@@ -1,4 +1,4 @@
-// import rootEpic from '../epic';
+import rootEpic from '../epic';
 import { createLogger } from 'redux-logger';
 import { reducer } from '../reducers/index';
 import { configureStore } from '@reduxjs/toolkit';
@@ -19,7 +19,7 @@ export const initStore = () => {
     devTools: process.env.NODE_ENV !== 'production',
   });
 
-  //   epicMiddleware.run(rootEpic as any);
+  epicMiddleware.run(rootEpic as any);
 
   return store;
 };

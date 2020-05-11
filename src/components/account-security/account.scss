@@ -1,0 +1,76 @@
+@import '../../assets/styles/forms/form-group';
+@import '../../assets/styles/forms/error-message';
+@import '../../assets/styles/forms/btn';
+@import '../../assets/styles/variables';
+
+.account {
+  &__wrap {
+    width: 100%;
+  }
+
+  &__form {
+    position: relative;
+    width: 580px;
+    margin: 0 15px;
+    padding: 40px 80px 10px 80px;
+    text-align: center;
+    background-color: $color_white;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+
+    @media screen and (max-width: 1660px) {
+      width: 500px;
+      margin: 0;
+      padding: 10px 60px 0;
+    }
+
+    @media screen and (max-width: 590px) {
+      padding: 0 20px;
+    }
+  }
+
+  &__logo {
+    max-width: 390px;
+    margin: 0 auto;
+    height: 100px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  &__form-title {
+    padding: 0 0 70px;
+    font-size: 18px;
+    line-height: 24px;
+    color: $color_black;
+
+    @media screen and (max-width: 1660px) {
+      padding: 0 0 45px;
+    }
+
+    @media screen and (max-width: 425px) {
+      padding-bottom: 30px;
+      font-size: 18px;
+    }
+
+    letter-spacing: 0.7px;
+  }
+
+  &__forgot-psw {
+    margin-top: 30px;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 20px;
+    transition: 0.3s color ease;
+
+    &:hover {
+      color: $color_green;
+    }
+  }
+}
+
+.bg-auth {
+  background: #faf9f8;
+  background-position: center;
+  background-repeat: no-repeat;
+}
