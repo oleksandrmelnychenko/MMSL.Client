@@ -9,6 +9,7 @@ import { IApplicationState } from '../redux/reducers';
 import PageNotFound from './master/PageNotFound';
 import AccountSecurity from './account-security/AccountSecurity';
 import { IAuthState } from '../interfaces';
+import Dealers from './dealers/Dealers';
 
 export interface IRoutingProps {
   onEnter: void;
@@ -23,6 +24,7 @@ export const Routing: React.FC<IRoutingProps> = (props) => {
   );
 
   const languageCode = getActiveLanguage(localize).code;
+
   if (!auth.isAuth)
     return (
       <>
@@ -44,6 +46,8 @@ export const Routing: React.FC<IRoutingProps> = (props) => {
         path={`/${languageCode}/account-security`}
         component={AccountSecurity}
       />
+
+      <PrivateRoute path={`/${languageCode}/app/dealers`} component={Dealers} />
 
       <PrivateRoute path={`/${languageCode}/app`} component={Dashboard} />
 

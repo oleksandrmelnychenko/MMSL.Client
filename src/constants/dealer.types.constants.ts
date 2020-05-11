@@ -1,0 +1,1 @@
+export const CHANGE_DEALER_VIEW = 'dealer.CHANGE_DEALER_VIEW';
