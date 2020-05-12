@@ -1,5 +1,5 @@
 .dealerForm {
-  padding: 12px 0px 12px 0px;
+  padding: 52px 0px 12px 0px;
 
   input {
     height: 30px;
@@ -19,5 +19,9 @@
     color: #005A9E;
     font-weight: 700;
     font-size: 16px;
+  }
+
+  .saveButton {
+    position: absolute;
   }
 }

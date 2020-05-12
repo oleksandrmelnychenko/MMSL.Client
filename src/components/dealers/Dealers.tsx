@@ -8,6 +8,7 @@ import {
   Panel,
   PanelType,
   PrimaryButton,
+  Text,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -183,18 +184,21 @@ export const Dealers: React.FC = (props: any) => {
         <Panel
           isOpen={isAddDealerOpen}
           type={PanelType.custom}
-          customWidth={'1000px'}
+          customWidth={'600px'}
           onDismiss={() => {
             setisAddDealerOpen(!isAddDealerOpen);
           }}
-          onRenderFooterContent={() => (
-            <div>
-              <PrimaryButton>Save</PrimaryButton>
-            </div>
-          )}
-          headerText="Add dealer"
+          onRenderHeader={() => {
+            return (
+              <Stack horizontal className="dealerPanelHeader">
+                <Text className="dealerPanelHeader__title">Add Dealer</Text>
+                <PrimaryButton className="dealerPanelHeader__save">
+                  Save
+                </PrimaryButton>
+              </Stack>
+            );
+          }}
           closeButtonAriaLabel="Close"
-          isFooterAtBottom={true}
         >
           <DealerDetails />
         </Panel>

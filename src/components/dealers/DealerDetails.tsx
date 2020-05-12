@@ -14,10 +14,6 @@ import {
 import './dealerDetails.scss';
 
 export const DealerDetails: React.FC = (props: any) => {
-  const maskFormat: { [key: string]: RegExp } = {
-    '*': /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/,
-  };
-
   return (
     <div>
       <Formik initialValues={{}} onSubmit={() => {}}>
@@ -101,7 +97,7 @@ export const DealerDetails: React.FC = (props: any) => {
                     />
                   </Stack>
 
-                  <Stack grow={1}>
+                  {/* <Stack grow={1}>
                     <div className="formScope">
                       <Text className="formScopeHeader">BILLING ADDRESS</Text>
                       <TextField
@@ -154,11 +150,11 @@ export const DealerDetails: React.FC = (props: any) => {
                         <Checkbox label="Use same as billing" />
                       </Stack>
                     </div>
-                  </Stack>
+                  </Stack> */}
                 </Stack>
 
                 {/* <PrimaryButton
-                  style={{ marginTop: '30px' }}
+                  className="saveButton"
                   text="Save"
                   allowDisabledFocus
                 /> */}

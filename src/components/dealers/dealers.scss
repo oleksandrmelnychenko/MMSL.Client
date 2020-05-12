@@ -15,7 +15,7 @@
       position: relative;
 
       &__title {
-        color: 7f7f7f;
+        color: #484848;
         font-size: 22px;
         font-weight: 600;
         padding: 9px 90px 0 6px;
@@ -60,5 +60,21 @@
         border: none;
       }
     }
+  }
+
+}
+
+.dealerPanelHeader {
+  position: absolute;
+  left: 24px;
+
+  &__title {
+    color: #484848;
+    font-size: 22px;
+    font-weight: 600;
+  }
+
+  &__save {
+    margin-left: 60px !important;
   }
 }
