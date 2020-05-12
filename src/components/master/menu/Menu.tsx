@@ -3,7 +3,15 @@ import { Nav, INavLinkGroup } from 'office-ui-fabric-react/lib/Nav';
 
 import './menu.scss';
 
-const Menu = () => {
+const Menu: React.FC = () => {
+  const menuStyles = {
+    root: {
+      fontFamily: 'Segoe UI',
+    },
+    link: {
+      textTransform: 'none',
+    },
+  };
   const navLinkGroups: INavLinkGroup[] = [
     {
       links: [
@@ -81,7 +89,11 @@ const Menu = () => {
   ];
 
   return (
-    <Nav ariaLabel="Nav example with nested links" groups={navLinkGroups} />
+    <Nav
+      ariaLabel="Nav example with nested links"
+      groups={navLinkGroups}
+      styles={menuStyles}
+    />
   );
 };
 
