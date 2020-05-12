@@ -21,6 +21,7 @@ import { TokenHelper } from './helpers/token.helper';
 import * as authAction from './redux/actions/auth.actions';
 
 import { loadTheme, createTheme, ITheme } from 'office-ui-fabric-react';
+import { initializeIcons } from 'office-ui-fabric-react';
 
 const mmslTheme: ITheme = createTheme({
   palette: {
@@ -55,6 +56,7 @@ const mmslTheme: ITheme = createTheme({
 });
 
 loadTheme(mmslTheme);
+initializeIcons();
 
 const history = createBrowserHistory();
 const store = initStore(history);

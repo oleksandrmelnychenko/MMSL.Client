@@ -1,4 +1,28 @@
 .dealers {
+
+    padding: 12px 12px 12px 12px;
+
+    &__header {
+        background-color: #ffffff;
+
+        &__top {
+            position: relative;
+            border-bottom: 1px solid gray;
+
+            &__title {
+                color: grey;
+                font-size: 19px;
+            }
+
+            &__controls {
+                input {
+                    height: 30px;
+                }
+
+            }
+        }
+    }
+
     &__navigation {
         li {
             display: inline-block;
