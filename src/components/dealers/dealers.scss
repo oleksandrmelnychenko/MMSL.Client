@@ -13,11 +13,12 @@
     &__top {
       height: 52px;
       position: relative;
-      border-bottom: 1px solid gray;
 
       &__title {
-        color: grey;
-        font-size: 19px;
+        color: 7f7f7f;
+        font-size: 22px;
+        font-weight: 600;
+        padding: 9px 0px 0 6px;
       }
 
       &__controls {
@@ -38,6 +39,7 @@
 
   &__navigation {
     margin: 18px 0 0 0;
+    display: none;
 
     li {
       display: inline-block;
