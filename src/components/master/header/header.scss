@@ -2,16 +2,16 @@
     width: 100%;
     height: 50px;
     background-color: #fff;
-    box-shadow: -5px 0 11px 1px rgba(0, 0, 0, 0.09);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
 
     &_right {
         float: right;
     }
 
     &__logo {
-        width: 80px;
+        width: 65px;
         height: 40px;
-        margin: 5px 0 0 25px;
+        margin: 5px 0 0 35px;
         float: left;
         background-image: url('../../../assets/images/logo.png');
         background-position: center;

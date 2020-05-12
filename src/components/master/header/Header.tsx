@@ -32,10 +32,11 @@ const Header: React.FC = () => {
   const menuStyles = {
     root: {
       minWidth: 'auto',
-      padding: '0',
-      margin: '10px 0',
+      padding: '5px',
+      margin: '4px 0',
       border: 'none',
       background: '#fff',
+      'box-sizing': 'content-box',
     },
   };
   const menuItems: IContextualMenuItem[] = [
