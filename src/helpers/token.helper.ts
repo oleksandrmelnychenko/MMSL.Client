@@ -1,7 +1,7 @@
 import { CookieHelper } from './cookie.helper';
 
 export class TokenHelper {
-  private static readonly tokenAccessId: string = '.HarvestedCore.Session';
+  private static readonly tokenAccessId: string = '.MMSL.Session';
 
   public static parseJwt(token: string): any {
     const base64Url = token.split('.')[1];

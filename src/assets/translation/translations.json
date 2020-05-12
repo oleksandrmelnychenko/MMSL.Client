@@ -3,6 +3,7 @@
     "Невірно введений email",
     "Email is not entered correctly"
   ],
+
   "passwordRequired": ["Пароль обов'язковий", "Password is required"],
 
   "repeatPasswordRequired": [
@@ -37,22 +38,7 @@
     "Email or password did not match the user credentials"
   ],
 
-  "Apple varieties selection updated successfully": [
-    "Сорти яблунь успішно оновлено",
-    "Apple varieties successfully updated"
-  ],
-
-  "Apple variety updated successfully": [
-    "Сорт яблук успішно оновлений",
-    "Apple variety updated successfully"
-  ],
-
   "NullReference": ["Помилка сервера", "Server error"],
-
-  "userOnTheSystem": [
-    "Такий користувач вже є в системі",
-    "This user is already on the system"
-  ],
 
   "emailIsRequired": ["Email обов'язковий", "Email is required"],
 
@@ -80,24 +66,6 @@
 
   "titleSignUp": ["Створення аккаунту", "Create an account"],
 
-  "home": ["Головна", "Home"],
-
-  "drones": ["Дрони", "Drones"],
-
-  "droneSettings": ["Налаштування дрона", "Drone settings"],
-
-  "territory": ["Територія", "The territory"],
-
-  "company": ["Підприємство", "Company"],
-
-  "products": ["Товари", "Products"],
-
-  "analytics": ["Аналітика", "Analytics"],
-
-  "market": ["Маркет", "Market"],
-
-  "edit": ["Змінити", "Edit"],
-
   "cancel": ["Скасувати", "Cancel"],
 
   "save": ["Зберегти", "Save"],
@@ -109,67 +77,8 @@
     "Number of varieties selected"
   ],
 
-  "productManagement": ["Керування товарами", "Product Management"],
-
-  "basicVarietiesOfApples": ["Базові сорти яблук", "Basic varieties of apples"],
-
-  "enterpriseVarieties": ["Сорти підприємства", "Enterprise varieties"],
-
-  "saveChanges": ["Зберегти зміни", "Save changes"],
-
-  "companyDescription": [
-    "Короткий опис про компанії",
-    "Short description about the company"
-  ],
-
-  "companyCity": ["Місто де зареєстровані", "City where registered"],
-
-  "companyAddress": ["Адреса компанії", "Company address"],
-
   "titleForgotPassword": [
     "Введіть свою електронну адресу, і ми надішлемо вам посилання для скидання пароля",
     "Enter your email address and we send you a password reset link"
-  ],
-
-  "Company information saved": [
-    "Інформація про компанію збережена",
-    "Company information saved"
-  ],
-
-  "Apple variety added successfully": [
-    "Сорт яблук успішно доданий",
-    "Apple variety successfully added"
-  ],
-
-  "copyright": [
-    "Copyright © 2020 Nolt technologies LLC. All rights reserved",
-    "Copyright © 2020 Nolt technologies LLC. All rights reserved"
-  ],
-
-  "droneManagement": ["Керування дронами", "Drone management"],
-
-  "droneConsole": ["Консоль дрона", "Drone console"],
-
-  "addDrone": ["Додати новий пристрій", "Add new drone"],
-
-  "name": ["Ім'я", "Name"],
-
-  "serialNumber": ["С/Н", "S/N"],
-
-  "isFlying": ["В польоті", "Is flying"],
-
-  "delete": ["Видалити", "Delete"],
-
-  "isOnline": ["Онлайн", "Online"],
-
-  "batteryLevel": ["Рівень акумулятора", "Battery level"],
-
-  "noRegisteredDrones": ["Немає зареєстрованих дронів", "No registered drones"],
-
-  "totalDrones": ["Всього дронів", "Total drones"],
-
-  "backHome": ["Назад", "Home"],
-
-  "satellite": ["Супутник", "Satellite"],
-  "droneCamera": ["Камера дрона", "Drone camera"]
+  ]
 }

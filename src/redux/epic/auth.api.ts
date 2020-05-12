@@ -8,6 +8,7 @@ import * as API from '../../constants/api.constants';
 import { ajaxPostResponse } from '../../helpers/epic.helper';
 import { TokenHelper } from '../../helpers/token.helper';
 import * as authTypes from '../../constants/auth.types.constants';
+import { getActiveLanguage } from 'react-localize-redux';
 
 import { SignInAction, SignUpAction } from '../../redux/actions/auth.actions';
 
@@ -15,12 +16,14 @@ export const signInEpic = (action$: AnyAction, state$: any) =>
   action$.pipe(
     ofType(authTypes.REQUEST_SIGNIN),
     switchMap((action: SignInAction) => {
+      const currentLanguage = getActiveLanguage(state$.value.localize).code;
       return ajaxPostResponse(
         API.SIGN_IN_API,
         action.payload,
         state$.value
       ).pipe(
         mergeMap((res: any) => {
+          console.log(res);
           TokenHelper.SetToken(res.body.token);
 
           return of(
@@ -31,11 +34,12 @@ export const signInEpic = (action$: AnyAction, state$: any) =>
             {
               type: authTypes.REQUEST_USER_ACCOUNT_TYPE,
             },
-            push(`/app`)
+            push(`/${currentLanguage}/app`)
           );
         }),
         catchError((error) => {
-          const serverMessage = error.response.message;
+          // const serverMessage = error.response.message;
+          const serverMessage = 'message';
           return of({
             type: authTypes.FAILURE_SIGNIN,
             payload: {
