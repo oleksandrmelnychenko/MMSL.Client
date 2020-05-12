@@ -25,3 +25,13 @@ export interface IAuthState {
   isError: boolean;
   userInfo: IUserInfo;
 }
+
+export interface IDealer {
+  dealerInfo: string;
+  rejected: string;
+  processing: string;
+  stitching: string;
+  stitched: string;
+  dispatched: string;
+  delivered: string;
+}

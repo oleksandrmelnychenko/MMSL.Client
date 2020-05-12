@@ -1,7 +1,6 @@
 import React from 'react';
 import './dealers.scss';
 import { DefaultButton, SearchBox, ActionButton } from 'office-ui-fabric-react';
-import { Switch, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import { LocalizeState, getActiveLanguage } from 'react-localize-redux';
@@ -10,8 +9,6 @@ import DealerStores from './DealerStores';
 import DealerList from './DealerList';
 import { DealerView } from '../../redux/reducers/dealer.reducer';
 import * as dealerActions from '../../redux/actions/dealer.actions';
-import { Dropdown, IDropdownOption } from 'office-ui-fabric-react/lib/Dropdown';
-import { IconButton, IIconProps } from 'office-ui-fabric-react';
 import {
   DatePicker,
   DayOfWeek,
@@ -122,7 +119,7 @@ export const Dealers: React.FC = (props: any) => {
 
         <div className="dealers__navigation">
           <ul>
-            <li>
+            <li className={dealerView === DealerView.List ? 'selected ' : ''}>
               <DefaultButton
                 text="List"
                 allowDisabledFocus
@@ -131,7 +128,9 @@ export const Dealers: React.FC = (props: any) => {
                 }
               />
             </li>
-            <li>
+            <li
+              className={dealerView === DealerView.Details ? 'selected ' : ''}
+            >
               <DefaultButton
                 text="Dealer details"
                 allowDisabledFocus
@@ -140,8 +139,7 @@ export const Dealers: React.FC = (props: any) => {
                 }
               />
             </li>
-            <li>
-              {' '}
+            <li className={dealerView === DealerView.Stores ? 'selected ' : ''}>
               <DefaultButton
                 text="Dealer stores"
                 allowDisabledFocus
