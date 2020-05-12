@@ -61,14 +61,11 @@ const store = initStore();
 
 store.dispatch(
   initialize({
-    languages: [
-      { name: 'Ukraine', code: 'uk' },
-      { name: 'English', code: 'en' },
-    ],
+    languages: [{ name: 'English', code: 'en' }],
     translation: globalTranslations,
     options: {
       renderToStaticMarkup,
-      defaultLanguage: 'uk',
+      defaultLanguage: 'en',
     },
   })
 );

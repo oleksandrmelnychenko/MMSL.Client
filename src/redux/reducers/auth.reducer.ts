@@ -14,9 +14,6 @@ export const authReducer = createReducer(defaultAuthState, (builder) =>
     .addCase(actions.failureSignInAction, (state, action) => {
       state.errorMessage = action.payload.errorMessage;
     })
-    .addCase(actions.authSuccessSignUpAction, (state, action) => {
-      state.isAuth = action.payload;
-    })
     .addCase(actions.failureSignUpAction, (state, action) => {
       state.errorMessage = action.payload.errorMessage;
     })

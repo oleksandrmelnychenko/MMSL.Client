@@ -12,52 +12,47 @@
   background: $color_white;
   transition: 0.3s background-color ease;
   box-sizing: border-box;
+
   &-submit {
-    width: 240px;
+    width: 100%;
     margin-top: 5px;
     background: $color_grey;
     color: $color_white;
     border: 1px solid $color_grey;
+
     &:hover {
       background-color: $color_black;
     }
   }
+
   &-link {
     line-height: 50px;
     color: $color_white;
     font-size: 16px;
     font-weight: 400;
     background: $color_grey;
+
     @media screen and (max-width: 470px) {
       font-size: 14px;
       padding-left: 25px;
     }
+
     &:hover {
       background-color: $color_black;
     }
-    &:before {
-      content: '';
-      position: absolute;
-      width: 55px;
-      height: 20px;
-      top: calc(50% - 10px);
-      left: 30px;
-      background: url('../../images/sign-in/signUp.svg');
-      background-repeat: no-repeat;
-      @media screen and (max-width: 630px) {
-        left: 5px;
-      }
-    }
   }
+
   &__action {
     height: 30px;
     margin-right: 10px;
     padding: 0 20px;
+
     &:hover {
       color: $color_white;
       background-color: $color_grey;
     }
   }
+
   &__close {
     position: absolute;
     width: 12px;
@@ -66,11 +61,13 @@
     right: 20px;
     border: none;
     background: url('../../images/close.svg') no-repeat;
+
     @media screen and (max-width: 768px) {
       top: 7px;
       right: 7px;
     }
   }
+
   &-primary {
     display: inline-block;
     width: auto;
@@ -79,16 +76,19 @@
     background: $color_grey;
     color: $color_white;
     border: 1px solid $color_grey;
+
     &:hover {
       background-color: $color_black;
     }
   }
+
   &-secondary {
     width: 100%;
     margin-top: 5px;
     background: $color_grey;
     color: $color_white;
     border: 1px solid $color_grey;
+
     &:hover {
       background-color: $color_black;
     }

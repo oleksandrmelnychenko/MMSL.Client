@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import * as types from '../../constants/auth.types.constants';
-import { IAuthentication, IFailureAuth, IUserInfo } from '../../interfaces';
+import { IAuthentication, IFailureAuth } from '../../interfaces';
 
 export const signInAction = createAction<IAuthentication>(types.REQUEST_SIGNIN);
 export type SignInAction = ReturnType<typeof signInAction>;
@@ -22,13 +22,6 @@ export const authSuccessSignInAction = createAction<boolean>(
   types.SUCCESS_SIGNIN
 );
 export type AuthSuccessAction = ReturnType<typeof authSuccessSignInAction>;
-
-export const authSuccessSignUpAction = createAction<boolean>(
-  types.SUCCESS_SIGNUP
-);
-export type AuthSuccessSignUpAction = ReturnType<
-  typeof authSuccessSignUpAction
->;
 
 export const logOut = createAction(types.LOGOUT);
 

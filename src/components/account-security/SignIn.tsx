@@ -48,7 +48,7 @@ export const SignIn: React.FC = () => {
     errorMessage && dispatch(authAction.clearErrorMessage());
 
   return (
-    <div className="container-flex-center bg-auth">
+    <div className="container-flex-center">
       {isActiveForm && <PreloaderModule />}
 
       <div className="account__form">
@@ -129,16 +129,6 @@ export const SignIn: React.FC = () => {
           onClick={handleClearErrorMessages}>
           <Translate id="forgotPassword" />
         </Link>
-        <hr />
-        <Link
-          to={`/${languageCode}/account-security/sign-up`}
-          className="btn btn-link"
-          onClick={handleClearErrorMessages}>
-          <Translate id="CreateNewAccount" />
-        </Link>
-        <div className="copyright">
-          <Translate id="copyright" />
-        </div>
       </div>
     </div>
   );

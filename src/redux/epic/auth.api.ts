@@ -10,7 +10,7 @@ import { TokenHelper } from '../../helpers/token.helper';
 import * as authTypes from '../../constants/auth.types.constants';
 import { getActiveLanguage } from 'react-localize-redux';
 
-import { SignInAction, SignUpAction } from '../../redux/actions/auth.actions';
+import { SignInAction } from '../../redux/actions/auth.actions';
 
 export const signInEpic = (action$: AnyAction, state$: any) =>
   action$.pipe(
@@ -51,39 +51,4 @@ export const signInEpic = (action$: AnyAction, state$: any) =>
         })
       );
     })
-  );
-
-export const signUpEpic = (action$: AnyAction, state$: any) =>
-  action$.pipe(
-    ofType(authTypes.REQUEST_SIGNUP),
-    switchMap((action: SignUpAction) =>
-      ajaxPostResponse(
-        API.NEW_USER_ACCOUNT_API,
-        action.payload,
-        state$.value
-      ).pipe(
-        mergeMap((res: any) => {
-          return of(
-            {
-              type: authTypes.SUCCESS_SIGNUP,
-              payload: true,
-            },
-            {
-              type: authTypes.REQUEST_SIGNIN,
-              payload: action.payload,
-            }
-          );
-        }),
-        catchError((error) => {
-          const serverMessage = error.response.message;
-          return of({
-            type: authTypes.FAILURE_SIGNUP,
-            payload: {
-              isError: true,
-              errorMessage: serverMessage,
-            },
-          });
-        })
-      )
-    )
   );

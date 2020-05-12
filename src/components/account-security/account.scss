@@ -10,19 +10,14 @@
 
   &__form {
     position: relative;
-    width: 580px;
+    width: 500px;
     margin: 0 15px;
-    padding: 40px 80px 10px 80px;
+    padding: 40px 80px 50px 80px;
     text-align: center;
     background-color: $color_white;
     transition: all 0.3s ease;
     border-radius: 2px;
-
-    @media screen and (max-width: 1660px) {
-      width: 500px;
-      margin: 0;
-      padding: 10px 60px 0;
-    }
+    box-shadow: -5px 0 11px 1px rgba(0, 0, 0, 0.09);
 
     @media screen and (max-width: 590px) {
       padding: 0 20px;
@@ -32,8 +27,9 @@
   &__logo {
     max-width: 390px;
     margin: 0 auto;
+    padding-bottom: 25px;
     height: 100px;
-    background-image: url('../../assets/images/logo.jpg');
+    background-image: url('../../assets/images/logo.png');
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -68,10 +64,4 @@
       color: $color_green;
     }
   }
-}
-
-.bg-auth {
-  background: #faf9f8;
-  background-position: center;
-  background-repeat: no-repeat;
 }

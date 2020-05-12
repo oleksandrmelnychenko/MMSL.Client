@@ -1,84 +1,118 @@
 {
   "emailIsNotCorrect": [
-    "Невірно введений email",
-    "Email is not entered correctly"
+    "Email is not entered correctly",
+    ""
   ],
 
-  "passwordRequired": ["Пароль обов'язковий", "Password is required"],
+  "passwordRequired": ["Password is required", ""],
 
   "repeatPasswordRequired": [
-    "Підтвердження пароля обов'язковий",
-    "Password confirmation is required"
+    "Password confirmation is required",
+    ""
   ],
 
-  "passwordMatch": ["Паролі мають співпадати", "Passwords must match"],
+  "passwordMatch": ["Passwords must match",
+    ""
+  ],
 
   "passwordLength": [
-    "Пароль має бути не менше, а ніж 5 символів",
-    "Password must be at least 5 characters long"
+    "Password must be at least 5 characters long",
+    ""
   ],
 
   "Email is not available": [
-    "Електронна пошта недоступна",
-    "Email is not available"
+    "Email is not available",
+    ""
   ],
 
   "requiredFields": [
-    "Обов'язкові поля для заповнення",
-    "Required fields are required"
+    "Required fields are required",
+    ""
   ],
 
   "Password must be between 8 and 18 characters long and must contain an upper case letter, a lower case letter and a number": [
-    "Пароль повинен містити від 8 до 18 символів і повинен містити Великі літери, малі літери та цифру",
-    "Password must be between 8 and 18 characters long and must contain an upper case letter, a lower case letter and a number"
+    "Password must be between 8 and 18 characters long and must contain an upper case letter, a lower case letter and a number",
+    ""
   ],
 
   "Email or password did not match the user credentials": [
-    "Електронна пошта чи пароль не відповідають обліковим даним користувача",
-    "Email or password did not match the user credentials"
+    "Email or password did not match the user credentials",
+    ""
   ],
 
-  "NullReference": ["Помилка сервера", "Server error"],
+  "NullReference": ["Server error",
+    ""
+  ],
 
-  "emailIsRequired": ["Email обов'язковий", "Email is required"],
+  "emailIsRequired": ["Email is required",
+    ""
+  ],
 
-  "forgotPassword": ["Забули пароль?", "Forgot your password?"],
+  "forgotPassword": ["Forgot your password?",
+    ""
+  ],
 
-  "signIn": ["Увійти", "Enter"],
+  "signIn": ["Sign in",
+    ""
+  ],
 
-  "settings": ["Налаштування", "Settings"],
+  "settings": ["Settings",
+    ""
+  ],
 
-  "logOut": ["Вийти", "Log out"],
+  "logOut": ["Log out",
+    ""
+  ],
 
-  "Registred": ["Створити", "Create"],
+  "Registred": ["Create",
+    ""
+  ],
 
-  "SendEmail": ["Відправити email", "Send email"],
+  "SendEmail": ["Send email",
+    ""
+  ],
 
-  "CreateNewAccount": ["Створення аккаунту", "Create an account"],
+  "CreateNewAccount": ["Create an account",
+    ""
+  ],
 
-  "enterPassword": ["Введіть пароль", "Enter your password"],
+  "enterPassword": ["Enter your password",
+    ""
+  ],
 
-  "enterRepeatedPassword": ["Підтвердження пароля", "Password confirmation"],
+  "enterRepeatedPassword": ["Password confirmation",
+    ""
+  ],
 
-  "enterEmail": ["Введіть email", "Enter your email"],
+  "enterEmail": ["Enter your email",
+    ""
+  ],
 
-  "titleSignIn": ["Залогінтесь для початку роботи", "Sign in to get started"],
+  "titleSignIn": ["Log in to get started", ""],
 
-  "titleSignUp": ["Створення аккаунту", "Create an account"],
+  "titleSignUp": ["Create an account",
+    ""
+  ],
 
-  "cancel": ["Скасувати", "Cancel"],
+  "cancel": ["Cancel",
+    ""
+  ],
 
-  "save": ["Зберегти", "Save"],
+  "save": ["Save",
+    ""
+  ],
 
-  "companyName": ["Назва компанії", "The company name"],
+  "companyName": ["The company name",
+    ""
+  ],
 
   "counterVarieties": [
-    "Кількість вибраних сортів",
-    "Number of varieties selected"
+    "Number of varieties selected",
+    ""
   ],
 
   "titleForgotPassword": [
-    "Введіть свою електронну адресу, і ми надішлемо вам посилання для скидання пароля",
-    "Enter your email address and we send you a password reset link"
+    "Enter your email address and we send you a password reset link",
+    ""
   ]
 }
