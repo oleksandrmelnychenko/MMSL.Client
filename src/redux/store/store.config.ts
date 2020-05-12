@@ -1,17 +1,19 @@
-import rootEpic from '../epic';
+import { configureStore } from '@reduxjs/toolkit';
 import { createLogger } from 'redux-logger';
 import { reducer } from '../reducers/index';
-import { configureStore } from '@reduxjs/toolkit';
+import { routerMiddleware } from 'react-router-redux';
 import { createEpicMiddleware } from 'redux-observable';
+import rootEpic from '../epic';
 
-export const initStore = () => {
+export const initStore = (history: any) => {
+  const simpleRouter = routerMiddleware(history);
   const epicMiddleware = createEpicMiddleware();
 
   const logger = createLogger({
     collapsed: true,
   });
 
-  const middleware = [epicMiddleware, logger];
+  const middleware = [epicMiddleware, simpleRouter, logger];
 
   const store = configureStore({
     reducer,

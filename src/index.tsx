@@ -57,7 +57,7 @@ const mmslTheme: ITheme = createTheme({
 loadTheme(mmslTheme);
 
 const history = createBrowserHistory();
-const store = initStore();
+const store = initStore(history);
 
 store.dispatch(
   initialize({
