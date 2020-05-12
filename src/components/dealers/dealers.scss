@@ -18,22 +18,29 @@
         color: 7f7f7f;
         font-size: 22px;
         font-weight: 600;
-        padding: 9px 0px 0 6px;
+        padding: 9px 90px 0 6px;
       }
 
       &__controls {
-        position: absolute;
-        right: 0;
-        top: 0;
 
-        input {
-          height: 30px;
+        margin-top: 11px;
+
+        .dealersDate {
+          margin-right: 12px;
         }
 
-        &__control {
-          display: inline-block;
+        .dealerSearch {
+          margin-right: 12px;
+        }
+
+        .dealerAdd {
+          margin-top: -3px;
         }
       }
+    }
+
+    input {
+      height: 30px;
     }
   }
 
