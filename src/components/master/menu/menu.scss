@@ -1,0 +1,34 @@
+nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background: #fff;
+    transform: translateX(0);
+    height: calc(100vh - 75px);
+    text-align: left;
+    padding: 1rem;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    box-shadow: -5px 0 11px 1px rgba(0, 0, 0, 0.09);
+    z-index: -1;
+
+    a {
+        font-size: 16px;
+        text-transform: uppercase;
+        padding: 1rem 0;
+        font-weight: bold;
+        letter-spacing: 0.08rem;
+        color: #0D0C1D;
+        text-decoration: none;
+
+        @media (max-width: 576px) {
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        &:hover {
+            color: #343078;
+        }
+    }
+}

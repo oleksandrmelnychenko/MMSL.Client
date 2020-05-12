@@ -90,9 +90,9 @@
 
   "titleSignIn": ["Log in to get started", ""],
 
-  "titleSignUp": ["Create an account",
-    ""
-  ],
+  "titleSignUp": ["Create an account", ""],
+
+  "logout": ["Log out", ""],
 
   "cancel": ["Cancel",
     ""

@@ -25,7 +25,7 @@ import { initializeIcons } from 'office-ui-fabric-react';
 
 const mmslTheme: ITheme = createTheme({
   palette: {
-    themePrimary: '#ffb800',
+    themePrimary: '#403f3d',
     themeLighterAlt: '#fafcf4',
     themeLighter: '#eaf4d2',
     themeLight: '#d9ebae',
@@ -59,7 +59,7 @@ loadTheme(mmslTheme);
 initializeIcons();
 
 const history = createBrowserHistory();
-const store = initStore();
+const store = initStore(history);
 
 store.dispatch(
   initialize({

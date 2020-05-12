@@ -1,0 +1,21 @@
+.header {
+    width: 100%;
+    height: 50px;
+    background-color: #fff;
+    box-shadow: -5px 0 11px 1px rgba(0, 0, 0, 0.09);
+
+    &_right {
+        float: right;
+    }
+
+    &__logo {
+        width: 80px;
+        height: 40px;
+        margin: 5px 0 0 25px;
+        float: left;
+        background-image: url('../../../assets/images/logo.png');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+}
