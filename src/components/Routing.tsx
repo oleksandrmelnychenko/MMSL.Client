@@ -47,8 +47,6 @@ export const Routing: React.FC<IRoutingProps> = (props) => {
         component={AccountSecurity}
       />
 
-      <PrivateRoute path={`/${languageCode}/app/dealers`} component={Dealers} />
-
       <PrivateRoute path={`/${languageCode}/app`} component={Dashboard} />
 
       <Route path={`/${languageCode}/404`} component={PageNotFound} />
