@@ -28,7 +28,7 @@
     max-width: 390px;
     margin: 0 auto;
     padding-bottom: 25px;
-    height: 100px;
+    height: 80px;
     background-image: url('../../assets/images/logo.png');
     background-size: contain;
     background-position: center;
@@ -36,14 +36,10 @@
   }
 
   &__form-title {
-    padding: 0 0 70px;
+    padding: 20px 0 45px;
     font-size: 18px;
     line-height: 24px;
     color: $color_black;
-
-    @media screen and (max-width: 1660px) {
-      padding: 0 0 45px;
-    }
 
     @media screen and (max-width: 425px) {
       padding-bottom: 30px;
