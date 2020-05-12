@@ -102,9 +102,6 @@ export const ForgotPassword: React.FC = () => {
           onClick={handleClearErrorMessages}>
           <Translate id="signIn" />
         </Link>
-        <div className="copyright">
-          <Translate id="copyright" />
-        </div>
       </div>
     </div>
   );
