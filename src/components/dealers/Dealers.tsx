@@ -93,65 +93,70 @@ export const Dealers: React.FC = (props: any) => {
 
   return (
     <div className="dealers">
-      <div className="dealers__header">
-        <div className="dealers__header__top">
-          <div className="dealers__header__top__title">Dealers</div>
-          <div className="dealers__header__top__controls">
-            <div className="dealers__header__top__controls__control">
-              <DatePicker
-                className={controlClass.control}
-                firstDayOfWeek={DayOfWeek.Monday}
-                strings={DayPickerStrings}
-                placeholder="Select a date..."
-                ariaLabel="Select a date"
-              />
+      <div className="dealers__root">
+        <div className="dealers__header">
+          <div className="dealers__header__top">
+            <div className="dealers__header__top__title">Dealers</div>
+            <div className="dealers__header__top__controls">
+              <div className="dealers__header__top__controls__control">
+                <DatePicker
+                  className={controlClass.control}
+                  firstDayOfWeek={DayOfWeek.Monday}
+                  strings={DayPickerStrings}
+                  placeholder="Select a date..."
+                  ariaLabel="Select a date"
+                />
+              </div>
+              <div className="dealers__header__top__controls__control">
+                <SearchBox styles={{ root: { width: 200 } }} />
+              </div>
+              <div className="dealers__header__top__controls__control">
+                <ActionButton iconProps={{ iconName: 'Add' }}>
+                  Add dealer
+                </ActionButton>
+              </div>
             </div>
-            <div className="dealers__header__top__controls__control">
-              <SearchBox styles={{ root: { width: 200 } }} />
-            </div>
-            <div className="dealers__header__top__controls__control">
-              <ActionButton iconProps={{ iconName: 'Add' }}>
-                Add dealer
-              </ActionButton>
-            </div>
+          </div>
+
+          <div className="dealers__navigation">
+            <ul>
+              <li className={dealerView === DealerView.List ? 'selected ' : ''}>
+                <DefaultButton
+                  text="List"
+                  allowDisabledFocus
+                  onClick={() =>
+                    dispatch(dealerActions.changeDealerView(DealerView.List))
+                  }
+                />
+              </li>
+              <li
+                className={dealerView === DealerView.Details ? 'selected ' : ''}
+              >
+                <DefaultButton
+                  text="Dealer details"
+                  allowDisabledFocus
+                  onClick={() =>
+                    dispatch(dealerActions.changeDealerView(DealerView.Details))
+                  }
+                />
+              </li>
+              <li
+                className={dealerView === DealerView.Stores ? 'selected ' : ''}
+              >
+                <DefaultButton
+                  text="Dealer stores"
+                  allowDisabledFocus
+                  onClick={() =>
+                    dispatch(dealerActions.changeDealerView(DealerView.Stores))
+                  }
+                />
+              </li>
+            </ul>
           </div>
         </div>
 
-        <div className="dealers__navigation">
-          <ul>
-            <li className={dealerView === DealerView.List ? 'selected ' : ''}>
-              <DefaultButton
-                text="List"
-                allowDisabledFocus
-                onClick={() =>
-                  dispatch(dealerActions.changeDealerView(DealerView.List))
-                }
-              />
-            </li>
-            <li
-              className={dealerView === DealerView.Details ? 'selected ' : ''}
-            >
-              <DefaultButton
-                text="Dealer details"
-                allowDisabledFocus
-                onClick={() =>
-                  dispatch(dealerActions.changeDealerView(DealerView.Details))
-                }
-              />
-            </li>
-            <li className={dealerView === DealerView.Stores ? 'selected ' : ''}>
-              <DefaultButton
-                text="Dealer stores"
-                allowDisabledFocus
-                onClick={() =>
-                  dispatch(dealerActions.changeDealerView(DealerView.Stores))
-                }
-              />
-            </li>
-          </ul>
-        </div>
+        <div>{content}</div>
       </div>
-      <div>{content}</div>
     </div>
   );
 };
