@@ -1,92 +1,35 @@
 import React from 'react';
-import {
-  Nav,
-  INavLink,
-  INavStyles,
-  INavLinkGroup,
-} from 'office-ui-fabric-react/lib/Nav';
+import { DefaultButton } from 'office-ui-fabric-react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getTranslate, LocalizeState } from 'react-localize-redux';
+
+import './header.scss';
+import { TokenHelper } from '../../../helpers/token.helper';
+import { IApplicationState } from '../../../redux/reducers';
+import * as authAction from '../../../redux/actions/auth.actions';
 
 const Header: React.FC = () => {
-  const navStyles: Partial<INavStyles> = {
-    root: {
-      width: 208,
-      height: 350,
-      boxSizing: 'border-box',
-      border: '1px solid #eee',
-      overflowY: 'auto',
-    },
+  const dispatch = useDispatch();
+  const translate = getTranslate(
+    useSelector<IApplicationState, LocalizeState>((state) => state.localize)
+  );
+
+  const logOut = (event: any) => {
+    event!.stopPropagation();
+    dispatch(authAction.logOut());
+    TokenHelper.removeAccessToken();
   };
 
-  const navLinkGroups: INavLinkGroup[] = [
-    {
-      links: [
-        {
-          name: 'Home',
-          url: 'http://example.com',
-          expandAriaLabel: 'Expand Home section',
-          collapseAriaLabel: 'Collapse Home section',
-          links: [
-            {
-              name: 'Activity',
-              url: 'http://msn.com',
-              key: 'key1',
-              target: '_blank',
-            },
-            {
-              name: 'MSN',
-              url: 'http://msn.com',
-              disabled: true,
-              key: 'key2',
-              target: '_blank',
-            },
-          ],
-          isExpanded: true,
-        },
-        {
-          name: 'Documents',
-          url: 'http://example.com',
-          key: 'key3',
-          isExpanded: true,
-          target: '_blank',
-        },
-        {
-          name: 'Pages',
-          url: 'http://msn.com',
-          key: 'key4',
-          target: '_blank',
-        },
-        {
-          name: 'Notebook',
-          url: 'http://msn.com',
-          key: 'key5',
-          disabled: true,
-        },
-        {
-          name: 'Communication and Media',
-          url: 'http://msn.com',
-          key: 'key6',
-          target: '_blank',
-        },
-        {
-          name: 'News',
-          url: 'http://cnn.com',
-          icon: 'News',
-          key: 'key7',
-          target: '_blank',
-        },
-      ],
-    },
-  ];
-
   return (
-    <div>
-      <Nav
-        onLinkClick={() => console.log('message')}
-        selectedKey="key3"
-        ariaLabel="Nav basic example"
-        styles={navStyles}
-        groups={navLinkGroups}
-      />
+    <div className="header">
+      <div className="header__logo"></div>
+      <div className="header_right">
+        <DefaultButton
+          text={translate('logout').toString()}
+          onClick={logOut}
+          allowDisabledFocus
+        />
+      </div>
     </div>
   );
 };

@@ -1,12 +1,18 @@
 import React from 'react';
 
+import './dashboard.scss';
 import Header from './header/Header';
+import Footer from './footer/Footer';
+import Menu from './menu/Menu';
 
 const Dashboard = () => {
   return (
     <>
       <Header />
-      <div>Dashboard</div>
+      <Menu />
+      <div className="content">View Components</div>
+
+      <Footer />
     </>
   );
 };
