@@ -92,3 +92,83 @@ nav {
 
 
 }
+
+.menu {
+    display: flex;
+    width: 200px;
+    flex-direction: column;
+    justify-content: flex-start;
+    background: #fff;
+    transform: translateX(0);
+    height: calc(100vh - 75px);
+    text-align: left;
+    padding: 5px 0 0 5px;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    border-right: 1px solid #eaeaea;
+
+    .menu__link {
+        display: block;
+        padding: 7px 20px 7px 35px;
+        position: relative;
+
+        &:hover {
+            color: #0078d4;
+        }
+
+        &.active {
+            border-left: 2px solid #0078d4;
+            color: #0078d4;
+            background-color: #f3f2f1;
+        }
+
+        &:before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 16px;
+            top: 10px;
+            left: 10px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+        }
+
+        &.dashboard:before {
+            background-image: url('../../../assets/images/menu-icons/dashboard.svg');
+        }
+
+        &.order:before {
+            background-image: url('../../../assets/images/menu-icons/order.svg');
+        }
+
+        &.customer:before {
+            background-image: url('../../../assets/images/menu-icons/customer.svg');
+        }
+
+        &.dealers:before {
+            background-image: url('../../../assets/images/menu-icons/dealers.svg');
+        }
+
+        &.stock:before {
+            background-image: url('../../../assets/images/menu-icons/stock.svg');
+        }
+
+        &.documents:before {
+            background-image: url('../../../assets/images/menu-icons/documents.svg');
+        }
+
+        &.activity:before {
+            background-image: url('../../../assets/images/menu-icons/activity.svg');
+        }
+
+        &.product:before {
+            background-image: url('../../../assets/images/menu-icons/product.svg');
+        }
+
+        &.reports:before {
+            background-image: url('../../../assets/images/menu-icons/reports.svg');
+        }
+    }
+}

@@ -1,150 +1,94 @@
 import React from 'react';
-import { Nav, INavLinkGroup } from 'office-ui-fabric-react/lib/Nav';
-
-import './menu.scss';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
+import './menu.scss';
+import { IApplicationState } from '../../../redux/reducers';
+import { LocalizeState, getActiveLanguage } from 'react-localize-redux';
+
 const Menu: React.FC = () => {
-  const menuStyles = {
-    root: {
-      fontFamily: 'Segoe UI',
-    },
-    link: {
-      textTransform: 'none',
-      fontFamily: 'Segoe UI',
-    },
-  };
-  const navLinkGroups: INavLinkGroup[] = [
-    {
-      links: [
-        {
-          name: 'Dashboard',
-          url: '/',
-          iconProps: {
-            imageProps: {
-              className: 'menu-icon dashboard',
-            },
-          },
-          expandAriaLabel: 'Dashboard',
-          collapseAriaLabel: 'Dashboard',
-        },
-        {
-          name: 'Order',
-          url: '/',
-          iconProps: {
-            imageProps: {
-              className: 'menu-icon order',
-            },
-          },
-          icon: 'ShoppingCart',
-          expandAriaLabel: 'Order',
-          collapseAriaLabel: 'Order',
-        },
-        {
-          name: 'Customer',
-          url: '/',
-          iconProps: {
-            imageProps: {
-              className: 'menu-icon customer',
-            },
-          },
-          expandAriaLabel: 'Customer',
-          collapseAriaLabel: 'Customer',
-        },
-        {
-          name: 'Dealers',
-          url: '/en/app/dealers',
-          iconProps: {
-            imageProps: {
-              className: 'menu-icon dealers',
-            },
-          },
-          expandAriaLabel: 'Dealers',
-          collapseAriaLabel: 'Dealers',
-        },
-        {
-          name: 'Stock',
-          url: '/',
-          iconProps: {
-            imageProps: {
-              className: 'menu-icon stock',
-            },
-          },
-          expandAriaLabel: 'Stock',
-          collapseAriaLabel: 'Stock',
-        },
-        {
-          name: 'Documents',
-          url: '/',
-          iconProps: {
-            imageProps: {
-              className: 'menu-icon documents',
-            },
-          },
-          expandAriaLabel: 'Documents',
-          collapseAriaLabel: 'Documents',
-        },
-        {
-          name: 'Activity History',
-          url: '/',
-          iconProps: {
-            imageProps: {
-              className: 'menu-icon activity',
-            },
-          },
-          expandAriaLabel: 'Activity History',
-          collapseAriaLabel: 'Activity History',
-        },
-        {
-          name: 'Product Category',
-          url: '/',
-          iconProps: {
-            imageProps: {
-              className: 'menu-icon product',
-            },
-          },
-          expandAriaLabel: 'Product Category',
-          collapseAriaLabel: 'Product Category',
-        },
-        {
-          name: 'Reports',
-          url: '/',
-          iconProps: {
-            imageProps: {
-              className: 'menu-icon reports',
-            },
-          },
-          expandAriaLabel: 'Reports',
-          collapseAriaLabel: 'Reports',
-          links: [
-            {
-              name: 'Reports link 1',
-              url: '/',
-            },
-          ],
-        },
-      ],
-    },
-  ];
+  const localize = useSelector<IApplicationState, LocalizeState>(
+    (state) => state.localize
+  );
+  const languageCode = getActiveLanguage(localize).code;
 
   return (
-    <Nav
-      ariaLabel="Nav example with nested links"
-      groups={navLinkGroups}
-      styles={menuStyles}
-    />
-    // <nav className="menu">
-    //   <ul className="menu__list">
-    //     <li className="menu__item">
-    //       <NavLink
-    //         className="menu-icon dashboard"
-    //         to={`/`}
-    //         activeClassName="active">
-    //         Dashboard
-    //       </NavLink>
-    //     </li>
-    //   </ul>
-    // </nav>
+    <div className="menu">
+      <ul className="menu__list">
+        <li className="menu__item">
+          <NavLink
+            className="menu__link dashboard"
+            to={`/${languageCode}/app/dashboard`}
+            activeClassName="active">
+            Dashboard
+          </NavLink>
+        </li>
+        <li className="menu__item">
+          <NavLink
+            className="menu__link order"
+            to={`/${languageCode}/app/order`}
+            activeClassName="active">
+            Order
+          </NavLink>
+        </li>
+        <li className="menu__item">
+          <NavLink
+            className="menu__link customer"
+            to={`/${languageCode}/app/customer`}
+            activeClassName="active">
+            Customer
+          </NavLink>
+        </li>
+        <li className="menu__item">
+          <NavLink
+            className="menu__link dealers"
+            to={`/${languageCode}/app/dealers`}
+            activeClassName="active">
+            Dealers
+          </NavLink>
+        </li>
+        <li className="menu__item">
+          <NavLink
+            className="menu__link stock"
+            to={`/${languageCode}/app/stock`}
+            activeClassName="active">
+            Stock
+          </NavLink>
+        </li>
+        <li className="menu__item">
+          <NavLink
+            className="menu__link documents"
+            to={`/${languageCode}/app/documents`}
+            activeClassName="active">
+            Documents
+          </NavLink>
+        </li>
+        <li className="menu__item">
+          <NavLink
+            className="menu__link activity"
+            to={`/${languageCode}/app/activity`}
+            activeClassName="active">
+            Activity History
+          </NavLink>
+        </li>
+        <li className="menu__item">
+          <NavLink
+            className="menu__link product"
+            to={`/${languageCode}/app/product`}
+            activeClassName="active">
+            Product Category
+          </NavLink>
+        </li>
+        <li className="menu__item">
+          <NavLink
+            className="menu__link reports"
+            to={`/${languageCode}/app/reports`}
+            activeClassName="active">
+            Reports
+          </NavLink>
+        </li>
+      </ul>
+    </div>
   );
 };
 
