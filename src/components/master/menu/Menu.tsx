@@ -3,20 +3,38 @@ import { Nav, INavLinkGroup } from 'office-ui-fabric-react/lib/Nav';
 
 import './menu.scss';
 
-const Menu = () => {
+const Menu: React.FC = () => {
+  const menuStyles = {
+    root: {
+      fontFamily: 'Segoe UI',
+    },
+    link: {
+      textTransform: 'none',
+      fontFamily: 'Segoe UI',
+    },
+  };
   const navLinkGroups: INavLinkGroup[] = [
     {
       links: [
         {
-          name: 'Dashbord',
+          name: 'Dashboard',
           url: '/',
-          icon: 'ViewDashboard',
-          expandAriaLabel: 'Expand Parent link 1',
-          collapseAriaLabel: 'Collapse Parent link 1',
+          iconProps: {
+            imageProps: {
+              className: 'menu-icon dashboard',
+            },
+          },
+          expandAriaLabel: 'Dashboard',
+          collapseAriaLabel: 'Dashboard',
         },
         {
           name: 'Order',
           url: '/',
+          iconProps: {
+            imageProps: {
+              className: 'menu-icon order',
+            },
+          },
           icon: 'ShoppingCart',
           expandAriaLabel: 'Order',
           collapseAriaLabel: 'Order',
@@ -24,49 +42,77 @@ const Menu = () => {
         {
           name: 'Customer',
           url: '/',
-          icon: 'ContactList',
+          iconProps: {
+            imageProps: {
+              className: 'menu-icon customer',
+            },
+          },
           expandAriaLabel: 'Customer',
           collapseAriaLabel: 'Customer',
         },
         {
           name: 'Dealers',
           url: '/en/app/dealers',
-          icon: 'FollowUser',
+          iconProps: {
+            imageProps: {
+              className: 'menu-icon dealers',
+            },
+          },
           expandAriaLabel: 'Dealers',
           collapseAriaLabel: 'Dealers',
         },
         {
           name: 'Stock',
           url: '/',
-          icon: 'GiftboxOpen',
+          iconProps: {
+            imageProps: {
+              className: 'menu-icon stock',
+            },
+          },
           expandAriaLabel: 'Stock',
           collapseAriaLabel: 'Stock',
         },
         {
           name: 'Documents',
           url: '/',
-          icon: 'TextDocument',
+          iconProps: {
+            imageProps: {
+              className: 'menu-icon documents',
+            },
+          },
           expandAriaLabel: 'Documents',
           collapseAriaLabel: 'Documents',
         },
         {
           name: 'Activity History',
           url: '/',
-          icon: 'LineChart',
+          iconProps: {
+            imageProps: {
+              className: 'menu-icon activity',
+            },
+          },
           expandAriaLabel: 'Activity History',
           collapseAriaLabel: 'Activity History',
         },
         {
           name: 'Product Category',
           url: '/',
-          icon: 'LocationCircle',
+          iconProps: {
+            imageProps: {
+              className: 'menu-icon product',
+            },
+          },
           expandAriaLabel: 'Product Category',
           collapseAriaLabel: 'Product Category',
         },
         {
           name: 'Reports',
           url: '/',
-          icon: 'DonutChart',
+          iconProps: {
+            imageProps: {
+              className: 'menu-icon reports',
+            },
+          },
           expandAriaLabel: 'Reports',
           collapseAriaLabel: 'Reports',
           links: [
@@ -81,7 +127,11 @@ const Menu = () => {
   ];
 
   return (
-    <Nav ariaLabel="Nav example with nested links" groups={navLinkGroups} />
+    <Nav
+      ariaLabel="Nav example with nested links"
+      groups={navLinkGroups}
+      styles={menuStyles}
+    />
   );
 };
 
