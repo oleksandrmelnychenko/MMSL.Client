@@ -5,9 +5,11 @@ import {
   Dropdown,
   Checkbox,
   PrimaryButton,
+  Text,
   Stack,
   TextField,
   MaskedTextField,
+  FontWeights,
 } from 'office-ui-fabric-react';
 import './dealerDetails.scss';
 
@@ -24,7 +26,7 @@ export const DealerDetails: React.FC = (props: any) => {
             <Form>
               <div className="dealerForm">
                 <Stack horizontal>
-                  <Stack grow={2}>
+                  <Stack style={{ marginRight: '20px' }} grow={1}>
                     <TextField
                       className="formInput"
                       label="Company name"
@@ -40,20 +42,22 @@ export const DealerDetails: React.FC = (props: any) => {
                       label="Email"
                       placeholder="Email"
                     />
-                    <MaskedTextField
+                    <TextField
                       label="Alternative Email"
                       className="formInput"
                       placeholder="Alternative Email"
-                      mask="m\ask: ****"
-                      maskFormat={maskFormat}
-                      maskChar="?"
                     />
                     <MaskedTextField
                       className="formInput"
+                      label="Phone Number"
                       placeholder="Phone Number"
-                      mask="m\ask: (999) 999 - 9999"
+                      mask="(999) 999 - 9999"
                     />
-                    <TextField className="formInput" placeholder="Tax Number" />
+                    <MaskedTextField
+                      label="Tax Number"
+                      className="formInput"
+                      placeholder="Tax Number"
+                    />
                     <Toggle
                       className="formInput"
                       label="Vat Applicate"
@@ -63,6 +67,7 @@ export const DealerDetails: React.FC = (props: any) => {
                     />
                     <Dropdown
                       className="formInput"
+                      label="Select Currency"
                       placeholder="Select Currency"
                       options={[
                         { key: 'usd', text: 'USD' },
@@ -72,6 +77,7 @@ export const DealerDetails: React.FC = (props: any) => {
                     />
                     <Dropdown
                       className="formInput"
+                      label="Select Payment"
                       placeholder="Select Payment"
                       options={[
                         { key: 'bankTransfer', text: 'Bank transfer' },
@@ -87,6 +93,7 @@ export const DealerDetails: React.FC = (props: any) => {
                       offText="Off"
                     />
                     <TextField
+                      label="General Text"
                       className="formInput"
                       placeholder="General Text"
                       multiline
@@ -95,12 +102,66 @@ export const DealerDetails: React.FC = (props: any) => {
                   </Stack>
 
                   <Stack grow={1}>
-                    <TextField
-                      label="Company name"
-                      placeholder="Company name"
-                    />
+                    <div className="formScope">
+                      <Text className="formScopeHeader">BILLING ADDRESS</Text>
+                      <TextField
+                        className="formInput"
+                        label="Address Line 1"
+                        placeholder="Address Line 1"
+                      />
+                      <TextField
+                        className="formInput"
+                        label="Address Line 2"
+                        placeholder="Address Line 2"
+                      />
+
+                      <Stack horizontal>
+                        <Stack style={{ marginRight: '10px' }} grow={1}>
+                          <TextField
+                            className="formInput"
+                            label="City"
+                            placeholder="City"
+                          />
+                          <TextField
+                            className="formInput"
+                            label="Country"
+                            placeholder="Country"
+                          />
+                        </Stack>
+                        <Stack style={{ marginLeft: '10px' }} grow={1}>
+                          <TextField
+                            className="formInput"
+                            label="State"
+                            placeholder="State"
+                          />
+                          <TextField
+                            className="formInput"
+                            label="Zip"
+                            placeholder="Zip"
+                          />
+                        </Stack>
+                      </Stack>
+                    </div>
+
+                    <div className="formScope" style={{ marginTop: '10px' }}>
+                      <Stack horizontal>
+                        <Stack.Item grow={1}>
+                          <Text className="formScopeHeader">
+                            DELIVERY ADDRESS
+                          </Text>
+                        </Stack.Item>
+
+                        <Checkbox label="Use same as billing" />
+                      </Stack>
+                    </div>
                   </Stack>
                 </Stack>
+
+                {/* <PrimaryButton
+                  style={{ marginTop: '30px' }}
+                  text="Save"
+                  allowDisabledFocus
+                /> */}
               </div>
             </Form>
           );
