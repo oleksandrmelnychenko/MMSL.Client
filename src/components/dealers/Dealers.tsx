@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './dealers.scss';
-import { DefaultButton, SearchBox, ActionButton } from 'office-ui-fabric-react';
+import {
+  DefaultButton,
+  SearchBox,
+  ActionButton,
+  Stack,
+  Panel,
+  PanelType,
+} from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import { LocalizeState, getActiveLanguage } from 'react-localize-redux';
@@ -15,9 +22,13 @@ import {
   IDatePickerStrings,
   mergeStyleSets,
 } from 'office-ui-fabric-react';
+import { boolean } from 'yup';
 
 export const Dealers: React.FC = (props: any) => {
+  const [isAddDealerOpen, setisAddDealerOpen] = useState<boolean>();
+
   const dispatch = useDispatch();
+
   const localize = useSelector<IApplicationState, LocalizeState>(
     (state) => state.localize
   );
@@ -96,26 +107,37 @@ export const Dealers: React.FC = (props: any) => {
       <div className="dealers__root">
         <div className="dealers__header">
           <div className="dealers__header__top">
-            <div className="dealers__header__top__title">Dealers</div>
-            <div className="dealers__header__top__controls">
-              <div className="dealers__header__top__controls__control">
-                <DatePicker
-                  className={controlClass.control}
-                  firstDayOfWeek={DayOfWeek.Monday}
-                  strings={DayPickerStrings}
-                  placeholder="Select a date..."
-                  ariaLabel="Select a date"
-                />
+            <Stack horizontal>
+              <div className="dealers__header__top__title">Dealers</div>
+              <div className="dealers__header__top__controls">
+                <Stack horizontal>
+                  <div className="dealers__header__top__controls__control">
+                    <DatePicker
+                      className="dealersDate"
+                      firstDayOfWeek={DayOfWeek.Monday}
+                      strings={DayPickerStrings}
+                      placeholder="Select a date..."
+                      ariaLabel="Select a date"
+                    />
+                  </div>
+                  <div className="dealers__header__top__controls__control">
+                    <SearchBox
+                      className="dealerSearch"
+                      styles={{ root: { width: 200 } }}
+                    />
+                  </div>
+                  <div className="dealers__header__top__controls__control">
+                    <ActionButton
+                      className="dealerAdd"
+                      onClick={() => setisAddDealerOpen(!isAddDealerOpen)}
+                      iconProps={{ iconName: 'Add' }}
+                    >
+                      Add dealer
+                    </ActionButton>
+                  </div>
+                </Stack>
               </div>
-              <div className="dealers__header__top__controls__control">
-                <SearchBox styles={{ root: { width: 200 } }} />
-              </div>
-              <div className="dealers__header__top__controls__control">
-                <ActionButton iconProps={{ iconName: 'Add' }}>
-                  Add dealer
-                </ActionButton>
-              </div>
-            </div>
+            </Stack>
           </div>
 
           <div className="dealers__navigation">
@@ -156,6 +178,20 @@ export const Dealers: React.FC = (props: any) => {
         </div>
 
         <div>{content}</div>
+
+        <Panel
+          isOpen={isAddDealerOpen}
+          type={PanelType.custom}
+          customWidth={'800px'}
+          onDismiss={() => {
+            setisAddDealerOpen(!isAddDealerOpen);
+          }}
+          headerText="Add dealer"
+          closeButtonAriaLabel="Close"
+          isFooterAtBottom={true}
+        >
+          <DealerDetails />
+        </Panel>
       </div>
     </div>
   );
