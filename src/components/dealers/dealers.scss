@@ -1,31 +1,39 @@
 .dealers {
+  padding: 12px 12px 12px 12px;
 
-    padding: 12px 12px 12px 12px;
+  &__header {
+    background-color: #ffffff;
 
-    &__header {
-        background-color: #ffffff;
+    &__top {
+      height: 52px;
+      position: relative;
+      border-bottom: 1px solid gray;
 
-        &__top {
-            position: relative;
-            border-bottom: 1px solid gray;
+      &__title {
+        color: grey;
+        font-size: 19px;
+      }
 
-            &__title {
-                color: grey;
-                font-size: 19px;
-            }
+      &__controls {
+        position: absolute;
+        right: 0;
+        top: 0;
 
-            &__controls {
-                input {
-                    height: 30px;
-                }
-
-            }
+        input {
+          height: 30px;
         }
-    }
 
-    &__navigation {
-        li {
-            display: inline-block;
+        &__control {
+          display: inline-block;
         }
+      }
     }
+  }
+
+  &__navigation {
+    margin: 18px 0 0 0;
+    li {
+      display: inline-block;
+    }
+  }
 }

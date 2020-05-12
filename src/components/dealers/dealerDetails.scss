@@ -1,0 +1,21 @@
+.dealerForm {
+  position: relative;
+
+  &__info {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+
+  &__billingInfo {
+    position: absolute;
+    top: 0;
+    left: 51%;
+  }
+
+  .formInput {
+    margin-bottom: 9px;
+  }
+}

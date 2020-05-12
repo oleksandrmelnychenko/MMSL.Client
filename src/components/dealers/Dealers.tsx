@@ -1,6 +1,6 @@
 import React from 'react';
 import './dealers.scss';
-import { DefaultButton } from 'office-ui-fabric-react';
+import { DefaultButton, SearchBox, ActionButton } from 'office-ui-fabric-react';
 import { Switch, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -94,21 +94,29 @@ export const Dealers: React.FC = (props: any) => {
     closeButtonAriaLabel: 'Close date picker',
   };
 
-  const emojiIcon: IIconProps = { iconName: 'Emoji2' };
-
   return (
     <div className="dealers">
       <div className="dealers__header">
         <div className="dealers__header__top">
           <div className="dealers__header__top__title">Dealers</div>
           <div className="dealers__header__top__controls">
-            <DatePicker
-              className={controlClass.control}
-              firstDayOfWeek={DayOfWeek.Monday}
-              strings={DayPickerStrings}
-              placeholder="Select a date..."
-              ariaLabel="Select a date"
-            />
+            <div className="dealers__header__top__controls__control">
+              <DatePicker
+                className={controlClass.control}
+                firstDayOfWeek={DayOfWeek.Monday}
+                strings={DayPickerStrings}
+                placeholder="Select a date..."
+                ariaLabel="Select a date"
+              />
+            </div>
+            <div className="dealers__header__top__controls__control">
+              <SearchBox styles={{ root: { width: 200 } }} />
+            </div>
+            <div className="dealers__header__top__controls__control">
+              <ActionButton iconProps={{ iconName: 'Add' }}>
+                Add dealer
+              </ActionButton>
+            </div>
           </div>
         </div>
 

@@ -1,7 +1,8 @@
 import React from 'react';
+import './dealerList.scss';
 
 export const DealerList: React.FC = (props: any) => {
-  return <div>Dealer list</div>;
+  return <div className="dealerList">Dealer list</div>;
 };
 
 export default DealerList;
