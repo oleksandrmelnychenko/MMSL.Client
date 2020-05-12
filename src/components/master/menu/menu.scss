@@ -6,29 +6,89 @@ nav {
     transform: translateX(0);
     height: calc(100vh - 75px);
     text-align: left;
-    padding: 5px;
+    padding: 5px 0 0 0;
     position: absolute;
     top: 50px;
     left: 0;
-    box-shadow: -5px 0 11px 1px rgba(0, 0, 0, 0.09);
-    z-index: -1;
+
 
     a {
         font-size: 16px;
         text-transform: uppercase;
         padding: 1rem 0;
         font-weight: bold;
-        letter-spacing: 0.08rem;
         color: #0D0C1D;
         text-decoration: none;
-
-        @media (max-width: 576px) {
-            font-size: 1.5rem;
-            text-align: center;
-        }
 
         &:hover {
             color: #343078;
         }
     }
+
+    .menu-icon {
+        width: 18px;
+        height: 16px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+
+        &.dashboard {
+            width: 18px;
+            height: 16px;
+            background-image: url('../../../assets/images/menu-icons/dashboard.svg');
+        }
+
+        &.order {
+            margin-right: 4px;
+            width: 14px;
+            height: 16px;
+            background-image: url('../../../assets/images/menu-icons/order.svg');
+        }
+
+        &.customer {
+            width: 18px;
+            height: 16px;
+            background-image: url('../../../assets/images/menu-icons/customer.svg');
+        }
+
+        &.dealers {
+            padding: 0;
+            width: 18px;
+            height: 16px;
+            background-image: url('../../../assets/images/menu-icons/dealers.svg');
+        }
+
+        &.stock {
+            width: 18px;
+            height: 17px;
+            background-image: url('../../../assets/images/menu-icons/stock.svg');
+        }
+
+        &.documents {
+            width: 18px;
+            height: 16px;
+            background-image: url('../../../assets/images/menu-icons/documents.svg');
+        }
+
+        &.activity {
+            width: 18px;
+            height: 16px;
+            background-image: url('../../../assets/images/menu-icons/activity.svg');
+        }
+
+        &.product {
+            margin-right: 4px;
+            width: 14px;
+            height: 17px;
+            background-image: url('../../../assets/images/menu-icons/product.svg');
+        }
+
+        &.reports {
+            width: 18px;
+            height: 16px;
+            background-image: url('../../../assets/images/menu-icons/reports.svg');
+        }
+    }
+
+
 }

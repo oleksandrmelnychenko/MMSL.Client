@@ -5,6 +5,9 @@ import {
   ContextualMenuItemType,
   IContextualMenuProps,
   DirectionalHint,
+  Persona,
+  IPersonaSharedProps,
+  PersonaSize,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getTranslate, LocalizeState } from 'react-localize-redux';
@@ -71,6 +74,15 @@ const Header: React.FC = () => {
     },
   };
 
+  const examplePersona: IPersonaSharedProps = {
+    // imageUrl: TestImages.personaFemale,
+    imageInitials: 'A',
+    text: 'Annie Lindqvist',
+    secondaryText: 'Software Engineer',
+    tertiaryText: 'In a meeting',
+    optionalText: 'Available at 4:00pm',
+  };
+
   return (
     <div className="header">
       <div className="header__logo"></div>
@@ -79,7 +91,13 @@ const Header: React.FC = () => {
           styles={menuStyles}
           persistMenu={true}
           menuProps={menuProps}>
-          <div>{TokenHelper.parseJwt(TokenHelper.getAccessToken()).email}</div>
+          <div>
+            <Persona
+              {...examplePersona}
+              text={TokenHelper.parseJwt(TokenHelper.getAccessToken()).email}
+              size={PersonaSize.size32}
+            />
+          </div>
         </DefaultButton>
       </div>
     </div>
