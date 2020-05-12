@@ -2,6 +2,7 @@ import React from 'react';
 import { Nav, INavLinkGroup } from 'office-ui-fabric-react/lib/Nav';
 
 import './menu.scss';
+import { NavLink } from 'react-router-dom';
 
 const Menu: React.FC = () => {
   const menuStyles = {
@@ -132,6 +133,18 @@ const Menu: React.FC = () => {
       groups={navLinkGroups}
       styles={menuStyles}
     />
+    // <nav className="menu">
+    //   <ul className="menu__list">
+    //     <li className="menu__item">
+    //       <NavLink
+    //         className="menu-icon dashboard"
+    //         to={`/`}
+    //         activeClassName="active">
+    //         Dashboard
+    //       </NavLink>
+    //     </li>
+    //   </ul>
+    // </nav>
   );
 };
 
