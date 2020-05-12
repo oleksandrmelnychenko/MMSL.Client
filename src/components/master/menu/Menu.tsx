@@ -30,7 +30,7 @@ const Menu = () => {
         },
         {
           name: 'Dealers',
-          url: '/',
+          url: '/en/app/dealers',
           icon: 'FollowUser',
           expandAriaLabel: 'Dealers',
           collapseAriaLabel: 'Dealers',
