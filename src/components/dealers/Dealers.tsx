@@ -11,6 +11,7 @@ import DealerList from './DealerList';
 import { DealerView } from '../../redux/reducers/dealer.reducer';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import { Dropdown, IDropdownOption } from 'office-ui-fabric-react/lib/Dropdown';
+import { IconButton, IIconProps } from 'office-ui-fabric-react';
 import {
   DatePicker,
   DayOfWeek,
@@ -92,6 +93,8 @@ export const Dealers: React.FC = (props: any) => {
     nextYearAriaLabel: 'Go to next year',
     closeButtonAriaLabel: 'Close date picker',
   };
+
+  const emojiIcon: IIconProps = { iconName: 'Emoji2' };
 
   return (
     <div className="dealers">
