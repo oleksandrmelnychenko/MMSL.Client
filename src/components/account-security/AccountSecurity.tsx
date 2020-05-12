@@ -4,7 +4,6 @@ import { getActiveLanguage, LocalizeState } from 'react-localize-redux';
 import { Route, Switch, Redirect, match } from 'react-router-dom';
 
 import SignIn from './SignIn';
-import SignUp from './SignUp';
 import ForgotPassword from './ForgotPassword';
 import { IApplicationState } from '../../redux/reducers';
 
@@ -43,8 +42,6 @@ const AccountSecurity: React.FC<IAccountSecurityProps> = (props) => {
       />
 
       <Route exact path={`${props.match.url}/sign-in`} component={SignIn} />
-
-      <Route exact path={`${props.match.url}/sign-up`} component={SignUp} />
 
       <Route
         exact

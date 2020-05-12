@@ -44,7 +44,7 @@ export const ForgotPassword: React.FC = () => {
     errorMessage && dispatch(authAction.clearErrorMessage());
 
   return (
-    <div className="container-flex-center bg-auth">
+    <div className="container-flex-center">
       {isActiveForm && <PreloaderModule />}
       <div className="account__form">
         <div className="account__logo"></div>
