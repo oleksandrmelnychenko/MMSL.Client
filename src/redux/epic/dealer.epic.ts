@@ -11,7 +11,7 @@ export const getDroneListEpic = (action$: AnyAction, state$: any) =>
     switchMap((action: AnyAction) => {
       /// TODO: temporary hardcoded, use api
       const items: any[] = [];
-      for (let i = 0; i < 30; i++) {
+      for (let i = 0; i < 3; i++) {
         items.push({
           dealerInfo: `dealer info ${i}`,
           rejected: `rejected ${i}`,
