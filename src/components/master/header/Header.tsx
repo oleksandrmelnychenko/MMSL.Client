@@ -76,12 +76,7 @@ const Header: React.FC = () => {
   };
 
   const examplePersona: IPersonaSharedProps = {
-    // imageUrl: TestImages.personaFemale,
     imageInitials: 'A',
-    text: 'Annie Lindqvist',
-    secondaryText: 'Software Engineer',
-    tertiaryText: 'In a meeting',
-    optionalText: 'Available at 4:00pm',
   };
 
   return (
@@ -97,6 +92,7 @@ const Header: React.FC = () => {
               {...examplePersona}
               text={TokenHelper.parseJwt(TokenHelper.getAccessToken()).email}
               size={PersonaSize.size32}
+              className="header__user-icon"
             />
           </div>
         </DefaultButton>
