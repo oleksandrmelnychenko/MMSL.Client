@@ -30,7 +30,7 @@ export const DealerList: React.FC = (props: any) => {
       key: 'index',
       name: 'Sr.',
       minWidth: 16,
-      maxWidth: 16,
+      maxWidth: 24,
       onColumnClick: () => {},
       onRender: (item: any, index?: number) => {
         return (
