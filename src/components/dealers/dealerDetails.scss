@@ -1,21 +1,11 @@
 .dealerForm {
-  position: relative;
+  padding: 12px 0px 12px 0px;
 
-  &__info {
-    display: inline-block;
-    width: 50%;
-    height: 100%;
-    top: 0;
-    left: 0;
-  }
-
-  &__billingInfo {
-    position: absolute;
-    top: 0;
-    left: 51%;
+  input {
+    height: 30px;
   }
 
   .formInput {
-    margin-bottom: 9px;
+    margin-bottom: 12px;
   }
 }
