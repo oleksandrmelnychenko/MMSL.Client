@@ -23,6 +23,7 @@ export const signInEpic = (action$: AnyAction, state$: any) =>
         state$.value
       ).pipe(
         mergeMap((res: any) => {
+          debugger;
           console.log(res);
           TokenHelper.SetToken(res.body.token);
 
@@ -31,15 +32,11 @@ export const signInEpic = (action$: AnyAction, state$: any) =>
               type: authTypes.SUCCESS_SIGNIN,
               payload: true,
             },
-            {
-              type: authTypes.REQUEST_USER_ACCOUNT_TYPE,
-            },
             push(`/${currentLanguage}/app`)
           );
         }),
         catchError((error) => {
-          // const serverMessage = error.response.message;
-          const serverMessage = 'message';
+          const serverMessage = error.response.message;
           return of({
             type: authTypes.FAILURE_SIGNIN,
             payload: {
