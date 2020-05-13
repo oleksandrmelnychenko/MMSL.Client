@@ -27,12 +27,9 @@ export const DealersPagination: React.FC = () => {
             pageRangeDisplayed={10}
             marginPagesDisplayed={3}
             onPageChange={(args: any) => {
-              debugger;
-
               let paginationInfo = { ...pagination };
-              pagination.pageNumber = args.selected;
+              paginationInfo.pageNumber = args.selected + 1;
 
-              debugger;
               dispatch(
                 dealerActions.updateDealerListPagination(paginationInfo)
               );

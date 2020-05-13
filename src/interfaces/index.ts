@@ -44,10 +44,20 @@ export interface IDealer {
   delivered: string;
 }
 
-export class DealerAccount {
+export class EntityBase {
   constructor() {
     this.id = 0;
     this.isDeleted = false;
+  }
+
+  id: number;
+  isDeleted: boolean;
+}
+
+export class DealerAccount extends EntityBase {
+  constructor() {
+    super();
+
     this.companyName = '';
     this.email = '';
     this.alternateEmail = '';
@@ -65,8 +75,6 @@ export class DealerAccount {
     this.stores = [];
   }
 
-  id: number;
-  isDeleted: boolean;
   companyName: string;
   email: string;
   alternateEmail: string;
@@ -84,8 +92,10 @@ export class DealerAccount {
   stores: any[];
 }
 
-export class Address {
+export class Address extends EntityBase {
   constructor() {
+    super();
+
     this.addressLine1 = '';
     this.addressLine2 = '';
     this.city = '';
