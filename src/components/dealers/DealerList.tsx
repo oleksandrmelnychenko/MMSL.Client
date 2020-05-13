@@ -14,16 +14,18 @@ import { IApplicationState } from '../../redux/reducers';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import * as controlActions from '../../redux/actions/control.actions';
 import ReactPaginate from 'react-paginate';
-import { DealerAccount } from '../../interfaces';
+import { DealerAccount, PaginationInfo } from '../../interfaces';
+import DealersPagination from './DealersPagination';
 
 export const DealerList: React.FC = () => {
   const dispatch = useDispatch();
-  const dealers = useSelector<IApplicationState, DealerAccount[]>(
-    (state) => state.dealer.dealersList
-  );
+  const dealers: DealerAccount[] = useSelector<
+    IApplicationState,
+    DealerAccount[]
+  >((state) => state.dealer.dealerState.dealersList);
 
   useEffect(() => {
-    dispatch(dealerActions.getDealersList());
+    dispatch(dealerActions.getDealersListPaginated());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -197,11 +199,7 @@ export const DealerList: React.FC = () => {
         selectionMode={SelectionMode.single}
         columns={columns}
       />
-      {/* <ReactPaginate
-        pageCount={100}
-        pageRangeDisplayed={10}
-        marginPagesDisplayed={3}
-      /> */}
+      <DealersPagination />
     </div>
   );
 };
