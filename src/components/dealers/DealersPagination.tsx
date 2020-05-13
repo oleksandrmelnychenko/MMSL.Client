@@ -46,7 +46,7 @@ export const DealersPagination: React.FC = () => {
   );
 
   const dropDownStyles = {
-    dropdown: { width: 300 },
+    dropdown: { width: 60 },
     label: {
       fontWeight: FontWeights.light,
       paddingBottom: '2px',
@@ -59,9 +59,16 @@ export const DealersPagination: React.FC = () => {
   return (
     <div className="dealersPagination">
       <div className="paginationScope">
-        <Stack horizontal horizontalAlign="space-between">
-          <Stack horizontal>
+        <Stack horizontal tokens={{ childrenGap: 60 }}>
+          <Stack
+            style={{
+              marginTop: '23px',
+            }}
+            horizontal
+            tokens={{ childrenGap: 12 }}
+          >
             <Text
+              style={{ paddingTop: '6px' }}
               block
             >{`Total count: ${pagination.paginationInfo.totalItems}`}</Text>
             <Dropdown
@@ -71,6 +78,7 @@ export const DealersPagination: React.FC = () => {
               onChange={(event: React.FormEvent<HTMLDivElement>, item: any) => {
                 let updatedPagination = { ...pagination };
                 updatedPagination.limit = parseInt(item.text);
+                updatedPagination.paginationInfo.pageNumber = 1;
 
                 dispatch(
                   dealerActions.updateDealerListPagination(updatedPagination)
@@ -82,7 +90,7 @@ export const DealersPagination: React.FC = () => {
               }}
             />
           </Stack>
-          <Stack.Item>
+          <Stack grow={1} horizontal horizontalAlign="center">
             <ReactPaginate
               containerClassName={'pagination'}
               pageCount={pagination.paginationInfo.pagesCount}
@@ -104,10 +112,7 @@ export const DealersPagination: React.FC = () => {
                 );
               }}
             />
-          </Stack.Item>
-          <Stack.Item>
-            <Text block>Foo</Text>
-          </Stack.Item>
+          </Stack>
         </Stack>
       </div>
     </div>

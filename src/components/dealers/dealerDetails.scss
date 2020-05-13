@@ -3,6 +3,7 @@
 
   &__inputBlock {
     margin-bottom: 12px;
+    position: relative;
 
     &.noMargin {
       margin-bottom: 0px;
@@ -10,7 +11,9 @@
 
     &__error {
       position: absolute;
+      width: 100%;
       color: #a4373a;
+      background: #efefef;
     }
   }
 

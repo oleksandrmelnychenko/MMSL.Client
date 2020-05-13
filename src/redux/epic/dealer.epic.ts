@@ -59,7 +59,6 @@ export const getDealersListPaginatedEpic = (
       const languageCode = getActiveLanguage(state$.value.localize).code;
       const pagination: Pagination = state$.value.dealer.dealerState.pagination;
 
-      debugger;
       return ajaxGetWebResponse(api.GET_DEALERS_ALL, state$.value, [
         { key: 'pageNumber', value: `${pagination.paginationInfo.pageNumber}` },
         { key: 'limit', value: `${pagination.limit}` },

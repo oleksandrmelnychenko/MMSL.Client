@@ -108,7 +108,9 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
           email: Yup.string()
             .email('Invalid email')
             .required(() => 'Email is required'),
-          alternativeEmail: Yup.string().email('Invalid email').notRequired(),
+          alternativeEmail: Yup.string()
+            .email('Invalid email')
+            .required('Alternative email is required'),
           phoneNumber: Yup.string().notRequired(),
           taxNumber: Yup.string().notRequired(),
           selectCurrency: Yup.string().notRequired(),
@@ -174,7 +176,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                               styles={textFildLabelStyles}
                               className="formInput"
                               label="Company name"
-                              placeholder="Company name"
                               onChange={(args: any) => {
                                 let value = args.target.value;
                                 formik.setFieldValue('companyName', value);
@@ -204,7 +205,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                               styles={textFildLabelStyles}
                               className="formInput"
                               label="Name"
-                              placeholder="Name"
                               onChange={(args: any) => {
                                 let value = args.target.value;
                                 formik.setFieldValue('name', value);
@@ -232,7 +232,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                               styles={textFildLabelStyles}
                               className="formInput"
                               label="Email"
-                              placeholder="Email"
                               onChange={(args: any) => {
                                 let value = args.target.value;
                                 formik.setFieldValue('email', value);
@@ -261,7 +260,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                               styles={textFildLabelStyles}
                               label="Alternative Email"
                               className="formInput"
-                              placeholder="Alternative Email"
                               onChange={(args: any) => {
                                 let value = args.target.value;
                                 formik.setFieldValue('alternativeEmail', value);
@@ -291,7 +289,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                               styles={textFildLabelStyles}
                               className="formInput"
                               label="Phone Number"
-                              placeholder="Phone Number"
                               mask="(999) 999 - 9999"
                               onChange={(args: any) => {
                                 let value = args.target.value;
@@ -313,7 +310,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                               styles={textFildLabelStyles}
                               label="Tax Number"
                               className="formInput"
-                              placeholder="Tax Number"
                               onChange={(args: any) => {
                                 let value = args.target.value;
                                 formik.setFieldValue('taxNumber', value);
@@ -334,7 +330,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                               styles={textFildLabelStyles}
                               label="General Text"
                               className="formInput"
-                              placeholder="General Text"
                               multiline
                               rows={3}
                               onChange={(args: any) => {
@@ -357,7 +352,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                             <Dropdown
                               className="formInput"
                               label="Select Currency"
-                              placeholder="Select Currency"
                               options={[
                                 { key: 'usd', text: 'USD' },
                                 { key: 'eur', text: 'EUR' },
@@ -385,7 +379,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                             <Dropdown
                               className="formInput"
                               label="Select Payment"
-                              placeholder="Select Payment"
                               options={[
                                 {
                                   key: 'bankTransfer',
@@ -468,7 +461,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                                   styles={textFildLabelStyles}
                                   className="formInput"
                                   label="Address Line 1"
-                                  placeholder="Address Line 1"
                                   onChange={(args: any) => {
                                     let value = args.target.value;
                                     formik.setFieldValue('addressLine1', value);
@@ -488,7 +480,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                                   styles={textFildLabelStyles}
                                   className="formInput"
                                   label="Address Line 2"
-                                  placeholder="Address Line 2"
                                   onChange={(args: any) => {
                                     let value = args.target.value;
                                     formik.setFieldValue('addressLine2', value);
@@ -510,7 +501,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                                       styles={textFildLabelStyles}
                                       className="formInput"
                                       label="City"
-                                      placeholder="City"
                                       onChange={(args: any) => {
                                         let value = args.target.value;
                                         formik.setFieldValue('city', value);
@@ -530,7 +520,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                                       styles={textFildLabelStyles}
                                       className="formInput"
                                       label="Country"
-                                      placeholder="Country"
                                       onChange={(args: any) => {
                                         let value = args.target.value;
                                         formik.setFieldValue('country', value);
@@ -552,7 +541,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                                       styles={textFildLabelStyles}
                                       className="formInput"
                                       label="State"
-                                      placeholder="State"
                                       onChange={(args: any) => {
                                         let value = args.target.value;
                                         formik.setFieldValue('state', value);
@@ -572,7 +560,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                                       styles={textFildLabelStyles}
                                       className="formInput"
                                       label="Zip"
-                                      placeholder="Zip"
                                       onChange={(args: any) => {
                                         let value = args.target.value;
                                         formik.setFieldValue('zip', value);
