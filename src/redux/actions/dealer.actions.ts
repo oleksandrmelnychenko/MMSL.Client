@@ -1,6 +1,10 @@
 import { createAction } from '@reduxjs/toolkit';
 import * as dealerTypes from '../../constants/dealer.types.constants';
-import { DealerAccount, PaginationInfo } from '../../interfaces/index';
+import {
+  DealerAccount,
+  Pagination,
+  PaginationInfo,
+} from '../../interfaces/index';
 
 export const getDealersList = createAction(dealerTypes.GET_DEALERS_LIST);
 
@@ -28,8 +32,11 @@ export const setSelectedDealer = createAction<DealerAccount>(
   dealerTypes.SELECTED_DEALER
 );
 
-export const updateDealerListPagination = createAction<PaginationInfo>(
+export const updateDealerListPagination = createAction<Pagination>(
   dealerTypes.UPDATE_DEALER_LIST_PAGINATION
+);
+export const updateDealerListPaginationInfo = createAction<PaginationInfo>(
+  dealerTypes.UPDATE_DEALER_LIST_PAGINATION_INFO
 );
 
 export type GetDealersList = ReturnType<typeof getDealersList>;
@@ -41,5 +48,8 @@ export type SaveNewDealer = ReturnType<typeof saveNewDealer>;
 export type ToggleNewDealerForm = ReturnType<typeof toggleNewDealerForm>;
 export type SetSelectedDealer = ReturnType<typeof setSelectedDealer>;
 export type UpdateDealerListPagination = ReturnType<
+  typeof updateDealerListPagination
+>;
+export type updateDealerListPaginationInfo = ReturnType<
   typeof updateDealerListPagination
 >;
