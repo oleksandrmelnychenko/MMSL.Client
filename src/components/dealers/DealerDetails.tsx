@@ -9,7 +9,6 @@ import {
   Stack,
   TextField,
   MaskedTextField,
-  FontWeights,
   ITextProps,
 } from 'office-ui-fabric-react';
 import './dealerDetails.scss';
@@ -17,6 +16,7 @@ import * as Yup from 'yup';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import { useDispatch } from 'react-redux';
 import { assignPendingActions } from '../../helpers/action.helper';
+import { FontSizes, FontWeights } from 'office-ui-fabric-react/lib/Styling';
 
 export class DealerAccount {
   constructor() {
@@ -124,6 +124,34 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
 ) => {
   const dispatch = useDispatch();
 
+  const textFildLabelStyles = {
+    subComponentStyles: {
+      label: {
+        root: {
+          fontWeight: FontWeights.light,
+          paddingBottom: '2px',
+        },
+      },
+    },
+  };
+
+  const dropDownStyles = {
+    dropdown: { width: 300 },
+    label: {
+      fontWeight: FontWeights.light,
+      paddingBottom: '2px',
+    },
+    title: {
+      letterSpacing: '1px',
+    },
+  };
+
+  const toggleStyles = {
+    label: {
+      fontWeight: FontWeights.light,
+    },
+  };
+
   return (
     <div>
       <Formik
@@ -186,13 +214,14 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
             <Form>
               <div className="dealerForm">
                 <Stack horizontal tokens={{ childrenGap: 20 }}>
-                  <Stack grow={3}>
+                  <Stack grow={2}>
                     <Field
                       name="companyName"
                       render={() => {
                         return (
                           <div className="dealerForm__inputBlock">
                             <TextField
+                              styles={textFildLabelStyles}
                               className="formInput"
                               label="Company name"
                               placeholder="Company name"
@@ -222,6 +251,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                         return (
                           <div className="dealerForm__inputBlock">
                             <TextField
+                              styles={textFildLabelStyles}
                               className="formInput"
                               label="Name"
                               placeholder="Name"
@@ -249,6 +279,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                         return (
                           <div className="dealerForm__inputBlock">
                             <TextField
+                              styles={textFildLabelStyles}
                               className="formInput"
                               label="Email"
                               placeholder="Email"
@@ -277,6 +308,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                         return (
                           <div className="dealerForm__inputBlock">
                             <TextField
+                              styles={textFildLabelStyles}
                               label="Alternative Email"
                               className="formInput"
                               placeholder="Alternative Email"
@@ -306,6 +338,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                         return (
                           <div className="dealerForm__inputBlock">
                             <MaskedTextField
+                              styles={textFildLabelStyles}
                               className="formInput"
                               label="Phone Number"
                               placeholder="Phone Number"
@@ -327,6 +360,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                         return (
                           <div className="dealerForm__inputBlock">
                             <TextField
+                              styles={textFildLabelStyles}
                               label="Tax Number"
                               className="formInput"
                               placeholder="Tax Number"
@@ -342,6 +376,30 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                     ></Field>
 
                     <Field
+                      name="generalText"
+                      render={() => {
+                        return (
+                          <div className="dealerForm__inputBlock noMargin">
+                            <TextField
+                              styles={textFildLabelStyles}
+                              label="General Text"
+                              className="formInput"
+                              placeholder="General Text"
+                              multiline
+                              rows={3}
+                              onChange={(args: any) => {
+                                let value = args.target.value;
+                                formik.setFieldValue('generalText', value);
+                                formik.setFieldTouched('generalText');
+                              }}
+                            />
+                          </div>
+                        );
+                      }}
+                    ></Field>
+                  </Stack>
+                  <Stack>
+                    <Field
                       name="selectCurrency"
                       render={() => {
                         return (
@@ -354,7 +412,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                                 { key: 'usd', text: 'USD' },
                                 { key: 'eur', text: 'EUR' },
                               ]}
-                              styles={{ dropdown: { width: 300 } }}
+                              styles={dropDownStyles}
                               onChange={(
                                 event: React.FormEvent<HTMLDivElement>,
                                 item: any
@@ -385,7 +443,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                                 },
                                 { key: 'cash', text: 'Cash' },
                               ]}
-                              styles={{ dropdown: { width: 300 } }}
+                              styles={dropDownStyles}
                               onChange={(
                                 event: React.FormEvent<HTMLDivElement>,
                                 item: any
@@ -406,6 +464,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                         return (
                           <div className="dealerForm__inputBlock noMargin">
                             <Toggle
+                              styles={toggleStyles}
                               className="formInput"
                               label="Vat Applicate"
                               inlineLabel
@@ -429,6 +488,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                             <Toggle
                               className="formInput"
                               label="Credit Allowed"
+                              styles={toggleStyles}
                               inlineLabel
                               onText="On"
                               offText="Off"
@@ -444,30 +504,8 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                         );
                       }}
                     ></Field>
-
-                    <Field
-                      name="generalText"
-                      render={() => {
-                        return (
-                          <div className="dealerForm__inputBlock noMargin">
-                            <TextField
-                              label="General Text"
-                              className="formInput"
-                              placeholder="General Text"
-                              multiline
-                              rows={3}
-                              onChange={(args: any) => {
-                                let value = args.target.value;
-                                formik.setFieldValue('generalText', value);
-                                formik.setFieldTouched('generalText');
-                              }}
-                            />
-                          </div>
-                        );
-                      }}
-                    ></Field>
                   </Stack>
-                  <Stack grow={1} tokens={{ childrenGap: 20 }}>
+                  <Stack grow={4} tokens={{ childrenGap: 20 }}>
                     <Stack>
                       <div className="formScope">
                         <Text className="formScopeHeader">BILLING ADDRESS</Text>
@@ -477,6 +515,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                             return (
                               <div className="dealerForm__inputBlock">
                                 <TextField
+                                  styles={textFildLabelStyles}
                                   className="formInput"
                                   label="Address Line 1"
                                   placeholder="Address Line 1"
@@ -496,6 +535,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                             return (
                               <div className="dealerForm__inputBlock">
                                 <TextField
+                                  styles={textFildLabelStyles}
                                   className="formInput"
                                   label="Address Line 2"
                                   placeholder="Address Line 2"
@@ -517,6 +557,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                                 return (
                                   <div className="dealerForm__inputBlock">
                                     <TextField
+                                      styles={textFildLabelStyles}
                                       className="formInput"
                                       label="City"
                                       placeholder="City"
@@ -536,6 +577,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                                 return (
                                   <div className="dealerForm__inputBlock noMargin">
                                     <TextField
+                                      styles={textFildLabelStyles}
                                       className="formInput"
                                       label="Country"
                                       placeholder="Country"
@@ -557,6 +599,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                                 return (
                                   <div className="dealerForm__inputBlock">
                                     <TextField
+                                      styles={textFildLabelStyles}
                                       className="formInput"
                                       label="State"
                                       placeholder="State"
@@ -576,6 +619,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                                 return (
                                   <div className="dealerForm__inputBlock noMargin">
                                     <TextField
+                                      styles={textFildLabelStyles}
                                       className="formInput"
                                       label="Zip"
                                       placeholder="Zip"
