@@ -169,11 +169,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
           useBillingAsShipping: false,
         }}
         onSubmit={(values: any) => {
-          debugger;
-
           dispatch(dealerActions.saveNewDealer(buildDealerAccount(values)));
-
-          debugger;
         }}
         validateOnBlur={false}
       >
@@ -363,7 +359,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                                   event: React.FormEvent<HTMLDivElement>,
                                   item: any
                                 ) => {
-                                  debugger;
                                   let value = item.text;
                                   formik.setFieldValue('selectCurrency', value);
                                   formik.setFieldTouched('selectCurrency');

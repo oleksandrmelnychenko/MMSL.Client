@@ -1,13 +1,13 @@
 import { createReducer } from '@reduxjs/toolkit';
 import * as dealerActions from '../../redux/actions/dealer.actions';
-import { IDealer } from '../../interfaces';
+import { DealerAccount } from '../../components/dealers/DealerDetails';
 
 export class DealerState {
   constructor() {
     this.dealersList = [];
   }
 
-  dealersList: IDealer[];
+  dealersList: DealerAccount[];
 }
 
 export const dealerReducer = createReducer(new DealerState(), (builder) =>

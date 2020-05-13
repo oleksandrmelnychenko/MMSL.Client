@@ -10,18 +10,17 @@ import {
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
-import { IDealer } from '../../interfaces';
 import * as dealerActions from '../../redux/actions/dealer.actions';
+import { DealerAccount } from './DealerDetails';
 
 export const DealerList: React.FC = (props: any) => {
   const dispatch = useDispatch();
-  const dealers = useSelector<IApplicationState, IDealer[]>(
+  const dealers = useSelector<IApplicationState, DealerAccount[]>(
     (state) => state.dealer.dealersList
   );
 
   useEffect(() => {
     dispatch(dealerActions.getDealersList());
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -47,7 +46,7 @@ export const DealerList: React.FC = (props: any) => {
       isCollapsible: true,
       data: 'string',
       onRender: (item: any) => {
-        return <Text>{item.dealerInfo}</Text>;
+        return <Text>{item.companyName}</Text>;
       },
       isPadded: true,
     },
