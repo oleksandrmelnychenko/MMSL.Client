@@ -174,6 +174,7 @@ export const DealerList: React.FC = () => {
   const checkSelectionDealer = () => {
     if (selection.count > 0) {
       dealerSelection();
+      console.log(selection.getSelection());
     } else {
       dealerUnSelection();
     }
@@ -188,7 +189,6 @@ export const DealerList: React.FC = () => {
   return (
     <div className="dealerList">
       <DetailsList
-        onItemInvoked={() => console.log('invoked')}
         items={dealers}
         selection={selection}
         selectionMode={SelectionMode.single}

@@ -4,21 +4,25 @@ import './dashboard.scss';
 import Header from './header/Header';
 import Footer from './footer/Footer';
 import Menu from './menu/Menu';
-import { Switch } from 'react-router-dom';
+import { Switch, Route, useLocation } from 'react-router-dom';
 import PrivateRoute from '../PrivateRoute';
 import Dealers from '../dealers/Dealers';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers/index';
-import { Panel, PanelType } from 'office-ui-fabric-react';
+import { Panel, PanelType, PrimaryButton } from 'office-ui-fabric-react';
 import * as controlAction from '../../redux/actions/control.actions';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const isCollapseMenu = useSelector<IApplicationState, boolean>(
     (state) => state.control.isCollapseMenu
   );
   const isOpenPanelInfo = useSelector<IApplicationState, boolean>(
     (state) => state.control.isOpenPanelInfo
+  );
+  const component = useSelector<IApplicationState, any>(
+    (state) => state.control.componentInPanelInfo
   );
 
   const stylesPanelInfo = {
@@ -51,7 +55,14 @@ const Dashboard: React.FC = () => {
           isOpen={isOpenPanelInfo}
           onDismiss={dismissPanelInfo}
           closeButtonAriaLabel="Close">
-          <p>INFO</p>
+          <PrimaryButton
+            text="Add Store"
+            onClick={() => {
+              console.log('message');
+            }}
+            allowDisabledFocus
+          />
+          <Route path={`${location.pathname}`} component={component} />
         </Panel>
 
         <div className="content">
