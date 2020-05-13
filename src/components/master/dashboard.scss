@@ -1,3 +1,14 @@
 .content {
+    max-width: calc(100% - 230px);
     margin-top: 0px;
+}
+
+main.collapse {
+    .menu {
+        width: 46px;
+    }
+
+    .content {
+        width: calc(100% - 46px);
+    }
 }

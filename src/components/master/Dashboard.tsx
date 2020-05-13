@@ -7,12 +7,17 @@ import Menu from './menu/Menu';
 import { Switch } from 'react-router-dom';
 import PrivateRoute from '../PrivateRoute';
 import Dealers from '../dealers/Dealers';
+import { useSelector } from 'react-redux';
+import { IApplicationState } from '../../redux/reducers/index';
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
+  const isCollapseMenu = useSelector<IApplicationState, boolean>(
+    (state) => state.control.isCollapseMenu
+  );
   return (
     <>
       <Header />
-      <main>
+      <main className={isCollapseMenu ? 'collapse' : ''}>
         <Menu />
         <div className="content">
           <Switch>

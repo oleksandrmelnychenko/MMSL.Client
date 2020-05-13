@@ -1,3 +1,4 @@
+import { isCollapseMenu } from '../redux/actions/control.actions';
 export interface IUserInfo {
   userIdentityId: number;
   companyInfoId: number;
@@ -24,6 +25,10 @@ export interface IAuthState {
   errorMessage: string;
   isError: boolean;
   userInfo: IUserInfo;
+}
+
+export interface IControlState {
+  isCollapseMenu: boolean;
 }
 
 export interface IDealer {
