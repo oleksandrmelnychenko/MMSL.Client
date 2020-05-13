@@ -50,7 +50,7 @@ const mmslTheme: ITheme = createTheme({
   },
   fonts: {
     medium: {
-      fontFamily: '"Montserrat", sans-serif',
+      fontFamily: '"Segoe-UI", sans-serif',
     },
   },
 });
