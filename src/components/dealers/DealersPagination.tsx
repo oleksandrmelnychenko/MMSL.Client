@@ -25,6 +25,9 @@ export const DealersPagination: React.FC = () => {
             pageCount={pagination.pagesCount}
             pageRangeDisplayed={10}
             marginPagesDisplayed={3}
+            onPageChange={(args1: any) => {
+              debugger;
+            }}
           />
         </Stack>
       </div>

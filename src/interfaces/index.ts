@@ -104,7 +104,7 @@ export class Address {
 
 export class Pagination {
   constructor() {
-    this.limit = 3;
+    this.limit = 4;
     this.paginationInfo = new PaginationInfo();
     this.paginationInfo.pageNumber = 1;
   }
