@@ -39,6 +39,12 @@ export const updateDealerListPaginationInfo = createAction<PaginationInfo>(
   dealerTypes.UPDATE_DEALER_LIST_PAGINATION_INFO
 );
 
+export const setDealerStores = createAction<any>(dealerTypes.SET_DEALER_STORES);
+
+export const isOpenPanelWithDealerDetails = createAction<boolean>(
+  dealerTypes.IS_OPEN_PANEL_WITH_DEALER_DETAILS
+);
+
 export type GetDealersList = ReturnType<typeof getDealersList>;
 export type GetDealersListPaginated = ReturnType<
   typeof getDealersListPaginated

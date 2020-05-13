@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers/index';
 import { Panel, PanelType, PrimaryButton } from 'office-ui-fabric-react';
 import * as controlAction from '../../redux/actions/control.actions';
+import * as dealerAction from '../../redux/actions/dealer.actions';
 import DealerStores from '../dealers/DealerStores';
 
 const Dashboard: React.FC = () => {
@@ -58,8 +59,7 @@ const Dashboard: React.FC = () => {
           <PrimaryButton
             text="Details Store"
             onClick={() => {
-              // TODO
-              console.log('Details');
+              dispatch(dealerAction.isOpenPanelWithDealerDetails(true));
             }}
             allowDisabledFocus
           />
