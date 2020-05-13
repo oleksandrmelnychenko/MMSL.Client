@@ -24,7 +24,11 @@ export class ManageDealerFormState {
 }
 
 export const dealerReducer = createReducer(new DealerState(), (builder) =>
-  builder.addCase(dealerActions.updateDealersList, (state, action) => {
-    state.dealersList = action.payload;
-  })
+  builder
+    .addCase(dealerActions.updateDealersList, (state, action) => {
+      state.dealersList = action.payload;
+    })
+    .addCase(dealerActions.toggleNewDealerForm, (state, action) => {
+      state.manageDealerForm.isFormVisible = action.payload;
+    })
 );

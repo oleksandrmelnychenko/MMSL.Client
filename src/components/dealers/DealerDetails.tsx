@@ -9,7 +9,6 @@ import {
   Stack,
   TextField,
   MaskedTextField,
-  FontWeights,
   ITextProps,
 } from 'office-ui-fabric-react';
 import './dealerDetails.scss';
@@ -17,6 +16,7 @@ import * as Yup from 'yup';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import { useDispatch } from 'react-redux';
 import { assignPendingActions } from '../../helpers/action.helper';
+import { FontSizes, FontWeights } from 'office-ui-fabric-react/lib/Styling';
 
 export class DealerAccount {
   constructor() {
@@ -124,6 +124,34 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
 ) => {
   const dispatch = useDispatch();
 
+  const textFildLabelStyles = {
+    subComponentStyles: {
+      label: {
+        root: {
+          fontWeight: FontWeights.light,
+          paddingBottom: '2px',
+        },
+      },
+    },
+  };
+
+  const dropDownStyles = {
+    dropdown: { width: 300 },
+    label: {
+      fontWeight: FontWeights.light,
+      paddingBottom: '2px',
+    },
+    title: {
+      letterSpacing: '1px',
+    },
+  };
+
+  const toggleStyles = {
+    label: {
+      fontWeight: FontWeights.light,
+    },
+  };
+
   return (
     <div>
       <Formik
@@ -172,7 +200,10 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
         onSubmit={(values: any) => {
           let createAction = assignPendingActions(
             dealerActions.saveNewDealer(buildDealerAccount(values)),
-            [dealerActions.getDealersList()]
+            [
+              dealerActions.getDealersList(),
+              dealerActions.toggleNewDealerForm(false),
+            ]
           );
 
           dispatch(createAction);
@@ -185,302 +216,301 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
           return (
             <Form>
               <div className="dealerForm">
-                <Stack horizontal>
-                  <Stack.Item grow={3}>
-                    <Stack style={{ marginRight: '20px' }}>
-                      <Field
-                        name="companyName"
-                        render={() => {
-                          return (
-                            <div className="dealerForm__inputBlock">
-                              <TextField
-                                className="formInput"
-                                label="Company name"
-                                placeholder="Company name"
-                                onChange={(args: any) => {
-                                  let value = args.target.value;
-                                  formik.setFieldValue('companyName', value);
-                                  formik.setFieldTouched('companyName');
-                                  console.log(value);
-                                }}
-                              />
-                              {formik.errors.companyName &&
-                              formik.touched.companyName ? (
-                                <Text
-                                  variant={'small' as ITextProps['variant']}
-                                  className="dealerForm__inputBlock__error"
-                                >
-                                  {formik.errors.companyName}
-                                </Text>
-                              ) : null}
-                            </div>
-                          );
-                        }}
-                      ></Field>
+                <Stack horizontal tokens={{ childrenGap: 20 }}>
+                  <Stack grow={2}>
+                    <Field
+                      name="companyName"
+                      render={() => {
+                        return (
+                          <div className="dealerForm__inputBlock">
+                            <TextField
+                              styles={textFildLabelStyles}
+                              className="formInput"
+                              label="Company name"
+                              placeholder="Company name"
+                              onChange={(args: any) => {
+                                let value = args.target.value;
+                                formik.setFieldValue('companyName', value);
+                                formik.setFieldTouched('companyName');
+                                console.log(value);
+                              }}
+                            />
+                            {formik.errors.companyName &&
+                            formik.touched.companyName ? (
+                              <Text
+                                variant={'small' as ITextProps['variant']}
+                                className="dealerForm__inputBlock__error"
+                              >
+                                {formik.errors.companyName}
+                              </Text>
+                            ) : null}
+                          </div>
+                        );
+                      }}
+                    ></Field>
+                    <Field
+                      name="name"
+                      render={() => {
+                        return (
+                          <div className="dealerForm__inputBlock">
+                            <TextField
+                              styles={textFildLabelStyles}
+                              className="formInput"
+                              label="Name"
+                              placeholder="Name"
+                              onChange={(args: any) => {
+                                let value = args.target.value;
+                                formik.setFieldValue('name', value);
+                                formik.setFieldTouched('name');
+                              }}
+                            />
+                            {formik.errors.name && formik.touched.name ? (
+                              <Text
+                                variant={'small' as ITextProps['variant']}
+                                className="dealerForm__inputBlock__error"
+                              >
+                                {formik.errors.name}
+                              </Text>
+                            ) : null}
+                          </div>
+                        );
+                      }}
+                    ></Field>
+                    <Field
+                      name="email"
+                      render={() => {
+                        return (
+                          <div className="dealerForm__inputBlock">
+                            <TextField
+                              styles={textFildLabelStyles}
+                              className="formInput"
+                              label="Email"
+                              placeholder="Email"
+                              onChange={(args: any) => {
+                                let value = args.target.value;
+                                formik.setFieldValue('email', value);
+                                formik.setFieldTouched('email');
+                              }}
+                            />
+                            {formik.errors.email && formik.touched.email ? (
+                              <Text
+                                variant={'small' as ITextProps['variant']}
+                                className="dealerForm__inputBlock__error"
+                              >
+                                {formik.errors.email}
+                              </Text>
+                            ) : null}
+                          </div>
+                        );
+                      }}
+                    ></Field>
 
-                      <Field
-                        name="name"
-                        render={() => {
-                          return (
-                            <div className="dealerForm__inputBlock">
-                              <TextField
-                                className="formInput"
-                                label="Name"
-                                placeholder="Name"
-                                onChange={(args: any) => {
-                                  let value = args.target.value;
-                                  formik.setFieldValue('name', value);
-                                  formik.setFieldTouched('name');
-                                }}
-                              />
-                              {formik.errors.name && formik.touched.name ? (
-                                <Text
-                                  variant={'small' as ITextProps['variant']}
-                                  className="dealerForm__inputBlock__error"
-                                >
-                                  {formik.errors.name}
-                                </Text>
-                              ) : null}
-                            </div>
-                          );
-                        }}
-                      ></Field>
+                    <Field
+                      name="alternativeEmail"
+                      render={() => {
+                        return (
+                          <div className="dealerForm__inputBlock">
+                            <TextField
+                              styles={textFildLabelStyles}
+                              label="Alternative Email"
+                              className="formInput"
+                              placeholder="Alternative Email"
+                              onChange={(args: any) => {
+                                let value = args.target.value;
+                                formik.setFieldValue('alternativeEmail', value);
+                                formik.setFieldTouched('alternativeEmail');
+                              }}
+                            />
+                            {formik.errors.alternativeEmail &&
+                            formik.touched.alternativeEmail ? (
+                              <Text
+                                variant={'small' as ITextProps['variant']}
+                                className="dealerForm__inputBlock__error"
+                              >
+                                {formik.errors.alternativeEmail}
+                              </Text>
+                            ) : null}
+                          </div>
+                        );
+                      }}
+                    ></Field>
 
-                      <Field
-                        name="email"
-                        render={() => {
-                          return (
-                            <div className="dealerForm__inputBlock">
-                              <TextField
-                                className="formInput"
-                                label="Email"
-                                placeholder="Email"
-                                onChange={(args: any) => {
-                                  let value = args.target.value;
-                                  formik.setFieldValue('email', value);
-                                  formik.setFieldTouched('email');
-                                }}
-                              />
-                              {formik.errors.email && formik.touched.email ? (
-                                <Text
-                                  variant={'small' as ITextProps['variant']}
-                                  className="dealerForm__inputBlock__error"
-                                >
-                                  {formik.errors.email}
-                                </Text>
-                              ) : null}
-                            </div>
-                          );
-                        }}
-                      ></Field>
+                    <Field
+                      name="phoneNumber"
+                      render={() => {
+                        return (
+                          <div className="dealerForm__inputBlock">
+                            <MaskedTextField
+                              styles={textFildLabelStyles}
+                              className="formInput"
+                              label="Phone Number"
+                              placeholder="Phone Number"
+                              mask="(999) 999 - 9999"
+                              onChange={(args: any) => {
+                                let value = args.target.value;
+                                formik.setFieldValue('phoneNumber', value);
+                                formik.setFieldTouched('phoneNumber');
+                              }}
+                            />
+                          </div>
+                        );
+                      }}
+                    ></Field>
 
-                      <Field
-                        name="alternativeEmail"
-                        render={() => {
-                          return (
-                            <div className="dealerForm__inputBlock">
-                              <TextField
-                                label="Alternative Email"
-                                className="formInput"
-                                placeholder="Alternative Email"
-                                onChange={(args: any) => {
-                                  let value = args.target.value;
-                                  formik.setFieldValue(
-                                    'alternativeEmail',
-                                    value
-                                  );
-                                  formik.setFieldTouched('alternativeEmail');
-                                }}
-                              />
-                              {formik.errors.alternativeEmail &&
-                              formik.touched.alternativeEmail ? (
-                                <Text
-                                  variant={'small' as ITextProps['variant']}
-                                  className="dealerForm__inputBlock__error"
-                                >
-                                  {formik.errors.alternativeEmail}
-                                </Text>
-                              ) : null}
-                            </div>
-                          );
-                        }}
-                      ></Field>
+                    <Field
+                      name="taxNumber"
+                      render={() => {
+                        return (
+                          <div className="dealerForm__inputBlock">
+                            <TextField
+                              styles={textFildLabelStyles}
+                              label="Tax Number"
+                              className="formInput"
+                              placeholder="Tax Number"
+                              onChange={(args: any) => {
+                                let value = args.target.value;
+                                formik.setFieldValue('taxNumber', value);
+                                formik.setFieldTouched('taxNumber');
+                              }}
+                            />
+                          </div>
+                        );
+                      }}
+                    ></Field>
 
-                      <Field
-                        name="phoneNumber"
-                        render={() => {
-                          return (
-                            <div className="dealerForm__inputBlock">
-                              <MaskedTextField
-                                className="formInput"
-                                label="Phone Number"
-                                placeholder="Phone Number"
-                                mask="(999) 999 - 9999"
-                                onChange={(args: any) => {
-                                  let value = args.target.value;
-                                  formik.setFieldValue('phoneNumber', value);
-                                  formik.setFieldTouched('phoneNumber');
-                                }}
-                              />
-                            </div>
-                          );
-                        }}
-                      ></Field>
+                    <Field
+                      name="generalText"
+                      render={() => {
+                        return (
+                          <div className="dealerForm__inputBlock noMargin">
+                            <TextField
+                              styles={textFildLabelStyles}
+                              label="General Text"
+                              className="formInput"
+                              placeholder="General Text"
+                              multiline
+                              rows={3}
+                              onChange={(args: any) => {
+                                let value = args.target.value;
+                                formik.setFieldValue('generalText', value);
+                                formik.setFieldTouched('generalText');
+                              }}
+                            />
+                          </div>
+                        );
+                      }}
+                    ></Field>
+                  </Stack>
+                  <Stack>
+                    <Field
+                      name="selectCurrency"
+                      render={() => {
+                        return (
+                          <div className="dealerForm__inputBlock">
+                            <Dropdown
+                              className="formInput"
+                              label="Select Currency"
+                              placeholder="Select Currency"
+                              options={[
+                                { key: 'usd', text: 'USD' },
+                                { key: 'eur', text: 'EUR' },
+                              ]}
+                              styles={dropDownStyles}
+                              onChange={(
+                                event: React.FormEvent<HTMLDivElement>,
+                                item: any
+                              ) => {
+                                let value = item.text;
+                                formik.setFieldValue('selectCurrency', value);
+                                formik.setFieldTouched('selectCurrency');
+                              }}
+                            />
+                          </div>
+                        );
+                      }}
+                    ></Field>
 
-                      <Field
-                        name="taxNumber"
-                        render={() => {
-                          return (
-                            <div className="dealerForm__inputBlock">
-                              <TextField
-                                label="Tax Number"
-                                className="formInput"
-                                placeholder="Tax Number"
-                                onChange={(args: any) => {
-                                  let value = args.target.value;
-                                  formik.setFieldValue('taxNumber', value);
-                                  formik.setFieldTouched('taxNumber');
-                                }}
-                              />
-                            </div>
-                          );
-                        }}
-                      ></Field>
+                    <Field
+                      name="selectPayment"
+                      render={() => {
+                        return (
+                          <div className="dealerForm__inputBlock">
+                            <Dropdown
+                              className="formInput"
+                              label="Select Payment"
+                              placeholder="Select Payment"
+                              options={[
+                                {
+                                  key: 'bankTransfer',
+                                  text: 'Bank transfer',
+                                },
+                                { key: 'cash', text: 'Cash' },
+                              ]}
+                              styles={dropDownStyles}
+                              onChange={(
+                                event: React.FormEvent<HTMLDivElement>,
+                                item: any
+                              ) => {
+                                let value = item.text;
+                                formik.setFieldValue('selectPayment', value);
+                                formik.setFieldTouched('selectPayment');
+                              }}
+                            />
+                          </div>
+                        );
+                      }}
+                    ></Field>
 
-                      <Field
-                        name="selectCurrency"
-                        render={() => {
-                          return (
-                            <div className="dealerForm__inputBlock">
-                              <Dropdown
-                                className="formInput"
-                                label="Select Currency"
-                                placeholder="Select Currency"
-                                options={[
-                                  { key: 'usd', text: 'USD' },
-                                  { key: 'eur', text: 'EUR' },
-                                ]}
-                                styles={{ dropdown: { width: 300 } }}
-                                onChange={(
-                                  event: React.FormEvent<HTMLDivElement>,
-                                  item: any
-                                ) => {
-                                  let value = item.text;
-                                  formik.setFieldValue('selectCurrency', value);
-                                  formik.setFieldTouched('selectCurrency');
-                                }}
-                              />
-                            </div>
-                          );
-                        }}
-                      ></Field>
+                    <Field
+                      name="vatApplicate"
+                      render={() => {
+                        return (
+                          <div className="dealerForm__inputBlock noMargin">
+                            <Toggle
+                              styles={toggleStyles}
+                              className="formInput"
+                              label="Vat Applicate"
+                              inlineLabel
+                              onText="On"
+                              offText="Off"
+                              onChange={(checked: any, isChecked: any) => {
+                                formik.setFieldValue('vatApplicate', isChecked);
+                                formik.setFieldTouched('vatApplicate');
+                              }}
+                            />
+                          </div>
+                        );
+                      }}
+                    ></Field>
 
-                      <Field
-                        name="selectPayment"
-                        render={() => {
-                          return (
-                            <div className="dealerForm__inputBlock">
-                              <Dropdown
-                                className="formInput"
-                                label="Select Payment"
-                                placeholder="Select Payment"
-                                options={[
-                                  {
-                                    key: 'bankTransfer',
-                                    text: 'Bank transfer',
-                                  },
-                                  { key: 'cash', text: 'Cash' },
-                                ]}
-                                styles={{ dropdown: { width: 300 } }}
-                                onChange={(
-                                  event: React.FormEvent<HTMLDivElement>,
-                                  item: any
-                                ) => {
-                                  let value = item.text;
-                                  formik.setFieldValue('selectPayment', value);
-                                  formik.setFieldTouched('selectPayment');
-                                }}
-                              />
-                            </div>
-                          );
-                        }}
-                      ></Field>
-
-                      <Field
-                        name="vatApplicate"
-                        render={() => {
-                          return (
-                            <div className="dealerForm__inputBlock">
-                              <Toggle
-                                className="formInput"
-                                label="Vat Applicate"
-                                inlineLabel
-                                onText="On"
-                                offText="Off"
-                                onChange={(checked: any, isChecked: any) => {
-                                  formik.setFieldValue(
-                                    'vatApplicate',
-                                    isChecked
-                                  );
-                                  formik.setFieldTouched('vatApplicate');
-                                }}
-                              />
-                            </div>
-                          );
-                        }}
-                      ></Field>
-
-                      <Field
-                        name="creditAllowed"
-                        render={() => {
-                          return (
-                            <div className="dealerForm__inputBlock">
-                              <Toggle
-                                className="formInput"
-                                label="Credit Allowed"
-                                inlineLabel
-                                onText="On"
-                                offText="Off"
-                                onChange={(checked: any, isChecked: any) => {
-                                  formik.setFieldValue(
-                                    'creditAllowed',
-                                    isChecked
-                                  );
-                                  formik.setFieldTouched('creditAllowed');
-                                }}
-                              />
-                            </div>
-                          );
-                        }}
-                      ></Field>
-
-                      <Field
-                        name="generalText"
-                        render={() => {
-                          return (
-                            <div className="dealerForm__inputBlock">
-                              <TextField
-                                label="General Text"
-                                className="formInput"
-                                placeholder="General Text"
-                                multiline
-                                rows={3}
-                                onChange={(args: any) => {
-                                  let value = args.target.value;
-                                  formik.setFieldValue('generalText', value);
-                                  formik.setFieldTouched('generalText');
-                                }}
-                              />
-                            </div>
-                          );
-                        }}
-                      ></Field>
-                    </Stack>
-                  </Stack.Item>
-                   
-                  <Stack.Item grow={1}>
+                    <Field
+                      name="creditAllowed"
+                      render={() => {
+                        return (
+                          <div className="dealerForm__inputBlock noMargin">
+                            <Toggle
+                              className="formInput"
+                              label="Credit Allowed"
+                              styles={toggleStyles}
+                              inlineLabel
+                              onText="On"
+                              offText="Off"
+                              onChange={(checked: any, isChecked: any) => {
+                                formik.setFieldValue(
+                                  'creditAllowed',
+                                  isChecked
+                                );
+                                formik.setFieldTouched('creditAllowed');
+                              }}
+                            />
+                          </div>
+                        );
+                      }}
+                    ></Field>
+                  </Stack>
+                  <Stack grow={4} tokens={{ childrenGap: 20 }}>
                     <Stack>
-                      <div className="formScope" style={{ marginTop: '10px' }}>
+                      <div className="formScope">
                         <Text className="formScopeHeader">BILLING ADDRESS</Text>
                         <Field
                           name="addressLine1"
@@ -488,6 +518,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                             return (
                               <div className="dealerForm__inputBlock">
                                 <TextField
+                                  styles={textFildLabelStyles}
                                   className="formInput"
                                   label="Address Line 1"
                                   placeholder="Address Line 1"
@@ -501,13 +532,13 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                             );
                           }}
                         ></Field>
-                                      
                         <Field
                           name="addressLine2"
                           render={() => {
                             return (
                               <div className="dealerForm__inputBlock">
                                 <TextField
+                                  styles={textFildLabelStyles}
                                   className="formInput"
                                   label="Address Line 2"
                                   placeholder="Address Line 2"
@@ -521,16 +552,15 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                             );
                           }}
                         ></Field>
-                                
-                        <Stack horizontal>
-                          <Stack style={{ marginRight: '10px' }} grow={1}>
-                                                   
+                        <Stack horizontal tokens={{ childrenGap: 20 }}>
+                          <Stack grow={1}>
                             <Field
                               name="city"
                               render={() => {
                                 return (
                                   <div className="dealerForm__inputBlock">
                                     <TextField
+                                      styles={textFildLabelStyles}
                                       className="formInput"
                                       label="City"
                                       placeholder="City"
@@ -544,13 +574,13 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                                 );
                               }}
                             ></Field>
-                                           
                             <Field
                               name="country"
                               render={() => {
                                 return (
-                                  <div className="dealerForm__inputBlock">
+                                  <div className="dealerForm__inputBlock noMargin">
                                     <TextField
+                                      styles={textFildLabelStyles}
                                       className="formInput"
                                       label="Country"
                                       placeholder="Country"
@@ -564,16 +594,15 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                                 );
                               }}
                             ></Field>
-                                                            
                           </Stack>
-                          <Stack style={{ marginLeft: '10px' }} grow={1}>
-                                               
+                          <Stack grow={1}>
                             <Field
                               name="state"
                               render={() => {
                                 return (
                                   <div className="dealerForm__inputBlock">
                                     <TextField
+                                      styles={textFildLabelStyles}
                                       className="formInput"
                                       label="State"
                                       placeholder="State"
@@ -587,13 +616,13 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                                 );
                               }}
                             ></Field>
-                                        
                             <Field
                               name="zip"
                               render={() => {
                                 return (
-                                  <div className="dealerForm__inputBlock">
+                                  <div className="dealerForm__inputBlock noMargin">
                                     <TextField
+                                      styles={textFildLabelStyles}
                                       className="formInput"
                                       label="Zip"
                                       placeholder="Zip"
@@ -607,40 +636,46 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                                 );
                               }}
                             ></Field>
-                                                              
                           </Stack>
                         </Stack>
                       </div>
-                              
-                      <div className="formScope" style={{ marginTop: '10px' }}>
-                        <Text className="formScopeHeader">
-                          DELIVERY ADDRESS
-                        </Text>
-                        <Field
-                          name="useBillingAsShipping"
-                          render={() => {
-                            return (
-                              <div className="dealerForm__inputBlock">
-                                <Checkbox
-                                  label="Use same as billing"
-                                  onChange={(checked: any, isChecked: any) => {
-                                    formik.setFieldValue(
-                                      'useBillingAsShipping',
-                                      isChecked
-                                    );
-                                    formik.setFieldTouched(
-                                      'useBillingAsShipping'
-                                    );
-                                  }}
-                                />
-                              </div>
-                            );
-                          }}
-                        ></Field>
-                          
-                      </div>
                     </Stack>
-                  </Stack.Item>
+                    <div className="formScope">
+                      <Stack horizontal>
+                        <Stack.Item grow={1}>
+                          <Text className="formScopeHeader">
+                            DELIVERY ADDRESS
+                          </Text>
+                        </Stack.Item>
+                        <Stack.Item>
+                          <Field
+                            name="useBillingAsShipping"
+                            render={() => {
+                              return (
+                                <div className="dealerForm__inputBlock noMargin">
+                                  <Checkbox
+                                    label="Use same as billing"
+                                    onChange={(
+                                      checked: any,
+                                      isChecked: any
+                                    ) => {
+                                      formik.setFieldValue(
+                                        'useBillingAsShipping',
+                                        isChecked
+                                      );
+                                      formik.setFieldTouched(
+                                        'useBillingAsShipping'
+                                      );
+                                    }}
+                                  />
+                                </div>
+                              );
+                            }}
+                          ></Field>
+                        </Stack.Item>
+                      </Stack>
+                    </div>
+                  </Stack>
                 </Stack>
               </div>
             </Form>

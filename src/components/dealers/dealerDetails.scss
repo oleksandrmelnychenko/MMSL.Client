@@ -2,7 +2,11 @@
   padding: 52px 0px 12px 0px;
 
   &__inputBlock {
-    margin-bottom: 14px;
+    margin-bottom: 12px;
+
+    &.noMargin {
+      margin-bottom: 0px;
+    }
 
     &__error {
       position: absolute;
@@ -15,13 +19,12 @@
   }
 
   .formScope {
-    background-color: #efefef;
+    border: 1px solid #eaeaea;
     padding: 12px;
     border-radius: 3px;
   }
 
   .formScopeHeader {
-    color: #005A9E;
     font-size: 16px;
   }
 
