@@ -91,6 +91,10 @@ body {
   }
 }
 
+main {
+  display: flex;
+}
+
 input,
 textarea {
   padding: 5px;

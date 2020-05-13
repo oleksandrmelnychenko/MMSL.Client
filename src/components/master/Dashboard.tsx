@@ -12,12 +12,14 @@ const Dashboard = () => {
   return (
     <>
       <Header />
-      <Menu />
-      <div className="content">
-        <Switch>
-          <PrivateRoute path={`/en/app/dealers`} component={Dealers} />
-        </Switch>
-      </div>
+      <main>
+        <Menu />
+        <div className="content">
+          <Switch>
+            <PrivateRoute path={`/en/app/dealers`} component={Dealers} />
+          </Switch>
+        </div>
+      </main>
 
       <Footer />
     </>
