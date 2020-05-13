@@ -7,6 +7,7 @@ import * as controlActions from '../../redux/actions/control.actions';
 import ReactPaginate from 'react-paginate';
 import { DealerAccount, PaginationInfo } from '../../interfaces';
 import { Stack } from 'office-ui-fabric-react';
+import { assignPendingActions } from '../../helpers/action.helper';
 
 export const DealersPagination: React.FC = () => {
   const dispatch = useDispatch();
@@ -25,8 +26,20 @@ export const DealersPagination: React.FC = () => {
             pageCount={pagination.pagesCount}
             pageRangeDisplayed={10}
             marginPagesDisplayed={3}
-            onPageChange={(args1: any) => {
+            onPageChange={(args: any) => {
               debugger;
+
+              let paginationInfo = { ...pagination };
+              pagination.pageNumber = args.selected;
+
+              debugger;
+              dispatch(
+                dealerActions.updateDealerListPagination(paginationInfo)
+              );
+
+              dispatch(
+                assignPendingActions(dealerActions.getDealersListPaginated())
+              );
             }}
           />
         </Stack>

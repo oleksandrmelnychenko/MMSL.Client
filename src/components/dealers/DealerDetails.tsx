@@ -44,7 +44,6 @@ const buildDealerAccount = (values: any) => {
     paymentType: 0,
     isCreditAllowed: values.creditAllowed,
     billingAddressId: null,
-    /// TODO:
     billingAddress: null,
     useBillingAsShipping: values.useBillingAsShipping,
     shippingAddressId: null,
