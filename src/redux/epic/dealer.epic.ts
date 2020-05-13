@@ -24,6 +24,7 @@ export const getDealersListEpic = (action$: AnyAction, state$: any) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       return ajaxGetWebResponse(api.GET_DEALERS_ALL, state$.value).pipe(
         mergeMap((successResponse: any) => {
+          debugger;
           let successResultFlow = [
             dealerActions.updateDealersList(successResponse.entities),
             dealerActions.updateDealerListPagination(

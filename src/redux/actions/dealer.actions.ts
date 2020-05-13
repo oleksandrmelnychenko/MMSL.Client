@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import * as dealerTypes from '../../constants/dealer.types.constants';
-import { IDealer, DealerAccount, PaginationInfo } from '../../interfaces/index';
+import { DealerAccount, PaginationInfo } from '../../interfaces/index';
 
 export const getDealersList = createAction(dealerTypes.GET_DEALERS_LIST);
 
@@ -14,6 +14,10 @@ export const updateDealersList = createAction<DealerAccount[]>(
 
 export const saveNewDealer = createAction<DealerAccount>(
   dealerTypes.SAVE_NEW_DEALER
+);
+
+export const getStoresByDealer = createAction<number>(
+  dealerTypes.GET_STORES_BY_DEALER
 );
 
 export const toggleNewDealerForm = createAction<boolean>(
