@@ -8,15 +8,12 @@
     height: calc(100vh - 75px);
     text-align: left;
     padding: 5px 0 0 0;
-    position: absolute;
-    top: 50px;
-    left: 0;
     border-right: 1px solid #eaeaea;
-    border-top: 2px solid #eaeaea;
+    overflow: hidden;
 
     .menu__link {
         display: block;
-        padding: 10px 20px 10px 35px;
+        padding: 10px 20px 10px 40px;
         position: relative;
 
         &:hover {
