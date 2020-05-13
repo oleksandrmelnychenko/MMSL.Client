@@ -180,7 +180,7 @@ export const Dealers: React.FC = (props: any) => {
         <Panel
           isOpen={isAddDealerOpen}
           type={PanelType.custom}
-          customWidth={'1000px'}
+          customWidth={'1300px'}
           onDismiss={() => {
             setisAddDealerOpen(!isAddDealerOpen);
           }}
@@ -191,7 +191,6 @@ export const Dealers: React.FC = (props: any) => {
                 <PrimaryButton
                   className="dealerPanelHeader__save"
                   onClick={() => {
-                    debugger;
                     let formik: any = formikReference.formik;
 
                     if (formik !== undefined && formik !== null) {
