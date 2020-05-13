@@ -1,4 +1,5 @@
 import { isCollapseMenu } from '../redux/actions/control.actions';
+
 export interface IUserInfo {
   userIdentityId: number;
   companyInfoId: number;
@@ -45,6 +46,8 @@ export interface IDealer {
 
 export class DealerAccount {
   constructor() {
+    this.id = 0;
+    this.isDeleted = false;
     this.companyName = '';
     this.email = '';
     this.alternateEmail = '';
@@ -62,6 +65,8 @@ export class DealerAccount {
     this.stores = [];
   }
 
+  id: number;
+  isDeleted: boolean;
   companyName: string;
   email: string;
   alternateEmail: string;
@@ -95,4 +100,29 @@ export class Address {
   state: string;
   country: string;
   zipCode: boolean;
+}
+
+export class Pagination {
+  constructor() {
+    this.limit = 3;
+    this.paginationInfo = new PaginationInfo();
+    this.paginationInfo.pageNumber = 1;
+  }
+
+  limit: number;
+  paginationInfo: PaginationInfo;
+}
+
+export class PaginationInfo {
+  constructor() {
+    this.totalItems = 0;
+    this.pageSize = 0;
+    this.pageNumber = 0;
+    this.pagesCount = 0;
+  }
+
+  totalItems: number;
+  pageSize: number;
+  pageNumber: number;
+  pagesCount: number;
 }

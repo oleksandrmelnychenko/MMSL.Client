@@ -12,14 +12,35 @@ export interface IWebResponse {
   statusCode: number;
 }
 
+export interface QueryParam {
+  key: string;
+  value: string;
+}
+
 export const ajaxGetWebResponse = (
   urlPath: string,
-  state: IApplicationState
+  state: IApplicationState,
+  queryParams?: QueryParam[]
 ) => {
   const currentLanguage = getActiveLanguage(state.localize).code;
 
+  let queryString = `${API.SERVER_URL}/${currentLanguage}${urlPath}`;
+
+  if (
+    queryParams !== null &&
+    queryParams !== undefined &&
+    queryParams.length > 0
+  ) {
+    for (let i = 0; i < queryParams.length; i++) {
+      if (i === 0) queryString += '?';
+      else queryString += '&';
+
+      queryString += `${queryParams[i].key}=${queryParams[i].value}`;
+    }
+  }
+
   return ajax
-    .getJSON<IWebResponse>(`${API.SERVER_URL}/${currentLanguage}${urlPath}`, {
+    .getJSON<IWebResponse>(queryString, {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${TokenHelper.getAccessToken()}`,
     })

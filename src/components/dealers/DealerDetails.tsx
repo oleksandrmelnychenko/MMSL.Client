@@ -30,6 +30,8 @@ class DealerDetailsProps {
 
 const buildDealerAccount = (values: any) => {
   let dealerAccount: DealerAccount = {
+    id: 0,
+    isDeleted: false,
     companyName: values.companyName,
     email: values.email,
     alternateEmail: values.alternativeEmail,
