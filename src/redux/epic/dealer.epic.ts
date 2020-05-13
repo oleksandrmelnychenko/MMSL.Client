@@ -116,3 +116,32 @@ export const saveNewDealerEpic = (action$: AnyAction, state$: any) => {
     })
   );
 };
+
+export const addStoresByDealerEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(dealerTypes.GET_STORES_BY_DEALER),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      return ajaxGetWebResponse(api.GET_STORES_BY_DEALER, state$.value).pipe(
+        mergeMap((successResponse: any) => {
+          let successResultFlow = [
+            dealerActions.updateDealersList(successResponse.entities),
+            ...extractSuccessPendingActions(action),
+          ];
+
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [
+              { type: 'ERROR_GET_STORES_BY_DEALERS_ID' },
+              ...extractErrorPendingActions(action),
+            ];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};

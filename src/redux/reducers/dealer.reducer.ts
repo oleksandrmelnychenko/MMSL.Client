@@ -17,7 +17,7 @@ export class DealerState {
 
   dealerState: DealersListState;
   manageDealerForm: ManageDealerFormState;
-  selectedDealer: IDealer | null;
+  selectedDealer: DealerAccount | null;
 }
 
 /// Dealer list state (contains list of dealers and pagination)
@@ -47,6 +47,9 @@ export const dealerReducer = createReducer(new DealerState(), (builder) =>
     })
     .addCase(dealerActions.toggleNewDealerForm, (state, action) => {
       state.manageDealerForm.isFormVisible = action.payload;
+    })
+    .addCase(dealerActions.setSelectedDealer, (state, action) => {
+      state.selectedDealer = action.payload;
     })
     .addCase(dealerActions.updateDealerListPagination, (state, action) => {
       state.dealerState.pagination.paginationInfo = action.payload;

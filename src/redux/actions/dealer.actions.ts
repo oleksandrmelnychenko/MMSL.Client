@@ -20,7 +20,7 @@ export const toggleNewDealerForm = createAction<boolean>(
   dealerTypes.TOGGLE_NEW_DEALER_FORM
 );
 
-export const setSelectedDealer = createAction<IDealer>(
+export const setSelectedDealer = createAction<DealerAccount>(
   dealerTypes.SELECTED_DEALER
 );
 

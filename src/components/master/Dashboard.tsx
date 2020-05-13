@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers/index';
 import { Panel, PanelType, PrimaryButton } from 'office-ui-fabric-react';
 import * as controlAction from '../../redux/actions/control.actions';
+import DealerStores from '../dealers/DealerStores';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
@@ -48,21 +49,20 @@ const Dashboard: React.FC = () => {
 
         <Panel
           type={PanelType.smallFixedNear}
-          headerText="Non-modal panel"
-          // this prop makes the panel non-modal
+          headerText="Dealer management"
           isBlocking={false}
           styles={stylesPanelInfo}
           isOpen={isOpenPanelInfo}
-          onDismiss={dismissPanelInfo}
-          closeButtonAriaLabel="Close">
+          hasCloseButton={false}
+          onDismiss={dismissPanelInfo}>
           <PrimaryButton
-            text="Add Store"
+            text="Details Store"
             onClick={() => {
-              console.log('message');
+              // TODO
+              console.log('Details');
             }}
             allowDisabledFocus
           />
-          <Route path={`${location.pathname}`} component={component} />
         </Panel>
 
         <div className="content">
