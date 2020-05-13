@@ -9,10 +9,10 @@ import * as dealerActions from '../../redux/actions/dealer.actions';
 export const DealerStores: React.FC = () => {
   const dispatch = useDispatch();
   const selectedDealer = useSelector<IApplicationState, DealerAccount>(
-    (state) => state.dealer.selectedDealer
+    (state) => state.dealer.selectedDealer!
   );
   useEffect(() => {
-    dispatch(dealerActions.getStoresByDealer(selectedDealer.id as number));
+    dispatch(dealerActions.getStoresByDealer(selectedDealer.id));
   }, []);
 
   return (
