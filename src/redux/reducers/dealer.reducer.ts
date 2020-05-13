@@ -13,11 +13,15 @@ export class DealerState {
     this.selectedDealer = null;
     this.manageDealerForm = new ManageDealerFormState();
     this.dealerState = new DealersListState();
+    this.isOpenPanelWithDealerDetails = false;
+    this.dealerStores = [];
   }
 
   dealerState: DealersListState;
   manageDealerForm: ManageDealerFormState;
   selectedDealer: DealerAccount | null;
+  isOpenPanelWithDealerDetails: boolean;
+  dealerStores: any[];
 }
 
 /// Dealer list state (contains list of dealers and pagination)
@@ -53,5 +57,11 @@ export const dealerReducer = createReducer(new DealerState(), (builder) =>
     })
     .addCase(dealerActions.updateDealerListPagination, (state, action) => {
       state.dealerState.pagination.paginationInfo = action.payload;
+    })
+    .addCase(dealerActions.isOpenPanelWithDealerDetails, (state, action) => {
+      state.isOpenPanelWithDealerDetails = action.payload;
+    })
+    .addCase(dealerActions.setDealerStores, (state, action) => {
+      state.dealerStores = action.payload;
     })
 );

@@ -39,6 +39,10 @@ export const Dealers: React.FC = (props: any) => {
     (state) => state.dealer.manageDealerForm.isFormVisible
   );
 
+  const isOpenPanelWithDealerDetails = useSelector<IApplicationState, boolean>(
+    (state) => state.dealer.isOpenPanelWithDealerDetails
+  );
+
   const languageCode = getActiveLanguage(localize).code;
 
   const controlClass = mergeStyleSets({
@@ -173,13 +177,12 @@ export const Dealers: React.FC = (props: any) => {
         </Panel>
 
         <Panel
-          isOpen={false}
+          isOpen={isOpenPanelWithDealerDetails}
           type={PanelType.custom}
           customWidth={'1300px'}
-          // onDismiss={() => {
-          //   dispatch(dealerActions.toggleNewDealerForm(false));
-          // }}
-        >
+          onDismiss={() => {
+            dispatch(dealerActions.isOpenPanelWithDealerDetails(false));
+          }}>
           <DealerStores />
         </Panel>
       </div>

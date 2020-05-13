@@ -58,7 +58,6 @@ export const getDealersListPaginatedEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       const pagination: Pagination = state$.value.dealer.dealerState.pagination;
-      debugger;
       return ajaxGetWebResponse(api.GET_DEALERS_ALL, state$.value, [
         { key: 'pageNumber', value: `${pagination.paginationInfo.pageNumber}` },
         { key: 'limit', value: `${pagination.limit}` },
@@ -122,10 +121,13 @@ export const addStoresByDealerEpic = (action$: AnyAction, state$: any) => {
     ofType(dealerTypes.GET_STORES_BY_DEALER),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
-      return ajaxGetWebResponse(api.GET_STORES_BY_DEALER, state$.value).pipe(
+      return ajaxGetWebResponse(api.GET_STORES_BY_DEALER, state$.value, [
+        { key: 'dealerAccountId', value: `${action.payload}` },
+      ]).pipe(
         mergeMap((successResponse: any) => {
           let successResultFlow = [
-            dealerActions.updateDealersList(successResponse.entities),
+            dealerActions.setDealerStores(successResponse),
+
             ...extractSuccessPendingActions(action),
           ];
 

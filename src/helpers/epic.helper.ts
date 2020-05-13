@@ -38,7 +38,6 @@ export const ajaxGetWebResponse = (
       queryString += `${queryParams[i].key}=${queryParams[i].value}`;
     }
   }
-
   return ajax
     .getJSON<IWebResponse>(queryString, {
       'Content-Type': 'application/json',
