@@ -7,13 +7,15 @@ import {
   Stack,
   IconButton,
   Text,
+  Selection,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import * as dealerActions from '../../redux/actions/dealer.actions';
+import * as controlActions from '../../redux/actions/control.actions';
 import { DealerAccount } from './DealerDetails';
 
-export const DealerList: React.FC = (props: any) => {
+export const DealerList: React.FC = () => {
   const dispatch = useDispatch();
   const dealers = useSelector<IApplicationState, DealerAccount[]>(
     (state) => state.dealer.dealersList
@@ -157,11 +159,21 @@ export const DealerList: React.FC = (props: any) => {
     },
   ];
 
+  const dealerSelection = new Selection({
+    onSelectionChanged: () => {
+      dispatch(controlActions.isCollapseMenu(true));
+      setTimeout(() => {
+        dispatch(controlActions.isOpenPanelInfo(true));
+      }, 500);
+    },
+  });
   return (
     <div className="dealerList">
       <DetailsList
-        selectionMode={SelectionMode.none}
+        onItemInvoked={() => console.log('invoked')}
         items={dealers}
+        selection={dealerSelection}
+        selectionMode={SelectionMode.single}
         columns={columns}
       />
     </div>
