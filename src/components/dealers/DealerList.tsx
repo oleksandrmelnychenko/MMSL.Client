@@ -161,6 +161,8 @@ export const DealerList: React.FC = () => {
   ];
 
   const dealerSelection = () => {
+    const selectedDealer = selection.getSelection()[0] as DealerAccount;
+    dispatch(dealerActions.setSelectedDealer(selectedDealer));
     dispatch(controlActions.isCollapseMenu(true));
     setTimeout(() => {
       dispatch(controlActions.isOpenPanelInfo(true));
@@ -168,6 +170,7 @@ export const DealerList: React.FC = () => {
   };
 
   const dealerUnSelection = () => {
+    dispatch(dealerActions.setSelectedDealer(new DealerAccount()));
     dispatch(controlActions.isCollapseMenu(false));
     dispatch(controlActions.isOpenPanelInfo(false));
   };
@@ -175,7 +178,6 @@ export const DealerList: React.FC = () => {
   const checkSelectionDealer = () => {
     if (selection.count > 0) {
       dealerSelection();
-      console.log(selection.getSelection());
     } else {
       dealerUnSelection();
     }

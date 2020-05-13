@@ -6,3 +6,4 @@ export const NEW_USER_ACCOUNT_API = '/identity/new/account';
 
 export const CREATE_NEW_DEALER = '/dealer/accounts/add';
 export const GET_DEALERS_ALL = '/dealer/accounts/get/all';
+export const GET_STORES_BY_DEALER = '/stores/get/all/dealer';

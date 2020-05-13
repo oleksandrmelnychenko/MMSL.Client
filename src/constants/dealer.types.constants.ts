@@ -5,3 +5,4 @@ export const UPDATE_DEALERS_LIST = 'dealer.UPDATE_DEALERS_LIST';
 export const SAVE_NEW_DEALER = 'dealer.SAVE_NEW_DEALER';
 export const TOGGLE_NEW_DEALER_FORM = 'dealer.TOGGLE_NEW_DEALER_FORM';
 export const SELECTED_DEALER = 'dealer.SELECTED_DEALER';
+export const GET_STORES_BY_DEALER = 'dealer.GET_STORES_BY_DEALER';

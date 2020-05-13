@@ -129,8 +129,7 @@ export const Dealers: React.FC = (props: any) => {
                       onClick={() =>
                         dispatch(dealerActions.toggleNewDealerForm(true))
                       }
-                      iconProps={{ iconName: 'Add' }}
-                    >
+                      iconProps={{ iconName: 'Add' }}>
                       Add dealer
                     </ActionButton>
                   </div>
@@ -163,16 +162,25 @@ export const Dealers: React.FC = (props: any) => {
                     if (formik !== undefined && formik !== null) {
                       formik.submitForm();
                     }
-                  }}
-                >
+                  }}>
                   Save
                 </PrimaryButton>
               </Stack>
             );
           }}
-          closeButtonAriaLabel="Close"
-        >
+          closeButtonAriaLabel="Close">
           <DealerDetails formikReference={formikReference} />
+        </Panel>
+
+        <Panel
+          isOpen={false}
+          type={PanelType.custom}
+          customWidth={'1300px'}
+          // onDismiss={() => {
+          //   dispatch(dealerActions.toggleNewDealerForm(false));
+          // }}
+        >
+          <DealerStores />
         </Panel>
       </div>
     </div>

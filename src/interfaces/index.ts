@@ -60,6 +60,7 @@ export class DealerAccount {
     this.shippingAddressId = null;
     this.shippingAddress = null;
     this.stores = [];
+    this.id = null;
   }
 
   companyName: string;
@@ -77,6 +78,7 @@ export class DealerAccount {
   shippingAddressId: number | null;
   shippingAddress: Address | null;
   stores: any[];
+  id?: number | null;
 }
 
 export class Address {

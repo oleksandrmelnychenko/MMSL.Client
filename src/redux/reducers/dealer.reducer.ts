@@ -1,17 +1,17 @@
 import { createReducer } from '@reduxjs/toolkit';
 import * as dealerActions from '../../redux/actions/dealer.actions';
-import { IDealer, DealerAccount } from '../../interfaces';
+import { DealerAccount } from '../../interfaces';
 
 export class DealerState {
   constructor() {
     this.dealersList = [];
     this.manageDealerForm = new ManageDealerFormState();
-    this.selectedDealer = null;
+    this.selectedDealer = new DealerAccount();
   }
 
   dealersList: DealerAccount[];
   manageDealerForm: ManageDealerFormState;
-  selectedDealer: IDealer | null;
+  selectedDealer: DealerAccount;
 }
 
 export class ManageDealerFormState {
@@ -29,5 +29,8 @@ export const dealerReducer = createReducer(new DealerState(), (builder) =>
     })
     .addCase(dealerActions.toggleNewDealerForm, (state, action) => {
       state.manageDealerForm.isFormVisible = action.payload;
+    })
+    .addCase(dealerActions.setSelectedDealer, (state, action) => {
+      state.selectedDealer = action.payload;
     })
 );
