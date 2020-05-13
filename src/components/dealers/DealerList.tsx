@@ -159,14 +159,21 @@ export const DealerList: React.FC = () => {
     },
   ];
 
-  const dealerSelection = new Selection({
-    onSelectionChanged: () => {
+  const foo = () => {
+    if (dealerSelection.count > 0) {
       dispatch(controlActions.isCollapseMenu(true));
       setTimeout(() => {
         dispatch(controlActions.isOpenPanelInfo(true));
       }, 500);
+    }
+  };
+
+  const dealerSelection = new Selection({
+    onSelectionChanged: () => {
+      foo();
     },
   });
+
   return (
     <div className="dealerList">
       <DetailsList
