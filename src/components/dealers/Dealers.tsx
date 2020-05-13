@@ -16,7 +16,6 @@ import { LocalizeState, getActiveLanguage } from 'react-localize-redux';
 import DealerDetails from './DealerDetails';
 import DealerStores from './DealerStores';
 import DealerList from './DealerList';
-import { DealerView } from '../../redux/reducers/dealer.reducer';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import {
   DatePicker,
@@ -28,6 +27,9 @@ import { boolean } from 'yup';
 
 export const Dealers: React.FC = (props: any) => {
   const [isAddDealerOpen, setisAddDealerOpen] = useState<boolean>();
+  const [formikReference] = useState({
+    formik: {},
+  });
 
   const dispatch = useDispatch();
 
@@ -36,15 +38,7 @@ export const Dealers: React.FC = (props: any) => {
   );
   const languageCode = getActiveLanguage(localize).code;
 
-  const dealerView = useSelector<IApplicationState, DealerView>(
-    (state) => state.dealer.selectedView
-  );
-
   let content: any = null;
-
-  if (dealerView === DealerView.List) content = <DealerList />;
-  else if (dealerView === DealerView.Details) content = <DealerDetails />;
-  else if (dealerView === DealerView.Stores) content = <DealerStores />;
 
   const controlClass = mergeStyleSets({
     control: {
@@ -142,7 +136,7 @@ export const Dealers: React.FC = (props: any) => {
             </Stack>
           </div>
 
-          <div className="dealers__navigation">
+          {/* <div className="dealers__navigation">
             <ul>
               <li className={dealerView === DealerView.List ? 'selected ' : ''}>
                 <DefaultButton
@@ -176,15 +170,17 @@ export const Dealers: React.FC = (props: any) => {
                 />
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
 
-        <div>{content}</div>
+        <div>
+          <DealerList />
+        </div>
 
         <Panel
           isOpen={isAddDealerOpen}
           type={PanelType.custom}
-          customWidth={'600px'}
+          customWidth={'1000px'}
           onDismiss={() => {
             setisAddDealerOpen(!isAddDealerOpen);
           }}
@@ -192,7 +188,17 @@ export const Dealers: React.FC = (props: any) => {
             return (
               <Stack horizontal className="dealerPanelHeader">
                 <Text className="dealerPanelHeader__title">Add Dealer</Text>
-                <PrimaryButton className="dealerPanelHeader__save">
+                <PrimaryButton
+                  className="dealerPanelHeader__save"
+                  onClick={() => {
+                    debugger;
+                    let formik: any = formikReference.formik;
+
+                    if (formik !== undefined && formik !== null) {
+                      formik.submitForm();
+                    }
+                  }}
+                >
                   Save
                 </PrimaryButton>
               </Stack>
@@ -200,7 +206,7 @@ export const Dealers: React.FC = (props: any) => {
           }}
           closeButtonAriaLabel="Close"
         >
-          <DealerDetails />
+          <DealerDetails formikReference={formikReference} />
         </Panel>
       </div>
     </div>

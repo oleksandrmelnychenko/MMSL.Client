@@ -1,12 +1,17 @@
 .dealerForm {
   padding: 52px 0px 12px 0px;
 
-  input {
-    height: 30px;
+  &__inputBlock {
+    margin-bottom: 14px;
+
+    &__error {
+      position: absolute;
+      color: #a4373a;
+    }
   }
 
-  .formInput {
-    margin-bottom: 12px;
+  input {
+    height: 30px;
   }
 
   .formScope {
