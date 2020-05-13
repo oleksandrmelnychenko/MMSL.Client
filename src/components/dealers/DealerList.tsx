@@ -13,7 +13,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import * as controlActions from '../../redux/actions/control.actions';
-import { DealerAccount } from './DealerDetails';
+import ReactPaginate from 'react-paginate';
+import { DealerAccount } from '../../interfaces';
 
 export const DealerList: React.FC = () => {
   const dispatch = useDispatch();
@@ -194,6 +195,11 @@ export const DealerList: React.FC = () => {
         selectionMode={SelectionMode.single}
         columns={columns}
       />
+      {/* <ReactPaginate
+        pageCount={100}
+        pageRangeDisplayed={10}
+        marginPagesDisplayed={3}
+      /> */}
     </div>
   );
 };

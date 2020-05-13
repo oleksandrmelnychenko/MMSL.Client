@@ -1,7 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import * as dealerTypes from '../../constants/dealer.types.constants';
-import { DealerAccount } from '../../components/dealers/DealerDetails';
-import { IDealer } from '../../interfaces/index';
+import { IDealer, DealerAccount } from '../../interfaces/index';
 
 export const getDealersList = createAction(dealerTypes.GET_DEALERS_LIST);
 

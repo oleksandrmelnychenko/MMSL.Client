@@ -4,7 +4,6 @@ import {
   Toggle,
   Dropdown,
   Checkbox,
-  PrimaryButton,
   Text,
   Stack,
   TextField,
@@ -17,60 +16,7 @@ import * as dealerActions from '../../redux/actions/dealer.actions';
 import { useDispatch } from 'react-redux';
 import { assignPendingActions } from '../../helpers/action.helper';
 import { FontSizes, FontWeights } from 'office-ui-fabric-react/lib/Styling';
-
-export class DealerAccount {
-  constructor() {
-    this.companyName = '';
-    this.email = '';
-    this.alternateEmail = '';
-    this.phoneNumber = '';
-    this.taxNumber = '';
-    this.isVatApplicable = false;
-    this.currency = 0;
-    this.paymentType = 0;
-    this.isCreditAllowed = false;
-    this.billingAddressId = null;
-    this.billingAddress = null;
-    this.useBillingAsShipping = false;
-    this.shippingAddressId = null;
-    this.shippingAddress = null;
-    this.stores = [];
-  }
-
-  companyName: string;
-  email: string;
-  alternateEmail: string;
-  phoneNumber: string;
-  taxNumber: string;
-  isVatApplicable: boolean;
-  currency: number;
-  paymentType: number;
-  isCreditAllowed: boolean;
-  billingAddressId: number | null;
-  billingAddress: Address | null;
-  useBillingAsShipping: boolean;
-  shippingAddressId: number | null;
-  shippingAddress: Address | null;
-  stores: any[];
-}
-
-export class Address {
-  constructor() {
-    this.addressLine1 = '';
-    this.addressLine2 = '';
-    this.city = '';
-    this.state = '';
-    this.country = '';
-    this.zipCode = false;
-  }
-
-  addressLine1: string;
-  addressLine2: string;
-  city: string;
-  state: string;
-  country: string;
-  zipCode: boolean;
-}
+import { DealerAccount, Address } from '../../interfaces';
 
 class DealerDetailsProps {
   constructor() {

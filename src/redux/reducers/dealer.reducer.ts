@@ -1,7 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import * as dealerActions from '../../redux/actions/dealer.actions';
-import { DealerAccount } from '../../components/dealers/DealerDetails';
-import { IDealer } from '../../interfaces';
+import { IDealer, DealerAccount } from '../../interfaces';
 
 export class DealerState {
   constructor() {
