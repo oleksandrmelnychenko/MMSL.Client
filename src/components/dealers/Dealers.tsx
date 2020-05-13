@@ -23,10 +23,8 @@ import {
   IDatePickerStrings,
   mergeStyleSets,
 } from 'office-ui-fabric-react';
-import { boolean } from 'yup';
 
 export const Dealers: React.FC = (props: any) => {
-  const [isAddDealerOpen, setisAddDealerOpen] = useState<boolean>();
   const [formikReference] = useState({
     formik: {},
   });
@@ -36,9 +34,12 @@ export const Dealers: React.FC = (props: any) => {
   const localize = useSelector<IApplicationState, LocalizeState>(
     (state) => state.localize
   );
-  const languageCode = getActiveLanguage(localize).code;
 
-  let content: any = null;
+  const isAddDealerOpen = useSelector<IApplicationState, boolean>(
+    (state) => state.dealer.manageDealerForm.isFormVisible
+  );
+
+  const languageCode = getActiveLanguage(localize).code;
 
   const controlClass = mergeStyleSets({
     control: {
@@ -125,7 +126,9 @@ export const Dealers: React.FC = (props: any) => {
                   <div className="dealers__header__top__controls__control">
                     <ActionButton
                       className="dealerAdd"
-                      onClick={() => setisAddDealerOpen(!isAddDealerOpen)}
+                      onClick={() =>
+                        dispatch(dealerActions.toggleNewDealerForm(true))
+                      }
                       iconProps={{ iconName: 'Add' }}
                     >
                       Add dealer
@@ -135,42 +138,6 @@ export const Dealers: React.FC = (props: any) => {
               </div>
             </Stack>
           </div>
-
-          {/* <div className="dealers__navigation">
-            <ul>
-              <li className={dealerView === DealerView.List ? 'selected ' : ''}>
-                <DefaultButton
-                  text="List"
-                  allowDisabledFocus
-                  onClick={() =>
-                    dispatch(dealerActions.changeDealerView(DealerView.List))
-                  }
-                />
-              </li>
-              <li
-                className={dealerView === DealerView.Details ? 'selected ' : ''}
-              >
-                <DefaultButton
-                  text="Dealer details"
-                  allowDisabledFocus
-                  onClick={() =>
-                    dispatch(dealerActions.changeDealerView(DealerView.Details))
-                  }
-                />
-              </li>
-              <li
-                className={dealerView === DealerView.Stores ? 'selected ' : ''}
-              >
-                <DefaultButton
-                  text="Dealer stores"
-                  allowDisabledFocus
-                  onClick={() =>
-                    dispatch(dealerActions.changeDealerView(DealerView.Stores))
-                  }
-                />
-              </li>
-            </ul>
-          </div> */}
         </div>
 
         <div>
@@ -182,7 +149,7 @@ export const Dealers: React.FC = (props: any) => {
           type={PanelType.custom}
           customWidth={'1300px'}
           onDismiss={() => {
-            setisAddDealerOpen(!isAddDealerOpen);
+            dispatch(dealerActions.toggleNewDealerForm(false));
           }}
           onRenderHeader={() => {
             return (

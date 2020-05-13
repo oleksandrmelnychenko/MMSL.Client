@@ -200,7 +200,10 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
         onSubmit={(values: any) => {
           let createAction = assignPendingActions(
             dealerActions.saveNewDealer(buildDealerAccount(values)),
-            [dealerActions.getDealersList()]
+            [
+              dealerActions.getDealersList(),
+              dealerActions.toggleNewDealerForm(false),
+            ]
           );
 
           dispatch(createAction);

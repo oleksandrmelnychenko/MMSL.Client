@@ -12,7 +12,7 @@ export const saveNewDealer = createAction<DealerAccount>(
   dealerTypes.SAVE_NEW_DEALER
 );
 
-export const toggleNewDealerForm = createAction<DealerAccount>(
+export const toggleNewDealerForm = createAction<boolean>(
   dealerTypes.TOGGLE_NEW_DEALER_FORM
 );
 
