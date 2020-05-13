@@ -65,7 +65,7 @@ export const getDealersListPaginatedEpic = (
         mergeMap((successResponse: any) => {
           let successResultFlow = [
             dealerActions.updateDealersList(successResponse.entities),
-            dealerActions.updateDealerListPagination(
+            dealerActions.updateDealerListPaginationInfo(
               successResponse.paginationInfo
             ),
             ...extractSuccessPendingActions(action),

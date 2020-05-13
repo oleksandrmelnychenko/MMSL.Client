@@ -56,6 +56,9 @@ export const dealerReducer = createReducer(new DealerState(), (builder) =>
       state.selectedDealer = action.payload;
     })
     .addCase(dealerActions.updateDealerListPagination, (state, action) => {
+      state.dealerState.pagination = action.payload;
+    })
+    .addCase(dealerActions.updateDealerListPaginationInfo, (state, action) => {
       state.dealerState.pagination.paginationInfo = action.payload;
     })
     .addCase(dealerActions.isOpenPanelWithDealerDetails, (state, action) => {

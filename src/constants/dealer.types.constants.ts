@@ -7,8 +7,13 @@ export const SAVE_NEW_DEALER = 'dealer.SAVE_NEW_DEALER';
 export const TOGGLE_NEW_DEALER_FORM = 'dealer.TOGGLE_NEW_DEALER_FORM';
 export const SELECTED_DEALER = 'dealer.SELECTED_DEALER';
 export const GET_STORES_BY_DEALER = 'dealer.GET_STORES_BY_DEALER';
+
+/// Updates pagination (don't confuse with PAGINATION_INFO)
 export const UPDATE_DEALER_LIST_PAGINATION =
   'dealer.UPDATE_DEALER_LIST_PAGINATION';
 export const IS_OPEN_PANEL_WITH_DEALER_DETAILS =
   'dealer.IS_OPEN_PANEL_WITH_DEALER_DETAILS';
 export const SET_DEALER_STORES = 'dealer.SET_DEALER_STORES';
+/// Updates pagination INFO inside pagination
+export const UPDATE_DEALER_LIST_PAGINATION_INFO =
+  'dealer.UPDATE_DEALER_LIST_PAGINATION_INFO';
