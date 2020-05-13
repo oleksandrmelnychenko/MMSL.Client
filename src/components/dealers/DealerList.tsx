@@ -159,18 +159,29 @@ export const DealerList: React.FC = () => {
     },
   ];
 
-  const foo = () => {
-    if (dealerSelection.count > 0) {
-      dispatch(controlActions.isCollapseMenu(true));
-      setTimeout(() => {
-        dispatch(controlActions.isOpenPanelInfo(true));
-      }, 500);
+  const dealerSelection = () => {
+    dispatch(controlActions.isCollapseMenu(true));
+    setTimeout(() => {
+      dispatch(controlActions.isOpenPanelInfo(true));
+    }, 500);
+  };
+
+  const dealerUnSelection = () => {
+    dispatch(controlActions.isCollapseMenu(false));
+    dispatch(controlActions.isOpenPanelInfo(false));
+  };
+
+  const checkSelectionDealer = () => {
+    if (selection.count > 0) {
+      dealerSelection();
+    } else {
+      dealerUnSelection();
     }
   };
 
-  const dealerSelection = new Selection({
+  const selection = new Selection({
     onSelectionChanged: () => {
-      foo();
+      checkSelectionDealer();
     },
   });
 
@@ -179,7 +190,7 @@ export const DealerList: React.FC = () => {
       <DetailsList
         onItemInvoked={() => console.log('invoked')}
         items={dealers}
-        selection={dealerSelection}
+        selection={selection}
         selectionMode={SelectionMode.single}
         columns={columns}
       />

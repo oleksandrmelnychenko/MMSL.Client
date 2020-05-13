@@ -45,51 +45,7 @@ body {
   box-sizing: border-box;
 }
 
-.container-flex-center {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
 
-.container {
-  width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
-
-  @media (min-width: 1200px) {
-    max-width: 1140px;
-  }
-
-  @media (min-width: 992px) {
-    max-width: 960px;
-  }
-
-  @media (min-width: 768px) {
-    max-width: 720px;
-  }
-
-  @media (min-width: 576px) {
-    max-width: 540px;
-  }
-
-  &:after {
-    display: block;
-    clear: both;
-    content: '';
-  }
-
-  .row {
-    display: flex;
-    flex-wrap: wrap;
-    -ms-flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
-  }
-}
 
 main {
   display: flex;
