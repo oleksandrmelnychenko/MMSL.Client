@@ -3,10 +3,15 @@ import { createReducer } from '@reduxjs/toolkit';
 
 export const defaultControlState = {
   isCollapseMenu: false,
+  isOpenPanelInfo: false,
 };
 
 export const controlReducer = createReducer(defaultControlState, (builder) =>
-  builder.addCase(actions.isCollapseMenu, (state, action) => {
-    state.isCollapseMenu = action.payload;
-  })
+  builder
+    .addCase(actions.isCollapseMenu, (state, action) => {
+      state.isCollapseMenu = action.payload;
+    })
+    .addCase(actions.isOpenPanelInfo, (state, action) => {
+      state.isOpenPanelInfo = action.payload;
+    })
 );

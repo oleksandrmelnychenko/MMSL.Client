@@ -29,6 +29,7 @@ export interface IAuthState {
 
 export interface IControlState {
   isCollapseMenu: boolean;
+  isOpenPanelInfo: boolean;
 }
 
 export interface IDealer {

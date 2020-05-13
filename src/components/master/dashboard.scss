@@ -1,5 +1,6 @@
 .content {
-    max-width: calc(100% - 230px);
+    max-width: calc(100% - 300px);
+    width: 100%;
     margin-top: 0px;
 }
 
@@ -8,7 +9,7 @@ main.collapse {
         width: 46px;
     }
 
-    .content {
-        width: calc(100% - 46px);
-    }
+    // .content {
+    //     max-width: calc(100% - 46px);
+    // }
 }
