@@ -5,9 +5,19 @@ import { DealerAccount } from '../../components/dealers/DealerDetails';
 export class DealerState {
   constructor() {
     this.dealersList = [];
+    this.manageDealerForm = new ManageDealerFormState();
   }
 
   dealersList: DealerAccount[];
+  manageDealerForm: ManageDealerFormState;
+}
+
+export class ManageDealerFormState {
+  constructor() {
+    this.isFormVisible = false;
+  }
+
+  isFormVisible: boolean;
 }
 
 export const dealerReducer = createReducer(new DealerState(), (builder) =>

@@ -12,6 +12,11 @@ export const saveNewDealer = createAction<DealerAccount>(
   dealerTypes.SAVE_NEW_DEALER
 );
 
+export const toggleNewDealerForm = createAction<DealerAccount>(
+  dealerTypes.TOGGLE_NEW_DEALER_FORM
+);
+
 export type GetDealersList = ReturnType<typeof getDealersList>;
 export type UpdateDealersList = ReturnType<typeof updateDealersList>;
 export type SaveNewDealer = ReturnType<typeof saveNewDealer>;
+export type ToggleNewDealerForm = ReturnType<typeof toggleNewDealerForm>;

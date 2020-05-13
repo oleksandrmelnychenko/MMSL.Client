@@ -16,6 +16,7 @@ import './dealerDetails.scss';
 import * as Yup from 'yup';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import { useDispatch } from 'react-redux';
+import { assignPendingActions } from '../../helpers/action.helper';
 
 export class DealerAccount {
   constructor() {
@@ -169,7 +170,12 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
           useBillingAsShipping: false,
         }}
         onSubmit={(values: any) => {
-          dispatch(dealerActions.saveNewDealer(buildDealerAccount(values)));
+          let createAction = assignPendingActions(
+            dealerActions.saveNewDealer(buildDealerAccount(values)),
+            [dealerActions.getDealersList()]
+          );
+
+          dispatch(createAction);
         }}
         validateOnBlur={false}
       >
