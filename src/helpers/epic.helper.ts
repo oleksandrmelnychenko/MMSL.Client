@@ -95,7 +95,6 @@ export const ajaxPutResponse = (
     Authorization: `Bearer ${TokenHelper.getAccessToken()}`,
     'Content-Type': 'application/json',
   };
-
   return ajax
     .put(`${API.SERVER_URL}/${currentLanguage}${urlPath}`, body, header)
     .pipe(map((response) => response.response));

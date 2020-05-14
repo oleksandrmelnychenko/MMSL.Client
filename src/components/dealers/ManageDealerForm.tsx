@@ -11,7 +11,7 @@ import {
   ITextProps,
   IDropdownOption,
 } from 'office-ui-fabric-react';
-import './createDealer.scss';
+import './manageDealerForm.scss';
 import * as Yup from 'yup';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import { useDispatch } from 'react-redux';
@@ -24,17 +24,44 @@ import {
   Currency,
 } from '../../interfaces';
 
-class CreateDealerProps {
+class ManageDealerFormProps {
   constructor() {
-    this.formikReference = {
-      formik: null,
-    };
+    this.formikReference = new FormicReference();
+    this.dealerAccount = null;
+    this.submitAction = (args: any) => {};
   }
 
-  formikReference: any;
+  formikReference: FormicReference;
+  dealerAccount?: DealerAccount | null;
+  submitAction: (args: any) => void;
 }
 
-const buildDealerAccount = (values: any) => {
+export class FormicReference {
+  constructor() {
+    this.formik = null;
+  }
+
+  formik: any;
+}
+
+/// TOODO: resolve with Linq
+const resolveDefaultDropDownValue = (
+  limitOptions: any[],
+  initLimit: number
+) => {
+  let result;
+  limitOptions.forEach((option) => {
+    if (option.key === `${initLimit}`) {
+      result = option;
+    }
+  });
+  if (result === undefined || null) {
+    result = limitOptions[0];
+  }
+  return result;
+};
+
+const buildDealerAccount = (values: any, sourceDealer?: DealerAccount) => {
   let dealerAccount: DealerAccount = {
     id: 0,
     isDeleted: false,
@@ -44,8 +71,8 @@ const buildDealerAccount = (values: any) => {
     phoneNumber: values.phoneNumber,
     taxNumber: values.taxNumber,
     isVatApplicable: values.vatApplicate,
-    currency: values.selectCurrency,
-    paymentType: values.selectPayment,
+    currency: parseInt(values.selectCurrency),
+    paymentType: parseInt(values.selectPayment),
     isCreditAllowed: values.creditAllowed,
     billingAddressId: null,
     billingAddress: null,
@@ -67,11 +94,90 @@ const buildDealerAccount = (values: any) => {
 
   dealerAccount.billingAddress = billingAddress;
 
+  if (sourceDealer !== null && sourceDealer !== undefined) {
+    dealerAccount.id = sourceDealer.id;
+    dealerAccount.isDeleted = sourceDealer.isDeleted;
+    dealerAccount.billingAddressId = sourceDealer.billingAddressId;
+    dealerAccount.shippingAddressId = sourceDealer.shippingAddressId;
+
+    if (
+      sourceDealer.billingAddress !== null &&
+      sourceDealer.billingAddress !== undefined
+    ) {
+      dealerAccount.billingAddress.id = sourceDealer.billingAddress.id;
+      dealerAccount.billingAddress.isDeleted =
+        sourceDealer.billingAddress.isDeleted;
+    }
+  }
+
   return dealerAccount;
 };
 
-export const CreateDealer: React.FC<CreateDealerProps> = (
-  props: CreateDealerProps
+const initDefaultValues = (account?: DealerAccount | null) => {
+  const formikInitValues = {
+    companyName: '',
+    /// TODO: missing
+    name: '',
+    email: '',
+    alternativeEmail: '',
+    phoneNumber: '',
+    taxNumber: '',
+    selectCurrency: '',
+    selectPayment: '',
+    vatApplicate: false,
+    creditAllowed: false,
+    generalText: '',
+    addressLine1: '',
+    addressLine2: '',
+    city: '',
+    country: '',
+    state: '',
+    zip: '',
+    useBillingAsShipping: false,
+  };
+
+  if (account !== null && account !== undefined) {
+    formikInitValues.companyName = account.companyName;
+    /// TODO: missing
+    // formikInitValues.name = props.dealerAccount.Name;
+    formikInitValues.email = account.email;
+    formikInitValues.alternativeEmail = account.alternateEmail;
+    formikInitValues.phoneNumber = account.phoneNumber;
+    formikInitValues.taxNumber = account.taxNumber;
+    /// TODO: important
+    // formikInitValues.selectCurrency = props.dealerAccount.currency;
+    formikInitValues.selectCurrency = `${account.currency}`;
+
+    /// TODO: important
+    // formikInitValues.selectPayment = props.dealerAccount.paymentType;
+    formikInitValues.selectPayment = `${account.paymentType}`;
+    debugger;
+
+    formikInitValues.vatApplicate = account.isVatApplicable;
+    formikInitValues.creditAllowed = account.isCreditAllowed;
+    /// TODO: missing
+    // formikInitValues.generalText =  = props.dealerAccount.alternateEmail;
+
+    if (
+      account.billingAddress !== null &&
+      account.billingAddress !== undefined
+    ) {
+      formikInitValues.addressLine1 = account.billingAddress.addressLine1;
+      formikInitValues.addressLine2 = account.billingAddress.addressLine1;
+      formikInitValues.city = account.billingAddress.city;
+      formikInitValues.country = account.billingAddress.country;
+      formikInitValues.state = account.billingAddress.state;
+      formikInitValues.zip = account.billingAddress.zipCode;
+    }
+
+    formikInitValues.useBillingAsShipping = account.useBillingAsShipping;
+  }
+
+  return formikInitValues;
+};
+
+export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
+  props: ManageDealerFormProps
 ) => {
   const dispatch = useDispatch();
 
@@ -103,12 +209,40 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
     },
   };
 
+  const currencyOptions = [
+    {
+      key: '0',
+      text: 'USD',
+      value: Currency.USD,
+    } as IDropdownOption,
+    {
+      key: '1',
+      text: 'EUR',
+      value: Currency.EUR,
+    } as IDropdownOption,
+  ];
+
+  const paymentOptions = [
+    {
+      key: '0',
+      text: 'Bank transfer',
+      value: PaymentType.BankTransfer,
+    } as IDropdownOption,
+    {
+      key: '1',
+      text: 'Cash',
+      value: PaymentType.Cash,
+    } as IDropdownOption,
+  ];
+
+  const formikInitValues = initDefaultValues(props.dealerAccount);
+
   return (
     <div>
       <Formik
         validationSchema={Yup.object().shape({
           companyName: Yup.string().required(() => 'Company name is required'),
-          // name: Yup.string().required(() => 'Name is required'),
+          //   name: Yup.string().required(() => 'Name is required'),
           email: Yup.string()
             .email('Invalid email')
             .required(() => 'Email is required'),
@@ -121,7 +255,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
           selectPayment: Yup.string().notRequired(),
           vatApplicate: Yup.boolean().notRequired(),
           creditAllowed: Yup.boolean().notRequired(),
-          // generalText: Yup.string().notRequired(),
+          //   generalText: Yup.string().notRequired(),
           addressLine1: Yup.string().notRequired(),
           addressLine2: Yup.string().notRequired(),
           city: Yup.string().notRequired(),
@@ -130,36 +264,12 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
           zip: Yup.string().notRequired(),
           useBillingAsShipping: Yup.boolean().notRequired(),
         })}
-        initialValues={{
-          companyName: '',
-          // name: '',
-          email: '',
-          alternativeEmail: '',
-          phoneNumber: '',
-          taxNumber: '',
-          selectCurrency: '',
-          selectPayment: '',
-          vatApplicate: false,
-          creditAllowed: false,
-          // generalText: '',
-          addressLine1: '',
-          addressLine2: '',
-          city: '',
-          country: '',
-          state: '',
-          zip: '',
-          useBillingAsShipping: false,
-        }}
+        initialValues={formikInitValues}
         onSubmit={(values: any) => {
-          let createAction = assignPendingActions(
-            dealerActions.saveNewDealer(buildDealerAccount(values)),
-            [
-              dealerActions.getDealersListPaginated(),
-              dealerActions.toggleNewDealerForm(false),
-            ]
+          debugger;
+          props.submitAction(
+            buildDealerAccount(values, props.dealerAccount as DealerAccount)
           );
-
-          dispatch(createAction);
         }}
         validateOnBlur={false}
       >
@@ -177,11 +287,13 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                         return (
                           <div className="dealerForm__inputBlock">
                             <TextField
+                              value={formik.values.companyName}
                               styles={textFildLabelStyles}
                               className="formInput"
                               label="Company name"
                               onChange={(args: any) => {
                                 let value = args.target.value;
+
                                 formik.setFieldValue('companyName', value);
                                 formik.setFieldTouched('companyName');
                                 console.log(value);
@@ -206,6 +318,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                         return (
                           <div className="dealerForm__inputBlock">
                             <TextField
+                              value={formik.values.name}
                               styles={textFildLabelStyles}
                               className="formInput"
                               label="Name"
@@ -233,6 +346,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                         return (
                           <div className="dealerForm__inputBlock">
                             <TextField
+                              value={formik.values.email}
                               styles={textFildLabelStyles}
                               className="formInput"
                               label="Email"
@@ -261,6 +375,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                         return (
                           <div className="dealerForm__inputBlock">
                             <TextField
+                              value={formik.values.alternativeEmail}
                               styles={textFildLabelStyles}
                               label="Alternative Email"
                               className="formInput"
@@ -290,6 +405,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                         return (
                           <div className="dealerForm__inputBlock">
                             <MaskedTextField
+                              value={formik.values.phoneNumber}
                               styles={textFildLabelStyles}
                               className="formInput"
                               label="Phone Number"
@@ -311,6 +427,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                         return (
                           <div className="dealerForm__inputBlock">
                             <TextField
+                              value={formik.values.taxNumber}
                               styles={textFildLabelStyles}
                               label="Tax Number"
                               className="formInput"
@@ -331,6 +448,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                         return (
                           <div className="dealerForm__inputBlock noMargin">
                             <TextField
+                              value={formik.values.generalText}
                               styles={textFildLabelStyles}
                               label="General Text"
                               className="formInput"
@@ -354,20 +472,15 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                         return (
                           <div className="dealerForm__inputBlock">
                             <Dropdown
+                              defaultSelectedKey={
+                                resolveDefaultDropDownValue(
+                                  currencyOptions,
+                                  parseInt(formik.values.selectCurrency)
+                                ).key
+                              }
                               className="formInput"
                               label="Select Currency"
-                              options={[
-                                {
-                                  key: 'usd',
-                                  text: 'USD',
-                                  value: Currency.USD,
-                                } as IDropdownOption,
-                                {
-                                  key: 'eur',
-                                  text: 'EUR',
-                                  value: Currency.EUR,
-                                } as IDropdownOption,
-                              ]}
+                              options={currencyOptions}
                               styles={dropDownStyles}
                               onChange={(
                                 event: React.FormEvent<HTMLDivElement>,
@@ -391,18 +504,13 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                             <Dropdown
                               className="formInput"
                               label="Select Payment"
-                              options={[
-                                {
-                                  key: 'bankTransfer',
-                                  text: 'Bank transfer',
-                                  value: PaymentType.BankTransfer,
-                                } as IDropdownOption,
-                                {
-                                  key: 'cash',
-                                  text: 'Cash',
-                                  value: PaymentType.Cash,
-                                } as IDropdownOption,
-                              ]}
+                              options={paymentOptions}
+                              defaultSelectedKey={
+                                resolveDefaultDropDownValue(
+                                  paymentOptions,
+                                  parseInt(formik.values.selectPayment)
+                                ).key
+                              }
                               styles={dropDownStyles}
                               onChange={(
                                 event: React.FormEvent<HTMLDivElement>,
@@ -424,6 +532,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                         return (
                           <div className="dealerForm__inputBlock noMargin">
                             <Toggle
+                              checked={formik.values.vatApplicate}
                               styles={toggleStyles}
                               className="formInput"
                               label="Vat Applicate"
@@ -446,6 +555,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                         return (
                           <div className="dealerForm__inputBlock noMargin">
                             <Toggle
+                              checked={formik.values.creditAllowed}
                               className="formInput"
                               label="Credit Allowed"
                               styles={toggleStyles}
@@ -475,6 +585,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                             return (
                               <div className="dealerForm__inputBlock">
                                 <TextField
+                                  value={formik.values.addressLine1}
                                   styles={textFildLabelStyles}
                                   className="formInput"
                                   label="Address Line 1"
@@ -494,6 +605,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                             return (
                               <div className="dealerForm__inputBlock">
                                 <TextField
+                                  value={formik.values.addressLine2}
                                   styles={textFildLabelStyles}
                                   className="formInput"
                                   label="Address Line 2"
@@ -515,6 +627,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                                 return (
                                   <div className="dealerForm__inputBlock">
                                     <TextField
+                                      value={formik.values.city}
                                       styles={textFildLabelStyles}
                                       className="formInput"
                                       label="City"
@@ -534,6 +647,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                                 return (
                                   <div className="dealerForm__inputBlock noMargin">
                                     <TextField
+                                      value={formik.values.country}
                                       styles={textFildLabelStyles}
                                       className="formInput"
                                       label="Country"
@@ -555,6 +669,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                                 return (
                                   <div className="dealerForm__inputBlock">
                                     <TextField
+                                      value={formik.values.state}
                                       styles={textFildLabelStyles}
                                       className="formInput"
                                       label="State"
@@ -574,6 +689,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                                 return (
                                   <div className="dealerForm__inputBlock noMargin">
                                     <TextField
+                                      value={formik.values.zip}
                                       styles={textFildLabelStyles}
                                       className="formInput"
                                       label="Zip"
@@ -605,6 +721,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                               return (
                                 <div className="dealerForm__inputBlock noMargin">
                                   <Checkbox
+                                    checked={formik.values.useBillingAsShipping}
                                     label="Use same as billing"
                                     onChange={(
                                       checked: any,
@@ -637,4 +754,4 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
   );
 };
 
-export default CreateDealer;
+export default ManageDealerForm;

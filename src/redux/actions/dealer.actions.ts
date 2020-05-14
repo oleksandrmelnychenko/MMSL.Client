@@ -13,12 +13,20 @@ export const getDealersListPaginated = createAction(
   dealerTypes.GET_DEALERS_LIST_PAGINATED
 );
 
+export const getAndSelectDealerById = createAction<number>(
+  dealerTypes.GET_AND_SELECT_DEALER_BY_ID
+);
+
 export const updateDealersList = createAction<DealerAccount[]>(
   dealerTypes.UPDATE_DEALERS_LIST
 );
 
 export const saveNewDealer = createAction<DealerAccount>(
   dealerTypes.SAVE_NEW_DEALER
+);
+
+export const updateDealer = createAction<DealerAccount>(
+  dealerTypes.UPDATE_DEALER
 );
 
 export const getStoresByDealer = createAction<number>(
@@ -50,6 +58,7 @@ export type GetDealersList = ReturnType<typeof getDealersList>;
 export type GetDealersListPaginated = ReturnType<
   typeof getDealersListPaginated
 >;
+export type GetAndSelectDealerById = ReturnType<typeof getAndSelectDealerById>;
 export type UpdateDealersList = ReturnType<typeof updateDealersList>;
 export type SaveNewDealer = ReturnType<typeof saveNewDealer>;
 export type ToggleNewDealerForm = ReturnType<typeof toggleNewDealerForm>;
