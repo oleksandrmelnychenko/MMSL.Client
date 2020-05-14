@@ -20,3 +20,6 @@ export const SET_DEALER_STORES = 'dealer.SET_DEALER_STORES';
 /// Updates pagination INFO inside pagination
 export const UPDATE_DEALER_LIST_PAGINATION_INFO =
   'dealer.UPDATE_DEALER_LIST_PAGINATION_INFO';
+
+export const UPDATE_DEALER_STORE = 'dealer.UPDATE_DEALER_STORE';
+export const SET_UPDATE_DEALER_STORE = 'dealer.SET_UPDATE_DEALER_STORE';

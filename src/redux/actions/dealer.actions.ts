@@ -4,6 +4,7 @@ import {
   DealerAccount,
   Pagination,
   PaginationInfo,
+  IStore,
 } from '../../interfaces/index';
 import { ToggleDealerPanelWithDetails } from '../reducers/dealer.reducer';
 
@@ -49,6 +50,14 @@ export const updateDealerListPaginationInfo = createAction<PaginationInfo>(
 );
 export const toggleUpdatingDealer = createAction<boolean>(
   dealerTypes.TOGGLE_UPDATING_DEALER
+);
+
+export const updateDealerStore = createAction<IStore>(
+  dealerTypes.UPDATE_DEALER_STORE
+);
+
+export const setUpdateDealerStore = createAction<IStore>(
+  dealerTypes.SET_UPDATE_DEALER_STORE
 );
 
 export const setDealerStores = createAction<any>(dealerTypes.SET_DEALER_STORES);

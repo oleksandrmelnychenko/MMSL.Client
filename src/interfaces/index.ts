@@ -59,9 +59,9 @@ export interface IStore {
   addressId: number;
   billingEmail: string;
   contactEmail: string;
-  description: string;
+  description?: string;
   id: number;
-  isDeleted: boolean;
+  isDeleted?: boolean;
   name: string;
 }
 

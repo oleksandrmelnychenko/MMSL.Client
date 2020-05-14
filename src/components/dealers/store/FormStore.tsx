@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import { Field, Formik, Form } from 'formik';
 import {
@@ -9,12 +9,15 @@ import {
 } from 'office-ui-fabric-react';
 import { Text, ITextProps } from 'office-ui-fabric-react/lib/Text';
 import { IStore } from '../../../interfaces';
+import * as dealerActions from '../../../redux/actions/dealer.actions';
+import { useDispatch } from 'react-redux';
 
 interface IFormStoreProps {
   store: IStore[] | null;
 }
 
 const FormStore: React.FC<IFormStoreProps> = (props) => {
+  const dispatch = useDispatch();
   const selectedStore = props.store ? props.store[0] : null;
   const textFildLabelStyles = {
     subComponentStyles: {
@@ -25,6 +28,30 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
         },
       },
     },
+  };
+
+  const builderUpdateStore = (value: any) => {
+    if (selectedStore) {
+      const updateStore: IStore = {
+        addressId: selectedStore?.addressId,
+        address: {
+          addressLine1: value.addressLine1,
+          addressLine2: value.addressLine2,
+          city: value.city,
+          state: value.state,
+          country: value.country,
+          zipCode: value.zip,
+          id: selectedStore?.address.id,
+          isDeleted: selectedStore?.address.isDeleted,
+        },
+        contactEmail: value.contactEmail,
+        billingEmail: value.billingEmail,
+        name: value.nameStore,
+        // description: null,
+        id: selectedStore?.id,
+      };
+      return updateStore;
+    }
   };
 
   const initValue = () => {
@@ -76,7 +103,12 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
         })}
         initialValues={initValue()}
         onSubmit={(values: any) => {
-          console.log(values);
+          console.log(builderUpdateStore(values), '<======');
+          dispatch(
+            dealerActions.updateDealerStore(
+              builderUpdateStore(values) as IStore
+            )
+          );
         }}
         enableReinitialize={true}
         validateOnBlur={false}>

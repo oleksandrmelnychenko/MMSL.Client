@@ -88,6 +88,14 @@ export const dealerReducer = createReducer(new DealerState(), (builder) =>
     .addCase(dealerActions.setDealerStores, (state, action) => {
       state.dealerStores = action.payload;
     })
+    .addCase(dealerActions.setUpdateDealerStore, (state, action) => {
+      state.dealerStores = state.dealerStores.map((store) => {
+        if (store.id === action.payload.id) {
+          store = action.payload;
+        }
+        return store;
+      });
+    })
     .addCase(dealerActions.toggleUpdatingDealer, (state, action) => {
       let dealerForm = { ...state.manageDealerForm };
       dealerForm.isIpdatingDealer = action.payload;
