@@ -1,5 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import * as dealerActions from '../../redux/actions/dealer.actions';
+import { IStore } from '../../interfaces/index';
 import {
   IDealer,
   DealerAccount,
@@ -21,7 +22,7 @@ export class DealerState {
   manageDealerForm: ManageDealerFormState;
   selectedDealer: DealerAccount | null;
   isOpenPanelWithDealerDetails: boolean;
-  dealerStores: any[];
+  dealerStores: IStore[];
 }
 
 /// Dealer list state (contains list of dealers and pagination)

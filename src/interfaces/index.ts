@@ -54,6 +54,17 @@ export class EntityBase {
   isDeleted: boolean;
 }
 
+export interface IStore {
+  address: Address;
+  addressId: number;
+  billingEmail: string;
+  contactEmail: string;
+  description: string;
+  id: number;
+  isDeleted: boolean;
+  name: string;
+}
+
 export class DealerAccount extends EntityBase {
   constructor() {
     super();
