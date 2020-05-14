@@ -71,16 +71,14 @@ const Dashboard: React.FC = () => {
               styles={btnStyle}
               className="dealer__management__btn-add"
               onClick={() => {
-                console.log('add');
+                dispatch(dealerAction.isOpenPanelWithDealerDetails(true));
               }}
               allowDisabledFocus
             />
             <PrimaryButton
               className="dealer__management__btn-detail"
               styles={btnStyle}
-              onClick={() => {
-                dispatch(dealerAction.isOpenPanelWithDealerDetails(true));
-              }}
+              onClick={() => {}}
               allowDisabledFocus
             />
           </div>
