@@ -12,7 +12,6 @@ import { IApplicationState } from '../../redux/reducers/index';
 import { Panel, PanelType, PrimaryButton } from 'office-ui-fabric-react';
 import * as controlAction from '../../redux/actions/control.actions';
 import * as dealerAction from '../../redux/actions/dealer.actions';
-import DealerStores from '../dealers/DealerStores';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
@@ -42,6 +41,19 @@ const Dashboard: React.FC = () => {
     dispatch(controlAction.isCollapseMenu(false));
   };
 
+  const btnStyle = {
+    root: {
+      minWidth: '90px',
+      width: '90px',
+      height: '90px',
+      paddingRight: '0px',
+      border: 'none',
+      rootHovered: {
+        border: 'none',
+      },
+    },
+  };
+
   return (
     <>
       <Header />
@@ -50,19 +62,26 @@ const Dashboard: React.FC = () => {
 
         <Panel
           type={PanelType.smallFixedNear}
-          headerText="Dealer management"
           isBlocking={false}
           styles={stylesPanelInfo}
           isOpen={isOpenPanelInfo}
-          hasCloseButton={false}
           onDismiss={dismissPanelInfo}>
-          <PrimaryButton
-            text="Details Store"
-            onClick={() => {
-              dispatch(dealerAction.isOpenPanelWithDealerDetails(true));
-            }}
-            allowDisabledFocus
-          />
+          <div className="dealer__management">
+            <PrimaryButton
+              styles={btnStyle}
+              className="dealer__management__btn-add"
+              onClick={() => {
+                dispatch(dealerAction.isOpenPanelWithDealerDetails(true));
+              }}
+              allowDisabledFocus
+            />
+            <PrimaryButton
+              className="dealer__management__btn-detail"
+              styles={btnStyle}
+              onClick={() => {}}
+              allowDisabledFocus
+            />
+          </div>
         </Panel>
 
         <div className="content">

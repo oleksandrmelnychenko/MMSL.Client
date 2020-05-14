@@ -5,13 +5,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers/index';
 import { DealerAccount } from '../../interfaces';
 import * as dealerActions from '../../redux/actions/dealer.actions';
+import { IStore } from '../../interfaces/index';
 
 export const DealerStores: React.FC = () => {
   const dispatch = useDispatch();
   const selectedDealer = useSelector<IApplicationState, DealerAccount>(
     (state) => state.dealer.selectedDealer!
   );
-  const dealerStore = useSelector<IApplicationState, any[]>(
+  const dealerStore = useSelector<IApplicationState, IStore[]>(
     (state) => state.dealer.dealerStores
   );
   useEffect(() => {

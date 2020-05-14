@@ -54,6 +54,17 @@ export class EntityBase {
   isDeleted: boolean;
 }
 
+export interface IStore {
+  address: Address;
+  addressId: number;
+  billingEmail: string;
+  contactEmail: string;
+  description: string;
+  id: number;
+  isDeleted: boolean;
+  name: string;
+}
+
 export enum Currency {
   USD = 0,
   EUR = 1,
