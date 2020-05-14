@@ -26,6 +26,9 @@ import {
   mergeStyleSets,
 } from 'office-ui-fabric-react';
 import { ToggleDealerPanelWithDetails } from '../../redux/reducers/dealer.reducer';
+import DealerDetails from './DealerDetails';
+import DealerDetailsPanel from './DealerDetaisPanel';
+import { ofType } from 'redux-observable';
 
 export const Dealers: React.FC = (props: any) => {
   const [formikReference] = useState({
@@ -155,6 +158,7 @@ export const Dealers: React.FC = (props: any) => {
           </Stack.Item>
         </Stack>
 
+        {/* Create new dealer panel */}
         <Panel
           isOpen={isAddDealerOpen}
           type={PanelType.custom}
@@ -186,24 +190,8 @@ export const Dealers: React.FC = (props: any) => {
           <CreateDealer formikReference={formikReference} />
         </Panel>
 
-        <Panel
-          isOpen={isOpenPanelWithDealerDetails.isOpen}
-          type={PanelType.custom}
-          customWidth={'1300px'}
-          onDismiss={() => {
-            dispatch(
-              dealerActions.isOpenPanelWithDealerDetails(
-                new ToggleDealerPanelWithDetails()
-              )
-            );
-          }}
-        >
-          {isOpenPanelWithDealerDetails
-            ? isOpenPanelWithDealerDetails.component
-              ? isOpenPanelWithDealerDetails.component
-              : null
-            : null}
-        </Panel>
+        {/* Dealer details panel */}
+        <DealerDetailsPanel />
       </div>
     </div>
   );

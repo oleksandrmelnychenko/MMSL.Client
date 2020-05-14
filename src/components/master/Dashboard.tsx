@@ -12,8 +12,12 @@ import { IApplicationState } from '../../redux/reducers/index';
 import { Panel, PanelType, PrimaryButton, Label } from 'office-ui-fabric-react';
 import * as controlAction from '../../redux/actions/control.actions';
 import * as dealerAction from '../../redux/actions/dealer.actions';
-import { ToggleDealerPanelWithDetails } from '../../redux/reducers/dealer.reducer';
+import {
+  ToggleDealerPanelWithDetails,
+  DealerDetilsComponents,
+} from '../../redux/reducers/dealer.reducer';
 import DealerStores from '../dealers/DealerStores';
+import DealerDetails from '../dealers/DealerDetails';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
@@ -74,7 +78,8 @@ const Dashboard: React.FC = () => {
           isBlocking={false}
           styles={stylesPanelInfo}
           isOpen={isOpenPanelInfo}
-          onDismiss={dismissPanelInfo}>
+          onDismiss={dismissPanelInfo}
+        >
           <div className="dealer__management">
             <Label styles={labelStyle}>
               <PrimaryButton
@@ -83,7 +88,8 @@ const Dashboard: React.FC = () => {
                 onClick={() => {
                   const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
                   openDetailsArgs.isOpen = true;
-                  openDetailsArgs.component = <DealerStores />;
+                  openDetailsArgs.componentType =
+                    DealerDetilsComponents.DealerStores;
 
                   dispatch(
                     dealerAction.isOpenPanelWithDealerDetails(openDetailsArgs)
@@ -98,7 +104,14 @@ const Dashboard: React.FC = () => {
                 className="dealer__management__btn-detail"
                 styles={btnStyle}
                 onClick={() => {
-                  debugger;
+                  const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
+                  openDetailsArgs.isOpen = true;
+                  openDetailsArgs.componentType =
+                    DealerDetilsComponents.DealerDetails;
+
+                  dispatch(
+                    dealerAction.isOpenPanelWithDealerDetails(openDetailsArgs)
+                  );
                 }}
                 allowDisabledFocus
               />

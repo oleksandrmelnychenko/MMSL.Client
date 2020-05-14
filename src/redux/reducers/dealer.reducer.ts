@@ -45,14 +45,21 @@ export class ManageDealerFormState {
   isFormVisible: boolean;
 }
 
+/// Describes types of `dealer details` components
+export enum DealerDetilsComponents {
+  DealerDetails,
+  DealerStores,
+}
+
 /// Action payload
 export class ToggleDealerPanelWithDetails {
   constructor() {
     this.isOpen = false;
+    this.componentType = DealerDetilsComponents.DealerDetails;
   }
 
   isOpen: boolean;
-  component: any;
+  componentType: DealerDetilsComponents;
 }
 
 export const dealerReducer = createReducer(new DealerState(), (builder) =>
