@@ -9,9 +9,16 @@ import PrivateRoute from '../PrivateRoute';
 import Dealers from '../dealers/Dealers';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers/index';
-import { Panel, PanelType, PrimaryButton } from 'office-ui-fabric-react';
+import {
+  Panel,
+  PanelType,
+  PrimaryButton,
+  Label,
+  getId,
+} from 'office-ui-fabric-react';
 import * as controlAction from '../../redux/actions/control.actions';
 import * as dealerAction from '../../redux/actions/dealer.actions';
+import { FontWeights } from 'office-ui-fabric-react';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
@@ -54,6 +61,13 @@ const Dashboard: React.FC = () => {
     },
   };
 
+  const labelStyle = {
+    root: {
+      fontSize: '14px',
+      textAlign: 'center',
+      'font-weight': 400,
+    },
+  };
   return (
     <>
       <Header />
@@ -67,20 +81,27 @@ const Dashboard: React.FC = () => {
           isOpen={isOpenPanelInfo}
           onDismiss={dismissPanelInfo}>
           <div className="dealer__management">
-            <PrimaryButton
-              styles={btnStyle}
-              className="dealer__management__btn-add"
-              onClick={() => {
-                dispatch(dealerAction.isOpenPanelWithDealerDetails(true));
-              }}
-              allowDisabledFocus
-            />
-            <PrimaryButton
-              className="dealer__management__btn-detail"
-              styles={btnStyle}
-              onClick={() => {}}
-              allowDisabledFocus
-            />
+            <Label styles={labelStyle}>
+              <PrimaryButton
+                styles={btnStyle}
+                description={'tesst'}
+                className="dealer__management__btn-add"
+                onClick={() => {
+                  dispatch(dealerAction.isOpenPanelWithDealerDetails(true));
+                }}
+                allowDisabledFocus
+              />
+              Dealer stores
+            </Label>
+            <Label styles={labelStyle}>
+              <PrimaryButton
+                className="dealer__management__btn-detail"
+                styles={btnStyle}
+                onClick={() => {}}
+                allowDisabledFocus
+              />
+              Dealer details
+            </Label>
           </div>
         </Panel>
 
