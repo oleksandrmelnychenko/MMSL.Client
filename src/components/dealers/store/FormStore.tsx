@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { Field, Formik, Form } from 'formik';
 import {
@@ -16,8 +16,6 @@ interface IFormStoreProps {
 
 const FormStore: React.FC<IFormStoreProps> = (props) => {
   const selectedStore = props.store ? props.store[0] : null;
-  console.log(props.store);
-
   const textFildLabelStyles = {
     subComponentStyles: {
       label: {
@@ -41,7 +39,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
       state: '',
       zip: '',
     };
-    if (selectedStore !== null && selectedStore !== undefined) {
+    if (selectedStore) {
       formikInitValues = {
         nameStore: selectedStore.name,
         contactEmail: selectedStore.contactEmail,
@@ -97,6 +95,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                           styles={textFildLabelStyles}
                           className="formInput"
                           label="Store name"
+                          value={formik.values.nameStore}
                           onChange={(args: any) => {
                             let value = args.target.value;
                             formik.setFieldValue('nameStore', value);
@@ -114,6 +113,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                             styles={textFildLabelStyles}
                             className="formInput"
                             label="Email"
+                            value={formik.values.contactEmail}
                             onChange={(args: any) => {
                               let value = args.target.value;
                               formik.setFieldValue('contactEmail', value);
@@ -140,6 +140,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                             styles={textFildLabelStyles}
                             className="formInput"
                             label="Billing email"
+                            value={formik.values.billingEmail}
                             onChange={(args: any) => {
                               let value = args.target.value;
                               formik.setFieldValue('billingEmail', value);
@@ -166,6 +167,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                             styles={textFildLabelStyles}
                             className="formInput"
                             label="Address Line 1"
+                            value={formik.values.addressLine1}
                             onChange={(args: any) => {
                               let value = args.target.value;
                               formik.setFieldValue('addressLine1', value);
@@ -184,6 +186,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                             styles={textFildLabelStyles}
                             className="formInput"
                             label="Address Line 2"
+                            value={formik.values.addressLine2}
                             onChange={(args: any) => {
                               let value = args.target.value;
                               formik.setFieldValue('addressLine2', value);
@@ -204,6 +207,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                                 styles={textFildLabelStyles}
                                 className="formInput"
                                 label="City"
+                                value={formik.values.city}
                                 onChange={(args: any) => {
                                   let value = args.target.value;
                                   formik.setFieldValue('city', value);
@@ -222,6 +226,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                                 styles={textFildLabelStyles}
                                 className="formInput"
                                 label="Country"
+                                value={formik.values.country}
                                 onChange={(args: any) => {
                                   let value = args.target.value;
                                   formik.setFieldValue('country', value);
@@ -242,6 +247,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                                 styles={textFildLabelStyles}
                                 className="formInput"
                                 label="State"
+                                value={formik.values.state}
                                 onChange={(args: any) => {
                                   let value = args.target.value;
                                   formik.setFieldValue('state', value);
@@ -260,6 +266,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                                 styles={textFildLabelStyles}
                                 className="formInput"
                                 label="Zip"
+                                value={formik.values.zip}
                                 onChange={(args: any) => {
                                   let value = args.target.value;
                                   formik.setFieldValue('zip', value);

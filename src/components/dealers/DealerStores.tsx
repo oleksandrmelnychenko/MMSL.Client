@@ -12,11 +12,9 @@ import * as dealerActions from '../../redux/actions/dealer.actions';
 import { IStore } from '../../interfaces/index';
 import { Stack } from 'office-ui-fabric-react';
 import FormStore from './store/FormStore';
-import { useLocation, Route } from 'react-router-dom';
 
 export const DealerStores: React.FC = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const selectedDealer = useSelector<IApplicationState, DealerAccount>(
     (state) => state.dealer.selectedDealer!
   );
