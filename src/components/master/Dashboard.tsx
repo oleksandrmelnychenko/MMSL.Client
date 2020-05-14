@@ -9,16 +9,11 @@ import PrivateRoute from '../PrivateRoute';
 import Dealers from '../dealers/Dealers';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers/index';
-import {
-  Panel,
-  PanelType,
-  PrimaryButton,
-  Label,
-  getId,
-} from 'office-ui-fabric-react';
+import { Panel, PanelType, PrimaryButton, Label } from 'office-ui-fabric-react';
 import * as controlAction from '../../redux/actions/control.actions';
 import * as dealerAction from '../../redux/actions/dealer.actions';
-import { FontWeights } from 'office-ui-fabric-react';
+import { ToggleDealerPanelWithDetails } from '../../redux/reducers/dealer.reducer';
+import DealerStores from '../dealers/DealerStores';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
@@ -84,10 +79,15 @@ const Dashboard: React.FC = () => {
             <Label styles={labelStyle}>
               <PrimaryButton
                 styles={btnStyle}
-                description={'tesst'}
                 className="dealer__management__btn-add"
                 onClick={() => {
-                  dispatch(dealerAction.isOpenPanelWithDealerDetails(true));
+                  const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
+                  openDetailsArgs.isOpen = true;
+                  openDetailsArgs.component = <DealerStores />;
+
+                  dispatch(
+                    dealerAction.isOpenPanelWithDealerDetails(openDetailsArgs)
+                  );
                 }}
                 allowDisabledFocus
               />
@@ -97,7 +97,9 @@ const Dashboard: React.FC = () => {
               <PrimaryButton
                 className="dealer__management__btn-detail"
                 styles={btnStyle}
-                onClick={() => {}}
+                onClick={() => {
+                  debugger;
+                }}
                 allowDisabledFocus
               />
               Dealer details

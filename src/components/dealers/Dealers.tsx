@@ -25,6 +25,7 @@ import {
   IDatePickerStrings,
   mergeStyleSets,
 } from 'office-ui-fabric-react';
+import { ToggleDealerPanelWithDetails } from '../../redux/reducers/dealer.reducer';
 
 export const Dealers: React.FC = (props: any) => {
   const [formikReference] = useState({
@@ -41,9 +42,10 @@ export const Dealers: React.FC = (props: any) => {
     (state) => state.dealer.manageDealerForm.isFormVisible
   );
 
-  const isOpenPanelWithDealerDetails = useSelector<IApplicationState, boolean>(
-    (state) => state.dealer.isOpenPanelWithDealerDetails
-  );
+  const isOpenPanelWithDealerDetails: ToggleDealerPanelWithDetails = useSelector<
+    IApplicationState,
+    ToggleDealerPanelWithDetails
+  >((state) => state.dealer.isOpenPanelWithDealerDetails);
 
   const languageCode = getActiveLanguage(localize).code;
 
@@ -182,13 +184,21 @@ export const Dealers: React.FC = (props: any) => {
         </Panel>
 
         <Panel
-          isOpen={isOpenPanelWithDealerDetails}
+          isOpen={isOpenPanelWithDealerDetails.isOpen}
           type={PanelType.custom}
           customWidth={'1300px'}
           onDismiss={() => {
-            dispatch(dealerActions.isOpenPanelWithDealerDetails(false));
+            dispatch(
+              dealerActions.isOpenPanelWithDealerDetails(
+                new ToggleDealerPanelWithDetails()
+              )
+            );
           }}>
-          <DealerStores />
+          {isOpenPanelWithDealerDetails
+            ? isOpenPanelWithDealerDetails.component
+              ? isOpenPanelWithDealerDetails.component
+              : null
+            : null}
         </Panel>
       </div>
     </div>
