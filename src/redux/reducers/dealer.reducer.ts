@@ -1,3 +1,4 @@
+import { ManageDealerForm } from './../../components/dealers/ManageDealerForm';
 import { createReducer } from '@reduxjs/toolkit';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import { IStore } from '../../interfaces/index';
@@ -40,9 +41,11 @@ export class DealersListState {
 export class ManageDealerFormState {
   constructor() {
     this.isFormVisible = false;
+    this.isIpdatingDealer = false;
   }
 
   isFormVisible: boolean;
+  isIpdatingDealer: boolean;
 }
 
 /// Describes types of `dealer details` components
@@ -84,5 +87,10 @@ export const dealerReducer = createReducer(new DealerState(), (builder) =>
     })
     .addCase(dealerActions.setDealerStores, (state, action) => {
       state.dealerStores = action.payload;
+    })
+    .addCase(dealerActions.toggleUpdatingDealer, (state, action) => {
+      let dealerForm = { ...state.manageDealerForm };
+      dealerForm.isIpdatingDealer = action.payload;
+      state.manageDealerForm = dealerForm;
     })
 );

@@ -22,6 +22,7 @@
   }
 
   .formScope {
+    max-width: 263px;
     border: 1px solid #eaeaea;
     padding: 12px;
     border-radius: 3px;
@@ -34,4 +35,8 @@
   .saveButton {
     position: absolute;
   }
+
+  // .ms-Dropdown {
+  //   margin-right: 0 !important;
+  // }
 }

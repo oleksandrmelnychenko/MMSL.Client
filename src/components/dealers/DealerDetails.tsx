@@ -131,8 +131,10 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
           let createAction = assignPendingActions(
             dealerActions.updateDealer(args),
             [
+              dealerActions.isOpenPanelWithDealerDetails(
+                new ToggleDealerPanelWithDetails()
+              ),
               dealerActions.getDealersListPaginated(),
-              dealerActions.getAndSelectDealerById(args.id),
             ]
           );
           dispatch(createAction);

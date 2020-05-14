@@ -151,7 +151,6 @@ const initDefaultValues = (account?: DealerAccount | null) => {
     /// TODO: important
     // formikInitValues.selectPayment = props.dealerAccount.paymentType;
     formikInitValues.selectPayment = `${account.paymentType}`;
-    debugger;
 
     formikInitValues.vatApplicate = account.isVatApplicable;
     formikInitValues.creditAllowed = account.isCreditAllowed;
@@ -266,7 +265,6 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
         })}
         initialValues={formikInitValues}
         onSubmit={(values: any) => {
-          debugger;
           props.submitAction(
             buildDealerAccount(values, props.dealerAccount as DealerAccount)
           );
@@ -278,7 +276,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
 
           return (
             <Form>
-              <div className="dealerForm">
+              <div className="dealerFormManage">
                 <Stack horizontal tokens={{ childrenGap: 20 }}>
                   <Stack grow={2}>
                     <Field

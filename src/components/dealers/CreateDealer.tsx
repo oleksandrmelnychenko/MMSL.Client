@@ -86,8 +86,9 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
     },
   };
 
+  // width: 212
   const dropDownStyles = {
-    dropdown: { width: 300 },
+    dropdown: { marginRight: 0 },
     label: {
       fontWeight: FontWeights.light,
       paddingBottom: '2px',
@@ -170,7 +171,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
             <Form>
               <div className="dealerForm">
                 <Stack horizontal tokens={{ childrenGap: 20 }}>
-                  <Stack grow={2}>
+                  <Stack grow={4}>
                     <Field
                       name="companyName"
                       render={() => {
@@ -347,7 +348,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                       }}
                     ></Field> */}
                   </Stack>
-                  <Stack>
+                  <Stack grow={1}>
                     <Field
                       name="selectCurrency"
                       render={() => {
@@ -465,7 +466,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                       }}
                     ></Field>
                   </Stack>
-                  <Stack grow={4} tokens={{ childrenGap: 20 }}>
+                  <Stack tokens={{ childrenGap: 20 }}>
                     <Stack>
                       <div className="formScope">
                         <Text className="formScopeHeader">BILLING ADDRESS</Text>
@@ -592,7 +593,7 @@ export const CreateDealer: React.FC<CreateDealerProps> = (
                       </div>
                     </Stack>
                     <div className="formScope">
-                      <Stack horizontal>
+                      <Stack>
                         <Stack.Item grow={1}>
                           <Text className="formScopeHeader">
                             DELIVERY ADDRESS

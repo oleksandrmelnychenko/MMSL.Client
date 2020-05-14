@@ -25,6 +25,14 @@ export const DealerList: React.FC = () => {
     DealerAccount[]
   >((state) => state.dealer.dealerState.dealersList);
 
+  const isIpdatingDealer = useSelector<IApplicationState, boolean>(
+    (state) => state.dealer.manageDealerForm.isIpdatingDealer
+  );
+
+  const selectedDealer = useSelector<IApplicationState, DealerAccount | null>(
+    (state) => state.dealer.selectedDealer
+  );
+
   useEffect(() => {
     dispatch(dealerActions.getDealersListPaginated());
     // eslint-disable-next-line react-hooks/exhaustive-deps
