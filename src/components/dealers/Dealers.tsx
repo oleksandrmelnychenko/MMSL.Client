@@ -106,46 +106,50 @@ export const Dealers: React.FC = (props: any) => {
   return (
     <div className="dealers">
       <div className="dealers__root">
-        <div className="dealers__header">
-          <div className="dealers__header__top">
-            <Stack horizontal>
-              <div className="dealers__header__top__title">Dealers</div>
-              <div className="dealers__header__top__controls">
+        <Stack verticalAlign="space-around">
+          <Stack.Item align="stretch">
+            <div className="dealers__header">
+              <div className="dealers__header__top">
                 <Stack horizontal>
-                  <div className="dealers__header__top__controls__control">
-                    <DatePicker
-                      className="dealersDate"
-                      firstDayOfWeek={DayOfWeek.Monday}
-                      strings={DayPickerStrings}
-                      placeholder="Select a date..."
-                      ariaLabel="Select a date"
-                    />
-                  </div>
-                  <div className="dealers__header__top__controls__control">
-                    <SearchBox
-                      className="dealerSearch"
-                      styles={{ root: { width: 200 } }}
-                    />
-                  </div>
-                  <div className="dealers__header__top__controls__control">
-                    <ActionButton
-                      className="dealerAdd"
-                      onClick={() =>
-                        dispatch(dealerActions.toggleNewDealerForm(true))
-                      }
-                      iconProps={{ iconName: 'Add' }}>
-                      Add dealer
-                    </ActionButton>
+                  <div className="dealers__header__top__title">Dealers</div>
+                  <div className="dealers__header__top__controls">
+                    <Stack horizontal>
+                      <div className="dealers__header__top__controls__control">
+                        <DatePicker
+                          className="dealersDate"
+                          firstDayOfWeek={DayOfWeek.Monday}
+                          strings={DayPickerStrings}
+                          placeholder="Select a date..."
+                          ariaLabel="Select a date"
+                        />
+                      </div>
+                      <div className="dealers__header__top__controls__control">
+                        <SearchBox
+                          className="dealerSearch"
+                          styles={{ root: { width: 200 } }}
+                        />
+                      </div>
+                      <div className="dealers__header__top__controls__control">
+                        <ActionButton
+                          className="dealerAdd"
+                          onClick={() =>
+                            dispatch(dealerActions.toggleNewDealerForm(true))
+                          }
+                          iconProps={{ iconName: 'Add' }}
+                        >
+                          Add dealer
+                        </ActionButton>
+                      </div>
+                    </Stack>
                   </div>
                 </Stack>
               </div>
-            </Stack>
-          </div>
-        </div>
-
-        <div>
-          <DealerList />
-        </div>
+            </div>
+          </Stack.Item>
+          <Stack.Item>
+            <DealerList />
+          </Stack.Item>
+        </Stack>
 
         <Panel
           isOpen={isAddDealerOpen}
@@ -166,13 +170,15 @@ export const Dealers: React.FC = (props: any) => {
                     if (formik !== undefined && formik !== null) {
                       formik.submitForm();
                     }
-                  }}>
+                  }}
+                >
                   Save
                 </PrimaryButton>
               </Stack>
             );
           }}
-          closeButtonAriaLabel="Close">
+          closeButtonAriaLabel="Close"
+        >
           <DealerDetails formikReference={formikReference} />
         </Panel>
 
@@ -182,7 +188,8 @@ export const Dealers: React.FC = (props: any) => {
           customWidth={'1300px'}
           onDismiss={() => {
             dispatch(dealerActions.isOpenPanelWithDealerDetails(false));
-          }}>
+          }}
+        >
           <DealerStores />
         </Panel>
       </div>

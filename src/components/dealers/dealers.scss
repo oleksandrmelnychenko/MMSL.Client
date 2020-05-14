@@ -6,6 +6,9 @@
     border-radius: 6px;
     padding: 12px;
     margin: 12px;
+    height: calc(100% - 13px - 13px);
+    width: calc(100% - 12px - 12px);
+    position: absolute;
   }
 
   &__header {
@@ -44,24 +47,23 @@
     }
   }
 
-  &__navigation {
-    margin: 18px 0 0 0;
-    display: none;
+  // &__navigation {
+  //   margin: 18px 0 0 0;
+  //   display: none;
 
-    li {
-      display: inline-block;
+  //   li {
+  //     display: inline-block;
 
-      &.selected {
-        background-color: lightgray;
-      }
+  //     &.selected {
+  //       background-color: lightgray;
+  //     }
 
-      button {
-        background: transparent;
-        border: none;
-      }
-    }
-  }
-
+  //     button {
+  //       background: transparent;
+  //       border: none;
+  //     }
+  //   }
+  // }
 }
 
 .dealerPanelHeader {
@@ -71,7 +73,7 @@
   &__title {
     color: #484848;
     font-size: 22px;
-    font-weight: 300;
+    font-weight: 600;
   }
 
   &__save {

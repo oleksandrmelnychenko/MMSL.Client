@@ -193,13 +193,17 @@ export const DealerList: React.FC = () => {
 
   return (
     <div className="dealerList">
-      <DetailsList
-        items={dealers}
-        selection={selection}
-        selectionMode={SelectionMode.single}
-        columns={columns}
-      />
-      <DealersPagination />
+      <div className="dealerList__content">
+        <DetailsList
+          items={dealers}
+          selection={selection}
+          selectionMode={SelectionMode.single}
+          columns={columns}
+        />
+      </div>
+      <div className="dealerList__footer">
+        <DealersPagination />
+      </div>
     </div>
   );
 };
