@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
   Toggle,
@@ -10,11 +10,13 @@ import {
   MaskedTextField,
   ITextProps,
   IDropdownOption,
+  PrimaryButton,
 } from 'office-ui-fabric-react';
 import './createDealer.scss';
+import ManageDealerForm, { FormicReference } from './ManageDealerForm';
 import * as Yup from 'yup';
 import * as dealerActions from '../../redux/actions/dealer.actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { assignPendingActions } from '../../helpers/action.helper';
 import { FontSizes, FontWeights } from 'office-ui-fabric-react/lib/Styling';
 import {
@@ -23,6 +25,10 @@ import {
   PaymentType,
   Currency,
 } from '../../interfaces';
+import { IApplicationState } from '../../redux/reducers';
+import * as controlActions from '../../redux/actions/control.actions';
+import { ToggleDealerPanelWithDetails } from '../../redux/reducers/dealer.reducer';
+import * as dealerAction from '../../redux/actions/dealer.actions';
 
 class DealerDetailsProps {}
 
@@ -65,7 +71,12 @@ const buildDealerAccount = (values: any) => {
 export const DealerDetails: React.FC<DealerDetailsProps> = (
   props: DealerDetailsProps
 ) => {
+  const [formikReference] = useState<FormicReference>(new FormicReference());
+
   const dispatch = useDispatch();
+  const selectedDealer = useSelector<IApplicationState, DealerAccount>(
+    (state) => state.dealer.selectedDealer!
+  );
 
   const textFildLabelStyles = {
     subComponentStyles: {
@@ -95,7 +106,40 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
     },
   };
 
-  return <div>Dealer details</div>;
+  return (
+    <div>
+      <Stack horizontal className="dealerPanelHeader">
+        <Text className="dealerPanelHeader__title">Dealer Details</Text>
+        <PrimaryButton
+          className="dealerPanelHeader__save"
+          onClick={() => {
+            let formik: any = formikReference.formik;
+
+            if (formik !== undefined && formik !== null) {
+              formik.submitForm();
+            }
+          }}
+        >
+          Save
+        </PrimaryButton>
+      </Stack>
+
+      <ManageDealerForm
+        formikReference={formikReference}
+        dealerAccount={selectedDealer}
+        submitAction={(args: any) => {
+          let createAction = assignPendingActions(
+            dealerActions.updateDealer(args),
+            [
+              dealerActions.getDealersListPaginated(),
+              dealerActions.getAndSelectDealerById(args.id),
+            ]
+          );
+          dispatch(createAction);
+        }}
+      />
+    </div>
+  );
 };
 
 export default DealerDetails;

@@ -122,7 +122,7 @@ export class Address extends EntityBase {
     this.city = '';
     this.state = '';
     this.country = '';
-    this.zipCode = false;
+    this.zipCode = '';
   }
 
   addressLine1: string;
@@ -130,7 +130,7 @@ export class Address extends EntityBase {
   city: string;
   state: string;
   country: string;
-  zipCode: boolean;
+  zipCode: string;
 }
 
 export class Pagination {

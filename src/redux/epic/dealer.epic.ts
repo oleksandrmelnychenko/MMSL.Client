@@ -14,6 +14,7 @@ import { getActiveLanguage } from 'react-localize-redux';
 import {
   ajaxPostResponse,
   ajaxGetWebResponse,
+  ajaxPutResponse,
 } from '../../helpers/epic.helper';
 import * as api from '../../constants/api.constants';
 
@@ -88,6 +89,40 @@ export const getDealersListPaginatedEpic = (
   );
 };
 
+export const getAndSelectDealersByIdEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(dealerTypes.GET_AND_SELECT_DEALER_BY_ID),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      return ajaxGetWebResponse(api.GET_DEALER_BY_ID, state$.value, [
+        { key: 'dealerAccountId', value: `${action.payload}` },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          let successResultFlow = [
+            dealerActions.setSelectedDealer(successResponse),
+            ...extractSuccessPendingActions(action),
+          ];
+
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [
+              { type: 'ERROR_GET_DEALERS_LIST' },
+              ...extractErrorPendingActions(action),
+            ];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};
+
 export const saveNewDealerEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
     ofType(dealerTypes.SAVE_NEW_DEALER),
@@ -105,6 +140,35 @@ export const saveNewDealerEpic = (action$: AnyAction, state$: any) => {
           return from(successResultFlow);
         }),
         catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [...extractErrorPendingActions(action)];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};
+
+export const updateDealerEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(dealerTypes.UPDATE_DEALER),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      return ajaxPutResponse(
+        api.UPDATE_DEALER,
+        action.payload,
+        state$.value
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          debugger;
+          let successResultFlow = [...extractSuccessPendingActions(action)];
+
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          debugger;
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [...extractErrorPendingActions(action)];
 

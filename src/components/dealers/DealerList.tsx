@@ -16,6 +16,7 @@ import * as controlActions from '../../redux/actions/control.actions';
 import ReactPaginate from 'react-paginate';
 import { DealerAccount, PaginationInfo } from '../../interfaces';
 import DealersPagination from './DealersPagination';
+import { assignPendingActions } from '../../helpers/action.helper';
 
 export const DealerList: React.FC = () => {
   const dispatch = useDispatch();
@@ -164,11 +165,17 @@ export const DealerList: React.FC = () => {
 
   const dealerSelection = () => {
     const selectedDealer = selection.getSelection()[0] as DealerAccount;
-    dispatch(dealerActions.setSelectedDealer(selectedDealer));
+    let createAction = assignPendingActions(
+      dealerActions.getAndSelectDealerById(selectedDealer.id),
+      []
+    );
+    /// TODO:
     dispatch(controlActions.isCollapseMenu(true));
     setTimeout(() => {
       dispatch(controlActions.isOpenPanelInfo(true));
     }, 500);
+
+    dispatch(createAction);
   };
 
   const dealerUnSelection = () => {
