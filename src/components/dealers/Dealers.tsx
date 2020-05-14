@@ -15,7 +15,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import { LocalizeState, getActiveLanguage } from 'react-localize-redux';
-import DealerDetails from './DealerDetails';
+import CreateDealer from './CreateDealer';
 import DealerStores from './DealerStores';
 import DealerList from './DealerList';
 import * as dealerActions from '../../redux/actions/dealer.actions';
@@ -139,7 +139,8 @@ export const Dealers: React.FC = (props: any) => {
                           onClick={() =>
                             dispatch(dealerActions.toggleNewDealerForm(true))
                           }
-                          iconProps={{ iconName: 'Add' }}>
+                          iconProps={{ iconName: 'Add' }}
+                        >
                           Add dealer
                         </ActionButton>
                       </div>
@@ -173,14 +174,16 @@ export const Dealers: React.FC = (props: any) => {
                     if (formik !== undefined && formik !== null) {
                       formik.submitForm();
                     }
-                  }}>
+                  }}
+                >
                   Save
                 </PrimaryButton>
               </Stack>
             );
           }}
-          closeButtonAriaLabel="Close">
-          <DealerDetails formikReference={formikReference} />
+          closeButtonAriaLabel="Close"
+        >
+          <CreateDealer formikReference={formikReference} />
         </Panel>
 
         <Panel
@@ -193,7 +196,8 @@ export const Dealers: React.FC = (props: any) => {
                 new ToggleDealerPanelWithDetails()
               )
             );
-          }}>
+          }}
+        >
           {isOpenPanelWithDealerDetails
             ? isOpenPanelWithDealerDetails.component
               ? isOpenPanelWithDealerDetails.component
