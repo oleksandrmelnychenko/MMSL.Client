@@ -1,11 +1,18 @@
 import React, { useEffect } from 'react';
 import { Text } from 'office-ui-fabric-react/lib/Text';
-import { PrimaryButton, liProperties } from 'office-ui-fabric-react';
+import {
+  PrimaryButton,
+  FocusZone,
+  List,
+  FocusZoneDirection,
+  ImageFit,
+} from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers/index';
 import { DealerAccount } from '../../interfaces';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import { IStore } from '../../interfaces/index';
+import { Stack } from 'office-ui-fabric-react';
 
 export const DealerStores: React.FC = () => {
   const dispatch = useDispatch();
@@ -19,9 +26,26 @@ export const DealerStores: React.FC = () => {
     dispatch(dealerActions.getStoresByDealer(selectedDealer.id));
   }, []);
 
+  const onRenderCell = (
+    item: IStore,
+    index: number | undefined
+  ): JSX.Element => {
+    return (
+      <div className="dealer__store">
+        <div className="dealer__store__name">Store name: {item.name}</div>
+        <div className="dealer__store__address">
+          Address:{' '}
+          {`country: ${item.address.country}, city: ${item.address.city}`}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div>
-      <Text block>Dealer stores</Text>
+      <Text
+        block
+        className="dealer__title">{`Dealer: ${selectedDealer.companyName}`}</Text>
       <PrimaryButton
         text="Add Store"
         onClick={() => {
@@ -30,11 +54,19 @@ export const DealerStores: React.FC = () => {
         }}
         allowDisabledFocus
       />
-      <ul>
-        {dealerStore.map((store) => (
-          <li>Store name: {store.name}</li>
-        ))}
-      </ul>
+      <Stack horizontal tokens={{ childrenGap: 10 }}>
+        <Stack grow={1}>
+          <FocusZone direction={FocusZoneDirection.vertical}>
+            <div className={'dealer__stores'} data-is-scrollable={true}>
+              {dealerStore.map((item: IStore, index: number) => {
+                return onRenderCell(item, index);
+              })}{' '}
+            </div>
+          </FocusZone>
+        </Stack>
+        <Stack grow={3}></Stack>
+        <Stack grow={1}></Stack>
+      </Stack>
     </div>
   );
 };
