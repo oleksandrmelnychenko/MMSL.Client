@@ -14,14 +14,14 @@ export class DealerState {
     this.selectedDealer = null;
     this.manageDealerForm = new ManageDealerFormState();
     this.dealerState = new DealersListState();
-    this.isOpenPanelWithDealerDetails = false;
+    this.isOpenPanelWithDealerDetails = new ToggleDealerPanelWithDetails();
     this.dealerStores = [];
   }
 
   dealerState: DealersListState;
   manageDealerForm: ManageDealerFormState;
   selectedDealer: DealerAccount | null;
-  isOpenPanelWithDealerDetails: boolean;
+  isOpenPanelWithDealerDetails: ToggleDealerPanelWithDetails;
   dealerStores: IStore[];
 }
 
@@ -43,6 +43,16 @@ export class ManageDealerFormState {
   }
 
   isFormVisible: boolean;
+}
+
+/// Action payload
+export class ToggleDealerPanelWithDetails {
+  constructor() {
+    this.isOpen = false;
+  }
+
+  isOpen: boolean;
+  component: any;
 }
 
 export const dealerReducer = createReducer(new DealerState(), (builder) =>

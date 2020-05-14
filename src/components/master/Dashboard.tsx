@@ -12,6 +12,8 @@ import { IApplicationState } from '../../redux/reducers/index';
 import { Panel, PanelType, PrimaryButton } from 'office-ui-fabric-react';
 import * as controlAction from '../../redux/actions/control.actions';
 import * as dealerAction from '../../redux/actions/dealer.actions';
+import { ToggleDealerPanelWithDetails } from '../../redux/reducers/dealer.reducer';
+import DealerStores from '../dealers/DealerStores';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
@@ -65,20 +67,29 @@ const Dashboard: React.FC = () => {
           isBlocking={false}
           styles={stylesPanelInfo}
           isOpen={isOpenPanelInfo}
-          onDismiss={dismissPanelInfo}>
+          onDismiss={dismissPanelInfo}
+        >
           <div className="dealer__management">
             <PrimaryButton
               styles={btnStyle}
               className="dealer__management__btn-add"
               onClick={() => {
-                dispatch(dealerAction.isOpenPanelWithDealerDetails(true));
+                const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
+                openDetailsArgs.isOpen = true;
+                openDetailsArgs.component = <DealerStores />;
+
+                dispatch(
+                  dealerAction.isOpenPanelWithDealerDetails(openDetailsArgs)
+                );
               }}
               allowDisabledFocus
             />
             <PrimaryButton
               className="dealer__management__btn-detail"
               styles={btnStyle}
-              onClick={() => {}}
+              onClick={() => {
+                debugger;
+              }}
               allowDisabledFocus
             />
           </div>
