@@ -11,7 +11,7 @@ import {
   ITextProps,
   IDropdownOption,
 } from 'office-ui-fabric-react';
-import './dealerDetails.scss';
+import './createDealer.scss';
 import * as Yup from 'yup';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import { useDispatch } from 'react-redux';
@@ -24,7 +24,7 @@ import {
   Currency,
 } from '../../interfaces';
 
-class DealerDetailsProps {
+class CreateDealerProps {
   constructor() {
     this.formikReference = {
       formik: null,
@@ -70,8 +70,8 @@ const buildDealerAccount = (values: any) => {
   return dealerAccount;
 };
 
-export const DealerDetails: React.FC<DealerDetailsProps> = (
-  props: DealerDetailsProps
+export const CreateDealer: React.FC<CreateDealerProps> = (
+  props: CreateDealerProps
 ) => {
   const dispatch = useDispatch();
 
@@ -637,4 +637,4 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
   );
 };
 
-export default DealerDetails;
+export default CreateDealer;

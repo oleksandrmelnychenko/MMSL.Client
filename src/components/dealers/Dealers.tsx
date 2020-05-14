@@ -13,7 +13,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import { LocalizeState, getActiveLanguage } from 'react-localize-redux';
-import DealerDetails from './DealerDetails';
+import CreateDealer from './CreateDealer';
 import DealerStores from './DealerStores';
 import DealerList from './DealerList';
 import * as dealerActions from '../../redux/actions/dealer.actions';
@@ -181,7 +181,7 @@ export const Dealers: React.FC = (props: any) => {
           }}
           closeButtonAriaLabel="Close"
         >
-          <DealerDetails formikReference={formikReference} />
+          <CreateDealer formikReference={formikReference} />
         </Panel>
 
         <Panel
