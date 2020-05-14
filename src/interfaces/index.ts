@@ -54,6 +54,16 @@ export class EntityBase {
   isDeleted: boolean;
 }
 
+export enum Currency {
+  USD = 0,
+  EUR = 1,
+}
+
+export enum PaymentType {
+  BankTransfer = 0,
+  Cash = 1,
+}
+
 export class DealerAccount extends EntityBase {
   constructor() {
     super();

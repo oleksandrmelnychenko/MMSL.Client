@@ -9,6 +9,7 @@ import {
   TextField,
   MaskedTextField,
   ITextProps,
+  IDropdownOption,
 } from 'office-ui-fabric-react';
 import './dealerDetails.scss';
 import * as Yup from 'yup';
@@ -16,7 +17,12 @@ import * as dealerActions from '../../redux/actions/dealer.actions';
 import { useDispatch } from 'react-redux';
 import { assignPendingActions } from '../../helpers/action.helper';
 import { FontSizes, FontWeights } from 'office-ui-fabric-react/lib/Styling';
-import { DealerAccount, Address } from '../../interfaces';
+import {
+  DealerAccount,
+  Address,
+  PaymentType,
+  Currency,
+} from '../../interfaces';
 
 class DealerDetailsProps {
   constructor() {
@@ -38,10 +44,8 @@ const buildDealerAccount = (values: any) => {
     phoneNumber: values.phoneNumber,
     taxNumber: values.taxNumber,
     isVatApplicable: values.vatApplicate,
-    /// TODO:
-    currency: 0,
-    /// TODO:
-    paymentType: 0,
+    currency: values.selectCurrency,
+    paymentType: values.selectPayment,
     isCreditAllowed: values.creditAllowed,
     billingAddressId: null,
     billingAddress: null,
@@ -150,7 +154,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
           let createAction = assignPendingActions(
             dealerActions.saveNewDealer(buildDealerAccount(values)),
             [
-              dealerActions.getDealersList(),
+              dealerActions.getDealersListPaginated(),
               dealerActions.toggleNewDealerForm(false),
             ]
           );
@@ -353,15 +357,23 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                               className="formInput"
                               label="Select Currency"
                               options={[
-                                { key: 'usd', text: 'USD' },
-                                { key: 'eur', text: 'EUR' },
+                                {
+                                  key: 'usd',
+                                  text: 'USD',
+                                  value: Currency.USD,
+                                } as IDropdownOption,
+                                {
+                                  key: 'eur',
+                                  text: 'EUR',
+                                  value: Currency.EUR,
+                                } as IDropdownOption,
                               ]}
                               styles={dropDownStyles}
                               onChange={(
                                 event: React.FormEvent<HTMLDivElement>,
                                 item: any
                               ) => {
-                                let value = item.text;
+                                let value = item.value;
                                 formik.setFieldValue('selectCurrency', value);
                                 formik.setFieldTouched('selectCurrency');
                               }}
@@ -383,15 +395,20 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
                                 {
                                   key: 'bankTransfer',
                                   text: 'Bank transfer',
-                                },
-                                { key: 'cash', text: 'Cash' },
+                                  value: PaymentType.BankTransfer,
+                                } as IDropdownOption,
+                                {
+                                  key: 'cash',
+                                  text: 'Cash',
+                                  value: PaymentType.Cash,
+                                } as IDropdownOption,
                               ]}
                               styles={dropDownStyles}
                               onChange={(
                                 event: React.FormEvent<HTMLDivElement>,
                                 item: any
                               ) => {
-                                let value = item.text;
+                                let value = item.value;
                                 formik.setFieldValue('selectPayment', value);
                                 formik.setFieldTouched('selectPayment');
                               }}
