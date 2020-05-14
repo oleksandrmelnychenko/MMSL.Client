@@ -46,24 +46,13 @@
       height: 30px;
     }
   }
+}
 
-  // &__navigation {
-  //   margin: 18px 0 0 0;
-  //   display: none;
-
-  //   li {
-  //     display: inline-block;
-
-  //     &.selected {
-  //       background-color: lightgray;
-  //     }
-
-  //     button {
-  //       background: transparent;
-  //       border: none;
-  //     }
-  //   }
-  // }
+.dealer__title {
+  color: #484848;
+  font-size: 22px;
+  font-weight: 600;
+  padding: 9px 90px 0 6px;
 }
 
 .dealerPanelHeader {
@@ -78,5 +67,26 @@
 
   &__save {
     margin-left: 38px !important;
+  }
+}
+
+.dealer__store {
+  min-height: 54px;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgb(237, 235, 233);
+
+  &__name {
+    font-size: 16px;
+    font-weight: 600
+  }
+
+  &__address {
+    font-size: 12px;
+    color: rgb(161, 159, 157);
+    margin-bottom: 10px;
   }
 }
