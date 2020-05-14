@@ -4,7 +4,7 @@ import './dashboard.scss';
 import Header from './header/Header';
 import Footer from './footer/Footer';
 import Menu from './menu/Menu';
-import { Switch, Route, useLocation } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import PrivateRoute from '../PrivateRoute';
 import Dealers from '../dealers/Dealers';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,20 +16,14 @@ import {
   ToggleDealerPanelWithDetails,
   DealerDetilsComponents,
 } from '../../redux/reducers/dealer.reducer';
-import DealerStores from '../dealers/DealerStores';
-import DealerDetails from '../dealers/DealerDetails';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
   const isCollapseMenu = useSelector<IApplicationState, boolean>(
     (state) => state.control.isCollapseMenu
   );
   const isOpenPanelInfo = useSelector<IApplicationState, boolean>(
     (state) => state.control.isOpenPanelInfo
-  );
-  const component = useSelector<IApplicationState, any>(
-    (state) => state.control.componentInPanelInfo
   );
 
   const stylesPanelInfo = {
@@ -65,6 +59,15 @@ const Dashboard: React.FC = () => {
       fontSize: '14px',
       textAlign: 'center',
       'font-weight': 400,
+      cursor: 'pointer',
+      transition: 'all 0.3s ease',
+
+      selectors: {
+        '&:hover': {
+          background: '#faf9f8',
+          textDecoration: 'underline',
+        },
+      },
     },
   };
   return (
@@ -78,8 +81,7 @@ const Dashboard: React.FC = () => {
           isBlocking={false}
           styles={stylesPanelInfo}
           isOpen={isOpenPanelInfo}
-          onDismiss={dismissPanelInfo}
-        >
+          onDismiss={dismissPanelInfo}>
           <div className="dealer__management">
             <Label styles={labelStyle}>
               <PrimaryButton
@@ -97,7 +99,7 @@ const Dashboard: React.FC = () => {
                 }}
                 allowDisabledFocus
               />
-              Dealer stores
+              Stores
             </Label>
             <Label styles={labelStyle}>
               <PrimaryButton
@@ -115,7 +117,7 @@ const Dashboard: React.FC = () => {
                 }}
                 allowDisabledFocus
               />
-              Dealer details
+              Details
             </Label>
           </div>
         </Panel>

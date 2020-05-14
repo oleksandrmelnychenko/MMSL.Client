@@ -72,12 +72,13 @@
 
 .dealer__store {
   min-height: 54px;
-  padding-top: 10px;
+  padding-top: 53px;
   padding-right: 10px;
   padding-bottom: 10px;
   padding-left: 10px;
   box-sizing: border-box;
   border-bottom: 1px solid rgb(237, 235, 233);
+  cursor: pointer;
 
   &__name {
     font-size: 16px;
