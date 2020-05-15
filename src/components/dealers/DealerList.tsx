@@ -9,6 +9,7 @@ import {
   Stack,
   IconButton,
   MarqueeSelection,
+  DetailsRow,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -80,6 +81,7 @@ export const DealerList: React.FC = () => {
   };
 
   const dealerUnSelection = () => {
+    debugger;
     dispatch(dealerActions.setSelectedDealer(null));
     dispatch(controlActions.isCollapseMenu(false));
     dispatch(controlActions.isOpenPanelInfo(false));
@@ -184,6 +186,7 @@ export const DealerList: React.FC = () => {
                 ];
 
                 if (item.id === selectedDealerId) {
+                  debugger;
                   actionsQueue.push(dealerActions.setSelectedDealer(null));
                   actionsQueue.push(controlAction.isOpenPanelInfo(false));
                   actionsQueue.push(controlAction.isCollapseMenu(false));
@@ -199,6 +202,7 @@ export const DealerList: React.FC = () => {
                   actionsQueue
                 );
 
+                debugger;
                 dispatch(action);
               }}
             />
@@ -217,6 +221,25 @@ export const DealerList: React.FC = () => {
           selection={selection}
           selectionMode={SelectionMode.single}
           columns={_dealerColumns}
+          // onRenderRow={(args: any) => {
+          //   return (
+          //     <div
+          //       onClick={(clickArgs) => {
+          //         let foo = args;
+          //         debugger;
+          //       }}
+          //     >
+          //       <DetailsRow
+          //         eventsToRegister={{
+          //           onMouseDown: (item?: any, index?: number, event?: any) => {
+          //             debugger;
+          //           },
+          //         }}
+          //         {...args}
+          //       />
+          //     </div>
+          //   );
+          // }}
         />
       </MarqueeSelection>
     </div>

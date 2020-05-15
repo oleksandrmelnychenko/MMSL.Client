@@ -35,6 +35,7 @@ const Dashboard: React.FC = () => {
   };
 
   const dismissPanelInfo = () => {
+    debugger;
     dispatch(dealerActions.setSelectedDealer(null));
     dispatch(controlAction.isOpenPanelInfo(false));
     dispatch(controlAction.isCollapseMenu(false));
