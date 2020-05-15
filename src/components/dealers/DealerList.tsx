@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './dealerList.scss';
 import {
   DetailsList,
@@ -8,6 +8,7 @@ import {
   Selection,
   Stack,
   IconButton,
+  MarqueeSelection,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -122,23 +123,39 @@ export const DealerList: React.FC = () => {
     DealerAccount[]
   >((state) => state.dealer.dealerState.dealersList);
 
+  const [selection] = useState(
+    new Selection({
+      onSelectionChanged: () => {
+        if (selection.count > 0) {
+          dealerSelection();
+        } else {
+          dealerUnSelection();
+        }
+      },
+    })
+  );
+
   const pagination: Pagination = useSelector<IApplicationState, Pagination>(
     (state) => state.dealer.dealerState.pagination
   );
 
+  const selectedDealer: any = useSelector<
+    IApplicationState,
+    DealerAccount | null
+  >((state) => state.dealer.selectedDealer);
+
   useEffect(() => {
-    // dispatch(dealerActions.getDealersListPaginated());
     dispatch(dealerActions.getDealersListPaginated());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const dealerSelection = () => {
     const selectedDealer = selection.getSelection()[0] as DealerAccount;
+
     let createAction = assignPendingActions(
       dealerActions.getAndSelectDealerById(selectedDealer.id),
       []
     );
-    /// TODO:
     dispatch(controlActions.isCollapseMenu(true));
     setTimeout(() => {
       dispatch(controlActions.isOpenPanelInfo(true));
@@ -148,34 +165,34 @@ export const DealerList: React.FC = () => {
   };
 
   const dealerUnSelection = () => {
-    dispatch(dealerActions.setSelectedDealer(new DealerAccount()));
+    dispatch(dealerActions.setSelectedDealer(null));
     dispatch(controlActions.isCollapseMenu(false));
     dispatch(controlActions.isOpenPanelInfo(false));
   };
 
-  const checkSelectionDealer = () => {
-    if (selection.count > 0) {
-      dealerSelection();
-    } else {
-      dealerUnSelection();
+  if (!selectedDealer) {
+    console.log(`foo`);
+    if (!selectedDealer) {
+      selection.setAllSelected(false);
     }
-  };
-
-  const selection = new Selection({
-    onSelectionChanged: () => {
-      checkSelectionDealer();
-    },
-  });
+  } else {
+    console.log('foo selected');
+  }
 
   return (
     <div className="dealerList">
-      <DetailsList
-        // styles={{ root: { display: 'none' } }}
-        items={dealers}
-        selection={selection}
-        selectionMode={SelectionMode.single}
-        columns={_dealerColumns}
-      />
+      <MarqueeSelection selection={selection}>
+        <DetailsList
+          // styles={{ root: { display: 'none' } }}
+          items={dealers}
+          selection={selection}
+          selectionMode={SelectionMode.single}
+          columns={_dealerColumns}
+          onItemInvoked={(item?: any, index?: number, ev?: Event) => {
+            debugger;
+          }}
+        />
+      </MarqueeSelection>
       {/* <DealersTable
         itemsSource={dealers}
         columns={columns}

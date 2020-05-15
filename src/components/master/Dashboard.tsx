@@ -1,5 +1,5 @@
 import React from 'react';
-
+import * as dealerActions from '../../redux/actions/dealer.actions';
 import './dashboard.scss';
 import Header from './header/Header';
 import Footer from './footer/Footer';
@@ -34,6 +34,7 @@ const Dashboard: React.FC = () => {
   };
 
   const dismissPanelInfo = () => {
+    dispatch(dealerActions.setSelectedDealer(null));
     dispatch(controlAction.isOpenPanelInfo(false));
     dispatch(controlAction.isCollapseMenu(false));
   };
@@ -49,7 +50,8 @@ const Dashboard: React.FC = () => {
           isBlocking={false}
           styles={stylesPanelInfo}
           isOpen={isOpenPanelInfo}
-          onDismiss={dismissPanelInfo}>
+          onDismiss={dismissPanelInfo}
+        >
           <ManagementOptions />
         </Panel>
 
