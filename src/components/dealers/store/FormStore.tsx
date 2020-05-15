@@ -164,7 +164,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                 <div className="formScope">
                   <Separator alignContent="start">
                     {' '}
-                    Information about store: {selectedStore?.name}
+                    Details: {selectedStore?.name}
                   </Separator>
 
                   <Field name="nameStore">

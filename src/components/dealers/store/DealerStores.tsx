@@ -13,6 +13,7 @@ import * as dealerActions from '../../../redux/actions/dealer.actions';
 import { IStore } from '../../../interfaces/index';
 import { Stack } from 'office-ui-fabric-react';
 import FormStore from './FormStore';
+import PanelTitle from '../panel/PanelTitle';
 
 export const DealerStores: React.FC = () => {
   const dispatch = useDispatch();
@@ -65,9 +66,10 @@ export const DealerStores: React.FC = () => {
 
   return (
     <div>
-      <Text block className="dealer__title">
-        Dealer: {`${selectedDealer.companyName} | ${selectedDealer.email}`}
-      </Text>
+      <PanelTitle
+        title={`Dealer: ${selectedDealer.companyName} | ${selectedDealer.email}`}
+        // onSaveClick={() => {}}
+      />
       <Stack horizontal tokens={{ childrenGap: 20 }}>
         <Stack grow={1} tokens={{ maxWidth: '50%' }}>
           <FocusZone direction={FocusZoneDirection.vertical}>

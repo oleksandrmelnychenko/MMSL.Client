@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Text, Stack, ActionButton } from 'office-ui-fabric-react';
 import ManageDealerForm, {
   FormicReference,
 } from './dealerManaging/ManageDealerForm';
@@ -9,8 +8,9 @@ import { assignPendingActions } from '../../helpers/action.helper';
 import { DealerAccount } from '../../interfaces';
 import { IApplicationState } from '../../redux/reducers';
 import { ToggleDealerPanelWithDetails } from '../../redux/reducers/dealer.reducer';
-import PanelTitle from './PanelTitle';
+import PanelTitle from './panel/PanelTitle';
 import './dealerDetails.scss';
+import PanelFooter from './panel/PanelFooter';
 
 class DealerDetailsProps {}
 
@@ -26,16 +26,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
 
   return (
     <div className="dealerDetails">
-      <PanelTitle
-        onSaveClick={() => {
-          let formik: any = formikReference.formik;
-
-          if (formik !== undefined && formik !== null) {
-            formik.submitForm();
-          }
-        }}
-        title={'Dealer Details'}
-      />
+      <PanelTitle title={'Dealer Details'} />
 
       <ManageDealerForm
         formikReference={formikReference}
@@ -51,6 +42,15 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
             ]
           );
           dispatch(createAction);
+        }}
+      />
+      <PanelFooter
+        onSaveClick={() => {
+          let formik: any = formikReference.formik;
+
+          if (formik !== undefined && formik !== null) {
+            formik.submitForm();
+          }
         }}
       />
     </div>

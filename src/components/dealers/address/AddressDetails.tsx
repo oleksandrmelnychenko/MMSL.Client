@@ -9,7 +9,8 @@ import { assignPendingActions } from '../../../helpers/action.helper';
 import { DealerAccount } from '../../../interfaces';
 import { IApplicationState } from '../../../redux/reducers';
 import { ToggleDealerPanelWithDetails } from '../../../redux/reducers/dealer.reducer';
-import PanelTitle from '../PanelTitle';
+import PanelTitle from '../panel/PanelTitle';
+import PanelFooter from '../panel/PanelFooter';
 
 class DealerDetailsProps {}
 
@@ -25,16 +26,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
 
   return (
     <div>
-      <PanelTitle
-        title={'Dealer Address'}
-        onSaveClick={() => {
-          let formik: any = formikReference.formik;
-
-          if (formik !== undefined && formik !== null) {
-            formik.submitForm();
-          }
-        }}
-      />
+      <PanelTitle title={'Dealer Address'} />
 
       <BillingAddressForm
         formikReference={formikReference}
@@ -50,6 +42,15 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
             ]
           );
           dispatch(createAction);
+        }}
+      />
+      <PanelFooter
+        onSaveClick={() => {
+          let formik: any = formikReference.formik;
+
+          if (formik !== undefined && formik !== null) {
+            formik.submitForm();
+          }
         }}
       />
     </div>
