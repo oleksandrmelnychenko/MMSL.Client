@@ -68,6 +68,10 @@ export const addNewStoreToCurrentDealer = createAction<IStore>(
 
 export const setDealerStores = createAction<any>(dealerTypes.SET_DEALER_STORES);
 
+export const updateDealerStoresAfterDelete = createAction<number>(
+  dealerTypes.UPDATE_DEALER_STORE_AFTER_DELETE
+);
+
 export const deleteCurrentDealerStore = createAction<number>(
   dealerTypes.DELETE_CURRENT_DEALER_STORE
 );

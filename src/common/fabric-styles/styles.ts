@@ -21,6 +21,18 @@ export const textFildLabelStyles = {
   },
 };
 
+export const commandBarStyles = {
+  root: {
+    background: '#edebe9',
+    borderRadius: '6px',
+    marginBottom: '30px',
+  },
+  primarySet: {
+    color: '#323130',
+    'justify-content': 'flex-end',
+  },
+};
+
 export const commandBarButtonStyles = {
   root: {
     background: 'transparent',

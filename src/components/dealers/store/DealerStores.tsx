@@ -15,7 +15,10 @@ import { Stack } from 'office-ui-fabric-react';
 import FormStore from './FormStore';
 import PanelTitle from '../panel/PanelTitle';
 import { FormicReference } from '../dealerManaging/ManageDealerForm';
-import { commandBarButtonStyles } from '../../../common/fabric-styles/styles';
+import {
+  commandBarButtonStyles,
+  commandBarStyles,
+} from '../../../common/fabric-styles/styles';
 
 export const DealerStores: React.FC = () => {
   const dispatch = useDispatch();
@@ -78,6 +81,7 @@ export const DealerStores: React.FC = () => {
       iconProps: { iconName: 'Save' },
       onClick: () => {
         formikReference.formik.submitForm();
+        formikReference.formik.resetForm();
       },
       buttonStyles: commandBarButtonStyles,
     },
@@ -104,18 +108,6 @@ export const DealerStores: React.FC = () => {
       buttonStyles: commandBarButtonStyles,
     },
   ];
-
-  const commandBarStyles = {
-    root: {
-      background: '#edebe9',
-      borderRadius: '6px',
-      marginBottom: '30px',
-    },
-    primarySet: {
-      color: '#323130',
-      'justify-content': 'flex-end',
-    },
-  };
 
   return (
     <div>

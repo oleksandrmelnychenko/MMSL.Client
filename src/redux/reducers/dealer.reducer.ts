@@ -66,10 +66,6 @@ export const dealerReducer = createReducer(new DealerState(), (builder) =>
   builder
     .addCase(dealerActions.updateDealersList, (state, action) => {
       state.dealerState.dealersList = action.payload;
-
-      // state.dealerState.dealersList = state.dealerState.dealersList.concat(
-      //   action.payload
-      // );
     })
     .addCase(dealerActions.toggleNewDealerForm, (state, action) => {
       state.manageDealerForm.isFormVisible = action.payload;
@@ -102,5 +98,10 @@ export const dealerReducer = createReducer(new DealerState(), (builder) =>
     })
     .addCase(dealerActions.searchDealer, (state, action) => {
       state.dealerState.search = action.payload;
+    })
+    .addCase(dealerActions.updateDealerStoresAfterDelete, (state, action) => {
+      state.dealerStores = state.dealerStores.filter(
+        (store) => store.id !== action.payload
+      );
     })
 );
