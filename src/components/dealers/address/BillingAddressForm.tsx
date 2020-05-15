@@ -1,28 +1,11 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
-import {
-  Toggle,
-  Dropdown,
-  Checkbox,
-  Text,
-  Stack,
-  TextField,
-  MaskedTextField,
-  ITextProps,
-  IDropdownOption,
-} from 'office-ui-fabric-react';
+import { Checkbox, Text, Stack, TextField } from 'office-ui-fabric-react';
 import '../manageDealerForm.scss';
 import * as Yup from 'yup';
-import * as dealerActions from '../../../redux/actions/dealer.actions';
 import { useDispatch } from 'react-redux';
-import { assignPendingActions } from '../../../helpers/action.helper';
-import { FontSizes, FontWeights } from 'office-ui-fabric-react/lib/Styling';
-import {
-  DealerAccount,
-  Address,
-  PaymentType,
-  Currency,
-} from '../../../interfaces';
+import { FontWeights } from 'office-ui-fabric-react/lib/Styling';
+import { DealerAccount, Address } from '../../../interfaces';
 
 class ManageDealerFormProps {
   constructor() {
@@ -136,8 +119,7 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
             buildDealerAccount(values, props.dealerAccount as DealerAccount)
           );
         }}
-        validateOnBlur={false}
-      >
+        validateOnBlur={false}>
         {(formik) => {
           props.formikReference.formik = formik;
 
@@ -167,8 +149,7 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                 />
                               </div>
                             );
-                          }}
-                        ></Field>
+                          }}></Field>
                         <Field
                           name="addressLine2"
                           render={() => {
@@ -187,8 +168,7 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                 />
                               </div>
                             );
-                          }}
-                        ></Field>
+                          }}></Field>
                         <Stack horizontal tokens={{ childrenGap: 20 }}>
                           <Stack grow={1}>
                             <Field
@@ -209,8 +189,7 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                     />
                                   </div>
                                 );
-                              }}
-                            ></Field>
+                              }}></Field>
                             <Field
                               name="country"
                               render={() => {
@@ -229,8 +208,7 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                     />
                                   </div>
                                 );
-                              }}
-                            ></Field>
+                              }}></Field>
                           </Stack>
                           <Stack grow={1}>
                             <Field
@@ -251,8 +229,7 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                     />
                                   </div>
                                 );
-                              }}
-                            ></Field>
+                              }}></Field>
                             <Field
                               name="zip"
                               render={() => {
@@ -271,8 +248,7 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                     />
                                   </div>
                                 );
-                              }}
-                            ></Field>
+                              }}></Field>
                           </Stack>
                         </Stack>
                       </div>
@@ -308,8 +284,7 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                   />
                                 </div>
                               );
-                            }}
-                          ></Field>
+                            }}></Field>
                         </Stack.Item>
                       </Stack>
                     </div>

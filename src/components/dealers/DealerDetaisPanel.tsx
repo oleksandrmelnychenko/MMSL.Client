@@ -1,29 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './dealers.scss';
-import {
-  DefaultButton,
-  SearchBox,
-  ActionButton,
-  Stack,
-  Panel,
-  PanelType,
-  PrimaryButton,
-  Text,
-  Label,
-  getId,
-} from 'office-ui-fabric-react';
+import { DefaultButton, Panel, PanelType } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
-import { LocalizeState, getActiveLanguage } from 'react-localize-redux';
 import DealerStores from './DealerStores';
-import DealerList from './DealerList';
 import * as dealerActions from '../../redux/actions/dealer.actions';
-import {
-  DatePicker,
-  DayOfWeek,
-  IDatePickerStrings,
-  mergeStyleSets,
-} from 'office-ui-fabric-react';
+
+import { useConstCallback } from '@uifabric/react-hooks';
 import {
   ToggleDealerPanelWithDetails,
   DealerDetilsComponents,
@@ -62,6 +45,12 @@ export const DealerDetailsPanel: React.FC = (props: any) => {
     }
   }
 
+  const onRenderFooterContent = useConstCallback(() => (
+    <div>
+      <DefaultButton onClick={() => {}}>Save</DefaultButton>
+    </div>
+  ));
+
   return (
     <Panel
       isOpen={isOpenPanelWithDealerDetails.isOpen}
@@ -73,8 +62,7 @@ export const DealerDetailsPanel: React.FC = (props: any) => {
             new ToggleDealerPanelWithDetails()
           )
         );
-      }}
-    >
+      }}>
       {/* TODO */}
       {panelContent}
     </Panel>
