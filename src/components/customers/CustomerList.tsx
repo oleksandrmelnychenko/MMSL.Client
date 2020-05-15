@@ -76,6 +76,19 @@ const _customerColumns: IColumn[] = [
     isPadded: true,
   },
   {
+    key: 'store',
+    name: 'Store',
+    minWidth: 70,
+    maxWidth: 90,
+    isResizable: true,
+    isCollapsible: true,
+    data: 'string',
+    onRender: (item: any) => {
+      return <Text>{item.store ? item.store.name : ''}</Text>;
+    },
+    isPadded: true,
+  },
+  {
     key: 'actions',
     name: 'Actions',
     minWidth: 70,
