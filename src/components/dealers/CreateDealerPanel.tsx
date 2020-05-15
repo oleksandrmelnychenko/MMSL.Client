@@ -43,7 +43,7 @@ export const CreateDealerPanel: React.FC = (props: any) => {
     <Panel
       isOpen={isAddDealerOpen}
       type={PanelType.custom}
-      customWidth={'800px'}
+      customWidth={'600px'}
       onDismiss={() => {
         dispatch(dealerActions.toggleNewDealerForm(false));
       }}

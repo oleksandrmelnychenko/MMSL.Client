@@ -34,7 +34,8 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
             if (formik !== undefined && formik !== null) {
               formik.submitForm();
             }
-          }}>
+          }}
+        >
           Save
         </PrimaryButton>
       </Stack>
@@ -49,7 +50,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
               dealerActions.isOpenPanelWithDealerDetails(
                 new ToggleDealerPanelWithDetails()
               ),
-              //   dealerActions.getDealersListPaginated(),
+              dealerActions.getDealersListPaginated(),
             ]
           );
           dispatch(createAction);

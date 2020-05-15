@@ -51,6 +51,9 @@ const buildDealerAccount = (values: any, sourceDealer?: DealerAccount) => {
     dealerAccount = { ...sourceDealer };
   } else {
     dealerAccount = new DealerAccount();
+    dealerAccount.billingAddress = new Address();
+    dealerAccount.billingAddressId = dealerAccount.billingAddress.id;
+    dealerAccount.stores = [];
   }
 
   dealerAccount.useBillingAsShipping = values.useBillingAsShipping;
