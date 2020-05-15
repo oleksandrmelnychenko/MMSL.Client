@@ -3,7 +3,6 @@ import { Formik, Form, Field } from 'formik';
 import {
   Toggle,
   Dropdown,
-  Checkbox,
   Text,
   Stack,
   TextField,
@@ -13,16 +12,13 @@ import {
 } from 'office-ui-fabric-react';
 import './manageDealerForm.scss';
 import * as Yup from 'yup';
-import * as dealerActions from '../../redux/actions/dealer.actions';
-import { useDispatch } from 'react-redux';
-import { assignPendingActions } from '../../helpers/action.helper';
-import { FontSizes, FontWeights } from 'office-ui-fabric-react/lib/Styling';
+import { FontWeights } from 'office-ui-fabric-react/lib/Styling';
 import {
   DealerAccount,
   Address,
   PaymentType,
   Currency,
-} from '../../interfaces';
+} from '../../../interfaces';
 
 class ManageDealerFormProps {
   constructor() {

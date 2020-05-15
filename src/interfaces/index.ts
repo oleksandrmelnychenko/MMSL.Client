@@ -156,7 +156,7 @@ export class Address extends EntityBase {
 
 export class Pagination {
   constructor() {
-    this.limit = 15;
+    this.limit = 30;
     this.paginationInfo = new PaginationInfo();
     this.paginationInfo.pageNumber = 1;
   }
