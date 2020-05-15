@@ -4,6 +4,7 @@ import {
   PrimaryButton,
   FocusZone,
   FocusZoneDirection,
+  Separator,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers/index';
@@ -29,6 +30,8 @@ export const DealerStores: React.FC = () => {
 
   const [isOpenForm, setIsOpenForm] = useState(false);
 
+  console.log(selectedStore);
+
   const onRenderCell = (
     item: IStore,
     index: number | undefined
@@ -36,7 +39,9 @@ export const DealerStores: React.FC = () => {
     return (
       <div
         key={index}
-        className={`dealer__store`}
+        className={`dealer__store${
+          selectedStore && item.id === selectedStore[0].id ? ' selected' : ''
+        }`}
         onClick={() => {
           const selectedStore = dealerStores.filter(
             (store) => store.id === item.id
@@ -56,26 +61,29 @@ export const DealerStores: React.FC = () => {
 
   return (
     <div>
-      <Text
-        block
-        className="dealer__title">{`${selectedDealer.companyName} / ${selectedDealer.email}`}</Text>
-      <PrimaryButton
-        text="Add Store"
-        onClick={() => {
-          setSelectedStore(null);
-          setIsOpenForm(true);
-        }}
-        allowDisabledFocus
-      />
+      <Text block className="dealer__title">
+        Dealer: {`${selectedDealer.companyName} | ${selectedDealer.email}`}
+      </Text>
       <Stack horizontal tokens={{ childrenGap: 20 }}>
         <Stack grow={1} tokens={{ maxWidth: '50%' }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
+              <Separator alignContent="start">Stores</Separator>
               {dealerStores.map((item: IStore, index: number) => {
                 return onRenderCell(item, index);
               })}{' '}
             </div>
           </FocusZone>
+          {/* //TODO delete after adding styles */}
+          <br />
+          <PrimaryButton
+            text="Add Store"
+            onClick={() => {
+              setSelectedStore(null);
+              setIsOpenForm(true);
+            }}
+            allowDisabledFocus
+          />
         </Stack>
         <Stack grow={1} tokens={{ maxWidth: '50%' }}>
           {isOpenForm ? <FormStore store={selectedStore} /> : null}

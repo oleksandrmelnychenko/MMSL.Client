@@ -6,6 +6,7 @@ import {
   TextField,
   FontWeights,
   PrimaryButton,
+  Separator,
 } from 'office-ui-fabric-react';
 import { Text, ITextProps } from 'office-ui-fabric-react/lib/Text';
 import { IStore, INewStore } from '../../../interfaces';
@@ -37,6 +38,12 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
           paddingBottom: '2px',
         },
       },
+    },
+  };
+  const btnStyle = {
+    root: {
+      marginTop: '20px',
+      float: 'right',
     },
   };
   const builderAddStore = (value: any) => {
@@ -155,9 +162,11 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
             <Form>
               <Stack>
                 <div className="formScope">
-                  <Text className="formScopeHeader">
-                    Information about store
-                  </Text>
+                  <Separator alignContent="start">
+                    {' '}
+                    Information about store: {selectedStore?.name}
+                  </Separator>
+
                   <Field name="nameStore">
                     {() => (
                       <div className="dealerForm__inputBlock">
@@ -352,6 +361,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                 </div>
               </Stack>
               <PrimaryButton
+                styles={btnStyle}
                 text={
                   selectedStore
                     ? (translate('updateStore') as string)
