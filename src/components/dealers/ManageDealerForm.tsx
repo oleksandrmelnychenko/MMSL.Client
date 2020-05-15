@@ -64,57 +64,57 @@ const resolveDefaultDropDownValue = (
   return result;
 };
 
-// const buildDealerAccount = (values: any, sourceDealer?: DealerAccount) => {
-//   let dealerAccount: DealerAccount = {
-//     id: 0,
-//     isDeleted: false,
-//     companyName: values.companyName,
-//     email: values.email,
-//     alternateEmail: values.alternativeEmail,
-//     phoneNumber: values.phoneNumber,
-//     taxNumber: values.taxNumber,
-//     isVatApplicable: values.vatApplicate,
-//     currencyTypeId: parseInt(values.selectCurrency),
-//     paymentTypeId: parseInt(values.selectPayment),
-//     isCreditAllowed: values.creditAllowed,
-//     billingAddressId: null,
-//     billingAddress: null,
-//     useBillingAsShipping: values.useBillingAsShipping,
-//     shippingAddressId: null,
-//     /// TODO:
-//     shippingAddress: null,
-//     stores: [],
-//   } as DealerAccount;
+const buildDealerAccount = (values: any, sourceDealer?: DealerAccount) => {
+  let dealerAccount: DealerAccount = {
+    id: 0,
+    isDeleted: false,
+    companyName: values.companyName,
+    email: values.email,
+    alternateEmail: values.alternativeEmail,
+    phoneNumber: values.phoneNumber,
+    taxNumber: values.taxNumber,
+    isVatApplicable: values.vatApplicate,
+    currencyTypeId: parseInt(values.selectCurrency),
+    paymentTypeId: parseInt(values.selectPayment),
+    isCreditAllowed: values.creditAllowed,
+    billingAddressId: null,
+    billingAddress: null,
+    useBillingAsShipping: values.useBillingAsShipping,
+    shippingAddressId: null,
+    /// TODO:
+    shippingAddress: null,
+    stores: [],
+  } as DealerAccount;
 
-//   let billingAddress = {
-//     addressLine1: values.addressLine1,
-//     addressLine2: values.addressLine2,
-//     city: values.city,
-//     state: values.state,
-//     country: values.country,
-//     zipCode: values.zip,
-//   } as Address;
+  let billingAddress = {
+    addressLine1: values.addressLine1,
+    addressLine2: values.addressLine2,
+    city: values.city,
+    state: values.state,
+    country: values.country,
+    zipCode: values.zip,
+  } as Address;
 
-//   dealerAccount.billingAddress = billingAddress;
+  dealerAccount.billingAddress = billingAddress;
 
-//   if (sourceDealer !== null && sourceDealer !== undefined) {
-//     dealerAccount.id = sourceDealer.id;
-//     dealerAccount.isDeleted = sourceDealer.isDeleted;
-//     dealerAccount.billingAddressId = sourceDealer.billingAddressId;
-//     dealerAccount.shippingAddressId = sourceDealer.shippingAddressId;
+  if (sourceDealer !== null && sourceDealer !== undefined) {
+    dealerAccount.id = sourceDealer.id;
+    dealerAccount.isDeleted = sourceDealer.isDeleted;
+    dealerAccount.billingAddressId = sourceDealer.billingAddressId;
+    dealerAccount.shippingAddressId = sourceDealer.shippingAddressId;
 
-//     if (
-//       sourceDealer.billingAddress !== null &&
-//       sourceDealer.billingAddress !== undefined
-//     ) {
-//       dealerAccount.billingAddress.id = sourceDealer.billingAddress.id;
-//       dealerAccount.billingAddress.isDeleted =
-//         sourceDealer.billingAddress.isDeleted;
-//     }
-//   }
+    if (
+      sourceDealer.billingAddress !== null &&
+      sourceDealer.billingAddress !== undefined
+    ) {
+      dealerAccount.billingAddress.id = sourceDealer.billingAddress.id;
+      dealerAccount.billingAddress.isDeleted =
+        sourceDealer.billingAddress.isDeleted;
+    }
+  }
 
-//   return dealerAccount;
-// };
+  return dealerAccount;
+};
 
 const initDefaultValues = (account?: DealerAccount | null) => {
   const formikInitValues = {
@@ -264,11 +264,12 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
         })}
         initialValues={formikInitValues}
         onSubmit={(values: any) => {
-          // props.submitAction(
-          //   // buildDealerAccount(values, props.dealerAccount as DealerAccount)
-          // );
+          props.submitAction(
+            buildDealerAccount(values, props.dealerAccount as DealerAccount)
+          );
         }}
-        validateOnBlur={false}>
+        validateOnBlur={false}
+      >
         {(formik) => {
           props.formikReference.formik = formik;
 
@@ -299,13 +300,15 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             formik.touched.companyName ? (
                               <Text
                                 variant={'small' as ITextProps['variant']}
-                                className="dealerForm__inputBlock__error">
+                                className="dealerForm__inputBlock__error"
+                              >
                                 {formik.errors.companyName}
                               </Text>
                             ) : null}
                           </div>
                         );
-                      }}></Field>
+                      }}
+                    ></Field>
                     {/* <Field
                       name="name"
                       render={() => {
@@ -353,13 +356,15 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             {formik.errors.email && formik.touched.email ? (
                               <Text
                                 variant={'small' as ITextProps['variant']}
-                                className="dealerForm__inputBlock__error">
+                                className="dealerForm__inputBlock__error"
+                              >
                                 {formik.errors.email}
                               </Text>
                             ) : null}
                           </div>
                         );
-                      }}></Field>
+                      }}
+                    ></Field>
 
                     <Field
                       name="alternativeEmail"
@@ -381,13 +386,15 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             formik.touched.alternativeEmail ? (
                               <Text
                                 variant={'small' as ITextProps['variant']}
-                                className="dealerForm__inputBlock__error">
+                                className="dealerForm__inputBlock__error"
+                              >
                                 {formik.errors.alternativeEmail}
                               </Text>
                             ) : null}
                           </div>
                         );
-                      }}></Field>
+                      }}
+                    ></Field>
 
                     <Field
                       name="phoneNumber"
@@ -408,7 +415,8 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             />
                           </div>
                         );
-                      }}></Field>
+                      }}
+                    ></Field>
 
                     <Field
                       name="taxNumber"
@@ -428,7 +436,8 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             />
                           </div>
                         );
-                      }}></Field>
+                      }}
+                    ></Field>
 
                     {/* <Field
                       name="generalText"
@@ -481,7 +490,8 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             />
                           </div>
                         );
-                      }}></Field>
+                      }}
+                    ></Field>
 
                     <Field
                       name="selectPayment"
@@ -510,7 +520,8 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             />
                           </div>
                         );
-                      }}></Field>
+                      }}
+                    ></Field>
 
                     <Field
                       name="vatApplicate"
@@ -532,7 +543,8 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             />
                           </div>
                         );
-                      }}></Field>
+                      }}
+                    ></Field>
 
                     <Field
                       name="creditAllowed"
@@ -557,7 +569,8 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             />
                           </div>
                         );
-                      }}></Field>
+                      }}
+                    ></Field>
                   </Stack>
                 </Stack>
               </div>
