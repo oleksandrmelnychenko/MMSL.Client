@@ -64,57 +64,57 @@ const resolveDefaultDropDownValue = (
   return result;
 };
 
-// const buildDealerAccount = (values: any, sourceDealer?: DealerAccount) => {
-//   let dealerAccount: DealerAccount = {
-//     id: 0,
-//     isDeleted: false,
-//     companyName: values.companyName,
-//     email: values.email,
-//     alternateEmail: values.alternativeEmail,
-//     phoneNumber: values.phoneNumber,
-//     taxNumber: values.taxNumber,
-//     isVatApplicable: values.vatApplicate,
-//     currencyTypeId: parseInt(values.selectCurrency),
-//     paymentTypeId: parseInt(values.selectPayment),
-//     isCreditAllowed: values.creditAllowed,
-//     billingAddressId: null,
-//     billingAddress: null,
-//     useBillingAsShipping: values.useBillingAsShipping,
-//     shippingAddressId: null,
-//     /// TODO:
-//     shippingAddress: null,
-//     stores: [],
-//   } as DealerAccount;
+const buildDealerAccount = (values: any, sourceDealer?: DealerAccount) => {
+  let dealerAccount: DealerAccount = {
+    id: 0,
+    isDeleted: false,
+    companyName: values.companyName,
+    email: values.email,
+    alternateEmail: values.alternativeEmail,
+    phoneNumber: values.phoneNumber,
+    taxNumber: values.taxNumber,
+    isVatApplicable: values.vatApplicate,
+    currencyTypeId: parseInt(values.selectCurrency),
+    paymentTypeId: parseInt(values.selectPayment),
+    isCreditAllowed: values.creditAllowed,
+    billingAddressId: null,
+    billingAddress: null,
+    useBillingAsShipping: values.useBillingAsShipping,
+    shippingAddressId: null,
+    /// TODO:
+    shippingAddress: null,
+    stores: [],
+  } as DealerAccount;
 
-//   let billingAddress = {
-//     addressLine1: values.addressLine1,
-//     addressLine2: values.addressLine2,
-//     city: values.city,
-//     state: values.state,
-//     country: values.country,
-//     zipCode: values.zip,
-//   } as Address;
+  let billingAddress = {
+    addressLine1: values.addressLine1,
+    addressLine2: values.addressLine2,
+    city: values.city,
+    state: values.state,
+    country: values.country,
+    zipCode: values.zip,
+  } as Address;
 
-//   dealerAccount.billingAddress = billingAddress;
+  dealerAccount.billingAddress = billingAddress;
 
-//   if (sourceDealer !== null && sourceDealer !== undefined) {
-//     dealerAccount.id = sourceDealer.id;
-//     dealerAccount.isDeleted = sourceDealer.isDeleted;
-//     dealerAccount.billingAddressId = sourceDealer.billingAddressId;
-//     dealerAccount.shippingAddressId = sourceDealer.shippingAddressId;
+  if (sourceDealer !== null && sourceDealer !== undefined) {
+    dealerAccount.id = sourceDealer.id;
+    dealerAccount.isDeleted = sourceDealer.isDeleted;
+    dealerAccount.billingAddressId = sourceDealer.billingAddressId;
+    dealerAccount.shippingAddressId = sourceDealer.shippingAddressId;
 
-//     if (
-//       sourceDealer.billingAddress !== null &&
-//       sourceDealer.billingAddress !== undefined
-//     ) {
-//       dealerAccount.billingAddress.id = sourceDealer.billingAddress.id;
-//       dealerAccount.billingAddress.isDeleted =
-//         sourceDealer.billingAddress.isDeleted;
-//     }
-//   }
+    if (
+      sourceDealer.billingAddress !== null &&
+      sourceDealer.billingAddress !== undefined
+    ) {
+      dealerAccount.billingAddress.id = sourceDealer.billingAddress.id;
+      dealerAccount.billingAddress.isDeleted =
+        sourceDealer.billingAddress.isDeleted;
+    }
+  }
 
-//   return dealerAccount;
-// };
+  return dealerAccount;
+};
 
 const initDefaultValues = (account?: DealerAccount | null) => {
   const formikInitValues = {
@@ -149,11 +149,11 @@ const initDefaultValues = (account?: DealerAccount | null) => {
     formikInitValues.taxNumber = account.taxNumber;
     /// TODO: important
     // formikInitValues.selectCurrency = props.dealerAccount.currency;
-    // formikInitValues.selectCurrency = `${account.currencyTypeId}`;
+    formikInitValues.selectCurrency = `${account.currencyTypeId}`;
 
     // /// TODO: important
     // // formikInitValues.selectPayment = props.dealerAccount.paymentType;
-    // formikInitValues.selectPayment = `${account.paymentTypeId}`;
+    formikInitValues.selectPayment = `${account.paymentTypeId}`;
 
     formikInitValues.vatApplicate = account.isVatApplicable;
     formikInitValues.creditAllowed = account.isCreditAllowed;
