@@ -7,6 +7,7 @@ import Menu from './menu/Menu';
 import { Switch } from 'react-router-dom';
 import PrivateRoute from '../PrivateRoute';
 import Dealers from '../dealers/Dealers';
+import Customers from '../customers/Customers';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers/index';
 import { Panel, PanelType } from 'office-ui-fabric-react';
@@ -50,13 +51,15 @@ const Dashboard: React.FC = () => {
           isBlocking={false}
           styles={stylesPanelInfo}
           isOpen={isOpenPanelInfo}
-          onDismiss={dismissPanelInfo}>
+          onDismiss={dismissPanelInfo}
+        >
           <ManagementOptions />
         </Panel>
 
         <div className="content">
           <Switch>
             <PrivateRoute path={`/en/app/dealers`} component={Dealers} />
+            <PrivateRoute path={`/en/app/customer`} component={Customers} />
           </Switch>
         </div>
       </main>

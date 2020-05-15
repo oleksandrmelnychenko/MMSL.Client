@@ -2,12 +2,7 @@ import { ManageDealerForm } from '../../components/dealers/dealerManaging/Manage
 import { createReducer } from '@reduxjs/toolkit';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import { IStore } from '../../interfaces/index';
-import {
-  IDealer,
-  DealerAccount,
-  PaginationInfo,
-  Pagination,
-} from '../../interfaces';
+import { DealerAccount, PaginationInfo, Pagination } from '../../interfaces';
 
 /// Dealer reducer state
 export class DealerState {
