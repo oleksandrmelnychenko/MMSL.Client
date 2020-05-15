@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Text, Stack, ActionButton } from 'office-ui-fabric-react';
-import ManageDealerForm, { FormicReference } from './ManageDealerForm';
+import ManageDealerForm, {
+  FormicReference,
+} from './dealerManaging/ManageDealerForm';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { assignPendingActions } from '../../helpers/action.helper';

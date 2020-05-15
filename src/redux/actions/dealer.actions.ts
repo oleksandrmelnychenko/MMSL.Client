@@ -49,9 +49,6 @@ export const updateDealerListPagination = createAction<Pagination>(
 export const updateDealerListPaginationInfo = createAction<PaginationInfo>(
   dealerTypes.UPDATE_DEALER_LIST_PAGINATION_INFO
 );
-export const toggleUpdatingDealer = createAction<boolean>(
-  dealerTypes.TOGGLE_UPDATING_DEALER
-);
 
 export const updateDealerStore = createAction<IStore>(
   dealerTypes.UPDATE_DEALER_STORE

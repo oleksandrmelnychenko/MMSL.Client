@@ -8,11 +8,11 @@ import {
   Text,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
-import { IApplicationState } from '../../redux/reducers';
-import * as dealerActions from '../../redux/actions/dealer.actions';
+import { IApplicationState } from '../../../redux/reducers';
+import * as dealerActions from '../../../redux/actions/dealer.actions';
 import ManageDealerForm, { FormicReference } from './ManageDealerForm';
-import { assignPendingActions } from '../../helpers/action.helper';
-import PanelTitle from './PanelTitle';
+import { assignPendingActions } from '../../../helpers/action.helper';
+import PanelTitle from '../PanelTitle';
 
 export const CreateDealerPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();

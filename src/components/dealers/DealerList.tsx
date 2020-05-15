@@ -4,10 +4,10 @@ import {
   DetailsList,
   IColumn,
   SelectionMode,
-  Stack,
-  IconButton,
   Text,
   Selection,
+  Stack,
+  IconButton,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -15,6 +15,12 @@ import * as dealerActions from '../../redux/actions/dealer.actions';
 import * as controlActions from '../../redux/actions/control.actions';
 import { DealerAccount, Pagination } from '../../interfaces';
 import { assignPendingActions } from '../../helpers/action.helper';
+
+const _columnIconButtonStyle = {
+  root: {
+    height: '20px',
+  },
+};
 
 const _dealerColumns: IColumn[] = [
   {
@@ -65,6 +71,45 @@ const _dealerColumns: IColumn[] = [
     data: 'string',
     onRender: (item: any) => {
       return <Text>{item.companyName}</Text>;
+    },
+    isPadded: true,
+  },
+  {
+    key: 'actions',
+    name: 'Actions',
+    minWidth: 70,
+    isResizable: true,
+    isCollapsible: true,
+    data: 'string',
+    onRender: (item: any) => {
+      return (
+        <Stack horizontal disableShrink>
+          <IconButton
+            styles={_columnIconButtonStyle}
+            height={20}
+            iconProps={{ iconName: 'Copy' }}
+            title="Copy"
+            ariaLabel="Copy"
+          />
+          <IconButton
+            styles={_columnIconButtonStyle}
+            height={20}
+            iconProps={{ iconName: 'ShoppingCart' }}
+          />
+          <IconButton
+            styles={_columnIconButtonStyle}
+            height={20}
+            iconProps={{ iconName: 'People' }}
+          />
+          <IconButton
+            styles={_columnIconButtonStyle}
+            height={20}
+            iconProps={{ iconName: 'Settings' }}
+            title="Settings"
+            ariaLabel="Settings"
+          />
+        </Stack>
+      );
     },
     isPadded: true,
   },

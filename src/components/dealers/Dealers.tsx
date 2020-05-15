@@ -15,7 +15,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import { LocalizeState, getActiveLanguage } from 'react-localize-redux';
-import CreateDealerPanel from './CreateDealerPanel';
+import CreateDealerPanel from './dealerManaging/CreateDealerPanel';
 import DealerList from './DealerList';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import {

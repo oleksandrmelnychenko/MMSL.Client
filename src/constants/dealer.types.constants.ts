@@ -9,7 +9,6 @@ export const UPDATE_DEALER = 'dealer.UPDATE_DEALER';
 export const TOGGLE_NEW_DEALER_FORM = 'dealer.TOGGLE_NEW_DEALER_FORM';
 export const SELECTED_DEALER = 'dealer.SELECTED_DEALER';
 export const GET_STORES_BY_DEALER = 'dealer.GET_STORES_BY_DEALER';
-export const TOGGLE_UPDATING_DEALER = 'dealer.TOGGLE_UPDATING_DEALER';
 export const SEARCH_DEALER = 'dealer.SEARCH_DEALER';
 
 /// Updates pagination (don't confuse with PAGINATION_INFO)
