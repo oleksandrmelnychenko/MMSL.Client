@@ -11,6 +11,7 @@ import * as unitsTypes from '../../constants/units.types.constants';
 import { getActiveLanguage } from 'react-localize-redux';
 import { ajaxGetWebResponse } from '../../helpers/epic.helper';
 import * as api from '../../constants/api.constants';
+import * as unitsActions from '../actions/units.actions';
 
 export const getCurrenciesEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
@@ -22,7 +23,38 @@ export const getCurrenciesEpic = (action$: AnyAction, state$: any) => {
           debugger;
           /// TODO:
           let successResultFlow = [
-            { type: 'UNHANDLED' },
+            unitsActions.setCurrencies(successResponse),
+            ...extractSuccessPendingActions(action),
+          ];
+
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [
+              { type: 'ERROR_GET_DEALERS_LIST' },
+              ...extractErrorPendingActions(action),
+            ];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};
+
+export const getPaymentTypesEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(unitsTypes.GET_PAYMENT_TYPES),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      return ajaxGetWebResponse(api.GET_PAYMENT_TYPES_ALL, state$.value).pipe(
+        mergeMap((successResponse: any) => {
+          debugger;
+          /// TODO:
+          let successResultFlow = [
+            unitsActions.setPaymentTypes(successResponse),
             ...extractSuccessPendingActions(action),
           ];
 
