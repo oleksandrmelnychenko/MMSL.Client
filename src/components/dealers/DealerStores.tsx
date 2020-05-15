@@ -26,6 +26,7 @@ export const DealerStores: React.FC = () => {
   }, []);
 
   const [store, setStore] = useState<IStore[] | null>(null);
+  const [nstore, setNstore] = useState<IStore[] | null>(null);
   const [isOpenForm, setIsOpenForm] = useState(false);
 
   const onRenderCell = (
