@@ -62,6 +62,10 @@ export const getDealersListPaginatedEpic = (
       return ajaxGetWebResponse(api.GET_DEALERS_ALL, state$.value, [
         { key: 'pageNumber', value: `${pagination.paginationInfo.pageNumber}` },
         { key: 'limit', value: `${pagination.limit}` },
+        {
+          key: 'searchPhrase',
+          value: `${state$.value.dealer.dealerState.search}`,
+        },
       ]).pipe(
         mergeMap((successResponse: any) => {
           let successResultFlow = [
@@ -135,11 +139,13 @@ export const saveNewDealerEpic = (action$: AnyAction, state$: any) => {
         true
       ).pipe(
         mergeMap((successResponse: any) => {
+          debugger;
           let successResultFlow = [...extractSuccessPendingActions(action)];
 
           return from(successResultFlow);
         }),
         catchError((errorResponse: any) => {
+          debugger;
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [...extractErrorPendingActions(action)];
 

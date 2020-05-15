@@ -15,8 +15,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import { LocalizeState, getActiveLanguage } from 'react-localize-redux';
-import CreateDealer from './CreateDealer';
-import DealerStores from './DealerStores';
+import CreateDealerPanel from './CreateDealerPanel';
 import DealerList from './DealerList';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import {
@@ -31,18 +30,14 @@ import DealerDetailsPanel from './DealerDetaisPanel';
 import { ofType } from 'redux-observable';
 
 export const Dealers: React.FC = (props: any) => {
-  const [formikReference] = useState({
-    formik: {},
-  });
-
   const dispatch = useDispatch();
 
   const localize = useSelector<IApplicationState, LocalizeState>(
     (state) => state.localize
   );
 
-  const isAddDealerOpen = useSelector<IApplicationState, boolean>(
-    (state) => state.dealer.manageDealerForm.isFormVisible
+  const searchText = useSelector<IApplicationState, string>(
+    (state) => state.dealer.dealerState.search
   );
 
   const isOpenPanelWithDealerDetails: ToggleDealerPanelWithDetails = useSelector<
@@ -110,6 +105,8 @@ export const Dealers: React.FC = (props: any) => {
     closeButtonAriaLabel: 'Close date picker',
   };
 
+  const datePickerWidth = { root: { width: '150px' } };
+
   return (
     <div className="dealers">
       <div className="dealers__root">
@@ -120,22 +117,7 @@ export const Dealers: React.FC = (props: any) => {
                 <Stack horizontal>
                   <div className="dealers__header__top__title">Dealers</div>
                   <div className="dealers__header__top__controls">
-                    <Stack horizontal>
-                      <div className="dealers__header__top__controls__control">
-                        <DatePicker
-                          className="dealersDate"
-                          firstDayOfWeek={DayOfWeek.Monday}
-                          strings={DayPickerStrings}
-                          placeholder="Select a date..."
-                          ariaLabel="Select a date"
-                        />
-                      </div>
-                      <div className="dealers__header__top__controls__control">
-                        <SearchBox
-                          className="dealerSearch"
-                          styles={{ root: { width: 200 } }}
-                        />
-                      </div>
+                    <Stack horizontal tokens={{ childrenGap: 10 }}>
                       <div className="dealers__header__top__controls__control">
                         <ActionButton
                           className="dealerAdd"
@@ -146,6 +128,43 @@ export const Dealers: React.FC = (props: any) => {
                         >
                           Add dealer
                         </ActionButton>
+                      </div>
+                      <div className="dealers__header__top__controls__control">
+                        <DatePicker
+                          styles={datePickerWidth}
+                          className="dealersDate"
+                          firstDayOfWeek={DayOfWeek.Monday}
+                          strings={DayPickerStrings}
+                          placeholder="From date"
+                          ariaLabel="Select a date"
+                        />
+                      </div>
+                      <div className="dealers__header__top__controls__control">
+                        <DatePicker
+                          styles={datePickerWidth}
+                          className="dealersDate"
+                          firstDayOfWeek={DayOfWeek.Monday}
+                          strings={DayPickerStrings}
+                          placeholder="To date"
+                          ariaLabel="Select a date"
+                        />
+                      </div>
+                      <div className="dealers__header__top__controls__control">
+                        <SearchBox
+                          className="dealerSearch"
+                          value={searchText}
+                          styles={{ root: { width: 200 } }}
+                          onChange={(args: any) => {
+                            if (args) {
+                              let value = args.target.value;
+                              dispatch(dealerActions.searchDealer(value));
+                              dispatch(dealerActions.getDealersListPaginated());
+                            } else {
+                              dispatch(dealerActions.searchDealer(''));
+                              dispatch(dealerActions.getDealersListPaginated());
+                            }
+                          }}
+                        />
                       </div>
                     </Stack>
                   </div>
@@ -159,36 +178,7 @@ export const Dealers: React.FC = (props: any) => {
         </Stack>
 
         {/* Create new dealer panel */}
-        <Panel
-          isOpen={isAddDealerOpen}
-          type={PanelType.custom}
-          customWidth={'800px'}
-          onDismiss={() => {
-            dispatch(dealerActions.toggleNewDealerForm(false));
-          }}
-          onRenderHeader={() => {
-            return (
-              <Stack horizontal className="dealerPanelHeader">
-                <Text className="dealerPanelHeader__title">Add Dealer</Text>
-                <PrimaryButton
-                  className="dealerPanelHeader__save"
-                  onClick={() => {
-                    let formik: any = formikReference.formik;
-
-                    if (formik !== undefined && formik !== null) {
-                      formik.submitForm();
-                    }
-                  }}
-                >
-                  Save
-                </PrimaryButton>
-              </Stack>
-            );
-          }}
-          closeButtonAriaLabel="Close"
-        >
-          <CreateDealer formikReference={formikReference} />
-        </Panel>
+        <CreateDealerPanel />
 
         {/* Dealer details panel */}
         <DealerDetailsPanel />

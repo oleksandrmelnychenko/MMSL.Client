@@ -103,8 +103,8 @@ export class DealerAccount extends EntityBase {
     this.phoneNumber = '';
     this.taxNumber = '';
     this.isVatApplicable = false;
-    this.currency = 0;
-    this.paymentType = 0;
+    this.currencyTypeId = 0;
+    this.paymentTypeId = 0;
     this.isCreditAllowed = false;
     this.billingAddressId = null;
     this.billingAddress = null;
@@ -120,8 +120,8 @@ export class DealerAccount extends EntityBase {
   phoneNumber: string;
   taxNumber: string;
   isVatApplicable: boolean;
-  currency: number;
-  paymentType: number;
+  currencyTypeId: number;
+  paymentTypeId: number;
   isCreditAllowed: boolean;
   billingAddressId: number | null;
   billingAddress: Address | null;
