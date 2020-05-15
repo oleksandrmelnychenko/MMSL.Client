@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
 import './dealerList.scss';
+import React, { useEffect, useState } from 'react';
 import {
   DetailsList,
   IColumn,
@@ -14,7 +14,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import * as controlActions from '../../redux/actions/control.actions';
-import { DealerAccount, Pagination } from '../../interfaces';
+import { DealerAccount } from '../../interfaces';
 import { assignPendingActions } from '../../helpers/action.helper';
 
 const _columnIconButtonStyle = {
@@ -109,6 +109,16 @@ const _dealerColumns: IColumn[] = [
             title="Settings"
             ariaLabel="Settings"
           />
+          <IconButton
+            styles={_columnIconButtonStyle}
+            height={20}
+            iconProps={{ iconName: 'Delete' }}
+            title="Delete"
+            ariaLabel="Delete"
+            onClick={(args: any) => {
+              debugger;
+            }}
+          />
         </Stack>
       );
     },
@@ -134,15 +144,6 @@ export const DealerList: React.FC = () => {
       },
     })
   );
-
-  const pagination: Pagination = useSelector<IApplicationState, Pagination>(
-    (state) => state.dealer.dealerState.pagination
-  );
-
-  const selectedDealer: any = useSelector<
-    IApplicationState,
-    DealerAccount | null
-  >((state) => state.dealer.selectedDealer);
 
   const isCollapseMenu: boolean = useSelector<IApplicationState, boolean>(
     (state) => state.control.isCollapseMenu
@@ -188,9 +189,6 @@ export const DealerList: React.FC = () => {
           selection={selection}
           selectionMode={SelectionMode.single}
           columns={_dealerColumns}
-          onItemInvoked={(item?: any, index?: number, ev?: Event) => {
-            debugger;
-          }}
         />
       </MarqueeSelection>
     </div>

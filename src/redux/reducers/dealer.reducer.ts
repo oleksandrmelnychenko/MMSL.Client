@@ -78,7 +78,6 @@ export const dealerReducer = createReducer(new DealerState(), (builder) =>
       state.selectedDealer = action.payload;
     })
     .addCase(dealerActions.updateDealerListPagination, (state, action) => {
-      debugger;
       state.dealerState.pagination = action.payload;
     })
     .addCase(dealerActions.updateDealerListPaginationInfo, (state, action) => {
