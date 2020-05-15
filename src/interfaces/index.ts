@@ -62,6 +62,7 @@ export interface IStore {
   description?: string;
   id?: number;
   isDeleted?: boolean;
+  isSelected?: boolean;
   name: string;
 }
 

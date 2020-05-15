@@ -25,8 +25,8 @@ export const DealerStores: React.FC = () => {
     dispatch(dealerActions.getStoresByDealer(selectedDealer.id));
   }, []);
 
-  const [store, setStore] = useState<IStore[] | null>(null);
-  const [nstore, setNstore] = useState<IStore[] | null>(null);
+  const [selectedStore, setSelectedStore] = useState<IStore[] | null>(null);
+
   const [isOpenForm, setIsOpenForm] = useState(false);
 
   const onRenderCell = (
@@ -36,12 +36,13 @@ export const DealerStores: React.FC = () => {
     return (
       <div
         key={index}
-        className="dealer__store"
+        className={`dealer__store`}
         onClick={() => {
           const selectedStore = dealerStores.filter(
             (store) => store.id === item.id
           );
-          setStore(selectedStore);
+
+          setSelectedStore(selectedStore);
           setIsOpenForm(true);
         }}>
         <div className="dealer__store__name">Store name: {item.name}</div>
@@ -61,7 +62,7 @@ export const DealerStores: React.FC = () => {
       <PrimaryButton
         text="Add Store"
         onClick={() => {
-          setStore(null);
+          setSelectedStore(null);
           setIsOpenForm(true);
         }}
         allowDisabledFocus
@@ -77,7 +78,7 @@ export const DealerStores: React.FC = () => {
           </FocusZone>
         </Stack>
         <Stack grow={1} tokens={{ maxWidth: '50%' }}>
-          {isOpenForm ? <FormStore store={store} /> : null}
+          {isOpenForm ? <FormStore store={selectedStore} /> : null}
         </Stack>
       </Stack>
     </div>
