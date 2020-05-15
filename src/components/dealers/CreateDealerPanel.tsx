@@ -46,20 +46,6 @@ export const CreateDealerPanel: React.FC = (props: any) => {
             />
           );
         }}
-        onRenderFooter={() => {
-          return (
-            <PanelTitle
-              onSaveClick={() => {
-                let formik: any = formikReference.formik;
-
-                if (formik !== undefined && formik !== null) {
-                  formik.submitForm();
-                }
-              }}
-              title={'New Dealer'}
-            />
-          );
-        }}
         closeButtonAriaLabel="Close"
       >
         <ManageDealerForm
