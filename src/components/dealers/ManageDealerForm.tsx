@@ -65,54 +65,27 @@ const resolveDefaultDropDownValue = (
 };
 
 const buildDealerAccount = (values: any, sourceDealer?: DealerAccount) => {
-  let dealerAccount: DealerAccount = {
-    id: 0,
-    isDeleted: false,
-    companyName: values.companyName,
-    name: values.name,
-    email: values.email,
-    alternateEmail: values.alternativeEmail,
-    phoneNumber: values.phoneNumber,
-    taxNumber: values.taxNumber,
-    isVatApplicable: values.vatApplicate,
-    currencyTypeId: parseInt(values.selectCurrency),
-    paymentTypeId: parseInt(values.selectPayment),
-    isCreditAllowed: values.creditAllowed,
-    billingAddressId: null,
-    billingAddress: null,
-    useBillingAsShipping: values.useBillingAsShipping,
-    shippingAddressId: null,
-    /// TODO:
-    shippingAddress: null,
-    stores: [],
-  } as DealerAccount;
+  let dealerAccount: DealerAccount;
 
-  let billingAddress = {
-    addressLine1: values.addressLine1,
-    addressLine2: values.addressLine2,
-    city: values.city,
-    state: values.state,
-    country: values.country,
-    zipCode: values.zip,
-  } as Address;
-
-  dealerAccount.billingAddress = billingAddress;
-
-  if (sourceDealer !== null && sourceDealer !== undefined) {
-    dealerAccount.id = sourceDealer.id;
-    dealerAccount.isDeleted = sourceDealer.isDeleted;
-    dealerAccount.billingAddressId = sourceDealer.billingAddressId;
-    dealerAccount.shippingAddressId = sourceDealer.shippingAddressId;
-
-    if (
-      sourceDealer.billingAddress !== null &&
-      sourceDealer.billingAddress !== undefined
-    ) {
-      dealerAccount.billingAddress.id = sourceDealer.billingAddress.id;
-      dealerAccount.billingAddress.isDeleted =
-        sourceDealer.billingAddress.isDeleted;
-    }
+  if (sourceDealer) {
+    dealerAccount = { ...sourceDealer };
+  } else {
+    dealerAccount = new DealerAccount();
+    dealerAccount.billingAddress = new Address();
+    dealerAccount.billingAddressId = dealerAccount.billingAddress.id;
+    dealerAccount.stores = [];
   }
+
+  dealerAccount.companyName = values.companyName;
+  dealerAccount.name = values.name;
+  dealerAccount.email = values.email;
+  dealerAccount.alternateEmail = values.alternativeEmail;
+  dealerAccount.phoneNumber = values.phoneNumber;
+  dealerAccount.taxNumber = values.taxNumber;
+  dealerAccount.isVatApplicable = values.vatApplicate;
+  dealerAccount.currencyTypeId = parseInt(values.selectCurrency);
+  dealerAccount.paymentTypeId = parseInt(values.selectPayment);
+  dealerAccount.isCreditAllowed = values.creditAllowed;
 
   return dealerAccount;
 };
@@ -129,13 +102,6 @@ const initDefaultValues = (account?: DealerAccount | null) => {
     selectPayment: '1',
     vatApplicate: false,
     creditAllowed: false,
-    addressLine1: '',
-    addressLine2: '',
-    city: '',
-    country: '',
-    state: '',
-    zip: '',
-    useBillingAsShipping: false,
   };
 
   if (account !== null && account !== undefined) {
@@ -149,20 +115,6 @@ const initDefaultValues = (account?: DealerAccount | null) => {
     formikInitValues.selectPayment = `${account.paymentTypeId}`;
     formikInitValues.vatApplicate = account.isVatApplicable;
     formikInitValues.creditAllowed = account.isCreditAllowed;
-
-    if (
-      account.billingAddress !== null &&
-      account.billingAddress !== undefined
-    ) {
-      formikInitValues.addressLine1 = account.billingAddress.addressLine1;
-      formikInitValues.addressLine2 = account.billingAddress.addressLine1;
-      formikInitValues.city = account.billingAddress.city;
-      formikInitValues.country = account.billingAddress.country;
-      formikInitValues.state = account.billingAddress.state;
-      formikInitValues.zip = account.billingAddress.zipCode;
-    }
-
-    formikInitValues.useBillingAsShipping = account.useBillingAsShipping;
   }
 
   return formikInitValues;
@@ -243,13 +195,6 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
           selectPayment: Yup.string().notRequired(),
           vatApplicate: Yup.boolean().notRequired(),
           creditAllowed: Yup.boolean().notRequired(),
-          addressLine1: Yup.string().notRequired(),
-          addressLine2: Yup.string().notRequired(),
-          city: Yup.string().notRequired(),
-          country: Yup.string().notRequired(),
-          state: Yup.string().notRequired(),
-          zip: Yup.string().notRequired(),
-          useBillingAsShipping: Yup.boolean().notRequired(),
         })}
         initialValues={formikInitValues}
         onSubmit={(values: any) => {
@@ -266,7 +211,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
             <Form>
               <div className="dealerFormManage">
                 <Stack horizontal tokens={{ childrenGap: 20 }}>
-                  <Stack grow={4}>
+                  <Stack grow={1}>
                     <Field
                       name="companyName"
                       render={() => {
@@ -451,7 +396,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                       }}
                     ></Field> */}
                   </Stack>
-                  <Stack>
+                  <Stack grow={1}>
                     <Field
                       name="selectCurrency"
                       render={() => {

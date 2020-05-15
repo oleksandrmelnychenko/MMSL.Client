@@ -23,12 +23,14 @@ export const DealerDetailsPanel: React.FC = (props: any) => {
   >((state) => state.dealer.isOpenPanelWithDealerDetails);
 
   let panelContent: any = null;
+  let customWidth: string = '700px';
 
   if (isOpenPanelWithDealerDetails) {
     if (
       isOpenPanelWithDealerDetails.componentType ===
       DealerDetilsComponents.DealerDetails
     ) {
+      customWidth = '600px';
       panelContent = <DealerDetails />;
     } else if (
       isOpenPanelWithDealerDetails.componentType ===
@@ -53,8 +55,7 @@ export const DealerDetailsPanel: React.FC = (props: any) => {
     <Panel
       isOpen={isOpenPanelWithDealerDetails.isOpen}
       type={PanelType.custom}
-      customWidth={'700px'}
-      onRenderFooterContent={onRenderFooterContent}
+      customWidth={customWidth}
       onDismiss={() => {
         dispatch(
           dealerActions.isOpenPanelWithDealerDetails(
