@@ -81,7 +81,6 @@ export const DealerStores: React.FC = () => {
       iconProps: { iconName: 'Save' },
       onClick: () => {
         formikReference.formik.submitForm();
-        formikReference.formik.resetForm();
       },
       buttonStyles: commandBarButtonStyles,
     },
@@ -104,6 +103,9 @@ export const DealerStores: React.FC = () => {
             )
           );
         }
+        formikReference.formik.resetForm();
+        setSelectedStore(null);
+        setIsOpenForm(false);
       },
       buttonStyles: commandBarButtonStyles,
     },

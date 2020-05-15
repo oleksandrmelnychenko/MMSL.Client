@@ -27,10 +27,6 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
     (state) => state.dealer.selectedDealer?.id
   );
 
-  const translate = getTranslate(
-    useSelector<IApplicationState, LocalizeState>((state) => state.localize)
-  );
-
   const selectedStore = props.store ? props.store[0] : null;
 
   const builderAddStore = (value: any) => {
@@ -139,13 +135,13 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                 builderAddStore(values) as INewStore
               )
             );
+            resetForm();
           }
-          resetForm();
         }}
         enableReinitialize={true}
         validateOnBlur={false}>
         {(formik) => {
-          // props.formikReference.formik = formik;
+          props.formikReference.formik = formik;
           return (
             <Form>
               <Stack>
