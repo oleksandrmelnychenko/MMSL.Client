@@ -29,7 +29,7 @@ import {
   DealerDetilsComponents,
 } from '../../redux/reducers/dealer.reducer';
 import DealerDetails from './DealerDetails';
-import BillingAddress from './address/BillingAddress';
+import AddressDetails from './address/AddressDetails';
 
 export const DealerDetailsPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -56,7 +56,7 @@ export const DealerDetailsPanel: React.FC = (props: any) => {
       isOpenPanelWithDealerDetails.componentType ===
       DealerDetilsComponents.DealerAddress
     ) {
-      panelContent = <BillingAddress />;
+      panelContent = <AddressDetails />;
     }
   }
 

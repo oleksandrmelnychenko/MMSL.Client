@@ -11,7 +11,7 @@ import {
   ITextProps,
   IDropdownOption,
 } from 'office-ui-fabric-react';
-import './manageDealerForm.scss';
+import '../manageDealerForm.scss';
 import * as Yup from 'yup';
 import * as dealerActions from '../../../redux/actions/dealer.actions';
 import { useDispatch } from 'react-redux';
@@ -45,43 +45,52 @@ export class FormicReference {
 }
 
 /// TOODO: resolve with Linq
-const resolveDefaultDropDownValue = (
-  limitOptions: any[],
-  initLimit: number
-) => {
-  let result;
-  limitOptions.forEach((option) => {
-    if (option.key === `${initLimit}`) {
-      result = option;
-    }
-  });
-  if (result === undefined || null) {
-    result = limitOptions[0];
-  }
-  return result;
-};
+// const resolveDefaultDropDownValue = (
+//   limitOptions: any[],
+//   initLimit: number
+// ) => {
+//   let result;
+//   limitOptions.forEach((option) => {
+//     if (option.key === `${initLimit}`) {
+//       result = option;
+//     }
+//   });
+//   if (result === undefined || null) {
+//     result = limitOptions[0];
+//   }
+//   return result;
+// };
 
 const buildDealerAccount = (values: any, sourceDealer?: DealerAccount) => {
-  let dealerAccount: DealerAccount = {
-    id: 0,
-    isDeleted: false,
-    companyName: values.companyName,
-    email: values.email,
-    alternateEmail: values.alternativeEmail,
-    phoneNumber: values.phoneNumber,
-    taxNumber: values.taxNumber,
-    isVatApplicable: values.vatApplicate,
-    currencyTypeId: parseInt(values.selectCurrency),
-    paymentTypeId: parseInt(values.selectPayment),
-    isCreditAllowed: values.creditAllowed,
-    billingAddressId: null,
-    billingAddress: null,
-    useBillingAsShipping: values.useBillingAsShipping,
-    shippingAddressId: null,
-    /// TODO:
-    shippingAddress: null,
-    stores: [],
-  } as DealerAccount;
+  let dealerAccount: DealerAccount;
+  // {
+  //   id: 0,
+  //   isDeleted: false,
+  //   companyName: values.companyName,
+  //   email: values.email,
+  //   alternateEmail: values.alternativeEmail,
+  //   phoneNumber: values.phoneNumber,
+  //   taxNumber: values.taxNumber,
+  //   isVatApplicable: values.vatApplicate,
+  //   currencyTypeId: parseInt(values.selectCurrency),
+  //   paymentTypeId: parseInt(values.selectPayment),
+  //   isCreditAllowed: values.creditAllowed,
+  //   billingAddressId: null,
+  //   billingAddress: null,
+  //   useBillingAsShipping: values.useBillingAsShipping,
+  //   shippingAddressId: null,
+  //   /// TODO:
+  //   shippingAddress: null,
+  //   stores: [],
+  // } as DealerAccount;
+
+  if (sourceDealer) {
+    dealerAccount = { ...sourceDealer };
+  } else {
+    dealerAccount = new DealerAccount();
+  }
+
+  dealerAccount.useBillingAsShipping = values.useBillingAsShipping;
 
   let billingAddress = {
     addressLine1: values.addressLine1,
@@ -92,41 +101,79 @@ const buildDealerAccount = (values: any, sourceDealer?: DealerAccount) => {
     zipCode: values.zip,
   } as Address;
 
+  dealerAccount.billingAddressId = billingAddress.id;
   dealerAccount.billingAddress = billingAddress;
 
-  if (sourceDealer !== null && sourceDealer !== undefined) {
-    dealerAccount.id = sourceDealer.id;
-    dealerAccount.isDeleted = sourceDealer.isDeleted;
-    dealerAccount.billingAddressId = sourceDealer.billingAddressId;
-    dealerAccount.shippingAddressId = sourceDealer.shippingAddressId;
+  // if (sourceDealer !== null && sourceDealer !== undefined) {
+  //   dealerAccount.id = sourceDealer.id;
+  //   dealerAccount.isDeleted = sourceDealer.isDeleted;
+  //   dealerAccount.billingAddressId = sourceDealer.billingAddressId;
+  //   dealerAccount.shippingAddressId = sourceDealer.shippingAddressId;
 
-    if (
-      sourceDealer.billingAddress !== null &&
-      sourceDealer.billingAddress !== undefined
-    ) {
-      dealerAccount.billingAddress.id = sourceDealer.billingAddress.id;
-      dealerAccount.billingAddress.isDeleted =
-        sourceDealer.billingAddress.isDeleted;
-    }
-  }
+  //   if (
+  //     sourceDealer.billingAddress !== null &&
+  //     sourceDealer.billingAddress !== undefined
+  //   ) {
+  //     dealerAccount.billingAddress.id = sourceDealer.billingAddress.id;
+  //     dealerAccount.billingAddress.isDeleted =
+  //       sourceDealer.billingAddress.isDeleted;
+  //   }
+  // }
 
   return dealerAccount;
+
+  // let dealerAccount: DealerAccount = {
+  //   id: 0,
+  //   isDeleted: false,
+  //   companyName: values.companyName,
+  //   email: values.email,
+  //   alternateEmail: values.alternativeEmail,
+  //   phoneNumber: values.phoneNumber,
+  //   taxNumber: values.taxNumber,
+  //   isVatApplicable: values.vatApplicate,
+  //   currencyTypeId: parseInt(values.selectCurrency),
+  //   paymentTypeId: parseInt(values.selectPayment),
+  //   isCreditAllowed: values.creditAllowed,
+  //   billingAddressId: null,
+  //   billingAddress: null,
+  //   useBillingAsShipping: values.useBillingAsShipping,
+  //   shippingAddressId: null,
+  //   /// TODO:
+  //   shippingAddress: null,
+  //   stores: [],
+  // } as DealerAccount;
+  // let billingAddress = {
+  //   addressLine1: values.addressLine1,
+  //   addressLine2: values.addressLine2,
+  //   city: values.city,
+  //   state: values.state,
+  //   country: values.country,
+  //   zipCode: values.zip,
+  // } as Address;
+  // if (sourceDealer) {
+  //   sourceDealer.billingAddress = billingAddress;
+  // }
+  // dealerAccount.billingAddress = billingAddress;
+  // if (sourceDealer !== null && sourceDealer !== undefined) {
+  //   let foo = { ...sourceDealer };
+  //   dealerAccount.id = sourceDealer.id;
+  //   dealerAccount.isDeleted = sourceDealer.isDeleted;
+  //   dealerAccount.billingAddressId = sourceDealer.billingAddressId;
+  //   dealerAccount.shippingAddressId = sourceDealer.shippingAddressId;
+  //   if (
+  //     sourceDealer.billingAddress !== null &&
+  //     sourceDealer.billingAddress !== undefined
+  //   ) {
+  //     dealerAccount.billingAddress.id = sourceDealer.billingAddress.id;
+  //     dealerAccount.billingAddress.isDeleted =
+  //       sourceDealer.billingAddress.isDeleted;
+  //   }
+  // }
+  // return dealerAccount;
 };
 
 const initDefaultValues = (account?: DealerAccount | null) => {
   const formikInitValues = {
-    companyName: '',
-    /// TODO: missing
-    name: '',
-    email: '',
-    alternativeEmail: '',
-    phoneNumber: '',
-    taxNumber: '',
-    selectCurrency: '',
-    selectPayment: '',
-    vatApplicate: false,
-    creditAllowed: false,
-    generalText: '',
     addressLine1: '',
     addressLine2: '',
     city: '',
@@ -137,26 +184,6 @@ const initDefaultValues = (account?: DealerAccount | null) => {
   };
 
   if (account !== null && account !== undefined) {
-    formikInitValues.companyName = account.companyName;
-    /// TODO: missing
-    // formikInitValues.name = props.dealerAccount.Name;
-    formikInitValues.email = account.email;
-    formikInitValues.alternativeEmail = account.alternateEmail;
-    formikInitValues.phoneNumber = account.phoneNumber;
-    formikInitValues.taxNumber = account.taxNumber;
-    /// TODO: important
-    // formikInitValues.selectCurrency = props.dealerAccount.currency;
-    formikInitValues.selectCurrency = `${account.currencyTypeId}`;
-
-    /// TODO: important
-    // formikInitValues.selectPayment = props.dealerAccount.paymentType;
-    formikInitValues.selectPayment = `${account.paymentTypeId}`;
-
-    formikInitValues.vatApplicate = account.isVatApplicable;
-    formikInitValues.creditAllowed = account.isCreditAllowed;
-    /// TODO: missing
-    // formikInitValues.generalText =  = props.dealerAccount.alternateEmail;
-
     if (
       account.billingAddress !== null &&
       account.billingAddress !== undefined
@@ -175,7 +202,7 @@ const initDefaultValues = (account?: DealerAccount | null) => {
   return formikInitValues;
 };
 
-export const BillingAddress: React.FC<ManageDealerFormProps> = (props) => {
+export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
   const dispatch = useDispatch();
 
   const textFildLabelStyles = {
@@ -189,68 +216,12 @@ export const BillingAddress: React.FC<ManageDealerFormProps> = (props) => {
     },
   };
 
-  const dropDownStyles = {
-    dropdown: { width: 300 },
-    label: {
-      fontWeight: FontWeights.semibold,
-      paddingBottom: '2px',
-    },
-    title: {},
-  };
-
-  const toggleStyles = {
-    label: {
-      fontWeight: FontWeights.light,
-    },
-  };
-
-  const currencyOptions = [
-    {
-      key: '0',
-      text: 'USD',
-      value: Currency.USD,
-    } as IDropdownOption,
-    {
-      key: '1',
-      text: 'EUR',
-      value: Currency.EUR,
-    } as IDropdownOption,
-  ];
-
-  const paymentOptions = [
-    {
-      key: '0',
-      text: 'Bank transfer',
-      value: PaymentType.BankTransfer,
-    } as IDropdownOption,
-    {
-      key: '1',
-      text: 'Cash',
-      value: PaymentType.Cash,
-    } as IDropdownOption,
-  ];
-
   const formikInitValues = initDefaultValues(props.dealerAccount);
 
   return (
     <div>
       <Formik
         validationSchema={Yup.object().shape({
-          companyName: Yup.string().required(() => 'Company name is required'),
-          //   name: Yup.string().required(() => 'Name is required'),
-          email: Yup.string()
-            .email('Invalid email')
-            .required(() => 'Email is required'),
-          alternativeEmail: Yup.string()
-            .email('Invalid email')
-            .required('Alternative email is required'),
-          phoneNumber: Yup.string().notRequired(),
-          taxNumber: Yup.string().notRequired(),
-          selectCurrency: Yup.string().notRequired(),
-          selectPayment: Yup.string().notRequired(),
-          vatApplicate: Yup.boolean().notRequired(),
-          creditAllowed: Yup.boolean().notRequired(),
-          //   generalText: Yup.string().notRequired(),
           addressLine1: Yup.string().notRequired(),
           addressLine2: Yup.string().notRequired(),
           city: Yup.string().notRequired(),
@@ -261,6 +232,7 @@ export const BillingAddress: React.FC<ManageDealerFormProps> = (props) => {
         })}
         initialValues={formikInitValues}
         onSubmit={(values: any) => {
+          //TODO fix SUBMIT
           props.submitAction(
             buildDealerAccount(values, props.dealerAccount as DealerAccount)
           );
@@ -445,4 +417,4 @@ export const BillingAddress: React.FC<ManageDealerFormProps> = (props) => {
   );
 };
 
-export default BillingAddress;
+export default BillingAddressForm;

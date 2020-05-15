@@ -86,7 +86,8 @@ const ManagementOptions: React.FC = () => {
           onClick={() => {
             const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
             openDetailsArgs.isOpen = true;
-            openDetailsArgs.componentType = DealerDetilsComponents.DealerStores;
+            openDetailsArgs.componentType =
+              DealerDetilsComponents.DealerAddress;
 
             dispatch(
               dealerAction.isOpenPanelWithDealerDetails(openDetailsArgs)
