@@ -90,7 +90,8 @@ export const Dealers: React.FC = (props: any) => {
                           onClick={() =>
                             dispatch(dealerActions.toggleNewDealerForm(true))
                           }
-                          iconProps={{ iconName: 'Add' }}>
+                          iconProps={{ iconName: 'Add' }}
+                        >
                           New dealer
                         </ActionButton>
                       </div>
