@@ -1,18 +1,14 @@
 import React, { useState } from 'react';
 import './createDealerPanel.scss';
-import {
-  ActionButton,
-  Stack,
-  Panel,
-  PanelType,
-  Text,
-} from 'office-ui-fabric-react';
+import { Panel, PanelType } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
 import * as dealerActions from '../../../redux/actions/dealer.actions';
 import ManageDealerForm, { FormicReference } from './ManageDealerForm';
 import { assignPendingActions } from '../../../helpers/action.helper';
-import PanelTitle from '../PanelTitle';
+import PanelTitle from '../panel/PanelTitle';
+import PanelFooter from '../panel/PanelFooter';
+import { panelStyle } from '../../../common/fabric-styles/styles';
 
 export const CreateDealerPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -26,28 +22,24 @@ export const CreateDealerPanel: React.FC = (props: any) => {
   return (
     <div className="createDealerPanel">
       <Panel
+        styles={panelStyle}
         isOpen={isAddDealerOpen}
         type={PanelType.custom}
         customWidth={'600px'}
         onDismiss={() => {
           dispatch(dealerActions.toggleNewDealerForm(false));
         }}
-        onRenderHeader={() => {
-          return (
-            <PanelTitle
-              onSaveClick={() => {
-                let formik: any = formikReference.formik;
+        closeButtonAriaLabel="Close">
+        <PanelTitle
+          onSaveClick={() => {
+            let formik: any = formikReference.formik;
 
-                if (formik !== undefined && formik !== null) {
-                  formik.submitForm();
-                }
-              }}
-              title={'New Dealer'}
-            />
-          );
-        }}
-        closeButtonAriaLabel="Close"
-      >
+            if (formik !== undefined && formik !== null) {
+              formik.submitForm();
+            }
+          }}
+          title={'New Dealer'}
+        />
         <ManageDealerForm
           formikReference={formikReference}
           submitAction={(args: any) => {
@@ -59,6 +51,15 @@ export const CreateDealerPanel: React.FC = (props: any) => {
               ]
             );
             dispatch(createAction);
+          }}
+        />
+        <PanelFooter
+          onSaveClick={() => {
+            let formik: any = formikReference.formik;
+
+            if (formik !== undefined && formik !== null) {
+              formik.submitForm();
+            }
           }}
         />
       </Panel>

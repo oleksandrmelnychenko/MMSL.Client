@@ -10,7 +10,7 @@ class PanelTitleProps {
   }
 
   title: string;
-  onSaveClick: () => void;
+  onSaveClick?: () => void;
 }
 
 export const PanelTitle: React.FC<PanelTitleProps> = (
@@ -21,20 +21,18 @@ export const PanelTitle: React.FC<PanelTitleProps> = (
       <Stack
         tokens={{ childrenGap: 20 }}
         horizontal
-        className="panelTitle__panelHeader"
-      >
+        className="panelTitle__panelHeader">
         <Text className="panelTitle__title">{props.title}</Text>
 
-        <ActionButton
+        {/* <ActionButton
           styles={{ root: { marginTop: '-3px' } }}
           iconProps={{ iconName: 'Save' }}
           allowDisabledFocus
           onClick={() => {
-            props.onSaveClick();
-          }}
-        >
+              props.onSaveClick();
+          }}>
           Save
-        </ActionButton>
+        </ActionButton> */}
       </Stack>
     </div>
   );

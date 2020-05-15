@@ -1,18 +1,18 @@
 import React from 'react';
 import './dealers.scss';
-import { DefaultButton, Panel, PanelType } from 'office-ui-fabric-react';
+import { Panel, PanelType } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import DealerStores from './store/DealerStores';
 import * as dealerActions from '../../redux/actions/dealer.actions';
-
-import { useConstCallback } from '@uifabric/react-hooks';
 import {
   ToggleDealerPanelWithDetails,
   DealerDetilsComponents,
 } from '../../redux/reducers/dealer.reducer';
 import DealerDetails from './DealerDetails';
 import AddressDetails from './address/AddressDetails';
+import PanelFooter from './panel/PanelFooter';
+import { panelStyle } from '../../common/fabric-styles/styles';
 
 export const DealerDetailsPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -36,6 +36,7 @@ export const DealerDetailsPanel: React.FC = (props: any) => {
       isOpenPanelWithDealerDetails.componentType ===
       DealerDetilsComponents.DealerStores
     ) {
+      customWidth = '800px';
       panelContent = <DealerStores />;
     } else if (
       isOpenPanelWithDealerDetails.componentType ===
@@ -45,14 +46,9 @@ export const DealerDetailsPanel: React.FC = (props: any) => {
     }
   }
 
-  const onRenderFooterContent = useConstCallback(() => (
-    <div>
-      <DefaultButton onClick={() => {}}>Save</DefaultButton>
-    </div>
-  ));
-
   return (
     <Panel
+      styles={panelStyle}
       isOpen={isOpenPanelWithDealerDetails.isOpen}
       type={PanelType.custom}
       customWidth={customWidth}
