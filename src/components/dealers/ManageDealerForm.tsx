@@ -119,8 +119,6 @@ const buildDealerAccount = (values: any, sourceDealer?: DealerAccount) => {
 const initDefaultValues = (account?: DealerAccount | null) => {
   const formikInitValues = {
     companyName: '',
-    /// TODO: missing
-    name: '',
     email: '',
     alternativeEmail: '',
     phoneNumber: '',
@@ -129,7 +127,6 @@ const initDefaultValues = (account?: DealerAccount | null) => {
     selectPayment: '1',
     vatApplicate: false,
     creditAllowed: false,
-    generalText: '',
     addressLine1: '',
     addressLine2: '',
     city: '',
@@ -141,24 +138,14 @@ const initDefaultValues = (account?: DealerAccount | null) => {
 
   if (account !== null && account !== undefined) {
     formikInitValues.companyName = account.companyName;
-    /// TODO: missing
-    // formikInitValues.name = props.dealerAccount.Name;
     formikInitValues.email = account.email;
     formikInitValues.alternativeEmail = account.alternateEmail;
     formikInitValues.phoneNumber = account.phoneNumber;
     formikInitValues.taxNumber = account.taxNumber;
-    /// TODO: important
-    // formikInitValues.selectCurrency = props.dealerAccount.currency;
     formikInitValues.selectCurrency = `${account.currencyTypeId}`;
-
-    // /// TODO: important
-    // // formikInitValues.selectPayment = props.dealerAccount.paymentType;
     formikInitValues.selectPayment = `${account.paymentTypeId}`;
-
     formikInitValues.vatApplicate = account.isVatApplicable;
     formikInitValues.creditAllowed = account.isCreditAllowed;
-    /// TODO: missing
-    // formikInitValues.generalText =  = props.dealerAccount.alternateEmail;
 
     if (
       account.billingAddress !== null &&
@@ -240,7 +227,6 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
       <Formik
         validationSchema={Yup.object().shape({
           companyName: Yup.string().required(() => 'Company name is required'),
-          //   name: Yup.string().required(() => 'Name is required'),
           email: Yup.string()
             .email('Invalid email')
             .required(() => 'Email is required'),
@@ -253,7 +239,6 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
           selectPayment: Yup.string().notRequired(),
           vatApplicate: Yup.boolean().notRequired(),
           creditAllowed: Yup.boolean().notRequired(),
-          //   generalText: Yup.string().notRequired(),
           addressLine1: Yup.string().notRequired(),
           addressLine2: Yup.string().notRequired(),
           city: Yup.string().notRequired(),
