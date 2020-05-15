@@ -169,7 +169,7 @@ export const DealerList: React.FC = () => {
     dispatch(controlActions.isCollapseMenu(true));
     setTimeout(() => {
       dispatch(controlActions.isOpenPanelInfo(true));
-    }, 500);
+    }, 350);
 
     dispatch(createAction);
   };
@@ -184,7 +184,6 @@ export const DealerList: React.FC = () => {
     <div className="dealerList">
       <MarqueeSelection selection={selection}>
         <DetailsList
-          // styles={{ root: { display: 'none' } }}
           items={dealers}
           selection={selection}
           selectionMode={SelectionMode.single}
@@ -194,28 +193,6 @@ export const DealerList: React.FC = () => {
           }}
         />
       </MarqueeSelection>
-      {/* <DealersTable
-        itemsSource={dealers}
-        columns={columns}
-        pageNumberSource={pagination.paginationInfo.pageNumber}
-        invokeRequest={() => {
-          let updatedPagination = { ...pagination };
-          updatedPagination.paginationInfo = {
-            ...pagination.paginationInfo,
-          };
-          updatedPagination.paginationInfo.pageNumber =
-            updatedPagination.paginationInfo.pageNumber + 1;
-
-          dispatch(dealerActions.updateDealerListPagination(updatedPagination));
-
-          dispatch(
-            assignPendingActions(dealerActions.getDealersListPaginated())
-          );
-        }}
-      /> */}
-      {/* <div className="dealerList__footer">
-        <DealersPagination />
-      </div> */}
     </div>
   );
 };
