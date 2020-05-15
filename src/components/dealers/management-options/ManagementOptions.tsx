@@ -82,7 +82,7 @@ const ManagementOptions: React.FC = () => {
       <Label styles={labelStyle}>
         <PrimaryButton
           styles={btnStyle}
-          className="dealer__management__btn-add"
+          className="dealer__management__btn-address"
           onClick={() => {
             const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
             openDetailsArgs.isOpen = true;
@@ -100,7 +100,7 @@ const ManagementOptions: React.FC = () => {
       <Label styles={labelStyle}>
         <PrimaryButton
           styles={btnStyle}
-          className="dealer__management__btn-add"
+          className="dealer__management__btn-customer"
           onClick={() => {
             const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
             openDetailsArgs.isOpen = true;

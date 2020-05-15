@@ -12,14 +12,13 @@ import * as dealerActions from '../../redux/actions/dealer.actions';
 import { IStore } from '../../interfaces/index';
 import { Stack } from 'office-ui-fabric-react';
 import FormStore from './store/FormStore';
-import PanelTitle from './PanelTitle';
 
 export const DealerStores: React.FC = () => {
   const dispatch = useDispatch();
   const selectedDealer = useSelector<IApplicationState, DealerAccount>(
     (state) => state.dealer.selectedDealer!
   );
-  const dealerStore = useSelector<IApplicationState, IStore[]>(
+  const dealerStores = useSelector<IApplicationState, IStore[]>(
     (state) => state.dealer.dealerStores
   );
   useEffect(() => {
@@ -27,6 +26,7 @@ export const DealerStores: React.FC = () => {
   }, []);
 
   const [store, setStore] = useState<IStore[] | null>(null);
+  const [nstore, setNstore] = useState<IStore[] | null>(null);
   const [isOpenForm, setIsOpenForm] = useState(false);
 
   const onRenderCell = (
@@ -38,13 +38,12 @@ export const DealerStores: React.FC = () => {
         key={index}
         className="dealer__store"
         onClick={() => {
-          const selectedStore = dealerStore.filter(
+          const selectedStore = dealerStores.filter(
             (store) => store.id === item.id
           );
           setStore(selectedStore);
           setIsOpenForm(true);
-        }}
-      >
+        }}>
         <div className="dealer__store__name">Store name: {item.name}</div>
         <div className="dealer__store__address">
           Address:{' '}
@@ -58,8 +57,7 @@ export const DealerStores: React.FC = () => {
     <div>
       <Text
         block
-        className="dealer__title"
-      >{`Dealer: ${selectedDealer.companyName}`}</Text>
+        className="dealer__title">{`${selectedDealer.companyName} / ${selectedDealer.email}`}</Text>
       <PrimaryButton
         text="Add Store"
         onClick={() => {
@@ -68,20 +66,19 @@ export const DealerStores: React.FC = () => {
         }}
         allowDisabledFocus
       />
-      <Stack horizontal tokens={{ childrenGap: 10 }}>
-        <Stack grow={1}>
+      <Stack horizontal tokens={{ childrenGap: 20 }}>
+        <Stack grow={1} tokens={{ maxWidth: '50%' }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
-              {dealerStore.map((item: IStore, index: number) => {
+              {dealerStores.map((item: IStore, index: number) => {
                 return onRenderCell(item, index);
               })}{' '}
             </div>
           </FocusZone>
         </Stack>
-        <Stack grow={1} tokens={{ childrenGap: 10 }}>
+        <Stack grow={1} tokens={{ maxWidth: '50%' }}>
           {isOpenForm ? <FormStore store={store} /> : null}
         </Stack>
-        <Stack grow={5}></Stack>
       </Stack>
     </div>
   );
