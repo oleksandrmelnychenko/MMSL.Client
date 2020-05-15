@@ -87,8 +87,6 @@ const buildDealerAccount = (values: any, sourceDealer?: DealerAccount) => {
     stores: [],
   } as DealerAccount;
 
-  debugger;
-
   let billingAddress = {
     addressLine1: values.addressLine1,
     addressLine2: values.addressLine2,
@@ -475,7 +473,6 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                                 item: any
                               ) => {
                                 let value = item.value;
-                                debugger;
                                 formik.setFieldValue('selectCurrency', value);
                                 formik.setFieldTouched('selectCurrency');
                               }}
@@ -506,7 +503,6 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                                 item: any
                               ) => {
                                 let value = item.value;
-                                debugger;
                                 formik.setFieldValue('selectPayment', value);
                                 formik.setFieldTouched('selectPayment');
                               }}

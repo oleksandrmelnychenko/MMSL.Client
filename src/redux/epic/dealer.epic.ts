@@ -139,13 +139,11 @@ export const saveNewDealerEpic = (action$: AnyAction, state$: any) => {
         true
       ).pipe(
         mergeMap((successResponse: any) => {
-          debugger;
           let successResultFlow = [...extractSuccessPendingActions(action)];
 
           return from(successResultFlow);
         }),
         catchError((errorResponse: any) => {
-          debugger;
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [...extractErrorPendingActions(action)];
 
