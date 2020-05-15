@@ -56,7 +56,7 @@ export const DealerStores: React.FC = () => {
     <div>
       <Text
         block
-        className="dealer__title">{`Dealer: ${selectedDealer.companyName}`}</Text>
+        className="dealer__title">{`${selectedDealer.companyName} / ${selectedDealer.email}`}</Text>
       <PrimaryButton
         text="Add Store"
         onClick={() => {
@@ -65,8 +65,8 @@ export const DealerStores: React.FC = () => {
         }}
         allowDisabledFocus
       />
-      <Stack horizontal tokens={{ childrenGap: 10 }}>
-        <Stack grow={1}>
+      <Stack horizontal tokens={{ childrenGap: 20 }}>
+        <Stack grow={1} tokens={{ maxWidth: '50%' }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
               {dealerStore.map((item: IStore, index: number) => {
@@ -75,10 +75,9 @@ export const DealerStores: React.FC = () => {
             </div>
           </FocusZone>
         </Stack>
-        <Stack grow={1} tokens={{ childrenGap: 10 }}>
+        <Stack grow={1} tokens={{ maxWidth: '50%' }}>
           {isOpenForm ? <FormStore store={store} /> : null}
         </Stack>
-        <Stack grow={5}></Stack>
       </Stack>
     </div>
   );
