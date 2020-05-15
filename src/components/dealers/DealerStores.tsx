@@ -18,7 +18,7 @@ export const DealerStores: React.FC = () => {
   const selectedDealer = useSelector<IApplicationState, DealerAccount>(
     (state) => state.dealer.selectedDealer!
   );
-  const dealerStore = useSelector<IApplicationState, IStore[]>(
+  const dealerStores = useSelector<IApplicationState, IStore[]>(
     (state) => state.dealer.dealerStores
   );
   useEffect(() => {
@@ -37,7 +37,7 @@ export const DealerStores: React.FC = () => {
         key={index}
         className="dealer__store"
         onClick={() => {
-          const selectedStore = dealerStore.filter(
+          const selectedStore = dealerStores.filter(
             (store) => store.id === item.id
           );
           setStore(selectedStore);
@@ -69,7 +69,7 @@ export const DealerStores: React.FC = () => {
         <Stack grow={1} tokens={{ maxWidth: '50%' }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
-              {dealerStore.map((item: IStore, index: number) => {
+              {dealerStores.map((item: IStore, index: number) => {
                 return onRenderCell(item, index);
               })}{' '}
             </div>
