@@ -237,3 +237,37 @@ export const updateDealerStoreEpic = (action$: AnyAction, state$: any) => {
     })
   );
 };
+
+export const addStoreToCurrentDealerEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(dealerTypes.ADD_STORE_TO_CURRENT_DEALER),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      return ajaxPostResponse(
+        api.CREATE_DEALER_STORE,
+        action.payload,
+        state$.value,
+        true
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          let successResultFlow = [
+            dealerActions.addNewStoreToCurrentDealer(successResponse.body),
+            ...extractSuccessPendingActions(action),
+          ];
+
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [...extractErrorPendingActions(action)];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};

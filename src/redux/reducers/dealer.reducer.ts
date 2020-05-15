@@ -96,6 +96,9 @@ export const dealerReducer = createReducer(new DealerState(), (builder) =>
         return store;
       });
     })
+    .addCase(dealerActions.addNewStoreToCurrentDealer, (state, action) => {
+      state.dealerStores.push(action.payload);
+    })
     .addCase(dealerActions.toggleUpdatingDealer, (state, action) => {
       let dealerForm = { ...state.manageDealerForm };
       dealerForm.isIpdatingDealer = action.payload;
