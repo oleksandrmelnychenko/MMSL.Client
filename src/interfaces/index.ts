@@ -1,5 +1,3 @@
-import { isCollapseMenu } from '../redux/actions/control.actions';
-
 export interface IUserInfo {
   userIdentityId: number;
   companyInfoId: number;
