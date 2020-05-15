@@ -3,10 +3,15 @@
     max-width: calc(100% - 234px);
     width: 100%;
     margin-top: 0px;
+    transition: all 0.3s linear;
 }
 
 main.collapse {
     .menu {
         width: 46px;
+    }
+
+    .content {
+        max-width: calc(100% - 320px);
     }
 }

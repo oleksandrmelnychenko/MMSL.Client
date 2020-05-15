@@ -27,9 +27,9 @@ const Dashboard: React.FC = () => {
     main: {
       left: '46px',
       top: '51px',
-      height: 'calc(100vh - 77px)',
-      boxShadow:
-        'rgba(0, 0, 0, 0.22) 3px 4px 3px 0px, rgba(0, 0, 0, 0.18) 3px 1px 6px 0px;',
+      height: 'calc(100vh - 81px)',
+      borderRight: '1px solid #e8e8e8',
+      boxShadow: 'none',
     },
   };
 
