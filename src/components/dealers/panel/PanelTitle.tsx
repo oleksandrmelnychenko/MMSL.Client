@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Stack, ActionButton } from 'office-ui-fabric-react';
+import { Text, Stack } from 'office-ui-fabric-react';
 
 import './panelTitle.scss';
 
@@ -21,18 +21,9 @@ export const PanelTitle: React.FC<PanelTitleProps> = (
       <Stack
         tokens={{ childrenGap: 20 }}
         horizontal
-        className="panelTitle__panelHeader">
+        className="panelTitle__panelHeader"
+      >
         <Text className="panelTitle__title">{props.title}</Text>
-
-        {/* <ActionButton
-          styles={{ root: { marginTop: '-3px' } }}
-          iconProps={{ iconName: 'Save' }}
-          allowDisabledFocus
-          onClick={() => {
-              props.onSaveClick();
-          }}>
-          Save
-        </ActionButton> */}
       </Stack>
     </div>
   );

@@ -1,8 +1,7 @@
-import { ManageDealerForm } from '../../components/dealers/dealerManaging/ManageDealerForm';
 import { createReducer } from '@reduxjs/toolkit';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import { IStore } from '../../interfaces/index';
-import { DealerAccount, PaginationInfo, Pagination } from '../../interfaces';
+import { DealerAccount, Pagination } from '../../interfaces';
 
 /// Dealer reducer state
 export class DealerState {
@@ -79,6 +78,7 @@ export const dealerReducer = createReducer(new DealerState(), (builder) =>
       state.selectedDealer = action.payload;
     })
     .addCase(dealerActions.updateDealerListPagination, (state, action) => {
+      debugger;
       state.dealerState.pagination = action.payload;
     })
     .addCase(dealerActions.updateDealerListPaginationInfo, (state, action) => {

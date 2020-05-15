@@ -1,5 +1,3 @@
-// TODO: Vadym probably remove this case
-export const CHANGE_DEALER_VIEW = 'dealer.CHANGE_DEALER_VIEW';
 export const GET_DEALERS_LIST = 'dealer.GET_DEALERS_LIST';
 export const GET_DEALERS_LIST_PAGINATED = 'dealer.GET_DEALERS_LIST_PAGINATED';
 export const GET_AND_SELECT_DEALER_BY_ID = 'dealer.GET_AND_SELECT_DEALER_BY_ID';

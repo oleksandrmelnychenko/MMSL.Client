@@ -1,3 +1,4 @@
+import { CustomerState, customerReducer } from './customer.reducer';
 import { UnitsState, unitsReducer } from './units.reducer';
 import { combineReducers } from '@reduxjs/toolkit';
 import { localizeReducer, LocalizeState } from 'react-localize-redux';
@@ -14,6 +15,7 @@ export interface IApplicationState {
   localize: LocalizeState;
   dealer: DealerState;
   units: UnitsState;
+  customer: CustomerState;
 }
 
 export const reducer = combineReducers({
@@ -23,4 +25,5 @@ export const reducer = combineReducers({
   localize: localizeReducer,
   dealer: dealerReducer,
   units: unitsReducer,
+  customer: customerReducer,
 });

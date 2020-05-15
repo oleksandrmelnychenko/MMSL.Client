@@ -4,12 +4,13 @@ import { SearchBox, ActionButton, Stack } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import CustomerList from './CustomerList';
+import * as customerActions from '../../redux/actions/customer.actions';
 
 export const Customers: React.FC = (props: any) => {
   const dispatch = useDispatch();
 
   const searchText = useSelector<IApplicationState, string>(
-    (state) => state.dealer.dealerState.search
+    (state) => state.customer.customerState.search
   );
 
   return (
@@ -42,16 +43,18 @@ export const Customers: React.FC = (props: any) => {
                           value={searchText}
                           styles={{ root: { width: 200 } }}
                           onChange={(args: any) => {
-                            ///TODO
-                            debugger;
-                            // if (args) {
-                            //   let value = args.target.value;
-                            //   dispatch(dealerActions.searchDealer(value));
-                            //   dispatch(dealerActions.getDealersListPaginated());
-                            // } else {
-                            //   dispatch(dealerActions.searchDealer(''));
-                            //   dispatch(dealerActions.getDealersListPaginated());
-                            // }
+                            if (args) {
+                              let value = args.target.value;
+                              dispatch(customerActions.searchCustomer(value));
+                              dispatch(
+                                customerActions.getCustomersListPaginated()
+                              );
+                            } else {
+                              dispatch(customerActions.searchCustomer(''));
+                              dispatch(
+                                customerActions.getCustomersListPaginated()
+                              );
+                            }
                           }}
                         />
                       </div>
