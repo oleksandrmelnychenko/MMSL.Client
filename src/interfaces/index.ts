@@ -34,16 +34,6 @@ export interface IControlState {
   componentInPanelInfo: any;
 }
 
-export interface IDealer {
-  dealerInfo: string;
-  rejected: string;
-  processing: string;
-  stitching: string;
-  stitched: string;
-  dispatched: string;
-  delivered: string;
-}
-
 export class EntityBase {
   constructor() {
     this.id = 0;
@@ -52,6 +42,18 @@ export class EntityBase {
 
   id: number;
   isDeleted: boolean;
+}
+
+export class EntityBaseNamed extends EntityBase {
+  constructor() {
+    super();
+
+    this.name = '';
+    this.description = '';
+  }
+
+  name: string;
+  description: string;
 }
 
 export interface IStore {
@@ -200,4 +202,35 @@ export class PaginationInfo {
   pageSize: number;
   pageNumber: number;
   pagesCount: number;
+}
+
+export class StoreCustomer extends EntityBase {
+  constructor() {
+    super();
+    this.userName = '';
+    this.customerName = '';
+    this.email = '';
+    this.phoneNumber = '';
+    this.birthDate = '';
+    this.useBillingAsDeliveryAddress = false;
+    this.billingAddressId = null;
+    this.billingAddress = null;
+    this.deliveryAddressId = null;
+    this.deliveryAddress = null;
+    this.storeId = null;
+    this.store = null;
+  }
+
+  userName: string;
+  customerName: string;
+  email: string;
+  phoneNumber: string;
+  birthDate: string;
+  useBillingAsDeliveryAddress: boolean;
+  billingAddressId: number | null;
+  billingAddress: Address | null;
+  deliveryAddressId: number | null;
+  deliveryAddress: Address | null;
+  storeId: number | null;
+  store: IStore | null;
 }

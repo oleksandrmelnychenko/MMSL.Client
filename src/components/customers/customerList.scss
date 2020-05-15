@@ -1,0 +1,15 @@
+.customerList {
+    position: absolute;
+    height: calc(100% - 75px);
+    width: calc(100% - 26px);
+    overflow-y: scroll;
+
+    &__content {
+        max-height: 681px;
+    }
+
+    &__footer {
+        position: absolute;
+        bottom: 0;
+    }
+}

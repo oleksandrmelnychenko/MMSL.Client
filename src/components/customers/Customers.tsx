@@ -3,6 +3,7 @@ import React from 'react';
 import { SearchBox, ActionButton, Stack } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
+import CustomerList from './CustomerList';
 
 export const Customers: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -60,9 +61,9 @@ export const Customers: React.FC = (props: any) => {
               </div>
             </div>
           </Stack.Item>
-          {/* <Stack.Item>
-            <DealerList />
-          </Stack.Item> */}
+          <Stack.Item>
+            <CustomerList />
+          </Stack.Item>
         </Stack>
       </div>
     </div>
