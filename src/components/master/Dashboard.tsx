@@ -12,7 +12,7 @@ import { IApplicationState } from '../../redux/reducers/index';
 import { Panel, PanelType } from 'office-ui-fabric-react';
 import * as controlAction from '../../redux/actions/control.actions';
 
-import ManagementOptions from '../dealers/management-options/ManagementOptions';
+import ManagementOptions from '../dealers/dealerManaging/ManagementOptions';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
@@ -50,8 +50,7 @@ const Dashboard: React.FC = () => {
           isBlocking={false}
           styles={stylesPanelInfo}
           isOpen={isOpenPanelInfo}
-          onDismiss={dismissPanelInfo}
-        >
+          onDismiss={dismissPanelInfo}>
           <ManagementOptions />
         </Panel>
 

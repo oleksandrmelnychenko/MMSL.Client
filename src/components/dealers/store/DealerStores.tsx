@@ -7,12 +7,12 @@ import {
   Separator,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
-import { IApplicationState } from '../../redux/reducers/index';
-import { DealerAccount } from '../../interfaces';
-import * as dealerActions from '../../redux/actions/dealer.actions';
-import { IStore } from '../../interfaces/index';
+import { IApplicationState } from '../../../redux/reducers/index';
+import { DealerAccount } from '../../../interfaces';
+import * as dealerActions from '../../../redux/actions/dealer.actions';
+import { IStore } from '../../../interfaces/index';
 import { Stack } from 'office-ui-fabric-react';
-import FormStore from './store/FormStore';
+import FormStore from './FormStore';
 
 export const DealerStores: React.FC = () => {
   const dispatch = useDispatch();

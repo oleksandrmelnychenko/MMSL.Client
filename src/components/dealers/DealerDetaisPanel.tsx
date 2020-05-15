@@ -3,7 +3,7 @@ import './dealers.scss';
 import { DefaultButton, Panel, PanelType } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
-import DealerStores from './DealerStores';
+import DealerStores from './store/DealerStores';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 
 import { useConstCallback } from '@uifabric/react-hooks';
@@ -62,8 +62,7 @@ export const DealerDetailsPanel: React.FC = (props: any) => {
             new ToggleDealerPanelWithDetails()
           )
         );
-      }}
-    >
+      }}>
       {/* TODO */}
       {panelContent}
     </Panel>
