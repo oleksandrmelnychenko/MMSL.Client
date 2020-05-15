@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import { Field, Formik, Form } from 'formik';
 import {
@@ -8,13 +8,26 @@ import {
   PrimaryButton,
 } from 'office-ui-fabric-react';
 import { Text, ITextProps } from 'office-ui-fabric-react/lib/Text';
-import { IStore } from '../../../interfaces';
+import { IStore, INewStore } from '../../../interfaces';
+import * as dealerActions from '../../../redux/actions/dealer.actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { IApplicationState } from '../../../redux/reducers/index';
+import { getTranslate, LocalizeState } from 'react-localize-redux';
 
 interface IFormStoreProps {
   store: IStore[] | null;
 }
 
 const FormStore: React.FC<IFormStoreProps> = (props) => {
+  const dispatch = useDispatch();
+  const selectedDealerId = useSelector<IApplicationState, number | undefined>(
+    (state) => state.dealer.selectedDealer?.id
+  );
+
+  const translate = getTranslate(
+    useSelector<IApplicationState, LocalizeState>((state) => state.localize)
+  );
+
   const selectedStore = props.store ? props.store[0] : null;
   const textFildLabelStyles = {
     subComponentStyles: {
@@ -25,6 +38,50 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
         },
       },
     },
+  };
+  const builderAddStore = (value: any) => {
+    let storeData: INewStore;
+    if (selectedDealerId) {
+      storeData = {
+        address: {
+          addressLine1: value.addressLine1,
+          addressLine2: value.addressLine2,
+          city: value.city,
+          state: value.state,
+          country: value.country,
+          zipCode: value.zip,
+        },
+        dealerAccountId: selectedDealerId,
+        contactEmail: value.contactEmail,
+        billingEmail: value.billingEmail,
+        name: value.nameStore,
+      };
+      return storeData;
+    }
+  };
+
+  const builderUpdateStore = (value: any) => {
+    if (selectedStore) {
+      const updateStore: IStore = {
+        addressId: selectedStore?.addressId,
+        address: {
+          addressLine1: value.addressLine1,
+          addressLine2: value.addressLine2,
+          city: value.city,
+          state: value.state,
+          country: value.country,
+          zipCode: value.zip,
+          id: selectedStore?.address.id,
+          isDeleted: selectedStore?.address.isDeleted,
+        },
+        contactEmail: value.contactEmail,
+        billingEmail: value.billingEmail,
+        name: value.nameStore,
+        // description: null,
+        id: selectedStore?.id,
+      };
+      return updateStore;
+    }
   };
 
   const initValue = () => {
@@ -75,8 +132,21 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
           zip: Yup.string().notRequired(),
         })}
         initialValues={initValue()}
-        onSubmit={(values: any) => {
-          console.log(values);
+        onSubmit={(values: any, { resetForm }) => {
+          if (selectedStore) {
+            dispatch(
+              dealerActions.updateDealerStore(
+                builderUpdateStore(values) as IStore
+              )
+            );
+          } else {
+            dispatch(
+              dealerActions.addStoreToCurrentDealer(
+                builderAddStore(values) as INewStore
+              )
+            );
+            resetForm();
+          }
         }}
         enableReinitialize={true}
         validateOnBlur={false}>
@@ -282,7 +352,11 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                 </div>
               </Stack>
               <PrimaryButton
-                text="Save"
+                text={
+                  selectedStore
+                    ? (translate('updateStore') as string)
+                    : (translate('createStore') as string)
+                }
                 allowDisabledFocus
                 onClick={() => {
                   console.log(formik);

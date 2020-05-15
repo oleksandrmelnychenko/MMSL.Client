@@ -106,6 +106,14 @@
     ""
   ],
 
+  "updateStore": ["Update store",
+    ""
+  ],
+
+  "createStore": ["Create store",
+    ""
+  ],
+
   "counterVarieties": [
     "Number of varieties selected",
     ""

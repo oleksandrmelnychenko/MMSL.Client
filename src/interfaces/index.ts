@@ -56,13 +56,31 @@ export class EntityBase {
 
 export interface IStore {
   address: Address;
-  addressId: number;
+  addressId?: number;
   billingEmail: string;
   contactEmail: string;
-  description: string;
-  id: number;
-  isDeleted: boolean;
+  description?: string;
+  id?: number;
+  isDeleted?: boolean;
   name: string;
+}
+
+export interface INewStore {
+  name: string;
+  dealerAccountId: number | null;
+  addressId?: number;
+  address: IAddress;
+  billingEmail: string;
+  contactEmail: string;
+}
+
+export interface IAddress {
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  state: string;
+  country: string;
+  zipCode: string;
 }
 
 export enum Currency {
