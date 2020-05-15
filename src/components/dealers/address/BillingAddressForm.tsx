@@ -44,45 +44,8 @@ export class FormicReference {
   formik: any;
 }
 
-/// TOODO: resolve with Linq
-// const resolveDefaultDropDownValue = (
-//   limitOptions: any[],
-//   initLimit: number
-// ) => {
-//   let result;
-//   limitOptions.forEach((option) => {
-//     if (option.key === `${initLimit}`) {
-//       result = option;
-//     }
-//   });
-//   if (result === undefined || null) {
-//     result = limitOptions[0];
-//   }
-//   return result;
-// };
-
 const buildDealerAccount = (values: any, sourceDealer?: DealerAccount) => {
   let dealerAccount: DealerAccount;
-  // {
-  //   id: 0,
-  //   isDeleted: false,
-  //   companyName: values.companyName,
-  //   email: values.email,
-  //   alternateEmail: values.alternativeEmail,
-  //   phoneNumber: values.phoneNumber,
-  //   taxNumber: values.taxNumber,
-  //   isVatApplicable: values.vatApplicate,
-  //   currencyTypeId: parseInt(values.selectCurrency),
-  //   paymentTypeId: parseInt(values.selectPayment),
-  //   isCreditAllowed: values.creditAllowed,
-  //   billingAddressId: null,
-  //   billingAddress: null,
-  //   useBillingAsShipping: values.useBillingAsShipping,
-  //   shippingAddressId: null,
-  //   /// TODO:
-  //   shippingAddress: null,
-  //   stores: [],
-  // } as DealerAccount;
 
   if (sourceDealer) {
     dealerAccount = { ...sourceDealer };
@@ -92,84 +55,17 @@ const buildDealerAccount = (values: any, sourceDealer?: DealerAccount) => {
 
   dealerAccount.useBillingAsShipping = values.useBillingAsShipping;
 
-  let billingAddress = {
-    addressLine1: values.addressLine1,
-    addressLine2: values.addressLine2,
-    city: values.city,
-    state: values.state,
-    country: values.country,
-    zipCode: values.zip,
-  } as Address;
+  let billingAddress = { ...sourceDealer?.billingAddress } as Address;
+  billingAddress.addressLine1 = values.addressLine1;
+  billingAddress.addressLine2 = values.addressLine2;
+  billingAddress.city = values.city;
+  billingAddress.state = values.state;
+  billingAddress.country = values.country;
+  billingAddress.zipCode = values.zip;
 
-  dealerAccount.billingAddressId = billingAddress.id;
   dealerAccount.billingAddress = billingAddress;
 
-  // if (sourceDealer !== null && sourceDealer !== undefined) {
-  //   dealerAccount.id = sourceDealer.id;
-  //   dealerAccount.isDeleted = sourceDealer.isDeleted;
-  //   dealerAccount.billingAddressId = sourceDealer.billingAddressId;
-  //   dealerAccount.shippingAddressId = sourceDealer.shippingAddressId;
-
-  //   if (
-  //     sourceDealer.billingAddress !== null &&
-  //     sourceDealer.billingAddress !== undefined
-  //   ) {
-  //     dealerAccount.billingAddress.id = sourceDealer.billingAddress.id;
-  //     dealerAccount.billingAddress.isDeleted =
-  //       sourceDealer.billingAddress.isDeleted;
-  //   }
-  // }
-
   return dealerAccount;
-
-  // let dealerAccount: DealerAccount = {
-  //   id: 0,
-  //   isDeleted: false,
-  //   companyName: values.companyName,
-  //   email: values.email,
-  //   alternateEmail: values.alternativeEmail,
-  //   phoneNumber: values.phoneNumber,
-  //   taxNumber: values.taxNumber,
-  //   isVatApplicable: values.vatApplicate,
-  //   currencyTypeId: parseInt(values.selectCurrency),
-  //   paymentTypeId: parseInt(values.selectPayment),
-  //   isCreditAllowed: values.creditAllowed,
-  //   billingAddressId: null,
-  //   billingAddress: null,
-  //   useBillingAsShipping: values.useBillingAsShipping,
-  //   shippingAddressId: null,
-  //   /// TODO:
-  //   shippingAddress: null,
-  //   stores: [],
-  // } as DealerAccount;
-  // let billingAddress = {
-  //   addressLine1: values.addressLine1,
-  //   addressLine2: values.addressLine2,
-  //   city: values.city,
-  //   state: values.state,
-  //   country: values.country,
-  //   zipCode: values.zip,
-  // } as Address;
-  // if (sourceDealer) {
-  //   sourceDealer.billingAddress = billingAddress;
-  // }
-  // dealerAccount.billingAddress = billingAddress;
-  // if (sourceDealer !== null && sourceDealer !== undefined) {
-  //   let foo = { ...sourceDealer };
-  //   dealerAccount.id = sourceDealer.id;
-  //   dealerAccount.isDeleted = sourceDealer.isDeleted;
-  //   dealerAccount.billingAddressId = sourceDealer.billingAddressId;
-  //   dealerAccount.shippingAddressId = sourceDealer.shippingAddressId;
-  //   if (
-  //     sourceDealer.billingAddress !== null &&
-  //     sourceDealer.billingAddress !== undefined
-  //   ) {
-  //     dealerAccount.billingAddress.id = sourceDealer.billingAddress.id;
-  //     dealerAccount.billingAddress.isDeleted =
-  //       sourceDealer.billingAddress.isDeleted;
-  //   }
-  // }
-  // return dealerAccount;
 };
 
 const initDefaultValues = (account?: DealerAccount | null) => {
@@ -237,7 +133,8 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
             buildDealerAccount(values, props.dealerAccount as DealerAccount)
           );
         }}
-        validateOnBlur={false}>
+        validateOnBlur={false}
+      >
         {(formik) => {
           props.formikReference.formik = formik;
 
@@ -267,7 +164,8 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                 />
                               </div>
                             );
-                          }}></Field>
+                          }}
+                        ></Field>
                         <Field
                           name="addressLine2"
                           render={() => {
@@ -286,7 +184,8 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                 />
                               </div>
                             );
-                          }}></Field>
+                          }}
+                        ></Field>
                         <Stack horizontal tokens={{ childrenGap: 20 }}>
                           <Stack grow={1}>
                             <Field
@@ -307,7 +206,8 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                     />
                                   </div>
                                 );
-                              }}></Field>
+                              }}
+                            ></Field>
                             <Field
                               name="country"
                               render={() => {
@@ -326,7 +226,8 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                     />
                                   </div>
                                 );
-                              }}></Field>
+                              }}
+                            ></Field>
                           </Stack>
                           <Stack grow={1}>
                             <Field
@@ -347,7 +248,8 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                     />
                                   </div>
                                 );
-                              }}></Field>
+                              }}
+                            ></Field>
                             <Field
                               name="zip"
                               render={() => {
@@ -366,7 +268,8 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                     />
                                   </div>
                                 );
-                              }}></Field>
+                              }}
+                            ></Field>
                           </Stack>
                         </Stack>
                       </div>
@@ -402,7 +305,8 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                   />
                                 </div>
                               );
-                            }}></Field>
+                            }}
+                          ></Field>
                         </Stack.Item>
                       </Stack>
                     </div>
