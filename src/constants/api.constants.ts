@@ -11,6 +11,7 @@ export const GET_DEALER_BY_ID = '/dealer/accounts/get';
 export const GET_STORES_BY_DEALER = '/stores/get/all/dealer';
 export const UPDATE_DEALER_STORE = '/stores/update/store';
 export const CREATE_DEALER_STORE = '/stores/new/store';
+export const DELETE_CURRENT_DEALER_STORE = '/stores/delete/store';
 
 export const GET_CURRENCIES_ALL = '/types/currency/get';
 export const GET_PAYMENT_TYPES_ALL = '/types/payment/get';

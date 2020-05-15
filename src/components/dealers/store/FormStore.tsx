@@ -169,6 +169,13 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                             formik.setFieldTouched('nameStore');
                           }}
                         />
+                        {formik.errors.nameStore && formik.touched.nameStore ? (
+                          <Text
+                            variant={'small' as ITextProps['variant']}
+                            className="dealerForm__inputBlock__error">
+                            {formik.errors.nameStore}
+                          </Text>
+                        ) : null}
                       </div>
                     )}
                   </Field>

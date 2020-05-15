@@ -15,6 +15,7 @@ import {
   ajaxPostResponse,
   ajaxGetWebResponse,
   ajaxPutResponse,
+  ajaxDeleteResponse,
 } from '../../helpers/epic.helper';
 import * as api from '../../constants/api.constants';
 
@@ -277,3 +278,38 @@ export const addStoreToCurrentDealerEpic = (
     })
   );
 };
+
+// export const deleteCurrentDealerStoreEpic = (
+//   action$: AnyAction,
+//   state$: any
+// ) => {
+//   return action$.pipe(
+//     ofType(dealerTypes.DELETE_CURRENT_DEALER_STORE),
+//     switchMap((action: AnyAction) => {
+//       const languageCode = getActiveLanguage(state$.value.localize).code;
+//       return ajaxDeleteResponse(api.GET_STORES_BY_DEALER, state$.value, [
+//         { key: 'storeId', value: `${action.payload}` },
+//       ]).pipe(
+//         mergeMap((successResponse: any) => {
+//           let successResultFlow = [
+//             dealerActions.setDealerStores(successResponse),
+
+//             ...extractSuccessPendingActions(action),
+//           ];
+
+//           return from(successResultFlow);
+//         }),
+//         catchError((errorResponse: any) => {
+//           return checkUnauthorized(errorResponse.status, languageCode, () => {
+//             let errorResultFlow = [
+//               { type: 'ERROR_GET_STORES_BY_DEALERS_ID' },
+//               ...extractErrorPendingActions(action),
+//             ];
+
+//             return from(errorResultFlow);
+//           });
+//         })
+//       );
+//     })
+//   );
+// };

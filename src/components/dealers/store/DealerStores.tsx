@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  PrimaryButton,
   FocusZone,
   FocusZoneDirection,
   Separator,
@@ -16,6 +15,7 @@ import { Stack } from 'office-ui-fabric-react';
 import FormStore from './FormStore';
 import PanelTitle from '../panel/PanelTitle';
 import { FormicReference } from '../dealerManaging/ManageDealerForm';
+import { commandBarButtonStyles } from '../../../common/fabric-styles/styles';
 
 export const DealerStores: React.FC = () => {
   const dispatch = useDispatch();
@@ -63,18 +63,14 @@ export const DealerStores: React.FC = () => {
 
   const _items: ICommandBarItemProps[] = [
     {
-      key: 'Add',
-      text: 'Add',
+      key: 'New',
+      text: 'New',
       iconProps: { iconName: 'Add' },
       onClick: () => {
         setSelectedStore(null);
         setIsOpenForm(true);
       },
-      buttonStyles: {
-        root: {
-          background: 'transparent',
-        },
-      },
+      buttonStyles: commandBarButtonStyles,
     },
     {
       key: 'Save',
@@ -82,24 +78,30 @@ export const DealerStores: React.FC = () => {
       iconProps: { iconName: 'Save' },
       onClick: () => {
         formikReference.formik.submitForm();
-        console.log('Save');
       },
-      buttonStyles: {
-        root: {
-          background: 'transparent',
-        },
-      },
+      buttonStyles: commandBarButtonStyles,
+    },
+    {
+      key: 'Reset',
+      text: 'Reset',
+      iconProps: { iconName: 'Refresh' },
+      onClick: () => {},
+      buttonStyles: commandBarButtonStyles,
     },
     {
       key: 'Delete',
       text: 'Delete',
       iconProps: { iconName: 'Delete' },
-      onClick: () => console.log('Delete'),
-      buttonStyles: {
-        root: {
-          background: 'transparent',
-        },
+      onClick: () => {
+        if (selectedStore) {
+          dispatch(
+            dealerActions.deleteCurrentDealerStore(
+              selectedStore[0].id as number
+            )
+          );
+        }
       },
+      buttonStyles: commandBarButtonStyles,
     },
   ];
 
@@ -107,6 +109,7 @@ export const DealerStores: React.FC = () => {
     root: {
       background: '#edebe9',
       borderRadius: '6px',
+      marginBottom: '30px',
     },
     primarySet: {
       color: '#323130',
