@@ -12,9 +12,9 @@ import {
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
-import * as dealerActions from '../../redux/actions/dealer.actions';
+import * as customerActions from '../../redux/actions/customer.actions';
 import * as controlActions from '../../redux/actions/control.actions';
-import { DealerAccount, Pagination } from '../../interfaces';
+import { DealerAccount, Pagination, StoreCustomer } from '../../interfaces';
 import { assignPendingActions } from '../../helpers/action.helper';
 
 const _columnIconButtonStyle = {
@@ -37,15 +37,15 @@ const _customerColumns: IColumn[] = [
     },
   },
   {
-    key: 'name',
-    name: 'Name',
+    key: 'userName',
+    name: 'User Name',
     minWidth: 70,
     maxWidth: 90,
     isResizable: true,
     isCollapsible: true,
     data: 'string',
     onRender: (item: any) => {
-      return <Text>{item.name}</Text>;
+      return <Text>{item.userName}</Text>;
     },
     isPadded: true,
   },
@@ -118,11 +118,6 @@ const _customerColumns: IColumn[] = [
 
 export const CustomerList: React.FC = () => {
   const dispatch = useDispatch();
-  /// TODO: important
-  //   const dealers: DealerAccount[] = useSelector<
-  //     IApplicationState,
-  //     DealerAccount[]
-  //   >((state) => state.dealer.dealerState.dealersList);
 
   const [selection] = useState(
     new Selection({
@@ -136,6 +131,11 @@ export const CustomerList: React.FC = () => {
       },
     })
   );
+
+  const customers: StoreCustomer[] = useSelector<
+    IApplicationState,
+    StoreCustomer[]
+  >((state) => state.customer.customerState.customersList);
 
   /// TODO: important
   //   const pagination: Pagination = useSelector<IApplicationState, Pagination>(
@@ -161,8 +161,7 @@ export const CustomerList: React.FC = () => {
   //   }, [isCollapseMenu, selection]);
 
   useEffect(() => {
-    /// TODO: important
-    // dispatch(dealerActions.getDealersListPaginated());
+    dispatch(customerActions.getCustomersListPaginated());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -193,7 +192,7 @@ export const CustomerList: React.FC = () => {
     <div className="customerList">
       <MarqueeSelection selection={selection}>
         <DetailsList
-          items={[]}
+          items={customers}
           selection={selection}
           selectionMode={SelectionMode.single}
           columns={_customerColumns}

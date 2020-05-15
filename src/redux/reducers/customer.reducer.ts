@@ -27,9 +27,19 @@ export class CustomerListState {
   search: string;
 }
 
-export const dealerReducer = createReducer(new CustomerState(), (builder) =>
-  builder.addCase(
-    customerActions.getCustomersListPaginated,
-    (state, action) => {}
-  )
+export const customerReducer = createReducer(new CustomerState(), (builder) =>
+  builder
+    .addCase(customerActions.updateCustomersList, (state, action) => {
+      state.customerState.customersList = action.payload;
+    })
+    .addCase(
+      customerActions.updateCustomersListPaginationInfo,
+      (state, action) => {
+        state.customerState.pagination.paginationInfo = action.payload;
+      }
+    )
+    .addCase(customerActions.searchCustomer, (state, action) => {
+      debugger;
+      state.customerState.search = action.payload;
+    })
 );

@@ -27,7 +27,7 @@ export const getDealersListEpic = (action$: AnyAction, state$: any) => {
         mergeMap((successResponse: any) => {
           let successResultFlow = [
             dealerActions.updateDealersList(successResponse.entities),
-            dealerActions.updateDealerListPagination(
+            dealerActions.updateDealerListPaginationInfo(
               successResponse.paginationInfo
             ),
             ...extractSuccessPendingActions(action),
@@ -58,7 +58,9 @@ export const getDealersListPaginatedEpic = (
     ofType(dealerTypes.GET_DEALERS_LIST_PAGINATED),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
+
       const pagination: Pagination = state$.value.dealer.dealerState.pagination;
+
       return ajaxGetWebResponse(api.GET_DEALERS_ALL, state$.value, [
         { key: 'pageNumber', value: `${pagination.paginationInfo.pageNumber}` },
         { key: 'limit', value: `${pagination.limit}` },

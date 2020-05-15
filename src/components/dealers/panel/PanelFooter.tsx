@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack, ActionButton } from 'office-ui-fabric-react';
+import { ActionButton } from 'office-ui-fabric-react';
 
 import './panel-footer.scss';
 
@@ -23,7 +23,8 @@ export const PanelFooter: React.FC<PanelFooterProps> = (
           if (props.onSaveClick) {
             props.onSaveClick();
           }
-        }}>
+        }}
+      >
         Save
       </ActionButton>
     </div>
