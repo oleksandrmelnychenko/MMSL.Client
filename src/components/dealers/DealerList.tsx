@@ -144,6 +144,16 @@ export const DealerList: React.FC = () => {
     DealerAccount | null
   >((state) => state.dealer.selectedDealer);
 
+  const isCollapseMenu: boolean = useSelector<IApplicationState, boolean>(
+    (state) => state.control.isCollapseMenu
+  );
+
+  useEffect(() => {
+    if (!isCollapseMenu) {
+      selection.setAllSelected(false);
+    }
+  }, [isCollapseMenu, selection]);
+
   useEffect(() => {
     dispatch(dealerActions.getDealersListPaginated());
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -169,15 +179,6 @@ export const DealerList: React.FC = () => {
     dispatch(controlActions.isCollapseMenu(false));
     dispatch(controlActions.isOpenPanelInfo(false));
   };
-
-  if (!selectedDealer) {
-    console.log(`foo`);
-    if (!selectedDealer) {
-      selection.setAllSelected(false);
-    }
-  } else {
-    console.log('foo selected');
-  }
 
   return (
     <div className="dealerList">
