@@ -1,0 +1,17 @@
+.createDealerPanel {
+    &__panelHeader {
+        position: absolute;
+        left: 24px;
+
+
+        // &__save {
+        //     margin-left: 38px !important;
+        // }
+    }
+
+    &__title {
+        color: #484848;
+        font-size: 22px;
+        font-weight: 600;
+    }
+}
