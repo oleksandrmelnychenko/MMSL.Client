@@ -1,3 +1,4 @@
+import { UnitsState, unitsReducer } from './units.reducer';
 import { combineReducers } from '@reduxjs/toolkit';
 import { localizeReducer, LocalizeState } from 'react-localize-redux';
 import { routerReducer, RouterState } from 'react-router-redux';
@@ -12,6 +13,7 @@ export interface IApplicationState {
   routing: RouterState;
   localize: LocalizeState;
   dealer: DealerState;
+  units: UnitsState;
 }
 
 export const reducer = combineReducers({
@@ -20,4 +22,5 @@ export const reducer = combineReducers({
   routing: routerReducer,
   localize: localizeReducer,
   dealer: dealerReducer,
+  units: unitsReducer,
 });

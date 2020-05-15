@@ -93,6 +93,30 @@ export enum PaymentType {
   Cash = 1,
 }
 
+export class CurrencyF extends EntityBase {
+  constructor() {
+    super();
+
+    this.name = '';
+    this.description = '';
+  }
+
+  name: string;
+  description: string;
+}
+
+export class PaymentTypeF extends EntityBase {
+  constructor() {
+    super();
+
+    this.name = '';
+    this.description = '';
+  }
+
+  name: string;
+  description: string;
+}
+
 export class DealerAccount extends EntityBase {
   constructor() {
     super();
