@@ -1,20 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './dealers.scss';
-import {
-  DefaultButton,
-  SearchBox,
-  ActionButton,
-  Stack,
-  Panel,
-  PanelType,
-  PrimaryButton,
-  Text,
-  Label,
-  getId,
-} from 'office-ui-fabric-react';
+import { SearchBox, ActionButton, Stack } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
-import { LocalizeState, getActiveLanguage } from 'react-localize-redux';
 import CreateDealerPanel from './dealerManaging/CreateDealerPanel';
 import DealerList from './DealerList';
 import * as dealerActions from '../../redux/actions/dealer.actions';
@@ -22,37 +10,15 @@ import {
   DatePicker,
   DayOfWeek,
   IDatePickerStrings,
-  mergeStyleSets,
 } from 'office-ui-fabric-react';
-import { ToggleDealerPanelWithDetails } from '../../redux/reducers/dealer.reducer';
-import DealerDetails from './DealerDetails';
 import DealerDetailsPanel from './DealerDetaisPanel';
-import { ofType } from 'redux-observable';
 
 export const Dealers: React.FC = (props: any) => {
   const dispatch = useDispatch();
 
-  const localize = useSelector<IApplicationState, LocalizeState>(
-    (state) => state.localize
-  );
-
   const searchText = useSelector<IApplicationState, string>(
     (state) => state.dealer.dealerState.search
   );
-
-  const isOpenPanelWithDealerDetails: ToggleDealerPanelWithDetails = useSelector<
-    IApplicationState,
-    ToggleDealerPanelWithDetails
-  >((state) => state.dealer.isOpenPanelWithDealerDetails);
-
-  const languageCode = getActiveLanguage(localize).code;
-
-  const controlClass = mergeStyleSets({
-    control: {
-      margin: '0 0 15px 0',
-      maxWidth: '300px',
-    },
-  });
 
   const DayPickerStrings: IDatePickerStrings = {
     months: [
@@ -124,8 +90,7 @@ export const Dealers: React.FC = (props: any) => {
                           onClick={() =>
                             dispatch(dealerActions.toggleNewDealerForm(true))
                           }
-                          iconProps={{ iconName: 'Add' }}
-                        >
+                          iconProps={{ iconName: 'Add' }}>
                           New dealer
                         </ActionButton>
                       </div>
