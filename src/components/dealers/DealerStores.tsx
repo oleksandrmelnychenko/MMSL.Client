@@ -59,6 +59,10 @@ export const DealerStores: React.FC = () => {
     );
   };
 
+  const btnStyles = {
+    root: { marginTop: '20px' },
+  };
+
   return (
     <div>
       <Text block className="dealer__title">
@@ -74,17 +78,19 @@ export const DealerStores: React.FC = () => {
               })}{' '}
             </div>
           </FocusZone>
-          {/* //TODO delete after adding styles */}
-          <br />
-          <PrimaryButton
-            text="Add Store"
-            onClick={() => {
-              setSelectedStore(null);
-              setIsOpenForm(true);
-            }}
-            allowDisabledFocus
-          />
+          <Stack>
+            <PrimaryButton
+              styles={btnStyles}
+              text="Add Store"
+              onClick={() => {
+                setSelectedStore(null);
+                setIsOpenForm(true);
+              }}
+              allowDisabledFocus
+            />
+          </Stack>
         </Stack>
+
         <Stack grow={1} tokens={{ maxWidth: '50%' }}>
           {isOpenForm ? <FormStore store={selectedStore} /> : null}
         </Stack>
