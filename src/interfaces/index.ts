@@ -84,12 +84,12 @@ export interface IAddress {
 }
 
 export enum Currency {
-  USD = 0,
+  USD = 2,
   EUR = 1,
 }
 
 export enum PaymentType {
-  BankTransfer = 0,
+  BankTransfer = 2,
   Cash = 1,
 }
 
@@ -97,6 +97,7 @@ export class DealerAccount extends EntityBase {
   constructor() {
     super();
 
+    this.name = '';
     this.companyName = '';
     this.email = '';
     this.alternateEmail = '';
@@ -114,6 +115,7 @@ export class DealerAccount extends EntityBase {
     this.stores = [];
   }
 
+  name: string;
   companyName: string;
   email: string;
   alternateEmail: string;
@@ -153,7 +155,7 @@ export class Address extends EntityBase {
 
 export class Pagination {
   constructor() {
-    this.limit = 4;
+    this.limit = 15;
     this.paginationInfo = new PaginationInfo();
     this.paginationInfo.pageNumber = 1;
   }

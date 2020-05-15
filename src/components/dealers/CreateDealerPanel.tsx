@@ -72,7 +72,6 @@ export const CreateDealerPanel: React.FC = (props: any) => {
       <ManageDealerForm
         formikReference={formikReference}
         submitAction={(args: any) => {
-          debugger;
           /// Old needed
           let createAction = assignPendingActions(
             dealerActions.saveNewDealer(args),

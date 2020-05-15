@@ -69,6 +69,7 @@ const buildDealerAccount = (values: any, sourceDealer?: DealerAccount) => {
     id: 0,
     isDeleted: false,
     companyName: values.companyName,
+    name: values.name,
     email: values.email,
     alternateEmail: values.alternativeEmail,
     phoneNumber: values.phoneNumber,
@@ -119,6 +120,7 @@ const buildDealerAccount = (values: any, sourceDealer?: DealerAccount) => {
 const initDefaultValues = (account?: DealerAccount | null) => {
   const formikInitValues = {
     companyName: '',
+    name: '',
     email: '',
     alternativeEmail: '',
     phoneNumber: '',
@@ -138,6 +140,7 @@ const initDefaultValues = (account?: DealerAccount | null) => {
 
   if (account !== null && account !== undefined) {
     formikInitValues.companyName = account.companyName;
+    formikInitValues.name = account.name;
     formikInitValues.email = account.email;
     formikInitValues.alternativeEmail = account.alternateEmail;
     formikInitValues.phoneNumber = account.phoneNumber;
@@ -196,7 +199,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
 
   const currencyOptions = [
     {
-      key: '1',
+      key: '2',
       text: 'USD',
       value: Currency.USD,
     } as IDropdownOption,
@@ -227,6 +230,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
       <Formik
         validationSchema={Yup.object().shape({
           companyName: Yup.string().required(() => 'Company name is required'),
+          name: Yup.string().required(() => 'Name is required'),
           email: Yup.string()
             .email('Invalid email')
             .required(() => 'Email is required'),
@@ -294,7 +298,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                         );
                       }}
                     ></Field>
-                    {/* <Field
+                    <Field
                       name="name"
                       render={() => {
                         return (
@@ -321,7 +325,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                           </div>
                         );
                       }}
-                    ></Field> */}
+                    ></Field>
                     <Field
                       name="email"
                       render={() => {
