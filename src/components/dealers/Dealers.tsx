@@ -15,8 +15,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import { LocalizeState, getActiveLanguage } from 'react-localize-redux';
-import CreateDealer from './CreateDealer';
-import DealerStores from './DealerStores';
+import CreateDealerPanel from './CreateDealerPanel';
 import DealerList from './DealerList';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import {
@@ -31,18 +30,10 @@ import DealerDetailsPanel from './DealerDetaisPanel';
 import { ofType } from 'redux-observable';
 
 export const Dealers: React.FC = (props: any) => {
-  const [formikReference] = useState({
-    formik: {},
-  });
-
   const dispatch = useDispatch();
 
   const localize = useSelector<IApplicationState, LocalizeState>(
     (state) => state.localize
-  );
-
-  const isAddDealerOpen = useSelector<IApplicationState, boolean>(
-    (state) => state.dealer.manageDealerForm.isFormVisible
   );
 
   const isOpenPanelWithDealerDetails: ToggleDealerPanelWithDetails = useSelector<
@@ -159,36 +150,7 @@ export const Dealers: React.FC = (props: any) => {
         </Stack>
 
         {/* Create new dealer panel */}
-        <Panel
-          isOpen={isAddDealerOpen}
-          type={PanelType.custom}
-          customWidth={'800px'}
-          onDismiss={() => {
-            dispatch(dealerActions.toggleNewDealerForm(false));
-          }}
-          onRenderHeader={() => {
-            return (
-              <Stack horizontal className="dealerPanelHeader">
-                <Text className="dealerPanelHeader__title">Add Dealer</Text>
-                <PrimaryButton
-                  className="dealerPanelHeader__save"
-                  onClick={() => {
-                    let formik: any = formikReference.formik;
-
-                    if (formik !== undefined && formik !== null) {
-                      formik.submitForm();
-                    }
-                  }}
-                >
-                  Save
-                </PrimaryButton>
-              </Stack>
-            );
-          }}
-          closeButtonAriaLabel="Close"
-        >
-          <CreateDealer formikReference={formikReference} />
-        </Panel>
+        <CreateDealerPanel />
 
         {/* Dealer details panel */}
         <DealerDetailsPanel />

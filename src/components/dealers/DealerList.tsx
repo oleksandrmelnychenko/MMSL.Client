@@ -14,7 +14,8 @@ import { IApplicationState } from '../../redux/reducers';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import * as controlActions from '../../redux/actions/control.actions';
 import ReactPaginate from 'react-paginate';
-import { DealerAccount, PaginationInfo } from '../../interfaces';
+import DealersTable from './DealersTable';
+import { DealerAccount, PaginationInfo, Pagination } from '../../interfaces';
 import DealersPagination from './DealersPagination';
 import { assignPendingActions } from '../../helpers/action.helper';
 
@@ -25,15 +26,16 @@ export const DealerList: React.FC = () => {
     DealerAccount[]
   >((state) => state.dealer.dealerState.dealersList);
 
-  const isIpdatingDealer = useSelector<IApplicationState, boolean>(
-    (state) => state.dealer.manageDealerForm.isIpdatingDealer
-  );
-
   const selectedDealer = useSelector<IApplicationState, DealerAccount | null>(
     (state) => state.dealer.selectedDealer
   );
 
+  const pagination: Pagination = useSelector<IApplicationState, Pagination>(
+    (state) => state.dealer.dealerState.pagination
+  );
+
   useEffect(() => {
+    // dispatch(dealerActions.getDealersListPaginated());
     dispatch(dealerActions.getDealersListPaginated());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -208,17 +210,35 @@ export const DealerList: React.FC = () => {
 
   return (
     <div className="dealerList">
-      <div className="dealerList__content">
-        <DetailsList
-          items={dealers}
-          selection={selection}
-          selectionMode={SelectionMode.single}
-          columns={columns}
-        />
-      </div>
-      <div className="dealerList__footer">
+      <DetailsList
+        // styles={{ root: { display: 'none' } }}
+        items={dealers}
+        selection={selection}
+        selectionMode={SelectionMode.single}
+        columns={columns}
+      />
+      {/* <DealersTable
+        itemsSource={dealers}
+        columns={columns}
+        pageNumberSource={pagination.paginationInfo.pageNumber}
+        invokeRequest={() => {
+          let updatedPagination = { ...pagination };
+          updatedPagination.paginationInfo = {
+            ...pagination.paginationInfo,
+          };
+          updatedPagination.paginationInfo.pageNumber =
+            updatedPagination.paginationInfo.pageNumber + 1;
+
+          dispatch(dealerActions.updateDealerListPagination(updatedPagination));
+
+          dispatch(
+            assignPendingActions(dealerActions.getDealersListPaginated())
+          );
+        }}
+      /> */}
+      {/* <div className="dealerList__footer">
         <DealersPagination />
-      </div>
+      </div> */}
     </div>
   );
 };

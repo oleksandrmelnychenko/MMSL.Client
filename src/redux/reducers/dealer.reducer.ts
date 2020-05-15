@@ -30,10 +30,12 @@ export class DealerState {
 export class DealersListState {
   constructor() {
     this.dealersList = [];
+    this.lastOffset = [];
     this.pagination = new Pagination();
   }
 
   dealersList: DealerAccount[];
+  lastOffset: DealerAccount[];
   pagination: Pagination;
 }
 
@@ -69,6 +71,10 @@ export const dealerReducer = createReducer(new DealerState(), (builder) =>
   builder
     .addCase(dealerActions.updateDealersList, (state, action) => {
       state.dealerState.dealersList = action.payload;
+
+      // state.dealerState.dealersList = state.dealerState.dealersList.concat(
+      //   action.payload
+      // );
     })
     .addCase(dealerActions.toggleNewDealerForm, (state, action) => {
       state.manageDealerForm.isFormVisible = action.payload;

@@ -50,14 +50,17 @@ const resolveDefaultDropDownValue = (
   initLimit: number
 ) => {
   let result;
+
   limitOptions.forEach((option) => {
     if (option.key === `${initLimit}`) {
       result = option;
     }
   });
+
   if (result === undefined || null) {
     result = limitOptions[0];
   }
+
   return result;
 };
 
@@ -122,8 +125,8 @@ const initDefaultValues = (account?: DealerAccount | null) => {
     alternativeEmail: '',
     phoneNumber: '',
     taxNumber: '',
-    selectCurrency: '',
-    selectPayment: '',
+    selectCurrency: '0',
+    selectPayment: '0',
     vatApplicate: false,
     creditAllowed: false,
     generalText: '',
@@ -178,8 +181,6 @@ const initDefaultValues = (account?: DealerAccount | null) => {
 export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
   props: ManageDealerFormProps
 ) => {
-  const dispatch = useDispatch();
-
   const textFildLabelStyles = {
     subComponentStyles: {
       label: {
@@ -192,7 +193,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
   };
 
   const dropDownStyles = {
-    dropdown: { width: 300 },
+    // dropdown: { width: 300 },
     label: {
       fontWeight: FontWeights.light,
       paddingBottom: '2px',
@@ -278,7 +279,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
             <Form>
               <div className="dealerFormManage">
                 <Stack horizontal tokens={{ childrenGap: 20 }}>
-                  <Stack grow={2}>
+                  <Stack grow={4}>
                     <Field
                       name="companyName"
                       render={() => {
@@ -573,7 +574,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                       }}
                     ></Field>
                   </Stack>
-                  <Stack grow={4} tokens={{ childrenGap: 20 }}>
+                  <Stack grow={2} tokens={{ childrenGap: 20 }}>
                     <Stack>
                       <div className="formScope">
                         <Text className="formScopeHeader">BILLING ADDRESS</Text>
