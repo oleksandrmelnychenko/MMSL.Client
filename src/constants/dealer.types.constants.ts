@@ -9,6 +9,7 @@ export const SELECTED_DEALER = 'dealer.SELECTED_DEALER';
 export const GET_STORES_BY_DEALER = 'dealer.GET_STORES_BY_DEALER';
 export const SEARCH_DEALER = 'dealer.SEARCH_DEALER';
 export const DELETE_CURRENT_DEALER_STORE = 'dealer.DELETE_CURRENT_DEALER_STORE';
+export const DELETE_DEALER_BY_ID = 'dealer.DELETE_DEALER_BY_ID';
 
 /// Updates pagination (don't confuse with PAGINATION_INFO)
 export const UPDATE_DEALER_LIST_PAGINATION =

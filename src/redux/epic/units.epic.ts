@@ -32,7 +32,7 @@ export const getCurrenciesEpic = (action$: AnyAction, state$: any) => {
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
-              { type: 'ERROR_GET_DEALERS_LIST' },
+              { type: 'ERROR' },
               ...extractErrorPendingActions(action),
             ];
 
@@ -63,7 +63,7 @@ export const getPaymentTypesEpic = (action$: AnyAction, state$: any) => {
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
-              { type: 'ERROR_GET_DEALERS_LIST' },
+              { type: 'ERROR' },
               ...extractErrorPendingActions(action),
             ];
 

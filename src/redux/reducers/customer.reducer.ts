@@ -39,7 +39,6 @@ export const customerReducer = createReducer(new CustomerState(), (builder) =>
       }
     )
     .addCase(customerActions.searchCustomer, (state, action) => {
-      debugger;
       state.customerState.search = action.payload;
     })
 );
