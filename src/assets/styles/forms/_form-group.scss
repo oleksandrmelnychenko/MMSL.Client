@@ -38,6 +38,7 @@
     padding-left: 70px;
     color: $color_grey;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    height: 50px;
 
     @media screen and (max-width: 425px) {
       padding-left: 50px;

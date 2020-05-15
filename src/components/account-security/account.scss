@@ -11,7 +11,7 @@
   &__form {
     position: relative;
     width: 500px;
-    margin: 0 15px;
+    margin: calc(50vh - 250px) auto;
     padding: 40px 80px 50px 80px;
     text-align: center;
     background-color: $color_white;

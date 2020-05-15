@@ -175,9 +175,7 @@ const initDefaultValues = (account?: DealerAccount | null) => {
   return formikInitValues;
 };
 
-export const BillingAddress: React.FC<ManageDealerFormProps> = (
-  props: ManageDealerFormProps
-) => {
+export const BillingAddress: React.FC<ManageDealerFormProps> = (props) => {
   const dispatch = useDispatch();
 
   const textFildLabelStyles = {

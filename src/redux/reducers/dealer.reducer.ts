@@ -55,6 +55,7 @@ export class ManageDealerFormState {
 /// Describes types of `dealer details` components
 export enum DealerDetilsComponents {
   DealerDetails,
+  DealerAddress,
   DealerStores,
 }
 
