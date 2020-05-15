@@ -12,13 +12,13 @@ import {
 } from 'office-ui-fabric-react';
 import './manageDealerForm.scss';
 import * as Yup from 'yup';
-import { FontWeights } from 'office-ui-fabric-react/lib/Styling';
 import {
   DealerAccount,
   Address,
   PaymentType,
   Currency,
 } from '../../../interfaces';
+import * as fabricStyles from '../../../common/fabric-styles/styles';
 
 class ManageDealerFormProps {
   constructor() {
@@ -119,36 +119,6 @@ const initDefaultValues = (account?: DealerAccount | null) => {
 export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
   props: ManageDealerFormProps
 ) => {
-  const textFildLabelStyles = {
-    subComponentStyles: {
-      label: {
-        root: {
-          fontWeight: FontWeights.semibold,
-          paddingBottom: '2px',
-        },
-      },
-    },
-  };
-
-  const dropDownStyles = {
-    // dropdown: { width: 300 },
-    label: {
-      fontWeight: FontWeights.semibold,
-      paddingBottom: '2px',
-    },
-    title: {},
-  };
-
-  const toggleStyles = {
-    root: {
-      margin: '2px',
-      'justify-content': 'space-between',
-    },
-    label: {
-      fontWeight: FontWeights.semibold,
-    },
-  };
-
   const currencyOptions = [
     {
       key: '2',
@@ -218,7 +188,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                           <div className="dealerForm__inputBlock">
                             <TextField
                               value={formik.values.companyName}
-                              styles={textFildLabelStyles}
+                              styles={fabricStyles.textFildLabelStyles}
                               className="formInput"
                               label="Company name"
                               onChange={(args: any) => {
@@ -247,7 +217,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                           <div className="dealerForm__inputBlock">
                             <TextField
                               value={formik.values.name}
-                              styles={textFildLabelStyles}
+                              styles={fabricStyles.textFildLabelStyles}
                               className="formInput"
                               label="Name"
                               onChange={(args: any) => {
@@ -273,7 +243,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                           <div className="dealerForm__inputBlock">
                             <TextField
                               value={formik.values.email}
-                              styles={textFildLabelStyles}
+                              styles={fabricStyles.textFildLabelStyles}
                               className="formInput"
                               label="Email"
                               onChange={(args: any) => {
@@ -300,7 +270,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                           <div className="dealerForm__inputBlock">
                             <TextField
                               value={formik.values.alternativeEmail}
-                              styles={textFildLabelStyles}
+                              styles={fabricStyles.textFildLabelStyles}
                               label="Alternative Email"
                               className="formInput"
                               onChange={(args: any) => {
@@ -328,7 +298,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                           <div className="dealerForm__inputBlock">
                             <MaskedTextField
                               value={formik.values.phoneNumber}
-                              styles={textFildLabelStyles}
+                              styles={fabricStyles.textFildLabelStyles}
                               className="formInput"
                               label="Phone Number"
                               mask="(999) 999 - 9999"
@@ -349,7 +319,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                           <div className="dealerForm__inputBlock">
                             <TextField
                               value={formik.values.taxNumber}
-                              styles={textFildLabelStyles}
+                              styles={fabricStyles.textFildLabelStyles}
                               label="Tax Number"
                               className="formInput"
                               onChange={(args: any) => {
@@ -361,29 +331,6 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                           </div>
                         );
                       }}></Field>
-
-                    {/* <Field
-                      name="generalText"
-                      render={() => {
-                        return (
-                          <div className="dealerForm__inputBlock noMargin">
-                            <TextField
-                              value={formik.values.generalText}
-                              styles={textFildLabelStyles}
-                              label="General Text"
-                              className="formInput"
-                              multiline
-                              rows={3}
-                              onChange={(args: any) => {
-                                let value = args.target.value;
-                                formik.setFieldValue('generalText', value);
-                                formik.setFieldTouched('generalText');
-                              }}
-                            />
-                          </div>
-                        );
-                      }}
-                    ></Field> */}
                   </Stack>
                   <Stack grow={1}>
                     <Field
@@ -401,7 +348,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                               className="formInput"
                               label="Select Currency"
                               options={currencyOptions}
-                              styles={dropDownStyles}
+                              styles={fabricStyles.dropDownStyles}
                               onChange={(
                                 event: React.FormEvent<HTMLDivElement>,
                                 item: any
@@ -430,7 +377,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                                   parseInt(formik.values.selectPayment)
                                 ).key
                               }
-                              styles={dropDownStyles}
+                              styles={fabricStyles.dropDownStyles}
                               onChange={(
                                 event: React.FormEvent<HTMLDivElement>,
                                 item: any
@@ -451,7 +398,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                           <div className="dealerForm__inputBlock noMargin">
                             <Toggle
                               checked={formik.values.vatApplicate}
-                              styles={toggleStyles}
+                              styles={fabricStyles.toggleStyles}
                               className="formInput"
                               label="Vat Applicate"
                               inlineLabel
@@ -475,7 +422,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                               checked={formik.values.creditAllowed}
                               className="formInput"
                               label="Credit Allowed"
-                              styles={toggleStyles}
+                              styles={fabricStyles.toggleStyles}
                               inlineLabel
                               onText="On"
                               offText="Off"

@@ -4,7 +4,6 @@ import { Field, Formik, Form } from 'formik';
 import {
   Stack,
   TextField,
-  FontWeights,
   PrimaryButton,
   Separator,
 } from 'office-ui-fabric-react';
@@ -14,6 +13,7 @@ import * as dealerActions from '../../../redux/actions/dealer.actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { getTranslate, LocalizeState } from 'react-localize-redux';
+import * as fabricStyles from '../../../common/fabric-styles/styles';
 
 interface IFormStoreProps {
   store: IStore[] | null;
@@ -30,22 +30,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
   );
 
   const selectedStore = props.store ? props.store[0] : null;
-  const textFildLabelStyles = {
-    subComponentStyles: {
-      label: {
-        root: {
-          fontWeight: FontWeights.light,
-          paddingBottom: '2px',
-        },
-      },
-    },
-  };
-  const btnStyle = {
-    root: {
-      marginTop: '20px',
-      float: 'right',
-    },
-  };
+
   const builderAddStore = (value: any) => {
     let storeData: INewStore;
     if (selectedDealerId) {
@@ -171,7 +156,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                     {() => (
                       <div className="dealerForm__inputBlock">
                         <TextField
-                          styles={textFildLabelStyles}
+                          styles={fabricStyles.textFildLabelStyles}
                           className="formInput"
                           label="Store name"
                           value={formik.values.nameStore}
@@ -189,7 +174,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                       return (
                         <div className="dealerForm__inputBlock">
                           <TextField
-                            styles={textFildLabelStyles}
+                            styles={fabricStyles.textFildLabelStyles}
                             className="formInput"
                             label="Email"
                             value={formik.values.contactEmail}
@@ -216,7 +201,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                       return (
                         <div className="dealerForm__inputBlock">
                           <TextField
-                            styles={textFildLabelStyles}
+                            styles={fabricStyles.textFildLabelStyles}
                             className="formInput"
                             label="Billing email"
                             value={formik.values.billingEmail}
@@ -243,7 +228,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                       return (
                         <div className="dealerForm__inputBlock">
                           <TextField
-                            styles={textFildLabelStyles}
+                            styles={fabricStyles.textFildLabelStyles}
                             className="formInput"
                             label="Address Line 1"
                             value={formik.values.addressLine1}
@@ -262,7 +247,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                       return (
                         <div className="dealerForm__inputBlock">
                           <TextField
-                            styles={textFildLabelStyles}
+                            styles={fabricStyles.textFildLabelStyles}
                             className="formInput"
                             label="Address Line 2"
                             value={formik.values.addressLine2}
@@ -283,7 +268,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                           return (
                             <div className="dealerForm__inputBlock">
                               <TextField
-                                styles={textFildLabelStyles}
+                                styles={fabricStyles.textFildLabelStyles}
                                 className="formInput"
                                 label="City"
                                 value={formik.values.city}
@@ -302,7 +287,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                           return (
                             <div className="dealerForm__inputBlock noMargin">
                               <TextField
-                                styles={textFildLabelStyles}
+                                styles={fabricStyles.textFildLabelStyles}
                                 className="formInput"
                                 label="Country"
                                 value={formik.values.country}
@@ -323,7 +308,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                           return (
                             <div className="dealerForm__inputBlock">
                               <TextField
-                                styles={textFildLabelStyles}
+                                styles={fabricStyles.textFildLabelStyles}
                                 className="formInput"
                                 label="State"
                                 value={formik.values.state}
@@ -342,7 +327,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                           return (
                             <div className="dealerForm__inputBlock noMargin">
                               <TextField
-                                styles={textFildLabelStyles}
+                                styles={fabricStyles.textFildLabelStyles}
                                 className="formInput"
                                 label="Zip"
                                 value={formik.values.zip}
@@ -361,7 +346,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                 </div>
               </Stack>
               <PrimaryButton
-                styles={btnStyle}
+                styles={fabricStyles.btnStyle}
                 text={
                   selectedStore
                     ? (translate('updateStore') as string)
