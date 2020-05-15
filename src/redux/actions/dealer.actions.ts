@@ -71,6 +71,8 @@ export const addStoreToCurrentDealer = createAction<INewStore>(
   dealerTypes.ADD_STORE_TO_CURRENT_DEALER
 );
 
+export const searchDealer = createAction<string>(dealerTypes.SEARCH_DEALER);
+
 export const isOpenPanelWithDealerDetails = createAction<
   ToggleDealerPanelWithDetails
 >(dealerTypes.IS_OPEN_PANEL_WITH_DEALER_DETAILS);
@@ -90,3 +92,4 @@ export type UpdateDealerListPagination = ReturnType<
 export type updateDealerListPaginationInfo = ReturnType<
   typeof updateDealerListPagination
 >;
+export type SearchDealer = ReturnType<typeof searchDealer>;

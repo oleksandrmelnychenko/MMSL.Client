@@ -32,11 +32,13 @@ export class DealersListState {
     this.dealersList = [];
     this.lastOffset = [];
     this.pagination = new Pagination();
+    this.search = '';
   }
 
   dealersList: DealerAccount[];
   lastOffset: DealerAccount[];
   pagination: Pagination;
+  search: string;
 }
 
 /// Dealer `managing form` dependent state
@@ -109,5 +111,8 @@ export const dealerReducer = createReducer(new DealerState(), (builder) =>
       let dealerForm = { ...state.manageDealerForm };
       dealerForm.isIpdatingDealer = action.payload;
       state.manageDealerForm = dealerForm;
+    })
+    .addCase(dealerActions.searchDealer, (state, action) => {
+      state.dealerState.search = action.payload;
     })
 );

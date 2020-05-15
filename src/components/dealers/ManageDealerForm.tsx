@@ -74,8 +74,8 @@ const buildDealerAccount = (values: any, sourceDealer?: DealerAccount) => {
     phoneNumber: values.phoneNumber,
     taxNumber: values.taxNumber,
     isVatApplicable: values.vatApplicate,
-    currency: parseInt(values.selectCurrency),
-    paymentType: parseInt(values.selectPayment),
+    currencyTypeId: parseInt(values.selectCurrency),
+    paymentTypeId: parseInt(values.selectPayment),
     isCreditAllowed: values.creditAllowed,
     billingAddressId: null,
     billingAddress: null,
@@ -125,8 +125,8 @@ const initDefaultValues = (account?: DealerAccount | null) => {
     alternativeEmail: '',
     phoneNumber: '',
     taxNumber: '',
-    selectCurrency: '0',
-    selectPayment: '0',
+    selectCurrency: '1',
+    selectPayment: '1',
     vatApplicate: false,
     creditAllowed: false,
     generalText: '',
@@ -149,11 +149,11 @@ const initDefaultValues = (account?: DealerAccount | null) => {
     formikInitValues.taxNumber = account.taxNumber;
     /// TODO: important
     // formikInitValues.selectCurrency = props.dealerAccount.currency;
-    formikInitValues.selectCurrency = `${account.currency}`;
+    formikInitValues.selectCurrency = `${account.currencyTypeId}`;
 
     /// TODO: important
     // formikInitValues.selectPayment = props.dealerAccount.paymentType;
-    formikInitValues.selectPayment = `${account.paymentType}`;
+    formikInitValues.selectPayment = `${account.paymentTypeId}`;
 
     formikInitValues.vatApplicate = account.isVatApplicable;
     formikInitValues.creditAllowed = account.isCreditAllowed;
@@ -211,7 +211,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
 
   const currencyOptions = [
     {
-      key: '0',
+      key: '1',
       text: 'USD',
       value: Currency.USD,
     } as IDropdownOption,
@@ -224,7 +224,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
 
   const paymentOptions = [
     {
-      key: '0',
+      key: '2',
       text: 'Bank transfer',
       value: PaymentType.BankTransfer,
     } as IDropdownOption,
