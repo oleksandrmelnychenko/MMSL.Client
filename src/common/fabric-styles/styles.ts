@@ -13,7 +13,7 @@ export const textFildLabelStyles = {
   subComponentStyles: {
     label: {
       root: {
-        fontWeight: FontWeights.semibold,
+        fontWeight: FontWeights.regular,
         paddingTop: '15px',
         paddingBottom: '5px',
       },
@@ -21,22 +21,47 @@ export const textFildLabelStyles = {
   },
 };
 
+export const commandBarStyles = {
+  root: {
+    background: '#edebe9',
+    borderRadius: '6px',
+    marginBottom: '30px',
+  },
+  primarySet: {
+    color: '#323130',
+    'justify-content': 'flex-end',
+  },
+};
+
+export const commandBarButtonStyles = {
+  root: {
+    background: 'transparent',
+    margin: '0 5px',
+  },
+};
+
 export const dropDownStyles = {
   // dropdown: { width: 300 },
   label: {
-    fontWeight: FontWeights.semibold,
+    fontWeight: FontWeights.regular,
     paddingBottom: '2px',
+  },
+  root: {
+    paddingTop: '15px',
+    paddingBottom: '5px',
   },
   title: {},
 };
 
 export const toggleStyles = {
   root: {
+    paddingTop: '15px',
+    paddingBottom: '5px',
     margin: '2px',
     'justify-content': 'space-between',
   },
   label: {
-    fontWeight: FontWeights.semibold,
+    fontWeight: FontWeights.regular,
   },
 };
 

@@ -139,13 +139,13 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                 builderAddStore(values) as INewStore
               )
             );
-            resetForm();
           }
+          resetForm();
         }}
         enableReinitialize={true}
         validateOnBlur={false}>
         {(formik) => {
-          props.formikReference.formik = formik;
+          // props.formikReference.formik = formik;
           return (
             <Form>
               <Stack>
@@ -169,6 +169,13 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                             formik.setFieldTouched('nameStore');
                           }}
                         />
+                        {formik.errors.nameStore && formik.touched.nameStore ? (
+                          <Text
+                            variant={'small' as ITextProps['variant']}
+                            className="dealerForm__inputBlock__error">
+                            {formik.errors.nameStore}
+                          </Text>
+                        ) : null}
                       </div>
                     )}
                   </Field>

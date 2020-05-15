@@ -307,3 +307,38 @@ export const addStoreToCurrentDealerEpic = (
     })
   );
 };
+
+export const deleteCurrentDealerStoreEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(dealerTypes.DELETE_CURRENT_DEALER_STORE),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      return ajaxDeleteResponse(api.DELETE_CURRENT_DEALER_STORE, state$.value, [
+        { key: 'storeId', value: `${action.payload}` },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          let successResultFlow = [
+            dealerActions.updateDealerStoresAfterDelete(successResponse.body),
+
+            ...extractSuccessPendingActions(action),
+          ];
+
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [
+              { type: 'ERROR_DELETE_CURRENT_DEALER_STORE' },
+              ...extractErrorPendingActions(action),
+            ];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};
