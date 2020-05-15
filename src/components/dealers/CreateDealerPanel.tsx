@@ -12,6 +12,7 @@ import { IApplicationState } from '../../redux/reducers';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import ManageDealerForm, { FormicReference } from './ManageDealerForm';
 import { assignPendingActions } from '../../helpers/action.helper';
+import PanelTitle from './PanelTitle';
 
 export const CreateDealerPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -33,40 +34,30 @@ export const CreateDealerPanel: React.FC = (props: any) => {
         }}
         onRenderHeader={() => {
           return (
-            <Stack
-              tokens={{ childrenGap: 20 }}
-              horizontal
-              className="createDealerPanel__panelHeader"
-            >
-              <Text className="createDealerPanel__title">Add Dealer</Text>
-              <ActionButton
-                styles={{ root: { marginTop: '-3px' } }}
-                iconProps={{ iconName: 'Save' }}
-                allowDisabledFocus
-                onClick={() => {
-                  let formik: any = formikReference.formik;
-
-                  if (formik !== undefined && formik !== null) {
-                    formik.submitForm();
-                  }
-                }}
-              >
-                Save
-              </ActionButton>
-
-              {/* <PrimaryButton
-              className="dealerPanelHeader__save"
-              onClick={() => {
+            <PanelTitle
+              onSaveClick={() => {
                 let formik: any = formikReference.formik;
 
                 if (formik !== undefined && formik !== null) {
                   formik.submitForm();
                 }
               }}
-            >
-              Save
-            </PrimaryButton> */}
-            </Stack>
+              title={'New Dealer'}
+            />
+          );
+        }}
+        onRenderFooter={() => {
+          return (
+            <PanelTitle
+              onSaveClick={() => {
+                let formik: any = formikReference.formik;
+
+                if (formik !== undefined && formik !== null) {
+                  formik.submitForm();
+                }
+              }}
+              title={'New Dealer'}
+            />
           );
         }}
         closeButtonAriaLabel="Close"

@@ -62,7 +62,8 @@ export const DealerDetailsPanel: React.FC = (props: any) => {
             new ToggleDealerPanelWithDetails()
           )
         );
-      }}>
+      }}
+    >
       {/* TODO */}
       {panelContent}
     </Panel>

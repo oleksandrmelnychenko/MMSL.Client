@@ -12,6 +12,7 @@ import * as dealerActions from '../../redux/actions/dealer.actions';
 import { IStore } from '../../interfaces/index';
 import { Stack } from 'office-ui-fabric-react';
 import FormStore from './store/FormStore';
+import PanelTitle from './PanelTitle';
 
 export const DealerStores: React.FC = () => {
   const dispatch = useDispatch();
@@ -42,7 +43,8 @@ export const DealerStores: React.FC = () => {
           );
           setStore(selectedStore);
           setIsOpenForm(true);
-        }}>
+        }}
+      >
         <div className="dealer__store__name">Store name: {item.name}</div>
         <div className="dealer__store__address">
           Address:{' '}
@@ -56,7 +58,8 @@ export const DealerStores: React.FC = () => {
     <div>
       <Text
         block
-        className="dealer__title">{`Dealer: ${selectedDealer.companyName}`}</Text>
+        className="dealer__title"
+      >{`Dealer: ${selectedDealer.companyName}`}</Text>
       <PrimaryButton
         text="Add Store"
         onClick={() => {

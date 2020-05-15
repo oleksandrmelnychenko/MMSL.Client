@@ -126,7 +126,7 @@ export const Dealers: React.FC = (props: any) => {
                           }
                           iconProps={{ iconName: 'Add' }}
                         >
-                          Add dealer
+                          New dealer
                         </ActionButton>
                       </div>
                       <div className="dealers__header__top__controls__control">
