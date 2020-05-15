@@ -15,6 +15,7 @@ import {
   ajaxPostResponse,
   ajaxGetWebResponse,
   ajaxPutResponse,
+  ajaxDeleteResponse,
 } from '../../helpers/epic.helper';
 import * as api from '../../constants/api.constants';
 
@@ -38,7 +39,7 @@ export const getDealersListEpic = (action$: AnyAction, state$: any) => {
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
-              { type: 'ERROR_GET_DEALERS_LIST' },
+              { type: 'ERROR' },
               ...extractErrorPendingActions(action),
             ];
 
@@ -83,7 +84,38 @@ export const getDealersListPaginatedEpic = (
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
-              { type: 'ERROR_GET_DEALERS_LIST' },
+              { type: 'ERROR' },
+              ...extractErrorPendingActions(action),
+            ];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};
+
+export const deleteDealerByIdEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(dealerTypes.DELETE_DEALER_BY_ID),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      return ajaxDeleteResponse(api.DELETE_DEALER_BY_ID, state$.value, [
+        { key: 'dealerAccountId', value: `${action.payload}` },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          debugger;
+          let successResultFlow = [...extractSuccessPendingActions(action)];
+
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          debugger;
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [
+              { type: 'ERROR' },
               ...extractErrorPendingActions(action),
             ];
 
@@ -117,7 +149,7 @@ export const getAndSelectDealersByIdEpic = (
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
-              { type: 'ERROR_GET_DEALERS_LIST' },
+              { type: 'ERROR' },
               ...extractErrorPendingActions(action),
             ];
 

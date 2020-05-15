@@ -17,6 +17,27 @@ export interface QueryParam {
   value: string;
 }
 
+const buildQueryParamsString = (queryParams?: QueryParam[]) => {
+  if (queryParams && queryParams.length > 0) {
+    let queryString = '';
+
+    if (
+      queryParams !== null &&
+      queryParams !== undefined &&
+      queryParams.length > 0
+    ) {
+      for (let i = 0; i < queryParams.length; i++) {
+        if (i === 0) queryString += '?';
+        else queryString += '&';
+
+        queryString += `${queryParams[i].key}=${queryParams[i].value}`;
+      }
+    }
+
+    return queryString;
+  }
+};
+
 export const ajaxGetWebResponse = (
   urlPath: string,
   state: IApplicationState,
@@ -24,20 +45,9 @@ export const ajaxGetWebResponse = (
 ) => {
   const currentLanguage = getActiveLanguage(state.localize).code;
 
-  let queryString = `${API.SERVER_URL}/${currentLanguage}${urlPath}`;
-
-  if (
-    queryParams !== null &&
-    queryParams !== undefined &&
-    queryParams.length > 0
-  ) {
-    for (let i = 0; i < queryParams.length; i++) {
-      if (i === 0) queryString += '?';
-      else queryString += '&';
-
-      queryString += `${queryParams[i].key}=${queryParams[i].value}`;
-    }
-  }
+  let queryString = `${
+    API.SERVER_URL
+  }/${currentLanguage}${urlPath}${buildQueryParamsString(queryParams)}`;
 
   return ajax
     .getJSON<IWebResponse>(queryString, {
@@ -117,14 +127,19 @@ export const ajaxPutFormDataResponse = (
 
 export const ajaxDeleteResponse = (
   urlPath: string,
-  state: IApplicationState
+  state: IApplicationState,
+  queryParams?: QueryParam[]
 ) => {
   const currentLanguage = getActiveLanguage(state.localize).code;
   let header = {
     Authorization: `Bearer ${TokenHelper.getAccessToken()}`,
   };
 
+  let queryString = `${
+    API.SERVER_URL
+  }/${currentLanguage}${urlPath}${buildQueryParamsString(queryParams)}`;
+
   return ajax
-    .delete(`${API.SERVER_URL}/${currentLanguage}${urlPath}`, header)
+    .delete(queryString, header)
     .pipe(map((response) => response.response));
 };

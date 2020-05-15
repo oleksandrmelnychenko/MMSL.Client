@@ -15,6 +15,10 @@ export const getDealersListPaginated = createAction(
   dealerTypes.GET_DEALERS_LIST_PAGINATED
 );
 
+export const deleteDealerById = createAction<number>(
+  dealerTypes.DELETE_DEALER_BY_ID
+);
+
 export const getAndSelectDealerById = createAction<number>(
   dealerTypes.GET_AND_SELECT_DEALER_BY_ID
 );
@@ -90,3 +94,4 @@ export type updateDealerListPaginationInfo = ReturnType<
   typeof updateDealerListPagination
 >;
 export type SearchDealer = ReturnType<typeof searchDealer>;
+export type DeleteDealerById = ReturnType<typeof deleteDealerById>;
