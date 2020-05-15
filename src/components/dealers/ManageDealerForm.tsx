@@ -184,7 +184,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
     subComponentStyles: {
       label: {
         root: {
-          fontWeight: FontWeights.light,
+          fontWeight: FontWeights.semibold,
           paddingBottom: '2px',
         },
       },
@@ -194,12 +194,10 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
   const dropDownStyles = {
     dropdown: { width: 300 },
     label: {
-      fontWeight: FontWeights.light,
+      fontWeight: FontWeights.semibold,
       paddingBottom: '2px',
     },
-    title: {
-      letterSpacing: '1px',
-    },
+    title: {},
   };
 
   const toggleStyles = {
@@ -269,8 +267,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
             buildDealerAccount(values, props.dealerAccount as DealerAccount)
           );
         }}
-        validateOnBlur={false}
-      >
+        validateOnBlur={false}>
         {(formik) => {
           props.formikReference.formik = formik;
 
@@ -301,15 +298,13 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             formik.touched.companyName ? (
                               <Text
                                 variant={'small' as ITextProps['variant']}
-                                className="dealerForm__inputBlock__error"
-                              >
+                                className="dealerForm__inputBlock__error">
                                 {formik.errors.companyName}
                               </Text>
                             ) : null}
                           </div>
                         );
-                      }}
-                    ></Field>
+                      }}></Field>
                     {/* <Field
                       name="name"
                       render={() => {
@@ -357,15 +352,13 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             {formik.errors.email && formik.touched.email ? (
                               <Text
                                 variant={'small' as ITextProps['variant']}
-                                className="dealerForm__inputBlock__error"
-                              >
+                                className="dealerForm__inputBlock__error">
                                 {formik.errors.email}
                               </Text>
                             ) : null}
                           </div>
                         );
-                      }}
-                    ></Field>
+                      }}></Field>
 
                     <Field
                       name="alternativeEmail"
@@ -387,15 +380,13 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             formik.touched.alternativeEmail ? (
                               <Text
                                 variant={'small' as ITextProps['variant']}
-                                className="dealerForm__inputBlock__error"
-                              >
+                                className="dealerForm__inputBlock__error">
                                 {formik.errors.alternativeEmail}
                               </Text>
                             ) : null}
                           </div>
                         );
-                      }}
-                    ></Field>
+                      }}></Field>
 
                     <Field
                       name="phoneNumber"
@@ -416,8 +407,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             />
                           </div>
                         );
-                      }}
-                    ></Field>
+                      }}></Field>
 
                     <Field
                       name="taxNumber"
@@ -437,8 +427,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             />
                           </div>
                         );
-                      }}
-                    ></Field>
+                      }}></Field>
 
                     {/* <Field
                       name="generalText"
@@ -491,8 +480,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             />
                           </div>
                         );
-                      }}
-                    ></Field>
+                      }}></Field>
 
                     <Field
                       name="selectPayment"
@@ -521,8 +509,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             />
                           </div>
                         );
-                      }}
-                    ></Field>
+                      }}></Field>
 
                     <Field
                       name="vatApplicate"
@@ -544,8 +531,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             />
                           </div>
                         );
-                      }}
-                    ></Field>
+                      }}></Field>
 
                     <Field
                       name="creditAllowed"
@@ -570,177 +556,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             />
                           </div>
                         );
-                      }}
-                    ></Field>
-                  </Stack>
-                  <Stack grow={4} tokens={{ childrenGap: 20 }}>
-                    <Stack>
-                      <div className="formScope">
-                        <Text className="formScopeHeader">BILLING ADDRESS</Text>
-                        <Field
-                          name="addressLine1"
-                          render={() => {
-                            return (
-                              <div className="dealerForm__inputBlock">
-                                <TextField
-                                  value={formik.values.addressLine1}
-                                  styles={textFildLabelStyles}
-                                  className="formInput"
-                                  label="Address Line 1"
-                                  onChange={(args: any) => {
-                                    let value = args.target.value;
-                                    formik.setFieldValue('addressLine1', value);
-                                    formik.setFieldTouched('addressLine1');
-                                  }}
-                                />
-                              </div>
-                            );
-                          }}
-                        ></Field>
-                        <Field
-                          name="addressLine2"
-                          render={() => {
-                            return (
-                              <div className="dealerForm__inputBlock">
-                                <TextField
-                                  value={formik.values.addressLine2}
-                                  styles={textFildLabelStyles}
-                                  className="formInput"
-                                  label="Address Line 2"
-                                  onChange={(args: any) => {
-                                    let value = args.target.value;
-                                    formik.setFieldValue('addressLine2', value);
-                                    formik.setFieldTouched('addressLine2');
-                                  }}
-                                />
-                              </div>
-                            );
-                          }}
-                        ></Field>
-                        <Stack horizontal tokens={{ childrenGap: 20 }}>
-                          <Stack grow={1}>
-                            <Field
-                              name="city"
-                              render={() => {
-                                return (
-                                  <div className="dealerForm__inputBlock">
-                                    <TextField
-                                      value={formik.values.city}
-                                      styles={textFildLabelStyles}
-                                      className="formInput"
-                                      label="City"
-                                      onChange={(args: any) => {
-                                        let value = args.target.value;
-                                        formik.setFieldValue('city', value);
-                                        formik.setFieldTouched('city');
-                                      }}
-                                    />
-                                  </div>
-                                );
-                              }}
-                            ></Field>
-                            <Field
-                              name="country"
-                              render={() => {
-                                return (
-                                  <div className="dealerForm__inputBlock noMargin">
-                                    <TextField
-                                      value={formik.values.country}
-                                      styles={textFildLabelStyles}
-                                      className="formInput"
-                                      label="Country"
-                                      onChange={(args: any) => {
-                                        let value = args.target.value;
-                                        formik.setFieldValue('country', value);
-                                        formik.setFieldTouched('country');
-                                      }}
-                                    />
-                                  </div>
-                                );
-                              }}
-                            ></Field>
-                          </Stack>
-                          <Stack grow={1}>
-                            <Field
-                              name="state"
-                              render={() => {
-                                return (
-                                  <div className="dealerForm__inputBlock">
-                                    <TextField
-                                      value={formik.values.state}
-                                      styles={textFildLabelStyles}
-                                      className="formInput"
-                                      label="State"
-                                      onChange={(args: any) => {
-                                        let value = args.target.value;
-                                        formik.setFieldValue('state', value);
-                                        formik.setFieldTouched('state');
-                                      }}
-                                    />
-                                  </div>
-                                );
-                              }}
-                            ></Field>
-                            <Field
-                              name="zip"
-                              render={() => {
-                                return (
-                                  <div className="dealerForm__inputBlock noMargin">
-                                    <TextField
-                                      value={formik.values.zip}
-                                      styles={textFildLabelStyles}
-                                      className="formInput"
-                                      label="Zip"
-                                      onChange={(args: any) => {
-                                        let value = args.target.value;
-                                        formik.setFieldValue('zip', value);
-                                        formik.setFieldTouched('zip');
-                                      }}
-                                    />
-                                  </div>
-                                );
-                              }}
-                            ></Field>
-                          </Stack>
-                        </Stack>
-                      </div>
-                    </Stack>
-                    <div className="formScope">
-                      <Stack horizontal>
-                        <Stack.Item grow={1}>
-                          <Text className="formScopeHeader">
-                            DELIVERY ADDRESS
-                          </Text>
-                        </Stack.Item>
-                        <Stack.Item>
-                          <Field
-                            name="useBillingAsShipping"
-                            render={() => {
-                              return (
-                                <div className="dealerForm__inputBlock noMargin">
-                                  <Checkbox
-                                    checked={formik.values.useBillingAsShipping}
-                                    label="Use same as billing"
-                                    onChange={(
-                                      checked: any,
-                                      isChecked: any
-                                    ) => {
-                                      formik.setFieldValue(
-                                        'useBillingAsShipping',
-                                        isChecked
-                                      );
-                                      formik.setFieldTouched(
-                                        'useBillingAsShipping'
-                                      );
-                                    }}
-                                  />
-                                </div>
-                              );
-                            }}
-                          ></Field>
-                        </Stack.Item>
-                      </Stack>
-                    </div>
+                      }}></Field>
                   </Stack>
                 </Stack>
               </div>

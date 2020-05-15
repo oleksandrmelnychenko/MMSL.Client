@@ -1,0 +1,26 @@
+.dealer__management {
+    padding-top: 40px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    button {
+        margin: 5px 0;
+        transition: all 0.3s ease;
+        background-size: cover;
+        background-position: center;
+
+        &:hover {
+            border: none;
+            box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2);
+        }
+    }
+
+    &__btn-add {
+        background: url('../../../assets/images/dealers/add_store.svg') no-repeat;
+    }
+
+    &__btn-detail {
+        background: url('../../../assets/images/dealers/dealer_details.svg') no-repeat;
+    }
+}
