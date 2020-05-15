@@ -1,4 +1,4 @@
-import { PaginationInfo, Pagination } from './../../interfaces/index';
+import { Pagination } from './../../interfaces/index';
 import { checkUnauthorized } from './../../helpers/error.helpers';
 import {
   extractSuccessPendingActions,
