@@ -14,9 +14,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { getTranslate, LocalizeState } from 'react-localize-redux';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
+import { FormicReference } from '../dealerManaging/ManageDealerForm';
 
 interface IFormStoreProps {
   store: IStore[] | null;
+  formikReference: FormicReference;
 }
 
 const FormStore: React.FC<IFormStoreProps> = (props) => {
@@ -143,6 +145,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
         enableReinitialize={true}
         validateOnBlur={false}>
         {(formik) => {
+          props.formikReference.formik = formik;
           return (
             <Form>
               <Stack>
@@ -345,19 +348,6 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                   </Stack>
                 </div>
               </Stack>
-              <PrimaryButton
-                styles={fabricStyles.btnStyle}
-                text={
-                  selectedStore
-                    ? (translate('updateStore') as string)
-                    : (translate('createStore') as string)
-                }
-                allowDisabledFocus
-                onClick={() => {
-                  console.log(formik);
-                  formik.handleSubmit();
-                }}
-              />
             </Form>
           );
         }}

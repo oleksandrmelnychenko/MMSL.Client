@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Text } from 'office-ui-fabric-react/lib/Text';
 import {
   PrimaryButton,
   FocusZone,
   FocusZoneDirection,
   Separator,
+  CommandBar,
+  ICommandBarItemProps,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers/index';
@@ -14,9 +15,11 @@ import { IStore } from '../../../interfaces/index';
 import { Stack } from 'office-ui-fabric-react';
 import FormStore from './FormStore';
 import PanelTitle from '../panel/PanelTitle';
+import { FormicReference } from '../dealerManaging/ManageDealerForm';
 
 export const DealerStores: React.FC = () => {
   const dispatch = useDispatch();
+  const [formikReference] = useState<FormicReference>(new FormicReference());
   const selectedDealer = useSelector<IApplicationState, DealerAccount>(
     (state) => state.dealer.selectedDealer!
   );
@@ -30,8 +33,6 @@ export const DealerStores: React.FC = () => {
   const [selectedStore, setSelectedStore] = useState<IStore[] | null>(null);
 
   const [isOpenForm, setIsOpenForm] = useState(false);
-
-  console.log(selectedStore);
 
   const onRenderCell = (
     item: IStore,
@@ -60,16 +61,71 @@ export const DealerStores: React.FC = () => {
     );
   };
 
-  const btnStyles = {
-    root: { marginTop: '20px' },
+  const _items: ICommandBarItemProps[] = [
+    {
+      key: 'Add',
+      text: 'Add',
+      iconProps: { iconName: 'Add' },
+      onClick: () => {
+        setSelectedStore(null);
+        setIsOpenForm(true);
+      },
+      buttonStyles: {
+        root: {
+          background: 'transparent',
+        },
+      },
+    },
+    {
+      key: 'Save',
+      text: 'Save',
+      iconProps: { iconName: 'Save' },
+      onClick: () => {
+        formikReference.formik.submitForm();
+        console.log('Save');
+      },
+      buttonStyles: {
+        root: {
+          background: 'transparent',
+        },
+      },
+    },
+    {
+      key: 'Delete',
+      text: 'Delete',
+      iconProps: { iconName: 'Delete' },
+      onClick: () => console.log('Delete'),
+      buttonStyles: {
+        root: {
+          background: 'transparent',
+        },
+      },
+    },
+  ];
+
+  const commandBarStyles = {
+    root: {
+      background: '#edebe9',
+      borderRadius: '6px',
+    },
+    primarySet: {
+      color: '#323130',
+      'justify-content': 'flex-end',
+    },
   };
 
   return (
     <div>
       <PanelTitle
         title={`Dealer: ${selectedDealer.companyName} | ${selectedDealer.email}`}
-        // onSaveClick={() => {}}
       />
+      <div>
+        <CommandBar
+          styles={commandBarStyles}
+          items={_items}
+          className="dealers__store__controls"
+        />
+      </div>
       <Stack horizontal tokens={{ childrenGap: 20 }}>
         <Stack grow={1} tokens={{ maxWidth: '50%' }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
@@ -80,21 +136,15 @@ export const DealerStores: React.FC = () => {
               })}{' '}
             </div>
           </FocusZone>
-          <Stack>
-            <PrimaryButton
-              styles={btnStyles}
-              text="Add Store"
-              onClick={() => {
-                setSelectedStore(null);
-                setIsOpenForm(true);
-              }}
-              allowDisabledFocus
-            />
-          </Stack>
         </Stack>
 
         <Stack grow={1} tokens={{ maxWidth: '50%' }}>
-          {isOpenForm ? <FormStore store={selectedStore} /> : null}
+          {isOpenForm ? (
+            <FormStore
+              formikReference={formikReference}
+              store={selectedStore}
+            />
+          ) : null}
         </Stack>
       </Stack>
     </div>
