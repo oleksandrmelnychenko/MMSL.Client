@@ -149,11 +149,11 @@ const initDefaultValues = (account?: DealerAccount | null) => {
     formikInitValues.taxNumber = account.taxNumber;
     /// TODO: important
     // formikInitValues.selectCurrency = props.dealerAccount.currency;
-    // formikInitValues.selectCurrency = `${account.currencyTypeId}`;
+    formikInitValues.selectCurrency = `${account.currencyTypeId}`;
 
     // /// TODO: important
     // // formikInitValues.selectPayment = props.dealerAccount.paymentType;
-    // formikInitValues.selectPayment = `${account.paymentTypeId}`;
+    formikInitValues.selectPayment = `${account.paymentTypeId}`;
 
     formikInitValues.vatApplicate = account.isVatApplicable;
     formikInitValues.creditAllowed = account.isCreditAllowed;
