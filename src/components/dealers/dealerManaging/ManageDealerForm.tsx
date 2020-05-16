@@ -33,11 +33,13 @@ class ManageDealerFormProps {
 }
 
 export class FormicReference {
-  constructor() {
+  constructor(isDirtyFunc?: (isDirty: boolean) => void) {
     this.formik = null;
+    this.isDirtyFunc = isDirtyFunc;
   }
 
   formik: any;
+  isDirtyFunc?: (isDirty: boolean) => void;
 }
 
 /// TOODO: resolve with Linq
