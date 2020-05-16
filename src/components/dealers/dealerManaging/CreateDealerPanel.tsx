@@ -20,12 +20,19 @@ import {
 
 export const CreateDealerPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
+  const [formikReference] = useState<FormicReference>(
+    new FormicReference(() => {
+      formikReference.isDirtyFunc = (isDirty: boolean) => {
+        setIsDirtyForm(isDirty);
+      };
+    })
+  );
+  const [isDirtyForm, setIsDirtyForm] = useState(false);
 
   const isAddDealerOpen = useSelector<IApplicationState, boolean>(
     (state) => state.dealer.manageDealerForm.isFormVisible
   );
 
-  const [formikReference] = useState<FormicReference>(new FormicReference());
   const _items: ICommandBarItemProps[] = [
     {
       key: 'Save',
@@ -37,6 +44,16 @@ export const CreateDealerPanel: React.FC = (props: any) => {
         if (formik !== undefined && formik !== null) {
           formik.submitForm();
         }
+      },
+      buttonStyles: commandBarButtonStyles,
+    },
+    {
+      key: 'Reset',
+      text: 'Reset',
+      disabled: !isDirtyForm,
+      iconProps: { iconName: 'Refresh' },
+      onClick: () => {
+        formikReference.formik.resetForm();
       },
       buttonStyles: commandBarButtonStyles,
     },
@@ -52,7 +69,8 @@ export const CreateDealerPanel: React.FC = (props: any) => {
         onDismiss={() => {
           dispatch(dealerActions.toggleNewDealerForm(false));
         }}
-        closeButtonAriaLabel="Close">
+        closeButtonAriaLabel="Close"
+      >
         <PanelTitle
           onSaveClick={() => {
             let formik: any = formikReference.formik;
