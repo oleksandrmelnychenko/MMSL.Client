@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
 import './createCustomerPanel.scss';
-import { ICommandBarItemProps } from 'office-ui-fabric-react';
+import {
+  ICommandBarItemProps,
+  Panel,
+  PanelType,
+  CommandBar,
+} from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
-import { commandBarButtonStyles } from '../../../common/fabric-styles/styles';
 import { FormicReference } from '../../../interfaces';
+import {
+  panelStyle,
+  commandBarStyles,
+  commandBarButtonStyles,
+} from '../../../common/fabric-styles/styles';
+import PanelTitle from '../../dealers/panel/PanelTitle';
+import * as customerActions from '../../../redux/actions/customer.actions';
 
 export const CreateCustomerPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
+
   const [formikReference] = useState<FormicReference>(
     new FormicReference(() => {
       formikReference.isDirtyFunc = (isDirty: boolean) => {
@@ -15,10 +27,11 @@ export const CreateCustomerPanel: React.FC = (props: any) => {
       };
     })
   );
+
   const [isDirtyForm, setIsDirtyForm] = useState(false);
 
-  const isAddDealerOpen = useSelector<IApplicationState, boolean>(
-    (state) => state.dealer.manageDealerForm.isFormVisible
+  const isAddCustomerOpen = useSelector<IApplicationState, boolean>(
+    (state) => state.customer.manageCustomerForm.isFormVisible
   );
 
   const _items: ICommandBarItemProps[] = [
@@ -50,13 +63,13 @@ export const CreateCustomerPanel: React.FC = (props: any) => {
 
   return (
     <div className="createDealerPanel">
-      {/* <Panel
+      <Panel
         styles={panelStyle}
-        isOpen={isAddDealerOpen}
+        isOpen={isAddCustomerOpen}
         type={PanelType.custom}
         customWidth={'600px'}
         onDismiss={() => {
-          dispatch(dealerActions.toggleNewDealerForm(false));
+          dispatch(customerActions.toggleNewCustomerForm(false));
         }}
         closeButtonAriaLabel="Close"
       >
@@ -68,14 +81,15 @@ export const CreateCustomerPanel: React.FC = (props: any) => {
               formik.submitForm();
             }
           }}
-          title={'New Dealer'}
+          title={'New Customer'}
         />
         <CommandBar
           styles={commandBarStyles}
           items={_items}
           className="dealers__store__controls"
-        /> */}
-      {/* <ManageDealerForm
+        />
+
+        {/* <ManageDealerForm
           formikReference={formikReference}
           submitAction={(args: any) => {
             let createAction = assignPendingActions(
@@ -88,7 +102,7 @@ export const CreateCustomerPanel: React.FC = (props: any) => {
             dispatch(createAction);
           }}
         /> */}
-      {/* </Panel> */}
+      </Panel>
     </div>
   );
 };

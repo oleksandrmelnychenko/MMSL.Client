@@ -20,6 +20,9 @@ export const searchCustomer = createAction<string>(
 export const searchCustomerByStore = createAction<string>(
   customerTypes.SEARCH_CUSTOMER_BY_STORE
 );
+export const toggleNewCustomerForm = createAction<boolean>(
+  customerTypes.TOGGLE_NEW_CUSTOMER_FORM
+);
 
 export type GetCustomersListPaginated = ReturnType<
   typeof getCustomersListPaginated

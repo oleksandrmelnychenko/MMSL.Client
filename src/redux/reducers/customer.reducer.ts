@@ -7,8 +7,10 @@ import { DealerAccount, Pagination } from '../../interfaces';
 export class CustomerState {
   constructor() {
     this.customerState = new CustomerListState();
+    this.manageCustomerForm = new ManageCustomerFormState();
   }
 
+  manageCustomerForm: ManageCustomerFormState;
   customerState: CustomerListState;
 }
 
@@ -29,6 +31,15 @@ export class CustomerListState {
   searchByStore: string;
 }
 
+/// Customer `managing form` dependent state
+export class ManageCustomerFormState {
+  constructor() {
+    this.isFormVisible = false;
+  }
+
+  isFormVisible: boolean;
+}
+
 export const customerReducer = createReducer(new CustomerState(), (builder) =>
   builder
     .addCase(customerActions.updateCustomersList, (state, action) => {
@@ -45,5 +56,8 @@ export const customerReducer = createReducer(new CustomerState(), (builder) =>
     })
     .addCase(customerActions.searchCustomerByStore, (state, action) => {
       state.customerState.searchByStore = action.payload;
+    })
+    .addCase(customerActions.toggleNewCustomerForm, (state, action) => {
+      state.manageCustomerForm.isFormVisible = action.payload;
     })
 );

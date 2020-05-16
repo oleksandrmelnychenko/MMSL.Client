@@ -4,6 +4,7 @@ import { SearchBox, ActionButton, Stack } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import CustomerList from './CustomerList';
+import CreateCustomerPanel from './customerManaging/CreateCustomerPanel';
 import * as customerActions from '../../redux/actions/customer.actions';
 
 export const Customers: React.FC = (props: any) => {
@@ -33,8 +34,9 @@ export const Customers: React.FC = (props: any) => {
                         <ActionButton
                           className="customersAdd"
                           onClick={() => {
-                            ///TODO:
-                            // dispatch(dealerActions.toggleNewDealerForm(true));
+                            dispatch(
+                              customerActions.toggleNewCustomerForm(true)
+                            );
                           }}
                           iconProps={{ iconName: 'Add' }}
                         >
@@ -99,6 +101,8 @@ export const Customers: React.FC = (props: any) => {
             <CustomerList />
           </Stack.Item>
         </Stack>
+
+        <CreateCustomerPanel />
       </div>
     </div>
   );
