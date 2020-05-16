@@ -17,6 +17,17 @@ export const textFildLabelStyles = {
         paddingTop: '15px',
         paddingBottom: '5px',
       },
+      selectors: {
+        '&:after': {
+          content: '',
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          width: '1px',
+          height: '1px',
+          background: 'red',
+        },
+      },
     },
   },
 };
@@ -41,7 +52,6 @@ export const commandBarButtonStyles = {
 };
 
 export const dropDownStyles = {
-  // dropdown: { width: 300 },
   label: {
     fontWeight: FontWeights.regular,
     paddingBottom: '2px',

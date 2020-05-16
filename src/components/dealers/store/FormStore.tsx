@@ -1,18 +1,12 @@
 import React from 'react';
 import * as Yup from 'yup';
 import { Field, Formik, Form } from 'formik';
-import {
-  Stack,
-  TextField,
-  PrimaryButton,
-  Separator,
-} from 'office-ui-fabric-react';
-import { Text, ITextProps } from 'office-ui-fabric-react/lib/Text';
+import { Stack, Separator, TextField } from 'office-ui-fabric-react';
+
 import { IStore, INewStore } from '../../../interfaces';
 import * as dealerActions from '../../../redux/actions/dealer.actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers/index';
-import { getTranslate, LocalizeState } from 'react-localize-redux';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 import { FormicReference } from '../dealerManaging/ManageDealerForm';
 
@@ -113,7 +107,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
             .required(() => 'Email is required'),
           billingEmail: Yup.string()
             .email('Invalid email')
-            .required('Alternative email is required'),
+            .required('Billing email is required'),
           addressLine1: Yup.string().notRequired(),
           addressLine2: Yup.string().notRequired(),
           city: Yup.string().notRequired(),
@@ -142,62 +136,73 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
         validateOnBlur={false}>
         {(formik) => {
           props.formikReference.formik = formik;
+
+          if (props.formikReference.isDirtyFunc) {
+            props.formikReference.isDirtyFunc(formik.dirty);
+          }
+
           return (
-            <Form>
+            <Form className="form">
               <Stack>
                 <div className="formScope">
                   <Separator alignContent="start">
-                    {' '}
                     Details: {selectedStore?.name}
                   </Separator>
 
                   <Field name="nameStore">
                     {() => (
-                      <div className="dealerForm__inputBlock">
+                      <div className="form__group">
                         <TextField
                           styles={fabricStyles.textFildLabelStyles}
-                          className="formInput"
+                          className="form__group__field"
                           label="Store name"
+                          required
                           value={formik.values.nameStore}
                           onChange={(args: any) => {
                             let value = args.target.value;
                             formik.setFieldValue('nameStore', value);
                             formik.setFieldTouched('nameStore');
                           }}
+                          errorMessage={
+                            formik.errors.nameStore &&
+                            formik.touched.nameStore ? (
+                              <span className="form__group__error">
+                                {formik.errors.nameStore}
+                              </span>
+                            ) : (
+                              ''
+                            )
+                          }
                         />
-                        {formik.errors.nameStore && formik.touched.nameStore ? (
-                          <Text
-                            variant={'small' as ITextProps['variant']}
-                            className="dealerForm__inputBlock__error">
-                            {formik.errors.nameStore}
-                          </Text>
-                        ) : null}
                       </div>
                     )}
                   </Field>
                   <Field name="contactEmail">
                     {() => {
                       return (
-                        <div className="dealerForm__inputBlock">
+                        <div className="form__group">
                           <TextField
                             styles={fabricStyles.textFildLabelStyles}
-                            className="formInput"
+                            className="form__group__field"
                             label="Email"
+                            required
                             value={formik.values.contactEmail}
                             onChange={(args: any) => {
                               let value = args.target.value;
                               formik.setFieldValue('contactEmail', value);
                               formik.setFieldTouched('contactEmail');
                             }}
+                            errorMessage={
+                              formik.errors.contactEmail &&
+                              formik.touched.contactEmail ? (
+                                <span className="form__group__error">
+                                  {formik.errors.contactEmail}
+                                </span>
+                              ) : (
+                                ''
+                              )
+                            }
                           />
-                          {formik.errors.contactEmail &&
-                          formik.touched.contactEmail ? (
-                            <Text
-                              variant={'small' as ITextProps['variant']}
-                              className="dealerForm__inputBlock__error">
-                              {formik.errors.contactEmail}
-                            </Text>
-                          ) : null}
                         </div>
                       );
                     }}
@@ -205,26 +210,29 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                   <Field name="billingEmail">
                     {() => {
                       return (
-                        <div className="dealerForm__inputBlock">
+                        <div className="form__group">
                           <TextField
                             styles={fabricStyles.textFildLabelStyles}
-                            className="formInput"
+                            className="form__group__field"
                             label="Billing email"
+                            required
                             value={formik.values.billingEmail}
                             onChange={(args: any) => {
                               let value = args.target.value;
                               formik.setFieldValue('billingEmail', value);
                               formik.setFieldTouched('billingEmail');
                             }}
+                            errorMessage={
+                              formik.errors.billingEmail &&
+                              formik.touched.billingEmail ? (
+                                <span className="form__group__error">
+                                  {formik.errors.billingEmail}
+                                </span>
+                              ) : (
+                                ''
+                              )
+                            }
                           />
-                          {formik.errors.billingEmail &&
-                          formik.touched.billingEmail ? (
-                            <Text
-                              variant={'small' as ITextProps['variant']}
-                              className="dealerForm__inputBlock__error">
-                              {formik.errors.billingEmail}
-                            </Text>
-                          ) : null}
                         </div>
                       );
                     }}
@@ -232,10 +240,10 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                   <Field name="addressLine1">
                     {() => {
                       return (
-                        <div className="dealerForm__inputBlock">
+                        <div className="form__group">
                           <TextField
                             styles={fabricStyles.textFildLabelStyles}
-                            className="formInput"
+                            className="form__group__field"
                             label="Address Line 1"
                             value={formik.values.addressLine1}
                             onChange={(args: any) => {
@@ -251,7 +259,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                   <Field name="addressLine2">
                     {() => {
                       return (
-                        <div className="dealerForm__inputBlock">
+                        <div className="form__group">
                           <TextField
                             styles={fabricStyles.textFildLabelStyles}
                             className="formInput"
@@ -272,10 +280,10 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                       <Field name="city">
                         {() => {
                           return (
-                            <div className="dealerForm__inputBlock">
+                            <div className="form__group">
                               <TextField
                                 styles={fabricStyles.textFildLabelStyles}
-                                className="formInput"
+                                className="form__group__field"
                                 label="City"
                                 value={formik.values.city}
                                 onChange={(args: any) => {
@@ -291,10 +299,10 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                       <Field name="country">
                         {() => {
                           return (
-                            <div className="dealerForm__inputBlock noMargin">
+                            <div className="form__group noMargin">
                               <TextField
                                 styles={fabricStyles.textFildLabelStyles}
-                                className="formInput"
+                                className="form__group__field"
                                 label="Country"
                                 value={formik.values.country}
                                 onChange={(args: any) => {
@@ -312,10 +320,10 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                       <Field name="state">
                         {() => {
                           return (
-                            <div className="dealerForm__inputBlock">
+                            <div className="form__group">
                               <TextField
                                 styles={fabricStyles.textFildLabelStyles}
-                                className="formInput"
+                                className="form__group__field"
                                 label="State"
                                 value={formik.values.state}
                                 onChange={(args: any) => {
@@ -331,10 +339,10 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                       <Field name="zip">
                         {() => {
                           return (
-                            <div className="dealerForm__inputBlock noMargin">
+                            <div className="form__group">
                               <TextField
                                 styles={fabricStyles.textFildLabelStyles}
-                                className="formInput"
+                                className="form__group__field"
                                 label="Zip"
                                 value={formik.values.zip}
                                 onChange={(args: any) => {

@@ -22,7 +22,14 @@ import {
 
 export const DealerStores: React.FC = () => {
   const dispatch = useDispatch();
-  const [formikReference] = useState<FormicReference>(new FormicReference());
+  const [formikReference] = useState<FormicReference>(
+    new FormicReference(() => {
+      formikReference.isDirtyFunc = (isDirty: boolean) => {
+        setIsDirtyForm(isDirty);
+      };
+    })
+  );
+  const [isDirtyForm, setIsDirtyForm] = useState(false);
   const selectedDealer = useSelector<IApplicationState, DealerAccount>(
     (state) => state.dealer.selectedDealer!
   );
@@ -34,8 +41,15 @@ export const DealerStores: React.FC = () => {
   }, []);
 
   const [selectedStore, setSelectedStore] = useState<IStore[] | null>(null);
+  const [isSelectedStore, setIsSelectedStore] = useState(true);
 
   const [isOpenForm, setIsOpenForm] = useState(false);
+
+  useEffect(() => {
+    if (selectedStore) {
+      setIsSelectedStore(false);
+    }
+  }, [selectedStore]);
 
   const onRenderCell = (
     item: IStore,
@@ -63,6 +77,7 @@ export const DealerStores: React.FC = () => {
       </div>
     );
   };
+  console.log(!(isSelectedStore || isDirtyForm));
 
   const _items: ICommandBarItemProps[] = [
     {
@@ -78,6 +93,7 @@ export const DealerStores: React.FC = () => {
     {
       key: 'Save',
       text: 'Save',
+      disabled: !isDirtyForm,
       iconProps: { iconName: 'Save' },
       onClick: () => {
         formikReference.formik.submitForm();
@@ -87,14 +103,18 @@ export const DealerStores: React.FC = () => {
     {
       key: 'Reset',
       text: 'Reset',
+      disabled: !isDirtyForm,
       iconProps: { iconName: 'Refresh' },
-      onClick: () => {},
+      onClick: () => {
+        formikReference.formik.resetForm();
+      },
       buttonStyles: commandBarButtonStyles,
     },
     {
       key: 'Delete',
       text: 'Delete',
       iconProps: { iconName: 'Delete' },
+      disabled: isSelectedStore,
       onClick: () => {
         if (selectedStore) {
           dispatch(
