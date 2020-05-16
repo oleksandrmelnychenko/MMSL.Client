@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { FontWeights } from 'office-ui-fabric-react/lib/Styling';
 import { DealerAccount, Address } from '../../../interfaces';
 import { textFildLabelStyles } from '../../../common/fabric-styles/styles';
+import { FormicReference } from '../dealerManaging/ManageDealerForm';
 
 class ManageDealerFormProps {
   constructor() {
@@ -18,14 +19,6 @@ class ManageDealerFormProps {
   formikReference: FormicReference;
   dealerAccount?: DealerAccount | null;
   submitAction: (args: any) => void;
-}
-
-export class FormicReference {
-  constructor() {
-    this.formik = null;
-  }
-
-  formik: any;
 }
 
 const buildDealerAccount = (values: any, sourceDealer?: DealerAccount) => {
@@ -109,9 +102,13 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
             buildDealerAccount(values, props.dealerAccount as DealerAccount)
           );
         }}
-        validateOnBlur={false}>
+        validateOnBlur={false}
+      >
         {(formik) => {
           props.formikReference.formik = formik;
+          if (props.formikReference.isDirtyFunc) {
+            props.formikReference.isDirtyFunc(formik.dirty);
+          }
 
           return (
             <Form className="form">
