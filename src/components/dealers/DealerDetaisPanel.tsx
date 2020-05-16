@@ -47,6 +47,7 @@ export const DealerDetailsPanel: React.FC = (props: any) => {
 
   return (
     <Panel
+      onOuterClick={() => {}}
       styles={panelStyle}
       isOpen={isOpenPanelWithDealerDetails.isOpen}
       type={PanelType.custom}

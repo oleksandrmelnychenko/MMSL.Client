@@ -121,36 +121,30 @@ export const DealerStores: React.FC = () => {
       iconProps: { iconName: 'Delete' },
       disabled: isSelectedStore,
       onClick: () => {
-        // if (selectedStore && selectedStore.length > 0) {
-        //   dispatch(
-        //     controlAction.toggleCommonDialogVisibility(
-        //       new DialogArgs(
-        //         CommonDialogType.Delete,
-        //         'Delete store',
-        //         `Are you sure you want to delete ${selectedStore[0].name}?`,
-        //         () => {
-        //           debugger;
-
-        //         },
-        //         () => {
-        //           debugger;
-        //         }
-        //       )
-        //     )
-        //   );
-
-        // }
-
-        if (selectedStore) {
+        if (selectedStore && selectedStore.length > 0) {
           dispatch(
-            dealerActions.deleteCurrentDealerStore(
-              selectedStore[0].id as number
+            controlAction.toggleCommonDialogVisibility(
+              new DialogArgs(
+                CommonDialogType.Delete,
+                'Delete store',
+                `Are you sure you want to delete ${selectedStore[0].name}?`,
+                () => {
+                  if (selectedStore) {
+                    dispatch(
+                      dealerActions.deleteCurrentDealerStore(
+                        selectedStore[0].id as number
+                      )
+                    );
+                  }
+                  formikReference.formik.resetForm();
+                  setSelectedStore(null);
+                  setIsOpenForm(false);
+                },
+                () => {}
+              )
             )
           );
         }
-        formikReference.formik.resetForm();
-        setSelectedStore(null);
-        setIsOpenForm(false);
       },
       buttonStyles: commandBarButtonStyles,
     },
