@@ -13,7 +13,7 @@ export const btnMenuStyle = {
   root: {
     minWidth: '90px',
     width: '90px',
-    height: '90px',
+    height: '70px',
     paddingRight: '0px',
     paddingLeft: '0px',
     border: 'none',
