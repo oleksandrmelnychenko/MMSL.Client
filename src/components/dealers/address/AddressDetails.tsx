@@ -6,9 +6,6 @@ import {
   CommandBar,
   ICommandBarItemProps,
 } from 'office-ui-fabric-react';
-import BillingAddressForm, {
-  FormicReference,
-} from '../address/BillingAddressForm';
 import * as dealerActions from '../../../redux/actions/dealer.actions';
 import * as controlAction from '../../../redux/actions/control.actions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,13 +18,22 @@ import {
   commandBarButtonStyles,
   commandBarStyles,
 } from '../../../common/fabric-styles/styles';
+import { FormicReference } from '../dealerManaging/ManageDealerForm';
+import BillingAddressForm from './BillingAddressForm';
 
 class DealerDetailsProps {}
 
 export const DealerDetails: React.FC<DealerDetailsProps> = (
   props: DealerDetailsProps
 ) => {
-  const [formikReference] = useState<FormicReference>(new FormicReference());
+  const [formikReference] = useState<FormicReference>(
+    new FormicReference(() => {
+      formikReference.isDirtyFunc = (isDirty: boolean) => {
+        setIsDirtyForm(isDirty);
+      };
+    })
+  );
+  const [isDirtyForm, setIsDirtyForm] = useState(false);
 
   const dispatch = useDispatch();
   const selectedDealer = useSelector<IApplicationState, DealerAccount>(
@@ -45,6 +51,16 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
         if (formik !== undefined && formik !== null) {
           formik.submitForm();
         }
+      },
+      buttonStyles: commandBarButtonStyles,
+    },
+    {
+      key: 'Reset',
+      text: 'Reset',
+      disabled: !isDirtyForm,
+      iconProps: { iconName: 'Refresh' },
+      onClick: () => {
+        formikReference.formik.resetForm();
       },
       buttonStyles: commandBarButtonStyles,
     },
