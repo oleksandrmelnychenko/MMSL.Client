@@ -8,45 +8,16 @@ import {
 } from '../../../redux/reducers/dealer.reducer';
 import { useDispatch } from 'react-redux';
 import './management-options.scss';
+import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 
 const ManagementOptions: React.FC = () => {
   const dispatch = useDispatch();
 
-  const btnStyle = {
-    root: {
-      minWidth: '90px',
-      width: '90px',
-      height: '90px',
-      paddingRight: '0px',
-      border: 'none',
-      rootHovered: {
-        border: 'none',
-      },
-    },
-  };
-
-  const labelStyle = {
-    root: {
-      width: '90px',
-      fontSize: '14px',
-      textAlign: 'center',
-      'font-weight': 400,
-      cursor: 'pointer',
-      transition: 'all 0.3s ease',
-
-      selectors: {
-        '&:hover': {
-          background: '#faf9f8',
-          textDecoration: 'underline',
-        },
-      },
-    },
-  };
   return (
     <div className="dealer__management">
       <Label styles={labelStyle}>
         <PrimaryButton
-          styles={btnStyle}
+          styles={btnMenuStyle}
           className="dealer__management__btn-add"
           onClick={() => {
             const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
@@ -64,7 +35,7 @@ const ManagementOptions: React.FC = () => {
       <Label styles={labelStyle}>
         <PrimaryButton
           className="dealer__management__btn-detail"
-          styles={btnStyle}
+          styles={btnMenuStyle}
           onClick={() => {
             const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
             openDetailsArgs.isOpen = true;
@@ -81,7 +52,7 @@ const ManagementOptions: React.FC = () => {
       </Label>
       <Label styles={labelStyle}>
         <PrimaryButton
-          styles={btnStyle}
+          styles={btnMenuStyle}
           className="dealer__management__btn-address"
           onClick={() => {
             const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
@@ -99,7 +70,7 @@ const ManagementOptions: React.FC = () => {
       </Label>
       <Label styles={labelStyle}>
         <PrimaryButton
-          styles={btnStyle}
+          styles={btnMenuStyle}
           className="dealer__management__btn-customer"
           onClick={() => {
             const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();

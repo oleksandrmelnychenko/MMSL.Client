@@ -9,6 +9,38 @@ export const panelStyle = {
   },
 };
 
+export const btnMenuStyle = {
+  root: {
+    minWidth: '90px',
+    width: '90px',
+    height: '90px',
+    paddingRight: '0px',
+    paddingLeft: '0px',
+    border: 'none',
+    rootHovered: {
+      border: 'none',
+    },
+  },
+};
+
+export const labelStyle = {
+  root: {
+    width: '90px',
+    fontSize: '14px',
+    textAlign: 'center',
+    'font-weight': 400,
+    cursor: 'pointer',
+    transition: 'all 0.3s ease',
+
+    selectors: {
+      '&:hover': {
+        background: '#faf9f8',
+        textDecoration: 'underline',
+      },
+    },
+  },
+};
+
 export const textFildLabelStyles = {
   subComponentStyles: {
     label: {

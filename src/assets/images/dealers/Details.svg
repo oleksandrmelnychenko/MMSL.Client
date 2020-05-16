@@ -1,0 +1,15 @@
+<svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="90" height="90" rx="2" fill="white"/>
+<path d="M29.6154 25H60.3846V49.5L52.6923 57H29.6154V25Z" fill="#646A70"/>
+<path d="M52.6923 49.5H60.3846L52.6923 57V49.5Z" fill="#C2C2C2"/>
+<rect x="47.0513" y="40" width="7.17949" height="1.5" fill="#DEDEDE"/>
+<rect x="35.7692" y="43" width="18.4615" height="1.5" fill="#DEDEDE"/>
+<rect x="35.7692" y="46" width="18.4615" height="1.5" fill="#DEDEDE"/>
+<rect x="47.0513" y="37" width="7.17949" height="1.5" fill="#DEDEDE"/>
+<rect x="47.0513" y="34" width="7.17949" height="1.5" fill="#DEDEDE"/>
+<rect x="35.7692" y="31" width="9.23077" height="10" fill="white"/>
+<rect x="39.8718" y="35" width="1.02564" height="3" fill="#646A70"/>
+<rect x="41.9231" y="38" width="1" height="3.07692" transform="rotate(90 41.9231 38)" fill="#646A70"/>
+<rect x="40.8974" y="35" width="1" height="2.05128" transform="rotate(90 40.8974 35)" fill="#646A70"/>
+<rect x="39.8718" y="33" width="1.02564" height="1" fill="#646A70"/>
+</svg>

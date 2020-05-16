@@ -5,7 +5,6 @@
     flex-wrap: wrap;
 
     button {
-        margin: 5px 0;
         transition: all 0.3s ease;
         background-size: cover;
         background-position: center;
@@ -17,18 +16,18 @@
     }
 
     &__btn-add {
-        background: url('../../../assets/images/dealers/add_store.svg') no-repeat;
+        background: url('../../../assets/images/dealers/Stores.svg') no-repeat;
     }
 
     &__btn-detail {
-        background: url('../../../assets/images/dealers/dealer_details.svg') no-repeat;
+        background: url('../../../assets/images/dealers/Details.svg') no-repeat;
     }
 
     &__btn-address {
-        background: url('../../../assets/images/dealers/address.svg') no-repeat;
+        background: url('../../../assets/images/dealers/Address.svg') no-repeat;
     }
 
     &__btn-customer {
-        background: url('../../../assets/images/dealers/customer.svg') no-repeat;
+        background: url('../../../assets/images/dealers/Customer.svg') no-repeat;
     }
 }
