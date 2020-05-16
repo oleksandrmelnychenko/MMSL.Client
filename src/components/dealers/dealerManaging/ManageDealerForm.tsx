@@ -197,7 +197,6 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
 
                                 formik.setFieldValue('companyName', value);
                                 formik.setFieldTouched('companyName');
-                                console.log(value);
                               }}
                             />
                             {formik.errors.companyName &&

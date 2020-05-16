@@ -19,6 +19,10 @@ import { DealerAccount } from '../../interfaces';
 import { assignPendingActions } from '../../helpers/action.helper';
 import * as controlAction from '../../redux/actions/control.actions';
 import { ToggleDealerPanelWithDetails } from '../../redux/reducers/dealer.reducer';
+import {
+  DialogArgs,
+  CommonDialogType,
+} from '../../redux/reducers/control.reducer';
 
 const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
@@ -134,27 +138,37 @@ export const DealerList: React.FC = () => {
               title="Delete"
               ariaLabel="Delete"
               onClick={(args: any) => {
-                dispatch(controlAction.toggleCommonDialogVisibility(true));
-
-                // const actionsQueue: any[] = [
-                //   dealerActions.getDealersListPaginated(),
-                // ];
-                // /// TODO:
-                // if (item.id) {
-                //   actionsQueue.push(
-                //     dealerActions.setSelectedDealer(null),
-                //     controlAction.isOpenPanelInfo(false),
-                //     controlAction.isCollapseMenu(false),
-                //     dealerActions.isOpenPanelWithDealerDetails(
-                //       new ToggleDealerPanelWithDetails()
-                //     )
-                //   );
-                // }
-                // let action = assignPendingActions(
-                //   dealerActions.deleteDealerById(item.id),
-                //   actionsQueue
-                // );
-                // dispatch(action);
+                dispatch(
+                  controlAction.toggleCommonDialogVisibility(
+                    new DialogArgs(
+                      CommonDialogType.Delete,
+                      'Delete dealer',
+                      `Are you sure you want to delete ${item.name}?`,
+                      () => {
+                        const actionsQueue: any[] = [
+                          dealerActions.getDealersListPaginated(),
+                        ];
+                        /// TODO:
+                        if (item.id) {
+                          actionsQueue.push(
+                            dealerActions.setSelectedDealer(null),
+                            controlAction.isOpenPanelInfo(false),
+                            controlAction.isCollapseMenu(false),
+                            dealerActions.isOpenPanelWithDealerDetails(
+                              new ToggleDealerPanelWithDetails()
+                            )
+                          );
+                        }
+                        let action = assignPendingActions(
+                          dealerActions.deleteDealerById(item.id),
+                          actionsQueue
+                        );
+                        dispatch(action);
+                      },
+                      () => {}
+                    )
+                  )
+                );
               }}
             />
           </Stack>

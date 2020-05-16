@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './dashboard.scss';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Dialog,
   DialogFooter,
@@ -8,42 +8,61 @@ import {
   DefaultButton,
   DialogType,
 } from 'office-ui-fabric-react';
-import * as controlAction from '../../redux/actions/control.actions';
 import { IApplicationState } from '../../redux/reducers';
+import { DialogArgs } from '../../redux/reducers/control.reducer';
+import * as controlAction from '../../redux/actions/control.actions';
 
 const CommonDialog: React.FC = () => {
   const dispatch = useDispatch();
+  const [isHidden, setIsHidden] = useState<boolean>();
+  const [title, setTitle] = useState<string>();
+  const [subText, setSubText] = useState<string>();
 
-  const isDialogOpen: boolean = useSelector<IApplicationState, boolean>(
-    (state) => state.control.commonDialog.isDialogOpen
-  );
+  const dialogArgs: DialogArgs | null = useSelector<
+    IApplicationState,
+    DialogArgs | null
+  >((state) => state.control.commonDialog.dialogArgs);
 
-  const dialogContentProps = {
-    type: DialogType.normal,
-    title: 'Missing Subject',
-    closeButtonAriaLabel: 'Close',
-    subText: 'Do you want to send this message without a subject?',
-  };
+  useEffect(() => {
+    setIsHidden(dialogArgs ? false : true);
+    console.log(dialogArgs);
+
+    if (dialogArgs) {
+      setTitle(dialogArgs.title);
+      setSubText(dialogArgs.subText);
+    }
+  }, [dialogArgs]);
 
   return (
     <>
       <Dialog
-        hidden={!isDialogOpen}
+        hidden={isHidden}
         onDismiss={() => {}}
-        dialogContentProps={dialogContentProps}
+        dialogContentProps={{
+          type: DialogType.normal,
+          title: title,
+          subText: subText,
+        }}
       >
         <DialogFooter>
           <PrimaryButton
             onClick={() => {
-              dispatch(controlAction.toggleCommonDialogVisibility(false));
+              dispatch(controlAction.toggleCommonDialogVisibility(null));
+
+              setTimeout(() => {
+                dialogArgs?.onSubmitClick();
+              }, 500);
             }}
-            text="Send"
+            text="Submit"
           />
           <DefaultButton
             onClick={() => {
-              dispatch(controlAction.toggleCommonDialogVisibility(false));
+              dispatch(controlAction.toggleCommonDialogVisibility(null));
+
+              dialogArgs?.onDeclineClick();
+              setTimeout(() => {}, 500);
             }}
-            text="Don't send"
+            text="Cancel"
           />
         </DialogFooter>
       </Dialog>
