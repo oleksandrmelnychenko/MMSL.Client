@@ -29,6 +29,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
   const [formikReference] = useState<FormicReference>(
     new FormicReference(() => {
       formikReference.isDirtyFunc = (isDirty: boolean) => {
+        console.log(isDirty);
         setIsDirtyForm(isDirty);
       };
     })
@@ -44,6 +45,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
     {
       key: 'Save',
       text: 'Save',
+      disabled: !isDirtyForm,
       iconProps: { iconName: 'Save' },
       onClick: () => {
         let formik: any = formikReference.formik;

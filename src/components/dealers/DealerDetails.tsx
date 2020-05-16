@@ -39,6 +39,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
     {
       key: 'Save',
       text: 'Save',
+      disabled: !isDirtyForm,
       iconProps: { iconName: 'Save' },
       onClick: () => {
         let formik: any = formikReference.formik;

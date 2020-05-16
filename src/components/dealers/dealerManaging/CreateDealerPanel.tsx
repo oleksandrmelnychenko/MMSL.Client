@@ -37,6 +37,7 @@ export const CreateDealerPanel: React.FC = (props: any) => {
     {
       key: 'Save',
       text: 'Save',
+      disabled: !isDirtyForm,
       iconProps: { iconName: 'Save' },
       onClick: () => {
         let formik: any = formikReference.formik;
