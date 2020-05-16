@@ -11,7 +11,6 @@ import {
 } from '../../redux/reducers/dealer.reducer';
 import DealerDetails from './DealerDetails';
 import AddressDetails from './address/AddressDetails';
-import PanelFooter from './panel/PanelFooter';
 import { panelStyle } from '../../common/fabric-styles/styles';
 
 export const DealerDetailsPanel: React.FC = (props: any) => {

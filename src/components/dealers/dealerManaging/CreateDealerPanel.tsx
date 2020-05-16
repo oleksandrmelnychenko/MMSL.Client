@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import './createDealerPanel.scss';
-import { Panel, PanelType } from 'office-ui-fabric-react';
+import {
+  Panel,
+  PanelType,
+  CommandBar,
+  ICommandBarItemProps,
+} from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
 import * as dealerActions from '../../../redux/actions/dealer.actions';
 import ManageDealerForm, { FormicReference } from './ManageDealerForm';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import PanelTitle from '../panel/PanelTitle';
-import PanelFooter from '../panel/PanelFooter';
-import { panelStyle } from '../../../common/fabric-styles/styles';
+import {
+  panelStyle,
+  commandBarStyles,
+  commandBarButtonStyles,
+} from '../../../common/fabric-styles/styles';
 
 export const CreateDealerPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -18,6 +26,21 @@ export const CreateDealerPanel: React.FC = (props: any) => {
   );
 
   const [formikReference] = useState<FormicReference>(new FormicReference());
+  const _items: ICommandBarItemProps[] = [
+    {
+      key: 'Save',
+      text: 'Save',
+      iconProps: { iconName: 'Save' },
+      onClick: () => {
+        let formik: any = formikReference.formik;
+
+        if (formik !== undefined && formik !== null) {
+          formik.submitForm();
+        }
+      },
+      buttonStyles: commandBarButtonStyles,
+    },
+  ];
 
   return (
     <div className="createDealerPanel">
@@ -29,8 +52,7 @@ export const CreateDealerPanel: React.FC = (props: any) => {
         onDismiss={() => {
           dispatch(dealerActions.toggleNewDealerForm(false));
         }}
-        closeButtonAriaLabel="Close"
-      >
+        closeButtonAriaLabel="Close">
         <PanelTitle
           onSaveClick={() => {
             let formik: any = formikReference.formik;
@@ -40,6 +62,11 @@ export const CreateDealerPanel: React.FC = (props: any) => {
             }
           }}
           title={'New Dealer'}
+        />
+        <CommandBar
+          styles={commandBarStyles}
+          items={_items}
+          className="dealers__store__controls"
         />
         <ManageDealerForm
           formikReference={formikReference}
@@ -52,15 +79,6 @@ export const CreateDealerPanel: React.FC = (props: any) => {
               ]
             );
             dispatch(createAction);
-          }}
-        />
-        <PanelFooter
-          onSaveClick={() => {
-            let formik: any = formikReference.formik;
-
-            if (formik !== undefined && formik !== null) {
-              formik.submitForm();
-            }
           }}
         />
       </Panel>

@@ -83,7 +83,6 @@ export const DealerStores: React.FC = () => {
       </div>
     );
   };
-  console.log(!(isSelectedStore || isDirtyForm));
 
   const _items: ICommandBarItemProps[] = [
     {
@@ -154,7 +153,7 @@ export const DealerStores: React.FC = () => {
   return (
     <div>
       <PanelTitle
-        title={`Dealer: ${selectedDealer.companyName} | ${selectedDealer.email}`}
+        title={`Stores: ${selectedDealer.companyName} | ${selectedDealer.email}`}
       />
       <div>
         <CommandBar
