@@ -9,25 +9,41 @@
         background-size: cover;
         background-position: center;
 
+
         &:hover {
             border: none;
-            box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2);
         }
     }
 
     &__btn-add {
         background: url('../../../assets/images/dealers/Stores.svg') no-repeat;
+
+        &:hover {
+            background: url('../../../assets/images/dealers/Stores.svg') no-repeat;
+        }
     }
 
     &__btn-detail {
         background: url('../../../assets/images/dealers/Details.svg') no-repeat;
+
+        &:hover {
+            background: url('../../../assets/images/dealers/Details.svg') no-repeat;
+        }
     }
 
     &__btn-address {
         background: url('../../../assets/images/dealers/Address.svg') no-repeat;
+
+        &:hover {
+            background: url('../../../assets/images/dealers/Address.svg') no-repeat;
+        }
     }
 
     &__btn-customer {
         background: url('../../../assets/images/dealers/Customer.svg') no-repeat;
+
+        &:hover {
+            background: url('../../../assets/images/dealers/Customer.svg') no-repeat;
+        }
     }
 }
