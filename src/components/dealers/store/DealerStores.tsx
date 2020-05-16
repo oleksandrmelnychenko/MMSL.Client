@@ -8,13 +8,12 @@ import {
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers/index';
-import { DealerAccount } from '../../../interfaces';
+import { DealerAccount, FormicReference } from '../../../interfaces';
 import * as dealerActions from '../../../redux/actions/dealer.actions';
 import { IStore } from '../../../interfaces/index';
 import { Stack } from 'office-ui-fabric-react';
 import FormStore from './FormStore';
 import PanelTitle from '../panel/PanelTitle';
-import { FormicReference } from '../dealerManaging/ManageDealerForm';
 import {
   commandBarButtonStyles,
   commandBarStyles,

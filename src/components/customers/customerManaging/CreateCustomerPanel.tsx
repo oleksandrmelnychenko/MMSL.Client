@@ -1,25 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import './createDealerPanel.scss';
-import {
-  Panel,
-  PanelType,
-  CommandBar,
-  ICommandBarItemProps,
-} from 'office-ui-fabric-react';
+import React, { useState } from 'react';
+import './createCustomerPanel.scss';
+import { ICommandBarItemProps } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
-import * as dealerActions from '../../../redux/actions/dealer.actions';
-import ManageDealerForm from './ManageDealerForm';
-import { assignPendingActions } from '../../../helpers/action.helper';
-import PanelTitle from '../panel/PanelTitle';
-import {
-  panelStyle,
-  commandBarStyles,
-  commandBarButtonStyles,
-} from '../../../common/fabric-styles/styles';
+import { commandBarButtonStyles } from '../../../common/fabric-styles/styles';
 import { FormicReference } from '../../../interfaces';
 
-export const CreateDealerPanel: React.FC = (props: any) => {
+export const CreateCustomerPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
   const [formikReference] = useState<FormicReference>(
     new FormicReference(() => {
@@ -63,7 +50,7 @@ export const CreateDealerPanel: React.FC = (props: any) => {
 
   return (
     <div className="createDealerPanel">
-      <Panel
+      {/* <Panel
         styles={panelStyle}
         isOpen={isAddDealerOpen}
         type={PanelType.custom}
@@ -87,8 +74,8 @@ export const CreateDealerPanel: React.FC = (props: any) => {
           styles={commandBarStyles}
           items={_items}
           className="dealers__store__controls"
-        />
-        <ManageDealerForm
+        /> */}
+      {/* <ManageDealerForm
           formikReference={formikReference}
           submitAction={(args: any) => {
             let createAction = assignPendingActions(
@@ -100,10 +87,10 @@ export const CreateDealerPanel: React.FC = (props: any) => {
             );
             dispatch(createAction);
           }}
-        />
-      </Panel>
+        /> */}
+      {/* </Panel> */}
     </div>
   );
 };
 
-export default CreateDealerPanel;
+export default CreateCustomerPanel;

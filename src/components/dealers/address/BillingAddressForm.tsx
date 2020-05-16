@@ -1,13 +1,11 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
-import { Checkbox, Text, Stack, TextField } from 'office-ui-fabric-react';
+import { Checkbox, Stack, TextField } from 'office-ui-fabric-react';
 import '../dealerManaging/manageDealerForm.scss';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { FontWeights } from 'office-ui-fabric-react/lib/Styling';
-import { DealerAccount, Address } from '../../../interfaces';
+import { DealerAccount, Address, FormicReference } from '../../../interfaces';
 import { textFildLabelStyles } from '../../../common/fabric-styles/styles';
-import { FormicReference } from '../dealerManaging/ManageDealerForm';
 
 class ManageDealerFormProps {
   constructor() {

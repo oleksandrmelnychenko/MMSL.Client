@@ -3,11 +3,9 @@ import { Formik, Form, Field } from 'formik';
 import {
   Toggle,
   Dropdown,
-  Text,
   Stack,
   TextField,
   MaskedTextField,
-  ITextProps,
   IDropdownOption,
 } from 'office-ui-fabric-react';
 import './manageDealerForm.scss';
@@ -17,6 +15,7 @@ import {
   Address,
   PaymentType,
   Currency,
+  FormicReference,
 } from '../../../interfaces';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 
@@ -30,16 +29,6 @@ class ManageDealerFormProps {
   formikReference: FormicReference;
   dealerAccount?: DealerAccount | null;
   submitAction: (args: any) => void;
-}
-
-export class FormicReference {
-  constructor(isDirtyFunc?: (isDirty: boolean) => void) {
-    this.formik = null;
-    this.isDirtyFunc = isDirtyFunc;
-  }
-
-  formik: any;
-  isDirtyFunc?: (isDirty: boolean) => void;
 }
 
 /// TOODO: resolve with Linq

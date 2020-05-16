@@ -235,3 +235,13 @@ export class StoreCustomer extends EntityBase {
   storeId: number | null;
   store: IStore | null;
 }
+
+export class FormicReference {
+  constructor(isDirtyFunc?: (isDirty: boolean) => void) {
+    this.formik = null;
+    this.isDirtyFunc = isDirtyFunc;
+  }
+
+  formik: any;
+  isDirtyFunc?: (isDirty: boolean) => void;
+}
