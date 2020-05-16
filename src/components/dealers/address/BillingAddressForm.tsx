@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { FontWeights } from 'office-ui-fabric-react/lib/Styling';
 import { DealerAccount, Address } from '../../../interfaces';
+import { textFildLabelStyles } from '../../../common/fabric-styles/styles';
 
 class ManageDealerFormProps {
   constructor() {
@@ -87,17 +88,6 @@ const initDefaultValues = (account?: DealerAccount | null) => {
 export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
   const dispatch = useDispatch();
 
-  const textFildLabelStyles = {
-    subComponentStyles: {
-      label: {
-        root: {
-          fontWeight: FontWeights.semibold,
-          paddingBottom: '2px',
-        },
-      },
-    },
-  };
-
   const formikInitValues = initDefaultValues(props.dealerAccount);
 
   return (
@@ -119,28 +109,26 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
             buildDealerAccount(values, props.dealerAccount as DealerAccount)
           );
         }}
-        validateOnBlur={false}
-      >
+        validateOnBlur={false}>
         {(formik) => {
           props.formikReference.formik = formik;
 
           return (
-            <Form>
+            <Form className="form">
               <div className="dealerFormManage">
                 <Stack horizontal tokens={{ childrenGap: 20 }}>
                   <Stack grow={4} tokens={{ childrenGap: 20 }}>
                     <Stack>
                       <div className="formScope">
                         <Text className="formScopeHeader">BILLING ADDRESS</Text>
-                        <Field
-                          name="addressLine1"
-                          render={() => {
+                        <Field name="addressLine1">
+                          {() => {
                             return (
-                              <div className="dealerForm__inputBlock">
+                              <div className="form__group">
                                 <TextField
                                   value={formik.values.addressLine1}
                                   styles={textFildLabelStyles}
-                                  className="formInput"
+                                  className="form__group__field"
                                   label="Address Line 1"
                                   onChange={(args: any) => {
                                     let value = args.target.value;
@@ -151,16 +139,15 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                               </div>
                             );
                           }}
-                        ></Field>
-                        <Field
-                          name="addressLine2"
-                          render={() => {
+                        </Field>
+                        <Field name="addressLine2">
+                          {() => {
                             return (
-                              <div className="dealerForm__inputBlock">
+                              <div className="form__group">
                                 <TextField
                                   value={formik.values.addressLine2}
                                   styles={textFildLabelStyles}
-                                  className="formInput"
+                                  className="form__group__field"
                                   label="Address Line 2"
                                   onChange={(args: any) => {
                                     let value = args.target.value;
@@ -171,18 +158,17 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                               </div>
                             );
                           }}
-                        ></Field>
+                        </Field>
                         <Stack horizontal tokens={{ childrenGap: 20 }}>
                           <Stack grow={1}>
-                            <Field
-                              name="city"
-                              render={() => {
+                            <Field name="city">
+                              {() => {
                                 return (
-                                  <div className="dealerForm__inputBlock">
+                                  <div className="form__group">
                                     <TextField
                                       value={formik.values.city}
                                       styles={textFildLabelStyles}
-                                      className="formInput"
+                                      className="form__group__field"
                                       label="City"
                                       onChange={(args: any) => {
                                         let value = args.target.value;
@@ -193,16 +179,15 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                   </div>
                                 );
                               }}
-                            ></Field>
-                            <Field
-                              name="country"
-                              render={() => {
+                            </Field>
+                            <Field name="country">
+                              {() => {
                                 return (
-                                  <div className="dealerForm__inputBlock noMargin">
+                                  <div className="form__group">
                                     <TextField
                                       value={formik.values.country}
                                       styles={textFildLabelStyles}
-                                      className="formInput"
+                                      className="form__group__field"
                                       label="Country"
                                       onChange={(args: any) => {
                                         let value = args.target.value;
@@ -213,18 +198,17 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                   </div>
                                 );
                               }}
-                            ></Field>
+                            </Field>
                           </Stack>
                           <Stack grow={1}>
-                            <Field
-                              name="state"
-                              render={() => {
+                            <Field name="state">
+                              {() => {
                                 return (
-                                  <div className="dealerForm__inputBlock">
+                                  <div className="form__group">
                                     <TextField
                                       value={formik.values.state}
                                       styles={textFildLabelStyles}
-                                      className="formInput"
+                                      className="form__group__field"
                                       label="State"
                                       onChange={(args: any) => {
                                         let value = args.target.value;
@@ -235,16 +219,15 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                   </div>
                                 );
                               }}
-                            ></Field>
-                            <Field
-                              name="zip"
-                              render={() => {
+                            </Field>
+                            <Field name="zip">
+                              {() => {
                                 return (
-                                  <div className="dealerForm__inputBlock noMargin">
+                                  <div className="form__group">
                                     <TextField
                                       value={formik.values.zip}
                                       styles={textFildLabelStyles}
-                                      className="formInput"
+                                      className="form__group__field"
                                       label="Zip"
                                       onChange={(args: any) => {
                                         let value = args.target.value;
@@ -255,7 +238,7 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                   </div>
                                 );
                               }}
-                            ></Field>
+                            </Field>
                           </Stack>
                         </Stack>
                       </div>
@@ -268,11 +251,10 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                           </Text>
                         </Stack.Item>
                         <Stack.Item>
-                          <Field
-                            name="useBillingAsShipping"
-                            render={() => {
+                          <Field name="useBillingAsShipping">
+                            {() => {
                               return (
-                                <div className="dealerForm__inputBlock noMargin">
+                                <div className="form__group">
                                   <Checkbox
                                     checked={formik.values.useBillingAsShipping}
                                     label="Use same as billing"
@@ -292,7 +274,7 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                 </div>
                               );
                             }}
-                          ></Field>
+                          </Field>
                         </Stack.Item>
                       </Stack>
                     </div>

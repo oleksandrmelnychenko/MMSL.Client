@@ -11,7 +11,11 @@ import { IApplicationState } from '../../redux/reducers';
 import { ToggleDealerPanelWithDetails } from '../../redux/reducers/dealer.reducer';
 import PanelTitle from './panel/PanelTitle';
 import './dealerDetails.scss';
-import PanelFooter from './panel/PanelFooter';
+import { ICommandBarItemProps, CommandBar } from 'office-ui-fabric-react';
+import {
+  commandBarButtonStyles,
+  commandBarStyles,
+} from '../../common/fabric-styles/styles';
 
 class DealerDetailsProps {}
 
@@ -24,11 +28,29 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
   const selectedDealer = useSelector<IApplicationState, DealerAccount>(
     (state) => state.dealer.selectedDealer!
   );
+  const _items: ICommandBarItemProps[] = [
+    {
+      key: 'Save',
+      text: 'Save',
+      iconProps: { iconName: 'Save' },
+      onClick: () => {
+        let formik: any = formikReference.formik;
 
+        if (formik !== undefined && formik !== null) {
+          formik.submitForm();
+        }
+      },
+      buttonStyles: commandBarButtonStyles,
+    },
+  ];
   return (
     <div className="dealerDetails">
-      <PanelTitle title={'Dealer Details'} />
-
+      <PanelTitle title={'Details'} />
+      <CommandBar
+        styles={commandBarStyles}
+        items={_items}
+        className="dealers__store__controls"
+      />
       <ManageDealerForm
         formikReference={formikReference}
         dealerAccount={selectedDealer}
@@ -46,15 +68,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
             ]
           );
           dispatch(createAction);
-        }}
-      />
-      <PanelFooter
-        onSaveClick={() => {
-          let formik: any = formikReference.formik;
-
-          if (formik !== undefined && formik !== null) {
-            formik.submitForm();
-          }
         }}
       />
     </div>

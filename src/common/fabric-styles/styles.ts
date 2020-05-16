@@ -57,16 +57,15 @@ export const dropDownStyles = {
     paddingBottom: '2px',
   },
   root: {
-    paddingTop: '15px',
-    paddingBottom: '5px',
+    paddingTop: '13px',
+    paddingBottom: '0',
   },
   title: {},
 };
 
 export const toggleStyles = {
   root: {
-    paddingTop: '15px',
-    paddingBottom: '5px',
+    paddingTop: '10px',
     margin: '2px',
     'justify-content': 'space-between',
   },

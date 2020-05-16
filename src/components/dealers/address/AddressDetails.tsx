@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Text, Stack, PrimaryButton } from 'office-ui-fabric-react';
+import {
+  Text,
+  Stack,
+  PrimaryButton,
+  CommandBar,
+  ICommandBarItemProps,
+} from 'office-ui-fabric-react';
 import BillingAddressForm, {
   FormicReference,
 } from '../address/BillingAddressForm';
@@ -11,7 +17,10 @@ import { DealerAccount } from '../../../interfaces';
 import { IApplicationState } from '../../../redux/reducers';
 import { ToggleDealerPanelWithDetails } from '../../../redux/reducers/dealer.reducer';
 import PanelTitle from '../panel/PanelTitle';
-import PanelFooter from '../panel/PanelFooter';
+import {
+  commandBarButtonStyles,
+  commandBarStyles,
+} from '../../../common/fabric-styles/styles';
 
 class DealerDetailsProps {}
 
@@ -25,10 +34,32 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
     (state) => state.dealer.selectedDealer!
   );
 
+  const _items: ICommandBarItemProps[] = [
+    {
+      key: 'Save',
+      text: 'Save',
+      iconProps: { iconName: 'Save' },
+      onClick: () => {
+        let formik: any = formikReference.formik;
+
+        if (formik !== undefined && formik !== null) {
+          formik.submitForm();
+        }
+      },
+      buttonStyles: commandBarButtonStyles,
+    },
+  ];
+
   return (
     <div>
-      <PanelTitle title={'Dealer Address'} />
-
+      <PanelTitle title={'Address'} />
+      <div>
+        <CommandBar
+          styles={commandBarStyles}
+          items={_items}
+          className="dealers__store__controls"
+        />
+      </div>
       <BillingAddressForm
         formikReference={formikReference}
         dealerAccount={selectedDealer}
@@ -46,15 +77,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
             ]
           );
           dispatch(createAction);
-        }}
-      />
-      <PanelFooter
-        onSaveClick={() => {
-          let formik: any = formikReference.formik;
-
-          if (formik !== undefined && formik !== null) {
-            formik.submitForm();
-          }
         }}
       />
     </div>
