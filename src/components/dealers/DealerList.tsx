@@ -150,7 +150,6 @@ export const DealerList: React.FC = () => {
                         ];
                         /// TODO:
                         if (item.id) {
-                          debugger;
                           actionsQueue.push(
                             dealerActions.setSelectedDealer(null),
                             controlAction.isOpenPanelInfo(false),
