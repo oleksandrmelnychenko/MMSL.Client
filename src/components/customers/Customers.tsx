@@ -12,6 +12,11 @@ export const Customers: React.FC = (props: any) => {
   const searchText = useSelector<IApplicationState, string>(
     (state) => state.customer.customerState.search
   );
+  const searchByStoreText = useSelector<IApplicationState, string>(
+    (state) => state.customer.customerState.searchByStore
+  );
+
+  const searchBoxStyles = { root: { width: 200 } };
 
   return (
     <div className="customers">
@@ -29,7 +34,6 @@ export const Customers: React.FC = (props: any) => {
                           className="customersAdd"
                           onClick={() => {
                             ///TODO:
-                            debugger;
                             // dispatch(dealerActions.toggleNewDealerForm(true));
                           }}
                           iconProps={{ iconName: 'Add' }}
@@ -41,7 +45,8 @@ export const Customers: React.FC = (props: any) => {
                         <SearchBox
                           className="customersSearch"
                           value={searchText}
-                          styles={{ root: { width: 200 } }}
+                          styles={searchBoxStyles}
+                          placeholder="Find customer"
                           onChange={(args: any) => {
                             if (args) {
                               let value = args.target.value;
@@ -51,6 +56,32 @@ export const Customers: React.FC = (props: any) => {
                               );
                             } else {
                               dispatch(customerActions.searchCustomer(''));
+                              dispatch(
+                                customerActions.getCustomersListPaginated()
+                              );
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="customers__header__top__controls__control">
+                        <SearchBox
+                          className="customersSearch"
+                          value={searchByStoreText}
+                          styles={searchBoxStyles}
+                          placeholder="Find by store"
+                          onChange={(args: any) => {
+                            if (args) {
+                              let value = args.target.value;
+                              dispatch(
+                                customerActions.searchCustomerByStore(value)
+                              );
+                              dispatch(
+                                customerActions.getCustomersListPaginated()
+                              );
+                            } else {
+                              dispatch(
+                                customerActions.searchCustomerByStore('')
+                              );
                               dispatch(
                                 customerActions.getCustomersListPaginated()
                               );

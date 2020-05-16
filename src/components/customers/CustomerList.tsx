@@ -88,45 +88,46 @@ const _customerColumns: IColumn[] = [
     },
     isPadded: true,
   },
-  {
-    key: 'actions',
-    name: 'Actions',
-    minWidth: 70,
-    isResizable: true,
-    isCollapsible: true,
-    data: 'string',
-    onRender: (item: any) => {
-      return (
-        <Stack horizontal disableShrink>
-          <IconButton
-            styles={_columnIconButtonStyle}
-            height={20}
-            iconProps={{ iconName: 'Copy' }}
-            title="Copy"
-            ariaLabel="Copy"
-          />
-          <IconButton
-            styles={_columnIconButtonStyle}
-            height={20}
-            iconProps={{ iconName: 'ShoppingCart' }}
-          />
-          <IconButton
-            styles={_columnIconButtonStyle}
-            height={20}
-            iconProps={{ iconName: 'People' }}
-          />
-          <IconButton
-            styles={_columnIconButtonStyle}
-            height={20}
-            iconProps={{ iconName: 'Settings' }}
-            title="Settings"
-            ariaLabel="Settings"
-          />
-        </Stack>
-      );
-    },
-    isPadded: true,
-  },
+  /// Temporary removed
+  // {
+  //   key: 'actions',
+  //   name: 'Actions',
+  //   minWidth: 70,
+  //   isResizable: true,
+  //   isCollapsible: true,
+  //   data: 'string',
+  //   onRender: (item: any) => {
+  //     return (
+  //       <Stack horizontal disableShrink>
+  //         <IconButton
+  //           styles={_columnIconButtonStyle}
+  //           height={20}
+  //           iconProps={{ iconName: 'Copy' }}
+  //           title="Copy"
+  //           ariaLabel="Copy"
+  //         />
+  //         <IconButton
+  //           styles={_columnIconButtonStyle}
+  //           height={20}
+  //           iconProps={{ iconName: 'ShoppingCart' }}
+  //         />
+  //         <IconButton
+  //           styles={_columnIconButtonStyle}
+  //           height={20}
+  //           iconProps={{ iconName: 'People' }}
+  //         />
+  //         <IconButton
+  //           styles={_columnIconButtonStyle}
+  //           height={20}
+  //           iconProps={{ iconName: 'Settings' }}
+  //           title="Settings"
+  //           ariaLabel="Settings"
+  //         />
+  //       </Stack>
+  //     );
+  //   },
+  //   isPadded: true,
+  // },
 ];
 
 export const CustomerList: React.FC = () => {
@@ -209,9 +210,7 @@ export const CustomerList: React.FC = () => {
           selection={selection}
           selectionMode={SelectionMode.single}
           columns={_customerColumns}
-          onItemInvoked={(item?: any, index?: number, ev?: Event) => {
-            debugger;
-          }}
+          onItemInvoked={(item?: any, index?: number, ev?: Event) => {}}
         />
       </MarqueeSelection>
     </div>

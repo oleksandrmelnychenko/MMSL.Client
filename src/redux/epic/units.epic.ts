@@ -20,7 +20,6 @@ export const getCurrenciesEpic = (action$: AnyAction, state$: any) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       return ajaxGetWebResponse(api.GET_CURRENCIES_ALL, state$.value).pipe(
         mergeMap((successResponse: any) => {
-          debugger;
           /// TODO:
           let successResultFlow = [
             unitsActions.setCurrencies(successResponse),
@@ -51,7 +50,6 @@ export const getPaymentTypesEpic = (action$: AnyAction, state$: any) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       return ajaxGetWebResponse(api.GET_PAYMENT_TYPES_ALL, state$.value).pipe(
         mergeMap((successResponse: any) => {
-          debugger;
           /// TODO:
           let successResultFlow = [
             unitsActions.setPaymentTypes(successResponse),
