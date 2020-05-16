@@ -1,4 +1,4 @@
-import { StoreCustomer } from './../../interfaces/index';
+import { StoreCustomer, IStore } from './../../interfaces/index';
 import { createReducer } from '@reduxjs/toolkit';
 import * as customerActions from '../../redux/actions/customer.actions';
 import { DealerAccount, Pagination } from '../../interfaces';
@@ -35,9 +35,11 @@ export class CustomerListState {
 export class ManageCustomerFormState {
   constructor() {
     this.isFormVisible = false;
+    this.storesAutocomplete = [];
   }
 
   isFormVisible: boolean;
+  storesAutocomplete: IStore[];
 }
 
 export const customerReducer = createReducer(new CustomerState(), (builder) =>
@@ -60,4 +62,10 @@ export const customerReducer = createReducer(new CustomerState(), (builder) =>
     .addCase(customerActions.toggleNewCustomerForm, (state, action) => {
       state.manageCustomerForm.isFormVisible = action.payload;
     })
+    .addCase(
+      customerActions.updateCustomerFormStoreAutocompleteList,
+      (state, action) => {
+        state.manageCustomerForm.storesAutocomplete = action.payload;
+      }
+    )
 );

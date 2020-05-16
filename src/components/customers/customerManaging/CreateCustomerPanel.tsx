@@ -15,7 +15,9 @@ import {
   commandBarButtonStyles,
 } from '../../../common/fabric-styles/styles';
 import PanelTitle from '../../dealers/panel/PanelTitle';
+import ManageCustomerForm from './ManageCustomerForm';
 import * as customerActions from '../../../redux/actions/customer.actions';
+import { assignPendingActions } from '../../../helpers/action.helper';
 
 export const CreateCustomerPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -89,19 +91,20 @@ export const CreateCustomerPanel: React.FC = (props: any) => {
           className="dealers__store__controls"
         />
 
-        {/* <ManageDealerForm
+        <ManageCustomerForm
           formikReference={formikReference}
           submitAction={(args: any) => {
-            let createAction = assignPendingActions(
-              dealerActions.saveNewDealer(args),
-              [
-                dealerActions.getDealersListPaginated(),
-                dealerActions.toggleNewDealerForm(false),
-              ]
-            );
-            dispatch(createAction);
+            debugger;
+            // let createAction = assignPendingActions(
+            //   dealerActions.saveNewDealer(args),
+            //   [
+            //     dealerActions.getDealersListPaginated(),
+            //     dealerActions.toggleNewDealerForm(false),
+            //   ]
+            // );
+            // dispatch(createAction);
           }}
-        /> */}
+        />
       </Panel>
     </div>
   );

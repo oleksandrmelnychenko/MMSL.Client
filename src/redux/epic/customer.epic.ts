@@ -3,7 +3,7 @@ import {
   extractSuccessPendingActions,
   extractErrorPendingActions,
 } from './../../helpers/action.helper';
-import { switchMap, mergeMap, catchError } from 'rxjs/operators';
+import { debounceTime, switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import * as customerActions from '../../redux/actions/customer.actions';
@@ -51,6 +51,48 @@ export const getCustomersListPaginatedEpic = (
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               { type: 'ERROR_GET_CUSTOMERS_LIST' },
+              ...extractErrorPendingActions(action),
+            ];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};
+
+export const customerFormStoreAutocompleteTextEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(customerTypes.CUSTOMER_FORM_STORE_AUTOCOMPLETE_TEXT),
+    debounceTime(300),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      return ajaxGetWebResponse(api.GET_ALL_STORES, state$.value, [
+        {
+          key: 'searchPhrase',
+          value: `${action.payload}`,
+        },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          let successResultFlow = [
+            customerActions.updateCustomerFormStoreAutocompleteList(
+              successResponse
+            ),
+
+            ...extractSuccessPendingActions(action),
+          ];
+
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [
+              customerActions.updateCustomerFormStoreAutocompleteList([]),
               ...extractErrorPendingActions(action),
             ];
 
