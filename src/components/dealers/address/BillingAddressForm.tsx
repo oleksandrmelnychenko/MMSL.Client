@@ -35,7 +35,14 @@ const buildDealerAccount = (values: any, sourceDealer?: DealerAccount) => {
 
   dealerAccount.useBillingAsShipping = values.useBillingAsShipping;
 
-  let billingAddress = { ...sourceDealer?.billingAddress } as Address;
+  let billingAddress: Address;
+
+  if (sourceDealer?.billingAddress) {
+    billingAddress = { ...sourceDealer?.billingAddress } as Address;
+  } else {
+    billingAddress = new Address();
+  }
+
   billingAddress.addressLine1 = values.addressLine1;
   billingAddress.addressLine2 = values.addressLine2;
   billingAddress.city = values.city;
@@ -102,7 +109,8 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
             buildDealerAccount(values, props.dealerAccount as DealerAccount)
           );
         }}
-        validateOnBlur={false}>
+        validateOnBlur={false}
+      >
         {(formik) => {
           props.formikReference.formik = formik;
           if (props.formikReference.isDirtyFunc) {
