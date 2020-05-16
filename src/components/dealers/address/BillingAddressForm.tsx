@@ -102,8 +102,7 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
             buildDealerAccount(values, props.dealerAccount as DealerAccount)
           );
         }}
-        validateOnBlur={false}
-      >
+        validateOnBlur={false}>
         {(formik) => {
           props.formikReference.formik = formik;
           if (props.formikReference.isDirtyFunc) {
@@ -241,11 +240,6 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                     </Stack>
                     <div className="formScope">
                       <Stack horizontal>
-                        {/* <Stack.Item grow={1}> */}
-                        <Text className="formScopeHeader">
-                          DELIVERY ADDRESS
-                        </Text>
-                        {/* </Stack.Item> */}
                         <Stack.Item>
                           <Field name="useBillingAsShipping">
                             {() => {
@@ -253,7 +247,7 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                                 <div className="form__group">
                                   <Checkbox
                                     checked={formik.values.useBillingAsShipping}
-                                    label="Use same as billing"
+                                    label="Delivery address the same as billing"
                                     onChange={(
                                       checked: any,
                                       isChecked: any
