@@ -17,8 +17,12 @@ export const btnMenuStyle = {
     paddingRight: '0px',
     paddingLeft: '0px',
     border: 'none',
+    background: '#faf9f8',
     rootHovered: {
       border: 'none',
+    },
+    selectors: {
+      'root:hover': { background: '#faf9f8' },
     },
   },
 };
