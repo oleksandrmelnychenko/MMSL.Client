@@ -46,15 +46,8 @@ export const DealerStores: React.FC = () => {
   }, []);
 
   const [selectedStore, setSelectedStore] = useState<IStore[] | null>(null);
-  // const [isSelectedStore, setIsSelectedStore] = useState(true);
 
   const [isOpenForm, setIsOpenForm] = useState(false);
-
-  // useEffect(() => {
-  //   if (selectedStore) {
-  //     setIsSelectedStore(false);
-  //   }
-  // }, [selectedStore]);
 
   const onRenderCell = (
     item: IStore,
