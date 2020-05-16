@@ -19,12 +19,14 @@ export class CustomerListState {
     this.lastOffset = [];
     this.pagination = new Pagination();
     this.search = '';
+    this.searchByStore = '';
   }
 
   customersList: StoreCustomer[];
   lastOffset: DealerAccount[];
   pagination: Pagination;
   search: string;
+  searchByStore: string;
 }
 
 export const customerReducer = createReducer(new CustomerState(), (builder) =>
@@ -40,5 +42,8 @@ export const customerReducer = createReducer(new CustomerState(), (builder) =>
     )
     .addCase(customerActions.searchCustomer, (state, action) => {
       state.customerState.search = action.payload;
+    })
+    .addCase(customerActions.searchCustomerByStore, (state, action) => {
+      state.customerState.searchByStore = action.payload;
     })
 );

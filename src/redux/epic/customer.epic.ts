@@ -31,6 +31,10 @@ export const getCustomersListPaginatedEpic = (
           key: 'searchPhrase',
           value: `${state$.value.customer.customerState.search}`,
         },
+        {
+          key: 'storeName',
+          value: `${state$.value.customer.customerState.searchByStore}`,
+        },
       ]).pipe(
         mergeMap((successResponse: any) => {
           let successResultFlow = [

@@ -19,6 +19,11 @@ import {
   commandBarButtonStyles,
   commandBarStyles,
 } from '../../../common/fabric-styles/styles';
+import * as controlAction from '../../../redux/actions/control.actions';
+import {
+  DialogArgs,
+  CommonDialogType,
+} from '../../../redux/reducers/control.reducer';
 
 export const DealerStores: React.FC = () => {
   const dispatch = useDispatch();
@@ -68,7 +73,8 @@ export const DealerStores: React.FC = () => {
 
           setSelectedStore(selectedStore);
           setIsOpenForm(true);
-        }}>
+        }}
+      >
         <div className="dealer__store__name">Store name: {item.name}</div>
         <div className="dealer__store__address">
           Address:{' '}
@@ -115,6 +121,26 @@ export const DealerStores: React.FC = () => {
       iconProps: { iconName: 'Delete' },
       disabled: isSelectedStore,
       onClick: () => {
+        // if (selectedStore && selectedStore.length > 0) {
+        //   dispatch(
+        //     controlAction.toggleCommonDialogVisibility(
+        //       new DialogArgs(
+        //         CommonDialogType.Delete,
+        //         'Delete store',
+        //         `Are you sure you want to delete ${selectedStore[0].name}?`,
+        //         () => {
+        //           debugger;
+
+        //         },
+        //         () => {
+        //           debugger;
+        //         }
+        //       )
+        //     )
+        //   );
+
+        // }
+
         if (selectedStore) {
           dispatch(
             dealerActions.deleteCurrentDealerStore(

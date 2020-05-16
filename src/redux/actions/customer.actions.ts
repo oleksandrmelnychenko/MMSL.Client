@@ -17,6 +17,9 @@ export const updateCustomersListPaginationInfo = createAction<PaginationInfo>(
 export const searchCustomer = createAction<string>(
   customerTypes.SEARCH_CUSTOMER
 );
+export const searchCustomerByStore = createAction<string>(
+  customerTypes.SEARCH_CUSTOMER_BY_STORE
+);
 
 export type GetCustomersListPaginated = ReturnType<
   typeof getCustomersListPaginated
@@ -27,3 +30,4 @@ export type UpdateCustomersListPaginationInfo = ReturnType<
   typeof updateCustomersListPaginationInfo
 >;
 export type SearchCustomer = ReturnType<typeof searchCustomer>;
+export type SearchCustomerByStore = ReturnType<typeof searchCustomerByStore>;
