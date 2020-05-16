@@ -22,7 +22,14 @@ class DealerDetailsProps {}
 export const DealerDetails: React.FC<DealerDetailsProps> = (
   props: DealerDetailsProps
 ) => {
-  const [formikReference] = useState<FormicReference>(new FormicReference());
+  const [formikReference] = useState<FormicReference>(
+    new FormicReference(() => {
+      formikReference.isDirtyFunc = (isDirty: boolean) => {
+        setIsDirtyForm(isDirty);
+      };
+    })
+  );
+  const [isDirtyForm, setIsDirtyForm] = useState(false);
 
   const dispatch = useDispatch();
   const selectedDealer = useSelector<IApplicationState, DealerAccount>(
@@ -42,6 +49,16 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
       },
       buttonStyles: commandBarButtonStyles,
     },
+    {
+      key: 'Reset',
+      text: 'Reset',
+      disabled: !isDirtyForm,
+      iconProps: { iconName: 'Refresh' },
+      onClick: () => {
+        formikReference.formik.resetForm();
+      },
+      buttonStyles: commandBarButtonStyles,
+    },
   ];
   return (
     <div className="dealerDetails">
@@ -55,7 +72,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
         formikReference={formikReference}
         dealerAccount={selectedDealer}
         submitAction={(args: any) => {
-          debugger;
           let createAction = assignPendingActions(
             dealerActions.updateDealer(args),
             [
