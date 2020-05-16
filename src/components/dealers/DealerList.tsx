@@ -19,7 +19,6 @@ import { DealerAccount } from '../../interfaces';
 import { assignPendingActions } from '../../helpers/action.helper';
 import * as controlAction from '../../redux/actions/control.actions';
 import { ToggleDealerPanelWithDetails } from '../../redux/reducers/dealer.reducer';
-import { ofType } from 'redux-observable';
 
 const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
@@ -127,34 +126,6 @@ export const DealerList: React.FC = () => {
         return (
           <Stack horizontal disableShrink>
             <IconButton
-              className={DATA_SELECTION_DISABLED_CLASS}
-              styles={_columnIconButtonStyle}
-              height={20}
-              iconProps={{ iconName: 'Copy' }}
-              title="Copy"
-              ariaLabel="Copy"
-            />
-            <IconButton
-              className={DATA_SELECTION_DISABLED_CLASS}
-              styles={_columnIconButtonStyle}
-              height={20}
-              iconProps={{ iconName: 'ShoppingCart' }}
-            />
-            <IconButton
-              className={DATA_SELECTION_DISABLED_CLASS}
-              styles={_columnIconButtonStyle}
-              height={20}
-              iconProps={{ iconName: 'People' }}
-            />
-            <IconButton
-              className={DATA_SELECTION_DISABLED_CLASS}
-              styles={_columnIconButtonStyle}
-              height={20}
-              iconProps={{ iconName: 'Settings' }}
-              title="Settings"
-              ariaLabel="Settings"
-            />
-            <IconButton
               data-selection-disabled={true}
               className={DATA_SELECTION_DISABLED_CLASS}
               styles={_columnIconButtonStyle}
@@ -163,28 +134,27 @@ export const DealerList: React.FC = () => {
               title="Delete"
               ariaLabel="Delete"
               onClick={(args: any) => {
-                const actionsQueue: any[] = [
-                  dealerActions.getDealersListPaginated(),
-                ];
+                dispatch(controlAction.toggleCommonDialogVisibility(true));
 
-                /// TODO:
-                if (item.id) {
-                  actionsQueue.push(
-                    dealerActions.setSelectedDealer(null),
-                    controlAction.isOpenPanelInfo(false),
-                    controlAction.isCollapseMenu(false),
-                    dealerActions.isOpenPanelWithDealerDetails(
-                      new ToggleDealerPanelWithDetails()
-                    )
-                  );
-                }
-
-                let action = assignPendingActions(
-                  dealerActions.deleteDealerById(item.id),
-                  actionsQueue
-                );
-
-                dispatch(action);
+                // const actionsQueue: any[] = [
+                //   dealerActions.getDealersListPaginated(),
+                // ];
+                // /// TODO:
+                // if (item.id) {
+                //   actionsQueue.push(
+                //     dealerActions.setSelectedDealer(null),
+                //     controlAction.isOpenPanelInfo(false),
+                //     controlAction.isCollapseMenu(false),
+                //     dealerActions.isOpenPanelWithDealerDetails(
+                //       new ToggleDealerPanelWithDetails()
+                //     )
+                //   );
+                // }
+                // let action = assignPendingActions(
+                //   dealerActions.deleteDealerById(item.id),
+                //   actionsQueue
+                // );
+                // dispatch(action);
               }}
             />
           </Stack>
