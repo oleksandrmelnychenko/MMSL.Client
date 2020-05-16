@@ -34,7 +34,7 @@ export const textFildLabelStyles = {
 
 export const commandBarStyles = {
   root: {
-    background: '#edebe9',
+    background: '#f0f0f0',
     borderRadius: '6px',
     marginBottom: '30px',
   },
