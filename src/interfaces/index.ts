@@ -1,3 +1,5 @@
+import { CommonDialogState } from '../redux/reducers/control.reducer';
+
 export interface IUserInfo {
   userIdentityId: number;
   companyInfoId: number;
@@ -30,6 +32,7 @@ export interface IControlState {
   isCollapseMenu: boolean;
   isOpenPanelInfo: boolean;
   componentInPanelInfo: any;
+  commonDialog: CommonDialogState;
 }
 
 export class EntityBase {

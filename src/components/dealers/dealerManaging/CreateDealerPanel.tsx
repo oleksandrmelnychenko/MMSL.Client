@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './createDealerPanel.scss';
 import { Panel, PanelType } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -29,7 +29,8 @@ export const CreateDealerPanel: React.FC = (props: any) => {
         onDismiss={() => {
           dispatch(dealerActions.toggleNewDealerForm(false));
         }}
-        closeButtonAriaLabel="Close">
+        closeButtonAriaLabel="Close"
+      >
         <PanelTitle
           onSaveClick={() => {
             let formik: any = formikReference.formik;

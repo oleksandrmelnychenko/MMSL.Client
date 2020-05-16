@@ -106,13 +106,11 @@ export const deleteDealerByIdEpic = (action$: AnyAction, state$: any) => {
         { key: 'dealerAccountId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
-          debugger;
           let successResultFlow = [...extractSuccessPendingActions(action)];
 
           return from(successResultFlow);
         }),
         catchError((errorResponse: any) => {
-          debugger;
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               { type: 'ERROR' },

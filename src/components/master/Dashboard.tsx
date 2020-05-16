@@ -8,6 +8,7 @@ import { Switch } from 'react-router-dom';
 import PrivateRoute from '../PrivateRoute';
 import Dealers from '../dealers/Dealers';
 import Customers from '../customers/Customers';
+import CommonDialog from './CommonDialog';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers/index';
 import { Panel, PanelType } from 'office-ui-fabric-react';
@@ -65,6 +66,8 @@ const Dashboard: React.FC = () => {
       </main>
 
       <Footer />
+
+      <CommonDialog />
     </>
   );
 };
