@@ -42,8 +42,10 @@ export const DealerStores: React.FC = () => {
     (state) => state.dealer.dealerStores
   );
   useEffect(() => {
-    dispatch(dealerActions.getStoresByDealer(selectedDealer.id));
-  }, []);
+    if (selectedDealer) {
+      dispatch(dealerActions.getStoresByDealer(selectedDealer.id));
+    }
+  }, [selectedDealer, dispatch]);
 
   const [selectedStore, setSelectedStore] = useState<IStore[] | null>(null);
 
