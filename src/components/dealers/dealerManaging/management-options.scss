@@ -4,6 +4,25 @@
     justify-content: space-between;
     flex-wrap: wrap;
 
+    & .selected {
+        position: relative;
+        border: 1px solid #358bd5;
+        border-radius: 3px;
+        background-color: rgba(53, 139, 213, 0.1);
+
+        &:before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 10px;
+            right: 10px;
+            background-image: url('../../../assets/images/ok_icon.svg');
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+    }
+
     button {
         transition: all 0.3s ease;
         background-size: cover;
