@@ -120,7 +120,6 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                   <Stack grow={4} tokens={{ childrenGap: 20 }}>
                     <Stack>
                       <div className="formScope">
-                        <Text className="formScopeHeader">BILLING ADDRESS</Text>
                         <Field name="addressLine1">
                           {() => {
                             return (
@@ -245,11 +244,11 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
                     </Stack>
                     <div className="formScope">
                       <Stack horizontal>
-                        <Stack.Item grow={1}>
-                          <Text className="formScopeHeader">
-                            DELIVERY ADDRESS
-                          </Text>
-                        </Stack.Item>
+                        {/* <Stack.Item grow={1}> */}
+                        <Text className="formScopeHeader">
+                          DELIVERY ADDRESS
+                        </Text>
+                        {/* </Stack.Item> */}
                         <Stack.Item>
                           <Field name="useBillingAsShipping">
                             {() => {
