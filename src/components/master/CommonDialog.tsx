@@ -59,8 +59,9 @@ const CommonDialog: React.FC = () => {
             onClick={() => {
               dispatch(controlAction.toggleCommonDialogVisibility(null));
 
-              dialogArgs?.onDeclineClick();
-              setTimeout(() => {}, 500);
+              setTimeout(() => {
+                dialogArgs?.onDeclineClick();
+              }, 500);
             }}
             text="Cancel"
           />

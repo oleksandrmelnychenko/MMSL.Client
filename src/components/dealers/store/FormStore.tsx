@@ -133,7 +133,8 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
           }
         }}
         enableReinitialize={true}
-        validateOnBlur={false}>
+        validateOnBlur={false}
+      >
         {(formik) => {
           props.formikReference.formik = formik;
 

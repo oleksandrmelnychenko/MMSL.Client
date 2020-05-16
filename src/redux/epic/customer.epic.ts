@@ -31,17 +31,10 @@ export const getCustomersListPaginatedEpic = (
           key: 'searchPhrase',
           value: `${state$.value.customer.customerState.search}`,
         },
-        // {
-        //   /// TODO:
-        //   /// TODO:
-        //   /// TODO:
-        //   /// TODO:
-        //   /// TODO:
-        //   /// TODO:
-        //   /// TODO:
-        //   key: 'searchStorePhrase',
-        //   value: `${state$.value.customer.customerState.searchByStore}`,
-        // },
+        {
+          key: 'storeName',
+          value: `${state$.value.customer.customerState.searchByStore}`,
+        },
       ]).pipe(
         mergeMap((successResponse: any) => {
           let successResultFlow = [

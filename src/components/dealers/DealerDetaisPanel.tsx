@@ -52,13 +52,15 @@ export const DealerDetailsPanel: React.FC = (props: any) => {
       isOpen={isOpenPanelWithDealerDetails.isOpen}
       type={PanelType.custom}
       customWidth={customWidth}
-      onDismiss={() => {
+      onDismiss={(ev) => {
+        debugger;
         dispatch(
           dealerActions.isOpenPanelWithDealerDetails(
             new ToggleDealerPanelWithDetails()
           )
         );
-      }}>
+      }}
+    >
       {/* TODO */}
       {panelContent}
     </Panel>
