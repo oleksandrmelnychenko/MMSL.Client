@@ -73,13 +73,12 @@ const ManagementOptions: React.FC = () => {
           styles={btnMenuStyle}
           className="dealer__management__btn-customer"
           onClick={() => {
-            const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
-            openDetailsArgs.isOpen = true;
-            openDetailsArgs.componentType = DealerDetilsComponents.DealerStores;
-
-            dispatch(
-              dealerAction.isOpenPanelWithDealerDetails(openDetailsArgs)
-            );
+            // const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
+            // openDetailsArgs.isOpen = true;
+            // openDetailsArgs.componentType = DealerDetilsComponents.DealerStores;
+            // dispatch(
+            //   dealerAction.isOpenPanelWithDealerDetails(openDetailsArgs)
+            // );
           }}
           allowDisabledFocus
         />
