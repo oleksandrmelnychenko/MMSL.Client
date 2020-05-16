@@ -54,7 +54,8 @@ export const DealerStores: React.FC = () => {
 
           setSelectedStore(selectedStore);
           setIsOpenForm(true);
-        }}>
+        }}
+      >
         <div className="dealer__store__name">Store name: {item.name}</div>
         <div className="dealer__store__address">
           Address:{' '}
@@ -80,8 +81,9 @@ export const DealerStores: React.FC = () => {
       text: 'Save',
       iconProps: { iconName: 'Save' },
       onClick: () => {
+        debugger;
         formikReference.formik.submitForm();
-        formikReference.formik.resetForm();
+        // formikReference.formik.resetForm();
       },
       buttonStyles: commandBarButtonStyles,
     },

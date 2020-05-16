@@ -3,6 +3,7 @@ import ManageDealerForm, {
   FormicReference,
 } from './dealerManaging/ManageDealerForm';
 import * as dealerActions from '../../redux/actions/dealer.actions';
+import * as controlAction from '../../redux/actions/control.actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { assignPendingActions } from '../../helpers/action.helper';
 import { DealerAccount } from '../../interfaces';
@@ -35,6 +36,9 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
           let createAction = assignPendingActions(
             dealerActions.updateDealer(args),
             [
+              dealerActions.setSelectedDealer(null),
+              controlAction.isOpenPanelInfo(false),
+              controlAction.isCollapseMenu(false),
               dealerActions.isOpenPanelWithDealerDetails(
                 new ToggleDealerPanelWithDetails()
               ),

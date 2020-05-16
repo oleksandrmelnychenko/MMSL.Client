@@ -172,7 +172,8 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
             buildDealerAccount(values, props.dealerAccount as DealerAccount)
           );
         }}
-        validateOnBlur={false}>
+        validateOnBlur={false}
+      >
         {(formik) => {
           props.formikReference.formik = formik;
 
@@ -203,13 +204,15 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             formik.touched.companyName ? (
                               <Text
                                 variant={'small' as ITextProps['variant']}
-                                className="dealerForm__inputBlock__error">
+                                className="dealerForm__inputBlock__error"
+                              >
                                 {formik.errors.companyName}
                               </Text>
                             ) : null}
                           </div>
                         );
-                      }}></Field>
+                      }}
+                    ></Field>
                     <Field
                       name="name"
                       render={() => {
@@ -229,13 +232,15 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             {formik.errors.name && formik.touched.name ? (
                               <Text
                                 variant={'small' as ITextProps['variant']}
-                                className="dealerForm__inputBlock__error">
+                                className="dealerForm__inputBlock__error"
+                              >
                                 {formik.errors.name}
                               </Text>
                             ) : null}
                           </div>
                         );
-                      }}></Field>
+                      }}
+                    ></Field>
                     <Field
                       name="email"
                       render={() => {
@@ -255,13 +260,15 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             {formik.errors.email && formik.touched.email ? (
                               <Text
                                 variant={'small' as ITextProps['variant']}
-                                className="dealerForm__inputBlock__error">
+                                className="dealerForm__inputBlock__error"
+                              >
                                 {formik.errors.email}
                               </Text>
                             ) : null}
                           </div>
                         );
-                      }}></Field>
+                      }}
+                    ></Field>
 
                     <Field
                       name="alternativeEmail"
@@ -283,13 +290,15 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             formik.touched.alternativeEmail ? (
                               <Text
                                 variant={'small' as ITextProps['variant']}
-                                className="dealerForm__inputBlock__error">
+                                className="dealerForm__inputBlock__error"
+                              >
                                 {formik.errors.alternativeEmail}
                               </Text>
                             ) : null}
                           </div>
                         );
-                      }}></Field>
+                      }}
+                    ></Field>
 
                     <Field
                       name="phoneNumber"
@@ -310,7 +319,8 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             />
                           </div>
                         );
-                      }}></Field>
+                      }}
+                    ></Field>
 
                     <Field
                       name="taxNumber"
@@ -330,7 +340,8 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             />
                           </div>
                         );
-                      }}></Field>
+                      }}
+                    ></Field>
                   </Stack>
                   <Stack grow={1}>
                     <Field
@@ -360,7 +371,8 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             />
                           </div>
                         );
-                      }}></Field>
+                      }}
+                    ></Field>
 
                     <Field
                       name="selectPayment"
@@ -389,7 +401,8 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             />
                           </div>
                         );
-                      }}></Field>
+                      }}
+                    ></Field>
 
                     <Field
                       name="vatApplicate"
@@ -411,7 +424,8 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             />
                           </div>
                         );
-                      }}></Field>
+                      }}
+                    ></Field>
 
                     <Field
                       name="creditAllowed"
@@ -436,7 +450,8 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                             />
                           </div>
                         );
-                      }}></Field>
+                      }}
+                    ></Field>
                   </Stack>
                 </Stack>
               </div>

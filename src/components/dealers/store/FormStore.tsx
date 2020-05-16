@@ -127,6 +127,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
         })}
         initialValues={initValue()}
         onSubmit={(values: any, { resetForm }) => {
+          debugger;
           if (selectedStore) {
             dispatch(
               dealerActions.updateDealerStore(
@@ -143,9 +144,10 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
           resetForm();
         }}
         enableReinitialize={true}
-        validateOnBlur={false}>
+        validateOnBlur={false}
+      >
         {(formik) => {
-          // props.formikReference.formik = formik;
+          props.formikReference.formik = formik;
           return (
             <Form>
               <Stack>
@@ -172,7 +174,8 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                         {formik.errors.nameStore && formik.touched.nameStore ? (
                           <Text
                             variant={'small' as ITextProps['variant']}
-                            className="dealerForm__inputBlock__error">
+                            className="dealerForm__inputBlock__error"
+                          >
                             {formik.errors.nameStore}
                           </Text>
                         ) : null}
@@ -198,7 +201,8 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                           formik.touched.contactEmail ? (
                             <Text
                               variant={'small' as ITextProps['variant']}
-                              className="dealerForm__inputBlock__error">
+                              className="dealerForm__inputBlock__error"
+                            >
                               {formik.errors.contactEmail}
                             </Text>
                           ) : null}
@@ -225,7 +229,8 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
                           formik.touched.billingEmail ? (
                             <Text
                               variant={'small' as ITextProps['variant']}
-                              className="dealerForm__inputBlock__error">
+                              className="dealerForm__inputBlock__error"
+                            >
                               {formik.errors.billingEmail}
                             </Text>
                           ) : null}

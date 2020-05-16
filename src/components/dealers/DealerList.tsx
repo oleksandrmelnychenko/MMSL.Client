@@ -19,6 +19,9 @@ import { DealerAccount } from '../../interfaces';
 import { assignPendingActions } from '../../helpers/action.helper';
 import * as controlAction from '../../redux/actions/control.actions';
 import { ToggleDealerPanelWithDetails } from '../../redux/reducers/dealer.reducer';
+import { ofType } from 'redux-observable';
+
+const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
 const _columnIconButtonStyle = {
   root: {
@@ -35,18 +38,14 @@ export const DealerList: React.FC = () => {
 
   const [selection] = useState(
     new Selection({
-      onSelectionChanged: () => {
-        if (selection.count > 0) {
-          dealerSelection();
-        } else {
-          dealerUnSelection();
-        }
-      },
+      // onSelectionChanged: () => {
+      //   if (selection.count > 0) {
+      //     dealerSelection();
+      //   } else {
+      //     dealerUnSelection();
+      //   }
+      // },
     })
-  );
-
-  const isCollapseMenu: boolean = useSelector<IApplicationState, boolean>(
-    (state) => state.control.isCollapseMenu
   );
 
   const selectedDealerId: number | null | undefined = useSelector<
@@ -55,37 +54,15 @@ export const DealerList: React.FC = () => {
   >((state) => state.dealer.selectedDealer?.id);
 
   useEffect(() => {
-    if (!isCollapseMenu) {
+    if (!selectedDealerId) {
       selection.setAllSelected(false);
     }
-  }, [isCollapseMenu, selection]);
+  }, [selectedDealerId, selection]);
 
   useEffect(() => {
     dispatch(dealerActions.getDealersListPaginated());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const dealerSelection = () => {
-    const selectedDealer = selection.getSelection()[0] as DealerAccount;
-
-    let createAction = assignPendingActions(
-      dealerActions.getAndSelectDealerById(selectedDealer.id),
-      []
-    );
-    dispatch(controlActions.isCollapseMenu(true));
-    setTimeout(() => {
-      dispatch(controlActions.isOpenPanelInfo(true));
-    }, 350);
-
-    dispatch(createAction);
-  };
-
-  const dealerUnSelection = () => {
-    debugger;
-    dispatch(dealerActions.setSelectedDealer(null));
-    dispatch(controlActions.isCollapseMenu(false));
-    dispatch(controlActions.isOpenPanelInfo(false));
-  };
 
   const _dealerColumns: IColumn[] = [
     {
@@ -150,6 +127,7 @@ export const DealerList: React.FC = () => {
         return (
           <Stack horizontal disableShrink>
             <IconButton
+              className={DATA_SELECTION_DISABLED_CLASS}
               styles={_columnIconButtonStyle}
               height={20}
               iconProps={{ iconName: 'Copy' }}
@@ -157,16 +135,19 @@ export const DealerList: React.FC = () => {
               ariaLabel="Copy"
             />
             <IconButton
+              className={DATA_SELECTION_DISABLED_CLASS}
               styles={_columnIconButtonStyle}
               height={20}
               iconProps={{ iconName: 'ShoppingCart' }}
             />
             <IconButton
+              className={DATA_SELECTION_DISABLED_CLASS}
               styles={_columnIconButtonStyle}
               height={20}
               iconProps={{ iconName: 'People' }}
             />
             <IconButton
+              className={DATA_SELECTION_DISABLED_CLASS}
               styles={_columnIconButtonStyle}
               height={20}
               iconProps={{ iconName: 'Settings' }}
@@ -175,6 +156,7 @@ export const DealerList: React.FC = () => {
             />
             <IconButton
               data-selection-disabled={true}
+              className={DATA_SELECTION_DISABLED_CLASS}
               styles={_columnIconButtonStyle}
               height={20}
               iconProps={{ iconName: 'Delete' }}
@@ -185,12 +167,12 @@ export const DealerList: React.FC = () => {
                   dealerActions.getDealersListPaginated(),
                 ];
 
-                if (item.id === selectedDealerId) {
-                  debugger;
-                  actionsQueue.push(dealerActions.setSelectedDealer(null));
-                  actionsQueue.push(controlAction.isOpenPanelInfo(false));
-                  actionsQueue.push(controlAction.isCollapseMenu(false));
+                /// TODO:
+                if (item.id) {
                   actionsQueue.push(
+                    dealerActions.setSelectedDealer(null),
+                    controlAction.isOpenPanelInfo(false),
+                    controlAction.isCollapseMenu(false),
                     dealerActions.isOpenPanelWithDealerDetails(
                       new ToggleDealerPanelWithDetails()
                     )
@@ -202,7 +184,6 @@ export const DealerList: React.FC = () => {
                   actionsQueue
                 );
 
-                debugger;
                 dispatch(action);
               }}
             />
@@ -221,25 +202,48 @@ export const DealerList: React.FC = () => {
           selection={selection}
           selectionMode={SelectionMode.single}
           columns={_dealerColumns}
-          // onRenderRow={(args: any) => {
-          //   return (
-          //     <div
-          //       onClick={(clickArgs) => {
-          //         let foo = args;
-          //         debugger;
-          //       }}
-          //     >
-          //       <DetailsRow
-          //         eventsToRegister={{
-          //           onMouseDown: (item?: any, index?: number, event?: any) => {
-          //             debugger;
-          //           },
-          //         }}
-          //         {...args}
-          //       />
-          //     </div>
-          //   );
-          // }}
+          onRenderRow={(args: any) => {
+            return (
+              <div
+                onClick={(clickArgs: any) => {
+                  const offsetParent: any =
+                    clickArgs?.target?.offsetParent?.className;
+
+                  if (!offsetParent.includes(DATA_SELECTION_DISABLED_CLASS)) {
+                    const selectFlow = () => {
+                      let createAction = assignPendingActions(
+                        dealerActions.getAndSelectDealerById(args.item.id),
+                        []
+                      );
+                      dispatch(controlActions.isCollapseMenu(true));
+                      setTimeout(() => {
+                        dispatch(controlActions.isOpenPanelInfo(true));
+                      }, 350);
+                      dispatch(createAction);
+                    };
+
+                    const unSelectFlow = () => {
+                      dispatch(dealerActions.setSelectedDealer(null));
+                      dispatch(controlActions.isCollapseMenu(false));
+                      dispatch(controlActions.isOpenPanelInfo(false));
+                    };
+
+                    if (selectedDealerId) {
+                      if (selectedDealerId === args.item.id) {
+                        unSelectFlow();
+                      } else {
+                        selectFlow();
+                      }
+                    } else {
+                      selectFlow();
+                    }
+                  }
+                }}
+              >
+                <DetailsRow {...args} />
+              </div>
+            );
+          }}
         />
       </MarqueeSelection>
     </div>
