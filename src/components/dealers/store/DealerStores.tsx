@@ -46,15 +46,15 @@ export const DealerStores: React.FC = () => {
   }, []);
 
   const [selectedStore, setSelectedStore] = useState<IStore[] | null>(null);
-  const [isSelectedStore, setIsSelectedStore] = useState(true);
+  // const [isSelectedStore, setIsSelectedStore] = useState(true);
 
   const [isOpenForm, setIsOpenForm] = useState(false);
 
-  useEffect(() => {
-    if (selectedStore) {
-      setIsSelectedStore(false);
-    }
-  }, [selectedStore]);
+  // useEffect(() => {
+  //   if (selectedStore) {
+  //     setIsSelectedStore(false);
+  //   }
+  // }, [selectedStore]);
 
   const onRenderCell = (
     item: IStore,
@@ -119,7 +119,7 @@ export const DealerStores: React.FC = () => {
       key: 'Delete',
       text: 'Delete',
       iconProps: { iconName: 'Delete' },
-      disabled: isSelectedStore,
+      disabled: selectedStore && selectedStore.length > 0 ? false : true,
       onClick: () => {
         if (selectedStore && selectedStore.length > 0) {
           dispatch(
@@ -153,7 +153,11 @@ export const DealerStores: React.FC = () => {
   return (
     <div>
       <PanelTitle
-        title={`Stores: ${selectedDealer.companyName} | ${selectedDealer.email}`}
+        title={
+          selectedDealer
+            ? `Stores: ${selectedDealer.companyName} | ${selectedDealer.email}`
+            : ''
+        }
       />
       <div>
         <CommandBar
