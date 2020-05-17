@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './dealers.scss';
 import { Panel, PanelType } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -25,6 +25,13 @@ export const DealerDetailsPanel: React.FC = (props: any) => {
   let panelContent: any = null;
   let customWidth: string = '700px';
 
+  useEffect(() => {
+    if (isOpenPanelWithDealerDetails && !isOpenPanelWithDealerDetails.isOpen) {
+      dispatch(dealerActions.setDealerStores([]));
+      dispatch(dealerActions.updateTargetStoreStoreCustomersList([]));
+    }
+  }, [isOpenPanelWithDealerDetails, dispatch]);
+
   if (isOpenPanelWithDealerDetails) {
     if (
       isOpenPanelWithDealerDetails.componentType ===
@@ -49,6 +56,8 @@ export const DealerDetailsPanel: React.FC = (props: any) => {
     ) {
       customWidth = '800px';
       panelContent = <DealerCustomers />;
+    } else {
+      panelContent = null;
     }
   }
 

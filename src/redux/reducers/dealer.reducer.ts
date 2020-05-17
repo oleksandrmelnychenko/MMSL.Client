@@ -57,6 +57,7 @@ export class ManageDealerFormState {
 
 /// Describes types of `dealer details` components
 export enum DealerDetilsComponents {
+  Unknown,
   DealerDetails,
   DealerAddress,
   DealerStores,
@@ -67,7 +68,7 @@ export enum DealerDetilsComponents {
 export class ToggleDealerPanelWithDetails {
   constructor() {
     this.isOpen = false;
-    this.componentType = DealerDetilsComponents.DealerDetails;
+    this.componentType = DealerDetilsComponents.Unknown;
   }
 
   isOpen: boolean;
