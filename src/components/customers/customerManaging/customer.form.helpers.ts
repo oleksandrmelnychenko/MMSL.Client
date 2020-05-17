@@ -8,9 +8,6 @@ export class CreateStoreCustomerFormInitValues {
     this.phoneNumber = '';
     this.birthDate = '1989-05-11T21:00:00.000Z';
     this.store = null;
-    //   TODO
-    //   storeId: number | null;
-    //   store: IStore | null;
   }
 
   userName: string;
@@ -19,9 +16,6 @@ export class CreateStoreCustomerFormInitValues {
   phoneNumber: string;
   birthDate: string;
   store: IStore | null;
-  //   TODO
-  //   storeId: number | null;
-  //   store: IStore | null;
 }
 
 export const buildNewStoreCustomerAccount = (
@@ -48,11 +42,6 @@ export const buildNewStoreCustomerAccount = (
   newAccount.store = values.store;
   newAccount.storeId = newAccount.store?.id;
 
-  debugger;
-  //   TODO
-  //   storeId: number | null;
-  //   store: IStore | null;
-
   return newAccount;
 };
 
@@ -68,10 +57,6 @@ export const initDefaultValuesForNewStoreCustomerForm = (
     initValues.phoneNumber = sourceEntity.phoneNumber;
     initValues.birthDate = sourceEntity.birthDate;
     initValues.store = sourceEntity.store;
-
-    //   TODO
-    //   storeId: number | null;
-    //   store: IStore | null;
   }
 
   return initValues;

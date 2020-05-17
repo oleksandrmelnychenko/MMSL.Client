@@ -76,7 +76,8 @@ const ManagementOptions: React.FC = () => {
           styles={labelStyle}
           className={`${
             item.isSelected && isOpenPanelWithDealerDetails ? 'selected' : ''
-          }`}>
+          }`}
+        >
           <PrimaryButton
             styles={btnMenuStyle}
             className={item.className}
