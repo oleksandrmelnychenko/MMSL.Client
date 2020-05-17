@@ -67,8 +67,7 @@ export const DealerStores: React.FC = () => {
 
           setSelectedStore(selectedStore);
           setIsOpenForm(true);
-        }}
-      >
+        }}>
         <div className="dealer__store__name">Store name: {item.name}</div>
         <div className="dealer__store__address">
           Address:{' '}
@@ -147,9 +146,10 @@ export const DealerStores: React.FC = () => {
   return (
     <div>
       <PanelTitle
-        title={
+        title="Stores"
+        description={
           selectedDealer
-            ? `Stores: ${selectedDealer.companyName} | ${selectedDealer.email}`
+            ? `${selectedDealer.companyName} | ${selectedDealer.email}`
             : ''
         }
       />

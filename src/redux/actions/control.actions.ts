@@ -13,6 +13,22 @@ export const toggleCommonDialogVisibility = createAction<DialogArgs | null>(
   types.TOGGLE_COMMON_DIALOG_VISIBILITY
 );
 
+export const toggleMasterPageBusyIndicator = createAction<boolean>(
+  types.TOGGLE_MASTER_PAGE_BUSY_INDICATOR
+);
+
+export const showInfoMessage = createAction<string>(types.SHOW_INFO_MESSAGE);
+
+export const enableStatusBar = createAction(types.ENABLE_STATUS_BAR);
+
+export const disabledStatusBar = createAction(types.DISABLE_STATUS_BAR);
+
+export const clearInfoMessage = createAction(types.CLEAR_INFO_MESSAGE);
+
+export type ShowInfoMessage = ReturnType<typeof showInfoMessage>;
+export type ToggleMasterPageBusyIndicator = ReturnType<
+  typeof toggleMasterPageBusyIndicator
+>;
 export type ToggleCommonDialogVisibility = ReturnType<
   typeof toggleCommonDialogVisibility
 >;

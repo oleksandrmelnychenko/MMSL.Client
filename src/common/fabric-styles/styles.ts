@@ -9,6 +9,17 @@ export const panelStyle = {
   },
 };
 
+export const stylesPanelInfo = {
+  main: {
+    left: '46px',
+    top: '51px',
+    width: '260px',
+    height: 'calc(100vh - 81px)',
+    borderRight: '1px solid #e8e8e8',
+    boxShadow: 'none',
+  },
+};
+
 export const btnMenuStyle = {
   root: {
     minWidth: '90px',
@@ -30,11 +41,14 @@ export const btnMenuStyle = {
 export const labelStyle = {
   root: {
     width: '90px',
+    paddingBottom: '20px',
     fontSize: '14px',
+    lineHeight: '14px',
     textAlign: 'center',
     'font-weight': 400,
     cursor: 'pointer',
     transition: 'all 0.3s ease',
+    border: '1px solid transparent',
 
     selectors: {
       '&:hover': {

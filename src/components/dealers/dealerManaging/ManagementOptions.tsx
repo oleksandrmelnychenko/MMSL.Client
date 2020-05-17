@@ -73,6 +73,7 @@ const ManagementOptions: React.FC = () => {
     <div className="dealer__management">
       {menu.map((item) => (
         <Label
+          key={item.id}
           styles={labelStyle}
           className={`${
             item.isSelected && isOpenPanelWithDealerDetails ? 'selected' : ''

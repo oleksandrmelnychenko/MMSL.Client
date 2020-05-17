@@ -8,6 +8,7 @@ import { switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import * as dealerActions from '../../redux/actions/dealer.actions';
+import * as controlActions from '../../redux/actions/control.actions';
 import { from } from 'rxjs';
 import * as dealerTypes from '../../constants/dealer.types.constants';
 import { getActiveLanguage } from 'react-localize-redux';
@@ -19,38 +20,6 @@ import {
 } from '../../helpers/epic.helper';
 import * as api from '../../constants/api.constants';
 
-export const getDealersListEpic = (action$: AnyAction, state$: any) => {
-  return action$.pipe(
-    ofType(dealerTypes.GET_DEALERS_LIST),
-    switchMap((action: AnyAction) => {
-      const languageCode = getActiveLanguage(state$.value.localize).code;
-      return ajaxGetWebResponse(api.GET_DEALERS_ALL, state$.value).pipe(
-        mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            dealerActions.updateDealersList(successResponse.entities),
-            dealerActions.updateDealerListPaginationInfo(
-              successResponse.paginationInfo
-            ),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
-        }),
-        catchError((errorResponse: any) => {
-          return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              { type: 'ERROR' },
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
-          });
-        })
-      );
-    })
-  );
-};
-
 export const getDealersListPaginatedEpic = (
   action$: AnyAction,
   state$: any
@@ -59,7 +28,6 @@ export const getDealersListPaginatedEpic = (
     ofType(dealerTypes.GET_DEALERS_LIST_PAGINATED),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
-
       const pagination: Pagination = state$.value.dealer.dealerState.pagination;
 
       return ajaxGetWebResponse(api.GET_DEALERS_ALL, state$.value, [
@@ -106,14 +74,17 @@ export const deleteDealerByIdEpic = (action$: AnyAction, state$: any) => {
         { key: 'dealerAccountId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [...extractSuccessPendingActions(action)];
+          let successResultFlow = [
+            controlActions.showInfoMessage(successResponse.message),
+            ...extractSuccessPendingActions(action),
+          ];
 
           return from(successResultFlow);
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
-              { type: 'ERROR' },
+              { type: 'ERROR_DELETE_DEALER_BY_ID' },
               ...extractErrorPendingActions(action),
             ];
 
@@ -147,7 +118,7 @@ export const getAndSelectDealersByIdEpic = (
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
-              { type: 'ERROR' },
+              { type: 'ERROR_GET_AND_SELECT_DEALER_BY_ID' },
               ...extractErrorPendingActions(action),
             ];
 
@@ -171,7 +142,10 @@ export const saveNewDealerEpic = (action$: AnyAction, state$: any) => {
         true
       ).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [...extractSuccessPendingActions(action)];
+          let successResultFlow = [
+            controlActions.showInfoMessage(successResponse.message),
+            ...extractSuccessPendingActions(action),
+          ];
 
           return from(successResultFlow);
         }),
@@ -198,7 +172,10 @@ export const updateDealerEpic = (action$: AnyAction, state$: any) => {
         state$.value
       ).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [...extractSuccessPendingActions(action)];
+          let successResultFlow = [
+            controlActions.showInfoMessage(successResponse.message),
+            ...extractSuccessPendingActions(action),
+          ];
           return from(successResultFlow);
         }),
         catchError((errorResponse: any) => {
@@ -213,7 +190,7 @@ export const updateDealerEpic = (action$: AnyAction, state$: any) => {
   );
 };
 
-export const addStoresByDealerEpic = (action$: AnyAction, state$: any) => {
+export const getStoresByDealerEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
     ofType(dealerTypes.GET_STORES_BY_DEALER),
     switchMap((action: AnyAction) => {
@@ -258,6 +235,7 @@ export const updateDealerStoreEpic = (action$: AnyAction, state$: any) => {
         mergeMap((successResponse: any) => {
           let successResultFlow = [
             dealerActions.setUpdateDealerStore(successResponse.body),
+            controlActions.showInfoMessage(successResponse.message),
             ...extractSuccessPendingActions(action),
           ];
           return from(successResultFlow);
@@ -289,8 +267,10 @@ export const addStoreToCurrentDealerEpic = (
         true
       ).pipe(
         mergeMap((successResponse: any) => {
+          debugger;
           let successResultFlow = [
             dealerActions.addNewStoreToCurrentDealer(successResponse.body),
+            controlActions.showInfoMessage(successResponse.message),
             ...extractSuccessPendingActions(action),
           ];
 
@@ -322,6 +302,7 @@ export const deleteCurrentDealerStoreEpic = (
         mergeMap((successResponse: any) => {
           let successResultFlow = [
             dealerActions.updateDealerStoresAfterDelete(successResponse.body),
+            controlActions.showInfoMessage(successResponse.message),
 
             ...extractSuccessPendingActions(action),
           ];

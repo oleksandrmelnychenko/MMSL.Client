@@ -3,6 +3,7 @@ import { createReducer } from '@reduxjs/toolkit';
 
 export const defaultAuthState = {
   isAuth: false,
+  isError: false,
   errorMessage: '',
 };
 

@@ -33,6 +33,9 @@ export interface IControlState {
   isOpenPanelInfo: boolean;
   componentInPanelInfo: any;
   commonDialog: CommonDialogState;
+  infoMessage: string;
+  isActivateStatusBar: boolean;
+  isMasterBusy: boolean;
 }
 
 export class EntityBase {

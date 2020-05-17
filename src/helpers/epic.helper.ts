@@ -5,6 +5,7 @@ import * as API from '../constants/api.constants';
 import { map } from 'rxjs/operators';
 import { IApplicationState } from '../redux/reducers/index';
 import { getActiveLanguage } from 'react-localize-redux';
+import * as controlActions from '../redux/actions/control.actions';
 
 export interface IWebResponse {
   body: Object;
@@ -44,7 +45,6 @@ export const ajaxGetWebResponse = (
   queryParams?: QueryParam[]
 ) => {
   const currentLanguage = getActiveLanguage(state.localize).code;
-
   let queryString = `${
     API.SERVER_URL
   }/${currentLanguage}${urlPath}${buildQueryParamsString(queryParams)}`;

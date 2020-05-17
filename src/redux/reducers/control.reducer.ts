@@ -40,6 +40,9 @@ export const defaultControlState = {
   isOpenPanelInfo: false,
   componentInPanelInfo: null,
   commonDialog: new CommonDialogState(),
+  infoMessage: '',
+  isActivateStatusBar: false,
+  isMasterBusy: false,
 };
 
 export const controlReducer = createReducer(defaultControlState, (builder) =>
@@ -55,5 +58,21 @@ export const controlReducer = createReducer(defaultControlState, (builder) =>
     })
     .addCase(actions.toggleCommonDialogVisibility, (state, action) => {
       state.commonDialog.dialogArgs = action.payload;
+    })
+    .addCase(actions.toggleMasterPageBusyIndicator, (state, action) => {
+      state.isMasterBusy = action.payload;
+    })
+    .addCase(actions.showInfoMessage, (state, action) => {
+      state.isActivateStatusBar = false;
+      state.infoMessage = action.payload;
+    })
+    .addCase(actions.clearInfoMessage, (state) => {
+      state.infoMessage = '';
+    })
+    .addCase(actions.enableStatusBar, (state) => {
+      state.isActivateStatusBar = true;
+    })
+    .addCase(actions.disabledStatusBar, (state) => {
+      state.isActivateStatusBar = false;
     })
 );

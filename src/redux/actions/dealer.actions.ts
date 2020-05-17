@@ -9,8 +9,6 @@ import {
 } from '../../interfaces/index';
 import { ToggleDealerPanelWithDetails } from '../reducers/dealer.reducer';
 
-export const getDealersList = createAction(dealerTypes.GET_DEALERS_LIST);
-
 export const getDealersListPaginated = createAction(
   dealerTypes.GET_DEALERS_LIST_PAGINATED
 );
@@ -86,7 +84,6 @@ export const isOpenPanelWithDealerDetails = createAction<
   ToggleDealerPanelWithDetails
 >(dealerTypes.IS_OPEN_PANEL_WITH_DEALER_DETAILS);
 
-export type GetDealersList = ReturnType<typeof getDealersList>;
 export type GetDealersListPaginated = ReturnType<
   typeof getDealersListPaginated
 >;
