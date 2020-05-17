@@ -23,7 +23,6 @@ export const signInEpic = (action$: AnyAction, state$: any) =>
         state$.value
       ).pipe(
         mergeMap((res: any) => {
-          console.log(res);
           TokenHelper.SetToken(res.body.token);
 
           return of(
