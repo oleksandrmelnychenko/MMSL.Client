@@ -82,6 +82,14 @@ export const datePickerStyles = {
   },
 };
 
+export const comboBoxStyles = {
+  label: {
+    fontWeight: FontWeights.regular,
+    paddingTop: '15px',
+    paddingBottom: '5px',
+  },
+};
+
 export const commandBarStyles = {
   root: {
     background: '#f0f0f0',

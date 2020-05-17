@@ -29,6 +29,9 @@ export const customerFormStoreAutocompleteText = createAction<string>(
 export const updateCustomerFormStoreAutocompleteList = createAction<IStore[]>(
   customerTypes.UPDATE_CUSTOMER_FORM_STORE_AUTOCOMPLETE_LIST
 );
+export const saveNewCustomer = createAction<StoreCustomer>(
+  customerTypes.SAVE_NEW_CUSTOMER
+);
 
 export type GetCustomersListPaginated = ReturnType<
   typeof getCustomersListPaginated
@@ -43,3 +46,4 @@ export type SearchCustomerByStore = ReturnType<typeof searchCustomerByStore>;
 export type UpdateCustomerFormStoreAutocompleteList = ReturnType<
   typeof updateCustomerFormStoreAutocompleteList
 >;
+export type SaveNewCustomer = ReturnType<typeof saveNewCustomer>;

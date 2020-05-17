@@ -20,3 +20,4 @@ export const GET_CURRENCIES_ALL = '/types/currency/get';
 export const GET_PAYMENT_TYPES_ALL = '/types/payment/get';
 
 export const GET_CUSTOMERS_ALL = '/store/customers/get/all';
+export const CREATE_NEW_STORE_CUSTOMER = '/store/customers/add';

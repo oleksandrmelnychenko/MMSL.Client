@@ -8,7 +8,6 @@ import {
   DatePicker,
   ComboBox,
   DayOfWeek,
-  FontWeights,
   IComboBoxOption,
 } from 'office-ui-fabric-react';
 // import './manageDealerForm.scss';
@@ -120,12 +119,11 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
           email: Yup.string()
             .email('Invalid email')
             .required(() => 'Email is required'),
+          store: Yup.object()
+            .nullable()
+            .required(() => `Store is required`),
           phoneNumber: Yup.string().notRequired(),
           birthDate: Yup.string().notRequired(),
-          storeId: Yup.string().required(() => `Store is required`),
-          //   TODO
-          //   storeId: number | null;
-          //   store: IStore | null;
         })}
         initialValues={initValues}
         onSubmit={(values: any) => {
@@ -242,13 +240,17 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                       }}
                     ></Field>
                     <Field
-                      name="storeId"
+                      name="store"
                       render={() => {
                         return (
                           <div className="form__group">
                             <ComboBox
                               label="Store"
-                              selectedKey={formik.values.storeId}
+                              selectedKey={
+                                formik.values.store
+                                  ? `${formik.values.store.id}`
+                                  : ''
+                              }
                               key={'' + true + true}
                               allowFreeform={true}
                               onPendingValueChanged={(
@@ -271,16 +273,21 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                                 value?: string
                               ) => {
                                 if (option && (option as any).rawValue) {
-                                  formik.setFieldValue('storeId', option.key);
-                                  formik.setFieldTouched('storeId');
+                                  formik.setFieldValue(
+                                    'store',
+                                    (option as any).rawValue
+                                  );
+                                  formik.setFieldTouched('store');
+                                  /// Remove all syggestions and set just one selected item
                                   dispatch(
                                     customerActions.updateCustomerFormStoreAutocompleteList(
                                       [(option as any).rawValue]
                                     )
                                   );
                                 } else {
-                                  formik.setFieldValue('storeId', '');
-                                  formik.setFieldTouched('storeId');
+                                  formik.setFieldValue('store', null);
+                                  formik.setFieldTouched('store');
+                                  /// Clear suggestions list
                                   dispatch(
                                     customerActions.updateCustomerFormStoreAutocompleteList(
                                       []
@@ -288,19 +295,13 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                                   );
                                 }
                               }}
-                              styles={{
-                                label: {
-                                  fontWeight: FontWeights.regular,
-                                  paddingTop: '15px',
-                                  paddingBottom: '5px',
-                                },
-                              }}
+                              styles={fabricStyles.comboBoxStyles}
                               required
                               autoComplete={true ? 'on' : 'off'}
                               options={autocompleteOptions}
                               errorMessage={
-                                formik.errors.storeId && formik.touched.storeId
-                                  ? `${formik.errors.storeId}`
+                                formik.errors.store && formik.touched.store
+                                  ? `${formik.errors.store}`
                                   : ''
                               }
                             />
@@ -343,9 +344,7 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                               onSelectDate={(date: Date | null | undefined) => {
                                 let value = '';
 
-                                if (date) {
-                                  value = date.toJSON();
-                                }
+                                if (date) value = date.toJSON();
 
                                 formik.setFieldValue('birthDate', value);
                                 formik.setFieldTouched('birthDate');

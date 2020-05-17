@@ -10,7 +10,10 @@ import * as customerActions from '../../redux/actions/customer.actions';
 import { from } from 'rxjs';
 import * as customerTypes from '../../constants/customer.types.constants';
 import { getActiveLanguage } from 'react-localize-redux';
-import { ajaxGetWebResponse } from '../../helpers/epic.helper';
+import {
+  ajaxGetWebResponse,
+  ajaxPostResponse,
+} from '../../helpers/epic.helper';
 import * as api from '../../constants/api.constants';
 import { Pagination } from '../../interfaces';
 
@@ -95,6 +98,34 @@ export const customerFormStoreAutocompleteTextEpic = (
               customerActions.updateCustomerFormStoreAutocompleteList([]),
               ...extractErrorPendingActions(action),
             ];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};
+
+export const saveNewCustomerEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(customerTypes.SAVE_NEW_CUSTOMER),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      return ajaxPostResponse(
+        api.CREATE_NEW_STORE_CUSTOMER,
+        action.payload,
+        state$.value,
+        true
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          let successResultFlow = [...extractSuccessPendingActions(action)];
+
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [...extractErrorPendingActions(action)];
 
             return from(errorResultFlow);
           });

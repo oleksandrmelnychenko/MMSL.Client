@@ -7,7 +7,7 @@ export class CreateStoreCustomerFormInitValues {
     this.email = '';
     this.phoneNumber = '';
     this.birthDate = '1989-05-11T21:00:00.000Z';
-    this.storeId = '';
+    this.store = null;
     //   TODO
     //   storeId: number | null;
     //   store: IStore | null;
@@ -18,7 +18,7 @@ export class CreateStoreCustomerFormInitValues {
   email: string;
   phoneNumber: string;
   birthDate: string;
-  storeId: string;
+  store: IStore | null;
   //   TODO
   //   storeId: number | null;
   //   store: IStore | null;
@@ -28,8 +28,6 @@ export const buildNewStoreCustomerAccount = (
   values: any,
   sourceEntity?: StoreCustomer
 ) => {
-  debugger;
-
   let newAccount: StoreCustomer;
 
   if (sourceEntity) {
@@ -47,8 +45,10 @@ export const buildNewStoreCustomerAccount = (
   newAccount.email = values.email;
   newAccount.phoneNumber = values.phoneNumber;
   newAccount.birthDate = values.birthDate;
-  newAccount.useBillingAsDeliveryAddress = values.useBillingAsDeliveryAddress;
+  newAccount.store = values.store;
+  newAccount.storeId = newAccount.store?.id;
 
+  debugger;
   //   TODO
   //   storeId: number | null;
   //   store: IStore | null;
@@ -67,7 +67,7 @@ export const initDefaultValuesForNewStoreCustomerForm = (
     initValues.email = sourceEntity.email;
     initValues.phoneNumber = sourceEntity.phoneNumber;
     initValues.birthDate = sourceEntity.birthDate;
-    initValues.storeId = `${sourceEntity.storeId}`;
+    initValues.store = sourceEntity.store;
 
     //   TODO
     //   storeId: number | null;

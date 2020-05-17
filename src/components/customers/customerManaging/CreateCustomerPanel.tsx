@@ -94,15 +94,14 @@ export const CreateCustomerPanel: React.FC = (props: any) => {
         <ManageCustomerForm
           formikReference={formikReference}
           submitAction={(args: any) => {
-            debugger;
-            // let createAction = assignPendingActions(
-            //   dealerActions.saveNewDealer(args),
-            //   [
-            //     dealerActions.getDealersListPaginated(),
-            //     dealerActions.toggleNewDealerForm(false),
-            //   ]
-            // );
-            // dispatch(createAction);
+            let createAction = assignPendingActions(
+              customerActions.saveNewCustomer(args),
+              [
+                customerActions.getCustomersListPaginated(),
+                customerActions.toggleNewCustomerForm(false),
+              ]
+            );
+            dispatch(createAction);
           }}
         />
       </Panel>
