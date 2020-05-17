@@ -8,7 +8,6 @@ import {
   DatePicker,
   ComboBox,
   DayOfWeek,
-  FontWeights,
   IComboBoxOption,
 } from 'office-ui-fabric-react';
 // import './manageDealerForm.scss';
@@ -120,12 +119,11 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
           email: Yup.string()
             .email('Invalid email')
             .required(() => 'Email is required'),
+          store: Yup.object()
+            .nullable()
+            .required(() => `Store is required`),
           phoneNumber: Yup.string().notRequired(),
           birthDate: Yup.string().notRequired(),
-          storeId: Yup.string().required(() => `Store is required`),
-          //   TODO
-          //   storeId: number | null;
-          //   store: IStore | null;
         })}
         initialValues={initValues}
         onSubmit={(values: any) => {
@@ -148,213 +146,202 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
               <div className="dealerFormManage">
                 <Stack horizontal tokens={{ childrenGap: 20 }}>
                   <Stack grow={1}>
-                    <Field
-                      name="userName"
-                      render={() => {
-                        return (
-                          <div className="form__group">
-                            <TextField
-                              value={formik.values.userName}
-                              styles={fabricStyles.textFildLabelStyles}
-                              className="form__group__field"
-                              label="User name"
-                              required
-                              onChange={(args: any) => {
-                                let value = args.target.value;
+                    <Field name="userName">
+                      {() => (
+                        <div className="form__group">
+                          <TextField
+                            value={formik.values.userName}
+                            styles={fabricStyles.textFildLabelStyles}
+                            className="form__group__field"
+                            label="User name"
+                            required
+                            onChange={(args: any) => {
+                              let value = args.target.value;
 
-                                formik.setFieldValue('userName', value);
-                                formik.setFieldTouched('userName');
-                              }}
-                              errorMessage={
-                                formik.errors.userName &&
-                                formik.touched.userName ? (
-                                  <span className="form__group__error">
-                                    {formik.errors.userName}
-                                  </span>
-                                ) : (
-                                  ''
-                                )
+                              formik.setFieldValue('userName', value);
+                              formik.setFieldTouched('userName');
+                            }}
+                            errorMessage={
+                              formik.errors.userName &&
+                              formik.touched.userName ? (
+                                <span className="form__group__error">
+                                  {formik.errors.userName}
+                                </span>
+                              ) : (
+                                ''
+                              )
+                            }
+                          />
+                        </div>
+                      )}
+                    </Field>
+                    <Field name="customerName">
+                      {() => (
+                        <div className="form__group">
+                          <TextField
+                            value={formik.values.customerName}
+                            styles={fabricStyles.textFildLabelStyles}
+                            className="form__group__field"
+                            label="Customer Name"
+                            required
+                            onChange={(args: any) => {
+                              let value = args.target.value;
+                              formik.setFieldValue('customerName', value);
+                              formik.setFieldTouched('customerName');
+                            }}
+                            errorMessage={
+                              formik.errors.customerName &&
+                              formik.touched.customerName ? (
+                                <span className="form__group__error">
+                                  {formik.errors.customerName}
+                                </span>
+                              ) : (
+                                ''
+                              )
+                            }
+                          />
+                        </div>
+                      )}
+                    </Field>
+                    <Field name="email">
+                      {() => (
+                        <div className="form__group">
+                          <TextField
+                            value={formik.values.email}
+                            styles={fabricStyles.textFildLabelStyles}
+                            className="form__group__field"
+                            label="Email"
+                            required
+                            onChange={(args: any) => {
+                              let value = args.target.value;
+                              formik.setFieldValue('email', value);
+                              formik.setFieldTouched('email');
+                            }}
+                            errorMessage={
+                              formik.errors.email && formik.touched.email ? (
+                                <span className="form__group__error">
+                                  {formik.errors.email}
+                                </span>
+                              ) : (
+                                ''
+                              )
+                            }
+                          />
+                        </div>
+                      )}
+                    </Field>
+                    <Field name="store">
+                      {() => (
+                        <div className="form__group">
+                          <ComboBox
+                            className="form__group__comboBox"
+                            label="Store"
+                            selectedKey={
+                              formik.values.store
+                                ? `${formik.values.store.id}`
+                                : ''
+                            }
+                            key={'' + true + true}
+                            allowFreeform={true}
+                            onPendingValueChanged={(
+                              option?: IComboBoxOption,
+                              index?: number,
+                              value?: string
+                            ) => {
+                              if (value !== undefined) {
+                                dispatch(
+                                  customerActions.customerFormStoreAutocompleteText(
+                                    value ? value : ''
+                                  )
+                                );
                               }
-                            />
-                          </div>
-                        );
-                      }}
-                    ></Field>
-                    <Field
-                      name="customerName"
-                      render={() => {
-                        return (
-                          <div className="form__group">
-                            <TextField
-                              value={formik.values.customerName}
-                              styles={fabricStyles.textFildLabelStyles}
-                              className="form__group__field"
-                              label="Customer Name"
-                              required
-                              onChange={(args: any) => {
-                                let value = args.target.value;
-                                formik.setFieldValue('customerName', value);
-                                formik.setFieldTouched('customerName');
-                              }}
-                              errorMessage={
-                                formik.errors.customerName &&
-                                formik.touched.customerName ? (
-                                  <span className="form__group__error">
-                                    {formik.errors.customerName}
-                                  </span>
-                                ) : (
-                                  ''
-                                )
+                            }}
+                            onChange={(
+                              event: any,
+                              option?: IComboBoxOption,
+                              index?: number,
+                              value?: string
+                            ) => {
+                              if (option && (option as any).rawValue) {
+                                formik.setFieldValue(
+                                  'store',
+                                  (option as any).rawValue
+                                );
+                                formik.setFieldTouched('store');
+                                /// Remove all syggestions and set just one selected item
+                                dispatch(
+                                  customerActions.updateCustomerFormStoreAutocompleteList(
+                                    [(option as any).rawValue]
+                                  )
+                                );
+                              } else {
+                                formik.setFieldValue('store', null);
+                                formik.setFieldTouched('store');
+                                /// Clear suggestions list
+                                dispatch(
+                                  customerActions.updateCustomerFormStoreAutocompleteList(
+                                    []
+                                  )
+                                );
                               }
-                            />
-                          </div>
-                        );
-                      }}
-                    ></Field>
-                    <Field
-                      name="email"
-                      render={() => {
-                        return (
-                          <div className="form__group">
-                            <TextField
-                              value={formik.values.email}
-                              styles={fabricStyles.textFildLabelStyles}
-                              className="form__group__field"
-                              label="Email"
-                              required
-                              onChange={(args: any) => {
-                                let value = args.target.value;
-                                formik.setFieldValue('email', value);
-                                formik.setFieldTouched('email');
-                              }}
-                              errorMessage={
-                                formik.errors.email && formik.touched.email ? (
-                                  <span className="form__group__error">
-                                    {formik.errors.email}
-                                  </span>
-                                ) : (
-                                  ''
-                                )
-                              }
-                            />
-                          </div>
-                        );
-                      }}
-                    ></Field>
-                    <Field
-                      name="storeId"
-                      render={() => {
-                        return (
-                          <div className="form__group">
-                            <ComboBox
-                              label="Store"
-                              selectedKey={formik.values.storeId}
-                              key={'' + true + true}
-                              allowFreeform={true}
-                              onPendingValueChanged={(
-                                option?: IComboBoxOption,
-                                index?: number,
-                                value?: string
-                              ) => {
-                                if (value !== undefined) {
-                                  dispatch(
-                                    customerActions.customerFormStoreAutocompleteText(
-                                      value ? value : ''
-                                    )
-                                  );
-                                }
-                              }}
-                              onChange={(
-                                event: any,
-                                option?: IComboBoxOption,
-                                index?: number,
-                                value?: string
-                              ) => {
-                                if (option && (option as any).rawValue) {
-                                  formik.setFieldValue('storeId', option.key);
-                                  formik.setFieldTouched('storeId');
-                                  dispatch(
-                                    customerActions.updateCustomerFormStoreAutocompleteList(
-                                      [(option as any).rawValue]
-                                    )
-                                  );
-                                } else {
-                                  formik.setFieldValue('storeId', '');
-                                  formik.setFieldTouched('storeId');
-                                  dispatch(
-                                    customerActions.updateCustomerFormStoreAutocompleteList(
-                                      []
-                                    )
-                                  );
-                                }
-                              }}
-                              styles={{
-                                label: {
-                                  fontWeight: FontWeights.regular,
-                                  paddingTop: '15px',
-                                  paddingBottom: '5px',
-                                },
-                              }}
-                              required
-                              autoComplete={true ? 'on' : 'off'}
-                              options={autocompleteOptions}
-                              errorMessage={
-                                formik.errors.storeId && formik.touched.storeId
-                                  ? `${formik.errors.storeId}`
-                                  : ''
-                              }
-                            />
-                          </div>
-                        );
-                      }}
-                    ></Field>
-                    <Field
-                      name="phoneNumber"
-                      render={() => {
-                        return (
-                          <div className="form__group">
-                            <MaskedTextField
-                              value={formik.values.phoneNumber}
-                              styles={fabricStyles.textFildLabelStyles}
-                              className="form__group__field"
-                              label="Phone Number"
-                              mask="(999) 999 - 9999"
-                              onChange={(args: any) => {
-                                let value = args.target.value;
-                                formik.setFieldValue('phoneNumber', value);
-                                formik.setFieldTouched('phoneNumber');
-                              }}
-                            />
-                          </div>
-                        );
-                      }}
-                    ></Field>
-                    <Field
-                      name="birthDate"
-                      render={() => {
-                        return (
-                          <div className="form__group">
-                            <DatePicker
-                              firstDayOfWeek={DayOfWeek.Monday}
-                              strings={dayPickerStrings}
-                              textField={fabricStyles.datePickerStyles}
-                              value={new Date(formik.values.birthDate)}
-                              label="Birth Date"
-                              onSelectDate={(date: Date | null | undefined) => {
-                                let value = '';
+                            }}
+                            styles={fabricStyles.comboBoxStyles}
+                            required
+                            autoComplete={true ? 'on' : 'off'}
+                            options={autocompleteOptions}
+                            errorMessage={
+                              formik.errors.store && formik.touched.store
+                                ? ' '
+                                : ' '
+                            }
+                          />
+                          {formik.errors.store && formik.touched.store ? (
+                            <span className="form__group__error ownError">
+                              `{formik.errors.store}`
+                            </span>
+                          ) : null}
+                        </div>
+                      )}
+                    </Field>
+                    <Field name="phoneNumber">
+                      {() => (
+                        <div className="form__group">
+                          <MaskedTextField
+                            value={formik.values.phoneNumber}
+                            styles={fabricStyles.textFildLabelStyles}
+                            className="form__group__field"
+                            label="Phone Number"
+                            mask="(999) 999 - 9999"
+                            onChange={(args: any) => {
+                              let value = args.target.value;
+                              formik.setFieldValue('phoneNumber', value);
+                              formik.setFieldTouched('phoneNumber');
+                            }}
+                          />
+                        </div>
+                      )}
+                    </Field>
+                    <Field name="birthDate">
+                      {() => (
+                        <div className="form__group">
+                          <DatePicker
+                            firstDayOfWeek={DayOfWeek.Monday}
+                            strings={dayPickerStrings}
+                            textField={fabricStyles.datePickerStyles}
+                            value={new Date(formik.values.birthDate)}
+                            label="Birth Date"
+                            onSelectDate={(date: Date | null | undefined) => {
+                              let value = '';
 
-                                if (date) {
-                                  value = date.toJSON();
-                                }
+                              if (date) value = date.toJSON();
 
-                                formik.setFieldValue('birthDate', value);
-                                formik.setFieldTouched('birthDate');
-                              }}
-                            />
-                          </div>
-                        );
-                      }}
-                    ></Field>
+                              formik.setFieldValue('birthDate', value);
+                              formik.setFieldTouched('birthDate');
+                            }}
+                          />
+                        </div>
+                      )}
+                    </Field>
                   </Stack>
                 </Stack>
               </div>

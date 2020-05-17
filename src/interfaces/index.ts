@@ -235,7 +235,7 @@ export class StoreCustomer extends EntityBase {
   billingAddress: Address | null;
   deliveryAddressId: number | null;
   deliveryAddress: Address | null;
-  storeId: number | null;
+  storeId?: number | null;
   store: IStore | null;
 }
 
