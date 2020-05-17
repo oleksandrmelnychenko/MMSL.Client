@@ -7,10 +7,12 @@ class PanelTitleProps {
   constructor() {
     this.onSaveClick = () => {};
     this.title = '';
+    this.description = '';
   }
 
   title: string;
   onSaveClick?: () => void;
+  description?: string;
 }
 
 export const PanelTitle: React.FC<PanelTitleProps> = (
@@ -21,9 +23,9 @@ export const PanelTitle: React.FC<PanelTitleProps> = (
       <Stack
         tokens={{ childrenGap: 20 }}
         horizontal
-        className="panelTitle__panelHeader"
-      >
+        className="panelTitle__panelHeader">
         <Text className="panelTitle__title">{props.title}</Text>
+        <Text className="panelTitle__description">{props.description}</Text>
       </Stack>
     </div>
   );

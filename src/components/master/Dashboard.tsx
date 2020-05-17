@@ -15,6 +15,7 @@ import { Panel, PanelType } from 'office-ui-fabric-react';
 import * as controlAction from '../../redux/actions/control.actions';
 
 import ManagementOptions from '../dealers/dealerManaging/ManagementOptions';
+import { stylesPanelInfo } from '../../common/fabric-styles/styles';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
@@ -24,16 +25,6 @@ const Dashboard: React.FC = () => {
   const isOpenPanelInfo = useSelector<IApplicationState, boolean>(
     (state) => state.control.isOpenPanelInfo
   );
-
-  const stylesPanelInfo = {
-    main: {
-      left: '46px',
-      top: '51px',
-      height: 'calc(100vh - 81px)',
-      borderRight: '1px solid #e8e8e8',
-      boxShadow: 'none',
-    },
-  };
 
   const dismissPanelInfo = () => {
     dispatch(dealerActions.setSelectedDealer(null));
@@ -52,8 +43,7 @@ const Dashboard: React.FC = () => {
           isBlocking={false}
           styles={stylesPanelInfo}
           isOpen={isOpenPanelInfo}
-          onDismiss={dismissPanelInfo}
-        >
+          onDismiss={dismissPanelInfo}>
           <ManagementOptions />
         </Panel>
 

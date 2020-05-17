@@ -163,8 +163,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
             buildDealerAccount(values, props.dealerAccount as DealerAccount)
           );
         }}
-        validateOnBlur={false}
-      >
+        validateOnBlur={false}>
         {(formik) => {
           props.formikReference.formik = formik;
           if (props.formikReference.isDirtyFunc) {
@@ -176,9 +175,8 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
               <div className="dealerFormManage">
                 <Stack horizontal tokens={{ childrenGap: 20 }}>
                   <Stack grow={1}>
-                    <Field
-                      name="companyName"
-                      render={() => {
+                    <Field name="companyName">
+                      {() => {
                         return (
                           <div className="form__group">
                             <TextField
@@ -207,10 +205,9 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                           </div>
                         );
                       }}
-                    ></Field>
-                    <Field
-                      name="name"
-                      render={() => {
+                    </Field>
+                    <Field name="name">
+                      {() => {
                         return (
                           <div className="form__group">
                             <TextField
@@ -237,10 +234,9 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                           </div>
                         );
                       }}
-                    ></Field>
-                    <Field
-                      name="email"
-                      render={() => {
+                    </Field>
+                    <Field name="email">
+                      {() => {
                         return (
                           <div className="form__group">
                             <TextField
@@ -267,11 +263,10 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                           </div>
                         );
                       }}
-                    ></Field>
+                    </Field>
 
-                    <Field
-                      name="alternativeEmail"
-                      render={() => {
+                    <Field name="alternativeEmail">
+                      {() => {
                         return (
                           <div className="form__group">
                             <TextField
@@ -299,11 +294,10 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                           </div>
                         );
                       }}
-                    ></Field>
+                    </Field>
 
-                    <Field
-                      name="phoneNumber"
-                      render={() => {
+                    <Field name="phoneNumber">
+                      {() => {
                         return (
                           <div className="form__group">
                             <MaskedTextField
@@ -321,11 +315,10 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                           </div>
                         );
                       }}
-                    ></Field>
+                    </Field>
 
-                    <Field
-                      name="taxNumber"
-                      render={() => {
+                    <Field name="taxNumber">
+                      {() => {
                         return (
                           <div className="form__group">
                             <TextField
@@ -342,12 +335,11 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                           </div>
                         );
                       }}
-                    ></Field>
+                    </Field>
                   </Stack>
                   <Stack grow={1}>
-                    <Field
-                      name="selectCurrency"
-                      render={() => {
+                    <Field name="selectCurrency">
+                      {() => {
                         return (
                           <div className="form__group">
                             <Dropdown
@@ -373,11 +365,10 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                           </div>
                         );
                       }}
-                    ></Field>
+                    </Field>
 
-                    <Field
-                      name="selectPayment"
-                      render={() => {
+                    <Field name="selectPayment">
+                      {() => {
                         return (
                           <div className="form__group">
                             <Dropdown
@@ -403,11 +394,10 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                           </div>
                         );
                       }}
-                    ></Field>
+                    </Field>
 
-                    <Field
-                      name="vatApplicate"
-                      render={() => {
+                    <Field name="vatApplicate">
+                      {() => {
                         return (
                           <div className="form__group">
                             <Toggle
@@ -426,11 +416,10 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                           </div>
                         );
                       }}
-                    ></Field>
+                    </Field>
 
-                    <Field
-                      name="creditAllowed"
-                      render={() => {
+                    <Field name="creditAllowed">
+                      {() => {
                         return (
                           <div className="form__group">
                             <Toggle
@@ -452,7 +441,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
                           </div>
                         );
                       }}
-                    ></Field>
+                    </Field>
                   </Stack>
                 </Stack>
               </div>

@@ -10,8 +10,6 @@ import {
 } from '../../interfaces/index';
 import { ToggleDealerPanelWithDetails } from '../reducers/dealer.reducer';
 
-export const getDealersList = createAction(dealerTypes.GET_DEALERS_LIST);
-
 export const getDealersListPaginated = createAction(
   dealerTypes.GET_DEALERS_LIST_PAGINATED
 );
