@@ -297,7 +297,7 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                           />
                           {formik.errors.store && formik.touched.store ? (
                             <span className="form__group__error ownError">
-                              `{formik.errors.store}`
+                              {formik.errors.store}
                             </span>
                           ) : null}
                         </div>

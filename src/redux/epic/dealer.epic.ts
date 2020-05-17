@@ -267,7 +267,6 @@ export const addStoreToCurrentDealerEpic = (
         true
       ).pipe(
         mergeMap((successResponse: any) => {
-          debugger;
           let successResultFlow = [
             dealerActions.addNewStoreToCurrentDealer(successResponse.body),
             controlActions.showInfoMessage(successResponse.message),
@@ -333,7 +332,6 @@ export const getStoreCustomersByStoreIdEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
 
-      debugger;
       return ajaxGetWebResponse(api.GET_CUSTOMERS_ALL, state$.value, [
         {
           key: 'storeId',
@@ -341,7 +339,6 @@ export const getStoreCustomersByStoreIdEpic = (
         },
       ]).pipe(
         mergeMap((successResponse: any) => {
-          debugger;
           let successResultFlow = [
             dealerActions.updateTargetStoreStoreCustomersList(
               successResponse.entities
@@ -352,7 +349,6 @@ export const getStoreCustomersByStoreIdEpic = (
           return from(successResultFlow);
         }),
         catchError((errorResponse: any) => {
-          debugger;
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               { type: 'ERROR' },

@@ -92,7 +92,6 @@ export const updateTargetStoreStoreCustomersList = createAction<
   StoreCustomer[]
 >(dealerTypes.UPDATE_TARGET_STORE_STORE_CUSTOMERS_LIST);
 
-export type GetDealersList = ReturnType<typeof getDealersList>;
 export type GetDealersListPaginated = ReturnType<
   typeof getDealersListPaginated
 >;

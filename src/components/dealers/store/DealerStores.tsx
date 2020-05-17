@@ -67,7 +67,8 @@ export const DealerStores: React.FC = () => {
 
           setSelectedStore(selectedStore);
           setIsOpenForm(true);
-        }}>
+        }}
+      >
         <div className="dealer__store__name">Store name: {item.name}</div>
         <div className="dealer__store__address">
           Address:{' '}

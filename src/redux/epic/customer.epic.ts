@@ -16,6 +16,7 @@ import {
 } from '../../helpers/epic.helper';
 import * as api from '../../constants/api.constants';
 import { Pagination } from '../../interfaces';
+import * as controlActions from '../../redux/actions/control.actions';
 
 export const getCustomersListPaginatedEpic = (
   action$: AnyAction,
@@ -119,7 +120,10 @@ export const saveNewCustomerEpic = (action$: AnyAction, state$: any) => {
         true
       ).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [...extractSuccessPendingActions(action)];
+          let successResultFlow = [
+            controlActions.showInfoMessage('New customer created successfully'),
+            ...extractSuccessPendingActions(action),
+          ];
 
           return from(successResultFlow);
         }),

@@ -102,12 +102,6 @@ export const comboBoxStyles = {
     paddingTop: '15px',
     paddingBottom: '5px',
   },
-  // errorMessage: {
-  //   color: '#a80000',
-  //   fontSize: '10px',
-  //   width: '100%',
-  //   height: '20px',
-  // },
 };
 
 export const commandBarStyles = {

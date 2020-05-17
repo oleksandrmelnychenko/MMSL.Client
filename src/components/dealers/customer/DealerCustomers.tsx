@@ -164,9 +164,10 @@ export const DealerCustomers: React.FC = () => {
   return (
     <div>
       <PanelTitle
-        title={
+        title={'Customers'}
+        description={
           selectedDealer
-            ? `Customers: ${selectedDealer.companyName} | ${selectedDealer.email}`
+            ? `${selectedDealer.companyName} | ${selectedDealer.email}`
             : ''
         }
       />
