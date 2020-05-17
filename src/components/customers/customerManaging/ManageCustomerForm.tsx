@@ -245,6 +245,7 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                         return (
                           <div className="form__group">
                             <ComboBox
+                              className="form__group__comboBox"
                               label="Store"
                               selectedKey={
                                 formik.values.store
@@ -301,10 +302,15 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                               options={autocompleteOptions}
                               errorMessage={
                                 formik.errors.store && formik.touched.store
-                                  ? `${formik.errors.store}`
-                                  : ''
+                                  ? ' '
+                                  : ' '
                               }
                             />
+                            {formik.errors.store && formik.touched.store ? (
+                              <span className="form__group__error ownError">
+                                `{formik.errors.store}`
+                              </span>
+                            ) : null}
                           </div>
                         );
                       }}

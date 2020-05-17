@@ -53,7 +53,7 @@ const CommonDialog: React.FC = () => {
                 dialogArgs?.onSubmitClick();
               }, 500);
             }}
-            text="Submit"
+            text="Ok"
           />
           <DefaultButton
             onClick={() => {
