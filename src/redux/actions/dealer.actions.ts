@@ -1,3 +1,4 @@
+import { StoreCustomer } from './../../interfaces/index';
 import { createAction } from '@reduxjs/toolkit';
 import * as dealerTypes from '../../constants/dealer.types.constants';
 import {
@@ -86,6 +87,13 @@ export const isOpenPanelWithDealerDetails = createAction<
   ToggleDealerPanelWithDetails
 >(dealerTypes.IS_OPEN_PANEL_WITH_DEALER_DETAILS);
 
+export const getStoreCustomersByStoreId = createAction<number>(
+  dealerTypes.GET_STORE_CUSTOMERS_BY_STORE_ID
+);
+export const updateTargetStoreStoreCustomersList = createAction<
+  StoreCustomer[]
+>(dealerTypes.UPDATE_TARGET_STORE_STORE_CUSTOMERS_LIST);
+
 export type GetDealersList = ReturnType<typeof getDealersList>;
 export type GetDealersListPaginated = ReturnType<
   typeof getDealersListPaginated
@@ -103,3 +111,9 @@ export type updateDealerListPaginationInfo = ReturnType<
 >;
 export type SearchDealer = ReturnType<typeof searchDealer>;
 export type DeleteDealerById = ReturnType<typeof deleteDealerById>;
+export type GetStoreCustomersByStoreId = ReturnType<
+  typeof getStoreCustomersByStoreId
+>;
+export type UpdateTargetStoreStoreCustomersList = ReturnType<
+  typeof updateTargetStoreStoreCustomersList
+>;

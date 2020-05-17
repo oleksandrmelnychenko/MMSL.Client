@@ -1,3 +1,4 @@
+import { StoreCustomer } from './../../interfaces/index';
 import { createReducer } from '@reduxjs/toolkit';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import { IStore } from '../../interfaces/index';
@@ -11,6 +12,7 @@ export class DealerState {
     this.dealerState = new DealersListState();
     this.isOpenPanelWithDealerDetails = new ToggleDealerPanelWithDetails();
     this.dealerStores = [];
+    this.dealerCustomerState = new DealerCustomerState();
   }
 
   dealerState: DealersListState;
@@ -18,6 +20,15 @@ export class DealerState {
   selectedDealer: DealerAccount | null;
   isOpenPanelWithDealerDetails: ToggleDealerPanelWithDetails;
   dealerStores: IStore[];
+  dealerCustomerState: DealerCustomerState;
+}
+
+export class DealerCustomerState {
+  constructor() {
+    this.storeCustomers = [];
+  }
+
+  storeCustomers: StoreCustomer[];
 }
 
 /// Dealer list state (contains list of dealers and pagination)
@@ -49,6 +60,7 @@ export enum DealerDetilsComponents {
   DealerDetails,
   DealerAddress,
   DealerStores,
+  DealerCustomers,
 }
 
 /// Action payload
@@ -104,4 +116,10 @@ export const dealerReducer = createReducer(new DealerState(), (builder) =>
         (store) => store.id !== action.payload
       );
     })
+    .addCase(
+      dealerActions.updateTargetStoreStoreCustomersList,
+      (state, action) => {
+        state.dealerCustomerState.storeCustomers = action.payload;
+      }
+    )
 );

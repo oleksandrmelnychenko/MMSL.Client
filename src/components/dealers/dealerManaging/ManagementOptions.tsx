@@ -52,7 +52,7 @@ const ManagementOptions: React.FC = () => {
       id: 3,
       title: 'Customer',
       className: 'dealer__management__btn-customer',
-      componentType: DealerDetilsComponents.DealerStores,
+      componentType: DealerDetilsComponents.DealerCustomers,
       isSelected: false,
     },
   ];

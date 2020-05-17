@@ -11,6 +11,7 @@ import {
 } from '../../redux/reducers/dealer.reducer';
 import DealerDetails from './DealerDetails';
 import AddressDetails from './address/AddressDetails';
+import DealerCustomers from './customer/DealerCustomers';
 import { panelStyle } from '../../common/fabric-styles/styles';
 
 export const DealerDetailsPanel: React.FC = (props: any) => {
@@ -42,6 +43,12 @@ export const DealerDetailsPanel: React.FC = (props: any) => {
       DealerDetilsComponents.DealerAddress
     ) {
       panelContent = <AddressDetails />;
+    } else if (
+      isOpenPanelWithDealerDetails.componentType ===
+      DealerDetilsComponents.DealerCustomers
+    ) {
+      customWidth = '800px';
+      panelContent = <DealerCustomers />;
     }
   }
 
