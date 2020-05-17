@@ -23,9 +23,16 @@ import {
   DialogArgs,
   CommonDialogType,
 } from '../../../redux/reducers/control.reducer';
+import { List } from 'linq-typescript';
 
 export const DealerStores: React.FC = () => {
   const dispatch = useDispatch();
+  const [selectedStore, setSelectedStore] = useState<IStore | null | undefined>(
+    null
+  );
+  const [isDirtyForm, setIsDirtyForm] = useState(false);
+  const [isOpenForm, setIsOpenForm] = useState(false);
+
   const [formikReference] = useState<FormicReference>(
     new FormicReference(() => {
       formikReference.isDirtyFunc = (isDirty: boolean) => {
@@ -33,7 +40,6 @@ export const DealerStores: React.FC = () => {
       };
     })
   );
-  const [isDirtyForm, setIsDirtyForm] = useState(false);
   const selectedDealer = useSelector<IApplicationState, DealerAccount>(
     (state) => state.dealer.selectedDealer!
   );
@@ -46,9 +52,28 @@ export const DealerStores: React.FC = () => {
     }
   }, [selectedDealer, dispatch]);
 
-  const [selectedStore, setSelectedStore] = useState<IStore[] | null>(null);
+  useEffect(() => {
+    // if (dealerStores) {
+    //   if (dealerStores.length > 0 && selectedStore) {
+    //     const toSelect = new List<IStore>(dealerStores).firstOrDefault(
+    //       (store) => store.id === selectedStore[0].id
+    //     );
+    //     setSelectedStore(toSelect ? [toSelect] : null);
+    //   } else {
+    //     setSelectedStore(null);
+    //   }
+    // } else {
+    //   setSelectedStore(null);
+    // }
 
-  const [isOpenForm, setIsOpenForm] = useState(false);
+    if (dealerStores) {
+      let toSelect = new List(dealerStores).firstOrDefault(
+        (item) => item.id === selectedStore?.id
+      );
+
+      setSelectedStore(toSelect);
+    }
+  }, [dealerStores, selectedStore, setSelectedStore]);
 
   const onRenderCell = (
     item: IStore,
@@ -58,12 +83,15 @@ export const DealerStores: React.FC = () => {
       <div
         key={index}
         className={`dealer__store${
-          selectedStore && item.id === selectedStore[0].id ? ' selected' : ''
+          selectedStore && item.id === selectedStore.id ? ' selected' : ''
         }`}
         onClick={() => {
-          const selectedStore = dealerStores.filter(
+          const selectedStore = new List(dealerStores).firstOrDefault(
             (store) => store.id === item.id
           );
+          // const selectedStore = dealerStores.filter(
+          //   (store) => store.id === item.id
+          // );
 
           setSelectedStore(selectedStore);
           setIsOpenForm(true);
@@ -113,20 +141,20 @@ export const DealerStores: React.FC = () => {
       key: 'Delete',
       text: 'Delete',
       iconProps: { iconName: 'Delete' },
-      disabled: selectedStore && selectedStore.length > 0 ? false : true,
+      disabled: selectedStore ? false : true,
       onClick: () => {
-        if (selectedStore && selectedStore.length > 0) {
+        if (selectedStore) {
           dispatch(
             controlAction.toggleCommonDialogVisibility(
               new DialogArgs(
                 CommonDialogType.Delete,
                 'Delete store',
-                `Are you sure you want to delete ${selectedStore[0].name}?`,
+                `Are you sure you want to delete ${selectedStore.name}?`,
                 () => {
                   if (selectedStore) {
                     dispatch(
                       dealerActions.deleteCurrentDealerStore(
-                        selectedStore[0].id as number
+                        selectedStore.id as number
                       )
                     );
                   }
@@ -176,8 +204,15 @@ export const DealerStores: React.FC = () => {
         <Stack grow={1} tokens={{ maxWidth: '50%' }}>
           {isOpenForm ? (
             <FormStore
+              submitAction={(args: any) => {
+                if (selectedStore) {
+                  dispatch(dealerActions.updateDealerStore(args));
+                } else {
+                  dispatch(dealerActions.addStoreToCurrentDealer(args));
+                }
+              }}
               formikReference={formikReference}
-              store={selectedStore}
+              store={selectedStore ? [selectedStore] : null}
             />
           ) : null}
         </Stack>

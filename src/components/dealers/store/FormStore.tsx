@@ -12,6 +12,7 @@ import * as fabricStyles from '../../../common/fabric-styles/styles';
 interface IFormStoreProps {
   store: IStore[] | null;
   formikReference: FormicReference;
+  submitAction: (args: any) => void;
 }
 
 const FormStore: React.FC<IFormStoreProps> = (props) => {
@@ -116,20 +117,22 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
         })}
         initialValues={initValue()}
         onSubmit={(values: any, { resetForm }) => {
-          if (selectedStore) {
-            dispatch(
-              dealerActions.updateDealerStore(
-                builderUpdateStore(values) as IStore
-              )
-            );
-          } else {
-            dispatch(
-              dealerActions.addStoreToCurrentDealer(
-                builderAddStore(values) as INewStore
-              )
-            );
-            resetForm();
-          }
+          props.submitAction(builderUpdateStore(values) as IStore);
+          // resetForm();
+          // if (selectedStore) {
+          //   dispatch(
+          //     dealerActions.updateDealerStore(
+          //       builderUpdateStore(values) as IStore
+          //     )
+          //   );
+          // } else {
+          //   dispatch(
+          //     dealerActions.addStoreToCurrentDealer(
+          //       builderAddStore(values) as INewStore
+          //     )
+          //   );
+          //   resetForm();
+          // }
         }}
         enableReinitialize={true}
         validateOnBlur={false}
