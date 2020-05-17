@@ -15,5 +15,16 @@
             font-size: 10px;
             line-height: 20px;
         }
+
+        &__comboBox {
+
+            label+div {
+
+                &:after {
+                    border-color: rgb(96, 94, 92);
+                    ;
+                }
+            }
+        }
     }
 }
