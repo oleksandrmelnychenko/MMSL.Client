@@ -53,19 +53,6 @@ export const DealerStores: React.FC = () => {
   }, [selectedDealer, dispatch]);
 
   useEffect(() => {
-    // if (dealerStores) {
-    //   if (dealerStores.length > 0 && selectedStore) {
-    //     const toSelect = new List<IStore>(dealerStores).firstOrDefault(
-    //       (store) => store.id === selectedStore[0].id
-    //     );
-    //     setSelectedStore(toSelect ? [toSelect] : null);
-    //   } else {
-    //     setSelectedStore(null);
-    //   }
-    // } else {
-    //   setSelectedStore(null);
-    // }
-
     if (dealerStores) {
       let toSelect = new List(dealerStores).firstOrDefault(
         (item) => item.id === selectedStore?.id
@@ -89,9 +76,6 @@ export const DealerStores: React.FC = () => {
           const selectedStore = new List(dealerStores).firstOrDefault(
             (store) => store.id === item.id
           );
-          // const selectedStore = dealerStores.filter(
-          //   (store) => store.id === item.id
-          // );
 
           setSelectedStore(selectedStore);
           setIsOpenForm(true);

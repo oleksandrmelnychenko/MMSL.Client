@@ -18,6 +18,7 @@ import {
   FormicReference,
 } from '../../../interfaces';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
+import { List } from 'linq-typescript';
 
 class ManageDealerFormProps {
   constructor() {
@@ -31,22 +32,17 @@ class ManageDealerFormProps {
   submitAction: (args: any) => void;
 }
 
-/// TOODO: resolve with Linq
 const resolveDefaultDropDownValue = (
   limitOptions: any[],
   initLimit: number
 ) => {
   let result;
 
-  limitOptions.forEach((option) => {
-    if (option.key === `${initLimit}`) {
-      result = option;
-    }
-  });
+  result = new List(limitOptions).firstOrDefault(
+    (option) => option.key === `${initLimit}`
+  );
 
-  if (result === undefined || null) {
-    result = limitOptions[0];
-  }
+  if (result === undefined || null) result = limitOptions[0];
 
   return result;
 };
@@ -163,7 +159,8 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
             buildDealerAccount(values, props.dealerAccount as DealerAccount)
           );
         }}
-        validateOnBlur={false}>
+        validateOnBlur={false}
+      >
         {(formik) => {
           props.formikReference.formik = formik;
           if (props.formikReference.isDirtyFunc) {

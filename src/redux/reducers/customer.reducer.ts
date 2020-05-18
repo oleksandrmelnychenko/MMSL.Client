@@ -1,7 +1,7 @@
 import { StoreCustomer, IStore } from './../../interfaces/index';
 import { createReducer } from '@reduxjs/toolkit';
 import * as customerActions from '../../redux/actions/customer.actions';
-import { DealerAccount, Pagination } from '../../interfaces';
+import { Pagination } from '../../interfaces';
 
 /// Customer reducer state
 export class CustomerState {
@@ -18,14 +18,12 @@ export class CustomerState {
 export class CustomerListState {
   constructor() {
     this.customersList = [];
-    this.lastOffset = [];
     this.pagination = new Pagination();
     this.search = '';
     this.searchByStore = '';
   }
 
   customersList: StoreCustomer[];
-  lastOffset: DealerAccount[];
   pagination: Pagination;
   search: string;
   searchByStore: string;
