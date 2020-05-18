@@ -14,11 +14,10 @@ import {
   commandBarButtonStyles,
 } from '../../../common/fabric-styles/styles';
 import PanelTitle from '../../dealers/panel/PanelTitle';
-import ManageCustomerForm from './ManageCustomerForm';
-import * as customerActions from '../../../redux/actions/customer.actions';
-import { assignPendingActions } from '../../../helpers/action.helper';
+import * as productSettingsActions from '../../../redux/actions/productSettings.actions';
+import { ManagingPanelComponent } from '../../../redux/reducers/productSettings.reducer';
 
-export const CreateCustomerPanel: React.FC = (props: any) => {
+export const ProductSettingsManagementPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
 
   const [formikReference] = useState<FormicReference>(
@@ -31,9 +30,10 @@ export const CreateCustomerPanel: React.FC = (props: any) => {
 
   const [isDirtyForm, setIsDirtyForm] = useState(false);
 
-  const isAddCustomerOpen = useSelector<IApplicationState, boolean>(
-    (state) => state.customer.manageCustomerForm.isFormVisible
-  );
+  const panelContent: ManagingPanelComponent | null = useSelector<
+    IApplicationState,
+    ManagingPanelComponent | null
+  >((state) => state.productSettings.managingPanelContent);
 
   const _items: ICommandBarItemProps[] = [
     {
@@ -62,15 +62,24 @@ export const CreateCustomerPanel: React.FC = (props: any) => {
     },
   ];
 
+  let panelWidth = '600px';
+  let content: any = null;
+
+  if (panelContent === ManagingPanelComponent.ManageGroups) {
+    content = 'Managing Groups';
+  } else if (panelContent === ManagingPanelComponent.ManageUnits) {
+    content = 'Managing Units';
+  }
+
   return (
     <div className="createDealerPanel">
       <Panel
         styles={panelStyle}
-        isOpen={isAddCustomerOpen}
+        isOpen={panelContent ? true : false}
         type={PanelType.custom}
-        customWidth={'600px'}
+        customWidth={panelWidth}
         onDismiss={() => {
-          dispatch(customerActions.toggleNewCustomerForm(false));
+          dispatch(productSettingsActions.managingPanelContent(null));
         }}
         closeButtonAriaLabel="Close"
       >
@@ -82,30 +91,17 @@ export const CreateCustomerPanel: React.FC = (props: any) => {
               formik.submitForm();
             }
           }}
-          title={'New Customer'}
+          title={'New Product Setting'}
         />
         <CommandBar
           styles={commandBarStyles}
           items={_items}
           className="dealers__store__controls"
         />
-
-        <ManageCustomerForm
-          formikReference={formikReference}
-          submitAction={(args: any) => {
-            let createAction = assignPendingActions(
-              customerActions.saveNewCustomer(args),
-              [
-                customerActions.getCustomersListPaginated(),
-                customerActions.toggleNewCustomerForm(false),
-              ]
-            );
-            dispatch(createAction);
-          }}
-        />
+        {content}
       </Panel>
     </div>
   );
 };
 
-export default CreateCustomerPanel;
+export default ProductSettingsManagementPanel;

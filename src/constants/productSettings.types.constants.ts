@@ -1,0 +1,1 @@
+export const MANAGING_PANEL_CONTENT = 'productSettings.MANAGING_PANEL_CONTENT';

@@ -3,6 +3,10 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import { Stack, ActionButton, SearchBox } from 'office-ui-fabric-react';
+import ProductSettingsList from './ProductSettingsList';
+import ProductSettingsManagementPanel from './productSettingManagement/ProductSettingsManagementPanel';
+import * as productSettingsActions from '../../redux/actions/productSettings.actions';
+import { ManagingPanelComponent } from '../../redux/reducers/productSettings.reducer';
 
 export const ProductSettings: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -33,11 +37,11 @@ export const ProductSettings: React.FC = (props: any) => {
                         <ActionButton
                           className="productSettingsAdd"
                           onClick={() => {
-                            debugger;
-
-                            // dispatch(
-                            //   customerActions.toggleNewCustomerForm(true)
-                            // );
+                            dispatch(
+                              productSettingsActions.managingPanelContent(
+                                ManagingPanelComponent.ManageGroups
+                              )
+                            );
                           }}
                           iconProps={{ iconName: 'Add' }}
                         >
@@ -51,7 +55,6 @@ export const ProductSettings: React.FC = (props: any) => {
                           styles={searchBoxStyles}
                           placeholder="Find product settings"
                           onChange={(args: any) => {
-                            debugger;
                             // if (args) {
                             //   let value = args.target.value;
                             //   dispatch(customerActions.searchCustomer(value));
@@ -73,10 +76,12 @@ export const ProductSettings: React.FC = (props: any) => {
               </div>
             </div>
           </Stack.Item>
-          <Stack.Item>{/* <CustomerList /> */}</Stack.Item>
+          <Stack.Item>
+            <ProductSettingsList />
+          </Stack.Item>
         </Stack>
 
-        {/* <CreateCustomerPanel /> */}
+        <ProductSettingsManagementPanel />
       </div>
     </div>
   );
