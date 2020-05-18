@@ -16,6 +16,7 @@ import * as controlAction from '../../redux/actions/control.actions';
 
 import ManagementOptions from '../dealers/dealerManaging/ManagementOptions';
 import { stylesPanelInfo } from '../../common/fabric-styles/styles';
+import ProductSettings from '../productSettings/ProductSettings';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
@@ -43,7 +44,8 @@ const Dashboard: React.FC = () => {
           isBlocking={false}
           styles={stylesPanelInfo}
           isOpen={isOpenPanelInfo}
-          onDismiss={dismissPanelInfo}>
+          onDismiss={dismissPanelInfo}
+        >
           <ManagementOptions />
         </Panel>
 
@@ -51,6 +53,10 @@ const Dashboard: React.FC = () => {
           <Switch>
             <PrivateRoute path={`/en/app/dealers`} component={Dealers} />
             <PrivateRoute path={`/en/app/customer`} component={Customers} />
+            <PrivateRoute
+              path={`/en/app/product-settings`}
+              component={ProductSettings}
+            />
           </Switch>
         </div>
       </main>
