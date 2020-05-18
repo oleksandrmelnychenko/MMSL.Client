@@ -83,8 +83,8 @@ const Menu: React.FC = () => {
   return (
     <div className="menu">
       <ul className="menu__list">
-        {menuItem.map((item) => (
-          <li className="menu__item">
+        {menuItem.map((item, index) => (
+          <li key={index} className="menu__item">
             <NavLink
               className={`menu__link ${item.className}`}
               to={item.link}

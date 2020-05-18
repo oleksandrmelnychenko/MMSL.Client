@@ -5,13 +5,13 @@ import {
   Separator,
   CommandBar,
   ICommandBarItemProps,
+  Stack,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { DealerAccount, FormicReference } from '../../../interfaces';
 import * as dealerActions from '../../../redux/actions/dealer.actions';
 import { IStore } from '../../../interfaces/index';
-import { Stack } from 'office-ui-fabric-react';
 import FormStore from './FormStore';
 import PanelTitle from '../panel/PanelTitle';
 import {
@@ -24,6 +24,7 @@ import {
   CommonDialogType,
 } from '../../../redux/reducers/control.reducer';
 import { List } from 'linq-typescript';
+import { Route } from 'react-router-dom';
 
 export const DealerStores: React.FC = () => {
   const dispatch = useDispatch();
@@ -79,8 +80,7 @@ export const DealerStores: React.FC = () => {
 
           setSelectedStore(selectedStore);
           setIsOpenForm(true);
-        }}
-      >
+        }}>
         <div className="dealer__store__name">Store name: {item.name}</div>
         <div className="dealer__store__address">
           Address:{' '}
@@ -200,6 +200,7 @@ export const DealerStores: React.FC = () => {
             />
           ) : null}
         </Stack>
+        {/* <Route component=""> */}
       </Stack>
     </div>
   );

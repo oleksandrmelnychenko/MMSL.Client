@@ -39,17 +39,7 @@ export const DealerList: React.FC = () => {
     DealerAccount[]
   >((state) => state.dealer.dealerState.dealersList);
 
-  const [selection] = useState(
-    new Selection({
-      // onSelectionChanged: () => {
-      //   if (selection.count > 0) {
-      //     dealerSelection();
-      //   } else {
-      //     dealerUnSelection();
-      //   }
-      // },
-    })
-  );
+  const [selection] = useState(new Selection({}));
 
   const selectedDealerId: number | null | undefined = useSelector<
     IApplicationState,
@@ -200,6 +190,7 @@ export const DealerList: React.FC = () => {
                         []
                       );
                       dispatch(controlActions.isCollapseMenu(true));
+
                       setTimeout(() => {
                         dispatch(controlActions.isOpenPanelInfo(true));
                       }, 350);
@@ -222,8 +213,7 @@ export const DealerList: React.FC = () => {
                       selectFlow();
                     }
                   }
-                }}
-              >
+                }}>
                 <DetailsRow {...args} />
               </div>
             );
