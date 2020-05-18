@@ -252,7 +252,7 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                                 ? `${formik.values.store.id}`
                                 : ''
                             }
-                            key={'' + true + true}
+                            // key={'' + true + true}
                             allowFreeform={true}
                             onPendingValueChanged={(
                               option?: IComboBoxOption,
