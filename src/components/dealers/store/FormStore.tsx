@@ -2,9 +2,7 @@ import React from 'react';
 import * as Yup from 'yup';
 import { Field, Formik, Form } from 'formik';
 import { Stack, Separator, TextField } from 'office-ui-fabric-react';
-
 import { IStore, INewStore, FormicReference } from '../../../interfaces';
-import * as dealerActions from '../../../redux/actions/dealer.actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers/index';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
@@ -16,7 +14,6 @@ interface IFormStoreProps {
 }
 
 const FormStore: React.FC<IFormStoreProps> = (props) => {
-  const dispatch = useDispatch();
   const selectedDealerId = useSelector<IApplicationState, number | undefined>(
     (state) => state.dealer.selectedDealer?.id
   );

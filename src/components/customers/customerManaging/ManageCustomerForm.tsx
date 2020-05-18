@@ -4,23 +4,85 @@ import {
   Stack,
   TextField,
   MaskedTextField,
-  IDatePickerStrings,
   DatePicker,
   ComboBox,
   DayOfWeek,
   IComboBoxOption,
 } from 'office-ui-fabric-react';
-// import './manageDealerForm.scss';
 import * as Yup from 'yup';
-import { FormicReference, StoreCustomer, IStore } from '../../../interfaces';
-import * as fabricStyles from '../../../common/fabric-styles/styles';
 import {
-  initDefaultValuesForNewStoreCustomerForm,
-  buildNewStoreCustomerAccount,
-} from './customer.form.helpers';
+  FormicReference,
+  StoreCustomer,
+  IStore,
+  Address,
+} from '../../../interfaces';
+import * as fabricStyles from '../../../common/fabric-styles/styles';
+import * as fabricControlSettings from '../../../common/fabric-control-settings/fabricControlSettings';
 import { useDispatch, useSelector } from 'react-redux';
 import * as customerActions from '../../../redux/actions/customer.actions';
 import { IApplicationState } from '../../../redux/reducers';
+
+export class CreateStoreCustomerFormInitValues {
+  constructor() {
+    this.userName = '';
+    this.customerName = '';
+    this.email = '';
+    this.phoneNumber = '';
+    this.birthDate = '1989-05-11T21:00:00.000Z';
+    this.store = null;
+  }
+
+  userName: string;
+  customerName: string;
+  email: string;
+  phoneNumber: string;
+  birthDate: string;
+  store: IStore | null;
+}
+
+const buildNewStoreCustomerAccount = (
+  values: any,
+  sourceEntity?: StoreCustomer
+) => {
+  let newAccount: StoreCustomer;
+
+  if (sourceEntity) {
+    newAccount = { ...sourceEntity };
+  } else {
+    newAccount = new StoreCustomer();
+    newAccount.billingAddress = new Address();
+    newAccount.billingAddressId = newAccount.billingAddress.id;
+    newAccount.deliveryAddress = new Address();
+    newAccount.deliveryAddressId = newAccount.deliveryAddress.id;
+  }
+
+  newAccount.userName = values.userName;
+  newAccount.customerName = values.customerName;
+  newAccount.email = values.email;
+  newAccount.phoneNumber = values.phoneNumber;
+  newAccount.birthDate = values.birthDate;
+  newAccount.store = values.store;
+  newAccount.storeId = newAccount.store?.id;
+
+  return newAccount;
+};
+
+const initDefaultValuesForNewStoreCustomerForm = (
+  sourceEntity?: StoreCustomer | null
+) => {
+  const initValues = new CreateStoreCustomerFormInitValues();
+
+  if (sourceEntity) {
+    initValues.userName = sourceEntity.userName;
+    initValues.customerName = sourceEntity.customerName;
+    initValues.email = sourceEntity.email;
+    initValues.phoneNumber = sourceEntity.phoneNumber;
+    initValues.birthDate = sourceEntity.birthDate;
+    initValues.store = sourceEntity.store;
+  }
+
+  return initValues;
+};
 
 class ManageCustomerFormProps {
   constructor() {
@@ -33,57 +95,6 @@ class ManageCustomerFormProps {
   customer?: StoreCustomer | null;
   submitAction: (args: any) => void;
 }
-
-const dayPickerStrings: IDatePickerStrings = {
-  months: [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ],
-
-  shortMonths: [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
-  ],
-
-  days: [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-  ],
-
-  shortDays: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-
-  goToToday: 'Go to today',
-  prevMonthAriaLabel: 'Go to previous month',
-  nextMonthAriaLabel: 'Go to next month',
-  prevYearAriaLabel: 'Go to previous year',
-  nextYearAriaLabel: 'Go to next year',
-  closeButtonAriaLabel: 'Close date picker',
-};
 
 export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
   props: ManageCustomerFormProps
@@ -326,7 +337,7 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                         <div className="form__group">
                           <DatePicker
                             firstDayOfWeek={DayOfWeek.Monday}
-                            strings={dayPickerStrings}
+                            strings={fabricControlSettings.dayPickerStrings}
                             textField={fabricStyles.datePickerStyles}
                             value={new Date(formik.values.birthDate)}
                             label="Birth Date"
