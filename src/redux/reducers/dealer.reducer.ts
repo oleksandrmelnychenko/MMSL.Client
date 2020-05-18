@@ -35,13 +35,11 @@ export class DealerCustomerState {
 export class DealersListState {
   constructor() {
     this.dealersList = [];
-    this.lastOffset = [];
     this.pagination = new Pagination();
     this.search = '';
   }
 
   dealersList: DealerAccount[];
-  lastOffset: DealerAccount[];
   pagination: Pagination;
   search: string;
 }
