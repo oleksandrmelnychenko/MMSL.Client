@@ -239,6 +239,30 @@ export class StoreCustomer extends EntityBase {
   store: IStore | null;
 }
 
+export class ProductGroup extends EntityBaseNamed {
+  constructor() {
+    super();
+
+    this.isMandatory = false;
+    this.productUnits = [];
+  }
+
+  isMandatory: boolean;
+  productUnits: ProductUnit[];
+}
+
+export class ProductUnit extends EntityBaseNamed {
+  constructor() {
+    super();
+
+    this.imageBase64 = null;
+    this.isAllowed = false;
+  }
+
+  imageBase64: string | null;
+  isAllowed: boolean;
+}
+
 export class FormicReference {
   constructor(isDirtyFunc?: (isDirty: boolean) => void) {
     this.formik = null;

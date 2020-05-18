@@ -14,6 +14,7 @@ import {
   commandBarButtonStyles,
 } from '../../../common/fabric-styles/styles';
 import PanelTitle from '../../dealers/panel/PanelTitle';
+import ManagingProductGroupForm from './ManagingProductGroupForm';
 import * as productSettingsActions from '../../../redux/actions/productSettings.actions';
 import { ManagingPanelComponent } from '../../../redux/reducers/productSettings.reducer';
 
@@ -66,7 +67,15 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
   let content: any = null;
 
   if (panelContent === ManagingPanelComponent.ManageGroups) {
-    content = 'Managing Groups';
+    content = (
+      <ManagingProductGroupForm
+        formikReference={formikReference}
+        submitAction={(args: any) => {
+          debugger;
+          /// TODO:
+        }}
+      />
+    );
   } else if (panelContent === ManagingPanelComponent.ManageUnits) {
     content = 'Managing Units';
   }

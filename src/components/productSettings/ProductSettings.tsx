@@ -1,7 +1,6 @@
 import './productSettings.scss';
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { IApplicationState } from '../../redux/reducers';
+import { useDispatch } from 'react-redux';
 import { Stack, ActionButton, SearchBox } from 'office-ui-fabric-react';
 import ProductSettingsList from './ProductSettingsList';
 import ProductSettingsManagementPanel from './productSettingManagement/ProductSettingsManagementPanel';
@@ -10,13 +9,6 @@ import { ManagingPanelComponent } from '../../redux/reducers/productSettings.red
 
 export const ProductSettings: React.FC = (props: any) => {
   const dispatch = useDispatch();
-
-  const searchText = useSelector<IApplicationState, string>(
-    (state) => state.customer.customerState.search
-  );
-  const searchByStoreText = useSelector<IApplicationState, string>(
-    (state) => state.customer.customerState.searchByStore
-  );
 
   const searchBoxStyles = { root: { width: 200 } };
 
@@ -51,7 +43,7 @@ export const ProductSettings: React.FC = (props: any) => {
                       <div className="productSettings__header__top__controls__control">
                         <SearchBox
                           className="productSettingsSearch"
-                          value={searchText}
+                          value={''}
                           styles={searchBoxStyles}
                           placeholder="Find product settings"
                           onChange={(args: any) => {
