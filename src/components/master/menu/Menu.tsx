@@ -21,7 +21,7 @@ const Menu: React.FC = () => {
   );
   const languageCode = getActiveLanguage(localize).code;
 
-  const foo = () => {
+  const onMenuClick = () => {
     dispatch(dealerActions.setSelectedDealer(null));
     dispatch(controlActions.isOpenPanelInfo(false));
     dispatch(controlActions.isCollapseMenu(false));
@@ -86,9 +86,13 @@ const Menu: React.FC = () => {
         {menuItem.map((item, index) => (
           <li key={index} className="menu__item">
             <NavLink
+              onClick={() => {
+                onMenuClick();
+              }}
               className={`menu__link ${item.className}`}
               to={item.link}
-              activeClassName="active">
+              activeClassName="active"
+            >
               {item.title}
             </NavLink>
           </li>
