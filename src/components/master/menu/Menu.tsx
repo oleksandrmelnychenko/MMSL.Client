@@ -8,6 +8,12 @@ import { IApplicationState } from '../../../redux/reducers';
 import { LocalizeState, getActiveLanguage } from 'react-localize-redux';
 import { ToggleDealerPanelWithDetails } from '../../../redux/reducers/dealer.reducer';
 
+interface IMenuItem {
+  title: string;
+  className: string;
+  link: string;
+}
+
 const Menu: React.FC = () => {
   const dispatch = useDispatch();
   const localize = useSelector<IApplicationState, LocalizeState>(
@@ -26,99 +32,67 @@ const Menu: React.FC = () => {
     );
   };
 
+  const menuItem: IMenuItem[] = [
+    {
+      title: 'Dashboard',
+      className: 'dashboard',
+      link: `/${languageCode}/app/dashboard`,
+    },
+    {
+      title: 'Order',
+      className: 'order',
+      link: `/${languageCode}/app/order`,
+    },
+    {
+      title: 'Customer',
+      className: 'customer',
+      link: `/${languageCode}/app/customer`,
+    },
+    {
+      title: 'Dealers',
+      className: 'dealers',
+      link: `/${languageCode}/app/dealers`,
+    },
+    {
+      title: 'Stock',
+      className: 'stock',
+      link: `/${languageCode}/app/stock`,
+    },
+    {
+      title: 'Documents',
+      className: 'documents',
+      link: `/${languageCode}/app/documents`,
+    },
+    {
+      title: ' Activity History',
+      className: 'activity',
+      link: `/${languageCode}/app/activity`,
+    },
+    {
+      title: 'Product Category',
+      className: 'product',
+      link: `/${languageCode}/app/product`,
+    },
+    {
+      title: 'Reports',
+      className: 'reports',
+      link: `/${languageCode}/app/reports`,
+    },
+  ];
+
   return (
     <div className="menu">
       <ul className="menu__list">
-        <li className="menu__item">
-          <NavLink
-            onClick={() => foo()}
-            className="menu__link dashboard"
-            to={`/${languageCode}/app/dashboard`}
-            activeClassName="active"
-          >
-            Dashboard
-          </NavLink>
-        </li>
-        <li className="menu__item">
-          <NavLink
-            onClick={() => foo()}
-            className="menu__link order"
-            to={`/${languageCode}/app/order`}
-            activeClassName="active"
-          >
-            Order
-          </NavLink>
-        </li>
-        <li className="menu__item">
-          <NavLink
-            onClick={() => foo()}
-            className="menu__link customer"
-            to={`/${languageCode}/app/customer`}
-            activeClassName="active"
-          >
-            Customer
-          </NavLink>
-        </li>
-        <li className="menu__item">
-          <NavLink
-            onClick={() => foo()}
-            className="menu__link dealers"
-            to={`/${languageCode}/app/dealers`}
-            activeClassName="active"
-          >
-            Dealers
-          </NavLink>
-        </li>
-        <li className="menu__item">
-          <NavLink
-            onClick={() => foo()}
-            className="menu__link stock"
-            to={`/${languageCode}/app/stock`}
-            activeClassName="active"
-          >
-            Stock
-          </NavLink>
-        </li>
-        <li className="menu__item">
-          <NavLink
-            onClick={() => foo()}
-            className="menu__link documents"
-            to={`/${languageCode}/app/documents`}
-            activeClassName="active"
-          >
-            Documents
-          </NavLink>
-        </li>
-        <li className="menu__item">
-          <NavLink
-            onClick={() => foo()}
-            className="menu__link activity"
-            to={`/${languageCode}/app/activity`}
-            activeClassName="active"
-          >
-            Activity History
-          </NavLink>
-        </li>
-        <li className="menu__item">
-          <NavLink
-            onClick={() => foo()}
-            className="menu__link product"
-            to={`/${languageCode}/app/product`}
-            activeClassName="active"
-          >
-            Product Category
-          </NavLink>
-        </li>
-        <li className="menu__item">
-          <NavLink
-            onClick={() => foo()}
-            className="menu__link reports"
-            to={`/${languageCode}/app/reports`}
-            activeClassName="active"
-          >
-            Reports
-          </NavLink>
-        </li>
+        {menuItem.map((item, index) => (
+          <li key={index} className="menu__item">
+            <NavLink
+              className={`menu__link ${item.className}`}
+              to={item.link}
+              activeClassName="active">
+              {item.title}
+            </NavLink>
+          </li>
+        ))}
       </ul>
     </div>
   );

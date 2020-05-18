@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Label, PrimaryButton } from 'office-ui-fabric-react';
 
 import * as dealerAction from '../../../redux/actions/dealer.actions';
@@ -22,9 +22,10 @@ interface ImenuItem {
 const ManagementOptions: React.FC = () => {
   const dispatch = useDispatch();
 
-  const isOpenPanelWithDealerDetails = useSelector<IApplicationState, boolean>(
-    (state) => state.dealer.isOpenPanelWithDealerDetails.isOpen
-  );
+  const isOpenPanelWithDealerDetails = useSelector<
+    IApplicationState,
+    ToggleDealerPanelWithDetails
+  >((state) => state.dealer.isOpenPanelWithDealerDetails);
 
   const menuItem: ImenuItem[] = [
     {
@@ -58,16 +59,20 @@ const ManagementOptions: React.FC = () => {
   ];
 
   const [menu, setMenu] = useState(menuItem);
-  const changeSelectedMenuItem = (id: number) => {
+  const changeSelectedMenuItem = (componentType: number) => {
     const updateMenu = menu.map((item) => {
       item.isSelected = false;
-      if (item.id === id) {
+      if (item.componentType === componentType) {
         item.isSelected = true;
       }
       return item;
     });
     setMenu(updateMenu);
   };
+
+  useEffect(() => {
+    changeSelectedMenuItem(isOpenPanelWithDealerDetails.componentType);
+  }, [isOpenPanelWithDealerDetails]);
 
   return (
     <div className="dealer__management">
@@ -77,13 +82,12 @@ const ManagementOptions: React.FC = () => {
           styles={labelStyle}
           className={`${
             item.isSelected && isOpenPanelWithDealerDetails ? 'selected' : ''
-          }`}
-        >
+          }`}>
           <PrimaryButton
             styles={btnMenuStyle}
             className={item.className}
             onClick={() => {
-              changeSelectedMenuItem(item.id);
+              changeSelectedMenuItem(item.componentType);
               const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
               openDetailsArgs.isOpen = true;
               openDetailsArgs.componentType = item.componentType;

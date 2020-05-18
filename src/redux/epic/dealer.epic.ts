@@ -19,6 +19,10 @@ import {
   ajaxDeleteResponse,
 } from '../../helpers/epic.helper';
 import * as api from '../../constants/api.constants';
+import {
+  ToggleDealerPanelWithDetails,
+  DealerDetilsComponents,
+} from '../reducers/dealer.reducer';
 
 export const getDealersListPaginatedEpic = (
   action$: AnyAction,
@@ -104,12 +108,16 @@ export const getAndSelectDealersByIdEpic = (
     ofType(dealerTypes.GET_AND_SELECT_DEALER_BY_ID),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
+      const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
+      openDetailsArgs.isOpen = true;
+      openDetailsArgs.componentType = DealerDetilsComponents.DealerDetails;
       return ajaxGetWebResponse(api.GET_DEALER_BY_ID, state$.value, [
         { key: 'dealerAccountId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
           let successResultFlow = [
             dealerActions.setSelectedDealer(successResponse),
+            dealerActions.isOpenPanelWithDealerDetails(openDetailsArgs),
             ...extractSuccessPendingActions(action),
           ];
 
