@@ -23,8 +23,7 @@ const Menu: React.FC = () => {
 
   const onMenuClick = () => {
     dispatch(dealerActions.setSelectedDealer(null));
-    dispatch(controlActions.isOpenPanelInfo(false));
-    dispatch(controlActions.isCollapseMenu(false));
+    dispatch(controlActions.closeInfoPanelWithComponent());
     dispatch(
       dealerActions.isOpenPanelWithDealerDetails(
         new ToggleDealerPanelWithDetails()
@@ -96,8 +95,7 @@ const Menu: React.FC = () => {
               }}
               className={`menu__link ${item.className}`}
               to={item.link}
-              activeClassName="active"
-            >
+              activeClassName="active">
               {item.title}
             </NavLink>
           </li>

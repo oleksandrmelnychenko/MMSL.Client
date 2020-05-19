@@ -82,8 +82,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
             dealerActions.updateDealer(args),
             [
               dealerActions.setSelectedDealer(null),
-              controlAction.isOpenPanelInfo(false),
-              controlAction.isCollapseMenu(false),
+              controlAction.closeInfoPanelWithComponent(),
               dealerActions.isOpenPanelWithDealerDetails(
                 new ToggleDealerPanelWithDetails()
               ),

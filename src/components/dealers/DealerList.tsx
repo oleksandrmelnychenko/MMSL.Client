@@ -19,6 +19,7 @@ import { DealerAccount } from '../../interfaces';
 import { assignPendingActions } from '../../helpers/action.helper';
 import * as controlAction from '../../redux/actions/control.actions';
 import { ToggleDealerPanelWithDetails } from '../../redux/reducers/dealer.reducer';
+import ManagementOptions from './dealerManaging/ManagementOptions';
 import {
   DialogArgs,
   CommonDialogType,
@@ -142,8 +143,7 @@ export const DealerList: React.FC = () => {
                         if (item.id) {
                           actionsQueue.push(
                             dealerActions.setSelectedDealer(null),
-                            controlAction.isOpenPanelInfo(false),
-                            controlAction.isCollapseMenu(false),
+                            controlAction.closeInfoPanelWithComponent(),
                             dealerActions.isOpenPanelWithDealerDetails(
                               new ToggleDealerPanelWithDetails()
                             )
@@ -189,15 +189,17 @@ export const DealerList: React.FC = () => {
                         dealerActions.getAndSelectDealerById(args.item.id),
                         []
                       );
-                      dispatch(controlActions.isCollapseMenu(true));
-                      dispatch(controlActions.isOpenPanelInfo(true));
                       dispatch(createAction);
+                      dispatch(
+                        controlAction.openInfoPanelWithComponent(
+                          ManagementOptions
+                        )
+                      );
                     };
 
                     const unSelectFlow = () => {
                       dispatch(dealerActions.setSelectedDealer(null));
-                      dispatch(controlActions.isCollapseMenu(false));
-                      dispatch(controlActions.isOpenPanelInfo(false));
+                      dispatch(controlAction.closeInfoPanelWithComponent());
                     };
 
                     if (selectedDealerId) {
