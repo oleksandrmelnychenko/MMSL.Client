@@ -128,6 +128,7 @@ export const CustomerList: React.FC = () => {
     new Selection({
       onSelectionChanged: () => {
         /// TODO: important
+        customerSelection();
         // if (selection.count > 0) {
         //   dealerSelection();
         // } else {
@@ -147,11 +148,10 @@ export const CustomerList: React.FC = () => {
   //     (state) => state.dealer.dealerState.pagination
   //   );
 
-  /// TODO: important
-  //   const selectedDealer: any = useSelector<
-  //     IApplicationState,
-  //     DealerAccount | null
-  //   >((state) => state.dealer.selectedDealer);
+  // const selectedCustomer: any = useSelector<
+  //   IApplicationState,
+  //   DealerAccount | null
+  // >((state) => state.dealer.selectedDealer);
 
   /// TODO: important
   //   const isCollapseMenu: boolean = useSelector<IApplicationState, boolean>(
@@ -171,20 +171,9 @@ export const CustomerList: React.FC = () => {
   }, []);
 
   /// TODO: important
-  //   const dealerSelection = () => {
-  //     const selectedDealer = selection.getSelection()[0] as DealerAccount;
-
-  //     let createAction = assignPendingActions(
-  //       dealerActions.getAndSelectDealerById(selectedDealer.id),
-  //       []
-  //     );
-  //     dispatch(controlActions.isCollapseMenu(true));
-  //     setTimeout(() => {
-  //       dispatch(controlActions.isOpenPanelInfo(true));
-  //     }, 350);
-
-  //     dispatch(createAction);
-  //   };
+  const customerSelection = () => {
+    const selectedDealer = selection.getSelection()[0] as any;
+  };
 
   /// TODO: important
   //   const dealerUnSelection = () => {
@@ -201,7 +190,6 @@ export const CustomerList: React.FC = () => {
           selection={selection}
           selectionMode={SelectionMode.single}
           columns={_customerColumns}
-          onItemInvoked={(item?: any, index?: number, ev?: Event) => {}}
         />
       </MarqueeSelection>
     </div>

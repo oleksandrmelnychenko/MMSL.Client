@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Label, PrimaryButton } from 'office-ui-fabric-react';
 
-import * as dealerAction from '../../../../redux/actions/dealer.actions';
+import * as dealerAction from '../../../redux/actions/dealer.actions';
 import {
   ToggleDealerPanelWithDetails,
   DealerDetilsComponents,
-} from '../../../../redux/reducers/dealer.reducer';
+} from '../../../redux/reducers/dealer.reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import './management-options.scss';
-import {
-  labelStyle,
-  btnMenuStyle,
-} from '../../../../common/fabric-styles/styles';
-import { IApplicationState } from '../../../../redux/reducers/index';
+import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
+import { IApplicationState } from '../../../redux/reducers/index';
 
 interface ImenuItem {
   id: number;
