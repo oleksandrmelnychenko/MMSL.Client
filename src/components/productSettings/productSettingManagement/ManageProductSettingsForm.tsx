@@ -190,7 +190,6 @@ export const ManageProductSettingsForm: React.FC<ManageProductSettingsFormProps>
         })}
         initialValues={initValues}
         onSubmit={(values: any) => {
-          debugger;
           //   props.submitAction(
           //     buildNewStoreCustomerAccount(
           //       values,

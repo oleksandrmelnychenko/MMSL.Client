@@ -239,19 +239,19 @@ export class StoreCustomer extends EntityBase {
   store: IStore | null;
 }
 
-export class ProductGroup extends EntityBaseNamed {
+export class OptionGroup extends EntityBaseNamed {
   constructor() {
     super();
 
     this.isMandatory = false;
-    this.productUnits = [];
+    this.optionUnits = [];
   }
 
   isMandatory: boolean;
-  productUnits: ProductUnit[];
+  optionUnits: OptionUnit[];
 }
 
-export class ProductUnit extends EntityBaseNamed {
+export class OptionUnit extends EntityBaseNamed {
   constructor() {
     super();
 

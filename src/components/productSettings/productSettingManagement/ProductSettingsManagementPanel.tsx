@@ -17,6 +17,7 @@ import PanelTitle from '../../dealers/panel/PanelTitle';
 import ManagingProductGroupForm from './ManagingProductGroupForm';
 import * as productSettingsActions from '../../../redux/actions/productSettings.actions';
 import { ManagingPanelComponent } from '../../../redux/reducers/productSettings.reducer';
+import { assignPendingActions } from '../../../helpers/action.helper';
 
 export const ProductSettingsManagementPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -71,8 +72,14 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
       <ManagingProductGroupForm
         formikReference={formikReference}
         submitAction={(args: any) => {
-          debugger;
-          /// TODO:
+          let createAction = assignPendingActions(
+            productSettingsActions.saveNewOptionGroup(args),
+            [
+              productSettingsActions.managingPanelContent(null),
+              productSettingsActions.getAllOptionGroupsList(),
+            ]
+          );
+          dispatch(createAction);
         }}
       />
     );

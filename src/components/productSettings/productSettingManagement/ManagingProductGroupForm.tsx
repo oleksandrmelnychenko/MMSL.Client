@@ -2,10 +2,10 @@ import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Stack, TextField, Toggle } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
-import { FormicReference, ProductGroup } from '../../../interfaces';
+import { FormicReference, OptionGroup } from '../../../interfaces';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 
-export class ManagingProductGroupFormInitValues {
+export class ManagingOptionGroupFormInitValues {
   constructor() {
     this.name = '';
     this.isMandatory = false;
@@ -15,17 +15,17 @@ export class ManagingProductGroupFormInitValues {
   isMandatory: boolean;
 }
 
-const buildProductGroup = (
-  values: ManagingProductGroupFormInitValues,
-  sourceEntity?: ProductGroup
+const buildOptionGroup = (
+  values: ManagingOptionGroupFormInitValues,
+  sourceEntity?: OptionGroup
 ) => {
-  let newGroup: ProductGroup;
+  let newGroup: OptionGroup;
 
   if (sourceEntity) {
     newGroup = { ...sourceEntity };
   } else {
-    newGroup = new ProductGroup();
-    newGroup.productUnits = [];
+    newGroup = new OptionGroup();
+    newGroup.optionUnits = [];
   }
 
   newGroup.name = values.name;
@@ -34,8 +34,8 @@ const buildProductGroup = (
   return newGroup;
 };
 
-const initDefaultValues = (sourceEntity?: ProductGroup | null) => {
-  const initValues = new ManagingProductGroupFormInitValues();
+const initDefaultValues = (sourceEntity?: OptionGroup | null) => {
+  const initValues = new ManagingOptionGroupFormInitValues();
 
   if (sourceEntity) {
     initValues.name = sourceEntity.name;
@@ -45,22 +45,22 @@ const initDefaultValues = (sourceEntity?: ProductGroup | null) => {
   return initValues;
 };
 
-class ManagingProductGroupFormProps {
+class ManagingvOptionGroupFormProps {
   constructor() {
     this.formikReference = new FormicReference();
-    this.productGroupToEdit = null;
+    this.OptionGroupToEdit = null;
     this.submitAction = (args: any) => {};
   }
 
   formikReference: FormicReference;
-  productGroupToEdit?: ProductGroup | null;
+  OptionGroupToEdit?: OptionGroup | null;
   submitAction: (args: any) => void;
 }
 
-export const ManagingProductGroupForm: React.FC<ManagingProductGroupFormProps> = (
-  props: ManagingProductGroupFormProps
+export const ManagingvOptionGroupForm: React.FC<ManagingvOptionGroupFormProps> = (
+  props: ManagingvOptionGroupFormProps
 ) => {
-  const initValues = initDefaultValues(props.productGroupToEdit);
+  const initValues = initDefaultValues(props.OptionGroupToEdit);
 
   return (
     <div>
@@ -72,7 +72,7 @@ export const ManagingProductGroupForm: React.FC<ManagingProductGroupFormProps> =
         initialValues={initValues}
         onSubmit={(values: any) => {
           props.submitAction(
-            buildProductGroup(values, props.productGroupToEdit as ProductGroup)
+            buildOptionGroup(values, props.OptionGroupToEdit as OptionGroup)
           );
         }}
         validateOnBlur={false}
@@ -147,4 +147,4 @@ export const ManagingProductGroupForm: React.FC<ManagingProductGroupFormProps> =
   );
 };
 
-export default ManagingProductGroupForm;
+export default ManagingvOptionGroupForm;

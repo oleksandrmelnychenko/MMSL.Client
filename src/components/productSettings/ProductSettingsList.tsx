@@ -188,7 +188,6 @@ export const ProductSettingsList: React.FC = () => {
             showEmptyGroups: true,
           }}
           onRenderDetailsHeader={(props: any, _defaultRender?: any) => {
-            debugger;
             return (
               <DetailsHeader
                 {...props}
