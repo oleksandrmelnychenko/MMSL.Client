@@ -18,6 +18,7 @@ import ManagingProductGroupForm from './ManagingProductGroupForm';
 import * as productSettingsActions from '../../../redux/actions/productSettings.actions';
 import { ManagingPanelComponent } from '../../../redux/reducers/productSettings.reducer';
 import { assignPendingActions } from '../../../helpers/action.helper';
+import OptionGroupDetails from './OptionGroupDetails';
 
 export const ProductSettingsManagementPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -64,10 +65,13 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
     },
   ];
 
+  let panelTitleText = 'Management Panel';
   let panelWidth = '600px';
   let content: any = null;
 
   if (panelContent === ManagingPanelComponent.ManageGroups) {
+    panelTitleText = 'New Option Group';
+
     content = (
       <ManagingProductGroupForm
         formikReference={formikReference}
@@ -84,7 +88,9 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
       />
     );
   } else if (panelContent === ManagingPanelComponent.ManageUnits) {
-    content = 'Managing Units';
+    panelTitleText = 'Manage Option Units';
+    panelWidth = '900px';
+    content = <OptionGroupDetails />;
   }
 
   return (
@@ -96,6 +102,9 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
         customWidth={panelWidth}
         onDismiss={() => {
           dispatch(productSettingsActions.managingPanelContent(null));
+          dispatch(
+            productSettingsActions.changeTargetOptionGroupForUnitsEdit(null)
+          );
         }}
         closeButtonAriaLabel="Close"
       >
@@ -107,7 +116,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
               formik.submitForm();
             }
           }}
-          title={'New Product Setting'}
+          title={panelTitleText}
         />
         <CommandBar
           styles={commandBarStyles}

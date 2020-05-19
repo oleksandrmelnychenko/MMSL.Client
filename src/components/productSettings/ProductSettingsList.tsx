@@ -147,6 +147,11 @@ export const ProductSettingsList: React.FC = () => {
               ariaLabel="Settings"
               onClick={() => {
                 dispatch(
+                  productSettingsActions.changeTargetOptionGroupForUnitsEdit(
+                    item
+                  )
+                );
+                dispatch(
                   productSettingsActions.managingPanelContent(
                     ManagingPanelComponent.ManageUnits
                   )

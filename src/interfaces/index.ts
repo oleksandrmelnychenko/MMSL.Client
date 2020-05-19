@@ -257,8 +257,10 @@ export class OptionUnit extends EntityBaseNamed {
 
     this.imageBase64 = null;
     this.isAllowed = false;
+    this.value = null;
   }
 
+  value: string | null;
   imageBase64: string | null;
   isAllowed: boolean;
 }

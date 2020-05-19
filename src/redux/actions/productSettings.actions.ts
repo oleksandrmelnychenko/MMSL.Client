@@ -15,8 +15,14 @@ export const getAllOptionGroupsList = createAction(
 export const updateOptionGroupList = createAction<OptionGroup[]>(
   productSettingsTypes.UPDATE_OPTION_GROUP_LIST
 );
+export const changeTargetOptionGroupForUnitsEdit = createAction<OptionGroup | null>(
+  productSettingsTypes.CHANGE_TARGET_OPTION_GROUP_FOR_UNITS_EDIT
+);
 
 export type ManagingPanelContent = ReturnType<typeof managingPanelContent>;
 export type SaveNewOptionGroup = ReturnType<typeof saveNewOptionGroup>;
 export type GetAllOptionGroupsList = ReturnType<typeof getAllOptionGroupsList>;
 export type UpdateOptionGroupList = ReturnType<typeof updateOptionGroupList>;
+export type ChangeTargetOptionGroupForUnitsEdit = ReturnType<
+  typeof changeTargetOptionGroupForUnitsEdit
+>;
