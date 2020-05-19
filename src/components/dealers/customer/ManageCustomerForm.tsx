@@ -5,9 +5,7 @@ import {
   TextField,
   MaskedTextField,
   DatePicker,
-  ComboBox,
   DayOfWeek,
-  IComboBoxOption,
 } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import {
@@ -18,8 +16,8 @@ import {
 } from '../../../interfaces';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 import * as fabricControlSettings from '../../../common/fabric-control-settings/fabricControlSettings';
-import { useDispatch, useSelector } from 'react-redux';
-import * as customerActions from '../../../redux/actions/customer.actions';
+import { useSelector } from 'react-redux';
+
 import { IApplicationState } from '../../../redux/reducers';
 
 export class CreateStoreCustomerFormInitValues {
@@ -99,10 +97,7 @@ class ManageCustomerFormProps {
 export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
   props: ManageCustomerFormProps
 ) => {
-  const dispatch = useDispatch();
-
   const initValues = initDefaultValuesForNewStoreCustomerForm(props.customer);
-
   const storesAutocomplete = useSelector<IApplicationState, IStore[]>(
     (state) => state.customer.manageCustomerForm.storesAutocomplete
   );
@@ -130,21 +125,14 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
           email: Yup.string()
             .email('Invalid email')
             .required(() => 'Email is required'),
-          store: Yup.object()
-            .nullable()
-            .required(() => `Store is required`),
           phoneNumber: Yup.string().notRequired(),
           birthDate: Yup.string().notRequired(),
         })}
         initialValues={initValues}
         onSubmit={(values: any) => {
-          props.submitAction(
-            buildNewStoreCustomerAccount(
-              values,
-              props.customer as StoreCustomer
-            )
-          );
+          props.submitAction(buildNewStoreCustomerAccount(values));
         }}
+        enableReinitialize={true}
         validateOnBlur={false}>
         {(formik) => {
           props.formikReference.formik = formik;
@@ -237,78 +225,6 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                               )
                             }
                           />
-                        </div>
-                      )}
-                    </Field>
-                    <Field name="store">
-                      {() => (
-                        <div className="form__group">
-                          <ComboBox
-                            className="form__group__comboBox"
-                            label="Store"
-                            selectedKey={
-                              formik.values.store
-                                ? `${formik.values.store.id}`
-                                : ''
-                            }
-                            allowFreeform={true}
-                            onPendingValueChanged={(
-                              option?: IComboBoxOption,
-                              index?: number,
-                              value?: string
-                            ) => {
-                              if (value !== undefined) {
-                                dispatch(
-                                  customerActions.customerFormStoreAutocompleteText(
-                                    value ? value : ''
-                                  )
-                                );
-                              }
-                            }}
-                            onChange={(
-                              event: any,
-                              option?: IComboBoxOption,
-                              index?: number,
-                              value?: string
-                            ) => {
-                              if (option && (option as any).rawValue) {
-                                formik.setFieldValue(
-                                  'store',
-                                  (option as any).rawValue
-                                );
-                                formik.setFieldTouched('store');
-                                /// Remove all syggestions and set just one selected item
-                                dispatch(
-                                  customerActions.updateCustomerFormStoreAutocompleteList(
-                                    [(option as any).rawValue]
-                                  )
-                                );
-                              } else {
-                                formik.setFieldValue('store', null);
-                                formik.setFieldTouched('store');
-                                /// Clear suggestions list
-                                dispatch(
-                                  customerActions.updateCustomerFormStoreAutocompleteList(
-                                    []
-                                  )
-                                );
-                              }
-                            }}
-                            styles={fabricStyles.comboBoxStyles}
-                            required
-                            autoComplete={true ? 'on' : 'off'}
-                            options={autocompleteOptions}
-                            errorMessage={
-                              formik.errors.store && formik.touched.store
-                                ? ' '
-                                : ' '
-                            }
-                          />
-                          {formik.errors.store && formik.touched.store ? (
-                            <span className="form__group__error ownError">
-                              {formik.errors.store}
-                            </span>
-                          ) : null}
                         </div>
                       )}
                     </Field>

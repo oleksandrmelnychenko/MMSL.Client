@@ -1,6 +1,6 @@
 import { CurrencyF, PaymentTypeF } from '../../interfaces/index';
 import { createAction } from '@reduxjs/toolkit';
-import * as unitsTypes from '../../constants/units.types.constants';
+import * as unitsTypes from '../constants/units.types.constants';
 
 export const getCurrencies = createAction(unitsTypes.GET_CURRENCIES);
 export const setCurrencies = createAction<CurrencyF[]>(

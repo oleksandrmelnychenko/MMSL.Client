@@ -28,10 +28,14 @@ export interface IAuthState {
   userInfo: IUserInfo;
 }
 
-export interface IControlState {
-  isCollapseMenu: boolean;
+export interface IPanelInfo {
   isOpenPanelInfo: boolean;
   componentInPanelInfo: any;
+}
+
+export interface IControlState {
+  isCollapseMenu: boolean;
+  panelInfo: IPanelInfo;
   commonDialog: CommonDialogState;
   infoMessage: string;
   isActivateStatusBar: boolean;

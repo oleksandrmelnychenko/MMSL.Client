@@ -1,6 +1,6 @@
 import { StoreCustomer } from './../../interfaces/index';
 import { createAction } from '@reduxjs/toolkit';
-import * as dealerTypes from '../../constants/dealer.types.constants';
+import * as dealerTypes from '../constants/dealer.types.constants';
 import {
   DealerAccount,
   Pagination,
@@ -65,6 +65,10 @@ export const addNewStoreToCurrentDealer = createAction<IStore>(
   dealerTypes.ADD_NEW_STORE_TO_CURRENT_DEALER
 );
 
+export const setSelectedCustomerInCurrentStore = createAction<StoreCustomer | null>(
+  dealerTypes.SET_SELECTED_CUSTOMER_IN_CURRENT_STORE
+);
+
 export const setDealerStores = createAction<any>(dealerTypes.SET_DEALER_STORES);
 
 export const updateDealerStoresAfterDelete = createAction<number>(
@@ -74,6 +78,14 @@ export const updateDealerStoresAfterDelete = createAction<number>(
 export const deleteCurrentDealerStore = createAction<number>(
   dealerTypes.DELETE_CURRENT_DEALER_STORE
 );
+
+export const deleteCurrentCustomerFromStore = createAction<number>(
+  dealerTypes.DELETE_CUSTOMER_FROM_STORE
+);
+
+export const updateCustomersStoreAfterDeleteCustomer = createAction<
+  StoreCustomer
+>(dealerTypes.UPDATE_CUSTOMERS_STORE_AFTER_DELETE_CUSTOMER);
 
 export const addStoreToCurrentDealer = createAction<INewStore>(
   dealerTypes.ADD_STORE_TO_CURRENT_DEALER
@@ -88,9 +100,17 @@ export const isOpenPanelWithDealerDetails = createAction<
 export const getStoreCustomersByStoreId = createAction<number>(
   dealerTypes.GET_STORE_CUSTOMERS_BY_STORE_ID
 );
-export const updateTargetStoreStoreCustomersList = createAction<
-  StoreCustomer[]
->(dealerTypes.UPDATE_TARGET_STORE_STORE_CUSTOMERS_LIST);
+export const updateTargetStoreCustomersList = createAction<StoreCustomer[]>(
+  dealerTypes.UPDATE_TARGET_STORE_STORE_CUSTOMERS_LIST
+);
+
+export const updateCustomerListAfterUpdateCustomer = createAction<
+  StoreCustomer
+>(dealerTypes.UPDATE_CUSTOMER_LIST_AFTER_UPDATE_CUSTOMER);
+
+export const updateStoreCustomer = createAction<StoreCustomer>(
+  dealerTypes.UPDATE_STORE_CUSTOMER
+);
 
 export type GetDealersListPaginated = ReturnType<
   typeof getDealersListPaginated
@@ -112,5 +132,5 @@ export type GetStoreCustomersByStoreId = ReturnType<
   typeof getStoreCustomersByStoreId
 >;
 export type UpdateTargetStoreStoreCustomersList = ReturnType<
-  typeof updateTargetStoreStoreCustomersList
+  typeof updateTargetStoreCustomersList
 >;

@@ -10,7 +10,7 @@ import { ofType } from 'redux-observable';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import * as controlActions from '../../redux/actions/control.actions';
 import { from } from 'rxjs';
-import * as dealerTypes from '../../constants/dealer.types.constants';
+import * as dealerTypes from '../constants/dealer.types.constants';
 import { getActiveLanguage } from 'react-localize-redux';
 import {
   ajaxPostResponse,
@@ -18,7 +18,7 @@ import {
   ajaxPutResponse,
   ajaxDeleteResponse,
 } from '../../helpers/epic.helper';
-import * as api from '../../constants/api.constants';
+import * as api from '../constants/api.constants';
 import {
   ToggleDealerPanelWithDetails,
   DealerDetilsComponents,
@@ -117,7 +117,6 @@ export const getAndSelectDealersByIdEpic = (
         mergeMap((successResponse: any) => {
           let successResultFlow = [
             dealerActions.setSelectedDealer(successResponse),
-            dealerActions.isOpenPanelWithDealerDetails(openDetailsArgs),
             ...extractSuccessPendingActions(action),
           ];
 
@@ -348,7 +347,7 @@ export const getStoreCustomersByStoreIdEpic = (
       ]).pipe(
         mergeMap((successResponse: any) => {
           let successResultFlow = [
-            dealerActions.updateTargetStoreStoreCustomersList(
+            dealerActions.updateTargetStoreCustomersList(
               successResponse.entities
             ),
             ...extractSuccessPendingActions(action),
@@ -360,6 +359,81 @@ export const getStoreCustomersByStoreIdEpic = (
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               { type: 'ERROR' },
+              ...extractErrorPendingActions(action),
+            ];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};
+
+export const deleteCurrentCustomerFromStoreEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(dealerTypes.DELETE_CUSTOMER_FROM_STORE),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      return ajaxDeleteResponse(api.DELETE_CUSTOMER_FROM_STORE, state$.value, [
+        { key: 'storeCustomerId', value: `${action.payload}` },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          let successResultFlow = [
+            dealerActions.updateCustomersStoreAfterDeleteCustomer(
+              successResponse.body
+            ),
+            controlActions.showInfoMessage(successResponse.message),
+            ...extractSuccessPendingActions(action),
+          ];
+
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [
+              { type: 'DELETE_CUSTOMER_FROM_STORE' },
+              ...extractErrorPendingActions(action),
+            ];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};
+
+export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(dealerTypes.UPDATE_STORE_CUSTOMER),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      return ajaxPutResponse(
+        api.UPDATE_STORE_CUSTOMER,
+        action.payload,
+        state$.value
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          let successResultFlow = [
+            dealerActions.updateCustomerListAfterUpdateCustomer(
+              successResponse.body
+            ),
+            dealerActions.setSelectedCustomerInCurrentStore(
+              successResponse.body
+            ),
+            controlActions.showInfoMessage(successResponse.message),
+            ...extractSuccessPendingActions(action),
+          ];
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [
+              { type: 'ERROR_UPDATE_STORE_CUSTOMER' },
               ...extractErrorPendingActions(action),
             ];
 

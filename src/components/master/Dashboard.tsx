@@ -4,7 +4,7 @@ import './dashboard.scss';
 import Header from './header/Header';
 import Footer from './footer/Footer';
 import Menu from './menu/Menu';
-import { Switch } from 'react-router-dom';
+import { Switch, Route, useLocation } from 'react-router-dom';
 import PrivateRoute from '../PrivateRoute';
 import Dealers from '../dealers/Dealers';
 import Customers from '../customers/Customers';
@@ -17,20 +17,22 @@ import * as controlAction from '../../redux/actions/control.actions';
 import ManagementOptions from '../dealers/dealerManaging/ManagementOptions';
 import { stylesPanelInfo } from '../../common/fabric-styles/styles';
 import ProductSettings from '../productSettings/ProductSettings';
+import { IPanelInfo } from '../../interfaces/index';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
   const isCollapseMenu = useSelector<IApplicationState, boolean>(
     (state) => state.control.isCollapseMenu
   );
-  const isOpenPanelInfo = useSelector<IApplicationState, boolean>(
-    (state) => state.control.isOpenPanelInfo
+  const panelInfo = useSelector<IApplicationState, IPanelInfo>(
+    (state) => state.control.panelInfo
   );
+
+  const location = useLocation();
 
   const dismissPanelInfo = () => {
     dispatch(dealerActions.setSelectedDealer(null));
-    dispatch(controlAction.isOpenPanelInfo(false));
-    dispatch(controlAction.isCollapseMenu(false));
+    dispatch(controlAction.closeInfoPanelWithComponent());
   };
 
   return (
@@ -43,10 +45,12 @@ const Dashboard: React.FC = () => {
           type={PanelType.smallFixedNear}
           isBlocking={false}
           styles={stylesPanelInfo}
-          isOpen={isOpenPanelInfo}
-          onDismiss={dismissPanelInfo}
-        >
-          <ManagementOptions />
+          isOpen={panelInfo.isOpenPanelInfo}
+          onDismiss={dismissPanelInfo}>
+          <Route
+            path={location.pathname}
+            component={panelInfo.componentInPanelInfo}
+          />
         </Panel>
 
         <div className="content">

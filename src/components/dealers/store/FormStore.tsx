@@ -115,21 +115,6 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
         initialValues={initValue()}
         onSubmit={(values: any, { resetForm }) => {
           props.submitAction(builderUpdateStore(values) as IStore);
-          // resetForm();
-          // if (selectedStore) {
-          //   dispatch(
-          //     dealerActions.updateDealerStore(
-          //       builderUpdateStore(values) as IStore
-          //     )
-          //   );
-          // } else {
-          //   dispatch(
-          //     dealerActions.addStoreToCurrentDealer(
-          //       builderAddStore(values) as INewStore
-          //     )
-          //   );
-          //   resetForm();
-          // }
         }}
         enableReinitialize={true}
         validateOnBlur={false}>

@@ -1,5 +1,5 @@
-import * as actions from '../actions/control.actions';
 import { createReducer } from '@reduxjs/toolkit';
+import * as actions from '../actions/control.actions';
 
 export class CommonDialogState {
   constructor() {
@@ -35,10 +35,18 @@ export enum CommonDialogType {
   Delete,
 }
 
+export class PanelInfo {
+  constructor() {
+    this.isOpenPanelInfo = false;
+    this.componentInPanelInfo = null;
+  }
+  isOpenPanelInfo: boolean;
+  componentInPanelInfo: React.FC | null;
+}
+
 export const defaultControlState = {
   isCollapseMenu: false,
-  isOpenPanelInfo: false,
-  componentInPanelInfo: null,
+  panelInfo: new PanelInfo(),
   commonDialog: new CommonDialogState(),
   infoMessage: '',
   isActivateStatusBar: false,
@@ -47,20 +55,21 @@ export const defaultControlState = {
 
 export const controlReducer = createReducer(defaultControlState, (builder) =>
   builder
-    .addCase(actions.isCollapseMenu, (state, action) => {
-      state.isCollapseMenu = action.payload;
-    })
     .addCase(actions.isOpenPanelInfo, (state, action) => {
-      state.isOpenPanelInfo = action.payload;
+      state.panelInfo.isOpenPanelInfo = action.payload;
     })
-    .addCase(actions.insertComponentToPanelInfo, (state, action) => {
-      state.componentInPanelInfo = action.payload;
+    .addCase(actions.openInfoPanelWithComponent, (state, action) => {
+      state.isCollapseMenu = true;
+      state.panelInfo.isOpenPanelInfo = true;
+      state.panelInfo.componentInPanelInfo = action.payload;
+    })
+    .addCase(actions.closeInfoPanelWithComponent, (state) => {
+      state.isCollapseMenu = false;
+      state.panelInfo.isOpenPanelInfo = false;
+      state.panelInfo.componentInPanelInfo = null;
     })
     .addCase(actions.toggleCommonDialogVisibility, (state, action) => {
       state.commonDialog.dialogArgs = action.payload;
-    })
-    .addCase(actions.toggleMasterPageBusyIndicator, (state, action) => {
-      state.isMasterBusy = action.payload;
     })
     .addCase(actions.showInfoMessage, (state, action) => {
       state.isActivateStatusBar = false;

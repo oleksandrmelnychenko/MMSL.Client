@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Label, PrimaryButton } from 'office-ui-fabric-react';
 
 import * as dealerAction from '../../../redux/actions/dealer.actions';
@@ -18,7 +18,7 @@ interface ImenuItem {
   isSelected: boolean;
 }
 
-const ManagementOptions: React.FC = () => {
+const ManagementPanel: React.FC = () => {
   const dispatch = useDispatch();
 
   const isOpenPanelWithDealerDetails = useSelector<
@@ -39,20 +39,6 @@ const ManagementOptions: React.FC = () => {
       title: 'Details',
       className: 'management__btn-detail',
       componentType: DealerDetilsComponents.DealerDetails,
-      isSelected: false,
-    },
-    {
-      id: 2,
-      title: 'Address',
-      className: 'management__btn-address',
-      componentType: DealerDetilsComponents.DealerAddress,
-      isSelected: false,
-    },
-    {
-      id: 3,
-      title: 'Customer',
-      className: 'management__btn-customer',
-      componentType: DealerDetilsComponents.DealerCustomers,
       isSelected: false,
     },
   ];
@@ -105,4 +91,4 @@ const ManagementOptions: React.FC = () => {
   );
 };
 
-export default ManagementOptions;
+export default ManagementPanel;

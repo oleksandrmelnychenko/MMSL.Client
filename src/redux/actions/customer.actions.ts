@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import * as customerTypes from '../../constants/customer.types.constants';
+import * as customerTypes from '../constants/customer.types.constants';
 import { StoreCustomer, PaginationInfo, IStore } from '../../interfaces/index';
 
 export const getCustomersListPaginated = createAction(

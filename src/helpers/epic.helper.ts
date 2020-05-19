@@ -1,11 +1,10 @@
 import { ajax } from 'rxjs/ajax';
 import { TokenHelper } from './token.helper';
-import * as API from '../constants/api.constants';
+import * as API from '../redux/constants/api.constants';
 
 import { map } from 'rxjs/operators';
 import { IApplicationState } from '../redux/reducers/index';
 import { getActiveLanguage } from 'react-localize-redux';
-import * as controlActions from '../redux/actions/control.actions';
 
 export interface IWebResponse {
   body: Object;
