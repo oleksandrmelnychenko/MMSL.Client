@@ -1,6 +1,6 @@
 import { ajax } from 'rxjs/ajax';
 import { TokenHelper } from './token.helper';
-import * as API from '../constants/api.constants';
+import * as API from '../redux/constants/api.constants';
 
 import { map } from 'rxjs/operators';
 import { IApplicationState } from '../redux/reducers/index';

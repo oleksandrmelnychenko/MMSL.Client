@@ -7,10 +7,10 @@ import { switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import { from } from 'rxjs';
-import * as unitsTypes from '../../constants/units.types.constants';
+import * as unitsTypes from '../constants/units.types.constants';
 import { getActiveLanguage } from 'react-localize-redux';
 import { ajaxGetWebResponse } from '../../helpers/epic.helper';
-import * as api from '../../constants/api.constants';
+import * as api from '../constants/api.constants';
 import * as unitsActions from '../actions/units.actions';
 
 export const getCurrenciesEpic = (action$: AnyAction, state$: any) => {

@@ -8,13 +8,13 @@ import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import * as customerActions from '../../redux/actions/customer.actions';
 import { from } from 'rxjs';
-import * as customerTypes from '../../constants/customer.types.constants';
+import * as customerTypes from '../constants/customer.types.constants';
 import { getActiveLanguage } from 'react-localize-redux';
 import {
   ajaxGetWebResponse,
   ajaxPostResponse,
 } from '../../helpers/epic.helper';
-import * as api from '../../constants/api.constants';
+import * as api from '../constants/api.constants';
 import { Pagination } from '../../interfaces';
 import * as controlActions from '../../redux/actions/control.actions';
 import * as dealerActions from '../../redux/actions/dealer.actions';

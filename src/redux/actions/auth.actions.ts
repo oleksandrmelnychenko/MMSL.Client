@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import * as types from '../../constants/auth.types.constants';
+import * as types from '../constants/auth.types.constants';
 import { IAuthentication, IFailureAuth } from '../../interfaces';
 
 export const signInAction = createAction<IAuthentication>(types.REQUEST_SIGNIN);

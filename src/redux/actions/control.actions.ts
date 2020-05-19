@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import * as types from '../../constants/control.types.constants';
+import * as types from '../constants/control.types.constants';
 import { DialogArgs } from '../reducers/control.reducer';
 
 export const isCollapseMenu = createAction<boolean>(types.IS_COLLAPSE_MENU);

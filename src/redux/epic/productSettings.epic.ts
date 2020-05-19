@@ -8,13 +8,13 @@ import { switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import { from } from 'rxjs';
-import * as productSettingsTypes from '../../constants/productSettings.types.constants';
+import * as productSettingsTypes from '../constants/productSettings.types.constants';
 import { getActiveLanguage } from 'react-localize-redux';
 import {
   ajaxPostResponse,
   ajaxGetWebResponse,
 } from '../../helpers/epic.helper';
-import * as api from '../../constants/api.constants';
+import * as api from '../constants/api.constants';
 import * as controlActions from '../../redux/actions/control.actions';
 import * as productSettingsActions from '../../redux/actions/productSettings.actions';
 

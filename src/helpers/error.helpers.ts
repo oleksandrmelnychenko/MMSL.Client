@@ -1,6 +1,6 @@
 import { TokenHelper } from './token.helper';
 import { of } from 'rxjs';
-import * as authTypes from '../constants/auth.types.constants';
+import * as authTypes from '../redux/constants/auth.types.constants';
 
 export const checkUnauthorized = (
   status: number,

@@ -10,7 +10,7 @@ import { ofType } from 'redux-observable';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import * as controlActions from '../../redux/actions/control.actions';
 import { from } from 'rxjs';
-import * as dealerTypes from '../../constants/dealer.types.constants';
+import * as dealerTypes from '../constants/dealer.types.constants';
 import { getActiveLanguage } from 'react-localize-redux';
 import {
   ajaxPostResponse,
@@ -18,7 +18,7 @@ import {
   ajaxPutResponse,
   ajaxDeleteResponse,
 } from '../../helpers/epic.helper';
-import * as api from '../../constants/api.constants';
+import * as api from '../constants/api.constants';
 import {
   ToggleDealerPanelWithDetails,
   DealerDetilsComponents,

@@ -1,6 +1,6 @@
 import { StoreCustomer } from './../../interfaces/index';
 import { createAction } from '@reduxjs/toolkit';
-import * as dealerTypes from '../../constants/dealer.types.constants';
+import * as dealerTypes from '../constants/dealer.types.constants';
 import {
   DealerAccount,
   Pagination,

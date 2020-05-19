@@ -1,6 +1,6 @@
 import { OptionGroup, ModifiedOptionUnitOrder } from './../../interfaces/index';
 import { createAction } from '@reduxjs/toolkit';
-import * as productSettingsTypes from '../../constants/productSettings.types.constants';
+import * as productSettingsTypes from '../constants/productSettings.types.constants';
 import { ManagingPanelComponent } from '../reducers/productSettings.reducer';
 
 export const managingPanelContent = createAction<ManagingPanelComponent | null>(
