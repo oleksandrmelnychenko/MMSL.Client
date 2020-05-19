@@ -34,6 +34,9 @@ export const updateOptionUnit = createAction<OptionUnit>(
 export const saveNewOptionUnit = createAction<OptionUnit>(
   productSettingsTypes.SAVE_NEW_OPTION_UNIT
 );
+export const toggleOptionUnitFormVisibility = createAction<boolean>(
+  productSettingsTypes.TOGGLE_OPTION_UNIT_FORM_VISIBILITY
+);
 
 export type ManagingPanelContent = ReturnType<typeof managingPanelContent>;
 export type SaveNewOptionGroup = ReturnType<typeof saveNewOptionGroup>;
@@ -46,3 +49,6 @@ export type ModifyOptionUnitsOrder = ReturnType<typeof modifyOptionUnitsOrder>;
 export type ChangeTargetOptionunit = ReturnType<typeof changeTargetOptionunit>;
 export type UpdateOptionUnit = ReturnType<typeof updateOptionUnit>;
 export type SaveNewOptionUnit = ReturnType<typeof saveNewOptionUnit>;
+export type ToggleOptionUnitFormVisibility = ReturnType<
+  typeof toggleOptionUnitFormVisibility
+>;

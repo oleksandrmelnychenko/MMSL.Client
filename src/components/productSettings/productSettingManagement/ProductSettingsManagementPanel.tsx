@@ -7,7 +7,7 @@ import {
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
-import { FormicReference, OptionUnit } from '../../../interfaces';
+import { FormicReference } from '../../../interfaces';
 import {
   panelStyle,
   commandBarStyles,
@@ -38,7 +38,13 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
     ManagingPanelComponent | null
   >((state) => state.productSettings.managingPanelContent);
 
-  const _items: ICommandBarItemProps[] = [
+  let _items: ICommandBarItemProps[] = [
+    {
+      key: 'New',
+      text: 'New',
+      iconProps: { iconName: 'Add' },
+      buttonStyles: commandBarButtonStyles,
+    },
     {
       key: 'Save',
       text: 'Save',
@@ -70,6 +76,11 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
   let content: any = null;
 
   if (panelContent === ManagingPanelComponent.ManageGroups) {
+    /// Hide `Save` command
+    _items[0].buttonStyles = {
+      root: { display: 'none' },
+    };
+
     panelTitleText = 'New Option Group';
 
     content = (
@@ -88,8 +99,15 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
       />
     );
   } else if (panelContent === ManagingPanelComponent.ManageUnits) {
+    /// Add own handler for `Save` command.
+    _items[0].onClick = () => {
+      dispatch(productSettingsActions.toggleOptionUnitFormVisibility(true));
+      dispatch(productSettingsActions.changeTargetOptionunit(null));
+    };
+
     panelTitleText = 'Manage Option Units';
     panelWidth = '900px';
+
     content = (
       <OptionGroupDetails
         formikReference={formikReference}
@@ -109,6 +127,9 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
           dispatch(productSettingsActions.managingPanelContent(null));
           dispatch(
             productSettingsActions.changeTargetOptionGroupForUnitsEdit(null)
+          );
+          dispatch(
+            productSettingsActions.toggleOptionUnitFormVisibility(false)
           );
         }}
         closeButtonAriaLabel="Close"

@@ -33,13 +33,6 @@ export const OptionItemsOrderingList: React.FC = () => {
     IApplicationState,
     OptionUnit[]
   >((state) => state.productSettings.managingOptionUnitsState.optionUnits);
-  const selectedOptionUnitId: number | null | undefined = useSelector<
-    IApplicationState,
-    number | null | undefined
-  >(
-    (state) =>
-      state.productSettings.managingOptionUnitsState.selectedOptionUnit?.id
-  );
 
   const dragEnterClass = mergeStyles({
     backgroundColor: getTheme().palette.neutralLight,
@@ -168,24 +161,16 @@ export const OptionItemsOrderingList: React.FC = () => {
                     clickArgs?.target?.offsetParent?.className;
 
                   if (!offsetParent.includes(DATA_SELECTION_DISABLED_CLASS)) {
-                    const selectFlow = () =>
+                    dispatch(
+                      productSettingsActions.changeTargetOptionunit(args.item)
+                    );
+                    dispatch(
                       dispatch(
-                        productSettingsActions.changeTargetOptionunit(args.item)
-                      );
-                    const unSelectFlow = () =>
-                      dispatch(
-                        productSettingsActions.changeTargetOptionunit(null)
-                      );
-
-                    if (selectedOptionUnitId) {
-                      if (selectedOptionUnitId === args.item.id) {
-                        unSelectFlow();
-                      } else {
-                        selectFlow();
-                      }
-                    } else {
-                      selectFlow();
-                    }
+                        productSettingsActions.toggleOptionUnitFormVisibility(
+                          true
+                        )
+                      )
+                    );
                   }
                 }}
               >

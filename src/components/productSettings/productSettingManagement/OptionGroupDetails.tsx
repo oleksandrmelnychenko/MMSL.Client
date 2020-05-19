@@ -40,6 +40,11 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
       state.productSettings.managingOptionUnitsState.targetOptionGroup?.id
   );
 
+  const isUnitFormVisible: boolean = useSelector<IApplicationState, boolean>(
+    (state) =>
+      state.productSettings.managingOptionUnitsState.isOptionUnitFormVisible
+  );
+
   return (
     <div className="customerList">
       <Stack
@@ -58,28 +63,34 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
         <Stack.Item grow={1}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
-              <Separator alignContent="start">Details:</Separator>
-              <ManagingProductUnitForm
-                formikReference={props.formikReference}
-                submitAction={(args: any) => {
-                  debugger;
+              <Separator alignContent="start">
+                {`Details: ${sectedOptionUnit ? sectedOptionUnit.value : ''}`}
+              </Separator>
 
-                  if (sectedOptionGroupId) {
-                    args.unit.optionGroupId = sectedOptionGroupId;
-
-                    let action = assignPendingActions(
-                      productSettingsActions.saveNewOptionUnit(args),
-                      // productSettingsActions.updateOptionUnit(args),
-                      [productSettingsActions.getAllOptionGroupsList()]
-                    );
-                    dispatch(action);
-                  } else {
+              {isUnitFormVisible ? (
+                <ManagingProductUnitForm
+                  formikReference={props.formikReference}
+                  submitAction={(args: any) => {
                     debugger;
-                    /// TODO: smth goes wrong!!!
-                  }
-                }}
-                optionUnit={sectedOptionUnit}
-              />
+                    /// TODO: !!!!
+
+                    if (sectedOptionGroupId) {
+                      args.unit.optionGroupId = sectedOptionGroupId;
+
+                      let action = assignPendingActions(
+                        productSettingsActions.saveNewOptionUnit(args),
+                        // productSettingsActions.updateOptionUnit(args),
+                        [productSettingsActions.getAllOptionGroupsList()]
+                      );
+                      dispatch(action);
+                    } else {
+                      debugger;
+                      /// TODO: smth goes wrong!!!
+                    }
+                  }}
+                  optionUnit={sectedOptionUnit}
+                />
+              ) : null}
             </div>
           </FocusZone>
         </Stack.Item>

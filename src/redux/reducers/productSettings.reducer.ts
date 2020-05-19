@@ -26,11 +26,13 @@ export class ManagingOptionUnitsState {
     this.targetOptionGroup = null;
     this.optionUnits = [];
     this.selectedOptionUnit = null;
+    this.isOptionUnitFormVisible = false;
   }
 
   targetOptionGroup: OptionGroup | null;
   optionUnits: OptionUnit[];
   selectedOptionUnit: OptionUnit | null;
+  isOptionUnitFormVisible: boolean;
 }
 
 export const productSettingsReducer = createReducer(
@@ -102,6 +104,13 @@ export const productSettingsReducer = createReducer(
         productSettingsActions.changeTargetOptionunit,
         (state, action) => {
           state.managingOptionUnitsState.selectedOptionUnit = action.payload;
+        }
+      )
+      .addCase(
+        productSettingsActions.toggleOptionUnitFormVisibility,
+        (state, action) => {
+          state.managingOptionUnitsState.isOptionUnitFormVisible =
+            action.payload;
         }
       )
 );

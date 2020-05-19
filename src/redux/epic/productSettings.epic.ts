@@ -214,7 +214,7 @@ export const saveNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
             value: `${action.payload.unit.isMandatory}`,
           },
           {
-            key: 'ImageUrl',
+            key: 'imageUrl',
             value: `${encodeURIComponent(action.payload.unit.imageUrl)}`,
           },
           {

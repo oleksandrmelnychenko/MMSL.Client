@@ -8,7 +8,6 @@ import {
 } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import { FormicReference, OptionUnit } from '../../../interfaces';
-import './managingProductUnitForm.scss';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 
 export class ManagingProductUnitFormInitValues {
