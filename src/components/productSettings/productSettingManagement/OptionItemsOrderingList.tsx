@@ -1,39 +1,20 @@
-import React, { useEffect, useState, Children } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   DetailsList,
   IColumn,
-  SelectionMode,
   Text,
   Selection,
-  Stack,
-  IconButton,
   MarqueeSelection,
-  IDetailsHeaderProps,
-  IRenderFunction,
-  DetailsHeader,
   IDragDropContext,
   mergeStyles,
   getTheme,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
-import * as customerActions from '../../../redux/actions/customer.actions';
-import * as controlActions from '../../../redux/actions/control.actions';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import * as productSettingsActions from '../../../redux/actions/productSettings.actions';
-import { ManagingPanelComponent } from '../../../redux/reducers/productSettings.reducer';
-import {
-  OptionGroup,
-  OptionUnit,
-  ModifiedOptionUnitOrder,
-} from '../../../interfaces';
+import { ModifiedOptionUnitOrder, OptionUnit } from '../../../interfaces';
 import { List } from 'linq-typescript';
-
-const _columnIconButtonStyle = {
-  root: {
-    height: '20px',
-  },
-};
 
 export const OptionItemsOrderingList: React.FC = () => {
   const dispatch = useDispatch();
@@ -84,47 +65,18 @@ export const OptionItemsOrderingList: React.FC = () => {
       isPadded: true,
     },
     {
-      key: 'isAllowed',
-      name: 'Is Allowed',
+      key: 'isMandatory',
+      name: 'Is Mandatory',
       minWidth: 70,
       maxWidth: 90,
       isResizable: true,
       isCollapsible: true,
       data: 'string',
       onRender: (item: any) => {
-        return <Text>{item.isAllowed}</Text>;
+        return <Text>{item.isMandatory ? 'Mandatory' : 'Not mandatory'}</Text>;
       },
       isPadded: true,
     },
-    // {
-    //   key: 'actions',
-    //   name: 'Actions',
-    //   minWidth: 70,
-    //   isResizable: true,
-    //   isCollapsible: true,
-    //   data: 'string',
-    //   onRender: (item: any) => {
-    //     return (
-    //       <Stack horizontal disableShrink>
-    //         <IconButton
-    //           styles={_columnIconButtonStyle}
-    //           height={20}
-    //           iconProps={{ iconName: 'Settings' }}
-    //           title="Settings"
-    //           ariaLabel="Settings"
-    //           onClick={() => {
-    //             dispatch(
-    //               productSettingsActions.managingPanelContent(
-    //                 ManagingPanelComponent.ManageUnits
-    //               )
-    //             );
-    //           }}
-    //         />
-    //       </Stack>
-    //     );
-    //   },
-    //   isPadded: true,
-    // },
   ];
 
   const _insertBeforeItem = (item: any) => {
@@ -166,6 +118,7 @@ export const OptionItemsOrderingList: React.FC = () => {
         <DetailsList
           columns={customerColumns}
           items={oputionUnits}
+          isHeaderVisible={false}
           dragDropEvents={{
             canDrop: (
               dropContext?: IDragDropContext,
