@@ -57,46 +57,29 @@ const _customerColumns: IColumn[] = [
     },
     isPadded: true,
   },
-  /// Temporary removed
-  // {
-  //   key: 'actions',
-  //   name: 'Actions',
-  //   minWidth: 70,
-  //   isResizable: true,
-  //   isCollapsible: true,
-  //   data: 'string',
-  //   onRender: (item: any) => {
-  //     return (
-  //       <Stack horizontal disableShrink>
-  //         <IconButton
-  //           styles={_columnIconButtonStyle}
-  //           height={20}
-  //           iconProps={{ iconName: 'Copy' }}
-  //           title="Copy"
-  //           ariaLabel="Copy"
-  //         />
-  //         <IconButton
-  //           styles={_columnIconButtonStyle}
-  //           height={20}
-  //           iconProps={{ iconName: 'ShoppingCart' }}
-  //         />
-  //         <IconButton
-  //           styles={_columnIconButtonStyle}
-  //           height={20}
-  //           iconProps={{ iconName: 'People' }}
-  //         />
-  //         <IconButton
-  //           styles={_columnIconButtonStyle}
-  //           height={20}
-  //           iconProps={{ iconName: 'Settings' }}
-  //           title="Settings"
-  //           ariaLabel="Settings"
-  //         />
-  //       </Stack>
-  //     );
-  //   },
-  //   isPadded: true,
-  // },
+  {
+    key: 'actions',
+    name: 'Actions',
+    minWidth: 70,
+    isResizable: true,
+    isCollapsible: true,
+    data: 'string',
+    onRender: (item: any) => {
+      return (
+        <Stack horizontal disableShrink>
+          <IconButton
+            styles={_columnIconButtonStyle}
+            height={20}
+            iconProps={{ iconName: 'Settings' }}
+            title="Settings"
+            ariaLabel="Settings"
+            onClick={() => {}}
+          />
+        </Stack>
+      );
+    },
+    isPadded: true,
+  },
 ];
 
 export const ProductSettingsList: React.FC = () => {
@@ -122,7 +105,7 @@ export const ProductSettingsList: React.FC = () => {
 
   useEffect(() => {
     dispatch(productSettingsActions.getAllOptionGroupsList());
-  }, []);
+  }, [dispatch]);
 
   /// TODO: important
   //   const pagination: Pagination = useSelector<IApplicationState, Pagination>(
