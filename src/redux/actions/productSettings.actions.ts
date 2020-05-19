@@ -1,4 +1,4 @@
-import { OptionGroup } from './../../interfaces/index';
+import { OptionGroup, ModifiedOptionUnitOrder } from './../../interfaces/index';
 import { createAction } from '@reduxjs/toolkit';
 import * as productSettingsTypes from '../../constants/productSettings.types.constants';
 import { ManagingPanelComponent } from '../reducers/productSettings.reducer';
@@ -18,6 +18,9 @@ export const updateOptionGroupList = createAction<OptionGroup[]>(
 export const changeTargetOptionGroupForUnitsEdit = createAction<OptionGroup | null>(
   productSettingsTypes.CHANGE_TARGET_OPTION_GROUP_FOR_UNITS_EDIT
 );
+export const modifyOptionUnitsOrder = createAction<ModifiedOptionUnitOrder[]>(
+  productSettingsTypes.MODIFY_OPTION_UNITS_ORDER
+);
 
 export type ManagingPanelContent = ReturnType<typeof managingPanelContent>;
 export type SaveNewOptionGroup = ReturnType<typeof saveNewOptionGroup>;
@@ -26,3 +29,4 @@ export type UpdateOptionGroupList = ReturnType<typeof updateOptionGroupList>;
 export type ChangeTargetOptionGroupForUnitsEdit = ReturnType<
   typeof changeTargetOptionGroupForUnitsEdit
 >;
+export type ModifyOptionUnitsOrder = ReturnType<typeof modifyOptionUnitsOrder>;

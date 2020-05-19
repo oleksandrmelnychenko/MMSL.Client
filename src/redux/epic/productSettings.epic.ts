@@ -1,3 +1,4 @@
+import { ajaxPutResponse } from './../../helpers/epic.helper';
 import { checkUnauthorized } from './../../helpers/error.helpers';
 import {
   extractSuccessPendingActions,
@@ -75,6 +76,42 @@ export const getAllOptionGroupsListEpic = (action$: AnyAction, state$: any) => {
             let errorResultFlow = [
               controlActions.showInfoMessage(
                 `Error occurred while getting option groups list. ${errorResponse}`
+              ),
+              ...extractErrorPendingActions(action),
+            ];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};
+
+export const modifyOptionUnitsOrderEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(productSettingsTypes.MODIFY_OPTION_UNITS_ORDER),
+    switchMap((action: AnyAction) => {
+      debugger;
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      return ajaxPutResponse(
+        api.MODIFY_OPTION_UNITS_ORDER,
+        action.payload,
+        state$.value
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          debugger;
+          let successResultFlow = [...extractSuccessPendingActions(action)];
+
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          debugger;
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [
+              controlActions.showInfoMessage(
+                `Error occurred while updation option units order. ${errorResponse}`
               ),
               ...extractErrorPendingActions(action),
             ];

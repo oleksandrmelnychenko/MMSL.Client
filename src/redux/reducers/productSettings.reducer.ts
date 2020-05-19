@@ -1,6 +1,7 @@
 import { OptionGroup, OptionUnit } from './../../interfaces/index';
 import { createReducer } from '@reduxjs/toolkit';
 import * as productSettingsActions from '../../redux/actions/productSettings.actions';
+import { List } from 'linq-typescript';
 
 export class ProductSettingsState {
   constructor() {
@@ -41,6 +42,28 @@ export const productSettingsReducer = createReducer(
         productSettingsActions.updateOptionGroupList,
         (state, action) => {
           state.optionGroupsList = action.payload;
+
+          if (state.optionGroupsList.length === 0) {
+            state.managingOptionUnitsState.targetOptionGroup = null;
+            state.managingOptionUnitsState.optionUnits = [];
+          }
+
+          /// TODO: remove this (Ask Seronya about `get Unit By ID`)
+          if (state.managingOptionUnitsState.targetOptionGroup) {
+            const optionToReselect = new List(
+              state.optionGroupsList
+            ).firstOrDefault(
+              (item) =>
+                item.id === state.managingOptionUnitsState.targetOptionGroup?.id
+            );
+
+            if (optionToReselect) {
+              state.managingOptionUnitsState.targetOptionGroup = optionToReselect;
+              state.managingOptionUnitsState.optionUnits =
+                optionToReselect.optionUnits;
+            }
+          } else {
+          }
         }
       )
       .addCase(
@@ -53,6 +76,10 @@ export const productSettingsReducer = createReducer(
 
           if (optionUnits === null || optionUnits === undefined) {
             optionUnits = [];
+          } else {
+            optionUnits = new List<OptionUnit>(optionUnits)
+              .orderBy<number>((item) => item.orderIndex)
+              .toArray();
           }
 
           state.managingOptionUnitsState.optionUnits = optionUnits;

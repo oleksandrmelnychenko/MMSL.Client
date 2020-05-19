@@ -255,14 +255,26 @@ export class OptionUnit extends EntityBaseNamed {
   constructor() {
     super();
 
-    this.imageBase64 = null;
-    this.isAllowed = false;
+    this.imageUrl = null;
+    this.isMandatory = false;
     this.value = null;
+    this.orderIndex = 0;
   }
 
+  orderIndex: number;
   value: string | null;
-  imageBase64: string | null;
-  isAllowed: boolean;
+  imageUrl: string | null;
+  isMandatory: boolean;
+}
+
+export class ModifiedOptionUnitOrder {
+  constructor() {
+    this.optionUnitId = 0;
+    this.orderIndex = 0;
+  }
+
+  optionUnitId: number;
+  orderIndex: number;
 }
 
 export class FormicReference {
