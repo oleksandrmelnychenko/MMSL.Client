@@ -1,0 +1,106 @@
+.productSettings {
+
+    &__root {
+        background-color: #ffffff;
+        box-shadow: 0px 0 11px 1px rgba(0, 0, 0, 0.09);
+        border-radius: 6px;
+        padding: 12px;
+        margin: 12px;
+        height: calc(100% - 13px - 13px);
+        width: calc(100% - 12px - 12px);
+        position: absolute;
+    }
+
+    &__header {
+
+        &__top {
+            height: 52px;
+            position: relative;
+
+            &__title {
+                color: #484848;
+                font-size: 22px;
+                font-weight: 600;
+                padding: 9px 90px 0 6px;
+            }
+
+            &__controls {
+
+                margin-top: 11px;
+
+                .productSettingsDate {
+                    margin-right: 12px;
+                }
+
+                .productSettingsSearch {
+                    margin-right: 12px;
+                }
+
+                .productSettingsAdd {
+                    margin-top: -3px;
+                }
+            }
+        }
+
+        input {
+            height: 30px;
+        }
+    }
+}
+
+.productSettings__title {
+    color: #484848;
+    padding: 9px 90px 0 6px;
+    font-size: 1.3125rem;
+    font-weight: 600;
+    letter-spacing: -.02em;
+}
+
+.productSettingsPanelHeader {
+    position: absolute;
+    left: 24px;
+
+    &__title {
+        color: #484848;
+        font-size: 22px;
+        font-weight: 600;
+    }
+
+    &__save {
+        margin-left: 38px !important;
+    }
+}
+
+.productSettings__store {
+    min-height: 54px;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgb(237, 235, 233);
+    border-left: 2px solid transparent;
+    cursor: pointer;
+
+    &.selected {
+        border-left: 3px solid #0078d4;
+        color: #0078d4;
+        background-color: #deecf9;
+    }
+
+    &__name {
+        font-size: 16px;
+        font-weight: 600
+    }
+
+    &__address {
+        font-size: 12px;
+        color: rgb(161, 159, 157);
+        margin-bottom: 10px;
+    }
+}
+
+.productSettingsForm {
+    &__inputBlock {
+        margin-left: 12px;
+    }
+}

@@ -18,9 +18,9 @@ export interface QueryParam {
 }
 
 const buildQueryParamsString = (queryParams?: QueryParam[]) => {
-  if (queryParams && queryParams.length > 0) {
-    let queryString = '';
+  let queryString = '';
 
+  if (queryParams && queryParams.length > 0) {
     if (
       queryParams !== null &&
       queryParams !== undefined &&
@@ -34,8 +34,10 @@ const buildQueryParamsString = (queryParams?: QueryParam[]) => {
       }
     }
 
-    return queryString;
+    if (queryString === null || queryString === undefined) queryString = '';
   }
+
+  return queryString;
 };
 
 export const ajaxGetWebResponse = (

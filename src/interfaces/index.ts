@@ -239,6 +239,44 @@ export class StoreCustomer extends EntityBase {
   store: IStore | null;
 }
 
+export class OptionGroup extends EntityBaseNamed {
+  constructor() {
+    super();
+
+    this.isMandatory = false;
+    this.optionUnits = [];
+  }
+
+  isMandatory: boolean;
+  optionUnits: OptionUnit[];
+}
+
+export class OptionUnit extends EntityBaseNamed {
+  constructor() {
+    super();
+
+    this.imageUrl = null;
+    this.isMandatory = false;
+    this.value = null;
+    this.orderIndex = 0;
+  }
+
+  orderIndex: number;
+  value: string | null;
+  imageUrl: string | null;
+  isMandatory: boolean;
+}
+
+export class ModifiedOptionUnitOrder {
+  constructor() {
+    this.optionUnitId = 0;
+    this.orderIndex = 0;
+  }
+
+  optionUnitId: number;
+  orderIndex: number;
+}
+
 export class FormicReference {
   constructor(isDirtyFunc?: (isDirty: boolean) => void) {
     this.formik = null;

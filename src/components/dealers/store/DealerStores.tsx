@@ -24,7 +24,6 @@ import {
   CommonDialogType,
 } from '../../../redux/reducers/control.reducer';
 import { List } from 'linq-typescript';
-import { Route } from 'react-router-dom';
 
 export const DealerStores: React.FC = () => {
   const dispatch = useDispatch();
@@ -80,7 +79,8 @@ export const DealerStores: React.FC = () => {
 
           setSelectedStore(selectedStore);
           setIsOpenForm(true);
-        }}>
+        }}
+      >
         <div className="dealer__store__name">Store name: {item.name}</div>
         <div className="dealer__store__address">
           Address:{' '}

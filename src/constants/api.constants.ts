@@ -23,3 +23,8 @@ export const GET_CUSTOMERS_ALL = '/store/customers/get/all';
 export const CREATE_NEW_STORE_CUSTOMER = '/store/customers/add';
 export const DELETE_CUSTOMER_FROM_STORE = '/store/customers/delete';
 export const UPDATE_STORE_CUSTOMER = '/store/customers/update';
+
+export const CREATE_NEW_OPTION_GROUP = '/options/groups/new/group';
+export const GET_ALL_OPTION_GROUPS = '/options/groups/get/all';
+
+export const MODIFY_OPTION_UNITS_ORDER = '/options/units/update/order/index';

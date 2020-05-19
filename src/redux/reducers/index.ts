@@ -1,3 +1,7 @@
+import {
+  ProductSettingsState,
+  productSettingsReducer,
+} from './productSettings.reducer';
 import { CustomerState, customerReducer } from './customer.reducer';
 import { UnitsState, unitsReducer } from './units.reducer';
 import { combineReducers } from '@reduxjs/toolkit';
@@ -16,6 +20,7 @@ export interface IApplicationState {
   dealer: DealerState;
   units: UnitsState;
   customer: CustomerState;
+  productSettings: ProductSettingsState;
 }
 
 export const reducer = combineReducers({
@@ -26,4 +31,5 @@ export const reducer = combineReducers({
   dealer: dealerReducer,
   units: unitsReducer,
   customer: customerReducer,
+  productSettings: productSettingsReducer,
 });

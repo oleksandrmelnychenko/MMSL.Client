@@ -1,7 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\src",
+    "\\src\\components",
+    "\\src\\components\\customers",
+    "\\src\\components\\customers\\customerManaging"
   ],
-  "SelectedNode": "\\src",
+  "SelectedNode": "\\src\\components\\customers\\customerManaging\\ManageCustomerForm.tsx",
   "PreviewInSolutionExplorer": false
 }
