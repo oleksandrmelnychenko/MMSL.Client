@@ -7,7 +7,7 @@ import {
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
-import { FormicReference } from '../../../interfaces';
+import { FormicReference, OptionUnit } from '../../../interfaces';
 import {
   panelStyle,
   commandBarStyles,
@@ -90,7 +90,12 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
   } else if (panelContent === ManagingPanelComponent.ManageUnits) {
     panelTitleText = 'Manage Option Units';
     panelWidth = '900px';
-    content = <OptionGroupDetails />;
+    content = (
+      <OptionGroupDetails
+        formikReference={formikReference}
+        submitAction={(args: any) => {}}
+      />
+    );
   }
 
   return (

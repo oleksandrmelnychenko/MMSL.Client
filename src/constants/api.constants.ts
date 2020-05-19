@@ -26,3 +26,5 @@ export const CREATE_NEW_OPTION_GROUP = '/options/groups/new/group';
 export const GET_ALL_OPTION_GROUPS = '/options/groups/get/all';
 
 export const MODIFY_OPTION_UNITS_ORDER = '/options/units/update/order/index';
+export const MODIFY_OPTION_UNIT = '/options/units/update';
+export const ADD_OPTION_UNIT = '/options/units/add';

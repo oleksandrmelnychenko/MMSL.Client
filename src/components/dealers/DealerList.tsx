@@ -24,7 +24,7 @@ import {
   CommonDialogType,
 } from '../../redux/reducers/control.reducer';
 
-const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
+export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
 const _columnIconButtonStyle = {
   root: {
@@ -213,7 +213,8 @@ export const DealerList: React.FC = () => {
                       selectFlow();
                     }
                   }
-                }}>
+                }}
+              >
                 <DetailsRow {...args} />
               </div>
             );

@@ -255,16 +255,20 @@ export class OptionUnit extends EntityBaseNamed {
   constructor() {
     super();
 
-    this.imageUrl = null;
+    this.imageUrl = '';
     this.isMandatory = false;
-    this.value = null;
+    this.value = '';
     this.orderIndex = 0;
+    this.optionGroupId = null;
+    this.optionGroup = null;
   }
 
   orderIndex: number;
-  value: string | null;
-  imageUrl: string | null;
+  value: string;
+  imageUrl: string;
   isMandatory: boolean;
+  optionGroupId?: number | null;
+  optionGroup?: OptionGroup | null;
 }
 
 export class ModifiedOptionUnitOrder {

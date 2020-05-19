@@ -25,10 +25,12 @@ export class ManagingOptionUnitsState {
   constructor() {
     this.targetOptionGroup = null;
     this.optionUnits = [];
+    this.selectedOptionUnit = null;
   }
 
   targetOptionGroup: OptionGroup | null;
   optionUnits: OptionUnit[];
+  selectedOptionUnit: OptionUnit | null;
 }
 
 export const productSettingsReducer = createReducer(
@@ -46,6 +48,7 @@ export const productSettingsReducer = createReducer(
           if (state.optionGroupsList.length === 0) {
             state.managingOptionUnitsState.targetOptionGroup = null;
             state.managingOptionUnitsState.optionUnits = [];
+            state.managingOptionUnitsState.selectedOptionUnit = null;
           }
 
           /// TODO: remove this (Ask Seronya about `get Unit By ID`)
@@ -75,14 +78,30 @@ export const productSettingsReducer = createReducer(
             state.managingOptionUnitsState.targetOptionGroup?.optionUnits;
 
           if (optionUnits === null || optionUnits === undefined) {
-            optionUnits = [];
+            state.managingOptionUnitsState.optionUnits = [];
+            state.managingOptionUnitsState.selectedOptionUnit = null;
           } else {
             optionUnits = new List<OptionUnit>(optionUnits)
               .orderBy<number>((item) => item.orderIndex)
               .toArray();
-          }
 
-          state.managingOptionUnitsState.optionUnits = optionUnits;
+            if (
+              state.managingOptionUnitsState.selectedOptionUnit &&
+              !new List<OptionUnit>(optionUnits).firstOrDefault(
+                (unit) =>
+                  unit.id ===
+                  state.managingOptionUnitsState.selectedOptionUnit?.id
+              )
+            ) {
+              state.managingOptionUnitsState.selectedOptionUnit = null;
+            }
+          }
+        }
+      )
+      .addCase(
+        productSettingsActions.changeTargetOptionunit,
+        (state, action) => {
+          state.managingOptionUnitsState.selectedOptionUnit = action.payload;
         }
       )
 );

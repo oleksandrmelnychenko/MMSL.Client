@@ -1,0 +1,29 @@
+.view-upload {
+    display: flex;
+    margin-bottom: 20px;
+
+    &__img {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+        transition: all 0.3s ease;
+
+        &.view-upload-action {
+            cursor: pointer;
+        }
+
+        &.view-upload-delete:after {
+            content: 'x';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            top: 0;
+            right: 0;
+            color: "Red";
+            cursor: pointer;
+        }
+    }
+}

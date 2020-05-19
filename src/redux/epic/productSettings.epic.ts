@@ -1,4 +1,8 @@
-import { ajaxPutResponse } from './../../helpers/epic.helper';
+import {
+  ajaxPutResponse,
+  ajaxPutFormDataResponse__FOO,
+  ajaxPostResponse_file,
+} from './../../helpers/epic.helper';
 import { checkUnauthorized } from './../../helpers/error.helpers';
 import {
   extractSuccessPendingActions,
@@ -108,7 +112,133 @@ export const modifyOptionUnitsOrderEpic = (action$: AnyAction, state$: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               controlActions.showInfoMessage(
-                `Error occurred while updation option units order. ${errorResponse}`
+                `Error occurred while updating option units order. ${errorResponse}`
+              ),
+              ...extractErrorPendingActions(action),
+            ];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};
+
+export const updateOptionUnitEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(productSettingsTypes.UPDATE_OPTION_UNIT),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      debugger;
+
+      const formData: FormData = new FormData();
+      formData.append('file', action.payload.file);
+
+      return ajaxPutFormDataResponse__FOO(
+        api.MODIFY_OPTION_UNIT,
+        formData,
+        state$.value,
+        [
+          {
+            key: 'orderIndex',
+            value: `${action.payload.unit.orderIndex}`,
+          },
+          {
+            key: 'value',
+            value: `${action.payload.unit.value}`,
+          },
+          {
+            key: 'isMandatory',
+            value: `${action.payload.unit.isMandatory}`,
+          },
+          {
+            key: 'ImageUrl',
+            value: `${encodeURIComponent(action.payload.unit.imageUrl)}`,
+          },
+          {
+            key: 'id',
+            value: `${action.payload.unit.id}`,
+          },
+        ]
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          debugger;
+          let successResultFlow = [...extractSuccessPendingActions(action)];
+
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          debugger;
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [
+              controlActions.showInfoMessage(
+                `Error occurred while updating option unit. ${errorResponse}`
+              ),
+              ...extractErrorPendingActions(action),
+            ];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};
+
+export const saveNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(productSettingsTypes.SAVE_NEW_OPTION_UNIT),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      debugger;
+
+      const formData: FormData = new FormData();
+      formData.append('file', action.payload.file);
+
+      return ajaxPostResponse_file(
+        api.ADD_OPTION_UNIT,
+        formData,
+        state$.value,
+        [
+          {
+            key: 'orderIndex',
+            value: `${action.payload.unit.orderIndex}`,
+          },
+          {
+            key: 'value',
+            value: `${action.payload.unit.value}`,
+          },
+          {
+            key: 'isMandatory',
+            value: `${action.payload.unit.isMandatory}`,
+          },
+          {
+            key: 'ImageUrl',
+            value: `${encodeURIComponent(action.payload.unit.imageUrl)}`,
+          },
+          {
+            key: 'id',
+            value: `${action.payload.unit.id}`,
+          },
+          {
+            key: 'optionGroupId',
+            value: `${action.payload.unit.optionGroupId}`,
+          },
+        ]
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          debugger;
+          let successResultFlow = [...extractSuccessPendingActions(action)];
+
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          debugger;
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [
+              controlActions.showInfoMessage(
+                `Error occurred while creating new option unit. ${errorResponse}`
               ),
               ...extractErrorPendingActions(action),
             ];
