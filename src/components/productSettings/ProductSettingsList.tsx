@@ -24,63 +24,13 @@ import {
 } from '../../interfaces';
 import { assignPendingActions } from '../../helpers/action.helper';
 import * as productSettingsActions from '../../redux/actions/productSettings.actions';
+import { ManagingPanelComponent } from '../../redux/reducers/productSettings.reducer';
 
 const _columnIconButtonStyle = {
   root: {
     height: '20px',
   },
 };
-
-const _customerColumns: IColumn[] = [
-  {
-    key: 'index',
-    name: '#',
-    minWidth: 16,
-    maxWidth: 24,
-    onColumnClick: () => {},
-    onRender: (item: any, index?: number) => {
-      return (
-        <Text>{index !== null && index !== undefined ? index + 1 : -1}</Text>
-      );
-    },
-  },
-  {
-    key: 'name',
-    name: 'Name',
-    minWidth: 70,
-    maxWidth: 90,
-    isResizable: true,
-    isCollapsible: true,
-    data: 'string',
-    onRender: (item: any) => {
-      return <Text>{item.name}</Text>;
-    },
-    isPadded: true,
-  },
-  {
-    key: 'actions',
-    name: 'Actions',
-    minWidth: 70,
-    isResizable: true,
-    isCollapsible: true,
-    data: 'string',
-    onRender: (item: any) => {
-      return (
-        <Stack horizontal disableShrink>
-          <IconButton
-            styles={_columnIconButtonStyle}
-            height={20}
-            iconProps={{ iconName: 'Settings' }}
-            title="Settings"
-            ariaLabel="Settings"
-            onClick={() => {}}
-          />
-        </Stack>
-      );
-    },
-    isPadded: true,
-  },
-];
 
 export const ProductSettingsList: React.FC = () => {
   const dispatch = useDispatch();
@@ -153,11 +103,68 @@ export const ProductSettingsList: React.FC = () => {
   //     dispatch(controlActions.isOpenPanelInfo(false));
   //   };
 
+  const customerColumns: IColumn[] = [
+    {
+      key: 'index',
+      name: '#',
+      minWidth: 16,
+      maxWidth: 24,
+      onColumnClick: () => {},
+      onRender: (item: any, index?: number) => {
+        return (
+          <Text>{index !== null && index !== undefined ? index + 1 : -1}</Text>
+        );
+      },
+    },
+    {
+      key: 'name',
+      name: 'Name',
+      minWidth: 70,
+      maxWidth: 90,
+      isResizable: true,
+      isCollapsible: true,
+      data: 'string',
+      onRender: (item: any) => {
+        return <Text>{item.name}</Text>;
+      },
+      isPadded: true,
+    },
+    {
+      key: 'actions',
+      name: 'Actions',
+      minWidth: 70,
+      isResizable: true,
+      isCollapsible: true,
+      data: 'string',
+      onRender: (item: any) => {
+        return (
+          <Stack horizontal disableShrink>
+            <IconButton
+              styles={_columnIconButtonStyle}
+              height={20}
+              iconProps={{ iconName: 'Settings' }}
+              title="Settings"
+              ariaLabel="Settings"
+              onClick={() => {
+                dispatch(
+                  productSettingsActions.managingPanelContent(
+                    ManagingPanelComponent.ManageUnits
+                  )
+                );
+              }}
+            />
+          </Stack>
+        );
+      },
+      isPadded: true,
+    },
+  ];
+
   return (
     <div className="customerList">
       <MarqueeSelection selection={selection}>
         <DetailsList
-          columns={_customerColumns}
+          columns={customerColumns}
           items={outionGroups}
           onRenderDetailsHeader={(props: any, _defaultRender?: any) => {
             return (
