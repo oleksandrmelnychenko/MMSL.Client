@@ -11,8 +11,10 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import * as customerActions from '../../redux/actions/customer.actions';
+import * as controlActions from '../../redux/actions/control.actions';
 
 import { StoreCustomer } from '../../interfaces';
+import ManagementPanel from './options/ManagmentPanel';
 
 const _customerColumns: IColumn[] = [
   {
@@ -173,6 +175,7 @@ export const CustomerList: React.FC = () => {
   /// TODO: important
   const customerSelection = () => {
     const selectedDealer = selection.getSelection()[0] as any;
+    dispatch(controlActions.openInfoPanelWithComponent(ManagementPanel));
   };
 
   /// TODO: important

@@ -7,7 +7,6 @@ import {
   DealerDetilsComponents,
 } from '../../../redux/reducers/dealer.reducer';
 import { useDispatch, useSelector } from 'react-redux';
-import './management-options.scss';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { IApplicationState } from '../../../redux/reducers/index';
 
@@ -62,7 +61,7 @@ const ManagementPanel: React.FC = () => {
   }, [isOpenPanelWithDealerDetails]);
 
   return (
-    <div className="dealer__management">
+    <div className="management">
       {menu.map((item) => (
         <Label
           key={item.id}

@@ -7,7 +7,6 @@ import {
   DealerDetilsComponents,
 } from '../../../redux/reducers/dealer.reducer';
 import { useDispatch, useSelector } from 'react-redux';
-import './management-options.scss';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { IApplicationState } from '../../../redux/reducers/index';
 
@@ -31,28 +30,28 @@ const ManagementOptions: React.FC = () => {
     {
       id: 0,
       title: 'Stores',
-      className: 'dealer__management__btn-add',
+      className: 'management__btn-add',
       componentType: DealerDetilsComponents.DealerStores,
       isSelected: false,
     },
     {
       id: 1,
       title: 'Details',
-      className: 'dealer__management__btn-detail',
+      className: 'management__btn-detail',
       componentType: DealerDetilsComponents.DealerDetails,
       isSelected: false,
     },
     {
       id: 2,
       title: 'Address',
-      className: 'dealer__management__btn-address',
+      className: 'management__btn-address',
       componentType: DealerDetilsComponents.DealerAddress,
       isSelected: false,
     },
     {
       id: 3,
       title: 'Customer',
-      className: 'dealer__management__btn-customer',
+      className: 'management__btn-customer',
       componentType: DealerDetilsComponents.DealerCustomers,
       isSelected: false,
     },
@@ -76,7 +75,7 @@ const ManagementOptions: React.FC = () => {
   }, [isOpenPanelWithDealerDetails]);
 
   return (
-    <div className="dealer__management">
+    <div className="management">
       {menu.map((item) => (
         <Label
           key={item.id}
