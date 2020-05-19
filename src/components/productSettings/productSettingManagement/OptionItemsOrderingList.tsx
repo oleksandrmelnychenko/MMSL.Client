@@ -8,6 +8,8 @@ import {
   IDragDropContext,
   mergeStyles,
   getTheme,
+  SelectionMode,
+  CheckboxVisibility,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
@@ -116,9 +118,11 @@ export const OptionItemsOrderingList: React.FC = () => {
     <div>
       <MarqueeSelection selection={selection}>
         <DetailsList
+          selectionMode={SelectionMode.single}
           columns={customerColumns}
           items={oputionUnits}
           isHeaderVisible={false}
+          checkboxVisibility={CheckboxVisibility.hidden}
           dragDropEvents={{
             canDrop: (
               dropContext?: IDragDropContext,
