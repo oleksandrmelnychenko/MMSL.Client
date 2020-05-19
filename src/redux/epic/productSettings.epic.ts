@@ -92,7 +92,6 @@ export const modifyOptionUnitsOrderEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
     ofType(productSettingsTypes.MODIFY_OPTION_UNITS_ORDER),
     switchMap((action: AnyAction) => {
-      debugger;
       const languageCode = getActiveLanguage(state$.value.localize).code;
 
       return ajaxPutResponse(
@@ -101,13 +100,11 @@ export const modifyOptionUnitsOrderEpic = (action$: AnyAction, state$: any) => {
         state$.value
       ).pipe(
         mergeMap((successResponse: any) => {
-          debugger;
           let successResultFlow = [...extractSuccessPendingActions(action)];
 
           return from(successResultFlow);
         }),
         catchError((errorResponse: any) => {
-          debugger;
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               controlActions.showInfoMessage(
