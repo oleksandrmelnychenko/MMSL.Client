@@ -9,7 +9,10 @@ import {
   DialogType,
 } from 'office-ui-fabric-react';
 import { IApplicationState } from '../../redux/reducers';
-import { DialogArgs } from '../../redux/reducers/control.reducer';
+import {
+  DialogArgs,
+  CommonDialogType,
+} from '../../redux/reducers/control.reducer';
 import * as controlAction from '../../redux/actions/control.actions';
 
 const CommonDialog: React.FC = () => {
@@ -25,7 +28,6 @@ const CommonDialog: React.FC = () => {
 
   useEffect(() => {
     setIsHidden(dialogArgs ? false : true);
-    console.log(dialogArgs);
 
     if (dialogArgs) {
       setTitle(dialogArgs.title);
@@ -35,38 +37,46 @@ const CommonDialog: React.FC = () => {
 
   return (
     <>
-      <Dialog
-        hidden={isHidden}
-        onDismiss={() => {}}
-        dialogContentProps={{
-          type: DialogType.normal,
-          title: title,
-          subText: subText,
-        }}
-      >
-        <DialogFooter>
-          <PrimaryButton
-            onClick={() => {
-              dispatch(controlAction.toggleCommonDialogVisibility(null));
-
-              setTimeout(() => {
-                dialogArgs?.onSubmitClick();
-              }, 500);
-            }}
-            text="Ok"
-          />
-          <DefaultButton
-            onClick={() => {
-              dispatch(controlAction.toggleCommonDialogVisibility(null));
-
-              setTimeout(() => {
-                dialogArgs?.onDeclineClick();
-              }, 500);
-            }}
-            text="Cancel"
-          />
-        </DialogFooter>
-      </Dialog>
+      {dialogArgs ? (
+        <Dialog
+          hidden={isHidden}
+          onDismiss={() => {}}
+          dialogContentProps={{
+            type: DialogType.normal,
+            title: title,
+            subText: subText,
+          }}>
+          {dialogArgs?.dialogType === CommonDialogType.Common ? (
+            <DialogFooter>
+              <PrimaryButton
+                onClick={() => {
+                  dispatch(controlAction.toggleCommonDialogVisibility(null));
+                  dialogArgs?.onSubmitClick();
+                }}
+                text="Ok"
+              />
+            </DialogFooter>
+          ) : null}
+          {dialogArgs?.dialogType === CommonDialogType.Delete ? (
+            <DialogFooter>
+              <PrimaryButton
+                onClick={() => {
+                  dispatch(controlAction.toggleCommonDialogVisibility(null));
+                  dialogArgs?.onSubmitClick();
+                }}
+                text="Ok"
+              />
+              <DefaultButton
+                onClick={() => {
+                  dispatch(controlAction.toggleCommonDialogVisibility(null));
+                  dialogArgs?.onDeclineClick();
+                }}
+                text="Cancel"
+              />
+            </DialogFooter>
+          ) : null}
+        </Dialog>
+      ) : null}
     </>
   );
 };

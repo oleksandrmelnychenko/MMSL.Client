@@ -6,22 +6,13 @@ import {
   SelectionMode,
   Text,
   Selection,
-  Stack,
-  IconButton,
   MarqueeSelection,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import * as customerActions from '../../redux/actions/customer.actions';
-import * as controlActions from '../../redux/actions/control.actions';
-import { DealerAccount, Pagination, StoreCustomer } from '../../interfaces';
-import { assignPendingActions } from '../../helpers/action.helper';
 
-const _columnIconButtonStyle = {
-  root: {
-    height: '20px',
-  },
-};
+import { StoreCustomer } from '../../interfaces';
 
 const _customerColumns: IColumn[] = [
   {

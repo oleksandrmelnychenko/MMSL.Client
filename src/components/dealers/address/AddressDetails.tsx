@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Text,
-  Stack,
-  PrimaryButton,
-  CommandBar,
-  ICommandBarItemProps,
-} from 'office-ui-fabric-react';
+import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react';
 import * as dealerActions from '../../../redux/actions/dealer.actions';
 import * as controlAction from '../../../redux/actions/control.actions';
 import { useDispatch, useSelector } from 'react-redux';

@@ -28,7 +28,7 @@ export const DealerDetailsPanel: React.FC = (props: any) => {
   useEffect(() => {
     if (isOpenPanelWithDealerDetails && !isOpenPanelWithDealerDetails.isOpen) {
       dispatch(dealerActions.setDealerStores([]));
-      dispatch(dealerActions.updateTargetStoreStoreCustomersList([]));
+      dispatch(dealerActions.updateTargetStoreCustomersList([]));
     }
   }, [isOpenPanelWithDealerDetails, dispatch]);
 
@@ -54,7 +54,7 @@ export const DealerDetailsPanel: React.FC = (props: any) => {
       isOpenPanelWithDealerDetails.componentType ===
       DealerDetilsComponents.DealerCustomers
     ) {
-      customWidth = '800px';
+      customWidth = '1200px';
       panelContent = <DealerCustomers />;
     } else {
       panelContent = null;
@@ -74,8 +74,7 @@ export const DealerDetailsPanel: React.FC = (props: any) => {
             new ToggleDealerPanelWithDetails()
           )
         );
-      }}
-    >
+      }}>
       {/* TODO */}
       {panelContent}
     </Panel>

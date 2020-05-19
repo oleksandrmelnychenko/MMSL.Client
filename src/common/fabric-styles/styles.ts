@@ -38,6 +38,12 @@ export const btnMenuStyle = {
   },
 };
 
+export const columnIconButtonStyle = {
+  root: {
+    height: '20px',
+  },
+};
+
 export const labelStyle = {
   root: {
     width: '90px',

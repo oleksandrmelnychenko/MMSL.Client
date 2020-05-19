@@ -3,16 +3,16 @@ import {
   FocusZone,
   FocusZoneDirection,
   Separator,
-  CommandBar,
   ICommandBarItemProps,
+  CommandBar,
+  TeachingBubbleContent,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers/index';
-import { DealerAccount, FormicReference } from '../../../interfaces';
+import { FormicReference } from '../../../interfaces';
 import * as dealerActions from '../../../redux/actions/dealer.actions';
 import { IStore } from '../../../interfaces/index';
 import { Stack } from 'office-ui-fabric-react';
-// import FormStore from './FormStore';
 import PanelTitle from '../panel/PanelTitle';
 import DealerCustomersList from './DealerCustomersList';
 import {
@@ -25,9 +25,17 @@ import {
   CommonDialogType,
 } from '../../../redux/reducers/control.reducer';
 import { List } from 'linq-typescript';
+import ManageCustomerForm from './ManageCustomerForm';
+import * as customerActions from '../../../redux/actions/customer.actions';
+import { DealerState } from '../../../redux/reducers/dealer.reducer';
 
 export const DealerCustomers: React.FC = () => {
   const dispatch = useDispatch();
+  const [isDirtyForm, setIsDirtyForm] = useState(false);
+  const [selectedStore, setSelectedStore] = useState<IStore | null | undefined>(
+    null
+  );
+  const [isOpenForm, setIsOpenForm] = useState(false);
   const [formikReference] = useState<FormicReference>(
     new FormicReference(() => {
       formikReference.isDirtyFunc = (isDirty: boolean) => {
@@ -35,24 +43,23 @@ export const DealerCustomers: React.FC = () => {
       };
     })
   );
-  const [isDirtyForm, setIsDirtyForm] = useState(false);
-  const selectedDealer = useSelector<IApplicationState, DealerAccount>(
-    (state) => state.dealer.selectedDealer!
-  );
-  const dealerStores = useSelector<IApplicationState, IStore[]>(
-    (state) => state.dealer.dealerStores
-  );
+
+  const { selectedDealer, dealerStores, dealerCustomerState } = useSelector<
+    IApplicationState,
+    DealerState
+  >((state) => state.dealer);
+
   useEffect(() => {
     if (selectedDealer) {
       dispatch(dealerActions.getStoresByDealer(selectedDealer.id));
     }
   }, [selectedDealer, dispatch]);
 
-  const [selectedStore, setSelectedStore] = useState<IStore | null | undefined>(
-    null
-  );
-
-  const [isOpenForm, setIsOpenForm] = useState(false);
+  useEffect(() => {
+    return () => {
+      dispatch(dealerActions.setSelectedCustomerInCurrentStore(null));
+    };
+  }, []);
 
   const onRenderCell = (
     item: IStore,
@@ -65,27 +72,18 @@ export const DealerCustomers: React.FC = () => {
           selectedStore && item.id === selectedStore.id ? ' selected' : ''
         }`}
         onClick={() => {
-          //   const selectedStore = dealerStores.filter(
-          //     (store) => store.id === item.id
-          //   );
-
           const selectedStore = new List<IStore>(dealerStores).firstOrDefault(
             (store) => store.id === item.id
           );
-
           setSelectedStore(selectedStore);
-
           if (selectedStore && selectedStore.id) {
             dispatch(
               dealerActions.getStoreCustomersByStoreId(selectedStore.id)
             );
-            setIsOpenForm(true);
           } else {
-            setIsOpenForm(false);
-            dispatch(dealerActions.updateTargetStoreStoreCustomersList([]));
+            dispatch(dealerActions.updateTargetStoreCustomersList([]));
           }
-        }}
-      >
+        }}>
         <div className="dealer__store__name">Store name: {item.name}</div>
         <div className="dealer__store__address">
           Address:{' '}
@@ -101,8 +99,24 @@ export const DealerCustomers: React.FC = () => {
       text: 'New',
       iconProps: { iconName: 'Add' },
       onClick: () => {
-        setSelectedStore(null);
-        setIsOpenForm(true);
+        if (selectedStore) {
+          setIsOpenForm(true);
+          dispatch(dealerActions.setSelectedCustomerInCurrentStore(null));
+        } else {
+          dispatch(
+            controlAction.toggleCommonDialogVisibility(
+              new DialogArgs(
+                CommonDialogType.Common,
+                'Information',
+                `Select a store to create in it customers`,
+                () => {
+                  dispatch(controlAction.toggleCommonDialogVisibility(null));
+                },
+                () => {}
+              )
+            )
+          );
+        }
       },
       buttonStyles: commandBarButtonStyles,
     },
@@ -113,6 +127,9 @@ export const DealerCustomers: React.FC = () => {
       iconProps: { iconName: 'Save' },
       onClick: () => {
         formikReference.formik.submitForm();
+        if (!dealerCustomerState.selectedCustomer) {
+          setIsOpenForm(false);
+        }
       },
       buttonStyles: commandBarButtonStyles,
     },
@@ -130,7 +147,7 @@ export const DealerCustomers: React.FC = () => {
       key: 'Delete',
       text: 'Delete',
       iconProps: { iconName: 'Delete' },
-      disabled: selectedStore ? false : true,
+      disabled: dealerCustomerState.selectedCustomer ? false : true,
       onClick: () => {
         if (selectedStore) {
           dispatch(
@@ -140,15 +157,15 @@ export const DealerCustomers: React.FC = () => {
                 'Delete store',
                 `Are you sure you want to delete ${selectedStore.name}?`,
                 () => {
-                  if (selectedStore) {
-                    dispatch(
-                      dealerActions.deleteCurrentDealerStore(
-                        selectedStore.id as number
-                      )
-                    );
-                  }
-                  formikReference.formik.resetForm();
-                  setSelectedStore(null);
+                  dispatch(
+                    dealerActions.deleteCurrentCustomerFromStore(
+                      dealerCustomerState.selectedCustomer!.id
+                    )
+                  );
+                  dispatch(
+                    dealerActions.setSelectedCustomerInCurrentStore(null)
+                  );
+
                   setIsOpenForm(false);
                 },
                 () => {}
@@ -160,7 +177,6 @@ export const DealerCustomers: React.FC = () => {
       buttonStyles: commandBarButtonStyles,
     },
   ];
-
   return (
     <div>
       <PanelTitle
@@ -172,19 +188,17 @@ export const DealerCustomers: React.FC = () => {
         }
       />
       <div>
-        {/* <CommandBar
-
+        <CommandBar
           styles={commandBarStyles}
           items={_items}
           className="dealers__store__controls"
-        /> */}
+        />
       </div>
       <Stack
         horizontal
         horizontalAlign="space-between"
-        tokens={{ childrenGap: 20 }}
-      >
-        <Stack grow={1} tokens={{ maxWidth: '50%' }}>
+        tokens={{ childrenGap: 20 }}>
+        <Stack grow={1} tokens={{ maxWidth: '32%' }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
               <Separator alignContent="start">Stores</Separator>
@@ -195,9 +209,39 @@ export const DealerCustomers: React.FC = () => {
           </FocusZone>
         </Stack>
 
-        <Stack grow={1} tokens={{ maxWidth: '50%' }}>
-          {/* {isOpenForm ? <DealerCustomersList /> : null} */}
+        <Stack grow={1} tokens={{ maxWidth: '32%' }}>
           <DealerCustomersList />
+        </Stack>
+        <Stack grow={1} tokens={{ maxWidth: '32%' }}>
+          {(selectedStore && isOpenForm) ||
+          (selectedStore && dealerCustomerState.selectedCustomer) ? (
+            <>
+              <Separator alignContent="start">Customers form</Separator>
+              <ManageCustomerForm
+                formikReference={formikReference}
+                submitAction={(args: any) => {
+                  const value = { ...args, storeId: selectedStore.id };
+                  if (dealerCustomerState.selectedCustomer) {
+                    dispatch(
+                      dealerActions.updateStoreCustomer({
+                        ...value,
+                        id: dealerCustomerState.selectedCustomer.id,
+                      })
+                    );
+                  } else {
+                    dispatch(customerActions.saveNewCustomer(value));
+                    dispatch(
+                      dealerActions.getStoreCustomersByStoreId(
+                        selectedStore.id!
+                      )
+                    );
+                  }
+                  formikReference.formik.resetForm();
+                }}
+                customer={dealerCustomerState.selectedCustomer}
+              />
+            </>
+          ) : null}
         </Stack>
       </Stack>
     </div>

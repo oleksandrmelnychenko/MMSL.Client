@@ -67,6 +67,7 @@ const ManagementOptions: React.FC = () => {
       }
       return item;
     });
+
     setMenu(updateMenu);
   };
 

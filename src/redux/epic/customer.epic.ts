@@ -17,6 +17,7 @@ import {
 import * as api from '../../constants/api.constants';
 import { Pagination } from '../../interfaces';
 import * as controlActions from '../../redux/actions/control.actions';
+import * as dealerActions from '../../redux/actions/dealer.actions';
 
 export const getCustomersListPaginatedEpic = (
   action$: AnyAction,
@@ -121,7 +122,10 @@ export const saveNewCustomerEpic = (action$: AnyAction, state$: any) => {
       ).pipe(
         mergeMap((successResponse: any) => {
           let successResultFlow = [
-            controlActions.showInfoMessage('New customer created successfully'),
+            dealerActions.updateTargetStoreCustomersList(
+              Array.of(successResponse.body)
+            ),
+            controlActions.showInfoMessage(successResponse.message),
             ...extractSuccessPendingActions(action),
           ];
 

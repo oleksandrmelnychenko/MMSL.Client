@@ -1,42 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   FocusZone,
   FocusZoneDirection,
   Separator,
-  CommandBar,
-  ICommandBarItemProps,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers/index';
-import {
-  DealerAccount,
-  FormicReference,
-  StoreCustomer,
-} from '../../../interfaces';
-import * as dealerActions from '../../../redux/actions/dealer.actions';
-import { IStore } from '../../../interfaces/index';
-import { Stack } from 'office-ui-fabric-react';
-// import FormStore from './FormStore';
-import PanelTitle from '../panel/PanelTitle';
-import {
-  commandBarButtonStyles,
-  commandBarStyles,
-} from '../../../common/fabric-styles/styles';
-import * as controlAction from '../../../redux/actions/control.actions';
-import {
-  DialogArgs,
-  CommonDialogType,
-} from '../../../redux/reducers/control.reducer';
+import { StoreCustomer } from '../../../interfaces';
 import { List } from 'linq-typescript';
+import * as dealerActions from '../../../redux/actions/dealer.actions';
 
-export const DealerCustomersList: React.FC = (props: any) => {
+export const DealerCustomersList: React.FC = () => {
   const dispatch = useDispatch();
 
   const [selectedStoreCustomer, setSelectedStoreCustomer] = useState<
     StoreCustomer | null | undefined
   >(null);
 
-  const storeCustumers = useSelector<IApplicationState, StoreCustomer[]>(
+  const storeCustomers = useSelector<IApplicationState, StoreCustomer[]>(
     (state) => state.dealer.dealerCustomerState.storeCustomers
   );
 
@@ -53,16 +34,19 @@ export const DealerCustomersList: React.FC = (props: any) => {
             : ''
         }`}
         onClick={() => {
-          const selectedCustomer = new List(storeCustumers).firstOrDefault(
+          const selectedCustomer = new List(storeCustomers).firstOrDefault(
             (storeCustomer) => storeCustomer.id === item.id
           );
-
           setSelectedStoreCustomer(selectedCustomer);
-        }}
-      >
-        <div className="dealer__store__name">Store name: {item.userName}</div>
+          if (selectedCustomer) {
+            dispatch(
+              dealerActions.setSelectedCustomerInCurrentStore(selectedCustomer)
+            );
+          }
+        }}>
+        <div className="dealer__store__name">User name: {item.userName}</div>
         <div className="dealer__store__address">
-          Company name: {`${item.customerName}`}
+          Customer name: {`${item.customerName}`}
         </div>
       </div>
     );
@@ -73,7 +57,7 @@ export const DealerCustomersList: React.FC = (props: any) => {
       <FocusZone direction={FocusZoneDirection.vertical}>
         <div className={'dealer__stores'} data-is-scrollable={true}>
           <Separator alignContent="start">Customers</Separator>
-          {storeCustumers.map((item: StoreCustomer, index: number) => {
+          {storeCustomers.map((item: StoreCustomer, index: number) => {
             return onRenderCell(item, index);
           })}{' '}
         </div>

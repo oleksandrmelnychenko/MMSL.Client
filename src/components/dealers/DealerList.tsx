@@ -190,10 +190,7 @@ export const DealerList: React.FC = () => {
                         []
                       );
                       dispatch(controlActions.isCollapseMenu(true));
-
-                      setTimeout(() => {
-                        dispatch(controlActions.isOpenPanelInfo(true));
-                      }, 350);
+                      dispatch(controlActions.isOpenPanelInfo(true));
                       dispatch(createAction);
                     };
 

@@ -26,9 +26,11 @@ export class DealerState {
 export class DealerCustomerState {
   constructor() {
     this.storeCustomers = [];
+    this.selectedCustomer = null;
   }
 
   storeCustomers: StoreCustomer[];
+  selectedCustomer: StoreCustomer | null;
 }
 
 /// Dealer list state (contains list of dealers and pagination)
@@ -116,9 +118,33 @@ export const dealerReducer = createReducer(new DealerState(), (builder) =>
       );
     })
     .addCase(
-      dealerActions.updateTargetStoreStoreCustomersList,
+      dealerActions.updateCustomersStoreAfterDeleteCustomer,
       (state, action) => {
-        state.dealerCustomerState.storeCustomers = action.payload;
+        state.dealerCustomerState.storeCustomers = state.dealerCustomerState.storeCustomers.filter(
+          (customer) => customer.id !== action.payload.id
+        );
+      }
+    )
+    .addCase(dealerActions.updateTargetStoreCustomersList, (state, action) => {
+      state.dealerCustomerState.storeCustomers = action.payload;
+    })
+    .addCase(
+      dealerActions.updateCustomerListAfterUpdateCustomer,
+      (state, action) => {
+        state.dealerCustomerState.storeCustomers = state.dealerCustomerState.storeCustomers.map(
+          (customer) => {
+            if (customer.id === action.payload.id) {
+              customer = action.payload;
+            }
+            return customer;
+          }
+        );
+      }
+    )
+    .addCase(
+      dealerActions.setSelectedCustomerInCurrentStore,
+      (state, action) => {
+        state.dealerCustomerState.selectedCustomer = action.payload;
       }
     )
 );

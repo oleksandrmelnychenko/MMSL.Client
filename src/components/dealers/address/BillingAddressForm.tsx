@@ -3,7 +3,6 @@ import { Formik, Form, Field } from 'formik';
 import { Checkbox, Stack, TextField } from 'office-ui-fabric-react';
 import '../dealerManaging/manageDealerForm.scss';
 import * as Yup from 'yup';
-import { useDispatch } from 'react-redux';
 import { DealerAccount, Address, FormicReference } from '../../../interfaces';
 import { textFildLabelStyles } from '../../../common/fabric-styles/styles';
 
@@ -84,8 +83,6 @@ const initDefaultValues = (account?: DealerAccount | null) => {
 };
 
 export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
-  const dispatch = useDispatch();
-
   const formikInitValues = initDefaultValues(props.dealerAccount);
 
   return (
@@ -107,8 +104,7 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
             buildDealerAccount(values, props.dealerAccount as DealerAccount)
           );
         }}
-        validateOnBlur={false}
-      >
+        validateOnBlur={false}>
         {(formik) => {
           props.formikReference.formik = formik;
           if (props.formikReference.isDirtyFunc) {
