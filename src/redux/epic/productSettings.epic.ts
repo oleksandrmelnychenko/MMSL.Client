@@ -29,7 +29,6 @@ export const saveNewOptionGroupEpic = (action$: AnyAction, state$: any) => {
         true
       ).pipe(
         mergeMap((successResponse: any) => {
-          debugger;
           let successResultFlow = [
             controlActions.showInfoMessage(
               'New option group created successfully'
@@ -40,7 +39,6 @@ export const saveNewOptionGroupEpic = (action$: AnyAction, state$: any) => {
           return from(successResultFlow);
         }),
         catchError((errorResponse: any) => {
-          debugger;
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               controlActions.showInfoMessage(
@@ -65,7 +63,6 @@ export const getAllOptionGroupsListEpic = (action$: AnyAction, state$: any) => {
 
       return ajaxGetWebResponse(api.GET_ALL_OPTION_GROUPS, state$.value).pipe(
         mergeMap((successResponse: any) => {
-          debugger;
           let successResultFlow = [
             productSettingsActions.updateOptionGroupList(successResponse),
             ...extractSuccessPendingActions(action),
@@ -74,7 +71,6 @@ export const getAllOptionGroupsListEpic = (action$: AnyAction, state$: any) => {
           return from(successResultFlow);
         }),
         catchError((errorResponse: any) => {
-          debugger;
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               controlActions.showInfoMessage(

@@ -16,8 +16,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import * as customerActions from '../../redux/actions/customer.actions';
 import * as controlActions from '../../redux/actions/control.actions';
-import { DealerAccount, Pagination, StoreCustomer } from '../../interfaces';
+import {
+  DealerAccount,
+  Pagination,
+  StoreCustomer,
+  OptionGroup,
+} from '../../interfaces';
 import { assignPendingActions } from '../../helpers/action.helper';
+import * as productSettingsActions from '../../redux/actions/productSettings.actions';
 
 const _columnIconButtonStyle = {
   root: {
@@ -108,29 +114,15 @@ export const ProductSettingsList: React.FC = () => {
       },
     })
   );
-  const [items, setItems] = useState<any[]>([
-    { key: 'a', name: 'a', color: 'red' },
-    { key: 'b', name: 'b', color: 'red' },
-    { key: 'c', name: 'c', color: 'blue' },
-    { key: 'd', name: 'd', color: 'blue' },
-    { key: 'e', name: 'e', color: 'blue' },
-  ]);
-  const [groups, setGroups] = useState<any[]>([
-    {
-      key: 'groupred0',
-      name: 'Color: "red"',
-      startIndex: 0,
-      count: 4,
-      level: 0,
-    },
-    {
-      key: 'groupblue2',
-      name: 'Color: "blue"',
-      startIndex: 2,
-      count: 3,
-      level: 0,
-    },
-  ]);
+
+  const outionGroups: OptionGroup[] = useSelector<
+    IApplicationState,
+    OptionGroup[]
+  >((state) => state.productSettings.optionGroupsList);
+
+  useEffect(() => {
+    dispatch(productSettingsActions.getAllOptionGroupsList());
+  }, []);
 
   /// TODO: important
   //   const pagination: Pagination = useSelector<IApplicationState, Pagination>(
@@ -182,11 +174,8 @@ export const ProductSettingsList: React.FC = () => {
     <div className="customerList">
       <MarqueeSelection selection={selection}>
         <DetailsList
-          items={items}
-          groups={groups}
-          groupProps={{
-            showEmptyGroups: true,
-          }}
+          columns={_customerColumns}
+          items={outionGroups}
           onRenderDetailsHeader={(props: any, _defaultRender?: any) => {
             return (
               <DetailsHeader
