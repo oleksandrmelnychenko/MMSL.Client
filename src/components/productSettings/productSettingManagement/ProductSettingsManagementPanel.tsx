@@ -138,6 +138,8 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
             ]
           );
           dispatch(createAction);
+
+          formikReference.formik.resetForm();
         }}
       />
     );
@@ -147,22 +149,22 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
     if (sectedOptionGroup) {
       panelDescription = sectedOptionGroup.name;
     }
-    const saveButton = new List(_items).firstOrDefault(
-      (item) => item.key === NEW_PANEL_ITEM_NAME
-    );
-    const deleteButton = new List(_items).firstOrDefault(
-      (item) => item.key === DELETE_PANEL_ITEM_NAME
-    );
+    // const saveButton = new List(_items).firstOrDefault(
+    //   (item) => item.key === NEW_PANEL_ITEM_NAME
+    // );
+    // const deleteButton = new List(_items).firstOrDefault(
+    //   (item) => item.key === DELETE_PANEL_ITEM_NAME
+    // );
 
-    if (saveButton)
-      saveButton.buttonStyles = {
-        root: { display: 'none' },
-      };
+    // if (saveButton)
+    //   saveButton.buttonStyles = {
+    //     root: { display: 'none' },
+    //   };
 
-    if (deleteButton)
-      deleteButton.buttonStyles = {
-        root: { display: 'none' },
-      };
+    // if (deleteButton)
+    //   deleteButton.buttonStyles = {
+    //     root: { display: 'none' },
+    //   };
 
     content = (
       <OptionGroupDetails

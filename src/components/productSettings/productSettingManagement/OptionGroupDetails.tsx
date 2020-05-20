@@ -107,7 +107,8 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
       <Stack
         horizontal
         horizontalAlign="space-between"
-        tokens={{ childrenGap: 20 }}>
+        tokens={{ childrenGap: 20 }}
+      >
         <Stack.Item grow={1} styles={{ root: { maxWidth: '49%' } }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
@@ -142,6 +143,7 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
                         ]
                       );
                       dispatch(action);
+                      props.formikReference.formik.resetForm();
                     } else {
                       /// Creating new unit
 
@@ -156,6 +158,7 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
                         ]
                       );
                       dispatch(action);
+                      props.formikReference.formik.resetForm();
                     }
                   }}
                   optionUnit={sectedOptionUnit}

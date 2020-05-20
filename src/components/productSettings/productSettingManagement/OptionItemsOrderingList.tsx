@@ -52,7 +52,7 @@ export const OptionItemsOrderingList: React.FC = () => {
       key: 'option-item',
       name: '#',
       minWidth: 16,
-      maxWidth: 24,
+      maxWidth: 204,
       onColumnClick: () => {},
       onRender: (item: any, index?: number) => {
         return (
@@ -78,118 +78,118 @@ export const OptionItemsOrderingList: React.FC = () => {
 
   return (
     <div>
-      <MarqueeSelection selection={selection}>
-        <DetailsList
-          styles={{
-            root: {
-              color: 'red',
-            },
-          }}
-          className="options"
-          selectionMode={SelectionMode.single}
-          columns={customerColumns}
-          items={optionUnits}
-          isHeaderVisible={false}
-          checkboxVisibility={CheckboxVisibility.hidden}
-          dragDropEvents={{
-            canDrop: (
-              dropContext?: IDragDropContext,
-              dragContext?: IDragDropContext
-            ) => {
-              return true;
-            },
-            canDrag: (item?: any) => {
-              return true;
-            },
-            onDragEnter: (item?: any, event?: DragEvent) => {
-              // return string is the css classes that will be added to the entering element.
-              return dragEnterClass;
-            },
-            onDragLeave: (item?: any, event?: DragEvent) => {
-              return;
-            },
-            onDrop: (item?: any, event?: DragEvent) => {
-              if (draggedItem) {
-                const draggedItems = selection.isIndexSelected(draggedIndex)
-                  ? (selection.getSelection() as any[])
-                  : [draggedItem!];
+      {/* <MarqueeSelection selection={selection}> */}
+      <DetailsList
+        styles={{
+          root: {
+            color: 'red',
+          },
+        }}
+        className="options"
+        selectionMode={SelectionMode.single}
+        columns={customerColumns}
+        items={optionUnits}
+        isHeaderVisible={false}
+        checkboxVisibility={CheckboxVisibility.hidden}
+        dragDropEvents={{
+          canDrop: (
+            dropContext?: IDragDropContext,
+            dragContext?: IDragDropContext
+          ) => {
+            return true;
+          },
+          canDrag: (item?: any) => {
+            return true;
+          },
+          onDragEnter: (item?: any, event?: DragEvent) => {
+            // return string is the css classes that will be added to the entering element.
+            return dragEnterClass;
+          },
+          onDragLeave: (item?: any, event?: DragEvent) => {
+            return;
+          },
+          onDrop: (item?: any, event?: DragEvent) => {
+            if (draggedItem) {
+              const draggedItems = selection.isIndexSelected(draggedIndex)
+                ? (selection.getSelection() as any[])
+                : [draggedItem!];
 
-                const insertIndex = optionUnits.indexOf(item);
-                const items = optionUnits.filter(
-                  (itm) => draggedItems.indexOf(itm) === -1
-                );
+              const insertIndex = optionUnits.indexOf(item);
+              const items = optionUnits.filter(
+                (itm) => draggedItems.indexOf(itm) === -1
+              );
 
-                items.splice(insertIndex, 0, ...draggedItems);
+              items.splice(insertIndex, 0, ...draggedItems);
 
-                items.forEach((item: OptionUnit, index: number) => {
-                  item.orderIndex = index;
-                });
+              items.forEach((item: OptionUnit, index: number) => {
+                item.orderIndex = index;
+              });
 
-                let action = assignPendingActions(
-                  productSettingsActions.modifyOptionUnitsOrder(
-                    new List<OptionUnit>(items)
-                      .select<ModifiedOptionUnitOrder>((item: OptionUnit) => {
-                        let result = new ModifiedOptionUnitOrder();
-                        result.optionUnitId = item.id;
-                        result.orderIndex = item.orderIndex;
+              let action = assignPendingActions(
+                productSettingsActions.modifyOptionUnitsOrder(
+                  new List<OptionUnit>(items)
+                    .select<ModifiedOptionUnitOrder>((item: OptionUnit) => {
+                      let result = new ModifiedOptionUnitOrder();
+                      result.optionUnitId = item.id;
+                      result.orderIndex = item.orderIndex;
 
-                        return result;
-                      })
-                      .toArray()
-                  ),
-                  [productSettingsActions.getAllOptionGroupsList()]
-                );
-                dispatch(action);
-              }
-            },
-            onDragStart: (
-              item?: any,
-              itemIndex?: number,
-              selectedItems?: any[],
-              event?: MouseEvent
-            ) => {
-              setDraggedItem(item);
-              setDraggedIndex(itemIndex!);
-            },
-            onDragEnd: (item?: any, event?: DragEvent) => {
-              setDraggedItem(undefined);
-              setDraggedIndex(-1);
-            },
-          }}
-          onRenderRow={(args: any) => {
-            return (
-              <div
-                onClick={(clickArgs: any) => {
-                  const offsetParent: any =
-                    clickArgs?.target?.offsetParent?.className;
+                      return result;
+                    })
+                    .toArray()
+                ),
+                [productSettingsActions.getAllOptionGroupsList()]
+              );
+              dispatch(action);
+            }
+          },
+          onDragStart: (
+            item?: any,
+            itemIndex?: number,
+            selectedItems?: any[],
+            event?: MouseEvent
+          ) => {
+            setDraggedItem(item);
+            setDraggedIndex(itemIndex!);
+          },
+          onDragEnd: (item?: any, event?: DragEvent) => {
+            setDraggedItem(undefined);
+            setDraggedIndex(-1);
+          },
+        }}
+        onRenderRow={(args: any) => {
+          return (
+            <div
+              onClick={(clickArgs: any) => {
+                const offsetParent: any =
+                  clickArgs?.target?.offsetParent?.className;
 
-                  if (!offsetParent.includes(DATA_SELECTION_DISABLED_CLASS)) {
+                if (!offsetParent.includes(DATA_SELECTION_DISABLED_CLASS)) {
+                  dispatch(
+                    productSettingsActions.changeTargetOptionunit(args.item)
+                  );
+                  dispatch(
                     dispatch(
-                      productSettingsActions.changeTargetOptionunit(args.item)
-                    );
-                    dispatch(
-                      dispatch(
-                        productSettingsActions.toggleOptionUnitFormVisibility(
-                          true
-                        )
+                      productSettingsActions.toggleOptionUnitFormVisibility(
+                        true
                       )
-                    );
-                  }
+                    )
+                  );
+                }
+              }}
+            >
+              <DetailsRow
+                styles={{
+                  cell: {
+                    padding: 0,
+                  },
                 }}
-              >
-                <DetailsRow
-                  styles={{
-                    cell: {
-                      padding: 0,
-                    },
-                  }}
-                  {...args}
-                />
-              </div>
-            );
-          }}
-        />
-      </MarqueeSelection>
+                {...args}
+              />
+            </div>
+          );
+        }}
+      />
+      {/* </MarqueeSelection> */}
     </div>
   );
 };
