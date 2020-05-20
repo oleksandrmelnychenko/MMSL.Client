@@ -195,7 +195,9 @@ export const DealerStores: React.FC = () => {
                     dealerActions.updateDealerStore(args)
                   );
                   dispatch(action);
+
                   setIsOpenForm(false);
+                  setIsDirtyForm(false);
                 } else {
                   let action = assignPendingActions(
                     dealerActions.addStoreToCurrentDealer(args)
@@ -203,6 +205,7 @@ export const DealerStores: React.FC = () => {
                   dispatch(action);
 
                   setIsOpenForm(false);
+                  setIsDirtyForm(false);
                 }
               }}
               formikReference={formikReference}
