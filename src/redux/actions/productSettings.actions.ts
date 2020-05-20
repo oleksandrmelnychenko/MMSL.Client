@@ -49,6 +49,12 @@ export const updateSearchWordOptionGroup = createAction<string>(
 export const getBySearchOptionGroups = createAction(
   productSettingsTypes.GET_BY_SEARCH_OPTION_GROUPS
 );
+export const getAndSelectOptionUnitForSingleEditById = createAction<number>(
+  productSettingsTypes.GET_AND_SELECT_OPTION_UNIT_FOR_SINGLE_EDIT_BY_ID
+);
+export const updateSingleEditOptionUnit = createAction<
+  OptionUnit | null | undefined
+>(productSettingsTypes.UPDATE_SINGLE_EDIT_OPTION_UNIT);
 
 export type ManagingPanelContent = ReturnType<typeof managingPanelContent>;
 export type SaveNewOptionGroup = ReturnType<typeof saveNewOptionGroup>;
@@ -73,4 +79,10 @@ export type UpdateSearchWordOptionGroup = ReturnType<
 >;
 export type GetBySearchOptionGroups = ReturnType<
   typeof getBySearchOptionGroups
+>;
+export type GetAndSelectOptionUnitForSingleEditById = ReturnType<
+  typeof getAndSelectOptionUnitForSingleEditById
+>;
+export type UpdateSingleEditOptionUnit = ReturnType<
+  typeof updateSingleEditOptionUnit
 >;

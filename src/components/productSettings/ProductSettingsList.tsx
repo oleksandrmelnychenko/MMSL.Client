@@ -8,9 +8,6 @@ import {
   Image,
   Stack,
   IconButton,
-  MarqueeSelection,
-  DetailsHeader,
-  DetailsRow,
   CheckboxVisibility,
   GroupHeader,
   ITextProps,
@@ -20,16 +17,23 @@ import {
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
-import { OptionGroup } from '../../interfaces';
+import { OptionGroup, OptionUnit } from '../../interfaces';
 import { assignPendingActions } from '../../helpers/action.helper';
 import * as productSettingsActions from '../../redux/actions/productSettings.actions';
 import { ManagingPanelComponent } from '../../redux/reducers/productSettings.reducer';
 import { List } from 'linq-typescript';
 import { scrollablePaneStyleForDetailList } from '../../common/fabric-styles/styles';
+import { DATA_SELECTION_DISABLED_CLASS } from '../dealers/DealerList';
+import * as controlAction from '../../redux/actions/control.actions';
+import {
+  DialogArgs,
+  CommonDialogType,
+} from '../../redux/reducers/control.reducer';
 
 const _columnIconButtonStyle = {
   root: {
     height: '20px',
+    marginTop: '15px',
   },
 };
 
@@ -43,16 +47,29 @@ export const ProductSettingsList: React.FC = () => {
     OptionGroup[]
   >((state) => state.productSettings.optionGroupsList);
 
+  const singleOptionForEdit: OptionUnit | null | undefined = useSelector<
+    IApplicationState,
+    OptionUnit | null | undefined
+  >((state) => state.productSettings.manageSingleOptionUnitState.optionUnit);
+
   useEffect(() => {
     dispatch(productSettingsActions.getAllOptionGroupsList());
   }, [dispatch]);
+
+  useEffect(() => {
+    const panelContentType = singleOptionForEdit
+      ? ManagingPanelComponent.ManageSingleOptionUnit
+      : null;
+
+    dispatch(productSettingsActions.managingPanelContent(panelContentType));
+  }, [singleOptionForEdit, dispatch]);
 
   const customerColumns: IColumn[] = [
     {
       key: 'index',
       name: '#',
       minWidth: 16,
-      maxWidth: 24,
+      maxWidth: 200,
       onColumnClick: () => {},
       onRender: (item: any, index?: number) => {
         const imageProps: IImageProps = {
@@ -88,6 +105,65 @@ export const ProductSettingsList: React.FC = () => {
           </Stack>
         );
       },
+    },
+    {
+      key: 'actions',
+      name: 'Actions',
+      minWidth: 70,
+      isResizable: true,
+      isCollapsible: true,
+      data: 'string',
+      onRender: (item: any) => {
+        return (
+          <Stack horizontal disableShrink>
+            <IconButton
+              data-selection-disabled={true}
+              className={DATA_SELECTION_DISABLED_CLASS}
+              styles={_columnIconButtonStyle}
+              height={20}
+              iconProps={{ iconName: 'SingleColumnEdit' }}
+              title="Edit"
+              ariaLabel="Edit"
+              onClick={() => {
+                dispatch(
+                  productSettingsActions.getAndSelectOptionUnitForSingleEditById(
+                    item.id
+                  )
+                );
+              }}
+            />
+            <IconButton
+              data-selection-disabled={true}
+              className={DATA_SELECTION_DISABLED_CLASS}
+              styles={_columnIconButtonStyle}
+              height={20}
+              iconProps={{ iconName: 'Delete' }}
+              title="Delete"
+              ariaLabel="Delete"
+              onClick={(args: any) => {
+                dispatch(
+                  controlAction.toggleCommonDialogVisibility(
+                    new DialogArgs(
+                      CommonDialogType.Delete,
+                      'Delete option unit',
+                      `Are you sure you want to delete ${item.value}?`,
+                      () => {
+                        let action = assignPendingActions(
+                          productSettingsActions.deleteOptionUnitById(item.id),
+                          [productSettingsActions.getAllOptionGroupsList()]
+                        );
+                        dispatch(action);
+                      },
+                      () => {}
+                    )
+                  )
+                );
+              }}
+            />
+          </Stack>
+        );
+      },
+      isPadded: true,
     },
   ];
 
@@ -135,13 +211,29 @@ export const ProductSettingsList: React.FC = () => {
                   {...props}
                   onRenderTitle={(props?: any, defaultRender?: any) => {
                     return (
-                      <div style={{ paddingLeft: '8px' }}>
-                        <Stack horizontal tokens={{ childrenGap: 20 }}>
+                      <div
+                        style={{
+                          paddingLeft: '8px',
+                          paddingRight: '8px',
+                          width: '100%',
+                        }}
+                      >
+                        <Stack
+                          horizontal
+                          horizontalAlign="space-between"
+                          tokens={{ childrenGap: 0 }}
+                        >
                           {defaultRender(props)}
+
                           <IconButton
-                            styles={_columnIconButtonStyle}
+                            styles={{
+                              root: {
+                                height: '20px',
+                                marginRight: '15px',
+                              },
+                            }}
                             height={20}
-                            iconProps={{ iconName: 'Edit' }}
+                            iconProps={{ iconName: 'ColumnRightTwoThirdsEdit' }}
                             title="Settings"
                             ariaLabel="Settings"
                             onClick={() => {
@@ -171,21 +263,21 @@ export const ProductSettingsList: React.FC = () => {
           columns={customerColumns}
           items={allConcatedUnits}
           checkboxVisibility={CheckboxVisibility.hidden}
-          onRenderRow={(args: any) => {
-            return (
-              <div>
-                <DetailsRow {...args} />
-              </div>
-            );
-          }}
-          onRenderDetailsHeader={(props: any, _defaultRender?: any) => {
-            return (
-              <DetailsHeader
-                {...props}
-                ariaLabelForToggleAllGroupsButton={'Expand collapse groups'}
-              />
-            );
-          }}
+          // onRenderRow={(args: any) => {
+          //   return (
+          //     <div>
+          //       <DetailsRow {...args} />
+          //     </div>
+          //   );
+          // }}
+          // onRenderDetailsHeader={(props: any, _defaultRender?: any) => {
+          //   return (
+          //     <DetailsHeader
+          //       {...props}
+          //       ariaLabelForToggleAllGroupsButton={'Expand collapse groups'}
+          //     />
+          //   );
+          // }}
         />
       </ScrollablePane>
     </div>

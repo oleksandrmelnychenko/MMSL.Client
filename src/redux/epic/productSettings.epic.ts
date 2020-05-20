@@ -389,3 +389,42 @@ export const getAndSelectOptionGroupByIdEpic = (
     })
   );
 };
+
+export const getAndSelectOptionUnitForSingleEditByIdEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(
+      productSettingsTypes.GET_AND_SELECT_OPTION_UNIT_FOR_SINGLE_EDIT_BY_ID
+    ),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      return ajaxGetWebResponse(api.GET_OPTION_UNIT_BY_ID, state$.value, [
+        { key: 'optionUnitId', value: `${action.payload}` },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          let successResultFlow = [
+            productSettingsActions.updateSingleEditOptionUnit(successResponse),
+            ...extractSuccessPendingActions(action),
+          ];
+
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [
+              controlActions.showInfoMessage(
+                `Error occurred while getting option unit for select. ${errorResponse}`
+              ),
+              ...extractErrorPendingActions(action),
+            ];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};
