@@ -105,21 +105,24 @@
     }
 }
 
-.options {
-    .options__item {
-        border-left: 3px solid transparent;
-    }
-
-    & .selected {
-        border-left: 3px solid #0078d4;
-        color: #0078d4;
-        background-color: #f0f0f0;
-    }
-}
+.options {}
 
 .list {
     &__item {
+        padding-left: 12px;
+        padding-top: 11px;
+        padding-bottom: 11px;
         cursor: pointer;
+        border-left: 3px solid transparent;
+
+        &.selected {
+            border-left: 3px solid #0078d4;
+            background-color: #f0f0f0;
+
+            .list__description__name {
+                color: #0078d4;
+            }
+        }
 
         &:before {
             display: block;

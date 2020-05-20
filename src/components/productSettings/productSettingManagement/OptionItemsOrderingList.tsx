@@ -57,7 +57,10 @@ export const OptionItemsOrderingList: React.FC = () => {
       onColumnClick: () => {},
       onRender: (item: any, index?: number) => {
         return (
-          <div className="list__item">
+          <div
+            className={`list__item${
+              item.id === selectedOptionUnitId ? ' selected' : ''
+            }`}>
             <div className="list__description">
               <div className="list__description__name">
                 Unit value: {item.value}
@@ -79,6 +82,11 @@ export const OptionItemsOrderingList: React.FC = () => {
     <div>
       <MarqueeSelection selection={selection}>
         <DetailsList
+          styles={{
+            root: {
+              color: 'red',
+            },
+          }}
           className="options"
           selectionMode={SelectionMode.single}
           columns={customerColumns}
@@ -153,9 +161,6 @@ export const OptionItemsOrderingList: React.FC = () => {
           onRenderRow={(args: any) => {
             return (
               <div
-                className={`options__item${
-                  args.item.id === selectedOptionUnitId ? ' selected' : ''
-                }`}
                 onClick={(clickArgs: any) => {
                   const offsetParent: any =
                     clickArgs?.target?.offsetParent?.className;
@@ -172,9 +177,15 @@ export const OptionItemsOrderingList: React.FC = () => {
                       )
                     );
                   }
-                }}
-              >
-                <DetailsRow {...args} />
+                }}>
+                <DetailsRow
+                  styles={{
+                    cell: {
+                      padding: 0,
+                    },
+                  }}
+                  {...args}
+                />
               </div>
             );
           }}

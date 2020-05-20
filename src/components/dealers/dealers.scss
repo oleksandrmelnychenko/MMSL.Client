@@ -48,6 +48,12 @@
   }
 }
 
+.dealer__stores {
+  position: relative;
+  height: 70vh;
+  overflow-y: scroll;
+}
+
 .dealer__title {
   color: #484848;
   padding: 9px 90px 0 6px;
@@ -72,6 +78,7 @@
 }
 
 .dealer__store {
+  position: relative;
   min-height: 54px;
   padding-top: 10px;
   padding-right: 10px;
