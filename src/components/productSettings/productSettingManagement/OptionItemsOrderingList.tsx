@@ -172,7 +172,8 @@ export const OptionItemsOrderingList: React.FC = () => {
                       )
                     );
                   }
-                }}>
+                }}
+              >
                 <DetailsRow {...args} />
               </div>
             );

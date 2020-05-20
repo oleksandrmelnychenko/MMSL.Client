@@ -20,26 +20,26 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
 
   const selectedStore = props.store ? props.store[0] : null;
 
-  // const builderAddStore = (value: any) => {
-  //   let storeData: INewStore;
-  //   if (selectedDealerId) {
-  //     storeData = {
-  //       address: {
-  //         addressLine1: value.addressLine1,
-  //         addressLine2: value.addressLine2,
-  //         city: value.city,
-  //         state: value.state,
-  //         country: value.country,
-  //         zipCode: value.zip,
-  //       },
-  //       dealerAccountId: selectedDealerId,
-  //       contactEmail: value.contactEmail,
-  //       billingEmail: value.billingEmail,
-  //       name: value.nameStore,
-  //     };
-  //     return storeData;
-  //   }
-  // };
+  const builderAddStore = (value: any) => {
+    let storeData: INewStore;
+    if (selectedDealerId) {
+      storeData = {
+        address: {
+          addressLine1: value.addressLine1,
+          addressLine2: value.addressLine2,
+          city: value.city,
+          state: value.state,
+          country: value.country,
+          zipCode: value.zip,
+        },
+        dealerAccountId: selectedDealerId,
+        contactEmail: value.contactEmail,
+        billingEmail: value.billingEmail,
+        name: value.nameStore,
+      };
+      return storeData;
+    }
+  };
 
   const builderUpdateStore = (value: any) => {
     if (selectedStore) {
@@ -114,10 +114,15 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
         })}
         initialValues={initValue()}
         onSubmit={(values: any, { resetForm }) => {
-          props.submitAction(builderUpdateStore(values) as IStore);
+          if (selectedStore) {
+            props.submitAction(builderUpdateStore(values) as IStore);
+          } else {
+            props.submitAction(builderAddStore(values) as INewStore);
+          }
         }}
         enableReinitialize={true}
-        validateOnBlur={false}>
+        validateOnBlur={false}
+      >
         {(formik) => {
           props.formikReference.formik = formik;
 
