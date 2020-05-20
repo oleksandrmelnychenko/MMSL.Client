@@ -39,11 +39,15 @@ export class DealersListState {
     this.dealersList = [];
     this.pagination = new Pagination();
     this.search = '';
+    this.fromDate = undefined;
+    this.toDate = undefined;
   }
 
   dealersList: DealerAccount[];
   pagination: Pagination;
   search: string;
+  fromDate: Date | undefined;
+  toDate: Date | undefined;
 }
 
 /// Dealer `managing form` dependent state
@@ -147,4 +151,10 @@ export const dealerReducer = createReducer(new DealerState(), (builder) =>
         state.dealerCustomerState.selectedCustomer = action.payload;
       }
     )
+    .addCase(dealerActions.dealeFromDate, (state, action) => {
+      state.dealerState.fromDate = action.payload;
+    })
+    .addCase(dealerActions.dealeToDate, (state, action) => {
+      state.dealerState.toDate = action.payload;
+    })
 );
