@@ -114,8 +114,7 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
           );
         }}
         validateOnBlur={false}
-        enableReinitialize={true}
-      >
+        enableReinitialize={true}>
         {(formik) => {
           props.formikReference.formik = formik;
           if (props.formikReference.isDirtyFunc)
@@ -140,15 +139,10 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
             <div
               style={{
                 position: 'relative',
-                maxWidth: '279px',
-                maxHeight: '178px',
-                minWidth: '267px',
-                minHeight: '178px',
                 border: '1px solid #efefef',
                 padding: '6px',
-                borderRadius: '3px',
-              }}
-            >
+                borderRadius: '6px',
+              }}>
               <FontIcon
                 style={{
                   position: 'absolute',

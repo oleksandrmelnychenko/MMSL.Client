@@ -76,6 +76,10 @@
             background-image: url('../../../assets/images/menu-icons/product.svg');
         }
 
+        &.settings:before {
+            background-image: url('../../../assets/images/menu-icons/settings.svg');
+        }
+
         &.reports:before {
             background-image: url('../../../assets/images/menu-icons/reports.svg');
         }

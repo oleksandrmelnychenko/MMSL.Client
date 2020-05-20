@@ -104,3 +104,46 @@
         margin-left: 12px;
     }
 }
+
+.options {
+    .options__item {
+        border-left: 3px solid transparent;
+    }
+
+    & .selected {
+        border-left: 3px solid #0078d4;
+        color: #0078d4;
+        background-color: #f0f0f0;
+    }
+}
+
+.list {
+    &__item {
+        cursor: pointer;
+
+        &:before {
+            display: block;
+            content: "";
+            clear: both;
+        }
+    }
+
+    &__description {
+
+        &__name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        &__mandatory {}
+
+        &__image {
+            position: absolute;
+            width: 12px;
+            height: 18px;
+            top: 14px;
+            right: 14px;
+        }
+    }
+}

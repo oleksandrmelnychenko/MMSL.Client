@@ -12,6 +12,7 @@ import {
   CheckboxVisibility,
   DetailsRow,
   FontIcon,
+  divProperties,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
@@ -20,13 +21,6 @@ import * as productSettingsActions from '../../../redux/actions/productSettings.
 import { ModifiedOptionUnitOrder, OptionUnit } from '../../../interfaces';
 import { List } from 'linq-typescript';
 import { DATA_SELECTION_DISABLED_CLASS } from '../../dealers/DealerList';
-
-const iconClass = mergeStyles({
-  fontSize: 18,
-  height: 18,
-  width: 18,
-  marginTop: '-4px',
-});
 
 export const OptionItemsOrderingList: React.FC = () => {
   const dispatch = useDispatch();
@@ -37,10 +31,18 @@ export const OptionItemsOrderingList: React.FC = () => {
   >();
   const [draggedIndex, setDraggedIndex] = useState<number>(-1);
 
-  const oputionUnits: OptionUnit[] = useSelector<
+  const optionUnits: OptionUnit[] = useSelector<
     IApplicationState,
     OptionUnit[]
   >((state) => state.productSettings.managingOptionUnitsState.optionUnits);
+
+  const selectedOptionUnitId: number | null | undefined = useSelector<
+    IApplicationState,
+    number | null | undefined
+  >(
+    (state) =>
+      state.productSettings.managingOptionUnitsState.selectedOptionUnit?.id
+  );
 
   const dragEnterClass = mergeStyles({
     backgroundColor: getTheme().palette.neutralLight,
@@ -48,59 +50,28 @@ export const OptionItemsOrderingList: React.FC = () => {
 
   const customerColumns: IColumn[] = [
     {
-      key: 'index',
+      key: 'option-item',
       name: '#',
       minWidth: 16,
       maxWidth: 24,
       onColumnClick: () => {},
       onRender: (item: any, index?: number) => {
         return (
-          <Text>{index !== null && index !== undefined ? index + 1 : -1}</Text>
+          <div className="list__item">
+            <div className="list__description">
+              <div className="list__description__name">
+                Unit value: {item.value}
+              </div>
+              <div className="list__description__mandatory">
+                {item.isMandatory ? 'Allowed' : 'Not allowed'}
+              </div>
+              <div className="list__description__image">
+                {item.imageUrl ? <FontIcon iconName="FileImage" /> : null}
+              </div>
+            </div>
+          </div>
         );
       },
-    },
-    {
-      key: 'value',
-      name: 'Value',
-      minWidth: 70,
-      maxWidth: 90,
-      isResizable: true,
-      isCollapsible: true,
-      data: 'string',
-      onRender: (item: any) => {
-        return <Text>{item.value}</Text>;
-      },
-      isPadded: true,
-    },
-    {
-      key: 'isMandatory',
-      name: 'Is Mandatory',
-      minWidth: 70,
-      maxWidth: 30,
-      isResizable: true,
-      isCollapsible: true,
-      data: 'string',
-      onRender: (item: any) => {
-        return <Text>{item.isMandatory ? 'Mandatory' : 'Not mandatory'}</Text>;
-      },
-      isPadded: true,
-    },
-    {
-      key: 'imageSource',
-      name: '',
-      minWidth: 70,
-      maxWidth: 30,
-      isResizable: true,
-      isCollapsible: true,
-      data: 'string',
-      onRender: (item: any) => {
-        return item.imageUrl !== null &&
-          item.imageUrl !== undefined &&
-          item.imageUrl.length > 0 ? (
-          <FontIcon iconName="FileImage" className={iconClass} />
-        ) : null;
-      },
-      isPadded: true,
     },
   ];
 
@@ -108,9 +79,10 @@ export const OptionItemsOrderingList: React.FC = () => {
     <div>
       <MarqueeSelection selection={selection}>
         <DetailsList
+          className="options"
           selectionMode={SelectionMode.single}
           columns={customerColumns}
-          items={oputionUnits}
+          items={optionUnits}
           isHeaderVisible={false}
           checkboxVisibility={CheckboxVisibility.hidden}
           dragDropEvents={{
@@ -136,8 +108,8 @@ export const OptionItemsOrderingList: React.FC = () => {
                   ? (selection.getSelection() as any[])
                   : [draggedItem!];
 
-                const insertIndex = oputionUnits.indexOf(item);
-                const items = oputionUnits.filter(
+                const insertIndex = optionUnits.indexOf(item);
+                const items = optionUnits.filter(
                   (itm) => draggedItems.indexOf(itm) === -1
                 );
 
@@ -181,6 +153,9 @@ export const OptionItemsOrderingList: React.FC = () => {
           onRenderRow={(args: any) => {
             return (
               <div
+                className={`options__item${
+                  args.item.id === selectedOptionUnitId ? ' selected' : ''
+                }`}
                 onClick={(clickArgs: any) => {
                   const offsetParent: any =
                     clickArgs?.target?.offsetParent?.className;
@@ -197,8 +172,7 @@ export const OptionItemsOrderingList: React.FC = () => {
                       )
                     );
                   }
-                }}
-              >
+                }}>
                 <DetailsRow {...args} />
               </div>
             );

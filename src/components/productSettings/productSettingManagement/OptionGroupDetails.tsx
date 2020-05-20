@@ -103,12 +103,11 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
   }
 
   return (
-    <div className="customerList">
+    <div>
       <Stack
         horizontal
         horizontalAlign="space-between"
-        tokens={{ childrenGap: 20 }}
-      >
+        tokens={{ childrenGap: 20 }}>
         <Stack.Item grow={1} styles={{ root: { maxWidth: '49%' } }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
@@ -119,7 +118,7 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
         </Stack.Item>
         <Stack.Item grow={1}>
           <FocusZone direction={FocusZoneDirection.vertical}>
-            <div className={'dealer__stores'} data-is-scrollable={true}>
+            <div className={'list'} data-is-scrollable={true}>
               <Separator alignContent="start">
                 {`Details: ${sectedOptionUnit ? sectedOptionUnit.value : ''}`}
               </Separator>
