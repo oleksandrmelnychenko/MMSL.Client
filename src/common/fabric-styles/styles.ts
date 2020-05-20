@@ -20,6 +20,13 @@ export const stylesPanelInfo = {
   },
 };
 
+export const scrollablePaneStyleForDetailList = {
+  root: {
+    top: '70px',
+    bottom: '12px',
+  },
+};
+
 export const btnMenuStyle = {
   root: {
     minWidth: '90px',
