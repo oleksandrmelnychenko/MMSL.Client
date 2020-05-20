@@ -80,22 +80,6 @@ export const ajaxPostResponse = (
     .pipe(map((response) => response.response));
 };
 
-export const ajaxPostResponse_file = (
-  urlPath: string,
-  body: any,
-  state: IApplicationState
-) => {
-  const currentLanguage = getActiveLanguage(state.localize).code;
-
-  const header = {
-    Authorization: `Bearer ${TokenHelper.getAccessToken()}`,
-  };
-
-  return ajax
-    .post(`${API.SERVER_URL}/${currentLanguage}${urlPath}`, body, header)
-    .pipe(map((response) => response.response));
-};
-
 export const ajaxPutResponse = (
   urlPath: string,
   body: any,
@@ -113,16 +97,47 @@ export const ajaxPutResponse = (
 
 export const ajaxPutFormDataResponse = (
   urlPath: string,
-  body: any,
-  state: IApplicationState
+  body: FormData,
+  state: IApplicationState,
+  queryParams?: QueryParam[]
 ) => {
   const currentLanguage = getActiveLanguage(state.localize).code;
   let header = {
     Authorization: `Bearer ${TokenHelper.getAccessToken()}`,
+    // 'Content-Type': 'application/json',
   };
 
   return ajax
-    .put(`${API.SERVER_URL}/${currentLanguage}${urlPath}`, body, header)
+    .put(
+      `${API.SERVER_URL}/${currentLanguage}${urlPath}${buildQueryParamsString(
+        queryParams
+      )}`,
+      body,
+      header
+    )
+    .pipe(map((response) => response.response));
+};
+
+export const ajaxPostFormDataResponse = (
+  urlPath: string,
+  body: any,
+  state: IApplicationState,
+  queryParams?: QueryParam[]
+) => {
+  const currentLanguage = getActiveLanguage(state.localize).code;
+
+  const header = {
+    Authorization: `Bearer ${TokenHelper.getAccessToken()}`,
+  };
+
+  return ajax
+    .post(
+      `${API.SERVER_URL}/${currentLanguage}${urlPath}${buildQueryParamsString(
+        queryParams
+      )}`,
+      body,
+      header
+    )
     .pipe(map((response) => response.response));
 };
 

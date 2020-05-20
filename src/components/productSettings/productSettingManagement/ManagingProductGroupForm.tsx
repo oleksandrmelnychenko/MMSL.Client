@@ -1,7 +1,8 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
-import { Stack, TextField, Toggle } from 'office-ui-fabric-react';
+import { Stack, TextField, Checkbox } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
+import '../../dealers/dealerManaging/manageDealerForm.scss';
 import { FormicReference, OptionGroup } from '../../../interfaces';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 
@@ -86,7 +87,7 @@ export const ManagingvOptionGroupForm: React.FC<ManagingvOptionGroupFormProps> =
             <Form className="form">
               <div className="dealerFormManage">
                 <Stack horizontal tokens={{ childrenGap: 20 }}>
-                  <Stack grow={1}>
+                  <Stack grow={1} tokens={{ childrenGap: 20 }}>
                     <Field name="name">
                       {() => (
                         <div className="form__group">
@@ -119,7 +120,7 @@ export const ManagingvOptionGroupForm: React.FC<ManagingvOptionGroupFormProps> =
                       {() => {
                         return (
                           <div className="form__group">
-                            <Toggle
+                            {/* <Toggle
                               checked={formik.values.isMandatory}
                               styles={fabricStyles.toggleStyles}
                               className="form__group__field"
@@ -127,6 +128,15 @@ export const ManagingvOptionGroupForm: React.FC<ManagingvOptionGroupFormProps> =
                               inlineLabel
                               onText="On"
                               offText="Off"
+                              onChange={(checked: any, isChecked: any) => {
+                                formik.setFieldValue('isMandatory', isChecked);
+                                formik.setFieldTouched('isMandatory');
+                              }}
+                            /> */}
+
+                            <Checkbox
+                              checked={formik.values.isMandatory}
+                              label="Is mandatory"
                               onChange={(checked: any, isChecked: any) => {
                                 formik.setFieldValue('isMandatory', isChecked);
                                 formik.setFieldTouched('isMandatory');

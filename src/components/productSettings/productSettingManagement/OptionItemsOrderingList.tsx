@@ -10,6 +10,7 @@ import {
   getTheme,
   SelectionMode,
   CheckboxVisibility,
+  DetailsRow,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
@@ -17,6 +18,7 @@ import { assignPendingActions } from '../../../helpers/action.helper';
 import * as productSettingsActions from '../../../redux/actions/productSettings.actions';
 import { ModifiedOptionUnitOrder, OptionUnit } from '../../../interfaces';
 import { List } from 'linq-typescript';
+import { DATA_SELECTION_DISABLED_CLASS } from '../../dealers/DealerList';
 
 export const OptionItemsOrderingList: React.FC = () => {
   const dispatch = useDispatch();
@@ -31,10 +33,6 @@ export const OptionItemsOrderingList: React.FC = () => {
     IApplicationState,
     OptionUnit[]
   >((state) => state.productSettings.managingOptionUnitsState.optionUnits);
-
-  useEffect(() => {
-    dispatch(productSettingsActions.getAllOptionGroupsList());
-  }, [dispatch]);
 
   const dragEnterClass = mergeStyles({
     backgroundColor: getTheme().palette.neutralLight,
@@ -81,39 +79,6 @@ export const OptionItemsOrderingList: React.FC = () => {
     },
   ];
 
-  const _insertBeforeItem = (item: any) => {
-    const draggedItems = selection.isIndexSelected(draggedIndex)
-      ? (selection.getSelection() as any[])
-      : [draggedItem!];
-
-    const insertIndex = oputionUnits.indexOf(item);
-    const items = oputionUnits.filter(
-      (itm) => draggedItems.indexOf(itm) === -1
-    );
-
-    items.splice(insertIndex, 0, ...draggedItems);
-
-    items.forEach((item: OptionUnit, index: number) => {
-      item.orderIndex = index;
-    });
-
-    let action = assignPendingActions(
-      productSettingsActions.modifyOptionUnitsOrder(
-        new List<OptionUnit>(items)
-          .select<ModifiedOptionUnitOrder>((item: OptionUnit) => {
-            let result = new ModifiedOptionUnitOrder();
-            result.optionUnitId = item.id;
-            result.orderIndex = item.orderIndex;
-
-            return result;
-          })
-          .toArray()
-      ),
-      [productSettingsActions.getAllOptionGroupsList()]
-    );
-    dispatch(action);
-  };
-
   return (
     <div>
       <MarqueeSelection selection={selection}>
@@ -142,7 +107,36 @@ export const OptionItemsOrderingList: React.FC = () => {
             },
             onDrop: (item?: any, event?: DragEvent) => {
               if (draggedItem) {
-                _insertBeforeItem(item);
+                const draggedItems = selection.isIndexSelected(draggedIndex)
+                  ? (selection.getSelection() as any[])
+                  : [draggedItem!];
+
+                const insertIndex = oputionUnits.indexOf(item);
+                const items = oputionUnits.filter(
+                  (itm) => draggedItems.indexOf(itm) === -1
+                );
+
+                items.splice(insertIndex, 0, ...draggedItems);
+
+                items.forEach((item: OptionUnit, index: number) => {
+                  item.orderIndex = index;
+                });
+
+                let action = assignPendingActions(
+                  productSettingsActions.modifyOptionUnitsOrder(
+                    new List<OptionUnit>(items)
+                      .select<ModifiedOptionUnitOrder>((item: OptionUnit) => {
+                        let result = new ModifiedOptionUnitOrder();
+                        result.optionUnitId = item.id;
+                        result.orderIndex = item.orderIndex;
+
+                        return result;
+                      })
+                      .toArray()
+                  ),
+                  [productSettingsActions.getAllOptionGroupsList()]
+                );
+                dispatch(action);
               }
             },
             onDragStart: (
@@ -158,6 +152,31 @@ export const OptionItemsOrderingList: React.FC = () => {
               setDraggedItem(undefined);
               setDraggedIndex(-1);
             },
+          }}
+          onRenderRow={(args: any) => {
+            return (
+              <div
+                onClick={(clickArgs: any) => {
+                  const offsetParent: any =
+                    clickArgs?.target?.offsetParent?.className;
+
+                  if (!offsetParent.includes(DATA_SELECTION_DISABLED_CLASS)) {
+                    dispatch(
+                      productSettingsActions.changeTargetOptionunit(args.item)
+                    );
+                    dispatch(
+                      dispatch(
+                        productSettingsActions.toggleOptionUnitFormVisibility(
+                          true
+                        )
+                      )
+                    );
+                  }
+                }}
+              >
+                <DetailsRow {...args} />
+              </div>
+            );
           }}
         />
       </MarqueeSelection>

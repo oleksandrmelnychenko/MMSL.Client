@@ -1,4 +1,8 @@
-import { OptionGroup, ModifiedOptionUnitOrder } from './../../interfaces/index';
+import {
+  OptionGroup,
+  ModifiedOptionUnitOrder,
+  OptionUnit,
+} from './../../interfaces/index';
 import { createAction } from '@reduxjs/toolkit';
 import * as productSettingsTypes from '../constants/productSettings.types.constants';
 import { ManagingPanelComponent } from '../reducers/productSettings.reducer';
@@ -21,6 +25,21 @@ export const changeTargetOptionGroupForUnitsEdit = createAction<OptionGroup | nu
 export const modifyOptionUnitsOrder = createAction<ModifiedOptionUnitOrder[]>(
   productSettingsTypes.MODIFY_OPTION_UNITS_ORDER
 );
+export const changeTargetOptionunit = createAction<OptionUnit | null>(
+  productSettingsTypes.CHANGE_TARGET_OPTIONUNIT
+);
+export const updateOptionUnit = createAction<OptionUnit>(
+  productSettingsTypes.UPDATE_OPTION_UNIT
+);
+export const saveNewOptionUnit = createAction<OptionUnit>(
+  productSettingsTypes.SAVE_NEW_OPTION_UNIT
+);
+export const toggleOptionUnitFormVisibility = createAction<boolean>(
+  productSettingsTypes.TOGGLE_OPTION_UNIT_FORM_VISIBILITY
+);
+export const deleteOptionUnitById = createAction<number>(
+  productSettingsTypes.DELETE_OPTION_UNIT_BY_ID
+);
 
 export type ManagingPanelContent = ReturnType<typeof managingPanelContent>;
 export type SaveNewOptionGroup = ReturnType<typeof saveNewOptionGroup>;
@@ -30,3 +49,10 @@ export type ChangeTargetOptionGroupForUnitsEdit = ReturnType<
   typeof changeTargetOptionGroupForUnitsEdit
 >;
 export type ModifyOptionUnitsOrder = ReturnType<typeof modifyOptionUnitsOrder>;
+export type ChangeTargetOptionunit = ReturnType<typeof changeTargetOptionunit>;
+export type UpdateOptionUnit = ReturnType<typeof updateOptionUnit>;
+export type SaveNewOptionUnit = ReturnType<typeof saveNewOptionUnit>;
+export type ToggleOptionUnitFormVisibility = ReturnType<
+  typeof toggleOptionUnitFormVisibility
+>;
+export type DeleteOptionUnitById = ReturnType<typeof deleteOptionUnitById>;

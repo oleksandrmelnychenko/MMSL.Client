@@ -1,4 +1,10 @@
-import { ajaxPutResponse } from './../../helpers/epic.helper';
+import { DELETE_OPTION_UNIT_BY_ID } from './../constants/productSettings.types.constants';
+import {
+  ajaxPutResponse,
+  ajaxPutFormDataResponse,
+  ajaxPostFormDataResponse,
+  ajaxDeleteResponse,
+} from './../../helpers/epic.helper';
 import { checkUnauthorized } from './../../helpers/error.helpers';
 import {
   extractSuccessPendingActions,
@@ -17,6 +23,8 @@ import {
 import * as api from '../constants/api.constants';
 import * as controlActions from '../../redux/actions/control.actions';
 import * as productSettingsActions from '../../redux/actions/productSettings.actions';
+
+const FORM_DATA_IMAGE_FILE_KEY = 'file';
 
 export const saveNewOptionGroupEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
@@ -108,7 +116,161 @@ export const modifyOptionUnitsOrderEpic = (action$: AnyAction, state$: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               controlActions.showInfoMessage(
-                `Error occurred while updation option units order. ${errorResponse}`
+                `Error occurred while updating option units order. ${errorResponse}`
+              ),
+              ...extractErrorPendingActions(action),
+            ];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};
+
+export const updateOptionUnitEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(productSettingsTypes.UPDATE_OPTION_UNIT),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      const formData: FormData = new FormData();
+      formData.append(FORM_DATA_IMAGE_FILE_KEY, action.payload.imageBlob);
+
+      return ajaxPutFormDataResponse(
+        api.MODIFY_OPTION_UNIT,
+        formData,
+        state$.value,
+        [
+          {
+            key: 'orderIndex',
+            value: `${action.payload.orderIndex}`,
+          },
+          {
+            key: 'value',
+            value: `${action.payload.value}`,
+          },
+          {
+            key: 'isMandatory',
+            value: `${action.payload.isMandatory}`,
+          },
+          {
+            key: 'ImageUrl',
+            value: `${encodeURIComponent(action.payload.imageUrl)}`,
+          },
+          {
+            key: 'id',
+            value: `${action.payload.id}`,
+          },
+        ]
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          let successResultFlow = [...extractSuccessPendingActions(action)];
+
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [
+              controlActions.showInfoMessage(
+                `Error occurred while updating option unit. ${errorResponse}`
+              ),
+              ...extractErrorPendingActions(action),
+            ];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};
+
+export const saveNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(productSettingsTypes.SAVE_NEW_OPTION_UNIT),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      const formData: FormData = new FormData();
+      formData.append(FORM_DATA_IMAGE_FILE_KEY, action.payload.imageBlob);
+
+      return ajaxPostFormDataResponse(
+        api.ADD_OPTION_UNIT,
+        formData,
+        state$.value,
+        [
+          {
+            key: 'orderIndex',
+            value: `${action.payload.orderIndex}`,
+          },
+          {
+            key: 'value',
+            value: `${action.payload.value}`,
+          },
+          {
+            key: 'isMandatory',
+            value: `${action.payload.isMandatory}`,
+          },
+          {
+            key: 'imageUrl',
+            value: `${encodeURIComponent(action.payload.imageUrl)}`,
+          },
+          {
+            key: 'id',
+            value: `${action.payload.id}`,
+          },
+          {
+            key: 'optionGroupId',
+            value: `${action.payload.optionGroupId}`,
+          },
+        ]
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          let successResultFlow = [...extractSuccessPendingActions(action)];
+
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [
+              controlActions.showInfoMessage(
+                `Error occurred while creating new option unit. ${errorResponse}`
+              ),
+              ...extractErrorPendingActions(action),
+            ];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};
+
+export const deleteOptionUnitByIdEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(productSettingsTypes.DELETE_OPTION_UNIT_BY_ID),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      return ajaxDeleteResponse(api.DELETE_OPTION_UNIT_BY_ID, state$.value, [
+        { key: 'optionUnitId', value: `${action.payload}` },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          let successResultFlow = [
+            controlActions.showInfoMessage(successResponse.message),
+            ...extractSuccessPendingActions(action),
+          ];
+
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [
+              controlActions.showInfoMessage(
+                `Error occurred while deleteing option unit. ${errorResponse}`
               ),
               ...extractErrorPendingActions(action),
             ];
