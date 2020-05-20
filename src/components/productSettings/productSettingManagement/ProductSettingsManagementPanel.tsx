@@ -7,7 +7,7 @@ import {
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
-import { FormicReference, OptionGroup } from '../../../interfaces';
+import { FormicReference, OptionGroup, OptionUnit } from '../../../interfaces';
 import {
   panelStyle,
   commandBarStyles,
@@ -23,6 +23,26 @@ import { OptionGroupDetails } from './OptionGroupDetails';
 
 const NEW_PANEL_ITEM_NAME = 'New';
 const DELETE_PANEL_ITEM_NAME = 'Delete';
+
+/// Simply hides "Add" and "Edit" panel buttons
+const hideAddEditPanelActions = (actions: ICommandBarItemProps[]) => {
+  const saveButton = new List(actions).firstOrDefault(
+    (item) => item.key === NEW_PANEL_ITEM_NAME
+  );
+  const deleteButton = new List(actions).firstOrDefault(
+    (item) => item.key === DELETE_PANEL_ITEM_NAME
+  );
+
+  if (saveButton)
+    saveButton.buttonStyles = {
+      root: { display: 'none' },
+    };
+
+  if (deleteButton)
+    deleteButton.buttonStyles = {
+      root: { display: 'none' },
+    };
+};
 
 export const ProductSettingsManagementPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -48,6 +68,11 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
   >(
     (state) => state.productSettings.managingOptionUnitsState.targetOptionGroup
   );
+
+  const sectedSingleOptionUnit: OptionUnit | null | undefined = useSelector<
+    IApplicationState,
+    OptionUnit | null | undefined
+  >((state) => state.productSettings.manageSingleOptionUnitState.optionUnit);
 
   let _items: ICommandBarItemProps[] = [
     {
@@ -97,22 +122,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
   let content: any = null;
 
   if (panelContent === ManagingPanelComponent.ManageGroups) {
-    const saveButton = new List(_items).firstOrDefault(
-      (item) => item.key === NEW_PANEL_ITEM_NAME
-    );
-    const deleteButton = new List(_items).firstOrDefault(
-      (item) => item.key === DELETE_PANEL_ITEM_NAME
-    );
-
-    if (saveButton)
-      saveButton.buttonStyles = {
-        root: { display: 'none' },
-      };
-
-    if (deleteButton)
-      deleteButton.buttonStyles = {
-        root: { display: 'none' },
-      };
+    hideAddEditPanelActions(_items);
 
     panelTitleText = 'New Option Group';
 
@@ -137,6 +147,22 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
     if (sectedOptionGroup) {
       panelDescription = sectedOptionGroup.name;
     }
+    const saveButton = new List(_items).firstOrDefault(
+      (item) => item.key === NEW_PANEL_ITEM_NAME
+    );
+    const deleteButton = new List(_items).firstOrDefault(
+      (item) => item.key === DELETE_PANEL_ITEM_NAME
+    );
+
+    if (saveButton)
+      saveButton.buttonStyles = {
+        root: { display: 'none' },
+      };
+
+    if (deleteButton)
+      deleteButton.buttonStyles = {
+        root: { display: 'none' },
+      };
 
     content = (
       <OptionGroupDetails
@@ -152,7 +178,11 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
       />
     );
   } else if (panelContent === ManagingPanelComponent.ManageSingleOptionUnit) {
-    debugger;
+    panelTitleText = 'Details';
+    if (sectedSingleOptionUnit) {
+      panelDescription = sectedSingleOptionUnit.value;
+    }
+    hideAddEditPanelActions(_items);
   }
 
   return (
