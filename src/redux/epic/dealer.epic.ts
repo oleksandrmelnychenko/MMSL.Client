@@ -23,6 +23,7 @@ import {
   ToggleDealerPanelWithDetails,
   DealerDetilsComponents,
 } from '../reducers/dealer.reducer';
+import StoreHelper from '../../helpers/store.helper';
 
 export const getDealersListPaginatedEpic = (
   action$: AnyAction,
@@ -33,7 +34,7 @@ export const getDealersListPaginatedEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       const pagination: Pagination = state$.value.dealer.dealerState.pagination;
-
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const fromDate = state$.value.dealer.dealerState.fromDate;
       const toDate = state$.value.dealer.dealerState.toDate;
 
@@ -71,6 +72,7 @@ export const getDealersListPaginatedEpic = (
             dealerActions.updateDealerListPaginationInfo(
               successResponse.paginationInfo
             ),
+            controlActions.disabledStatusBar(),
             ...extractSuccessPendingActions(action),
           ];
 
@@ -80,6 +82,7 @@ export const getDealersListPaginatedEpic = (
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               { type: 'ERROR' },
+              controlActions.disabledStatusBar(),
               ...extractErrorPendingActions(action),
             ];
 
@@ -96,13 +99,14 @@ export const deleteDealerByIdEpic = (action$: AnyAction, state$: any) => {
     ofType(dealerTypes.DELETE_DEALER_BY_ID),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
-
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       return ajaxDeleteResponse(api.DELETE_DEALER_BY_ID, state$.value, [
         { key: 'dealerAccountId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
           let successResultFlow = [
             controlActions.showInfoMessage(successResponse.message),
+            controlActions.disabledStatusBar(),
             ...extractSuccessPendingActions(action),
           ];
 
@@ -112,6 +116,7 @@ export const deleteDealerByIdEpic = (action$: AnyAction, state$: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               { type: 'ERROR_DELETE_DEALER_BY_ID' },
+              controlActions.disabledStatusBar(),
               ...extractErrorPendingActions(action),
             ];
 
@@ -132,6 +137,7 @@ export const getAndSelectDealersByIdEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       openDetailsArgs.isOpen = true;
       openDetailsArgs.componentType = DealerDetilsComponents.DealerDetails;
       return ajaxGetWebResponse(api.GET_DEALER_BY_ID, state$.value, [
@@ -140,6 +146,7 @@ export const getAndSelectDealersByIdEpic = (
         mergeMap((successResponse: any) => {
           let successResultFlow = [
             dealerActions.setSelectedDealer(successResponse),
+            controlActions.disabledStatusBar(),
             ...extractSuccessPendingActions(action),
           ];
 
@@ -149,6 +156,7 @@ export const getAndSelectDealersByIdEpic = (
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               { type: 'ERROR_GET_AND_SELECT_DEALER_BY_ID' },
+              controlActions.disabledStatusBar(),
               ...extractErrorPendingActions(action),
             ];
 
@@ -165,6 +173,7 @@ export const saveNewDealerEpic = (action$: AnyAction, state$: any) => {
     ofType(dealerTypes.SAVE_NEW_DEALER),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       return ajaxPostResponse(
         api.CREATE_NEW_DEALER,
         action.payload,
@@ -174,6 +183,7 @@ export const saveNewDealerEpic = (action$: AnyAction, state$: any) => {
         mergeMap((successResponse: any) => {
           let successResultFlow = [
             controlActions.showInfoMessage(successResponse.message),
+            controlActions.disabledStatusBar(),
             ...extractSuccessPendingActions(action),
           ];
 
@@ -181,7 +191,10 @@ export const saveNewDealerEpic = (action$: AnyAction, state$: any) => {
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [...extractErrorPendingActions(action)];
+            let errorResultFlow = [
+              controlActions.disabledStatusBar(),
+              ...extractErrorPendingActions(action),
+            ];
 
             return from(errorResultFlow);
           });
@@ -195,6 +208,7 @@ export const updateDealerEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
     ofType(dealerTypes.UPDATE_DEALER),
     switchMap((action: AnyAction) => {
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const languageCode = getActiveLanguage(state$.value.localize).code;
       return ajaxPutResponse(
         api.UPDATE_DEALER,
@@ -204,13 +218,17 @@ export const updateDealerEpic = (action$: AnyAction, state$: any) => {
         mergeMap((successResponse: any) => {
           let successResultFlow = [
             controlActions.showInfoMessage(successResponse.message),
+            controlActions.disabledStatusBar(),
             ...extractSuccessPendingActions(action),
           ];
           return from(successResultFlow);
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [...extractErrorPendingActions(action)];
+            let errorResultFlow = [
+              controlActions.disabledStatusBar(),
+              ...extractErrorPendingActions(action),
+            ];
 
             return from(errorResultFlow);
           });
@@ -225,12 +243,14 @@ export const getStoresByDealerEpic = (action$: AnyAction, state$: any) => {
     ofType(dealerTypes.GET_STORES_BY_DEALER),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       return ajaxGetWebResponse(api.GET_STORES_BY_DEALER, state$.value, [
         { key: 'dealerAccountId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
           let successResultFlow = [
             dealerActions.setDealerStores(successResponse),
+            controlActions.disabledStatusBar(),
 
             ...extractSuccessPendingActions(action),
           ];
@@ -241,6 +261,7 @@ export const getStoresByDealerEpic = (action$: AnyAction, state$: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               { type: 'ERROR_GET_STORES_BY_DEALERS_ID' },
+              controlActions.disabledStatusBar(),
               ...extractErrorPendingActions(action),
             ];
 
@@ -256,6 +277,7 @@ export const updateDealerStoreEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
     ofType(dealerTypes.UPDATE_DEALER_STORE),
     switchMap((action: AnyAction) => {
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const languageCode = getActiveLanguage(state$.value.localize).code;
       return ajaxPutResponse(
         api.UPDATE_DEALER_STORE,
@@ -266,13 +288,17 @@ export const updateDealerStoreEpic = (action$: AnyAction, state$: any) => {
           let successResultFlow = [
             dealerActions.setUpdateDealerStore(successResponse.body),
             controlActions.showInfoMessage(successResponse.message),
+            controlActions.disabledStatusBar(),
             ...extractSuccessPendingActions(action),
           ];
           return from(successResultFlow);
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [...extractErrorPendingActions(action)];
+            let errorResultFlow = [
+              controlActions.disabledStatusBar(),
+              ...extractErrorPendingActions(action),
+            ];
 
             return from(errorResultFlow);
           });
@@ -289,6 +315,7 @@ export const addStoreToCurrentDealerEpic = (
   return action$.pipe(
     ofType(dealerTypes.ADD_STORE_TO_CURRENT_DEALER),
     switchMap((action: AnyAction) => {
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const languageCode = getActiveLanguage(state$.value.localize).code;
       return ajaxPostResponse(
         api.CREATE_DEALER_STORE,
@@ -299,6 +326,7 @@ export const addStoreToCurrentDealerEpic = (
         mergeMap((successResponse: any) => {
           let successResultFlow = [
             dealerActions.addNewStoreToCurrentDealer(successResponse.body),
+            controlActions.disabledStatusBar(),
             controlActions.showInfoMessage(successResponse.message),
             ...extractSuccessPendingActions(action),
           ];
@@ -307,7 +335,10 @@ export const addStoreToCurrentDealerEpic = (
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [...extractErrorPendingActions(action)];
+            let errorResultFlow = [
+              controlActions.disabledStatusBar(),
+              ...extractErrorPendingActions(action),
+            ];
 
             return from(errorResultFlow);
           });
@@ -325,12 +356,14 @@ export const deleteCurrentDealerStoreEpic = (
     ofType(dealerTypes.DELETE_CURRENT_DEALER_STORE),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       return ajaxDeleteResponse(api.DELETE_CURRENT_DEALER_STORE, state$.value, [
         { key: 'storeId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
           let successResultFlow = [
             dealerActions.updateDealerStoresAfterDelete(successResponse.body),
+            controlActions.disabledStatusBar(),
             controlActions.showInfoMessage(successResponse.message),
 
             ...extractSuccessPendingActions(action),
@@ -342,6 +375,7 @@ export const deleteCurrentDealerStoreEpic = (
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               { type: 'ERROR_DELETE_CURRENT_DEALER_STORE' },
+              controlActions.disabledStatusBar(),
               ...extractErrorPendingActions(action),
             ];
 
@@ -361,7 +395,7 @@ export const getStoreCustomersByStoreIdEpic = (
     ofType(dealerTypes.GET_STORE_CUSTOMERS_BY_STORE_ID),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
-
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       return ajaxGetWebResponse(api.GET_CUSTOMERS_ALL, state$.value, [
         {
           key: 'storeId',
@@ -373,6 +407,7 @@ export const getStoreCustomersByStoreIdEpic = (
             dealerActions.updateTargetStoreCustomersList(
               successResponse.entities
             ),
+            controlActions.disabledStatusBar(),
             ...extractSuccessPendingActions(action),
           ];
 
@@ -382,6 +417,7 @@ export const getStoreCustomersByStoreIdEpic = (
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               { type: 'ERROR' },
+              controlActions.disabledStatusBar(),
               ...extractErrorPendingActions(action),
             ];
 
@@ -401,6 +437,7 @@ export const deleteCurrentCustomerFromStoreEpic = (
     ofType(dealerTypes.DELETE_CUSTOMER_FROM_STORE),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       return ajaxDeleteResponse(api.DELETE_CUSTOMER_FROM_STORE, state$.value, [
         { key: 'storeCustomerId', value: `${action.payload}` },
       ]).pipe(
@@ -409,6 +446,7 @@ export const deleteCurrentCustomerFromStoreEpic = (
             dealerActions.updateCustomersStoreAfterDeleteCustomer(
               successResponse.body
             ),
+            controlActions.disabledStatusBar(),
             controlActions.showInfoMessage(successResponse.message),
             ...extractSuccessPendingActions(action),
           ];
@@ -419,6 +457,7 @@ export const deleteCurrentCustomerFromStoreEpic = (
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               { type: 'DELETE_CUSTOMER_FROM_STORE' },
+              controlActions.disabledStatusBar(),
               ...extractErrorPendingActions(action),
             ];
 
@@ -434,6 +473,7 @@ export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
     ofType(dealerTypes.UPDATE_STORE_CUSTOMER),
     switchMap((action: AnyAction) => {
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const languageCode = getActiveLanguage(state$.value.localize).code;
       return ajaxPutResponse(
         api.UPDATE_STORE_CUSTOMER,
@@ -448,6 +488,7 @@ export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
             dealerActions.setSelectedCustomerInCurrentStore(
               successResponse.body
             ),
+            controlActions.disabledStatusBar(),
             controlActions.showInfoMessage(successResponse.message),
             ...extractSuccessPendingActions(action),
           ];
@@ -457,6 +498,7 @@ export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               { type: 'ERROR_UPDATE_STORE_CUSTOMER' },
+              controlActions.disabledStatusBar(),
               ...extractErrorPendingActions(action),
             ];
 

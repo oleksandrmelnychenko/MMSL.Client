@@ -19,6 +19,7 @@ import * as api from '../constants/api.constants';
 import { Pagination } from '../../interfaces';
 import * as controlActions from '../../redux/actions/control.actions';
 import * as dealerActions from '../../redux/actions/dealer.actions';
+import StoreHelper from '../../helpers/store.helper';
 
 export const getCustomersListPaginatedEpic = (
   action$: AnyAction,
@@ -29,7 +30,7 @@ export const getCustomersListPaginatedEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       const pagination: Pagination = state$.value.dealer.dealerState.pagination;
-
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       return ajaxGetWebResponse(api.GET_CUSTOMERS_ALL, state$.value, [
         { key: 'pageNumber', value: `${pagination.paginationInfo.pageNumber}` },
         { key: 'limit', value: `${pagination.limit}` },
@@ -48,6 +49,7 @@ export const getCustomersListPaginatedEpic = (
             customerActions.updateCustomersListPaginationInfo(
               successResponse.paginationInfo
             ),
+            controlActions.disabledStatusBar(),
             ...extractSuccessPendingActions(action),
           ];
 
@@ -57,6 +59,7 @@ export const getCustomersListPaginatedEpic = (
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               { type: 'ERROR_GET_CUSTOMERS_LIST' },
+              controlActions.disabledStatusBar(),
               ...extractErrorPendingActions(action),
             ];
 
@@ -77,7 +80,7 @@ export const customerFormStoreAutocompleteTextEpic = (
     debounceTime(300),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
-
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       return ajaxGetWebResponse(api.GET_ALL_STORES, state$.value, [
         {
           key: 'searchPhrase',
@@ -89,7 +92,7 @@ export const customerFormStoreAutocompleteTextEpic = (
             customerActions.updateCustomerFormStoreAutocompleteList(
               successResponse
             ),
-
+            controlActions.disabledStatusBar(),
             ...extractSuccessPendingActions(action),
           ];
 
@@ -99,6 +102,7 @@ export const customerFormStoreAutocompleteTextEpic = (
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               customerActions.updateCustomerFormStoreAutocompleteList([]),
+              controlActions.disabledStatusBar(),
               ...extractErrorPendingActions(action),
             ];
 
@@ -115,6 +119,7 @@ export const saveNewCustomerEpic = (action$: AnyAction, state$: any) => {
     ofType(customerTypes.SAVE_NEW_CUSTOMER),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       return ajaxPostResponse(
         api.CREATE_NEW_STORE_CUSTOMER,
         action.payload,
@@ -126,6 +131,7 @@ export const saveNewCustomerEpic = (action$: AnyAction, state$: any) => {
             dealerActions.updateTargetStoreCustomersList(
               Array.of(successResponse.body)
             ),
+            controlActions.disabledStatusBar(),
             controlActions.showInfoMessage(successResponse.message),
             ...extractSuccessPendingActions(action),
           ];
@@ -134,7 +140,10 @@ export const saveNewCustomerEpic = (action$: AnyAction, state$: any) => {
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [...extractErrorPendingActions(action)];
+            let errorResultFlow = [
+              controlActions.disabledStatusBar(),
+              ...extractErrorPendingActions(action),
+            ];
 
             return from(errorResultFlow);
           });
@@ -149,6 +158,7 @@ export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
     ofType(customerTypes.UPDATE_STORE_CUSTOMER),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       return ajaxPutResponse(
         api.UPDATE_STORE_CUSTOMER,
         action.payload,
@@ -159,6 +169,7 @@ export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
             customerActions.toggleCustomerForm(false),
             customerActions.getCustomersListPaginated(),
             customerActions.selectedCustomer(null),
+            controlActions.disabledStatusBar(),
             controlActions.showInfoMessage(successResponse.message),
             ...extractSuccessPendingActions(action),
           ];
@@ -168,6 +179,7 @@ export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               { type: 'ERROR_UPDATE_STORE_CUSTOMER' },
+              controlActions.disabledStatusBar(),
               ...extractErrorPendingActions(action),
             ];
 
