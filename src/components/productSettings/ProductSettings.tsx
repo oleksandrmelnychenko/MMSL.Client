@@ -35,8 +35,7 @@ export const ProductSettings: React.FC = (props: any) => {
                               )
                             );
                           }}
-                          iconProps={{ iconName: 'Add' }}
-                        >
+                          iconProps={{ iconName: 'Add' }}>
                           New product setting
                         </ActionButton>
                       </div>

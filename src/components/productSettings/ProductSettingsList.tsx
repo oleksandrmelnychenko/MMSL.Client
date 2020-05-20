@@ -15,6 +15,7 @@ import {
   ITextProps,
   IImageProps,
   ImageFit,
+  ScrollablePane,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -23,6 +24,7 @@ import { assignPendingActions } from '../../helpers/action.helper';
 import * as productSettingsActions from '../../redux/actions/productSettings.actions';
 import { ManagingPanelComponent } from '../../redux/reducers/productSettings.reducer';
 import { List } from 'linq-typescript';
+import { scrollablePaneStyleForDetailList } from '../../common/fabric-styles/styles';
 
 const _columnIconButtonStyle = {
   root: {
@@ -71,8 +73,7 @@ export const ProductSettingsList: React.FC = () => {
               <Stack.Item>
                 <Text
                   variant={'mediumPlus' as ITextProps['variant']}
-                  styles={{ root: { color: '#484848', fontWeight: 400 } }}
-                >
+                  styles={{ root: { color: '#484848', fontWeight: 400 } }}>
                   Unit value: {item.value}
                 </Text>
               </Stack.Item>
@@ -112,7 +113,7 @@ export const ProductSettingsList: React.FC = () => {
 
   return (
     <div className="customerList">
-      <MarqueeSelection selection={selection}>
+      <ScrollablePane styles={scrollablePaneStyleForDetailList}>
         <DetailsList
           groupProps={{
             showEmptyGroups: true,
@@ -152,6 +153,7 @@ export const ProductSettingsList: React.FC = () => {
                     );
                   }}
                   styles={{
+                    root: { overflowY: 'scroll' },
                     check: checkButtonStyle,
                     headerCount: headerCountStyle,
                   }}
@@ -181,7 +183,7 @@ export const ProductSettingsList: React.FC = () => {
             );
           }}
         />
-      </MarqueeSelection>
+      </ScrollablePane>
     </div>
   );
 };

@@ -42,6 +42,7 @@ export const Dealers: React.FC = (props: any) => {
                       </div>
                       <div className="dealers__header__top__controls__control">
                         <DatePicker
+                          formatDate={fabricControlSettings.onFormatDate}
                           styles={datePickerWidth}
                           className="dealersDate"
                           firstDayOfWeek={DayOfWeek.Monday}
@@ -52,6 +53,7 @@ export const Dealers: React.FC = (props: any) => {
                       </div>
                       <div className="dealers__header__top__controls__control">
                         <DatePicker
+                          formatDate={fabricControlSettings.onFormatDate}
                           styles={datePickerWidth}
                           className="dealersDate"
                           firstDayOfWeek={DayOfWeek.Monday}
