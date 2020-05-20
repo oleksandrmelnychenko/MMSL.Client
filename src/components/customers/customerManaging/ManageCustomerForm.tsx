@@ -245,6 +245,11 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                         <div className="form__group">
                           <ComboBox
                             className="form__group__comboBox"
+                            text={
+                              formik.values.store
+                                ? formik.values.store.name
+                                : ''
+                            }
                             label="Store"
                             selectedKey={
                               formik.values.store

@@ -12,9 +12,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import * as customerActions from '../../redux/actions/customer.actions';
 import * as controlActions from '../../redux/actions/control.actions';
-
-import { StoreCustomer } from '../../interfaces';
 import ManagementPanel from './options/ManagmentPanel';
+import { CustomerListState } from '../../redux/reducers/customer.reducer';
 
 const _customerColumns: IColumn[] = [
   {
@@ -81,46 +80,6 @@ const _customerColumns: IColumn[] = [
     },
     isPadded: true,
   },
-  /// Temporary removed
-  // {
-  //   key: 'actions',
-  //   name: 'Actions',
-  //   minWidth: 70,
-  //   isResizable: true,
-  //   isCollapsible: true,
-  //   data: 'string',
-  //   onRender: (item: any) => {
-  //     return (
-  //       <Stack horizontal disableShrink>
-  //         <IconButton
-  //           styles={_columnIconButtonStyle}
-  //           height={20}
-  //           iconProps={{ iconName: 'Copy' }}
-  //           title="Copy"
-  //           ariaLabel="Copy"
-  //         />
-  //         <IconButton
-  //           styles={_columnIconButtonStyle}
-  //           height={20}
-  //           iconProps={{ iconName: 'ShoppingCart' }}
-  //         />
-  //         <IconButton
-  //           styles={_columnIconButtonStyle}
-  //           height={20}
-  //           iconProps={{ iconName: 'People' }}
-  //         />
-  //         <IconButton
-  //           styles={_columnIconButtonStyle}
-  //           height={20}
-  //           iconProps={{ iconName: 'Settings' }}
-  //           title="Settings"
-  //           ariaLabel="Settings"
-  //         />
-  //       </Stack>
-  //     );
-  //   },
-  //   isPadded: true,
-  // },
 ];
 
 export const CustomerList: React.FC = () => {
@@ -130,66 +89,51 @@ export const CustomerList: React.FC = () => {
     new Selection({
       onSelectionChanged: () => {
         /// TODO: important
-        customerSelection();
-        // if (selection.count > 0) {
-        //   dealerSelection();
-        // } else {
-        //   dealerUnSelection();
-        // }
+        if (selection.count > 0) {
+          customerSelection();
+        } else {
+          // customerUnSelection();
+        }
       },
     })
   );
 
-  const customers: StoreCustomer[] = useSelector<
+  const { customersList, selectedCustomer } = useSelector<
     IApplicationState,
-    StoreCustomer[]
-  >((state) => state.customer.customerState.customersList);
+    CustomerListState
+  >((state) => state.customer.customerState);
 
   /// TODO: important
   //   const pagination: Pagination = useSelector<IApplicationState, Pagination>(
   //     (state) => state.dealer.dealerState.pagination
   //   );
 
-  // const selectedCustomer: any = useSelector<
-  //   IApplicationState,
-  //   DealerAccount | null
-  // >((state) => state.dealer.selectedDealer);
-
-  /// TODO: important
-  //   const isCollapseMenu: boolean = useSelector<IApplicationState, boolean>(
-  //     (state) => state.control.isCollapseMenu
-  //   );
-
-  /// TODO: important
-  //   useEffect(() => {
-  //     if (!isCollapseMenu) {
-  //       selection.setAllSelected(false);
-  //     }
-  //   }, [isCollapseMenu, selection]);
+  useEffect(() => {
+    if (!selectedCustomer) {
+      selection.setAllSelected(false);
+      dispatch(controlActions.closeInfoPanelWithComponent());
+    }
+  }, [selectedCustomer, selection]);
 
   useEffect(() => {
     dispatch(customerActions.getCustomersListPaginated());
+    return () => {
+      dispatch(customerActions.selectedCustomer(null));
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /// TODO: important
   const customerSelection = () => {
-    const selectedDealer = selection.getSelection()[0] as any;
+    const selectedCustomer = selection.getSelection()[0] as any;
+    dispatch(customerActions.selectedCustomer(selectedCustomer));
     dispatch(controlActions.openInfoPanelWithComponent(ManagementPanel));
   };
-
-  /// TODO: important
-  //   const dealerUnSelection = () => {
-  //     dispatch(dealerActions.setSelectedDealer(null));
-  //     dispatch(controlActions.isCollapseMenu(false));
-  //     dispatch(controlActions.isOpenPanelInfo(false));
-  //   };
 
   return (
     <div className="customerList">
       <MarqueeSelection selection={selection}>
         <DetailsList
-          items={customers}
+          items={customersList}
           selection={selection}
           selectionMode={SelectionMode.single}
           columns={_customerColumns}

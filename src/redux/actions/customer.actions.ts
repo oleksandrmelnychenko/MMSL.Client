@@ -14,14 +14,18 @@ export const updateCustomersListPaginationInfo = createAction<PaginationInfo>(
   customerTypes.UPDATE_CUSTOMERS_LIST_PAGINATION_INFO
 );
 
+export const selectedCustomer = createAction<StoreCustomer | null>(
+  customerTypes.SELECTED_CUSTOMER
+);
+
 export const searchCustomer = createAction<string>(
   customerTypes.SEARCH_CUSTOMER
 );
 export const searchCustomerByStore = createAction<string>(
   customerTypes.SEARCH_CUSTOMER_BY_STORE
 );
-export const toggleNewCustomerForm = createAction<boolean>(
-  customerTypes.TOGGLE_NEW_CUSTOMER_FORM
+export const toggleCustomerForm = createAction<boolean>(
+  customerTypes.TOGGLE_CUSTOMER_FORM
 );
 export const customerFormStoreAutocompleteText = createAction<string>(
   customerTypes.CUSTOMER_FORM_STORE_AUTOCOMPLETE_TEXT
@@ -29,6 +33,11 @@ export const customerFormStoreAutocompleteText = createAction<string>(
 export const updateCustomerFormStoreAutocompleteList = createAction<IStore[]>(
   customerTypes.UPDATE_CUSTOMER_FORM_STORE_AUTOCOMPLETE_LIST
 );
+
+export const updateStoreCustomer = createAction<StoreCustomer>(
+  customerTypes.UPDATE_STORE_CUSTOMER
+);
+
 export const saveNewCustomer = createAction<StoreCustomer>(
   customerTypes.SAVE_NEW_CUSTOMER
 );

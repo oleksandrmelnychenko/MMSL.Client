@@ -7,7 +7,7 @@ import {
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
-import { FormicReference } from '../../../interfaces';
+import { FormicReference, StoreCustomer } from '../../../interfaces';
 import {
   panelStyle,
   commandBarStyles,
@@ -18,7 +18,7 @@ import ManageCustomerForm from './ManageCustomerForm';
 import * as customerActions from '../../../redux/actions/customer.actions';
 import { assignPendingActions } from '../../../helpers/action.helper';
 
-export const CreateCustomerPanel: React.FC = (props: any) => {
+export const CustomerPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
 
   const [formikReference] = useState<FormicReference>(
@@ -33,6 +33,10 @@ export const CreateCustomerPanel: React.FC = (props: any) => {
 
   const isAddCustomerOpen = useSelector<IApplicationState, boolean>(
     (state) => state.customer.manageCustomerForm.isFormVisible
+  );
+
+  const selectedCustomer = useSelector<IApplicationState, StoreCustomer | null>(
+    (state) => state.customer.customerState.selectedCustomer
   );
 
   const _items: ICommandBarItemProps[] = [
@@ -70,10 +74,9 @@ export const CreateCustomerPanel: React.FC = (props: any) => {
         type={PanelType.custom}
         customWidth={'600px'}
         onDismiss={() => {
-          dispatch(customerActions.toggleNewCustomerForm(false));
+          dispatch(customerActions.toggleCustomerForm(false));
         }}
-        closeButtonAriaLabel="Close"
-      >
+        closeButtonAriaLabel="Close">
         <PanelTitle
           onSaveClick={() => {
             let formik: any = formikReference.formik;
@@ -93,19 +96,24 @@ export const CreateCustomerPanel: React.FC = (props: any) => {
         <ManageCustomerForm
           formikReference={formikReference}
           submitAction={(args: any) => {
-            let createAction = assignPendingActions(
-              customerActions.saveNewCustomer(args),
-              [
-                customerActions.getCustomersListPaginated(),
-                customerActions.toggleNewCustomerForm(false),
-              ]
-            );
-            dispatch(createAction);
+            if (selectedCustomer) {
+              dispatch(customerActions.updateStoreCustomer(args));
+            } else {
+              let createAction = assignPendingActions(
+                customerActions.saveNewCustomer(args),
+                [
+                  customerActions.getCustomersListPaginated(),
+                  customerActions.toggleCustomerForm(false),
+                ]
+              );
+              dispatch(createAction);
+            }
           }}
+          customer={selectedCustomer ? selectedCustomer : null}
         />
       </Panel>
     </div>
   );
 };
 
-export default CreateCustomerPanel;
+export default CustomerPanel;

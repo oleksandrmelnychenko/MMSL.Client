@@ -24,11 +24,11 @@ const Menu: React.FC = () => {
   const onMenuClick = () => {
     dispatch(dealerActions.setSelectedDealer(null));
     dispatch(controlActions.closeInfoPanelWithComponent());
-    dispatch(
-      dealerActions.isOpenPanelWithDealerDetails(
-        new ToggleDealerPanelWithDetails()
-      )
-    );
+    // dispatch(
+    //   dealerActions.isOpenPanelWithDealerDetails(
+    //     new ToggleDealerPanelWithDetails()
+    //   )
+    // );
   };
 
   const menuItem: IMenuItem[] = [

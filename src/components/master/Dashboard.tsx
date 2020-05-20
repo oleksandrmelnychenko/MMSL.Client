@@ -4,7 +4,7 @@ import './dashboard.scss';
 import Header from './header/Header';
 import Footer from './footer/Footer';
 import Menu from './menu/Menu';
-import { Switch, Route, useLocation } from 'react-router-dom';
+import { Switch, useLocation } from 'react-router-dom';
 import PrivateRoute from '../PrivateRoute';
 import Dealers from '../dealers/Dealers';
 import Customers from '../customers/Customers';
@@ -14,7 +14,6 @@ import { IApplicationState } from '../../redux/reducers/index';
 import { Panel, PanelType } from 'office-ui-fabric-react';
 import * as controlAction from '../../redux/actions/control.actions';
 
-import ManagementOptions from '../dealers/dealerManaging/ManagementOptions';
 import { stylesPanelInfo } from '../../common/fabric-styles/styles';
 import ProductSettings from '../productSettings/ProductSettings';
 import { IPanelInfo } from '../../interfaces/index';
@@ -47,7 +46,7 @@ const Dashboard: React.FC = () => {
           styles={stylesPanelInfo}
           isOpen={panelInfo.isOpenPanelInfo}
           onDismiss={dismissPanelInfo}>
-          <Route
+          <PrivateRoute
             path={location.pathname}
             component={panelInfo.componentInPanelInfo}
           />
