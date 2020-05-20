@@ -26,6 +26,7 @@ import * as productSettingsActions from '../../redux/actions/productSettings.act
 import { ManagingPanelComponent } from '../../redux/reducers/productSettings.reducer';
 import { List } from 'linq-typescript';
 import { scrollablePaneStyleForDetailList } from '../../common/fabric-styles/styles';
+import { DATA_SELECTION_DISABLED_CLASS } from '../dealers/DealerList';
 
 const _columnIconButtonStyle = {
   root: {
@@ -52,7 +53,7 @@ export const ProductSettingsList: React.FC = () => {
       key: 'index',
       name: '#',
       minWidth: 16,
-      maxWidth: 24,
+      maxWidth: 200,
       onColumnClick: () => {},
       onRender: (item: any, index?: number) => {
         const imageProps: IImageProps = {
@@ -88,6 +89,103 @@ export const ProductSettingsList: React.FC = () => {
           </Stack>
         );
       },
+    },
+    {
+      key: 'actions',
+      name: 'Actions',
+      minWidth: 70,
+      isResizable: true,
+      isCollapsible: true,
+      data: 'string',
+      onRender: (item: any) => {
+        return (
+          <Stack horizontal disableShrink>
+            <IconButton
+              data-selection-disabled={true}
+              className={DATA_SELECTION_DISABLED_CLASS}
+              styles={_columnIconButtonStyle}
+              height={20}
+              iconProps={{ iconName: 'Delete' }}
+              title="Delete"
+              ariaLabel="Delete"
+              onClick={(args: any) => {
+                // dispatch(
+                //   controlAction.toggleCommonDialogVisibility(
+                //     new DialogArgs(
+                //       CommonDialogType.Delete,
+                //       'Delete dealer',
+                //       `Are you sure you want to delete ${item.name}?`,
+                //       () => {
+                //         const actionsQueue: any[] = [
+                //           dealerActions.getDealersListPaginated(),
+                //         ];
+                //         /// TODO:
+                //         if (item.id) {
+                //           actionsQueue.push(
+                //             dealerActions.setSelectedDealer(null),
+                //             controlAction.closeInfoPanelWithComponent(),
+                //             dealerActions.isOpenPanelWithDealerDetails(
+                //               new ToggleDealerPanelWithDetails()
+                //             )
+                //           );
+                //         }
+                //         let action = assignPendingActions(
+                //           dealerActions.deleteDealerById(item.id),
+                //           actionsQueue
+                //         );
+                //         dispatch(action);
+                //       },
+                //       () => {}
+                //     )
+                //   )
+                // );
+              }}
+            />
+            <IconButton
+              data-selection-disabled={true}
+              className={DATA_SELECTION_DISABLED_CLASS}
+              styles={_columnIconButtonStyle}
+              height={20}
+              iconProps={{ iconName: 'Delete' }}
+              title="Delete"
+              ariaLabel="Delete"
+              onClick={(args: any) => {
+                // dispatch(
+                //   controlAction.toggleCommonDialogVisibility(
+                //     new DialogArgs(
+                //       CommonDialogType.Delete,
+                //       'Delete dealer',
+                //       `Are you sure you want to delete ${item.name}?`,
+                //       () => {
+                //         const actionsQueue: any[] = [
+                //           dealerActions.getDealersListPaginated(),
+                //         ];
+                //         /// TODO:
+                //         if (item.id) {
+                //           actionsQueue.push(
+                //             dealerActions.setSelectedDealer(null),
+                //             controlAction.closeInfoPanelWithComponent(),
+                //             dealerActions.isOpenPanelWithDealerDetails(
+                //               new ToggleDealerPanelWithDetails()
+                //             )
+                //           );
+                //         }
+                //         let action = assignPendingActions(
+                //           dealerActions.deleteDealerById(item.id),
+                //           actionsQueue
+                //         );
+                //         dispatch(action);
+                //       },
+                //       () => {}
+                //     )
+                //   )
+                // );
+              }}
+            />
+          </Stack>
+        );
+      },
+      isPadded: true,
     },
   ];
 
@@ -135,11 +233,22 @@ export const ProductSettingsList: React.FC = () => {
                   {...props}
                   onRenderTitle={(props?: any, defaultRender?: any) => {
                     return (
-                      <div style={{ paddingLeft: '8px' }}>
-                        <Stack horizontal tokens={{ childrenGap: 20 }}>
+                      <div
+                        style={{
+                          paddingLeft: '8px',
+                          paddingRight: '8px',
+                          width: '100%',
+                        }}
+                      >
+                        <Stack
+                          horizontal
+                          horizontalAlign="space-between"
+                          tokens={{ childrenGap: 0 }}
+                        >
                           {defaultRender(props)}
+
                           <IconButton
-                            styles={_columnIconButtonStyle}
+                            styles={{ ..._columnIconButtonStyle }}
                             height={20}
                             iconProps={{ iconName: 'Edit' }}
                             title="Settings"
