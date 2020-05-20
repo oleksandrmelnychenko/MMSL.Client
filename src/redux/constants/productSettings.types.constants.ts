@@ -15,3 +15,5 @@ export const UPDATE_OPTION_UNIT = 'productSettings.UPDATE_OPTION_UNIT';
 export const SAVE_NEW_OPTION_UNIT = 'productSettings.SAVE_NEW_OPTION_UNIT';
 export const TOGGLE_OPTION_UNIT_FORM_VISIBILITY =
   'productSettings.TOGGLE_OPTION_UNIT_FORM_VISIBILITY';
+export const DELETE_OPTION_UNIT_BY_ID =
+  'productSettings.DELETE_OPTION_UNIT_BY_ID';

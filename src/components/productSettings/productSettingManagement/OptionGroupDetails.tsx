@@ -10,12 +10,28 @@ import {
   FocusZoneDirection,
   FocusZone,
   Separator,
+  ICommandBarItemProps,
 } from 'office-ui-fabric-react';
 import { OptionUnit } from '../../../interfaces';
 import { IApplicationState } from '../../../redux/reducers';
 import { assignPendingActions } from '../../../helpers/action.helper';
+import * as controlAction from '../../../redux/actions/control.actions';
+import {
+  DialogArgs,
+  CommonDialogType,
+} from '../../../redux/reducers/control.reducer';
 
-class OptionGroupDetailsProps extends ManagingProductUnitFormProps {}
+class OptionGroupDetailsProps extends ManagingProductUnitFormProps {
+  constructor() {
+    super();
+
+    this.panelNewButton = null;
+    this.panelDeleteButton = null;
+  }
+
+  panelNewButton: ICommandBarItemProps | null | undefined;
+  panelDeleteButton: ICommandBarItemProps | null | undefined;
+}
 
 export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
   props: OptionGroupDetailsProps
@@ -44,6 +60,50 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
     (state) =>
       state.productSettings.managingOptionUnitsState.isOptionUnitFormVisible
   );
+
+  if (props.panelNewButton) {
+    props.panelNewButton.onClick = () => {
+      dispatch(productSettingsActions.toggleOptionUnitFormVisibility(true));
+      dispatch(productSettingsActions.changeTargetOptionunit(null));
+    };
+  }
+
+  if (props.panelDeleteButton) {
+    props.panelDeleteButton.disabled = sectedOptionUnit ? false : true;
+
+    props.panelDeleteButton.onClick = () => {
+      if (sectedOptionUnit) {
+        dispatch(
+          controlAction.toggleCommonDialogVisibility(
+            new DialogArgs(
+              CommonDialogType.Delete,
+              'Delete option unit',
+              `Are you sure you want to delete ${sectedOptionUnit.value}?`,
+              () => {
+                let action = assignPendingActions(
+                  productSettingsActions.deleteOptionUnitById(
+                    sectedOptionUnit.id
+                  ),
+                  [
+                    productSettingsActions.getAllOptionGroupsList(),
+                    productSettingsActions.managingPanelContent(null),
+                    productSettingsActions.changeTargetOptionGroupForUnitsEdit(
+                      null
+                    ),
+                    productSettingsActions.toggleOptionUnitFormVisibility(
+                      false
+                    ),
+                  ]
+                );
+                dispatch(action);
+              },
+              () => {}
+            )
+          )
+        );
+      }
+    };
+  }
 
   return (
     <div className="customerList">

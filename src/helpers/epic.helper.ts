@@ -107,7 +107,6 @@ export const ajaxPutFormDataResponse = (
     // 'Content-Type': 'application/json',
   };
 
-  debugger;
   return ajax
     .put(
       `${API.SERVER_URL}/${currentLanguage}${urlPath}${buildQueryParamsString(

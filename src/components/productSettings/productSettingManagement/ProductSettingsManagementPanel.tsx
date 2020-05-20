@@ -18,7 +18,11 @@ import ManagingProductGroupForm from './ManagingProductGroupForm';
 import * as productSettingsActions from '../../../redux/actions/productSettings.actions';
 import { ManagingPanelComponent } from '../../../redux/reducers/productSettings.reducer';
 import { assignPendingActions } from '../../../helpers/action.helper';
-import OptionGroupDetails from './OptionGroupDetails';
+import { List } from 'linq-typescript';
+import { OptionGroupDetails } from './OptionGroupDetails';
+
+const NEW_PANEL_ITEM_NAME = 'New';
+const DELETE_PANEL_ITEM_NAME = 'Delete';
 
 export const ProductSettingsManagementPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -40,9 +44,10 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
 
   let _items: ICommandBarItemProps[] = [
     {
-      key: 'New',
-      text: 'New',
+      key: NEW_PANEL_ITEM_NAME,
+      text: NEW_PANEL_ITEM_NAME,
       iconProps: { iconName: 'Add' },
+      onClick: () => {},
       buttonStyles: commandBarButtonStyles,
     },
     {
@@ -69,6 +74,14 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
       },
       buttonStyles: commandBarButtonStyles,
     },
+    {
+      key: DELETE_PANEL_ITEM_NAME,
+      text: DELETE_PANEL_ITEM_NAME,
+      iconProps: { iconName: 'Delete' },
+      disabled: true,
+      onClick: () => {},
+      buttonStyles: commandBarButtonStyles,
+    },
   ];
 
   let panelTitleText = 'Management Panel';
@@ -76,10 +89,22 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
   let content: any = null;
 
   if (panelContent === ManagingPanelComponent.ManageGroups) {
-    /// Hide `Save` command
-    _items[0].buttonStyles = {
-      root: { display: 'none' },
-    };
+    const saveButton = new List(_items).firstOrDefault(
+      (item) => item.key === NEW_PANEL_ITEM_NAME
+    );
+    const deleteButton = new List(_items).firstOrDefault(
+      (item) => item.key === DELETE_PANEL_ITEM_NAME
+    );
+
+    if (saveButton)
+      saveButton.buttonStyles = {
+        root: { display: 'none' },
+      };
+
+    if (deleteButton)
+      deleteButton.buttonStyles = {
+        root: { display: 'none' },
+      };
 
     panelTitleText = 'New Option Group';
 
@@ -99,17 +124,17 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
       />
     );
   } else if (panelContent === ManagingPanelComponent.ManageUnits) {
-    /// Add own handler for `Save` command.
-    _items[0].onClick = () => {
-      dispatch(productSettingsActions.toggleOptionUnitFormVisibility(true));
-      dispatch(productSettingsActions.changeTargetOptionunit(null));
-    };
-
     panelTitleText = 'Manage Option Units';
     panelWidth = '900px';
 
     content = (
       <OptionGroupDetails
+        panelNewButton={new List(_items).firstOrDefault(
+          (item) => item.key === NEW_PANEL_ITEM_NAME
+        )}
+        panelDeleteButton={new List(_items).firstOrDefault(
+          (item) => item.key === DELETE_PANEL_ITEM_NAME
+        )}
         relativeOptionGroupId={0}
         formikReference={formikReference}
         submitAction={(args: any) => {}}
@@ -124,6 +149,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
         isOpen={panelContent ? true : false}
         type={PanelType.custom}
         customWidth={panelWidth}
+        onOuterClick={() => {}}
         onDismiss={() => {
           dispatch(productSettingsActions.managingPanelContent(null));
           dispatch(

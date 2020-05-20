@@ -128,7 +128,9 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                 thumbUrl = props.optionUnit.imageUrl;
               }
             } else {
-              thumbUrl = URL.createObjectURL(formik.values.imageFile);
+              if (formik.values.imageFile) {
+                thumbUrl = URL.createObjectURL(formik.values.imageFile);
+              }
             }
           }
 
