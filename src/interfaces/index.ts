@@ -81,6 +81,7 @@ export interface IStore {
   id?: number;
   isDeleted?: boolean;
   name: string;
+  storeCustomersCount?: number;
 }
 
 export interface INewStore {

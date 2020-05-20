@@ -236,7 +236,7 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                             styles={fabricStyles.textFildLabelStyles}
                             className="form__group__field"
                             label="Phone Number"
-                            mask="(999) 999 - 9999"
+                            mask="(999)999-9999"
                             onChange={(args: any) => {
                               let value = args.target.value;
                               formik.setFieldValue('phoneNumber', value);
