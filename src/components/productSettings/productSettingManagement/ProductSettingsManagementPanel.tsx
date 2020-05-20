@@ -124,7 +124,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
 
   if (panelContent === ManagingPanelComponent.ManageGroups) {
     hideAddEditPanelActions(_items);
-
+    panelWidth = '600px';
     panelTitleText = 'New Option Group';
 
     content = (

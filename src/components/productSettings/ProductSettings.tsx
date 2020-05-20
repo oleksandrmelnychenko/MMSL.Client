@@ -55,7 +55,7 @@ export const ProductSettings: React.FC = (props: any) => {
                           value={searchWord}
                           styles={searchBoxStyles}
                           onChange={(args: any) => {
-                            let value = args.target.value;
+                            let value = args?.target?.value;
 
                             dispatch(
                               productSettingsActions.updateSearchWordOptionGroup(
