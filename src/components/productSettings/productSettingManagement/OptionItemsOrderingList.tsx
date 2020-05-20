@@ -11,6 +11,7 @@ import {
   SelectionMode,
   CheckboxVisibility,
   DetailsRow,
+  FontIcon,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
@@ -19,6 +20,13 @@ import * as productSettingsActions from '../../../redux/actions/productSettings.
 import { ModifiedOptionUnitOrder, OptionUnit } from '../../../interfaces';
 import { List } from 'linq-typescript';
 import { DATA_SELECTION_DISABLED_CLASS } from '../../dealers/DealerList';
+
+const iconClass = mergeStyles({
+  fontSize: 18,
+  height: 18,
+  width: 18,
+  marginTop: '-4px',
+});
 
 export const OptionItemsOrderingList: React.FC = () => {
   const dispatch = useDispatch();
@@ -74,6 +82,23 @@ export const OptionItemsOrderingList: React.FC = () => {
       data: 'string',
       onRender: (item: any) => {
         return <Text>{item.isMandatory ? 'Mandatory' : 'Not mandatory'}</Text>;
+      },
+      isPadded: true,
+    },
+    {
+      key: 'isMandatory',
+      name: 'Is Mandatory',
+      minWidth: 70,
+      maxWidth: 90,
+      isResizable: true,
+      isCollapsible: true,
+      data: 'string',
+      onRender: (item: any) => {
+        return item.imageUrl !== null &&
+          item.imageUrl !== undefined &&
+          item.imageUrl.length > 0 ? (
+          <FontIcon iconName="FileImage" className={iconClass} />
+        ) : null;
       },
       isPadded: true,
     },

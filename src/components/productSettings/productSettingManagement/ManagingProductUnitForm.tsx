@@ -4,7 +4,10 @@ import {
   Stack,
   TextField,
   Toggle,
+  Checkbox,
   PrimaryButton,
+  FontIcon,
+  mergeStyles,
 } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import { FormicReference, OptionUnit } from '../../../interfaces';
@@ -119,8 +122,7 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
             props.formikReference.isDirtyFunc(formik.dirty);
 
           let thumbUrl: string = '';
-          if (!formik.values.isRemovingImage) {
-          } else {
+          if (formik.values.isRemovingImage) {
             if (props.optionUnit) {
               if (formik.values.imageFile) {
                 thumbUrl = URL.createObjectURL(formik.values.imageFile);
@@ -135,14 +137,50 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
           }
 
           const thumb: any = (
-            <img width="300px" height="300px" alt="" src={thumbUrl} />
+            <div
+              style={{
+                position: 'relative',
+                maxWidth: '279px',
+                maxHeight: '178px',
+                minWidth: '267px',
+                minHeight: '178px',
+                border: '1px solid #efefef',
+                padding: '6px',
+                borderRadius: '3px',
+              }}
+            >
+              <FontIcon
+                style={{
+                  position: 'absolute',
+                  top: 'calc(50% - 18px)',
+                  left: 'calc(50% - 12px)',
+                  zIndex: 0,
+                }}
+                iconName="FileImage"
+                className={mergeStyles({
+                  fontSize: 24,
+                  width: 24,
+                  color: '#cfcfcf',
+                })}
+              />
+              <img
+                style={{
+                  position: 'relative',
+                  zIndex: 1,
+                }}
+                width="300px"
+                height="300px"
+                alt=""
+                src={thumbUrl}
+              />
+            </div>
           );
 
           return (
             <Form className="form">
               <div className="dealerFormManage">
                 <Stack horizontal tokens={{ childrenGap: 20 }}>
-                  <Stack grow={1}>
+                  <Stack grow={1} tokens={{ childrenGap: 20 }}>
                     <Field name="value">
                       {() => (
                         <div className="form__group">
@@ -176,14 +214,9 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                       {() => {
                         return (
                           <div className="form__group">
-                            <Toggle
+                            <Checkbox
                               checked={formik.values.isMandatory}
-                              styles={fabricStyles.toggleStyles}
-                              className="form__group__field"
                               label="Allow"
-                              inlineLabel
-                              onText="On"
-                              offText="Off"
                               onChange={(checked: any, isChecked: any) => {
                                 formik.setFieldValue('isMandatory', isChecked);
                                 formik.setFieldTouched('isMandatory');
@@ -198,76 +231,103 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                       {() => {
                         return (
                           <div className="form__group">
-                            <div style={{ position: 'relative' }}>
-                              <input
-                                accept="image/*"
-                                ref={fileInputRef}
-                                style={{
-                                  height: '1px',
-                                  width: '1px',
-                                  position: 'absolute',
-                                }}
-                                type="file"
-                                onChange={(args: any) => {
-                                  let file = args.currentTarget.files;
-                                  if (file && file.length && file.length > 0) {
-                                    formik.setFieldValue('imageFile', file[0]);
-                                    formik.setFieldValue(
-                                      'isRemovingImage',
-                                      true
-                                    );
+                            <Stack tokens={{ childrenGap: 10 }}>
+                              <div style={{ position: 'relative' }}>
+                                <input
+                                  accept="image/*"
+                                  ref={fileInputRef}
+                                  style={{
+                                    height: '1px',
+                                    width: '1px',
+                                    position: 'absolute',
+                                  }}
+                                  type="file"
+                                  onChange={(args: any) => {
+                                    let file = args.currentTarget.files;
+                                    if (
+                                      file &&
+                                      file.length &&
+                                      file.length > 0
+                                    ) {
+                                      formik.setFieldValue(
+                                        'imageFile',
+                                        file[0]
+                                      );
+                                      formik.setFieldValue(
+                                        'isRemovingImage',
+                                        true
+                                      );
+                                    }
+                                  }}
+                                />
+                                <PrimaryButton
+                                  styles={{
+                                    root: {
+                                      maxWidth: '150px',
+                                      minWidth: '150px',
+                                    },
+                                  }}
+                                  text={
+                                    formik.values.isRemovingImage
+                                      ? 'Remove source'
+                                      : 'Add source'
                                   }
-                                }}
-                              />
-                              <PrimaryButton
-                                text={
-                                  formik.values.isRemovingImage
-                                    ? 'Remove image'
-                                    : 'Add image'
-                                }
-                                onClick={() => {
-                                  const clearInputFileFlow = () => {
-                                    if (fileInputRef && fileInputRef.current) {
-                                      if (fileInputRef.current) {
-                                        fileInputRef.current.value = '';
-                                        formik.setFieldValue('imageFile', null);
-                                        formik.setFieldValue(
-                                          'isRemovingImage',
-                                          false
-                                        );
-                                      }
-                                    }
-                                  };
-
-                                  const addInputFileFlow = () => {
-                                    if (fileInputRef && fileInputRef.current) {
+                                  onClick={() => {
+                                    const clearInputFileFlow = () => {
                                       if (
-                                        fileInputRef.current &&
-                                        document.createEvent
+                                        fileInputRef &&
+                                        fileInputRef.current
                                       ) {
-                                        let evt = document.createEvent(
-                                          'MouseEvents'
-                                        );
-                                        evt.initEvent('click', true, false);
-                                        fileInputRef.current.dispatchEvent(evt);
+                                        if (fileInputRef.current) {
+                                          fileInputRef.current.value = '';
+                                          formik.setFieldValue(
+                                            'imageFile',
+                                            null
+                                          );
+                                          formik.setFieldValue(
+                                            'isRemovingImage',
+                                            false
+                                          );
+                                        }
                                       }
-                                    }
-                                  };
+                                    };
 
-                                  if (formik.values.isRemovingImage) {
-                                    clearInputFileFlow();
-                                  } else {
-                                    if (formik.values.imageFile) {
+                                    const addInputFileFlow = () => {
+                                      if (
+                                        fileInputRef &&
+                                        fileInputRef.current
+                                      ) {
+                                        if (
+                                          fileInputRef.current &&
+                                          document.createEvent
+                                        ) {
+                                          let evt = document.createEvent(
+                                            'MouseEvents'
+                                          );
+                                          evt.initEvent('click', true, false);
+                                          fileInputRef.current.dispatchEvent(
+                                            evt
+                                          );
+                                        }
+                                      }
+                                    };
+
+                                    if (formik.values.isRemovingImage) {
                                       clearInputFileFlow();
                                     } else {
-                                      addInputFileFlow();
+                                      if (formik.values.imageFile) {
+                                        clearInputFileFlow();
+                                      } else {
+                                        addInputFileFlow();
+                                      }
                                     }
-                                  }
-                                }}
-                                allowDisabledFocus
-                              />
-                            </div>
-                            {thumb}
+                                  }}
+                                  allowDisabledFocus
+                                />
+                              </div>
+
+                              {formik.values.isRemovingImage ? thumb : null}
+                            </Stack>
                           </div>
                         );
                       }}
