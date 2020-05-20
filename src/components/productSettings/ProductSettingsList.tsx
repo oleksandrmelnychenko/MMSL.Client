@@ -121,53 +121,53 @@ export const ProductSettingsList: React.FC = () => {
         );
       },
     },
-    {
-      key: 'name',
-      name: 'Name',
-      minWidth: 70,
-      maxWidth: 90,
-      isResizable: true,
-      isCollapsible: true,
-      data: 'string',
-      onRender: (item: any) => {
-        return <Text>{item.name}</Text>;
-      },
-      isPadded: true,
-    },
-    {
-      key: 'actions',
-      name: 'Actions',
-      minWidth: 70,
-      isResizable: true,
-      isCollapsible: true,
-      data: 'string',
-      onRender: (item: any) => {
-        return (
-          <Stack horizontal disableShrink>
-            <IconButton
-              styles={_columnIconButtonStyle}
-              height={20}
-              iconProps={{ iconName: 'Settings' }}
-              title="Settings"
-              ariaLabel="Settings"
-              onClick={() => {
-                dispatch(
-                  productSettingsActions.changeTargetOptionGroupForUnitsEdit(
-                    item
-                  )
-                );
-                dispatch(
-                  productSettingsActions.managingPanelContent(
-                    ManagingPanelComponent.ManageUnits
-                  )
-                );
-              }}
-            />
-          </Stack>
-        );
-      },
-      isPadded: true,
-    },
+    // {
+    //   key: 'name',
+    //   name: 'Name',
+    //   minWidth: 70,
+    //   maxWidth: 90,
+    //   isResizable: true,
+    //   isCollapsible: true,
+    //   data: 'string',
+    //   onRender: (item: any) => {
+    //     return <Text>{item.name}</Text>;
+    //   },
+    //   isPadded: true,
+    // },
+    // {
+    //   key: 'actions',
+    //   name: 'Actions',
+    //   minWidth: 70,
+    //   isResizable: true,
+    //   isCollapsible: true,
+    //   data: 'string',
+    //   onRender: (item: any) => {
+    //     return (
+    //       <Stack horizontal disableShrink>
+    //         <IconButton
+    //           styles={_columnIconButtonStyle}
+    //           height={20}
+    //           iconProps={{ iconName: 'Settings' }}
+    //           title="Settings"
+    //           ariaLabel="Settings"
+    //           onClick={() => {
+    //             dispatch(
+    //               productSettingsActions.changeTargetOptionGroupForUnitsEdit(
+    //                 item
+    //               )
+    //             );
+    //             dispatch(
+    //               productSettingsActions.managingPanelContent(
+    //                 ManagingPanelComponent.ManageUnits
+    //               )
+    //             );
+    //           }}
+    //         />
+    //       </Stack>
+    //     );
+    //   },
+    //   isPadded: true,
+    // },
   ];
 
   const allConcatedUnits = new List(outionGroups)
@@ -207,12 +207,12 @@ export const ProductSettingsList: React.FC = () => {
                   onRenderTitle={(props?: any, defaultRender?: any) => {
                     return (
                       <div>
-                        <Stack horizontal>
+                        <Stack horizontal tokens={{ childrenGap: 20 }}>
                           {defaultRender(props)}
                           <IconButton
                             styles={_columnIconButtonStyle}
                             height={20}
-                            iconProps={{ iconName: 'Settings' }}
+                            iconProps={{ iconName: 'Edit' }}
                             title="Settings"
                             ariaLabel="Settings"
                             onClick={() => {
@@ -246,7 +246,7 @@ export const ProductSettingsList: React.FC = () => {
           isHeaderVisible={false}
           columns={customerColumns}
           items={allConcatedUnits}
-          checkboxVisibility={CheckboxVisibility.onHover}
+          checkboxVisibility={CheckboxVisibility.hidden}
           onRenderRow={(args: any) => {
             return (
               <div>
