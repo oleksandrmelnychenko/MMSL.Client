@@ -288,3 +288,43 @@ export const deleteOptionUnitByIdEpic = (action$: AnyAction, state$: any) => {
     })
   );
 };
+
+export const getAndSelectOptionGroupByIdEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(productSettingsTypes.GET_AND_SELECT_OPTION_GROUP_BY_ID),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      return ajaxGetWebResponse(api.GET_OPTION_GROUP_BY_ID, state$.value, [
+        { key: 'groupId', value: `${action.payload}` },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          let successResultFlow = [
+            productSettingsActions.changeTargetOptionGroupForUnitsEdit(
+              successResponse
+            ),
+            ...extractSuccessPendingActions(action),
+          ];
+
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          debugger;
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [
+              controlActions.showInfoMessage(
+                `Error occurred while getting option group. ${errorResponse}`
+              ),
+              ...extractErrorPendingActions(action),
+            ];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};

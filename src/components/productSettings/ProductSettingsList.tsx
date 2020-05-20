@@ -14,6 +14,7 @@ import {
   DetailsRow,
   IDetailsGroupDividerProps,
   CheckboxVisibility,
+  GroupHeader,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -177,7 +178,7 @@ export const ProductSettingsList: React.FC = () => {
   const groups = new List(outionGroups)
     .select((group) => {
       const groupEntity = {
-        key: `${groupIndex}_group`,
+        key: `${group.id}`,
         name: group.name,
         level: 0,
         startIndex: groupIndex,
@@ -198,8 +199,47 @@ export const ProductSettingsList: React.FC = () => {
           groupProps={{
             showEmptyGroups: true,
             onRenderHeader: (props?: any, defaultRender?: any) => {
-              let defaultRendered = defaultRender(props);
-              return defaultRendered;
+              const headerCountStyle = { display: 'none' };
+              const checkButtonStyle = { display: 'none' };
+
+              return (
+                <GroupHeader
+                  onRenderTitle={(props?: any, defaultRender?: any) => {
+                    return (
+                      <div>
+                        <Stack horizontal>
+                          {defaultRender(props)}
+                          <IconButton
+                            styles={_columnIconButtonStyle}
+                            height={20}
+                            iconProps={{ iconName: 'Settings' }}
+                            title="Settings"
+                            ariaLabel="Settings"
+                            onClick={() => {
+                              let action = assignPendingActions(
+                                productSettingsActions.getAndSelectOptionGroupById(
+                                  parseInt(props.group.key)
+                                ),
+                                [
+                                  productSettingsActions.managingPanelContent(
+                                    ManagingPanelComponent.ManageUnits
+                                  ),
+                                ]
+                              );
+                              dispatch(action);
+                            }}
+                          />
+                        </Stack>
+                      </div>
+                    );
+                  }}
+                  styles={{
+                    check: checkButtonStyle,
+                    headerCount: headerCountStyle,
+                  }}
+                  {...props}
+                />
+              );
             },
           }}
           groups={groups}
@@ -214,14 +254,14 @@ export const ProductSettingsList: React.FC = () => {
               </div>
             );
           }}
-          // onRenderDetailsHeader={(props: any, _defaultRender?: any) => {
-          //   return (
-          //     <DetailsHeader
-          //       {...props}
-          //       ariaLabelForToggleAllGroupsButton={'Expand collapse groups'}
-          //     />
-          //   );
-          // }}
+          onRenderDetailsHeader={(props: any, _defaultRender?: any) => {
+            return (
+              <DetailsHeader
+                {...props}
+                ariaLabelForToggleAllGroupsButton={'Expand collapse groups'}
+              />
+            );
+          }}
         />
       </MarqueeSelection>
     </div>
