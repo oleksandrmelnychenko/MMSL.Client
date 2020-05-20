@@ -120,20 +120,6 @@ export const ManagingvOptionGroupForm: React.FC<ManagingvOptionGroupFormProps> =
                       {() => {
                         return (
                           <div className="form__group">
-                            {/* <Toggle
-                              checked={formik.values.isMandatory}
-                              styles={fabricStyles.toggleStyles}
-                              className="form__group__field"
-                              label="Is mandatory"
-                              inlineLabel
-                              onText="On"
-                              offText="Off"
-                              onChange={(checked: any, isChecked: any) => {
-                                formik.setFieldValue('isMandatory', isChecked);
-                                formik.setFieldTouched('isMandatory');
-                              }}
-                            /> */}
-
                             <Checkbox
                               checked={formik.values.isMandatory}
                               label="Is mandatory"
