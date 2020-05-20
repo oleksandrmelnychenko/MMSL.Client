@@ -166,7 +166,10 @@ export const updateOptionUnitEpic = (action$: AnyAction, state$: any) => {
         ]
       ).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [...extractSuccessPendingActions(action)];
+          let successResultFlow = [
+            controlActions.showInfoMessage(successResponse.message),
+            ...extractSuccessPendingActions(action),
+          ];
 
           return from(successResultFlow);
         }),
@@ -228,7 +231,10 @@ export const saveNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
         ]
       ).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [...extractSuccessPendingActions(action)];
+          let successResultFlow = [
+            controlActions.showInfoMessage(successResponse.message),
+            ...extractSuccessPendingActions(action),
+          ];
 
           return from(successResultFlow);
         }),
