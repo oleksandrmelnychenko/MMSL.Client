@@ -62,9 +62,7 @@ export const OptionItemsOrderingList: React.FC = () => {
             }`}
           >
             <div className="list__description">
-              <div className="list__description__name">
-                Unit value: {item.value}
-              </div>
+              <div className="list__description__name">{item.value}</div>
               <div className="list__description__mandatory">
                 {item.isMandatory ? 'Allowed' : 'Not allowed'}
               </div>

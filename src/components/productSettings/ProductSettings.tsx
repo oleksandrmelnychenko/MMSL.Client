@@ -1,16 +1,25 @@
 import './productSettings.scss';
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Stack, ActionButton, SearchBox } from 'office-ui-fabric-react';
 import ProductSettingsList from './ProductSettingsList';
 import ProductSettingsManagementPanel from './productSettingManagement/ProductSettingsManagementPanel';
 import * as productSettingsActions from '../../redux/actions/productSettings.actions';
 import { ManagingPanelComponent } from '../../redux/reducers/productSettings.reducer';
+import { IApplicationState } from '../../redux/reducers';
 
 export const ProductSettings: React.FC = (props: any) => {
   const dispatch = useDispatch();
 
   const searchBoxStyles = { root: { width: 200 } };
+
+  const searchWord: string = useSelector<IApplicationState, string>(
+    (state) => state.productSettings.searchWordOptionGroup
+  );
+
+  useEffect(() => {
+    dispatch(productSettingsActions.getBySearchOptionGroups());
+  }, [searchWord, dispatch]);
 
   return (
     <div className="productSettings">
@@ -21,7 +30,7 @@ export const ProductSettings: React.FC = (props: any) => {
               <div className="productSettings__header__top">
                 <Stack horizontal>
                   <div className="productSettings__header__top__title">
-                    Product settings
+                    Option groups
                   </div>
                   <div className="productSettings__header__top__controls">
                     <Stack horizontal tokens={{ childrenGap: 10 }}>
@@ -35,29 +44,24 @@ export const ProductSettings: React.FC = (props: any) => {
                               )
                             );
                           }}
-                          iconProps={{ iconName: 'Add' }}>
-                          New product setting
+                          iconProps={{ iconName: 'Add' }}
+                        >
+                          New group
                         </ActionButton>
                       </div>
                       <div className="productSettings__header__top__controls__control">
                         <SearchBox
                           className="productSettingsSearch"
-                          value={''}
+                          value={searchWord}
                           styles={searchBoxStyles}
-                          placeholder="Find product settings"
                           onChange={(args: any) => {
-                            // if (args) {
-                            //   let value = args.target.value;
-                            //   dispatch(customerActions.searchCustomer(value));
-                            //   dispatch(
-                            //     customerActions.getCustomersListPaginated()
-                            //   );
-                            // } else {
-                            //   dispatch(customerActions.searchCustomer(''));
-                            //   dispatch(
-                            //     customerActions.getCustomersListPaginated()
-                            //   );
-                            // }
+                            let value = args.target.value;
+
+                            dispatch(
+                              productSettingsActions.updateSearchWordOptionGroup(
+                                value ? value : ''
+                              )
+                            );
                           }}
                         />
                       </div>

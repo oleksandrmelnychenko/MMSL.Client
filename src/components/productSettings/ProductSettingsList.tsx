@@ -73,8 +73,9 @@ export const ProductSettingsList: React.FC = () => {
               <Stack.Item>
                 <Text
                   variant={'mediumPlus' as ITextProps['variant']}
-                  styles={{ root: { color: '#484848', fontWeight: 400 } }}>
-                  Unit value: {item.value}
+                  styles={{ root: { color: '#484848', fontWeight: 400 } }}
+                >
+                  {item.value}
                 </Text>
               </Stack.Item>
               <Stack.Item>
