@@ -110,6 +110,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
 
     content = (
       <OptionGroupDetails
+        relativeOptionGroupId={0}
         formikReference={formikReference}
         submitAction={(args: any) => {}}
       />

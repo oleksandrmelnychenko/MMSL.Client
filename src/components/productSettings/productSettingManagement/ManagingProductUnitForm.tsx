@@ -13,19 +13,22 @@ import * as fabricStyles from '../../../common/fabric-styles/styles';
 export class ManagingProductUnitFormInitValues {
   constructor() {
     this.value = '';
-    this.imageUrl = '';
     this.isMandatory = false;
-    this.file = null;
+    this.imageFile = null;
+    this.isRemovingImage = false;
+    this.imageUrl = '';
   }
 
   value: string;
   imageUrl: string;
   isMandatory: boolean;
-  file: any;
+  imageFile: any | null;
+  isRemovingImage: boolean;
 }
 
 const buildOptionUnit = (
   values: ManagingProductUnitFormInitValues,
+  relativeOptionGroupId: number | null | undefined,
   sourceEntity?: OptionUnit
 ) => {
   let newUnit: OptionUnit;
@@ -34,18 +37,20 @@ const buildOptionUnit = (
     newUnit = { ...sourceEntity };
   } else {
     newUnit = new OptionUnit();
+    newUnit.optionGroupId = relativeOptionGroupId;
   }
 
   newUnit.value = values.value;
-  newUnit.imageUrl = values.imageUrl;
   newUnit.isMandatory = values.isMandatory;
 
-  let FOO_FOO = {
-    unit: newUnit,
-    file: values.file,
-  };
+  if (!values.isRemovingImage) {
+    newUnit.imageBlob = null;
+    newUnit.imageUrl = '';
+  } else {
+    newUnit.imageBlob = values.imageFile;
+  }
 
-  return FOO_FOO;
+  return newUnit;
 };
 
 const initDefaultValues = (sourceEntity?: OptionUnit | null) => {
@@ -53,8 +58,14 @@ const initDefaultValues = (sourceEntity?: OptionUnit | null) => {
 
   if (sourceEntity) {
     initValues.value = sourceEntity.value;
-    initValues.imageUrl = sourceEntity.imageUrl;
     initValues.isMandatory = sourceEntity.isMandatory;
+    initValues.isRemovingImage =
+      sourceEntity.imageBlob !== null && sourceEntity.imageBlob !== undefined;
+    initValues.imageUrl = sourceEntity.imageUrl;
+
+    if (initValues.imageUrl && initValues.imageUrl.length > 0) {
+      initValues.isRemovingImage = true;
+    }
   }
 
   return initValues;
@@ -64,11 +75,13 @@ export class ManagingProductUnitFormProps {
   constructor() {
     this.formikReference = new FormicReference();
     this.optionUnit = null;
+    this.relativeOptionGroupId = null;
     this.submitAction = (args: any) => {};
   }
 
   formikReference: FormicReference;
   optionUnit?: OptionUnit | null;
+  relativeOptionGroupId: number | null | undefined;
   submitAction: (args: any) => void;
 }
 
@@ -76,7 +89,6 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
   props: ManagingProductUnitFormProps
 ) => {
   const initValues = initDefaultValues(props.optionUnit);
-
   const fileInputRef: any = React.createRef();
 
   return (
@@ -85,12 +97,17 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
         validationSchema={Yup.object().shape({
           value: Yup.string().required(() => 'Value is required'),
           isMandatory: Yup.boolean(),
-          file: Yup.object().nullable(),
+          imageFile: Yup.object().nullable(),
+          isRemovingImage: Yup.boolean(),
         })}
         initialValues={initValues}
         onSubmit={(values: any) => {
           props.submitAction(
-            buildOptionUnit(values, props.optionUnit as OptionUnit)
+            buildOptionUnit(
+              values,
+              props.relativeOptionGroupId,
+              props.optionUnit as OptionUnit
+            )
           );
         }}
         validateOnBlur={false}
@@ -101,20 +118,23 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
           if (props.formikReference.isDirtyFunc)
             props.formikReference.isDirtyFunc(formik.dirty);
 
-          console.log(formik);
-
-          let thumb: any = null;
-
-          if (formik.values.file) {
-            thumb = (
-              <img
-                width="100px"
-                height="100px"
-                alt=""
-                src={URL.createObjectURL(formik.values.file)}
-              />
-            );
+          let thumbUrl: string = '';
+          if (!formik.values.isRemovingImage) {
+          } else {
+            if (props.optionUnit) {
+              if (formik.values.imageFile) {
+                thumbUrl = URL.createObjectURL(formik.values.imageFile);
+              } else {
+                thumbUrl = props.optionUnit.imageUrl;
+              }
+            } else {
+              thumbUrl = URL.createObjectURL(formik.values.imageFile);
+            }
           }
+
+          const thumb: any = (
+            <img width="300px" height="300px" alt="" src={thumbUrl} />
+          );
 
           return (
             <Form className="form">
@@ -149,6 +169,7 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                         </div>
                       )}
                     </Field>
+
                     <Field name="isMandatory">
                       {() => {
                         return (
@@ -157,7 +178,7 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                               checked={formik.values.isMandatory}
                               styles={fabricStyles.toggleStyles}
                               className="form__group__field"
-                              label="Is mandatory"
+                              label="Allow"
                               inlineLabel
                               onText="On"
                               offText="Off"
@@ -171,7 +192,7 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                       }}
                     </Field>
 
-                    <Field name="file">
+                    <Field name="imageFile">
                       {() => {
                         return (
                           <div className="form__group">
@@ -187,28 +208,36 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                                 type="file"
                                 onChange={(args: any) => {
                                   let file = args.currentTarget.files;
-                                  debugger;
                                   if (file && file.length && file.length > 0) {
-                                    formik.setFieldValue('file', file[0]);
+                                    formik.setFieldValue('imageFile', file[0]);
+                                    formik.setFieldValue(
+                                      'isRemovingImage',
+                                      true
+                                    );
                                   }
                                 }}
                               />
                               <PrimaryButton
-                                text="Primary"
+                                text={
+                                  formik.values.isRemovingImage
+                                    ? 'Remove image'
+                                    : 'Add image'
+                                }
                                 onClick={() => {
-                                  debugger;
-                                  if (formik.values.file) {
+                                  const clearInputFileFlow = () => {
                                     if (fileInputRef && fileInputRef.current) {
-                                      if (
-                                        fileInputRef.current &&
-                                        document.createEvent
-                                      ) {
-                                        debugger;
+                                      if (fileInputRef.current) {
                                         fileInputRef.current.value = '';
-                                        formik.setFieldValue('file', null);
+                                        formik.setFieldValue('imageFile', null);
+                                        formik.setFieldValue(
+                                          'isRemovingImage',
+                                          false
+                                        );
                                       }
                                     }
-                                  } else {
+                                  };
+
+                                  const addInputFileFlow = () => {
                                     if (fileInputRef && fileInputRef.current) {
                                       if (
                                         fileInputRef.current &&
@@ -220,6 +249,16 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                                         evt.initEvent('click', true, false);
                                         fileInputRef.current.dispatchEvent(evt);
                                       }
+                                    }
+                                  };
+
+                                  if (formik.values.isRemovingImage) {
+                                    clearInputFileFlow();
+                                  } else {
+                                    if (formik.values.imageFile) {
+                                      clearInputFileFlow();
+                                    } else {
+                                      addInputFileFlow();
                                     }
                                   }
                                 }}

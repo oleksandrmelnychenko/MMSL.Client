@@ -70,22 +70,42 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
               {isUnitFormVisible ? (
                 <ManagingProductUnitForm
                   formikReference={props.formikReference}
+                  relativeOptionGroupId={sectedOptionGroupId}
                   submitAction={(args: any) => {
-                    debugger;
-                    /// TODO: !!!!
-
-                    if (sectedOptionGroupId) {
-                      args.unit.optionGroupId = sectedOptionGroupId;
+                    if (sectedOptionUnit) {
+                      /// Update unit
 
                       let action = assignPendingActions(
-                        productSettingsActions.saveNewOptionUnit(args),
-                        // productSettingsActions.updateOptionUnit(args),
-                        [productSettingsActions.getAllOptionGroupsList()]
+                        productSettingsActions.updateOptionUnit(args),
+                        [
+                          productSettingsActions.getAllOptionGroupsList(),
+                          productSettingsActions.managingPanelContent(null),
+                          productSettingsActions.changeTargetOptionGroupForUnitsEdit(
+                            null
+                          ),
+                          productSettingsActions.toggleOptionUnitFormVisibility(
+                            false
+                          ),
+                        ]
                       );
                       dispatch(action);
                     } else {
-                      debugger;
-                      /// TODO: smth goes wrong!!!
+                      /// Creating new unit
+
+                      let action = assignPendingActions(
+                        productSettingsActions.saveNewOptionUnit(args),
+                        [
+                          productSettingsActions.getAllOptionGroupsList(),
+                          productSettingsActions.managingPanelContent(null),
+                          productSettingsActions.changeTargetOptionGroupForUnitsEdit(
+                            null
+                          ),
+                          productSettingsActions.toggleOptionUnitFormVisibility(
+                            false
+                          ),
+                        ]
+                      );
+                      dispatch(action);
                     }
                   }}
                   optionUnit={sectedOptionUnit}

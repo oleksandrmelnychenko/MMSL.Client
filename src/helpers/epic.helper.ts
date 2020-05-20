@@ -95,7 +95,7 @@ export const ajaxPutResponse = (
     .pipe(map((response) => response.response));
 };
 
-export const ajaxPutFormDataResponse__FOO = (
+export const ajaxPutFormDataResponse = (
   urlPath: string,
   body: FormData,
   state: IApplicationState,
@@ -119,7 +119,7 @@ export const ajaxPutFormDataResponse__FOO = (
     .pipe(map((response) => response.response));
 };
 
-export const ajaxPostResponse_file = (
+export const ajaxPostFormDataResponse = (
   urlPath: string,
   body: any,
   state: IApplicationState,

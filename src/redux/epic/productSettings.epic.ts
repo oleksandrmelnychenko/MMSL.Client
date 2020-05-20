@@ -1,7 +1,7 @@
 import {
   ajaxPutResponse,
-  ajaxPutFormDataResponse__FOO,
-  ajaxPostResponse_file,
+  ajaxPutFormDataResponse,
+  ajaxPostFormDataResponse,
 } from './../../helpers/epic.helper';
 import { checkUnauthorized } from './../../helpers/error.helpers';
 import {
@@ -133,32 +133,32 @@ export const updateOptionUnitEpic = (action$: AnyAction, state$: any) => {
       debugger;
 
       const formData: FormData = new FormData();
-      formData.append('file', action.payload.file);
+      formData.append('file', action.payload.imageBlob);
 
-      return ajaxPutFormDataResponse__FOO(
+      return ajaxPutFormDataResponse(
         api.MODIFY_OPTION_UNIT,
         formData,
         state$.value,
         [
           {
             key: 'orderIndex',
-            value: `${action.payload.unit.orderIndex}`,
+            value: `${action.payload.orderIndex}`,
           },
           {
             key: 'value',
-            value: `${action.payload.unit.value}`,
+            value: `${action.payload.value}`,
           },
           {
             key: 'isMandatory',
-            value: `${action.payload.unit.isMandatory}`,
+            value: `${action.payload.isMandatory}`,
           },
           {
             key: 'ImageUrl',
-            value: `${encodeURIComponent(action.payload.unit.imageUrl)}`,
+            value: `${encodeURIComponent(action.payload.imageUrl)}`,
           },
           {
             key: 'id',
-            value: `${action.payload.unit.id}`,
+            value: `${action.payload.id}`,
           },
         ]
       ).pipe(
@@ -191,50 +191,47 @@ export const saveNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
     ofType(productSettingsTypes.SAVE_NEW_OPTION_UNIT),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
-      debugger;
 
       const formData: FormData = new FormData();
-      formData.append('file', action.payload.file);
+      formData.append('file', action.payload.imageBlob);
 
-      return ajaxPostResponse_file(
+      return ajaxPostFormDataResponse(
         api.ADD_OPTION_UNIT,
         formData,
         state$.value,
         [
           {
             key: 'orderIndex',
-            value: `${action.payload.unit.orderIndex}`,
+            value: `${action.payload.orderIndex}`,
           },
           {
             key: 'value',
-            value: `${action.payload.unit.value}`,
+            value: `${action.payload.value}`,
           },
           {
             key: 'isMandatory',
-            value: `${action.payload.unit.isMandatory}`,
+            value: `${action.payload.isMandatory}`,
           },
           {
             key: 'imageUrl',
-            value: `${encodeURIComponent(action.payload.unit.imageUrl)}`,
+            value: `${encodeURIComponent(action.payload.imageUrl)}`,
           },
           {
             key: 'id',
-            value: `${action.payload.unit.id}`,
+            value: `${action.payload.id}`,
           },
           {
             key: 'optionGroupId',
-            value: `${action.payload.unit.optionGroupId}`,
+            value: `${action.payload.optionGroupId}`,
           },
         ]
       ).pipe(
         mergeMap((successResponse: any) => {
-          debugger;
           let successResultFlow = [...extractSuccessPendingActions(action)];
 
           return from(successResultFlow);
         }),
         catchError((errorResponse: any) => {
-          debugger;
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               controlActions.showInfoMessage(
