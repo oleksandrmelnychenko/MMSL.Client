@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './createDealerPanel.scss';
 import {
   Panel,
@@ -71,8 +71,7 @@ export const CreateDealerPanel: React.FC = (props: any) => {
         onDismiss={() => {
           dispatch(dealerActions.toggleNewDealerForm(false));
         }}
-        closeButtonAriaLabel="Close"
-      >
+        closeButtonAriaLabel="Close">
         <PanelTitle
           onSaveClick={() => {
             let formik: any = formikReference.formik;

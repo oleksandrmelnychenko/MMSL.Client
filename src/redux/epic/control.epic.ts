@@ -5,7 +5,7 @@ import { ofType } from 'redux-observable';
 import { mapTo } from 'rxjs/operators';
 import * as controlTypes from '../constants/control.types.constants';
 
-export const getCustomersListPaginatedEpic = (action$: AnyAction) => {
+export const closeInfoMessageEpic = (action$: AnyAction) => {
   return action$.pipe(
     ofType(controlTypes.SHOW_INFO_MESSAGE),
     debounceTime(2500),

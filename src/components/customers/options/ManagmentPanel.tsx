@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Label, PrimaryButton } from 'office-ui-fabric-react';
 
 import * as customerActions from '../../../redux/actions/customer.actions';
@@ -29,17 +29,17 @@ const ManagementPanel: React.FC = () => {
   ];
 
   const [menu, setMenu] = useState(menuItem);
-  const changeSelectedMenuItem = (componentType: number) => {
-    const updateMenu = menu.map((item) => {
-      item.isSelected = false;
-      if (item.componentType === componentType) {
-        item.isSelected = true;
-      }
-      return item;
-    });
+  // const changeSelectedMenuItem = (componentType: number) => {
+  //   const updateMenu = menu.map((item) => {
+  //     item.isSelected = false;
+  //     if (item.componentType === componentType) {
+  //       item.isSelected = true;
+  //     }
+  //     return item;
+  //   });
 
-    setMenu(updateMenu);
-  };
+  //   setMenu(updateMenu);
+  // };
 
   return (
     <div className="management">

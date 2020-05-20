@@ -2,7 +2,6 @@ import React from 'react';
 import {
   DefaultButton,
   IContextualMenuItem,
-  ContextualMenuItemType,
   IContextualMenuProps,
   DirectionalHint,
   Persona,
@@ -40,14 +39,6 @@ const Header: React.FC = () => {
     },
   };
   const menuItems: IContextualMenuItem[] = [
-    // {
-    //   key: 'Settings',
-    //   text: translate('settings') as string,
-    // },
-    // {
-    //   key: 'divider_1',
-    //   itemType: ContextualMenuItemType.Divider,
-    // },
     {
       key: 'logOut',
       text: translate('logOut') as string,
