@@ -20,6 +20,7 @@ import { ManagingPanelComponent } from '../../../redux/reducers/productSettings.
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { List } from 'linq-typescript';
 import { OptionGroupDetails } from './OptionGroupDetails';
+import ManagingProductUnitForm from './ManagingProductUnitForm';
 
 const NEW_PANEL_ITEM_NAME = 'New';
 const DELETE_PANEL_ITEM_NAME = 'Delete';
@@ -118,7 +119,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
 
   let panelTitleText = 'Management Panel';
   let panelDescription = '';
-  let panelWidth = '600px';
+  let panelWidth = '0px';
   let content: any = null;
 
   if (panelContent === ManagingPanelComponent.ManageGroups) {
@@ -149,22 +150,6 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
     if (sectedOptionGroup) {
       panelDescription = sectedOptionGroup.name;
     }
-    // const saveButton = new List(_items).firstOrDefault(
-    //   (item) => item.key === NEW_PANEL_ITEM_NAME
-    // );
-    // const deleteButton = new List(_items).firstOrDefault(
-    //   (item) => item.key === DELETE_PANEL_ITEM_NAME
-    // );
-
-    // if (saveButton)
-    //   saveButton.buttonStyles = {
-    //     root: { display: 'none' },
-    //   };
-
-    // if (deleteButton)
-    //   deleteButton.buttonStyles = {
-    //     root: { display: 'none' },
-    //   };
 
     content = (
       <OptionGroupDetails
@@ -180,11 +165,32 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
       />
     );
   } else if (panelContent === ManagingPanelComponent.ManageSingleOptionUnit) {
+    panelWidth = '350px';
     panelTitleText = 'Details';
     if (sectedSingleOptionUnit) {
       panelDescription = sectedSingleOptionUnit.value;
     }
     hideAddEditPanelActions(_items);
+
+    content = (
+      <ManagingProductUnitForm
+        formikReference={formikReference}
+        optionUnit={sectedSingleOptionUnit}
+        relativeOptionGroupId={sectedOptionGroup?.id}
+        submitAction={(args: any) => {
+          let action = assignPendingActions(
+            productSettingsActions.updateOptionUnit(args),
+            [
+              productSettingsActions.getAllOptionGroupsList(),
+              productSettingsActions.changeTargetOptionGroupForUnitsEdit(null),
+              productSettingsActions.managingPanelContent(null),
+            ]
+          );
+          dispatch(action);
+          // props.formikReference.formik.resetForm();
+        }}
+      />
+    );
   }
 
   return (
@@ -199,9 +205,6 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
           dispatch(productSettingsActions.managingPanelContent(null));
           dispatch(
             productSettingsActions.changeTargetOptionGroupForUnitsEdit(null)
-          );
-          dispatch(
-            productSettingsActions.toggleOptionUnitFormVisibility(false)
           );
         }}
         closeButtonAriaLabel="Close"

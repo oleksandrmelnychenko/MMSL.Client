@@ -287,6 +287,7 @@ export const saveNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
         ]
       ).pipe(
         mergeMap((successResponse: any) => {
+          debugger;
           let successResultFlow = [
             controlActions.disabledStatusBar(),
             controlActions.showInfoMessage(successResponse.message),
