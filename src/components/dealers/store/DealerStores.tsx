@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { List } from 'linq-typescript';
+import { useSelector, useDispatch } from 'react-redux';
+import { Route, useLocation } from 'react-router-dom';
+
 import {
   Separator,
   CommandBar,
   ICommandBarItemProps,
   Stack,
 } from 'office-ui-fabric-react';
-import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { DealerAccount, FormicReference } from '../../../interfaces';
 import * as dealerActions from '../../../redux/actions/dealer.actions';
@@ -21,8 +24,8 @@ import {
   DialogArgs,
   CommonDialogType,
 } from '../../../redux/reducers/control.reducer';
-import { List } from 'linq-typescript';
 import { assignPendingActions } from '../../../helpers/action.helper';
+import { useFormikContext } from 'formik';
 
 export const DealerStores: React.FC = () => {
   const dispatch = useDispatch();
@@ -39,6 +42,7 @@ export const DealerStores: React.FC = () => {
       };
     })
   );
+
   const selectedDealer = useSelector<IApplicationState, DealerAccount>(
     (state) => state.dealer.selectedDealer!
   );
@@ -172,7 +176,7 @@ export const DealerStores: React.FC = () => {
         />
       </div>
       <Stack horizontal tokens={{ childrenGap: 20 }}>
-        <Stack grow={1} tokens={{ maxWidth: '50%' }}>
+        <Stack grow={1} tokens={{ maxWidth: '49%' }}>
           <Separator alignContent="start">Stores</Separator>
           <div className="dealer__stores">
             {dealerStores.map((item: IStore, index: number) => {
@@ -181,7 +185,7 @@ export const DealerStores: React.FC = () => {
           </div>
         </Stack>
 
-        <Stack grow={1} tokens={{ maxWidth: '50%' }}>
+        <Stack grow={1} tokens={{ maxWidth: '49%' }}>
           {isOpenForm ? (
             <FormStore
               submitAction={(args: any) => {
@@ -209,7 +213,6 @@ export const DealerStores: React.FC = () => {
             />
           ) : null}
         </Stack>
-        {/* <Route component=""> */}
       </Stack>
     </div>
   );

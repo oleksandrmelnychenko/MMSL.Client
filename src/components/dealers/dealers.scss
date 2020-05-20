@@ -98,4 +98,13 @@
     color: rgb(161, 159, 157);
     margin-bottom: 10px;
   }
+
+  &__counter {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: #0078d4;
+    font-size: 16px;
+    font-weight: 600;
+  }
 }

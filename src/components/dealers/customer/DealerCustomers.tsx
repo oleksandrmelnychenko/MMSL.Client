@@ -5,7 +5,6 @@ import {
   Separator,
   ICommandBarItemProps,
   CommandBar,
-  TeachingBubbleContent,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers/index';
@@ -89,6 +88,7 @@ export const DealerCustomers: React.FC = () => {
           Address:{' '}
           {`country: ${item.address.country}, city: ${item.address.city}`}
         </div>
+        <div className="dealer__store__counter">{item.storeCustomersCount}</div>
       </div>
     );
   };
@@ -129,6 +129,8 @@ export const DealerCustomers: React.FC = () => {
         formikReference.formik.submitForm();
         if (!dealerCustomerState.selectedCustomer) {
           setIsOpenForm(false);
+          setIsDirtyForm(false);
+          dispatch(dealerActions.setSelectedCustomerInCurrentStore(null));
         }
       },
       buttonStyles: commandBarButtonStyles,
@@ -221,6 +223,7 @@ export const DealerCustomers: React.FC = () => {
                 formikReference={formikReference}
                 submitAction={(args: any) => {
                   const value = { ...args, storeId: selectedStore.id };
+                  debugger;
                   if (dealerCustomerState.selectedCustomer) {
                     dispatch(
                       dealerActions.updateStoreCustomer({
