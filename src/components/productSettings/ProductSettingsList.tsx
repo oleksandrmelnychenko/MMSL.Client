@@ -11,6 +11,9 @@ import {
   IDetailsHeaderProps,
   IRenderFunction,
   DetailsHeader,
+  DetailsRow,
+  IDetailsGroupDividerProps,
+  CheckboxVisibility,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -25,6 +28,7 @@ import {
 import { assignPendingActions } from '../../helpers/action.helper';
 import * as productSettingsActions from '../../redux/actions/productSettings.actions';
 import { ManagingPanelComponent } from '../../redux/reducers/productSettings.reducer';
+import { List } from 'linq-typescript';
 
 const _columnIconButtonStyle = {
   root: {
@@ -165,20 +169,59 @@ export const ProductSettingsList: React.FC = () => {
     },
   ];
 
+  const allConcatedUnits = new List(outionGroups)
+    .selectMany((group) => group.optionUnits)
+    .toArray();
+
+  let groupIndex: number = 0;
+  const groups = new List(outionGroups)
+    .select((group) => {
+      const groupEntity = {
+        key: `${groupIndex}_group`,
+        name: group.name,
+        level: 0,
+        startIndex: groupIndex,
+        count: group.optionUnits.length,
+        isDropEnabled: group.optionUnits.length > 0,
+      };
+
+      groupIndex += group.optionUnits.length;
+
+      return groupEntity;
+    })
+    .toArray();
+
   return (
     <div className="customerList">
       <MarqueeSelection selection={selection}>
         <DetailsList
+          groupProps={{
+            showEmptyGroups: true,
+            onRenderHeader: (props?: any, defaultRender?: any) => {
+              let defaultRendered = defaultRender(props);
+              return defaultRendered;
+            },
+          }}
+          groups={groups}
+          isHeaderVisible={false}
           columns={customerColumns}
-          items={outionGroups}
-          onRenderDetailsHeader={(props: any, _defaultRender?: any) => {
+          items={allConcatedUnits}
+          checkboxVisibility={CheckboxVisibility.onHover}
+          onRenderRow={(args: any) => {
             return (
-              <DetailsHeader
-                {...props}
-                ariaLabelForToggleAllGroupsButton={'Expand collapse groups'}
-              />
+              <div>
+                <DetailsRow {...args} />
+              </div>
             );
           }}
+          // onRenderDetailsHeader={(props: any, _defaultRender?: any) => {
+          //   return (
+          //     <DetailsHeader
+          //       {...props}
+          //       ariaLabelForToggleAllGroupsButton={'Expand collapse groups'}
+          //     />
+          //   );
+          // }}
         />
       </MarqueeSelection>
     </div>
