@@ -133,7 +133,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
     );
   } else if (panelContent === ManagingPanelComponent.ManageUnits) {
     panelTitleText = 'Manage Option Units';
-    panelWidth = '650px';
+    panelWidth = '700px';
     if (sectedOptionGroup) {
       panelDescription = sectedOptionGroup.name;
     }

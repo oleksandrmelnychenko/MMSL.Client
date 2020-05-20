@@ -12,7 +12,6 @@ import {
   CheckboxVisibility,
   DetailsRow,
   FontIcon,
-  divProperties,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
@@ -60,7 +59,8 @@ export const OptionItemsOrderingList: React.FC = () => {
           <div
             className={`list__item${
               item.id === selectedOptionUnitId ? ' selected' : ''
-            }`}>
+            }`}
+          >
             <div className="list__description">
               <div className="list__description__name">
                 Unit value: {item.value}
@@ -177,7 +177,8 @@ export const OptionItemsOrderingList: React.FC = () => {
                       )
                     );
                   }
-                }}>
+                }}
+              >
                 <DetailsRow
                   styles={{
                     cell: {
