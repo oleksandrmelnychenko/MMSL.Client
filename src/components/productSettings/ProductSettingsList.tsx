@@ -11,6 +11,10 @@ import {
   IDetailsHeaderProps,
   IRenderFunction,
   DetailsHeader,
+  DetailsRow,
+  IDetailsGroupDividerProps,
+  CheckboxVisibility,
+  GroupHeader,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -25,6 +29,7 @@ import {
 import { assignPendingActions } from '../../helpers/action.helper';
 import * as productSettingsActions from '../../redux/actions/productSettings.actions';
 import { ManagingPanelComponent } from '../../redux/reducers/productSettings.reducer';
+import { List } from 'linq-typescript';
 
 const _columnIconButtonStyle = {
   root: {
@@ -165,12 +170,90 @@ export const ProductSettingsList: React.FC = () => {
     },
   ];
 
+  const allConcatedUnits = new List(outionGroups)
+    .selectMany((group) => group.optionUnits)
+    .toArray();
+
+  let groupIndex: number = 0;
+  const groups = new List(outionGroups)
+    .select((group) => {
+      const groupEntity = {
+        key: `${group.id}`,
+        name: group.name,
+        level: 0,
+        startIndex: groupIndex,
+        count: group.optionUnits.length,
+        isDropEnabled: group.optionUnits.length > 0,
+      };
+
+      groupIndex += group.optionUnits.length;
+
+      return groupEntity;
+    })
+    .toArray();
+
   return (
     <div className="customerList">
       <MarqueeSelection selection={selection}>
         <DetailsList
+          groupProps={{
+            showEmptyGroups: true,
+            onRenderHeader: (props?: any, defaultRender?: any) => {
+              const headerCountStyle = { display: 'none' };
+              const checkButtonStyle = { display: 'none' };
+
+              return (
+                <GroupHeader
+                  onRenderTitle={(props?: any, defaultRender?: any) => {
+                    return (
+                      <div>
+                        <Stack horizontal>
+                          {defaultRender(props)}
+                          <IconButton
+                            styles={_columnIconButtonStyle}
+                            height={20}
+                            iconProps={{ iconName: 'Settings' }}
+                            title="Settings"
+                            ariaLabel="Settings"
+                            onClick={() => {
+                              let action = assignPendingActions(
+                                productSettingsActions.getAndSelectOptionGroupById(
+                                  parseInt(props.group.key)
+                                ),
+                                [
+                                  productSettingsActions.managingPanelContent(
+                                    ManagingPanelComponent.ManageUnits
+                                  ),
+                                ]
+                              );
+                              dispatch(action);
+                            }}
+                          />
+                        </Stack>
+                      </div>
+                    );
+                  }}
+                  styles={{
+                    check: checkButtonStyle,
+                    headerCount: headerCountStyle,
+                  }}
+                  {...props}
+                />
+              );
+            },
+          }}
+          groups={groups}
+          isHeaderVisible={false}
           columns={customerColumns}
-          items={outionGroups}
+          items={allConcatedUnits}
+          checkboxVisibility={CheckboxVisibility.onHover}
+          onRenderRow={(args: any) => {
+            return (
+              <div>
+                <DetailsRow {...args} />
+              </div>
+            );
+          }}
           onRenderDetailsHeader={(props: any, _defaultRender?: any) => {
             return (
               <DetailsHeader

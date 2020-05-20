@@ -7,7 +7,7 @@ import {
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
-import { FormicReference } from '../../../interfaces';
+import { FormicReference, OptionGroup } from '../../../interfaces';
 import {
   panelStyle,
   commandBarStyles,
@@ -41,6 +41,13 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
     IApplicationState,
     ManagingPanelComponent | null
   >((state) => state.productSettings.managingPanelContent);
+
+  const sectedOptionGroup: OptionGroup | null | undefined = useSelector<
+    IApplicationState,
+    OptionGroup | null | undefined
+  >(
+    (state) => state.productSettings.managingOptionUnitsState.targetOptionGroup
+  );
 
   let _items: ICommandBarItemProps[] = [
     {
@@ -85,6 +92,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
   ];
 
   let panelTitleText = 'Management Panel';
+  let panelDescription = '';
   let panelWidth = '600px';
   let content: any = null;
 
@@ -125,7 +133,10 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
     );
   } else if (panelContent === ManagingPanelComponent.ManageUnits) {
     panelTitleText = 'Manage Option Units';
-    panelWidth = '600px';
+    panelWidth = '650px';
+    if (sectedOptionGroup) {
+      panelDescription = sectedOptionGroup.name;
+    }
 
     content = (
       <OptionGroupDetails
@@ -170,6 +181,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
             }
           }}
           title={panelTitleText}
+          description={panelDescription}
         />
         <CommandBar
           styles={commandBarStyles}

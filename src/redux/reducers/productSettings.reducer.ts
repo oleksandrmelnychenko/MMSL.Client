@@ -66,6 +66,21 @@ export const productSettingsReducer = createReducer(
               state.managingOptionUnitsState.targetOptionGroup = optionToReselect;
               state.managingOptionUnitsState.optionUnits =
                 optionToReselect.optionUnits;
+
+              if (state.managingOptionUnitsState.selectedOptionUnit) {
+                let unitToSelect = new List<OptionUnit>(
+                  state.managingOptionUnitsState.optionUnits
+                ).firstOrDefault(
+                  (unit) =>
+                    unit.id ===
+                    state.managingOptionUnitsState.selectedOptionUnit?.id
+                );
+                if (!unitToSelect) {
+                  state.managingOptionUnitsState.selectedOptionUnit = null;
+                } else {
+                  state.managingOptionUnitsState.selectedOptionUnit = unitToSelect;
+                }
+              }
             }
           } else {
           }

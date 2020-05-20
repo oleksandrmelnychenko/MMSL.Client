@@ -86,10 +86,7 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
                   ),
                   [
                     productSettingsActions.getAllOptionGroupsList(),
-                    productSettingsActions.managingPanelContent(null),
-                    productSettingsActions.changeTargetOptionGroupForUnitsEdit(
-                      null
-                    ),
+                    productSettingsActions.changeTargetOptionunit(null),
                     productSettingsActions.toggleOptionUnitFormVisibility(
                       false
                     ),
@@ -138,10 +135,7 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
                         productSettingsActions.updateOptionUnit(args),
                         [
                           productSettingsActions.getAllOptionGroupsList(),
-                          productSettingsActions.managingPanelContent(null),
-                          productSettingsActions.changeTargetOptionGroupForUnitsEdit(
-                            null
-                          ),
+                          productSettingsActions.changeTargetOptionunit(null),
                           productSettingsActions.toggleOptionUnitFormVisibility(
                             false
                           ),
@@ -155,10 +149,7 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
                         productSettingsActions.saveNewOptionUnit(args),
                         [
                           productSettingsActions.getAllOptionGroupsList(),
-                          productSettingsActions.managingPanelContent(null),
-                          productSettingsActions.changeTargetOptionGroupForUnitsEdit(
-                            null
-                          ),
+                          productSettingsActions.changeTargetOptionunit(null),
                           productSettingsActions.toggleOptionUnitFormVisibility(
                             false
                           ),
