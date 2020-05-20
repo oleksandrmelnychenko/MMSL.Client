@@ -8,7 +8,6 @@ import {
   Image,
   Stack,
   IconButton,
-  MarqueeSelection,
   DetailsHeader,
   DetailsRow,
   CheckboxVisibility,
@@ -27,6 +26,11 @@ import { ManagingPanelComponent } from '../../redux/reducers/productSettings.red
 import { List } from 'linq-typescript';
 import { scrollablePaneStyleForDetailList } from '../../common/fabric-styles/styles';
 import { DATA_SELECTION_DISABLED_CLASS } from '../dealers/DealerList';
+import * as controlAction from '../../redux/actions/control.actions';
+import {
+  DialogArgs,
+  CommonDialogType,
+} from '../../redux/reducers/control.reducer';
 
 const _columnIconButtonStyle = {
   root: {
@@ -151,36 +155,23 @@ export const ProductSettingsList: React.FC = () => {
               title="Delete"
               ariaLabel="Delete"
               onClick={(args: any) => {
-                // dispatch(
-                //   controlAction.toggleCommonDialogVisibility(
-                //     new DialogArgs(
-                //       CommonDialogType.Delete,
-                //       'Delete dealer',
-                //       `Are you sure you want to delete ${item.name}?`,
-                //       () => {
-                //         const actionsQueue: any[] = [
-                //           dealerActions.getDealersListPaginated(),
-                //         ];
-                //         /// TODO:
-                //         if (item.id) {
-                //           actionsQueue.push(
-                //             dealerActions.setSelectedDealer(null),
-                //             controlAction.closeInfoPanelWithComponent(),
-                //             dealerActions.isOpenPanelWithDealerDetails(
-                //               new ToggleDealerPanelWithDetails()
-                //             )
-                //           );
-                //         }
-                //         let action = assignPendingActions(
-                //           dealerActions.deleteDealerById(item.id),
-                //           actionsQueue
-                //         );
-                //         dispatch(action);
-                //       },
-                //       () => {}
-                //     )
-                //   )
-                // );
+                dispatch(
+                  controlAction.toggleCommonDialogVisibility(
+                    new DialogArgs(
+                      CommonDialogType.Delete,
+                      'Delete option unit',
+                      `Are you sure you want to delete ${item.value}?`,
+                      () => {
+                        let action = assignPendingActions(
+                          productSettingsActions.deleteOptionUnitById(item.id),
+                          [productSettingsActions.getAllOptionGroupsList()]
+                        );
+                        dispatch(action);
+                      },
+                      () => {}
+                    )
+                  )
+                );
               }}
             />
           </Stack>
