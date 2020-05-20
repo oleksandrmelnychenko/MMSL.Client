@@ -339,11 +339,13 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                       {() => (
                         <div className="form__group">
                           <DatePicker
+                            formatDate={fabricControlSettings.onFormatDate}
                             firstDayOfWeek={DayOfWeek.Monday}
                             strings={fabricControlSettings.dayPickerStrings}
                             textField={fabricStyles.datePickerStyles}
                             value={new Date(formik.values.birthDate)}
                             label="Birth Date"
+                            showGoToToday={false}
                             onSelectDate={(date: Date | null | undefined) => {
                               let value = '';
 
