@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  FocusZone,
-  FocusZoneDirection,
   Separator,
   CommandBar,
   ICommandBarItemProps,
@@ -80,8 +78,7 @@ export const DealerStores: React.FC = () => {
 
           setSelectedStore(selectedStore);
           setIsOpenForm(true);
-        }}
-      >
+        }}>
         <div className="dealer__store__name">Store name: {item.name}</div>
         <div className="dealer__store__address">
           Address:{' '}
@@ -176,14 +173,12 @@ export const DealerStores: React.FC = () => {
       </div>
       <Stack horizontal tokens={{ childrenGap: 20 }}>
         <Stack grow={1} tokens={{ maxWidth: '50%' }}>
-          <FocusZone direction={FocusZoneDirection.vertical}>
-            <div className={'dealer__stores'} data-is-scrollable={true}>
-              <Separator alignContent="start">Stores</Separator>
-              {dealerStores.map((item: IStore, index: number) => {
-                return onRenderCell(item, index);
-              })}{' '}
-            </div>
-          </FocusZone>
+          <Separator alignContent="start">Stores</Separator>
+          <div className="dealer__stores">
+            {dealerStores.map((item: IStore, index: number) => {
+              return onRenderCell(item, index);
+            })}{' '}
+          </div>
         </Stack>
 
         <Stack grow={1} tokens={{ maxWidth: '50%' }}>
@@ -198,6 +193,7 @@ export const DealerStores: React.FC = () => {
 
                   setIsOpenForm(false);
                   setIsDirtyForm(false);
+                  setSelectedStore(null);
                 } else {
                   let action = assignPendingActions(
                     dealerActions.addStoreToCurrentDealer(args)
