@@ -145,7 +145,8 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
             )
           );
         }}
-        validateOnBlur={false}>
+        validateOnBlur={false}
+      >
         {(formik) => {
           props.formikReference.formik = formik;
           if (props.formikReference.isDirtyFunc)
@@ -351,6 +352,7 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
 
                               if (date) value = date.toJSON();
 
+                              debugger;
                               formik.setFieldValue('birthDate', value);
                               formik.setFieldTouched('birthDate');
                             }}

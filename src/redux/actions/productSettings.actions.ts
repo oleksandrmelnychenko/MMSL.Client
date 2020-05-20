@@ -43,6 +43,12 @@ export const deleteOptionUnitById = createAction<number>(
 export const getAndSelectOptionGroupById = createAction<number>(
   productSettingsTypes.GET_AND_SELECT_OPTION_GROUP_BY_ID
 );
+export const updateSearchWordOptionGroup = createAction<string>(
+  productSettingsTypes.UPDATE_SEARCH_WORD_OPTION_GROUP
+);
+export const getBySearchOptionGroups = createAction(
+  productSettingsTypes.GET_BY_SEARCH_OPTION_GROUPS
+);
 
 export type ManagingPanelContent = ReturnType<typeof managingPanelContent>;
 export type SaveNewOptionGroup = ReturnType<typeof saveNewOptionGroup>;
@@ -61,4 +67,10 @@ export type ToggleOptionUnitFormVisibility = ReturnType<
 export type DeleteOptionUnitById = ReturnType<typeof deleteOptionUnitById>;
 export type GetAndSelectOptionGroupById = ReturnType<
   typeof getAndSelectOptionGroupById
+>;
+export type UpdateSearchWordOptionGroup = ReturnType<
+  typeof updateSearchWordOptionGroup
+>;
+export type GetBySearchOptionGroups = ReturnType<
+  typeof getBySearchOptionGroups
 >;

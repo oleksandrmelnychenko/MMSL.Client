@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './productSettingsLsit.scss';
 import {
   DetailsList,
   IColumn,
@@ -73,8 +74,9 @@ export const ProductSettingsList: React.FC = () => {
               <Stack.Item>
                 <Text
                   variant={'mediumPlus' as ITextProps['variant']}
-                  styles={{ root: { color: '#484848', fontWeight: 400 } }}>
-                  Unit value: {item.value}
+                  styles={{ root: { color: '#484848', fontWeight: 400 } }}
+                >
+                  {item.value}
                 </Text>
               </Stack.Item>
               <Stack.Item>
@@ -102,7 +104,9 @@ export const ProductSettingsList: React.FC = () => {
         level: 0,
         startIndex: groupIndex,
         count: group.optionUnits.length,
-        isDropEnabled: group.optionUnits.length > 0,
+        // isDropEnabled: group.optionUnits.length > 0,
+        isDropEnabled: false,
+        isCollapsed: false,
       };
 
       groupIndex += group.optionUnits.length;
@@ -112,20 +116,26 @@ export const ProductSettingsList: React.FC = () => {
     .toArray();
 
   return (
-    <div className="customerList">
+    <div className="productSettingsLsit">
       <ScrollablePane styles={scrollablePaneStyleForDetailList}>
         <DetailsList
+          selection={selection}
           groupProps={{
             showEmptyGroups: true,
             onRenderHeader: (props?: any, defaultRender?: any) => {
-              const headerCountStyle = { display: 'none' };
-              const checkButtonStyle = { display: 'none' };
-
               return (
                 <GroupHeader
+                  styles={{
+                    root: { overflowY: 'scroll' },
+                    check: { display: 'none' },
+                    headerCount: { display: 'none' },
+                    expandButtonProps: { display: 'none' },
+                    expandButtonIcon: 'Edit',
+                  }}
+                  {...props}
                   onRenderTitle={(props?: any, defaultRender?: any) => {
                     return (
-                      <div>
+                      <div style={{ paddingLeft: '8px' }}>
                         <Stack horizontal tokens={{ childrenGap: 20 }}>
                           {defaultRender(props)}
                           <IconButton
@@ -152,12 +162,6 @@ export const ProductSettingsList: React.FC = () => {
                       </div>
                     );
                   }}
-                  styles={{
-                    root: { overflowY: 'scroll' },
-                    check: checkButtonStyle,
-                    headerCount: headerCountStyle,
-                  }}
-                  {...props}
                 />
               );
             },

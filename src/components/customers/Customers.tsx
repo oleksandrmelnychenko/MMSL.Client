@@ -37,7 +37,8 @@ export const Customers: React.FC = (props: any) => {
                             dispatch(customerActions.selectedCustomer(null));
                             dispatch(customerActions.toggleCustomerForm(true));
                           }}
-                          iconProps={{ iconName: 'Add' }}>
+                          iconProps={{ iconName: 'Add' }}
+                        >
                           New customer
                         </ActionButton>
                       </div>

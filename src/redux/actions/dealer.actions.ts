@@ -112,6 +112,14 @@ export const updateStoreCustomer = createAction<StoreCustomer>(
   dealerTypes.UPDATE_STORE_CUSTOMER
 );
 
+export const dealeFromDate = createAction<Date | undefined>(
+  dealerTypes.DEALER_FROM_DATE
+);
+
+export const dealeToDate = createAction<Date | undefined>(
+  dealerTypes.DEALER_TO_DATE
+);
+
 export type GetDealersListPaginated = ReturnType<
   typeof getDealersListPaginated
 >;
@@ -134,3 +142,5 @@ export type GetStoreCustomersByStoreId = ReturnType<
 export type UpdateTargetStoreStoreCustomersList = ReturnType<
   typeof updateTargetStoreCustomersList
 >;
+export type DealeFromDate = ReturnType<typeof dealeFromDate>;
+export type DealeToDate = ReturnType<typeof dealeToDate>;

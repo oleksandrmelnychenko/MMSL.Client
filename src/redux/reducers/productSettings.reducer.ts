@@ -8,10 +8,12 @@ export class ProductSettingsState {
     this.managingPanelContent = null;
     this.optionGroupsList = [];
     this.managingOptionUnitsState = new ManagingOptionUnitsState();
+    this.searchWordOptionGroup = '';
   }
 
   managingPanelContent: ManagingPanelComponent | null;
   optionGroupsList: OptionGroup[];
+  searchWordOptionGroup: string;
   managingOptionUnitsState: ManagingOptionUnitsState;
 }
 
@@ -126,6 +128,12 @@ export const productSettingsReducer = createReducer(
         (state, action) => {
           state.managingOptionUnitsState.isOptionUnitFormVisible =
             action.payload;
+        }
+      )
+      .addCase(
+        productSettingsActions.updateSearchWordOptionGroup,
+        (state, action) => {
+          state.searchWordOptionGroup = action.payload;
         }
       )
 );

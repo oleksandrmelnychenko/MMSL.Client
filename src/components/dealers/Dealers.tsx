@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './dealers.scss';
 import { SearchBox, ActionButton, Stack } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,6 +16,20 @@ export const Dealers: React.FC = (props: any) => {
   const searchText = useSelector<IApplicationState, string>(
     (state) => state.dealer.dealerState.search
   );
+
+  const fromDate: Date | undefined = useSelector<
+    IApplicationState,
+    Date | undefined
+  >((state) => state.dealer.dealerState.fromDate);
+
+  const toDate: Date | undefined = useSelector<
+    IApplicationState,
+    Date | undefined
+  >((state) => state.dealer.dealerState.toDate);
+
+  useEffect(() => {
+    dispatch(dealerActions.getDealersListPaginated());
+  }, [fromDate, toDate, dispatch]);
 
   const datePickerWidth = { root: { width: '150px' } };
 
@@ -36,7 +50,8 @@ export const Dealers: React.FC = (props: any) => {
                           onClick={() =>
                             dispatch(dealerActions.toggleNewDealerForm(true))
                           }
-                          iconProps={{ iconName: 'Add' }}>
+                          iconProps={{ iconName: 'Add' }}
+                        >
                           New dealer
                         </ActionButton>
                       </div>
@@ -45,10 +60,19 @@ export const Dealers: React.FC = (props: any) => {
                           formatDate={fabricControlSettings.onFormatDate}
                           styles={datePickerWidth}
                           className="dealersDate"
+                          allowTextInput={true}
+                          value={fromDate}
                           firstDayOfWeek={DayOfWeek.Monday}
                           strings={fabricControlSettings.dayPickerStrings}
                           placeholder="From date"
                           ariaLabel="Select a date"
+                          onSelectDate={(date: Date | null | undefined) => {
+                            dispatch(
+                              dealerActions.dealeFromDate(
+                                date ? date : undefined
+                              )
+                            );
+                          }}
                         />
                       </div>
                       <div className="dealers__header__top__controls__control">
@@ -56,10 +80,17 @@ export const Dealers: React.FC = (props: any) => {
                           formatDate={fabricControlSettings.onFormatDate}
                           styles={datePickerWidth}
                           className="dealersDate"
+                          allowTextInput={true}
+                          value={toDate}
                           firstDayOfWeek={DayOfWeek.Monday}
                           strings={fabricControlSettings.dayPickerStrings}
                           placeholder="To date"
                           ariaLabel="Select a date"
+                          onSelectDate={(date: Date | null | undefined) => {
+                            dispatch(
+                              dealerActions.dealeToDate(date ? date : undefined)
+                            );
+                          }}
                         />
                       </div>
                       <div className="dealers__header__top__controls__control">

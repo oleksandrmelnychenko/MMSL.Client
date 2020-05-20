@@ -1,4 +1,3 @@
-import { DELETE_OPTION_UNIT_BY_ID } from './../constants/productSettings.types.constants';
 import {
   ajaxPutResponse,
   ajaxPutFormDataResponse,
@@ -10,7 +9,7 @@ import {
   extractSuccessPendingActions,
   extractErrorPendingActions,
 } from './../../helpers/action.helper';
-import { switchMap, mergeMap, catchError } from 'rxjs/operators';
+import { switchMap, mergeMap, catchError, debounceTime } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import { from } from 'rxjs';
@@ -70,7 +69,12 @@ export const getAllOptionGroupsListEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
 
-      return ajaxGetWebResponse(api.GET_ALL_OPTION_GROUPS, state$.value).pipe(
+      return ajaxGetWebResponse(api.GET_ALL_OPTION_GROUPS, state$.value, [
+        {
+          key: 'search',
+          value: `${state$.value.productSettings.searchWordOptionGroup}`,
+        },
+      ]).pipe(
         mergeMap((successResponse: any) => {
           let successResultFlow = [
             productSettingsActions.updateOptionGroupList(successResponse),
@@ -84,6 +88,44 @@ export const getAllOptionGroupsListEpic = (action$: AnyAction, state$: any) => {
             let errorResultFlow = [
               controlActions.showInfoMessage(
                 `Error occurred while getting option groups list. ${errorResponse}`
+              ),
+              ...extractErrorPendingActions(action),
+            ];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};
+
+export const searchOptionGroupEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(productSettingsTypes.GET_BY_SEARCH_OPTION_GROUPS),
+    debounceTime(500),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      return ajaxGetWebResponse(api.GET_ALL_OPTION_GROUPS, state$.value, [
+        {
+          key: 'search',
+          value: `${state$.value.productSettings.searchWordOptionGroup}`,
+        },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          let successResultFlow = [
+            productSettingsActions.updateOptionGroupList(successResponse),
+            ...extractSuccessPendingActions(action),
+          ];
+
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [
+              controlActions.showInfoMessage(
+                `Error occurred while searching option groups. ${errorResponse}`
               ),
               ...extractErrorPendingActions(action),
             ];

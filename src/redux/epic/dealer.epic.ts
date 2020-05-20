@@ -34,12 +34,35 @@ export const getDealersListPaginatedEpic = (
       const languageCode = getActiveLanguage(state$.value.localize).code;
       const pagination: Pagination = state$.value.dealer.dealerState.pagination;
 
+      const fromDate = state$.value.dealer.dealerState.fromDate;
+      const toDate = state$.value.dealer.dealerState.toDate;
+
       return ajaxGetWebResponse(api.GET_DEALERS_ALL, state$.value, [
         { key: 'pageNumber', value: `${pagination.paginationInfo.pageNumber}` },
         { key: 'limit', value: `${pagination.limit}` },
         {
           key: 'searchPhrase',
           value: `${state$.value.dealer.dealerState.search}`,
+        },
+        {
+          key: 'from',
+          value: `${
+            fromDate
+              ? `${fromDate.getFullYear()}-${
+                  fromDate.getMonth() + 1
+                }-${fromDate.getDate()}`
+              : ''
+          }`,
+        },
+        {
+          key: 'to',
+          value: `${
+            toDate
+              ? `${toDate.getFullYear()}-${
+                  toDate.getMonth() + 1
+                }-${toDate.getDate()}`
+              : ''
+          }`,
         },
       ]).pipe(
         mergeMap((successResponse: any) => {
