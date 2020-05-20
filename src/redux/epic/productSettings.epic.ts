@@ -312,7 +312,6 @@ export const getAndSelectOptionGroupByIdEpic = (
           return from(successResultFlow);
         }),
         catchError((errorResponse: any) => {
-          debugger;
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
               controlActions.showInfoMessage(

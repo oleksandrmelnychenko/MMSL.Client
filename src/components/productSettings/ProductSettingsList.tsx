@@ -15,6 +15,7 @@ import {
   IDetailsGroupDividerProps,
   CheckboxVisibility,
   GroupHeader,
+  FontIcon,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -116,8 +117,37 @@ export const ProductSettingsList: React.FC = () => {
       maxWidth: 24,
       onColumnClick: () => {},
       onRender: (item: any, index?: number) => {
+        // let markup = (
+        //   <div className="list__item">
+        //     <div className="list__description">
+        //       <div className="list__description__name">
+        //         Unit value: {item.value}
+        //       </div>
+        //       <div className="list__description__mandatory">
+        //         {item.isMandatory ? 'Allowed' : 'Not allowed'}
+        //       </div>
+        //       <div className="list__description__image">
+        //         {item.imageUrl ? <FontIcon iconName="FileImage" /> : null}
+        //       </div>
+        //     </div>
+        //   </div>
+        // );
+
+        // <Text>{index !== null && index !== undefined ? index + 1 : -1}</Text>
         return (
-          <Text>{index !== null && index !== undefined ? index + 1 : -1}</Text>
+          <div className="list__item">
+            <div className="list__description">
+              <div className="list__description__name">
+                Unit value: {item.value}
+              </div>
+              <div className="list__description__mandatory">
+                {item.isMandatory ? 'Allowed' : 'Not allowed'}
+              </div>
+              <div className="list__description__image">
+                {item.imageUrl ? <FontIcon iconName="FileImage" /> : null}
+              </div>
+            </div>
+          </div>
         );
       },
     },

@@ -24,6 +24,7 @@ import {
   CommonDialogType,
 } from '../../../redux/reducers/control.reducer';
 import { List } from 'linq-typescript';
+import { assignPendingActions } from '../../../helpers/action.helper';
 
 export const DealerStores: React.FC = () => {
   const dispatch = useDispatch();
@@ -190,9 +191,21 @@ export const DealerStores: React.FC = () => {
             <FormStore
               submitAction={(args: any) => {
                 if (selectedStore) {
-                  dispatch(dealerActions.updateDealerStore(args));
+                  let action = assignPendingActions(
+                    dealerActions.updateDealerStore(args)
+                  );
+                  dispatch(action);
+
+                  setIsOpenForm(false);
+                  setIsDirtyForm(false);
                 } else {
-                  dispatch(dealerActions.addStoreToCurrentDealer(args));
+                  let action = assignPendingActions(
+                    dealerActions.addStoreToCurrentDealer(args)
+                  );
+                  dispatch(action);
+
+                  setIsOpenForm(false);
+                  setIsDirtyForm(false);
                 }
               }}
               formikReference={formikReference}
