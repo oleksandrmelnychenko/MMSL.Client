@@ -31,6 +31,7 @@ import { DATA_SELECTION_DISABLED_CLASS } from '../dealers/DealerList';
 const _columnIconButtonStyle = {
   root: {
     height: '20px',
+    marginTop: '15px',
   },
 };
 
@@ -105,7 +106,7 @@ export const ProductSettingsList: React.FC = () => {
               className={DATA_SELECTION_DISABLED_CLASS}
               styles={_columnIconButtonStyle}
               height={20}
-              iconProps={{ iconName: 'Delete' }}
+              iconProps={{ iconName: 'SingleColumnEdit' }}
               title="Delete"
               ariaLabel="Delete"
               onClick={(args: any) => {
@@ -248,9 +249,14 @@ export const ProductSettingsList: React.FC = () => {
                           {defaultRender(props)}
 
                           <IconButton
-                            styles={{ ..._columnIconButtonStyle }}
+                            styles={{
+                              root: {
+                                height: '20px',
+                                marginRight: '15px',
+                              },
+                            }}
                             height={20}
-                            iconProps={{ iconName: 'Edit' }}
+                            iconProps={{ iconName: 'ColumnRightTwoThirdsEdit' }}
                             title="Settings"
                             ariaLabel="Settings"
                             onClick={() => {
