@@ -14,7 +14,7 @@ import AddressDetails from './address/AddressDetails';
 import DealerCustomers from './customer/DealerCustomers';
 import { panelStyle } from '../../common/fabric-styles/styles';
 
-export const DealerDetailsPanel: React.FC = (props: any) => {
+export const DealerPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
 
   const isOpenPanelWithDealerDetails: ToggleDealerPanelWithDetails = useSelector<
@@ -81,4 +81,4 @@ export const DealerDetailsPanel: React.FC = (props: any) => {
   );
 };
 
-export default DealerDetailsPanel;
+export default DealerPanel;

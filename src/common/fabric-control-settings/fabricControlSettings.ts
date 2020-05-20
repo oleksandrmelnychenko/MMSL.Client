@@ -50,3 +50,17 @@ export const dayPickerStrings: IDatePickerStrings = {
   nextYearAriaLabel: 'Go to next year',
   closeButtonAriaLabel: 'Close date picker',
 };
+
+export const onFormatDate = (date?: Date): string => {
+  if (date) {
+    return (
+      date.getDate() +
+      ' / ' +
+      (date.getMonth() + 1) +
+      ' / ' +
+      date.getFullYear()
+    );
+  } else {
+    return '';
+  }
+};

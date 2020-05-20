@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Label, PrimaryButton } from 'office-ui-fabric-react';
 
 import * as dealerAction from '../../../redux/actions/dealer.actions';
@@ -9,14 +9,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { IApplicationState } from '../../../redux/reducers/index';
-
-interface ImenuItem {
-  id: number;
-  title: string;
-  className: string;
-  componentType: DealerDetilsComponents;
-  isSelected: boolean;
-}
+import { ImenuItem } from '../../../interfaces';
 
 const ManagementOptions: React.FC = () => {
   const dispatch = useDispatch();
@@ -28,28 +21,24 @@ const ManagementOptions: React.FC = () => {
 
   const menuItem: ImenuItem[] = [
     {
-      id: 0,
       title: 'Stores',
       className: 'management__btn-add',
       componentType: DealerDetilsComponents.DealerStores,
       isSelected: false,
     },
     {
-      id: 1,
       title: 'Details',
       className: 'management__btn-detail',
       componentType: DealerDetilsComponents.DealerDetails,
       isSelected: false,
     },
     {
-      id: 2,
       title: 'Address',
       className: 'management__btn-address',
       componentType: DealerDetilsComponents.DealerAddress,
       isSelected: false,
     },
     {
-      id: 3,
       title: 'Customer',
       className: 'management__btn-customer',
       componentType: DealerDetilsComponents.DealerCustomers,
@@ -76,9 +65,9 @@ const ManagementOptions: React.FC = () => {
 
   return (
     <div className="management">
-      {menu.map((item) => (
+      {menu.map((item, index) => (
         <Label
-          key={item.id}
+          key={index}
           styles={labelStyle}
           className={`${
             item.isSelected && isOpenPanelWithDealerDetails ? 'selected' : ''

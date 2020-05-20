@@ -13,6 +13,7 @@ import { getActiveLanguage } from 'react-localize-redux';
 import {
   ajaxGetWebResponse,
   ajaxPostResponse,
+  ajaxPutResponse,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import { Pagination } from '../../interfaces';
@@ -134,6 +135,41 @@ export const saveNewCustomerEpic = (action$: AnyAction, state$: any) => {
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [...extractErrorPendingActions(action)];
+
+            return from(errorResultFlow);
+          });
+        })
+      );
+    })
+  );
+};
+
+export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(customerTypes.UPDATE_STORE_CUSTOMER),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      return ajaxPutResponse(
+        api.UPDATE_STORE_CUSTOMER,
+        action.payload,
+        state$.value
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          let successResultFlow = [
+            customerActions.toggleCustomerForm(false),
+            customerActions.getCustomersListPaginated(),
+            customerActions.selectedCustomer(null),
+            controlActions.showInfoMessage(successResponse.message),
+            ...extractSuccessPendingActions(action),
+          ];
+          return from(successResultFlow);
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            let errorResultFlow = [
+              { type: 'ERROR_UPDATE_STORE_CUSTOMER' },
+              ...extractErrorPendingActions(action),
+            ];
 
             return from(errorResultFlow);
           });

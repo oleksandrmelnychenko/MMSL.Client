@@ -19,11 +19,13 @@ export class CustomerListState {
   constructor() {
     this.customersList = [];
     this.pagination = new Pagination();
+    this.selectedCustomer = null;
     this.search = '';
     this.searchByStore = '';
   }
 
   customersList: StoreCustomer[];
+  selectedCustomer: StoreCustomer | null;
   pagination: Pagination;
   search: string;
   searchByStore: string;
@@ -57,8 +59,11 @@ export const customerReducer = createReducer(new CustomerState(), (builder) =>
     .addCase(customerActions.searchCustomerByStore, (state, action) => {
       state.customerState.searchByStore = action.payload;
     })
-    .addCase(customerActions.toggleNewCustomerForm, (state, action) => {
+    .addCase(customerActions.toggleCustomerForm, (state, action) => {
       state.manageCustomerForm.isFormVisible = action.payload;
+    })
+    .addCase(customerActions.selectedCustomer, (state, action) => {
+      state.customerState.selectedCustomer = action.payload;
     })
     .addCase(
       customerActions.updateCustomerFormStoreAutocompleteList,

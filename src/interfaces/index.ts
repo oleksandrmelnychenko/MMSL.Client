@@ -1,4 +1,5 @@
 import { CommonDialogState } from '../redux/reducers/control.reducer';
+import { DealerDetilsComponents } from '../redux/reducers/dealer.reducer';
 
 export interface IUserInfo {
   userIdentityId: number;
@@ -50,6 +51,13 @@ export class EntityBase {
 
   id: number;
   isDeleted: boolean;
+}
+
+export interface ImenuItem {
+  title: string;
+  className: string;
+  componentType: DealerDetilsComponents;
+  isSelected: boolean;
 }
 
 export class EntityBaseNamed extends EntityBase {
