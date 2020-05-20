@@ -151,6 +151,8 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
         submitAction={(args: any) => {}}
       />
     );
+  } else if (panelContent === ManagingPanelComponent.ManageSingleOptionUnit) {
+    debugger;
   }
 
   return (

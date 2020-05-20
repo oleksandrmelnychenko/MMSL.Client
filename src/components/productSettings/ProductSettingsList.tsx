@@ -8,8 +8,6 @@ import {
   Image,
   Stack,
   IconButton,
-  DetailsHeader,
-  DetailsRow,
   CheckboxVisibility,
   GroupHeader,
   ITextProps,
@@ -19,7 +17,7 @@ import {
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
-import { OptionGroup } from '../../interfaces';
+import { OptionGroup, OptionUnit } from '../../interfaces';
 import { assignPendingActions } from '../../helpers/action.helper';
 import * as productSettingsActions from '../../redux/actions/productSettings.actions';
 import { ManagingPanelComponent } from '../../redux/reducers/productSettings.reducer';
@@ -49,9 +47,22 @@ export const ProductSettingsList: React.FC = () => {
     OptionGroup[]
   >((state) => state.productSettings.optionGroupsList);
 
+  const singleOptionForEdit: OptionUnit | null | undefined = useSelector<
+    IApplicationState,
+    OptionUnit | null | undefined
+  >((state) => state.productSettings.manageSingleOptionUnitState.optionUnit);
+
   useEffect(() => {
     dispatch(productSettingsActions.getAllOptionGroupsList());
   }, [dispatch]);
+
+  useEffect(() => {
+    const panelContentType = singleOptionForEdit
+      ? ManagingPanelComponent.ManageSingleOptionUnit
+      : null;
+
+    dispatch(productSettingsActions.managingPanelContent(panelContentType));
+  }, [singleOptionForEdit, dispatch]);
 
   const customerColumns: IColumn[] = [
     {
@@ -111,39 +122,14 @@ export const ProductSettingsList: React.FC = () => {
               styles={_columnIconButtonStyle}
               height={20}
               iconProps={{ iconName: 'SingleColumnEdit' }}
-              title="Delete"
-              ariaLabel="Delete"
-              onClick={(args: any) => {
-                // dispatch(
-                //   controlAction.toggleCommonDialogVisibility(
-                //     new DialogArgs(
-                //       CommonDialogType.Delete,
-                //       'Delete dealer',
-                //       `Are you sure you want to delete ${item.name}?`,
-                //       () => {
-                //         const actionsQueue: any[] = [
-                //           dealerActions.getDealersListPaginated(),
-                //         ];
-                //         /// TODO:
-                //         if (item.id) {
-                //           actionsQueue.push(
-                //             dealerActions.setSelectedDealer(null),
-                //             controlAction.closeInfoPanelWithComponent(),
-                //             dealerActions.isOpenPanelWithDealerDetails(
-                //               new ToggleDealerPanelWithDetails()
-                //             )
-                //           );
-                //         }
-                //         let action = assignPendingActions(
-                //           dealerActions.deleteDealerById(item.id),
-                //           actionsQueue
-                //         );
-                //         dispatch(action);
-                //       },
-                //       () => {}
-                //     )
-                //   )
-                // );
+              title="Edit"
+              ariaLabel="Edit"
+              onClick={() => {
+                dispatch(
+                  productSettingsActions.getAndSelectOptionUnitForSingleEditById(
+                    item.id
+                  )
+                );
               }}
             />
             <IconButton
@@ -277,21 +263,21 @@ export const ProductSettingsList: React.FC = () => {
           columns={customerColumns}
           items={allConcatedUnits}
           checkboxVisibility={CheckboxVisibility.hidden}
-          onRenderRow={(args: any) => {
-            return (
-              <div>
-                <DetailsRow {...args} />
-              </div>
-            );
-          }}
-          onRenderDetailsHeader={(props: any, _defaultRender?: any) => {
-            return (
-              <DetailsHeader
-                {...props}
-                ariaLabelForToggleAllGroupsButton={'Expand collapse groups'}
-              />
-            );
-          }}
+          // onRenderRow={(args: any) => {
+          //   return (
+          //     <div>
+          //       <DetailsRow {...args} />
+          //     </div>
+          //   );
+          // }}
+          // onRenderDetailsHeader={(props: any, _defaultRender?: any) => {
+          //   return (
+          //     <DetailsHeader
+          //       {...props}
+          //       ariaLabelForToggleAllGroupsButton={'Expand collapse groups'}
+          //     />
+          //   );
+          // }}
         />
       </ScrollablePane>
     </div>

@@ -7,20 +7,23 @@ export class ProductSettingsState {
   constructor() {
     this.managingPanelContent = null;
     this.optionGroupsList = [];
-    this.managingOptionUnitsState = new ManagingOptionUnitsState();
     this.searchWordOptionGroup = '';
+    this.managingOptionUnitsState = new ManagingOptionUnitsState();
+    this.manageSingleOptionUnitState = new ManageSingleOptionUnitState();
   }
 
   managingPanelContent: ManagingPanelComponent | null;
   optionGroupsList: OptionGroup[];
   searchWordOptionGroup: string;
   managingOptionUnitsState: ManagingOptionUnitsState;
+  manageSingleOptionUnitState: ManageSingleOptionUnitState;
 }
 
 export enum ManagingPanelComponent {
   Unknown,
   ManageGroups,
   ManageUnits,
+  ManageSingleOptionUnit,
 }
 
 export class ManagingOptionUnitsState {
@@ -35,6 +38,14 @@ export class ManagingOptionUnitsState {
   optionUnits: OptionUnit[];
   selectedOptionUnit: OptionUnit | null;
   isOptionUnitFormVisible: boolean;
+}
+
+export class ManageSingleOptionUnitState {
+  constructor() {
+    this.optionUnit = null;
+  }
+
+  optionUnit: OptionUnit | null | undefined;
 }
 
 export const productSettingsReducer = createReducer(
@@ -134,6 +145,12 @@ export const productSettingsReducer = createReducer(
         productSettingsActions.updateSearchWordOptionGroup,
         (state, action) => {
           state.searchWordOptionGroup = action.payload;
+        }
+      )
+      .addCase(
+        productSettingsActions.updateSingleEditOptionUnit,
+        (state, action) => {
+          state.manageSingleOptionUnitState.optionUnit = action.payload;
         }
       )
 );

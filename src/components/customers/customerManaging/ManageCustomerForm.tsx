@@ -352,7 +352,6 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
 
                               if (date) value = date.toJSON();
 
-                              debugger;
                               formik.setFieldValue('birthDate', value);
                               formik.setFieldTouched('birthDate');
                             }}
