@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { List } from 'linq-typescript';
 import { useSelector, useDispatch } from 'react-redux';
-import { Route, useLocation } from 'react-router-dom';
 
 import {
   Separator,
@@ -25,7 +24,6 @@ import {
   CommonDialogType,
 } from '../../../redux/reducers/control.reducer';
 import { assignPendingActions } from '../../../helpers/action.helper';
-import { useFormikContext } from 'formik';
 
 export const DealerStores: React.FC = () => {
   const dispatch = useDispatch();

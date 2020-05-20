@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import { Field, Formik, Form } from 'formik';
 import { Stack, Separator, TextField } from 'office-ui-fabric-react';
 import { IStore, INewStore, FormicReference } from '../../../interfaces';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers/index';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 
@@ -121,8 +121,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
           }
         }}
         enableReinitialize={true}
-        validateOnBlur={false}
-      >
+        validateOnBlur={false}>
         {(formik) => {
           props.formikReference.formik = formik;
 

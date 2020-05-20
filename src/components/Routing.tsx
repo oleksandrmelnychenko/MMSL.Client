@@ -9,7 +9,6 @@ import { IApplicationState } from '../redux/reducers';
 import PageNotFound from './master/PageNotFound';
 import AccountSecurity from './account-security/AccountSecurity';
 import { IAuthState } from '../interfaces';
-import Dealers from './dealers/Dealers';
 
 export interface IRoutingProps {
   onEnter: void;

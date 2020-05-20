@@ -112,7 +112,7 @@ export const CustomerList: React.FC = () => {
       selection.setAllSelected(false);
       dispatch(controlActions.closeInfoPanelWithComponent());
     }
-  }, [selectedCustomer, selection]);
+  }, [selectedCustomer, selection, dispatch]);
 
   useEffect(() => {
     dispatch(customerActions.getCustomersListPaginated());
