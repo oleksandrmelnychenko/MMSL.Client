@@ -6,7 +6,6 @@ import * as controlActions from '../../../redux/actions/control.actions';
 import './menu.scss';
 import { IApplicationState } from '../../../redux/reducers';
 import { LocalizeState, getActiveLanguage } from 'react-localize-redux';
-import { ToggleDealerPanelWithDetails } from '../../../redux/reducers/dealer.reducer';
 
 interface IMenuItem {
   title: string;
@@ -24,11 +23,6 @@ const Menu: React.FC = () => {
   const onMenuClick = () => {
     dispatch(dealerActions.setSelectedDealer(null));
     dispatch(controlActions.closeInfoPanelWithComponent());
-    // dispatch(
-    //   dealerActions.isOpenPanelWithDealerDetails(
-    //     new ToggleDealerPanelWithDetails()
-    //   )
-    // );
   };
 
   const menuItem: IMenuItem[] = [
@@ -74,7 +68,7 @@ const Menu: React.FC = () => {
     },
     {
       title: 'Product Settings',
-      className: 'product',
+      className: 'settings',
       link: `/${languageCode}/app/product-settings`,
     },
     {

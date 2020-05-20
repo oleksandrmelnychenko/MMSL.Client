@@ -1,4 +1,3 @@
-import './customerList.scss';
 import React, { useEffect, useState } from 'react';
 import {
   DetailsList,
@@ -130,7 +129,7 @@ export const CustomerList: React.FC = () => {
   };
 
   return (
-    <div className="customerList">
+    <div>
       <MarqueeSelection selection={selection}>
         <DetailsList
           items={customersList}
