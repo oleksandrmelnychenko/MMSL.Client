@@ -1,9 +1,8 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import './status-bar.scss';
 
-import * as controlAction from '../../redux/actions/control.actions';
 import { IApplicationState } from '../../redux/reducers';
 
 export interface IStatusBarProps {
@@ -12,7 +11,6 @@ export interface IStatusBarProps {
 }
 
 export const StatusBar: React.FC<IStatusBarProps> = () => {
-  const dispatch = useDispatch();
   const message = useSelector<IApplicationState, string>(
     (state) => state.control.infoMessage
   );
@@ -20,15 +18,6 @@ export const StatusBar: React.FC<IStatusBarProps> = () => {
   const activateStatusBar = useSelector<IApplicationState, boolean>(
     (state) => state.control.isActivateStatusBar
   );
-
-  const delayDisplayMessage = () => {
-    if (message !== '') {
-      setTimeout(() => {
-        dispatch(controlAction.clearInfoMessage());
-      }, 2200);
-    }
-  };
-  message && delayDisplayMessage();
 
   return (
     <>

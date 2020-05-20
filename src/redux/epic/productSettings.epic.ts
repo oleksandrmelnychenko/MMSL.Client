@@ -19,6 +19,7 @@ import {
   ajaxPostResponse,
   ajaxGetWebResponse,
 } from '../../helpers/epic.helper';
+import StoreHelper from '../../helpers/store.helper';
 import * as api from '../constants/api.constants';
 import * as controlActions from '../../redux/actions/control.actions';
 import * as productSettingsActions from '../../redux/actions/productSettings.actions';
@@ -30,6 +31,7 @@ export const saveNewOptionGroupEpic = (action$: AnyAction, state$: any) => {
     ofType(productSettingsTypes.SAVE_NEW_OPTION_GROUP),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       return ajaxPostResponse(
         api.CREATE_NEW_OPTION_GROUP,
         action.payload,
@@ -41,6 +43,7 @@ export const saveNewOptionGroupEpic = (action$: AnyAction, state$: any) => {
             controlActions.showInfoMessage(
               'New option group created successfully'
             ),
+            controlActions.disabledStatusBar(),
             ...extractSuccessPendingActions(action),
           ];
 
@@ -52,6 +55,7 @@ export const saveNewOptionGroupEpic = (action$: AnyAction, state$: any) => {
               controlActions.showInfoMessage(
                 `Error occurred while creating new option group. ${errorResponse}`
               ),
+              controlActions.disabledStatusBar(),
               ...extractErrorPendingActions(action),
             ];
 
@@ -68,7 +72,7 @@ export const getAllOptionGroupsListEpic = (action$: AnyAction, state$: any) => {
     ofType(productSettingsTypes.GET_ALL_OPTION_GROUPS_LIST),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
-
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       return ajaxGetWebResponse(api.GET_ALL_OPTION_GROUPS, state$.value, [
         {
           key: 'search',
@@ -78,6 +82,7 @@ export const getAllOptionGroupsListEpic = (action$: AnyAction, state$: any) => {
         mergeMap((successResponse: any) => {
           let successResultFlow = [
             productSettingsActions.updateOptionGroupList(successResponse),
+            controlActions.disabledStatusBar(),
             ...extractSuccessPendingActions(action),
           ];
 
@@ -86,6 +91,7 @@ export const getAllOptionGroupsListEpic = (action$: AnyAction, state$: any) => {
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
+              controlActions.disabledStatusBar(),
               controlActions.showInfoMessage(
                 `Error occurred while getting option groups list. ${errorResponse}`
               ),
@@ -106,7 +112,7 @@ export const searchOptionGroupEpic = (action$: AnyAction, state$: any) => {
     debounceTime(500),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
-
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       return ajaxGetWebResponse(api.GET_ALL_OPTION_GROUPS, state$.value, [
         {
           key: 'search',
@@ -115,6 +121,7 @@ export const searchOptionGroupEpic = (action$: AnyAction, state$: any) => {
       ]).pipe(
         mergeMap((successResponse: any) => {
           let successResultFlow = [
+            controlActions.disabledStatusBar(),
             productSettingsActions.updateOptionGroupList(successResponse),
             ...extractSuccessPendingActions(action),
           ];
@@ -124,6 +131,7 @@ export const searchOptionGroupEpic = (action$: AnyAction, state$: any) => {
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
+              controlActions.disabledStatusBar(),
               controlActions.showInfoMessage(
                 `Error occurred while searching option groups. ${errorResponse}`
               ),
@@ -143,20 +151,24 @@ export const modifyOptionUnitsOrderEpic = (action$: AnyAction, state$: any) => {
     ofType(productSettingsTypes.MODIFY_OPTION_UNITS_ORDER),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
-
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       return ajaxPutResponse(
         api.MODIFY_OPTION_UNITS_ORDER,
         action.payload,
         state$.value
       ).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [...extractSuccessPendingActions(action)];
+          let successResultFlow = [
+            controlActions.disabledStatusBar(),
+            ...extractSuccessPendingActions(action),
+          ];
 
           return from(successResultFlow);
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
+              controlActions.disabledStatusBar(),
               controlActions.showInfoMessage(
                 `Error occurred while updating option units order. ${errorResponse}`
               ),
@@ -176,7 +188,7 @@ export const updateOptionUnitEpic = (action$: AnyAction, state$: any) => {
     ofType(productSettingsTypes.UPDATE_OPTION_UNIT),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
-
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const formData: FormData = new FormData();
       formData.append(FORM_DATA_IMAGE_FILE_KEY, action.payload.imageBlob);
 
@@ -210,6 +222,7 @@ export const updateOptionUnitEpic = (action$: AnyAction, state$: any) => {
         mergeMap((successResponse: any) => {
           let successResultFlow = [
             controlActions.showInfoMessage(successResponse.message),
+            controlActions.disabledStatusBar(),
             ...extractSuccessPendingActions(action),
           ];
 
@@ -218,6 +231,7 @@ export const updateOptionUnitEpic = (action$: AnyAction, state$: any) => {
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
+              controlActions.disabledStatusBar(),
               controlActions.showInfoMessage(
                 `Error occurred while updating option unit. ${errorResponse}`
               ),
@@ -237,7 +251,7 @@ export const saveNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
     ofType(productSettingsTypes.SAVE_NEW_OPTION_UNIT),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
-
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const formData: FormData = new FormData();
       formData.append(FORM_DATA_IMAGE_FILE_KEY, action.payload.imageBlob);
 
@@ -274,6 +288,7 @@ export const saveNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
       ).pipe(
         mergeMap((successResponse: any) => {
           let successResultFlow = [
+            controlActions.disabledStatusBar(),
             controlActions.showInfoMessage(successResponse.message),
             ...extractSuccessPendingActions(action),
           ];
@@ -283,6 +298,7 @@ export const saveNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
+              controlActions.disabledStatusBar(),
               controlActions.showInfoMessage(
                 `Error occurred while creating new option unit. ${errorResponse}`
               ),
@@ -302,13 +318,14 @@ export const deleteOptionUnitByIdEpic = (action$: AnyAction, state$: any) => {
     ofType(productSettingsTypes.DELETE_OPTION_UNIT_BY_ID),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
-
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       return ajaxDeleteResponse(api.DELETE_OPTION_UNIT_BY_ID, state$.value, [
         { key: 'optionUnitId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
           let successResultFlow = [
             controlActions.showInfoMessage(successResponse.message),
+            controlActions.disabledStatusBar(),
             ...extractSuccessPendingActions(action),
           ];
 
@@ -317,6 +334,7 @@ export const deleteOptionUnitByIdEpic = (action$: AnyAction, state$: any) => {
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
+              controlActions.disabledStatusBar(),
               controlActions.showInfoMessage(
                 `Error occurred while deleteing option unit. ${errorResponse}`
               ),
@@ -339,12 +357,13 @@ export const getAndSelectOptionGroupByIdEpic = (
     ofType(productSettingsTypes.GET_AND_SELECT_OPTION_GROUP_BY_ID),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
-
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       return ajaxGetWebResponse(api.GET_OPTION_GROUP_BY_ID, state$.value, [
         { key: 'groupId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
           let successResultFlow = [
+            controlActions.disabledStatusBar(),
             productSettingsActions.changeTargetOptionGroupForUnitsEdit(
               successResponse
             ),
@@ -356,6 +375,7 @@ export const getAndSelectOptionGroupByIdEpic = (
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             let errorResultFlow = [
+              controlActions.disabledStatusBar(),
               controlActions.showInfoMessage(
                 `Error occurred while getting option group. ${errorResponse}`
               ),

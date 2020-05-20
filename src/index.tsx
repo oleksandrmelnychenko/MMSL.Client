@@ -18,6 +18,7 @@ import { IApplicationState } from './redux/reducers';
 import { default as Routing } from './components/Routing';
 import globalTranslations from './assets/translation/translations.json';
 import { TokenHelper } from './helpers/token.helper';
+import StoreHelper from './helpers/store.helper';
 import * as authAction from './redux/actions/auth.actions';
 
 import { loadTheme, createTheme, ITheme } from 'office-ui-fabric-react';
@@ -60,6 +61,7 @@ initializeIcons();
 
 const history = createBrowserHistory();
 const store = initStore(history);
+StoreHelper.init(store);
 
 store.dispatch(
   initialize({
