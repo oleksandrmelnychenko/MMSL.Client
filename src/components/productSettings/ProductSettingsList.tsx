@@ -1,32 +1,24 @@
-import React, { useEffect, useState, Children } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   DetailsList,
   IColumn,
-  SelectionMode,
   Text,
   Selection,
+  Image,
   Stack,
   IconButton,
   MarqueeSelection,
-  IDetailsHeaderProps,
-  IRenderFunction,
   DetailsHeader,
   DetailsRow,
-  IDetailsGroupDividerProps,
   CheckboxVisibility,
   GroupHeader,
-  FontIcon,
+  ITextProps,
+  IImageProps,
+  ImageFit,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
-import * as customerActions from '../../redux/actions/customer.actions';
-import * as controlActions from '../../redux/actions/control.actions';
-import {
-  DealerAccount,
-  Pagination,
-  StoreCustomer,
-  OptionGroup,
-} from '../../interfaces';
+import { OptionGroup } from '../../interfaces';
 import { assignPendingActions } from '../../helpers/action.helper';
 import * as productSettingsActions from '../../redux/actions/productSettings.actions';
 import { ManagingPanelComponent } from '../../redux/reducers/productSettings.reducer';
@@ -41,18 +33,7 @@ const _columnIconButtonStyle = {
 export const ProductSettingsList: React.FC = () => {
   const dispatch = useDispatch();
 
-  const [selection] = useState(
-    new Selection({
-      onSelectionChanged: () => {
-        /// TODO: important
-        // if (selection.count > 0) {
-        //   dealerSelection();
-        // } else {
-        //   dealerUnSelection();
-        // }
-      },
-    })
-  );
+  const [selection] = useState(new Selection());
 
   const outionGroups: OptionGroup[] = useSelector<
     IApplicationState,
@@ -63,52 +44,6 @@ export const ProductSettingsList: React.FC = () => {
     dispatch(productSettingsActions.getAllOptionGroupsList());
   }, [dispatch]);
 
-  /// TODO: important
-  //   const pagination: Pagination = useSelector<IApplicationState, Pagination>(
-  //     (state) => state.dealer.dealerState.pagination
-  //   );
-
-  /// TODO: important
-  //   const selectedDealer: any = useSelector<
-  //     IApplicationState,
-  //     DealerAccount | null
-  //   >((state) => state.dealer.selectedDealer);
-
-  /// TODO: important
-  //   const isCollapseMenu: boolean = useSelector<IApplicationState, boolean>(
-  //     (state) => state.control.isCollapseMenu
-  //   );
-
-  /// TODO: important
-  //   useEffect(() => {
-  //     if (!isCollapseMenu) {
-  //       selection.setAllSelected(false);
-  //     }
-  //   }, [isCollapseMenu, selection]);
-
-  /// TODO: important
-  //   const dealerSelection = () => {
-  //     const selectedDealer = selection.getSelection()[0] as DealerAccount;
-
-  //     let createAction = assignPendingActions(
-  //       dealerActions.getAndSelectDealerById(selectedDealer.id),
-  //       []
-  //     );
-  //     dispatch(controlActions.isCollapseMenu(true));
-  //     setTimeout(() => {
-  //       dispatch(controlActions.isOpenPanelInfo(true));
-  //     }, 350);
-
-  //     dispatch(createAction);
-  //   };
-
-  /// TODO: important
-  //   const dealerUnSelection = () => {
-  //     dispatch(dealerActions.setSelectedDealer(null));
-  //     dispatch(controlActions.isCollapseMenu(false));
-  //     dispatch(controlActions.isOpenPanelInfo(false));
-  //   };
-
   const customerColumns: IColumn[] = [
     {
       key: 'index',
@@ -117,87 +52,40 @@ export const ProductSettingsList: React.FC = () => {
       maxWidth: 24,
       onColumnClick: () => {},
       onRender: (item: any, index?: number) => {
-        // let markup = (
-        //   <div className="list__item">
-        //     <div className="list__description">
-        //       <div className="list__description__name">
-        //         Unit value: {item.value}
-        //       </div>
-        //       <div className="list__description__mandatory">
-        //         {item.isMandatory ? 'Allowed' : 'Not allowed'}
-        //       </div>
-        //       <div className="list__description__image">
-        //         {item.imageUrl ? <FontIcon iconName="FileImage" /> : null}
-        //       </div>
-        //     </div>
-        //   </div>
-        // );
+        const imageProps: IImageProps = {
+          src: item.imageUrl,
+          imageFit: ImageFit.center,
+          width: 67,
+          height: 53,
+        };
 
-        // <Text>{index !== null && index !== undefined ? index + 1 : -1}</Text>
         return (
-          <div className="list__item">
-            <div className="list__description">
-              <div className="list__description__name">
-                Unit value: {item.value}
-              </div>
-              <div className="list__description__mandatory">
-                {item.isMandatory ? 'Allowed' : 'Not allowed'}
-              </div>
-              <div className="list__description__image">
-                {item.imageUrl ? <FontIcon iconName="FileImage" /> : null}
-              </div>
-            </div>
-          </div>
+          <Stack horizontal tokens={{ childrenGap: 20 }}>
+            {item.imageUrl && item.imageUrl.length > 0 ? (
+              <Stack.Item>
+                <Image {...imageProps} alt={`${item.value}`} />
+              </Stack.Item>
+            ) : null}
+
+            <Stack>
+              <Stack.Item>
+                <Text
+                  variant={'mediumPlus' as ITextProps['variant']}
+                  styles={{ root: { color: '#484848', fontWeight: 400 } }}
+                >
+                  Unit value: {item.value}
+                </Text>
+              </Stack.Item>
+              <Stack.Item>
+                <Text styles={{ root: { color: '#7b7b7b' } }}>
+                  {item.isMandatory ? 'Allowed' : 'Not allowed'}
+                </Text>
+              </Stack.Item>
+            </Stack>
+          </Stack>
         );
       },
     },
-    // {
-    //   key: 'name',
-    //   name: 'Name',
-    //   minWidth: 70,
-    //   maxWidth: 90,
-    //   isResizable: true,
-    //   isCollapsible: true,
-    //   data: 'string',
-    //   onRender: (item: any) => {
-    //     return <Text>{item.name}</Text>;
-    //   },
-    //   isPadded: true,
-    // },
-    // {
-    //   key: 'actions',
-    //   name: 'Actions',
-    //   minWidth: 70,
-    //   isResizable: true,
-    //   isCollapsible: true,
-    //   data: 'string',
-    //   onRender: (item: any) => {
-    //     return (
-    //       <Stack horizontal disableShrink>
-    //         <IconButton
-    //           styles={_columnIconButtonStyle}
-    //           height={20}
-    //           iconProps={{ iconName: 'Settings' }}
-    //           title="Settings"
-    //           ariaLabel="Settings"
-    //           onClick={() => {
-    //             dispatch(
-    //               productSettingsActions.changeTargetOptionGroupForUnitsEdit(
-    //                 item
-    //               )
-    //             );
-    //             dispatch(
-    //               productSettingsActions.managingPanelContent(
-    //                 ManagingPanelComponent.ManageUnits
-    //               )
-    //             );
-    //           }}
-    //         />
-    //       </Stack>
-    //     );
-    //   },
-    //   isPadded: true,
-    // },
   ];
 
   const allConcatedUnits = new List(outionGroups)
