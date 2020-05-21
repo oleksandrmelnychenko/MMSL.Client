@@ -67,7 +67,9 @@ export const ManagingvOptionGroupForm: React.FC<ManagingvOptionGroupFormProps> =
     <div>
       <Formik
         validationSchema={Yup.object().shape({
-          name: Yup.string().required(() => 'Name is required'),
+          name: Yup.string()
+            .min(3)
+            .required(() => 'Name is required'),
           isMandatory: Yup.boolean(),
         })}
         initialValues={initValues}
