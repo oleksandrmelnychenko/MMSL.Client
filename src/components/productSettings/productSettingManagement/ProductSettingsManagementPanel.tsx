@@ -124,7 +124,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
 
   if (panelContent === ManagingPanelComponent.ManageGroups) {
     hideAddEditPanelActions(_items);
-    panelWidth = '600px';
+    panelWidth = '420px';
     panelTitleText = 'New Option Group';
 
     content = (
@@ -165,7 +165,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
       />
     );
   } else if (panelContent === ManagingPanelComponent.ManageSingleOptionUnit) {
-    panelWidth = '350px';
+    panelWidth = '420px';
     panelTitleText = 'Details';
     if (sectedSingleOptionUnit) {
       panelDescription = sectedSingleOptionUnit.value;
@@ -208,7 +208,8 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
           );
           dispatch(productSettingsActions.updateSingleEditOptionUnit(null));
         }}
-        closeButtonAriaLabel="Close">
+        closeButtonAriaLabel="Close"
+      >
         <PanelTitle title={panelTitleText} description={panelDescription} />
         <CommandBar
           styles={commandBarStyles}

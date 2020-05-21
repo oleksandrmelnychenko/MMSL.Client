@@ -228,7 +228,7 @@ export const ProductSettingsList: React.FC = () => {
                             styles={{
                               root: {
                                 height: '20px',
-                                marginRight: '15px',
+                                marginRight: '90px',
                               },
                             }}
                             height={20}

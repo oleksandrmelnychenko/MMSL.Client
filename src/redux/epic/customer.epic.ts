@@ -2,6 +2,8 @@ import { checkUnauthorized } from './../../helpers/error.helpers';
 import {
   extractSuccessPendingActions,
   extractErrorPendingActions,
+  successCommonEpicFlow,
+  errorCommonEpicFlow,
 } from './../../helpers/action.helper';
 import { debounceTime, switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
@@ -44,26 +46,28 @@ export const getCustomersListPaginatedEpic = (
         },
       ]).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            customerActions.updateCustomersList(successResponse.entities),
-            customerActions.updateCustomersListPaginationInfo(
-              successResponse.paginationInfo
-            ),
-            controlActions.disabledStatusBar(),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              customerActions.updateCustomersList(successResponse.entities),
+              customerActions.updateCustomersListPaginationInfo(
+                successResponse.paginationInfo
+              ),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              { type: 'ERROR_GET_CUSTOMERS_LIST' },
-              controlActions.disabledStatusBar(),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_GET_CUSTOMERS_LIST' },
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
           });
         })
       );
@@ -88,25 +92,27 @@ export const customerFormStoreAutocompleteTextEpic = (
         },
       ]).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            customerActions.updateCustomerFormStoreAutocompleteList(
-              successResponse
-            ),
-            controlActions.disabledStatusBar(),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              customerActions.updateCustomerFormStoreAutocompleteList(
+                successResponse
+              ),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              customerActions.updateCustomerFormStoreAutocompleteList([]),
-              controlActions.disabledStatusBar(),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                customerActions.updateCustomerFormStoreAutocompleteList([]),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
           });
         })
       );
@@ -127,25 +133,25 @@ export const saveNewCustomerEpic = (action$: AnyAction, state$: any) => {
         true
       ).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            dealerActions.updateTargetStoreCustomersList(
-              Array.of(successResponse.body)
-            ),
-            controlActions.disabledStatusBar(),
-            controlActions.showInfoMessage(successResponse.message),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              dealerActions.updateTargetStoreCustomersList(
+                Array.of(successResponse.body)
+              ),
+              controlActions.disabledStatusBar(),
+              controlActions.showInfoMessage(successResponse.message),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              controlActions.disabledStatusBar(),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [controlActions.disabledStatusBar()],
+              action
+            );
           });
         })
       );
@@ -165,25 +171,28 @@ export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
         state$.value
       ).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            customerActions.toggleCustomerForm(false),
-            customerActions.getCustomersListPaginated(),
-            customerActions.selectedCustomer(null),
-            controlActions.disabledStatusBar(),
-            controlActions.showInfoMessage(successResponse.message),
-            ...extractSuccessPendingActions(action),
-          ];
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              customerActions.toggleCustomerForm(false),
+              customerActions.getCustomersListPaginated(),
+              customerActions.selectedCustomer(null),
+              controlActions.disabledStatusBar(),
+              controlActions.showInfoMessage(successResponse.message),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              { type: 'ERROR_UPDATE_STORE_CUSTOMER' },
-              controlActions.disabledStatusBar(),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_UPDATE_STORE_CUSTOMER' },
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
           });
         })
       );
