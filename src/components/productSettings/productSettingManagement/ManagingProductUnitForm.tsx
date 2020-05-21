@@ -263,7 +263,6 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                                       width: '100%',
                                       background: '#fff',
                                       color: 'rgb(0, 120, 212)',
-                                      fontWeight: '400',
                                       border: '1px dashed rgb(0, 120, 212)',
                                       transition: 'all 0.3s ease 0.3s',
                                     },
@@ -271,6 +270,9 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                                       background: '#fff',
                                       borderStyle: 'solid',
                                       color: 'rgb(0, 120, 212)',
+                                    },
+                                    label: {
+                                      fontWeight: '400',
                                     },
                                   }}
                                   text={
