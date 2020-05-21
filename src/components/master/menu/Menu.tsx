@@ -67,7 +67,7 @@ const Menu: React.FC = () => {
       link: `/${languageCode}/app/product`,
     },
     {
-      title: 'Product Settings',
+      title: 'Settings',
       className: 'settings',
       link: `/${languageCode}/app/product-settings`,
     },
@@ -89,7 +89,8 @@ const Menu: React.FC = () => {
               }}
               className={`menu__link ${item.className}`}
               to={item.link}
-              activeClassName="active">
+              activeClassName="active"
+            >
               {item.title}
             </NavLink>
           </li>
