@@ -1,12 +1,7 @@
 import './productSettings.scss';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Stack,
-  ActionButton,
-  SearchBox,
-  Separator,
-} from 'office-ui-fabric-react';
+import { Stack, ActionButton, SearchBox } from 'office-ui-fabric-react';
 import ProductSettingsList from './ProductSettingsList';
 import ProductSettingsManagementPanel from './productSettingManagement/ProductSettingsManagementPanel';
 import * as productSettingsActions from '../../redux/actions/productSettings.actions';
