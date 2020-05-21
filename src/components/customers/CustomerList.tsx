@@ -6,6 +6,7 @@ import {
   Text,
   Selection,
   MarqueeSelection,
+  ScrollablePane,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -13,6 +14,10 @@ import * as customerActions from '../../redux/actions/customer.actions';
 import * as controlActions from '../../redux/actions/control.actions';
 import ManagementPanel from './options/ManagmentPanel';
 import { CustomerListState } from '../../redux/reducers/customer.reducer';
+import {
+  scrollablePaneStyleForDetailList,
+  detailsListStyle,
+} from '../../common/fabric-styles/styles';
 
 const _customerColumns: IColumn[] = [
   {
@@ -102,11 +107,6 @@ export const CustomerList: React.FC = () => {
     CustomerListState
   >((state) => state.customer.customerState);
 
-  /// TODO: important
-  //   const pagination: Pagination = useSelector<IApplicationState, Pagination>(
-  //     (state) => state.dealer.dealerState.pagination
-  //   );
-
   useEffect(() => {
     if (!selectedCustomer) {
       selection.setAllSelected(false);
@@ -130,14 +130,15 @@ export const CustomerList: React.FC = () => {
 
   return (
     <div>
-      <MarqueeSelection selection={selection}>
+      <ScrollablePane styles={scrollablePaneStyleForDetailList}>
         <DetailsList
+          styles={detailsListStyle}
           items={customersList}
           selection={selection}
           selectionMode={SelectionMode.single}
           columns={_customerColumns}
         />
-      </MarqueeSelection>
+      </ScrollablePane>
     </div>
   );
 };

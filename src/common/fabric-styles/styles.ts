@@ -9,6 +9,13 @@ export const panelStyle = {
   },
 };
 
+export const detailsListStyle = {
+  root: {
+    paddingLeft: '12px',
+    paddingRight: '12px',
+  },
+};
+
 export const stylesPanelInfo = {
   main: {
     left: '46px',
@@ -23,6 +30,12 @@ export const stylesPanelInfo = {
 export const scrollablePaneStyleForDetailList = {
   root: {
     top: '77px',
+    bottom: '12px',
+  },
+};
+
+export const scrollablePaneStyleForDetailList_Dealers = {
+  root: {
     bottom: '12px',
   },
 };
