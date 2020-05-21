@@ -69,7 +69,7 @@ const initDefaultValues = (account?: DealerAccount | null) => {
       account.billingAddress !== undefined
     ) {
       formikInitValues.addressLine1 = account.billingAddress.addressLine1;
-      formikInitValues.addressLine2 = account.billingAddress.addressLine1;
+      formikInitValues.addressLine2 = account.billingAddress.addressLine2;
       formikInitValues.city = account.billingAddress.city;
       formikInitValues.country = account.billingAddress.country;
       formikInitValues.state = account.billingAddress.state;
@@ -104,8 +104,7 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
             buildDealerAccount(values, props.dealerAccount as DealerAccount)
           );
         }}
-        validateOnBlur={false}
-      >
+        validateOnBlur={false}>
         {(formik) => {
           props.formikReference.formik = formik;
           if (props.formikReference.isDirtyFunc) {
