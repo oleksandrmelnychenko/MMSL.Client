@@ -124,12 +124,12 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
 
   let panelTitleText = 'Management Panel';
   let panelDescription = '';
-  let panelWidth = '0px';
+  let panelWidth: number = 600;
   let content: any = null;
 
   if (panelContent === ManagingPanelComponent.ManageGroups) {
     hideAddEditPanelActions(_items);
-    panelWidth = '420px';
+    panelWidth = 420;
     panelTitleText = 'New Option Group';
 
     content = (
@@ -151,7 +151,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
     );
   } else if (panelContent === ManagingPanelComponent.ManageUnits) {
     panelTitleText = 'Manage Option Units';
-    panelWidth = '700px';
+    panelWidth = 700;
     if (sectedOptionGroup) {
       panelDescription = sectedOptionGroup.name;
     }
@@ -170,7 +170,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
       />
     );
   } else if (panelContent === ManagingPanelComponent.ManageSingleOptionUnit) {
-    panelWidth = '420px';
+    panelWidth = 420;
     panelTitleText = 'Details';
     if (sectedSingleOptionUnit) {
       panelDescription = sectedSingleOptionUnit.value;
@@ -191,14 +191,14 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
               productSettingsActions.managingPanelContent(null),
             ]
           );
+
           dispatch(action);
-          // props.formikReference.formik.resetForm();
         }}
       />
     );
   } else if (panelContent === ManagingPanelComponent.ManageSingleOptionGroup) {
     hideAddEditPanelActions(_items);
-    panelWidth = '420px';
+    panelWidth = 420;
     panelTitleText = 'Details';
     if (sectedSingleOptionGroup) {
       panelDescription = sectedSingleOptionGroup.name;
@@ -226,6 +226,8 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
         }}
       />
     );
+  } else {
+    panelWidth = 0;
   }
 
   return (
@@ -234,7 +236,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
         styles={panelStyle}
         isOpen={panelContent ? true : false}
         type={PanelType.custom}
-        customWidth={panelWidth}
+        customWidth={`${panelWidth}px`}
         onOuterClick={() => {}}
         onDismiss={() => {
           dispatch(productSettingsActions.managingPanelContent(null));

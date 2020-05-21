@@ -2,6 +2,7 @@ import { OptionGroup, OptionUnit } from './../../interfaces/index';
 import { createReducer } from '@reduxjs/toolkit';
 import * as productSettingsActions from '../../redux/actions/productSettings.actions';
 import { List } from 'linq-typescript';
+import { GroupItemVisualState } from '../../interfaces/viewModels';
 
 export class ProductSettingsState {
   constructor() {
@@ -19,6 +20,27 @@ export class ProductSettingsState {
   managingOptionUnitsState: ManagingOptionUnitsState;
   manageSingleOptionUnitState: ManageSingleOptionUnitState;
   manageSingleOptionGroupState: ManageSingleOptionGroupState;
+
+  setOptionGroupsList: (source: OptionGroup[]) => void = (
+    source: OptionGroup[]
+  ) => {
+    this.optionGroupsList = new List(source)
+      .select((item) => {
+        item.groupItemVisualState = new GroupItemVisualState();
+
+        const relatedGroup = new List(this.optionGroupsList).firstOrDefault(
+          (relatedItem) => relatedItem.id === item.id
+        );
+
+        item.groupItemVisualState.isCollapsed = relatedGroup
+          ?.groupItemVisualState?.isCollapsed
+          ? relatedGroup.groupItemVisualState.isCollapsed
+          : false;
+
+        return item;
+      })
+      .toArray();
+  };
 }
 
 export enum ManagingPanelComponent {
@@ -69,7 +91,7 @@ export const productSettingsReducer = createReducer(
       .addCase(
         productSettingsActions.updateOptionGroupList,
         (state, action) => {
-          state.optionGroupsList = action.payload;
+          state.setOptionGroupsList(action.payload);
 
           if (state.optionGroupsList.length === 0) {
             state.managingOptionUnitsState.targetOptionGroup = null;

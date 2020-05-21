@@ -1,3 +1,4 @@
+import { GroupItemVisualState } from './viewModels/index';
 import { CommonDialogState } from '../redux/reducers/control.reducer';
 import { DealerDetilsComponents } from '../redux/reducers/dealer.reducer';
 
@@ -259,10 +260,17 @@ export class OptionGroup extends EntityBaseNamed {
 
     this.isMandatory = false;
     this.optionUnits = [];
+
+    this.groupItemVisualState = new GroupItemVisualState();
+    this.foo = false;
   }
 
   isMandatory: boolean;
   optionUnits: OptionUnit[];
+
+  /// Keeps item visual state (is not related to DTO model).
+  groupItemVisualState: GroupItemVisualState;
+  foo: boolean;
 }
 
 export class OptionUnit extends EntityBaseNamed {
