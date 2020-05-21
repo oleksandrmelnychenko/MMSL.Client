@@ -55,10 +55,18 @@ export const getAndSelectOptionUnitForSingleEditById = createAction<number>(
 export const updateSingleEditOptionUnit = createAction<
   OptionUnit | null | undefined
 >(productSettingsTypes.UPDATE_SINGLE_EDIT_OPTION_UNIT);
-
 export const deleteOptionGroupById = createAction<number>(
   productSettingsTypes.DELETE_OPTION_GROUP_BY_ID
 );
+export const getAndSelectOptionGroupForSingleEditById = createAction<number>(
+  productSettingsTypes.GET_AND_SELECT_OPTION_GROUP_FOR_SINGLE_EDIT_BY_ID
+);
+export const saveEditOptionGroup = createAction<OptionGroup | null | undefined>(
+  productSettingsTypes.SAVE_EDIT_OPTION_GROUP
+);
+export const updateTargetSingleEditOptionGroup = createAction<
+  OptionGroup | null | undefined
+>(productSettingsTypes.UPDATE_TARGET_SINGLE_EDIT_OPTION_GROUP);
 
 export type ManagingPanelContent = ReturnType<typeof managingPanelContent>;
 export type SaveNewOptionGroup = ReturnType<typeof saveNewOptionGroup>;
@@ -91,3 +99,10 @@ export type UpdateSingleEditOptionUnit = ReturnType<
   typeof updateSingleEditOptionUnit
 >;
 export type DeleteOptionGroupById = ReturnType<typeof deleteOptionGroupById>;
+export type GetAndSelectOptionGroupForSingleEditById = ReturnType<
+  typeof getAndSelectOptionGroupForSingleEditById
+>;
+export type SaveEditOptionGroup = ReturnType<typeof saveEditOptionGroup>;
+export type UpdateTargetSingleEditOptionGroup = ReturnType<
+  typeof updateTargetSingleEditOptionGroup
+>;
