@@ -189,7 +189,11 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
               productSettingsActions.getAllOptionGroupsList(),
               productSettingsActions.changeTargetOptionGroupForUnitsEdit(null),
               productSettingsActions.managingPanelContent(null),
-            ]
+            ],
+            [],
+            (args: any) => {
+              dispatch(productSettingsActions.updateSingleEditOptionUnit(null));
+            }
           );
 
           dispatch(action);
