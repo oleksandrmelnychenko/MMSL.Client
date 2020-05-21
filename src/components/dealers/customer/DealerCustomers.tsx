@@ -82,9 +82,8 @@ export const DealerCustomers: React.FC = () => {
           } else {
             dispatch(dealerActions.updateTargetStoreCustomersList([]));
           }
-        }}
-      >
-        <div className="dealer__store__name">Store name: {item.name}</div>
+        }}>
+        <div className="dealer__store__name">Name: {item.name}</div>
         <div className="dealer__store__address">
           Address:{' '}
           {`country: ${item.address.country}, city: ${item.address.city}`}
@@ -200,8 +199,7 @@ export const DealerCustomers: React.FC = () => {
       <Stack
         horizontal
         horizontalAlign="space-between"
-        tokens={{ childrenGap: 20 }}
-      >
+        tokens={{ childrenGap: 20 }}>
         <Stack grow={1} tokens={{ maxWidth: '32%' }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>

@@ -46,7 +46,7 @@ export const DealerCustomersList: React.FC = () => {
         }}>
         <div className="dealer__store__name">User name: {item.userName}</div>
         <div className="dealer__store__address">
-          Customer name: {`${item.customerName}`}
+          Name: {`${item.customerName}`}
         </div>
       </div>
     );

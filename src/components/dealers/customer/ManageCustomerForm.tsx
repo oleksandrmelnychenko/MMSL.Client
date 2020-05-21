@@ -250,6 +250,7 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                       {() => (
                         <div className="form__group">
                           <DatePicker
+                            formatDate={fabricControlSettings.onFormatDate}
                             firstDayOfWeek={DayOfWeek.Monday}
                             strings={fabricControlSettings.dayPickerStrings}
                             textField={fabricStyles.datePickerStyles}
