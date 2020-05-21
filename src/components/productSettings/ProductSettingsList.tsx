@@ -171,6 +171,7 @@ export const ProductSettingsList: React.FC = () => {
     <div className="productSettingsLsit">
       <ScrollablePane styles={scrollablePaneStyleForDetailList}>
         <DetailsList
+          styles={{ root: { overflowX: 'hidden' } }}
           selection={selection}
           groupProps={{
             showEmptyGroups: true,
@@ -192,13 +193,11 @@ export const ProductSettingsList: React.FC = () => {
                           paddingLeft: '0px',
                           paddingRight: '8px',
                           width: '100%',
-                        }}
-                      >
+                        }}>
                         <Stack
                           horizontal
                           horizontalAlign="space-between"
-                          tokens={{ childrenGap: 0 }}
-                        >
+                          tokens={{ childrenGap: 0 }}>
                           {defaultRender(props)}
 
                           <Stack horizontal tokens={{ childrenGap: 10 }}>
@@ -282,16 +281,13 @@ export const ProductSettingsList: React.FC = () => {
           checkboxVisibility={CheckboxVisibility.hidden}
           onRenderRow={(args: any) => {
             return (
-              <div>
+              <div style={{ paddingLeft: '90px' }}>
                 <DetailsRow
                   styles={{
                     root: {
-                      marginLeft: '90px',
+                      // marginLeft: '90px',
                       paddingLeft: '12px',
                     },
-                    // cell: {
-                    //   padding: '0px',
-                    // },
                   }}
                   {...args}
                 />
