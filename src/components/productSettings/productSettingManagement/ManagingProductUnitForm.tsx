@@ -3,12 +3,10 @@ import { Formik, Form, Field } from 'formik';
 import {
   Stack,
   TextField,
-  Toggle,
   Checkbox,
-  PrimaryButton,
   FontIcon,
   mergeStyles,
-  Button,
+  DefaultButton,
 } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import { FormicReference, OptionUnit } from '../../../interfaces';
@@ -117,8 +115,7 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
           );
         }}
         validateOnBlur={false}
-        enableReinitialize={true}
-      >
+        enableReinitialize={true}>
         {(formik) => {
           props.formikReference.formik = formik;
           if (props.formikReference.isDirtyFunc)
@@ -146,8 +143,7 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                 border: '1px solid #efefef',
                 padding: '6px',
                 borderRadius: '6px',
-              }}
-            >
+              }}>
               <FontIcon
                 style={{
                   position: 'absolute',
@@ -261,7 +257,7 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                                     }
                                   }}
                                 />
-                                <Button
+                                <DefaultButton
                                   iconProps={{ iconName: 'Attach' }}
                                   styles={fabricStyles.btnUploadStyle}
                                   text={

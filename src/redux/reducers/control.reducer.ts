@@ -45,6 +45,7 @@ export class PanelInfo {
 }
 
 export const defaultControlState = {
+  isGlobalShimmerActive: false,
   isCollapseMenu: false,
   panelInfo: new PanelInfo(),
   commonDialog: new CommonDialogState(),
@@ -83,5 +84,11 @@ export const controlReducer = createReducer(defaultControlState, (builder) =>
     })
     .addCase(actions.disabledStatusBar, (state) => {
       state.isActivateStatusBar = false;
+    })
+    .addCase(actions.showGlobalShimmer, (state) => {
+      state.isGlobalShimmerActive = true;
+    })
+    .addCase(actions.hideGlobalShimmer, (state) => {
+      state.isGlobalShimmerActive = false;
     })
 );

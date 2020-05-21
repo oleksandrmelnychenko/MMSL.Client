@@ -5,8 +5,8 @@ import {
   SelectionMode,
   Text,
   Selection,
-  MarqueeSelection,
   ScrollablePane,
+  ShimmeredDetailsList,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -18,6 +18,7 @@ import {
   scrollablePaneStyleForDetailList,
   detailsListStyle,
 } from '../../common/fabric-styles/styles';
+import * as controlAction from '../../redux/actions/control.actions';
 
 const _customerColumns: IColumn[] = [
   {
@@ -107,20 +108,31 @@ export const CustomerList: React.FC = () => {
     CustomerListState
   >((state) => state.customer.customerState);
 
-  useEffect(() => {
-    if (!selectedCustomer) {
-      selection.setAllSelected(false);
-      dispatch(controlActions.closeInfoPanelWithComponent());
-    }
-  }, [selectedCustomer, selection, dispatch]);
+  const shimmer = useSelector<IApplicationState, boolean>(
+    (state) => state.control.isGlobalShimmerActive
+  );
 
   useEffect(() => {
+    dispatch(controlAction.showGlobalShimmer());
     dispatch(customerActions.getCustomersListPaginated());
     return () => {
       dispatch(customerActions.selectedCustomer(null));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (customersList.length > 0 && shimmer) {
+      dispatch(controlAction.hideGlobalShimmer());
+    }
+  }, [customersList]);
+
+  useEffect(() => {
+    if (!selectedCustomer) {
+      selection.setAllSelected(false);
+      dispatch(controlActions.closeInfoPanelWithComponent());
+    }
+  }, [selectedCustomer, selection, dispatch]);
 
   const customerSelection = () => {
     const selectedCustomer = selection.getSelection()[0] as any;
@@ -131,7 +143,8 @@ export const CustomerList: React.FC = () => {
   return (
     <div>
       <ScrollablePane styles={scrollablePaneStyleForDetailList}>
-        <DetailsList
+        <ShimmeredDetailsList
+          enableShimmer={shimmer}
           styles={detailsListStyle}
           items={customersList}
           selection={selection}

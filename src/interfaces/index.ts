@@ -35,6 +35,7 @@ export interface IPanelInfo {
 }
 
 export interface IControlState {
+  isGlobalShimmerActive: boolean;
   isCollapseMenu: boolean;
   panelInfo: IPanelInfo;
   commonDialog: CommonDialogState;
