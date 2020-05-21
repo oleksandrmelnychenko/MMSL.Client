@@ -18,6 +18,7 @@ import { stylesPanelInfo } from '../../common/fabric-styles/styles';
 import ProductSettings from '../productSettings/ProductSettings';
 import { IPanelInfo } from '../../interfaces/index';
 import Reports from '../reports/Reports';
+import ProductCategory from '../product-category/ProductCategory';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
@@ -57,6 +58,10 @@ const Dashboard: React.FC = () => {
           <Switch>
             <PrivateRoute path={`/en/app/dealers`} component={Dealers} />
             <PrivateRoute path={`/en/app/customer`} component={Customers} />
+            <PrivateRoute
+              path={`/en/app/product-category`}
+              component={ProductCategory}
+            />
             <PrivateRoute
               path={`/en/app/product-settings`}
               component={ProductSettings}
