@@ -10,6 +10,11 @@ import {
   GroupHeader,
   ScrollablePane,
   DetailsRow,
+  FontIcon,
+  mergeStyles,
+  TooltipHost,
+  TooltipDelay,
+  DirectionalHint,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -148,6 +153,7 @@ export const ProductSettingsList: React.FC = () => {
         count: group.optionUnits.length,
         isDropEnabled: false,
         isCollapsed: false,
+        rawGroupModel: group,
       };
 
       groupIndex += group.optionUnits.length;
@@ -176,6 +182,10 @@ export const ProductSettingsList: React.FC = () => {
                   }}
                   {...props}
                   onRenderTitle={(props?: any, defaultRender?: any) => {
+                    let mandatoryColor = props.group?.rawGroupModel?.isMandatory
+                      ? '#2b579a'
+                      : '#2b579a60';
+
                     return (
                       <div
                         style={{
@@ -189,7 +199,29 @@ export const ProductSettingsList: React.FC = () => {
                           horizontalAlign="space-between"
                           tokens={{ childrenGap: 0 }}
                         >
-                          {defaultRender(props)}
+                          <Stack horizontal tokens={{ childrenGap: 10 }}>
+                            {defaultRender(props)}{' '}
+                            <TooltipHost
+                              id={`mandatoryTooltip_${props.group.key}`}
+                              calloutProps={{ gapSpace: 0 }}
+                              delay={TooltipDelay.zero}
+                              directionalHint={DirectionalHint.bottomCenter}
+                              styles={{ root: { display: 'inline-block' } }}
+                              content={
+                                props.group?.rawGroupModel?.isMandatory
+                                  ? 'Mandatory'
+                                  : 'Not mandatory'
+                              }
+                            >
+                              <FontIcon
+                                iconName="Warning"
+                                className={mergeStyles({
+                                  fontSize: 16,
+                                  color: mandatoryColor,
+                                })}
+                              />
+                            </TooltipHost>
+                          </Stack>
 
                           <Stack horizontal tokens={{ childrenGap: 10 }}>
                             <IconButton
