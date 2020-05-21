@@ -51,26 +51,21 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
   const imageProps: IImageProps = {
     src: props.optionUnit.imageUrl,
     imageFit: ImageFit.center,
-    width: 97,
-    height: 83,
+    width: 67,
+    height: 53,
   };
 
   const allowTooltipId = useId(`allowTooltip_${props.optionUnit.id}`);
-  const imageTooltipId = useId(`imageTooltip_${props.optionUnit.id}`);
 
   let allowColor = props.optionUnit.isMandatory ? '#2b579a' : '#2b579a60';
-  let imageColor =
-    props.optionUnit.imageUrl && props.optionUnit.imageUrl.length > 0
-      ? '#2b579a'
-      : '#2b579a60';
 
   return (
     <Stack horizontal tokens={{ childrenGap: 20 }}>
-      {/* {item.imageUrl && item.imageUrl.length > 0 ? (
-              <Stack.Item>
-                <Image {...imageProps} alt={`${item.value}`} />
-              </Stack.Item>
-            ) : null} */}
+      {props.optionUnit.imageUrl && props.optionUnit.imageUrl.length > 0 ? (
+        <Stack.Item>
+          <Image {...imageProps} alt={`${props.optionUnit.value}`} />
+        </Stack.Item>
+      ) : null}
 
       <Stack>
         <Stack.Item>
@@ -94,26 +89,6 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
               <FontIcon
                 iconName="Lock"
                 className={mergeStyles({ fontSize: 16, color: allowColor })}
-              />
-            </TooltipHost>
-            <TooltipHost
-              id={imageTooltipId}
-              calloutProps={{ gapSpace: 0 }}
-              delay={TooltipDelay.zero}
-              directionalHint={DirectionalHint.bottomCenter}
-              styles={{ root: { display: 'inline-block' } }}
-              content={
-                props.optionUnit.imageUrl &&
-                props.optionUnit.imageUrl.length > 0 ? (
-                  <Image {...imageProps} alt={`${props.optionUnit.value}`} />
-                ) : (
-                  'No Image'
-                )
-              }
-            >
-              <FontIcon
-                iconName="FileImage"
-                className={mergeStyles({ fontSize: 16, color: imageColor })}
               />
             </TooltipHost>
           </Stack>
