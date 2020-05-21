@@ -8,6 +8,7 @@ import {
   PrimaryButton,
   FontIcon,
   mergeStyles,
+  Button,
 } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import { FormicReference, OptionUnit } from '../../../interfaces';
@@ -114,8 +115,7 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
           );
         }}
         validateOnBlur={false}
-        enableReinitialize={true}
-      >
+        enableReinitialize={true}>
         {(formik) => {
           props.formikReference.formik = formik;
           if (props.formikReference.isDirtyFunc)
@@ -143,8 +143,7 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                 border: '1px solid #efefef',
                 padding: '6px',
                 borderRadius: '6px',
-              }}
-            >
+              }}>
               <FontIcon
                 style={{
                   position: 'absolute',
@@ -245,6 +244,7 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                                       file.length &&
                                       file.length > 0
                                     ) {
+                                      debugger;
                                       formik.setFieldValue(
                                         'imageFile',
                                         file[0]
@@ -256,17 +256,27 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                                     }
                                   }}
                                 />
-                                <PrimaryButton
+                                <Button
+                                  iconProps={{ iconName: 'Attach' }}
                                   styles={{
                                     root: {
-                                      maxWidth: '150px',
-                                      minWidth: '150px',
+                                      width: '100%',
+                                      background: '#fff',
+                                      color: 'rgb(0, 120, 212)',
+                                      fontWeight: '400',
+                                      border: '1px dashed rgb(0, 120, 212)',
+                                      transition: 'all 0.3s ease 0.3s',
+                                    },
+                                    rootHovered: {
+                                      background: '#fff',
+                                      borderStyle: 'solid',
+                                      color: 'rgb(0, 120, 212)',
                                     },
                                   }}
                                   text={
                                     formik.values.isRemovingImage
-                                      ? 'Remove source'
-                                      : 'Add source'
+                                      ? 'Delete attach'
+                                      : 'Attach'
                                   }
                                   onClick={() => {
                                     const clearInputFileFlow = () => {
