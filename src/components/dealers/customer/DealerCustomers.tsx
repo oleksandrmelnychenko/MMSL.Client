@@ -173,6 +173,7 @@ export const DealerCustomers: React.FC = () => {
                   dispatch(
                     dealerActions.setSelectedCustomerInCurrentStore(null)
                   );
+                  dispatch(dealerActions.getStoresByDealer(selectedDealer!.id));
 
                   setIsOpenForm(false);
                 },
@@ -242,6 +243,9 @@ export const DealerCustomers: React.FC = () => {
                       dealerActions.getStoreCustomersByStoreId(
                         selectedLocalStore.id!
                       )
+                    );
+                    dispatch(
+                      dealerActions.getStoresByDealer(selectedDealer!.id)
                     );
                   }
                   formikReference.formik.resetForm();

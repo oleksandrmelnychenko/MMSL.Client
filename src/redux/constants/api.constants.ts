@@ -35,3 +35,10 @@ export const MODIFY_OPTION_UNIT = '/options/units/update';
 export const ADD_OPTION_UNIT = '/options/units/add';
 export const DELETE_OPTION_UNIT_BY_ID = '/options/units/delete';
 export const GET_OPTION_UNIT_BY_ID = '/options/units/get';
+
+export const GET_ALL_PRODUCT_CATEGORY = '/product/category/get/all';
+export const ADD_PRODUCT_CATEGORY = '/product/category/new/product/category';
+export const UPDATE_PRODUCT_CATEGORY =
+  '/product/category/update/product/category';
+export const DELETE_PRODUCT_CATEGORY =
+  '/product/category/delete/product/category';
