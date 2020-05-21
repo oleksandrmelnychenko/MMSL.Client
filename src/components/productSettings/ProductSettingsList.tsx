@@ -14,6 +14,7 @@ import {
   IImageProps,
   ImageFit,
   ScrollablePane,
+  DetailsRow,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -201,7 +202,7 @@ export const ProductSettingsList: React.FC = () => {
               return (
                 <GroupHeader
                   styles={{
-                    root: { paddingLeft: '16px' },
+                    root: { marginLeft: '18px' },
                     check: { display: 'none' },
                     headerCount: { display: 'none' },
                     expandButtonProps: { paddingLeft: '10px' },
@@ -211,7 +212,7 @@ export const ProductSettingsList: React.FC = () => {
                     return (
                       <div
                         style={{
-                          paddingLeft: '8px',
+                          paddingLeft: '0px',
                           paddingRight: '8px',
                           width: '100%',
                         }}
@@ -261,21 +262,21 @@ export const ProductSettingsList: React.FC = () => {
           columns={customerColumns}
           items={allConcatedUnits}
           checkboxVisibility={CheckboxVisibility.hidden}
-          // onRenderRow={(args: any) => {
-          //   return (
-          //     <div>
-          //       <DetailsRow {...args} />
-          //     </div>
-          //   );
-          // }}
-          // onRenderDetailsHeader={(props: any, _defaultRender?: any) => {
-          //   return (
-          //     <DetailsHeader
-          //       {...props}
-          //       ariaLabelForToggleAllGroupsButton={'Expand collapse groups'}
-          //     />
-          //   );
-          // }}
+          onRenderRow={(args: any) => {
+            return (
+              <div>
+                <DetailsRow
+                  styles={{
+                    root: {
+                      marginLeft: '90px',
+                      paddingLeft: '12px',
+                    },
+                  }}
+                  {...args}
+                />
+              </div>
+            );
+          }}
         />
       </ScrollablePane>
     </div>
