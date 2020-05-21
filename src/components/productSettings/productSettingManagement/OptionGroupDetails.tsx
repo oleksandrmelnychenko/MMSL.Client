@@ -131,7 +131,6 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
                   submitAction={(args: any) => {
                     if (sectedOptionUnit) {
                       /// Update unit
-
                       let action = assignPendingActions(
                         productSettingsActions.updateOptionUnit(args),
                         [
@@ -143,14 +142,12 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
                         ],
                         [],
                         (successResponseArgs: any) => {
-                          debugger;
                           props.formikReference.formik.resetForm();
                         }
                       );
                       dispatch(action);
                     } else {
                       /// Creating new unit
-
                       let action = assignPendingActions(
                         productSettingsActions.saveNewOptionUnit(args),
                         [
@@ -162,7 +159,6 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
                         ],
                         [],
                         (successResponseArgs: any) => {
-                          debugger;
                           props.formikReference.formik.resetForm();
                         }
                       );

@@ -1,12 +1,11 @@
 import { checkUnauthorized } from './../../helpers/error.helpers';
 import {
-  extractErrorPendingActions,
-  extractSuccessPendingActions,
+  successCommonEpicFlow,
+  errorCommonEpicFlow,
 } from './../../helpers/action.helper';
 import { switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
-import { from } from 'rxjs';
 import * as unitsTypes from '../constants/units.types.constants';
 import { getActiveLanguage } from 'react-localize-redux';
 import { ajaxGetWebResponse } from '../../helpers/epic.helper';
@@ -23,24 +22,22 @@ export const getCurrenciesEpic = (action$: AnyAction, state$: any) => {
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       return ajaxGetWebResponse(api.GET_CURRENCIES_ALL, state$.value).pipe(
         mergeMap((successResponse: any) => {
-          /// TODO:
-          let successResultFlow = [
-            unitsActions.setCurrencies(successResponse),
-            controlActions.disabledStatusBar(),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              unitsActions.setCurrencies(successResponse),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              { type: 'ERROR' },
-              controlActions.disabledStatusBar(),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [{ type: 'ERROR' }, controlActions.disabledStatusBar()],
+              action
+            );
           });
         })
       );
@@ -56,24 +53,22 @@ export const getPaymentTypesEpic = (action$: AnyAction, state$: any) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       return ajaxGetWebResponse(api.GET_PAYMENT_TYPES_ALL, state$.value).pipe(
         mergeMap((successResponse: any) => {
-          /// TODO:
-          let successResultFlow = [
-            unitsActions.setPaymentTypes(successResponse),
-            controlActions.disabledStatusBar(),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              unitsActions.setPaymentTypes(successResponse),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              { type: 'ERROR' },
-              controlActions.disabledStatusBar(),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [{ type: 'ERROR' }, controlActions.disabledStatusBar()],
+              action
+            );
           });
         })
       );

@@ -1,15 +1,14 @@
 import { Pagination } from './../../interfaces/index';
 import { checkUnauthorized } from './../../helpers/error.helpers';
 import {
-  extractSuccessPendingActions,
-  extractErrorPendingActions,
+  successCommonEpicFlow,
+  errorCommonEpicFlow,
 } from './../../helpers/action.helper';
 import { switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import * as controlActions from '../../redux/actions/control.actions';
-import { from } from 'rxjs';
 import * as dealerTypes from '../constants/dealer.types.constants';
 import { getActiveLanguage } from 'react-localize-redux';
 import {
@@ -67,26 +66,25 @@ export const getDealersListPaginatedEpic = (
         },
       ]).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            dealerActions.updateDealersList(successResponse.entities),
-            dealerActions.updateDealerListPaginationInfo(
-              successResponse.paginationInfo
-            ),
-            controlActions.disabledStatusBar(),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              dealerActions.updateDealersList(successResponse.entities),
+              dealerActions.updateDealerListPaginationInfo(
+                successResponse.paginationInfo
+              ),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              { type: 'ERROR' },
-              controlActions.disabledStatusBar(),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [{ type: 'ERROR' }, controlActions.disabledStatusBar()],
+              action
+            );
           });
         })
       );
@@ -104,23 +102,25 @@ export const deleteDealerByIdEpic = (action$: AnyAction, state$: any) => {
         { key: 'dealerAccountId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            controlActions.showInfoMessage(successResponse.message),
-            controlActions.disabledStatusBar(),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.showInfoMessage(successResponse.message),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              { type: 'ERROR_DELETE_DEALER_BY_ID' },
-              controlActions.disabledStatusBar(),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_DELETE_DEALER_BY_ID' },
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
           });
         })
       );
@@ -144,23 +144,25 @@ export const getAndSelectDealersByIdEpic = (
         { key: 'dealerAccountId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            dealerActions.setSelectedDealer(successResponse),
-            controlActions.disabledStatusBar(),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              dealerActions.setSelectedDealer(successResponse),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              { type: 'ERROR_GET_AND_SELECT_DEALER_BY_ID' },
-              controlActions.disabledStatusBar(),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_GET_AND_SELECT_DEALER_BY_ID' },
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
           });
         })
       );
@@ -181,22 +183,22 @@ export const saveNewDealerEpic = (action$: AnyAction, state$: any) => {
         true
       ).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            controlActions.showInfoMessage(successResponse.message),
-            controlActions.disabledStatusBar(),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.showInfoMessage(successResponse.message),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              controlActions.disabledStatusBar(),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [controlActions.disabledStatusBar()],
+              action
+            );
           });
         })
       );
@@ -216,21 +218,22 @@ export const updateDealerEpic = (action$: AnyAction, state$: any) => {
         state$.value
       ).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            controlActions.showInfoMessage(successResponse.message),
-            controlActions.disabledStatusBar(),
-            ...extractSuccessPendingActions(action),
-          ];
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.showInfoMessage(successResponse.message),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              controlActions.disabledStatusBar(),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [controlActions.disabledStatusBar()],
+              action
+            );
           });
         })
       );
@@ -248,24 +251,25 @@ export const getStoresByDealerEpic = (action$: AnyAction, state$: any) => {
         { key: 'dealerAccountId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            dealerActions.setDealerStores(successResponse),
-            controlActions.disabledStatusBar(),
-
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              dealerActions.setDealerStores(successResponse),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              { type: 'ERROR_GET_STORES_BY_DEALERS_ID' },
-              controlActions.disabledStatusBar(),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_GET_STORES_BY_DEALERS_ID' },
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
           });
         })
       );
@@ -285,22 +289,23 @@ export const updateDealerStoreEpic = (action$: AnyAction, state$: any) => {
         state$.value
       ).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            dealerActions.setUpdateDealerStore(successResponse.body),
-            controlActions.showInfoMessage(successResponse.message),
-            controlActions.disabledStatusBar(),
-            ...extractSuccessPendingActions(action),
-          ];
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              dealerActions.setUpdateDealerStore(successResponse.body),
+              controlActions.showInfoMessage(successResponse.message),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              controlActions.disabledStatusBar(),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [controlActions.disabledStatusBar()],
+              action
+            );
           });
         })
       );
@@ -324,23 +329,23 @@ export const addStoreToCurrentDealerEpic = (
         true
       ).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            dealerActions.addNewStoreToCurrentDealer(successResponse.body),
-            controlActions.disabledStatusBar(),
-            controlActions.showInfoMessage(successResponse.message),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              dealerActions.addNewStoreToCurrentDealer(successResponse.body),
+              controlActions.disabledStatusBar(),
+              controlActions.showInfoMessage(successResponse.message),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              controlActions.disabledStatusBar(),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [controlActions.disabledStatusBar()],
+              action
+            );
           });
         })
       );
@@ -361,25 +366,26 @@ export const deleteCurrentDealerStoreEpic = (
         { key: 'storeId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            dealerActions.updateDealerStoresAfterDelete(successResponse.body),
-            controlActions.disabledStatusBar(),
-            controlActions.showInfoMessage(successResponse.message),
-
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              dealerActions.updateDealerStoresAfterDelete(successResponse.body),
+              controlActions.disabledStatusBar(),
+              controlActions.showInfoMessage(successResponse.message),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              { type: 'ERROR_DELETE_CURRENT_DEALER_STORE' },
-              controlActions.disabledStatusBar(),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_DELETE_CURRENT_DEALER_STORE' },
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
           });
         })
       );
@@ -403,25 +409,24 @@ export const getStoreCustomersByStoreIdEpic = (
         },
       ]).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            dealerActions.updateTargetStoreCustomersList(
-              successResponse.entities
-            ),
-            controlActions.disabledStatusBar(),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              dealerActions.updateTargetStoreCustomersList(
+                successResponse.entities
+              ),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              { type: 'ERROR' },
-              controlActions.disabledStatusBar(),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [{ type: 'ERROR' }, controlActions.disabledStatusBar()],
+              action
+            );
           });
         })
       );
@@ -442,26 +447,28 @@ export const deleteCurrentCustomerFromStoreEpic = (
         { key: 'storeCustomerId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            dealerActions.updateCustomersStoreAfterDeleteCustomer(
-              successResponse.body
-            ),
-            controlActions.disabledStatusBar(),
-            controlActions.showInfoMessage(successResponse.message),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              dealerActions.updateCustomersStoreAfterDeleteCustomer(
+                successResponse.body
+              ),
+              controlActions.disabledStatusBar(),
+              controlActions.showInfoMessage(successResponse.message),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              { type: 'DELETE_CUSTOMER_FROM_STORE' },
-              controlActions.disabledStatusBar(),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'DELETE_CUSTOMER_FROM_STORE' },
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
           });
         })
       );
@@ -481,28 +488,31 @@ export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
         state$.value
       ).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            dealerActions.updateCustomerListAfterUpdateCustomer(
-              successResponse.body
-            ),
-            dealerActions.setSelectedCustomerInCurrentStore(
-              successResponse.body
-            ),
-            controlActions.disabledStatusBar(),
-            controlActions.showInfoMessage(successResponse.message),
-            ...extractSuccessPendingActions(action),
-          ];
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              dealerActions.updateCustomerListAfterUpdateCustomer(
+                successResponse.body
+              ),
+              dealerActions.setSelectedCustomerInCurrentStore(
+                successResponse.body
+              ),
+              controlActions.disabledStatusBar(),
+              controlActions.showInfoMessage(successResponse.message),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              { type: 'ERROR_UPDATE_STORE_CUSTOMER' },
-              controlActions.disabledStatusBar(),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_UPDATE_STORE_CUSTOMER' },
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
           });
         })
       );
