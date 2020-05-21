@@ -13,12 +13,12 @@ import * as dealerActions from '../../../redux/actions/dealer.actions';
 export const DealerCustomersList: React.FC = () => {
   const dispatch = useDispatch();
 
-  const [selectedStoreCustomer, setSelectedStoreCustomer] = useState<
-    StoreCustomer | null | undefined
-  >(null);
-
   const storeCustomers = useSelector<IApplicationState, StoreCustomer[]>(
     (state) => state.dealer.dealerCustomerState.storeCustomers
+  );
+
+  const selectedCustomer = useSelector<IApplicationState, StoreCustomer | null>(
+    (state) => state.dealer.dealerCustomerState.selectedCustomer
   );
 
   const onRenderCell = (
@@ -29,15 +29,12 @@ export const DealerCustomersList: React.FC = () => {
       <div
         key={index}
         className={`dealer__store${
-          selectedStoreCustomer && item.id === selectedStoreCustomer.id
-            ? ' selected'
-            : ''
+          selectedCustomer && item.id === selectedCustomer.id ? ' selected' : ''
         }`}
         onClick={() => {
           const selectedCustomer = new List(storeCustomers).firstOrDefault(
             (storeCustomer) => storeCustomer.id === item.id
           );
-          setSelectedStoreCustomer(selectedCustomer);
           if (selectedCustomer) {
             dispatch(
               dealerActions.setSelectedCustomerInCurrentStore(selectedCustomer)

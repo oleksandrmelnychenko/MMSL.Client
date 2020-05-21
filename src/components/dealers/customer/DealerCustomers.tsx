@@ -31,9 +31,9 @@ import { DealerState } from '../../../redux/reducers/dealer.reducer';
 export const DealerCustomers: React.FC = () => {
   const dispatch = useDispatch();
   const [isDirtyForm, setIsDirtyForm] = useState(false);
-  const [selectedStore, setSelectedStore] = useState<IStore | null | undefined>(
-    null
-  );
+  const [selectedLocalStore, setSelectedLocalStore] = useState<
+    IStore | null | undefined
+  >(null);
   const [isOpenForm, setIsOpenForm] = useState(false);
   const [formikReference] = useState<FormicReference>(
     new FormicReference(() => {
@@ -68,13 +68,19 @@ export const DealerCustomers: React.FC = () => {
       <div
         key={index}
         className={`dealer__store${
-          selectedStore && item.id === selectedStore.id ? ' selected' : ''
+          selectedLocalStore && item.id === selectedLocalStore.id
+            ? ' selected'
+            : ''
         }`}
         onClick={() => {
           const selectedStore = new List<IStore>(dealerStores).firstOrDefault(
             (store) => store.id === item.id
           );
-          setSelectedStore(selectedStore);
+          if (dealerCustomerState.selectedCustomer) {
+            dispatch(dealerActions.setSelectedCustomerInCurrentStore(null));
+          }
+          setSelectedLocalStore(selectedStore);
+
           if (selectedStore && selectedStore.id) {
             dispatch(
               dealerActions.getStoreCustomersByStoreId(selectedStore.id)
@@ -99,7 +105,7 @@ export const DealerCustomers: React.FC = () => {
       text: 'New',
       iconProps: { iconName: 'Add' },
       onClick: () => {
-        if (selectedStore) {
+        if (selectedLocalStore) {
           setIsOpenForm(true);
           dispatch(dealerActions.setSelectedCustomerInCurrentStore(null));
         } else {
@@ -151,13 +157,13 @@ export const DealerCustomers: React.FC = () => {
       iconProps: { iconName: 'Delete' },
       disabled: dealerCustomerState.selectedCustomer ? false : true,
       onClick: () => {
-        if (selectedStore) {
+        if (selectedLocalStore) {
           dispatch(
             controlAction.toggleCommonDialogVisibility(
               new DialogArgs(
                 CommonDialogType.Delete,
                 'Delete store',
-                `Are you sure you want to delete ${selectedStore.name}?`,
+                `Are you sure you want to delete ${selectedLocalStore.name}?`,
                 () => {
                   dispatch(
                     dealerActions.deleteCurrentCustomerFromStore(
@@ -215,14 +221,14 @@ export const DealerCustomers: React.FC = () => {
           <DealerCustomersList />
         </Stack>
         <Stack grow={1} tokens={{ maxWidth: '32%' }}>
-          {(selectedStore && isOpenForm) ||
-          (selectedStore && dealerCustomerState.selectedCustomer) ? (
+          {(selectedLocalStore && isOpenForm) ||
+          (selectedLocalStore && dealerCustomerState.selectedCustomer) ? (
             <>
               <Separator alignContent="start">Customers form</Separator>
               <ManageCustomerForm
                 formikReference={formikReference}
                 submitAction={(args: any) => {
-                  const value = { ...args, storeId: selectedStore.id };
+                  const value = { ...args, storeId: selectedLocalStore.id };
                   if (dealerCustomerState.selectedCustomer) {
                     dispatch(
                       dealerActions.updateStoreCustomer({
@@ -234,7 +240,7 @@ export const DealerCustomers: React.FC = () => {
                     dispatch(customerActions.saveNewCustomer(value));
                     dispatch(
                       dealerActions.getStoreCustomersByStoreId(
-                        selectedStore.id!
+                        selectedLocalStore.id!
                       )
                     );
                   }
