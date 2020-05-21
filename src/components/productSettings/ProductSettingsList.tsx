@@ -286,7 +286,7 @@ export const ProductSettingsList: React.FC = () => {
                 <DetailsRow
                   styles={{
                     root: {
-                      marginLeft: '90px',
+                      marginLeft: '60px',
                       paddingLeft: '12px',
                     },
                     // cell: {
