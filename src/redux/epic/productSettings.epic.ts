@@ -25,6 +25,89 @@ import * as productSettingsActions from '../../redux/actions/productSettings.act
 
 const FORM_DATA_IMAGE_FILE_KEY = 'file';
 
+export const getOptionGroupByIdEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(
+      productSettingsTypes.GET_AND_SELECT_OPTION_GROUP_FOR_SINGLE_EDIT_BY_ID
+    ),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
+      return ajaxGetWebResponse(api.GET_OPTION_GROUP_BY_ID, state$.value, [
+        { key: 'groupId', value: `${action.payload}` },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while getting option group. ${errorResponse}`
+                ),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const saveEditOptionGroupEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(productSettingsTypes.SAVE_EDIT_OPTION_GROUP),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
+      return ajaxPutResponse(
+        api.UPDATE_OPTION_GROUP,
+        action.payload,
+        state$.value
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.showInfoMessage(
+                'Option group updated successfully'
+              ),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while updating option group. ${errorResponse}`
+                ),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
 export const saveNewOptionGroupEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
     ofType(productSettingsTypes.SAVE_NEW_OPTION_GROUP),

@@ -182,11 +182,13 @@ export const ProductSettingsList: React.FC = () => {
                           paddingLeft: '0px',
                           paddingRight: '8px',
                           width: '100%',
-                        }}>
+                        }}
+                      >
                         <Stack
                           horizontal
                           horizontalAlign="space-between"
-                          tokens={{ childrenGap: 0 }}>
+                          tokens={{ childrenGap: 0 }}
+                        >
                           {defaultRender(props)}
 
                           <Stack horizontal tokens={{ childrenGap: 10 }}>
@@ -198,7 +200,7 @@ export const ProductSettingsList: React.FC = () => {
                               }}
                               height={20}
                               iconProps={{
-                                iconName: 'ColumnRightTwoThirdsEdit',
+                                iconName: 'Settings',
                               }}
                               title="Settings"
                               ariaLabel="Settings"
@@ -212,6 +214,42 @@ export const ProductSettingsList: React.FC = () => {
                                       ManagingPanelComponent.ManageUnits
                                     ),
                                   ]
+                                );
+                                dispatch(action);
+                              }}
+                            />
+
+                            <IconButton
+                              styles={{
+                                root: {
+                                  height: '20px',
+                                },
+                              }}
+                              height={20}
+                              iconProps={{
+                                iconName: 'SingleColumnEdit',
+                              }}
+                              title="Edit"
+                              ariaLabel="Edit"
+                              onClick={() => {
+                                let action = assignPendingActions(
+                                  productSettingsActions.getAndSelectOptionGroupForSingleEditById(
+                                    props.group.key
+                                  ),
+                                  [],
+                                  [],
+                                  (args: any) => {
+                                    dispatch(
+                                      productSettingsActions.updateTargetSingleEditOptionGroup(
+                                        args
+                                      )
+                                    );
+                                    dispatch(
+                                      productSettingsActions.managingPanelContent(
+                                        ManagingPanelComponent.ManageSingleOptionGroup
+                                      )
+                                    );
+                                  }
                                 );
                                 dispatch(action);
                               }}

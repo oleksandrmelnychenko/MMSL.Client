@@ -75,6 +75,11 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
     OptionUnit | null | undefined
   >((state) => state.productSettings.manageSingleOptionUnitState.optionUnit);
 
+  const sectedSingleOptionGroup: OptionGroup | null | undefined = useSelector<
+    IApplicationState,
+    OptionGroup | null | undefined
+  >((state) => state.productSettings.manageSingleOptionGroupState.optionGroup);
+
   let _items: ICommandBarItemProps[] = [
     {
       key: NEW_PANEL_ITEM_NAME,
@@ -191,6 +196,36 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
         }}
       />
     );
+  } else if (panelContent === ManagingPanelComponent.ManageSingleOptionGroup) {
+    hideAddEditPanelActions(_items);
+    panelWidth = '420px';
+    panelTitleText = 'Details';
+    if (sectedSingleOptionGroup) {
+      panelDescription = sectedSingleOptionGroup.name;
+    }
+
+    content = (
+      <ManagingProductGroupForm
+        formikReference={formikReference}
+        OptionGroupToEdit={sectedSingleOptionGroup}
+        submitAction={(args: any) => {
+          let createAction = assignPendingActions(
+            productSettingsActions.saveEditOptionGroup(args),
+            [],
+            [],
+            () => {
+              dispatch(productSettingsActions.getAllOptionGroupsList());
+              formikReference.formik.resetForm();
+              dispatch(productSettingsActions.managingPanelContent(null));
+              dispatch(
+                productSettingsActions.updateTargetSingleEditOptionGroup(null)
+              );
+            }
+          );
+          dispatch(createAction);
+        }}
+      />
+    );
   }
 
   return (
@@ -207,6 +242,9 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
             productSettingsActions.changeTargetOptionGroupForUnitsEdit(null)
           );
           dispatch(productSettingsActions.updateSingleEditOptionUnit(null));
+          dispatch(
+            productSettingsActions.updateTargetSingleEditOptionGroup(null)
+          );
         }}
         closeButtonAriaLabel="Close"
       >
