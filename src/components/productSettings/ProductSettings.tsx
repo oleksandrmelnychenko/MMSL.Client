@@ -1,7 +1,12 @@
 import './productSettings.scss';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Stack, ActionButton, SearchBox } from 'office-ui-fabric-react';
+import {
+  Stack,
+  ActionButton,
+  SearchBox,
+  Separator,
+} from 'office-ui-fabric-react';
 import ProductSettingsList from './ProductSettingsList';
 import ProductSettingsManagementPanel from './productSettingManagement/ProductSettingsManagementPanel';
 import * as productSettingsActions from '../../redux/actions/productSettings.actions';
@@ -30,7 +35,7 @@ export const ProductSettings: React.FC = (props: any) => {
               <div className="productSettings__header__top">
                 <Stack horizontal>
                   <div className="productSettings__header__top__title">
-                    Option groups
+                    Product Settings
                   </div>
                   <div className="productSettings__header__top__controls">
                     <Stack horizontal tokens={{ childrenGap: 10 }}>
@@ -71,6 +76,7 @@ export const ProductSettings: React.FC = (props: any) => {
               </div>
             </div>
           </Stack.Item>
+
           <Stack.Item>
             <ProductSettingsList />
           </Stack.Item>

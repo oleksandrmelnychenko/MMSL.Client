@@ -22,7 +22,7 @@ export const stylesPanelInfo = {
 
 export const scrollablePaneStyleForDetailList = {
   root: {
-    top: '70px',
+    top: '77px',
     bottom: '12px',
   },
 };

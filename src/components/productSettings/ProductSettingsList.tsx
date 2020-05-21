@@ -202,10 +202,10 @@ export const ProductSettingsList: React.FC = () => {
               return (
                 <GroupHeader
                   styles={{
-                    root: { overflowY: 'scroll' },
+                    root: { paddingLeft: '16px', overflowY: 'scroll' },
                     check: { display: 'none' },
                     headerCount: { display: 'none' },
-                    expandButtonProps: { display: 'none' },
+                    expandButtonProps: { paddingLeft: '10px' },
                     expandButtonIcon: 'Edit',
                   }}
                   {...props}

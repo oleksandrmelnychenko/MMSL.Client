@@ -206,6 +206,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
           dispatch(
             productSettingsActions.changeTargetOptionGroupForUnitsEdit(null)
           );
+          dispatch(productSettingsActions.updateSingleEditOptionUnit(null));
         }}
         closeButtonAriaLabel="Close"
       >
