@@ -112,6 +112,7 @@
 .list {
     &__item {
         padding-left: 12px;
+        padding-right: 35px;
         padding-top: 11px;
         padding-bottom: 11px;
         cursor: grab;
@@ -145,10 +146,11 @@
 
         &__image {
             position: absolute;
-            width: 12px;
-            height: 18px;
-            top: 14px;
+            width: 19px;
+            height: 40px;
+            top: 17px;
             right: 14px;
+            font-size: 18px;
         }
     }
 }
