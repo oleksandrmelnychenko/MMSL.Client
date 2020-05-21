@@ -208,19 +208,8 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
           );
           dispatch(productSettingsActions.updateSingleEditOptionUnit(null));
         }}
-        closeButtonAriaLabel="Close"
-      >
-        <PanelTitle
-          onSaveClick={() => {
-            let formik: any = formikReference.formik;
-
-            if (formik !== undefined && formik !== null) {
-              formik.submitForm();
-            }
-          }}
-          title={panelTitleText}
-          description={panelDescription}
-        />
+        closeButtonAriaLabel="Close">
+        <PanelTitle title={panelTitleText} description={panelDescription} />
         <CommandBar
           styles={commandBarStyles}
           items={_items}

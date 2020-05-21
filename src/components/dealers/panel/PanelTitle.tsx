@@ -5,13 +5,11 @@ import './panelTitle.scss';
 
 class PanelTitleProps {
   constructor() {
-    this.onSaveClick = () => {};
     this.title = '';
     this.description = '';
   }
 
   title: string;
-  onSaveClick?: () => void;
   description?: string;
 }
 

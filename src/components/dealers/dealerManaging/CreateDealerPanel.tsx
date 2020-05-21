@@ -72,16 +72,7 @@ export const CreateDealerPanel: React.FC = (props: any) => {
           dispatch(dealerActions.toggleNewDealerForm(false));
         }}
         closeButtonAriaLabel="Close">
-        <PanelTitle
-          onSaveClick={() => {
-            let formik: any = formikReference.formik;
-
-            if (formik !== undefined && formik !== null) {
-              formik.submitForm();
-            }
-          }}
-          title={'New Dealer'}
-        />
+        <PanelTitle title={'New Dealer'} />
         <CommandBar
           styles={commandBarStyles}
           items={_items}

@@ -77,16 +77,7 @@ export const CustomerPanel: React.FC = (props: any) => {
           dispatch(customerActions.toggleCustomerForm(false));
         }}
         closeButtonAriaLabel="Close">
-        <PanelTitle
-          onSaveClick={() => {
-            let formik: any = formikReference.formik;
-
-            if (formik !== undefined && formik !== null) {
-              formik.submitForm();
-            }
-          }}
-          title={'New Customer'}
-        />
+        <PanelTitle title={'New Customer'} />
         <CommandBar
           styles={commandBarStyles}
           items={_items}
