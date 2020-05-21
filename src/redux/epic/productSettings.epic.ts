@@ -6,14 +6,12 @@ import {
 } from './../../helpers/epic.helper';
 import { checkUnauthorized } from './../../helpers/error.helpers';
 import {
-  extractSuccessPendingActions,
-  extractErrorPendingActions,
-  extractSuccessPendingDelegate,
+  successCommonEpicFlow,
+  errorCommonEpicFlow,
 } from './../../helpers/action.helper';
 import { switchMap, mergeMap, catchError, debounceTime } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
-import { from } from 'rxjs';
 import * as productSettingsTypes from '../constants/productSettings.types.constants';
 import { getActiveLanguage } from 'react-localize-redux';
 import {
@@ -40,27 +38,29 @@ export const saveNewOptionGroupEpic = (action$: AnyAction, state$: any) => {
         true
       ).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            controlActions.showInfoMessage(
-              'New option group created successfully'
-            ),
-            controlActions.disabledStatusBar(),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.showInfoMessage(
+                'New option group created successfully'
+              ),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              controlActions.showInfoMessage(
-                `Error occurred while creating new option group. ${errorResponse}`
-              ),
-              controlActions.disabledStatusBar(),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.showInfoMessage(
+                  `Error occurred while creating new option group. ${errorResponse}`
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
           });
         })
       );
@@ -81,25 +81,27 @@ export const getAllOptionGroupsListEpic = (action$: AnyAction, state$: any) => {
         },
       ]).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            productSettingsActions.updateOptionGroupList(successResponse),
-            controlActions.disabledStatusBar(),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              productSettingsActions.updateOptionGroupList(successResponse),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              controlActions.disabledStatusBar(),
-              controlActions.showInfoMessage(
-                `Error occurred while getting option groups list. ${errorResponse}`
-              ),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while getting option groups list. ${errorResponse}`
+                ),
+              ],
+              action
+            );
           });
         })
       );
@@ -121,25 +123,27 @@ export const searchOptionGroupEpic = (action$: AnyAction, state$: any) => {
         },
       ]).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            controlActions.disabledStatusBar(),
-            productSettingsActions.updateOptionGroupList(successResponse),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.disabledStatusBar(),
+              productSettingsActions.updateOptionGroupList(successResponse),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              controlActions.disabledStatusBar(),
-              controlActions.showInfoMessage(
-                `Error occurred while searching option groups. ${errorResponse}`
-              ),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while searching option groups. ${errorResponse}`
+                ),
+              ],
+              action
+            );
           });
         })
       );
@@ -159,24 +163,24 @@ export const modifyOptionUnitsOrderEpic = (action$: AnyAction, state$: any) => {
         state$.value
       ).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            controlActions.disabledStatusBar(),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              controlActions.disabledStatusBar(),
-              controlActions.showInfoMessage(
-                `Error occurred while updating option units order. ${errorResponse}`
-              ),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while updating option units order. ${errorResponse}`
+                ),
+              ],
+              action
+            );
           });
         })
       );
@@ -221,28 +225,27 @@ export const updateOptionUnitEpic = (action$: AnyAction, state$: any) => {
         ]
       ).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            controlActions.showInfoMessage(successResponse.message),
-            controlActions.disabledStatusBar(),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          let pendingDelegate = extractSuccessPendingDelegate(action);
-          if (pendingDelegate) pendingDelegate(successResponse);
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.showInfoMessage(successResponse.message),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              controlActions.disabledStatusBar(),
-              controlActions.showInfoMessage(
-                `Error occurred while updating option unit. ${errorResponse}`
-              ),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while updating option unit. ${errorResponse}`
+                ),
+              ],
+              action
+            );
           });
         })
       );
@@ -291,28 +294,27 @@ export const saveNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
         ]
       ).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            controlActions.disabledStatusBar(),
-            controlActions.showInfoMessage(successResponse.message),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          let pendingDelegate = extractSuccessPendingDelegate(action);
-          if (pendingDelegate) pendingDelegate(successResponse);
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.showInfoMessage(successResponse.message),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              controlActions.disabledStatusBar(),
-              controlActions.showInfoMessage(
-                `Error occurred while creating new option unit. ${errorResponse}`
-              ),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while creating new option unit. ${errorResponse}`
+                ),
+              ],
+              action
+            );
           });
         })
       );
@@ -330,25 +332,27 @@ export const deleteOptionUnitByIdEpic = (action$: AnyAction, state$: any) => {
         { key: 'optionUnitId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            controlActions.showInfoMessage(successResponse.message),
-            controlActions.disabledStatusBar(),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.showInfoMessage(successResponse.message),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              controlActions.disabledStatusBar(),
-              controlActions.showInfoMessage(
-                `Error occurred while deleteing option unit. ${errorResponse}`
-              ),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while deleteing option unit. ${errorResponse}`
+                ),
+              ],
+              action
+            );
           });
         })
       );
@@ -369,27 +373,29 @@ export const getAndSelectOptionGroupByIdEpic = (
         { key: 'groupId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            controlActions.disabledStatusBar(),
-            productSettingsActions.changeTargetOptionGroupForUnitsEdit(
-              successResponse
-            ),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.disabledStatusBar(),
+              productSettingsActions.changeTargetOptionGroupForUnitsEdit(
+                successResponse
+              ),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              controlActions.disabledStatusBar(),
-              controlActions.showInfoMessage(
-                `Error occurred while getting option group. ${errorResponse}`
-              ),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while getting option group. ${errorResponse}`
+                ),
+              ],
+              action
+            );
           });
         })
       );
@@ -412,23 +418,27 @@ export const getAndSelectOptionUnitForSingleEditByIdEpic = (
         { key: 'optionUnitId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
-          let successResultFlow = [
-            productSettingsActions.updateSingleEditOptionUnit(successResponse),
-            ...extractSuccessPendingActions(action),
-          ];
-
-          return from(successResultFlow);
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              productSettingsActions.updateSingleEditOptionUnit(
+                successResponse
+              ),
+            ],
+            action
+          );
         }),
         catchError((errorResponse: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
-            let errorResultFlow = [
-              controlActions.showInfoMessage(
-                `Error occurred while getting option unit for select. ${errorResponse}`
-              ),
-              ...extractErrorPendingActions(action),
-            ];
-
-            return from(errorResultFlow);
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.showInfoMessage(
+                  `Error occurred while getting option unit for select. ${errorResponse}`
+                ),
+              ],
+              action
+            );
           });
         })
       );
