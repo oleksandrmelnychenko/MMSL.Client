@@ -3,23 +3,13 @@ import './productSettingsLsit.scss';
 import {
   DetailsList,
   IColumn,
-  Text,
   Selection,
-  Image,
   Stack,
   IconButton,
   CheckboxVisibility,
   GroupHeader,
-  ITextProps,
-  IImageProps,
-  ImageFit,
-  FontIcon,
   ScrollablePane,
   DetailsRow,
-  mergeStyles,
-  TooltipHost,
-  TooltipDelay,
-  DirectionalHint,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -36,7 +26,6 @@ import {
   DialogArgs,
   CommonDialogType,
 } from '../../redux/reducers/control.reducer';
-import { useId } from '@uifabric/react-hooks';
 
 const _columnIconButtonStyle = {
   root: {
@@ -281,11 +270,10 @@ export const ProductSettingsList: React.FC = () => {
           checkboxVisibility={CheckboxVisibility.hidden}
           onRenderRow={(args: any) => {
             return (
-              <div style={{ paddingLeft: '90px' }}>
+              <div style={{ paddingLeft: '60px' }}>
                 <DetailsRow
                   styles={{
                     root: {
-                      // marginLeft: '90px',
                       paddingLeft: '12px',
                     },
                   }}
