@@ -1,40 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './productSettingsLsit.scss';
 import {
-  DetailsList,
-  IColumn,
   Text,
-  Selection,
   Image,
   Stack,
-  IconButton,
-  CheckboxVisibility,
-  GroupHeader,
   ITextProps,
   IImageProps,
   ImageFit,
   FontIcon,
-  ScrollablePane,
-  DetailsRow,
   mergeStyles,
   TooltipHost,
   TooltipDelay,
   DirectionalHint,
 } from 'office-ui-fabric-react';
-import { useSelector, useDispatch } from 'react-redux';
-import { IApplicationState } from '../../redux/reducers';
-import { OptionGroup, OptionUnit } from '../../interfaces';
-import { assignPendingActions } from '../../helpers/action.helper';
-import * as productSettingsActions from '../../redux/actions/productSettings.actions';
-import { ManagingPanelComponent } from '../../redux/reducers/productSettings.reducer';
-import { List } from 'linq-typescript';
-import { scrollablePaneStyleForDetailList } from '../../common/fabric-styles/styles';
-import { DATA_SELECTION_DISABLED_CLASS } from '../dealers/DealerList';
-import * as controlAction from '../../redux/actions/control.actions';
-import {
-  DialogArgs,
-  CommonDialogType,
-} from '../../redux/reducers/control.reducer';
+import { OptionUnit } from '../../interfaces';
 import { useId } from '@uifabric/react-hooks';
 
 export class UnitRowItemProps {

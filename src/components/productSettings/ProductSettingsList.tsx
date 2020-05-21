@@ -15,6 +15,7 @@ import {
   TooltipHost,
   TooltipDelay,
   DirectionalHint,
+  IGroup,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -152,7 +153,7 @@ export const ProductSettingsList: React.FC = () => {
         startIndex: groupIndex,
         count: group.optionUnits.length,
         isDropEnabled: false,
-        isCollapsed: false,
+        isCollapsed: group.groupItemVisualState.isCollapsed,
         rawGroupModel: group,
       };
 
@@ -169,7 +170,15 @@ export const ProductSettingsList: React.FC = () => {
           styles={{ root: { overflowX: 'hidden' } }}
           selection={selection}
           groupProps={{
+            headerProps: {
+              onToggleCollapse: (group: IGroup) => {
+                if ((group as any)?.rawGroupModel?.groupItemVisualState) {
+                  (group as any).rawGroupModel.groupItemVisualState.isCollapsed = !group.isCollapsed;
+                }
+              },
+            },
             showEmptyGroups: true,
+
             onRenderHeader: (props?: any, defaultRender?: any) => {
               return (
                 <GroupHeader
