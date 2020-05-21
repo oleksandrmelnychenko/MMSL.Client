@@ -27,3 +27,5 @@ export const GET_AND_SELECT_OPTION_UNIT_FOR_SINGLE_EDIT_BY_ID =
   'productSettings.sinfleOptionEdit.GET_AND_SELECT_OPTION_UNIT_FOR_SINGLE_EDIT_BY_ID';
 export const UPDATE_SINGLE_EDIT_OPTION_UNIT =
   'productSettings.sinfleOptionEdit.UPDATE_SINGLE_EDIT_OPTION_UNIT';
+export const DELETE_OPTION_GROUP_BY_ID =
+  'productSettings.DELETE_OPTION_GROUP_BY_ID';

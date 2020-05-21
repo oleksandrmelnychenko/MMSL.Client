@@ -99,7 +99,9 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
     <div>
       <Formik
         validationSchema={Yup.object().shape({
-          value: Yup.string().required(() => 'Value is required'),
+          value: Yup.string()
+            .min(3)
+            .required(() => 'Value is required'),
           isMandatory: Yup.boolean(),
           imageFile: Yup.object().nullable(),
           isRemovingImage: Yup.boolean(),
@@ -115,7 +117,8 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
           );
         }}
         validateOnBlur={false}
-        enableReinitialize={true}>
+        enableReinitialize={true}
+      >
         {(formik) => {
           props.formikReference.formik = formik;
           if (props.formikReference.isDirtyFunc)
@@ -143,7 +146,8 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                 border: '1px solid #efefef',
                 padding: '6px',
                 borderRadius: '6px',
-              }}>
+              }}
+            >
               <FontIcon
                 style={{
                   position: 'absolute',
@@ -246,7 +250,6 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                                       file.length &&
                                       file.length > 0
                                     ) {
-                                      debugger;
                                       formik.setFieldValue(
                                         'imageFile',
                                         file[0]

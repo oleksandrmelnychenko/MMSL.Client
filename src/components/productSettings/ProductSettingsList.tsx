@@ -13,8 +13,13 @@ import {
   ITextProps,
   IImageProps,
   ImageFit,
+  FontIcon,
   ScrollablePane,
   DetailsRow,
+  mergeStyles,
+  TooltipHost,
+  TooltipDelay,
+  DirectionalHint,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -25,11 +30,13 @@ import { ManagingPanelComponent } from '../../redux/reducers/productSettings.red
 import { List } from 'linq-typescript';
 import { scrollablePaneStyleForDetailList } from '../../common/fabric-styles/styles';
 import { DATA_SELECTION_DISABLED_CLASS } from '../dealers/DealerList';
+import UnitRowItem from './UnitRowItem';
 import * as controlAction from '../../redux/actions/control.actions';
 import {
   DialogArgs,
   CommonDialogType,
 } from '../../redux/reducers/control.reducer';
+import { useId } from '@uifabric/react-hooks';
 
 const _columnIconButtonStyle = {
   root: {
@@ -73,38 +80,7 @@ export const ProductSettingsList: React.FC = () => {
       maxWidth: 200,
       onColumnClick: () => {},
       onRender: (item: any, index?: number) => {
-        const imageProps: IImageProps = {
-          src: item.imageUrl,
-          imageFit: ImageFit.center,
-          width: 67,
-          height: 53,
-        };
-
-        return (
-          <Stack horizontal tokens={{ childrenGap: 20 }}>
-            {item.imageUrl && item.imageUrl.length > 0 ? (
-              <Stack.Item>
-                <Image {...imageProps} alt={`${item.value}`} />
-              </Stack.Item>
-            ) : null}
-
-            <Stack>
-              <Stack.Item>
-                <Text
-                  variant={'mediumPlus' as ITextProps['variant']}
-                  styles={{ root: { color: '#484848', fontWeight: 400 } }}
-                >
-                  {item.value}
-                </Text>
-              </Stack.Item>
-              <Stack.Item>
-                <Text styles={{ root: { color: '#7b7b7b' } }}>
-                  {item.isMandatory ? 'Allowed' : 'Not allowed'}
-                </Text>
-              </Stack.Item>
-            </Stack>
-          </Stack>
-        );
+        return <UnitRowItem optionUnit={item as OptionUnit} />;
       },
     },
     {
@@ -225,31 +201,72 @@ export const ProductSettingsList: React.FC = () => {
                         >
                           {defaultRender(props)}
 
-                          <IconButton
-                            styles={{
-                              root: {
-                                height: '20px',
-                                marginRight: '90px',
-                              },
-                            }}
-                            height={20}
-                            iconProps={{ iconName: 'ColumnRightTwoThirdsEdit' }}
-                            title="Settings"
-                            ariaLabel="Settings"
-                            onClick={() => {
-                              let action = assignPendingActions(
-                                productSettingsActions.getAndSelectOptionGroupById(
-                                  parseInt(props.group.key)
-                                ),
-                                [
-                                  productSettingsActions.managingPanelContent(
-                                    ManagingPanelComponent.ManageUnits
+                          <Stack horizontal tokens={{ childrenGap: 10 }}>
+                            <IconButton
+                              styles={{
+                                root: {
+                                  height: '20px',
+                                },
+                              }}
+                              height={20}
+                              iconProps={{
+                                iconName: 'ColumnRightTwoThirdsEdit',
+                              }}
+                              title="Settings"
+                              ariaLabel="Settings"
+                              onClick={() => {
+                                let action = assignPendingActions(
+                                  productSettingsActions.getAndSelectOptionGroupById(
+                                    parseInt(props.group.key)
                                   ),
-                                ]
-                              );
-                              dispatch(action);
-                            }}
-                          />
+                                  [
+                                    productSettingsActions.managingPanelContent(
+                                      ManagingPanelComponent.ManageUnits
+                                    ),
+                                  ]
+                                );
+                                dispatch(action);
+                              }}
+                            />
+
+                            <IconButton
+                              styles={{
+                                root: {
+                                  height: '20px',
+                                  marginRight: '90px',
+                                },
+                              }}
+                              height={20}
+                              iconProps={{
+                                iconName: 'Delete',
+                              }}
+                              title="Delete"
+                              ariaLabel="Delete"
+                              onClick={() => {
+                                dispatch(
+                                  controlAction.toggleCommonDialogVisibility(
+                                    new DialogArgs(
+                                      CommonDialogType.Delete,
+                                      'Delete option group',
+                                      `Are you sure you want to delete ${props.group.name}?`,
+                                      () => {
+                                        let action = assignPendingActions(
+                                          productSettingsActions.deleteOptionGroupById(
+                                            props.group.key
+                                          ),
+                                          [
+                                            productSettingsActions.getAllOptionGroupsList(),
+                                          ]
+                                        );
+                                        dispatch(action);
+                                      },
+                                      () => {}
+                                    )
+                                  )
+                                );
+                              }}
+                            />
+                          </Stack>
                         </Stack>
                       </div>
                     );
@@ -272,6 +289,9 @@ export const ProductSettingsList: React.FC = () => {
                       marginLeft: '90px',
                       paddingLeft: '12px',
                     },
+                    // cell: {
+                    //   padding: '0px',
+                    // },
                   }}
                   {...args}
                 />
