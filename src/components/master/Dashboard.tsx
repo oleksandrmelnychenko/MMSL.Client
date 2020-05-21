@@ -17,6 +17,7 @@ import * as controlAction from '../../redux/actions/control.actions';
 import { stylesPanelInfo } from '../../common/fabric-styles/styles';
 import ProductSettings from '../productSettings/ProductSettings';
 import { IPanelInfo } from '../../interfaces/index';
+import Reports from '../reports/Reports';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
@@ -60,6 +61,7 @@ const Dashboard: React.FC = () => {
               path={`/en/app/product-settings`}
               component={ProductSettings}
             />
+            <PrivateRoute path={`/en/app/reports`} component={Reports} />
           </Switch>
         </div>
       </main>
