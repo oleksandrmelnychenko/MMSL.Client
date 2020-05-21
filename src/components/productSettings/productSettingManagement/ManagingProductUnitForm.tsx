@@ -164,8 +164,10 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
               />
               <img
                 style={{
+                  display: 'block',
                   position: 'relative',
                   zIndex: 1,
+                  margin: '0 auto',
                 }}
                 width="300px"
                 height="300px"
@@ -262,23 +264,7 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                                 />
                                 <Button
                                   iconProps={{ iconName: 'Attach' }}
-                                  styles={{
-                                    root: {
-                                      width: '100%',
-                                      background: '#fff',
-                                      color: 'rgb(0, 120, 212)',
-                                      border: '1px dashed rgb(0, 120, 212)',
-                                      transition: 'all 0.3s ease 0.3s',
-                                    },
-                                    rootHovered: {
-                                      background: '#fff',
-                                      borderStyle: 'solid',
-                                      color: 'rgb(0, 120, 212)',
-                                    },
-                                    label: {
-                                      fontWeight: '400',
-                                    },
-                                  }}
+                                  styles={fabricStyles.btnUploadStyle}
                                   text={
                                     formik.values.isRemovingImage
                                       ? 'Delete attach'
