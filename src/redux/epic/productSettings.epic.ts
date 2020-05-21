@@ -445,3 +445,43 @@ export const getAndSelectOptionUnitForSingleEditByIdEpic = (
     })
   );
 };
+
+export const deleteOptionGroupByIdEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(productSettingsTypes.DELETE_OPTION_GROUP_BY_ID),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
+      return ajaxDeleteResponse(api.DELETE_OPTION_GROUP_BY_ID, state$.value, [
+        { key: 'optionGroupId', value: `${action.payload}` },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.showInfoMessage(successResponse.message),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while deleteing option group. ${errorResponse}`
+                ),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};

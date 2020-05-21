@@ -201,31 +201,72 @@ export const ProductSettingsList: React.FC = () => {
                         >
                           {defaultRender(props)}
 
-                          <IconButton
-                            styles={{
-                              root: {
-                                height: '20px',
-                                marginRight: '90px',
-                              },
-                            }}
-                            height={20}
-                            iconProps={{ iconName: 'ColumnRightTwoThirdsEdit' }}
-                            title="Settings"
-                            ariaLabel="Settings"
-                            onClick={() => {
-                              let action = assignPendingActions(
-                                productSettingsActions.getAndSelectOptionGroupById(
-                                  parseInt(props.group.key)
-                                ),
-                                [
-                                  productSettingsActions.managingPanelContent(
-                                    ManagingPanelComponent.ManageUnits
+                          <Stack horizontal tokens={{ childrenGap: 10 }}>
+                            <IconButton
+                              styles={{
+                                root: {
+                                  height: '20px',
+                                },
+                              }}
+                              height={20}
+                              iconProps={{
+                                iconName: 'ColumnRightTwoThirdsEdit',
+                              }}
+                              title="Settings"
+                              ariaLabel="Settings"
+                              onClick={() => {
+                                let action = assignPendingActions(
+                                  productSettingsActions.getAndSelectOptionGroupById(
+                                    parseInt(props.group.key)
                                   ),
-                                ]
-                              );
-                              dispatch(action);
-                            }}
-                          />
+                                  [
+                                    productSettingsActions.managingPanelContent(
+                                      ManagingPanelComponent.ManageUnits
+                                    ),
+                                  ]
+                                );
+                                dispatch(action);
+                              }}
+                            />
+
+                            <IconButton
+                              styles={{
+                                root: {
+                                  height: '20px',
+                                  marginRight: '90px',
+                                },
+                              }}
+                              height={20}
+                              iconProps={{
+                                iconName: 'Delete',
+                              }}
+                              title="Delete"
+                              ariaLabel="Delete"
+                              onClick={() => {
+                                dispatch(
+                                  controlAction.toggleCommonDialogVisibility(
+                                    new DialogArgs(
+                                      CommonDialogType.Delete,
+                                      'Delete option group',
+                                      `Are you sure you want to delete ${props.group.name}?`,
+                                      () => {
+                                        let action = assignPendingActions(
+                                          productSettingsActions.deleteOptionGroupById(
+                                            props.group.key
+                                          ),
+                                          [
+                                            productSettingsActions.getAllOptionGroupsList(),
+                                          ]
+                                        );
+                                        dispatch(action);
+                                      },
+                                      () => {}
+                                    )
+                                  )
+                                );
+                              }}
+                            />
+                          </Stack>
                         </Stack>
                       </div>
                     );

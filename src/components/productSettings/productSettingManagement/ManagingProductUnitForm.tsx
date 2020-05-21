@@ -250,7 +250,6 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                                       file.length &&
                                       file.length > 0
                                     ) {
-                                      debugger;
                                       formik.setFieldValue(
                                         'imageFile',
                                         file[0]

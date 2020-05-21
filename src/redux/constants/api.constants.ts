@@ -27,6 +27,7 @@ export const UPDATE_STORE_CUSTOMER = '/store/customers/update';
 export const CREATE_NEW_OPTION_GROUP = '/options/groups/new/group';
 export const GET_ALL_OPTION_GROUPS = '/options/groups/get/all';
 export const GET_OPTION_GROUP_BY_ID = '/options/groups/get';
+export const DELETE_OPTION_GROUP_BY_ID = '/options/groups/delete/group';
 
 export const MODIFY_OPTION_UNITS_ORDER = '/options/units/update/order/index';
 export const MODIFY_OPTION_UNIT = '/options/units/update';
