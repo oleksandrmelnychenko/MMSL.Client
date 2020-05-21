@@ -4,7 +4,7 @@ import {
   successCommonEpicFlow,
   errorCommonEpicFlow,
 } from './../../helpers/action.helper';
-import { switchMap, mergeMap, catchError } from 'rxjs/operators';
+import { switchMap, mergeMap, catchError, debounceTime } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import * as dealerActions from '../../redux/actions/dealer.actions';
@@ -69,7 +69,9 @@ export const getDealersListPaginatedEpic = (
           return successCommonEpicFlow(
             successResponse,
             [
-              dealerActions.updateDealersList(successResponse.entities),
+              dealerActions.updateDealersList(
+                successResponse.entities ? successResponse.entities : null
+              ),
               dealerActions.updateDealerListPaginationInfo(
                 successResponse.paginationInfo
               ),

@@ -1,16 +1,15 @@
 import './dealerList.scss';
 import React, { useEffect, useState } from 'react';
 import {
-  DetailsList,
   IColumn,
   SelectionMode,
   Text,
   Selection,
   Stack,
   IconButton,
-  MarqueeSelection,
   DetailsRow,
   ScrollablePane,
+  ShimmeredDetailsList,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -27,15 +26,10 @@ import {
 import {
   detailsListStyle,
   scrollablePaneStyleForDetailList_Dealers,
+  columnIconButtonStyle,
 } from '../../common/fabric-styles/styles';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
-
-const _columnIconButtonStyle = {
-  root: {
-    height: '20px',
-  },
-};
 
 export const DealerList: React.FC = () => {
   const dispatch = useDispatch();
@@ -51,6 +45,10 @@ export const DealerList: React.FC = () => {
     number | null | undefined
   >((state) => state.dealer.selectedDealer?.id);
 
+  const shimmer = useSelector<IApplicationState, boolean>(
+    (state) => state.control.isGlobalShimmerActive
+  );
+
   useEffect(() => {
     if (!selectedDealerId) {
       selection.setAllSelected(false);
@@ -59,8 +57,15 @@ export const DealerList: React.FC = () => {
 
   useEffect(() => {
     dispatch(dealerActions.getDealersListPaginated());
+    dispatch(controlAction.showGlobalShimmer());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (dealers.length > 0 && shimmer) {
+      dispatch(controlAction.hideGlobalShimmer());
+    }
+  }, [dealers]);
 
   const _dealerColumns: IColumn[] = [
     {
@@ -127,7 +132,7 @@ export const DealerList: React.FC = () => {
             <IconButton
               data-selection-disabled={true}
               className={DATA_SELECTION_DISABLED_CLASS}
-              styles={_columnIconButtonStyle}
+              styles={columnIconButtonStyle}
               height={20}
               iconProps={{ iconName: 'Delete' }}
               title="Delete"
@@ -175,7 +180,8 @@ export const DealerList: React.FC = () => {
   return (
     <div className="dealerList">
       <ScrollablePane styles={scrollablePaneStyleForDetailList_Dealers}>
-        <DetailsList
+        <ShimmeredDetailsList
+          enableShimmer={shimmer}
           styles={detailsListStyle}
           items={dealers}
           selection={selection}

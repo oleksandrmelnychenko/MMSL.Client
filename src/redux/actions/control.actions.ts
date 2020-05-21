@@ -28,6 +28,9 @@ export const disabledStatusBar = createAction(types.DISABLE_STATUS_BAR);
 
 export const clearInfoMessage = createAction(types.CLEAR_INFO_MESSAGE);
 
+export const showGlobalShimmer = createAction(types.SHOW_GLOBAL_SHIMMER);
+export const hideGlobalShimmer = createAction(types.HIDE_GLOBAL_SHIMMER);
+
 export type ShowInfoMessage = ReturnType<typeof showInfoMessage>;
 export type ToggleMasterPageBusyIndicator = ReturnType<
   typeof toggleMasterPageBusyIndicator
