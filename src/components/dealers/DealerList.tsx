@@ -10,6 +10,7 @@ import {
   IconButton,
   MarqueeSelection,
   DetailsRow,
+  ScrollablePane,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -23,6 +24,10 @@ import {
   DialogArgs,
   CommonDialogType,
 } from '../../redux/reducers/control.reducer';
+import {
+  detailsListStyle,
+  scrollablePaneStyleForDetailList_Dealers,
+} from '../../common/fabric-styles/styles';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
@@ -169,8 +174,9 @@ export const DealerList: React.FC = () => {
 
   return (
     <div className="dealerList">
-      <MarqueeSelection selection={selection}>
+      <ScrollablePane styles={scrollablePaneStyleForDetailList_Dealers}>
         <DetailsList
+          styles={detailsListStyle}
           items={dealers}
           selection={selection}
           selectionMode={SelectionMode.single}
@@ -211,14 +217,13 @@ export const DealerList: React.FC = () => {
                       selectFlow();
                     }
                   }
-                }}
-              >
+                }}>
                 <DetailsRow {...args} />
               </div>
             );
           }}
         />
-      </MarqueeSelection>
+      </ScrollablePane>
     </div>
   );
 };
