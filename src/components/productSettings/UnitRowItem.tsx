@@ -87,7 +87,7 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
               content={props.optionUnit.isMandatory ? 'Allowed' : 'Not allowed'}
             >
               <FontIcon
-                iconName="Lock"
+                iconName="Unlock"
                 className={mergeStyles({ fontSize: 16, color: allowColor })}
               />
             </TooltipHost>
