@@ -140,10 +140,14 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
                           productSettingsActions.toggleOptionUnitFormVisibility(
                             false
                           ),
-                        ]
+                        ],
+                        [],
+                        (successResponseArgs: any) => {
+                          debugger;
+                          props.formikReference.formik.resetForm();
+                        }
                       );
                       dispatch(action);
-                      props.formikReference.formik.resetForm();
                     } else {
                       /// Creating new unit
 
@@ -155,10 +159,14 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
                           productSettingsActions.toggleOptionUnitFormVisibility(
                             false
                           ),
-                        ]
+                        ],
+                        [],
+                        (successResponseArgs: any) => {
+                          debugger;
+                          props.formikReference.formik.resetForm();
+                        }
                       );
                       dispatch(action);
-                      props.formikReference.formik.resetForm();
                     }
                   }}
                   optionUnit={sectedOptionUnit}

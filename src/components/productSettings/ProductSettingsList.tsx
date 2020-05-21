@@ -180,7 +180,6 @@ export const ProductSettingsList: React.FC = () => {
         level: 0,
         startIndex: groupIndex,
         count: group.optionUnits.length,
-        // isDropEnabled: group.optionUnits.length > 0,
         isDropEnabled: false,
         isCollapsed: false,
       };
@@ -202,11 +201,10 @@ export const ProductSettingsList: React.FC = () => {
               return (
                 <GroupHeader
                   styles={{
-                    root: { paddingLeft: '16px', overflowY: 'scroll' },
+                    root: { paddingLeft: '16px' },
                     check: { display: 'none' },
                     headerCount: { display: 'none' },
                     expandButtonProps: { paddingLeft: '10px' },
-                    expandButtonIcon: 'Edit',
                   }}
                   {...props}
                   onRenderTitle={(props?: any, defaultRender?: any) => {

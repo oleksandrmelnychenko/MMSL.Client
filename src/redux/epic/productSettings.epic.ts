@@ -8,6 +8,7 @@ import { checkUnauthorized } from './../../helpers/error.helpers';
 import {
   extractSuccessPendingActions,
   extractErrorPendingActions,
+  extractSuccessPendingDelegate,
 } from './../../helpers/action.helper';
 import { switchMap, mergeMap, catchError, debounceTime } from 'rxjs/operators';
 import { AnyAction } from 'redux';
@@ -226,6 +227,9 @@ export const updateOptionUnitEpic = (action$: AnyAction, state$: any) => {
             ...extractSuccessPendingActions(action),
           ];
 
+          let pendingDelegate = extractSuccessPendingDelegate(action);
+          if (pendingDelegate) pendingDelegate(successResponse);
+
           return from(successResultFlow);
         }),
         catchError((errorResponse: any) => {
@@ -287,12 +291,14 @@ export const saveNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
         ]
       ).pipe(
         mergeMap((successResponse: any) => {
-          debugger;
           let successResultFlow = [
             controlActions.disabledStatusBar(),
             controlActions.showInfoMessage(successResponse.message),
             ...extractSuccessPendingActions(action),
           ];
+
+          let pendingDelegate = extractSuccessPendingDelegate(action);
+          if (pendingDelegate) pendingDelegate(successResponse);
 
           return from(successResultFlow);
         }),
