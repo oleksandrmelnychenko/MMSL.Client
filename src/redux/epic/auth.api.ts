@@ -3,13 +3,11 @@ import { AnyAction } from 'redux';
 import { push } from 'react-router-redux';
 import { ofType } from 'redux-observable';
 import { switchMap, mergeMap, catchError } from 'rxjs/operators';
-
 import * as API from '../constants/api.constants';
 import { ajaxPostResponse } from '../../helpers/epic.helper';
 import { TokenHelper } from '../../helpers/token.helper';
 import * as authTypes from '../constants/auth.types.constants';
 import { getActiveLanguage } from 'react-localize-redux';
-
 import { SignInAction } from '../../redux/actions/auth.actions';
 
 export const signInEpic = (action$: AnyAction, state$: any) =>
