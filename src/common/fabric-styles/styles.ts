@@ -45,6 +45,24 @@ export const btnMenuStyle = {
   },
 };
 
+export const btnUploadStyle = {
+  root: {
+    width: '100%',
+    background: '#fff',
+    color: 'rgb(0, 120, 212)',
+    border: '1px dashed rgb(0, 120, 212)',
+    transition: 'all 0.3s ease 0.3s',
+  },
+  rootHovered: {
+    background: '#fff',
+    borderStyle: 'solid',
+    color: 'rgb(0, 120, 212)',
+  },
+  label: {
+    fontWeight: FontWeights.regular,
+  },
+};
+
 export const columnIconButtonStyle = {
   root: {
     height: '20px',
