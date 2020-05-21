@@ -202,10 +202,11 @@ export const ProductSettingsList: React.FC = () => {
               return (
                 <GroupHeader
                   styles={{
-                    root: { marginLeft: '18px' },
+                    root: { marginLeft: '18px', height: '40px' },
+                    groupHeaderContainer: { height: '40px' },
                     check: { display: 'none' },
                     headerCount: { display: 'none' },
-                    expandButtonProps: { paddingLeft: '10px' },
+                    expand: { height: '38px', marginTop: '-2px' },
                   }}
                   {...props}
                   onRenderTitle={(props?: any, defaultRender?: any) => {

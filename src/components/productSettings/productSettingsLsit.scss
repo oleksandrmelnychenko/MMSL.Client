@@ -2,15 +2,18 @@
     border-bottom: 1px solid #dfdfdf;
     margin-left: 19px;
 
-    // .ms-GroupHeader-expand {
-    //     display: none;
-    // }
-
     .ms-GroupSpacer {
         display: none !important;
     }
 
-    .ms-GroupHeader-title {
-        font-weight: 400;
+    .ms-GroupHeader {
+
+        .ms-GroupHeader-title {
+            font-weight: 400;
+            padding-left: 6px;
+            font-size: 16px;
+            font-family: "Segoe UI";
+        }
     }
+
 }
