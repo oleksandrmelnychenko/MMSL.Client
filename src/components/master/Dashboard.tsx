@@ -18,7 +18,7 @@ import { stylesPanelInfo } from '../../common/fabric-styles/styles';
 import ProductSettings from '../productSettings/ProductSettings';
 import { IPanelInfo } from '../../interfaces/index';
 import Reports from '../reports/Reports';
-import ProductCategory from '../product-category/ProductCategory';
+import ProductCategory from '../product-category/ProductCategories';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
