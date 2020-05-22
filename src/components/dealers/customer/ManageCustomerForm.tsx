@@ -132,13 +132,17 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
         onSubmit={(values: any) => {
           props.submitAction(buildNewStoreCustomerAccount(values));
         }}
-        enableReinitialize={true}
-        validateOnBlur={false}>
-        {(formik) => {
+        innerRef={(formik: any) => {
           props.formikReference.formik = formik;
-          if (props.formikReference.isDirtyFunc)
-            props.formikReference.isDirtyFunc(formik.dirty);
-
+          if (formik) {
+            if (props.formikReference.isDirtyFunc)
+              props.formikReference.isDirtyFunc(formik.dirty);
+          }
+        }}
+        enableReinitialize={true}
+        validateOnBlur={false}
+      >
+        {(formik) => {
           return (
             <Form className="form">
               <div className="dealerFormManage">

@@ -104,13 +104,17 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
             buildDealerAccount(values, props.dealerAccount as DealerAccount)
           );
         }}
-        validateOnBlur={false}>
-        {(formik) => {
+        innerRef={(formik: any) => {
           props.formikReference.formik = formik;
-          if (props.formikReference.isDirtyFunc) {
-            props.formikReference.isDirtyFunc(formik.dirty);
+          if (formik) {
+            if (props.formikReference.isDirtyFunc)
+              props.formikReference.isDirtyFunc(formik.dirty);
           }
-
+        }}
+        validateOnBlur={false}
+        enableReinitialize={true}
+      >
+        {(formik) => {
           return (
             <Form className="form">
               <div className="dealerFormManage">
