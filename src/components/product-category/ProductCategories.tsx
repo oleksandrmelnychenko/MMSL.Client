@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, SyntheticEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as productCategoryAction from '../../redux/actions/productCategory.actions';
 import {
@@ -16,12 +16,18 @@ import {
 } from '@uifabric/react-cards';
 import { Text, ITextProps, ITextStyles } from 'office-ui-fabric-react/lib/Text';
 import './product-category.scss';
+import * as controlAction from '../../redux/actions/control.actions';
 // Import IMG
 
 import productImage from '../../assets/images/product/shirt.jpg';
 import { IApplicationState } from '../../redux/reducers/index';
 import { ProductCategory } from '../../interfaces';
 import { scrollablePaneStyleForDetailList } from '../../common/fabric-styles/styles';
+import {
+  DialogArgs,
+  CommonDialogType,
+} from '../../redux/reducers/control.reducer';
+import { assignPendingActions } from '../../helpers/action.helper';
 
 const ProductCategories: React.FC = () => {
   const cardTokens: ICardTokens = {
@@ -39,6 +45,26 @@ const ProductCategories: React.FC = () => {
   const categories = useSelector<IApplicationState, ProductCategory[]>(
     (state) => state.product.productCategory
   );
+
+  const deleteProductCategory = (
+    event: SyntheticEvent,
+    category: ProductCategory
+  ) => {
+    event.stopPropagation();
+    dispatch(
+      controlAction.toggleCommonDialogVisibility(
+        new DialogArgs(
+          CommonDialogType.Delete,
+          'Delete dealer',
+          `Are you sure you want to delete ${category.name}?`,
+          () => {
+            dispatch(productCategoryAction.deleteProductCategory(category.id));
+          },
+          () => {}
+        )
+      )
+    );
+  };
 
   const backgroundImageCardSectionStyles: ICardSectionStyles = {
     root: {
@@ -100,7 +126,7 @@ const ProductCategories: React.FC = () => {
       <ScrollablePane styles={scrollablePaneStyleForDetailList}>
         <div className="categories">
           {categories.map((category) => (
-            <div style={{ margin: '12px' }}>
+            <div key={category.id} style={{ margin: '12px' }}>
               <Card
                 onClick={() => {
                   console.log('ACTION');
@@ -163,6 +189,9 @@ const ProductCategories: React.FC = () => {
                         color: '#a4262c',
                       },
                     }}
+                    onClick={(event: SyntheticEvent) =>
+                      deleteProductCategory(event, category)
+                    }
                   />
                 </Card.Section>
               </Card>

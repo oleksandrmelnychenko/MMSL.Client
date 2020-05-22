@@ -149,6 +149,7 @@ export const deleteProductCategoryEpic = (action$: AnyAction, state$: any) => {
           return successCommonEpicFlow(
             successResponse,
             [
+              productCategoryActions.getAllProductCategory(),
               controlActions.showInfoMessage(successResponse.message),
               controlActions.disabledStatusBar(),
             ],
