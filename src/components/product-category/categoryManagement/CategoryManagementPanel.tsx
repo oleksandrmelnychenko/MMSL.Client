@@ -72,13 +72,16 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
         <ProductCategoryForm
           formikReference={formikReference}
           submitAction={(args: any) => {
-            debugger;
-
             let action = assignPendingActions(
               productCategoryActions.apiAddNewProductCategory(args),
               [],
               [],
-              (args: any) => {}
+              (args: any) => {
+                dispatch(
+                  productCategoryActions.changeManagingPanelContent(null)
+                );
+                dispatch(productCategoryActions.apiGetAllProductCategory());
+              }
             );
 
             dispatch(action);

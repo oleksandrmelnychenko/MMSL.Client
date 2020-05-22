@@ -3,19 +3,19 @@ import * as types from '../constants/productCategory.types.constants';
 import { ProductCategory } from '../../interfaces/index';
 import { ProductManagingPanelComponent } from '../reducers/productCategory.reducer';
 
-export const getAllProductCategory = createAction(
+export const apiGetAllProductCategory = createAction(
   types.API_GET_ALL_PRODUCT_CATEGORY
 );
 
 export const successGetAllProductCategory = createAction<ProductCategory[]>(
   types.SUCCESS_GET_ALL_PRODUCT_CATEGORY
 );
-// TODO add type
-export const addNewProductCategory = createAction<any>(
+
+export const apiAddNewProductCategory = createAction<ProductCategory>(
   types.API_ADD_NEW_PRODUCT_CATEGORY
 );
 
-export const deleteProductCategory = createAction<number>(
+export const apiDeleteProductCategory = createAction<number>(
   types.API_DELETE_PRODUCT_CATEGORY
 );
 // TODO add type
@@ -25,11 +25,3 @@ export const deleteProductCategory = createAction<number>(
 export const changeManagingPanelContent = createAction<ProductManagingPanelComponent | null>(
   types.CHANGE_MANAGING_PANEL_CONTENT
 );
-
-export type ChangeManagingPanelContent = ReturnType<
-  typeof changeManagingPanelContent
->;
-
-export type ApiAddNewProductCategory = ReturnType<
-  typeof apiAddNewProductCategory
->;

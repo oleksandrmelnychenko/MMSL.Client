@@ -13,12 +13,16 @@ import {
   ajaxPostResponse,
   ajaxPutResponse,
   ajaxDeleteResponse,
+  ajaxPutFormDataResponse,
+  ajaxPostFormDataResponse,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import * as controlActions from '../../redux/actions/control.actions';
 import * as productCategoryTypes from '../constants/productCategory.types.constants';
 import * as productCategoryActions from '../actions/productCategory.actions';
 import StoreHelper from '../../helpers/store.helper';
+
+const FORM_DATA_IMAGE_FILE_KEY = 'file';
 
 export const getAllProductCategoryEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
@@ -60,20 +64,35 @@ export const getAllProductCategoryEpic = (action$: AnyAction, state$: any) => {
   );
 };
 
-export const addNewProductCategoryEpic = (action$: AnyAction, state$: any) => {
+export const apiAddNewProductCategoryEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
   return action$.pipe(
     ofType(productCategoryTypes.API_ADD_NEW_PRODUCT_CATEGORY),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxPostResponse(
+
+      const formData: FormData = new FormData();
+      formData.append(FORM_DATA_IMAGE_FILE_KEY, action.payload.imageBlob);
+
+      return ajaxPostFormDataResponse(
         api.ADD_PRODUCT_CATEGORY,
-        action.payload,
+        formData,
         state$.value,
-        true
+        [
+          {
+            key: 'name',
+            value: `${action.payload.name}`,
+          },
+          {
+            key: 'description',
+            value: `${action.payload.description}`,
+          },
+        ]
       ).pipe(
         mergeMap((successResponse: any) => {
-          debugger;
           return successCommonEpicFlow(
             successResponse,
             [
@@ -87,7 +106,12 @@ export const addNewProductCategoryEpic = (action$: AnyAction, state$: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             return errorCommonEpicFlow(
               errorResponse,
-              [controlActions.disabledStatusBar()],
+              [
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while creating new product category. ${errorResponse}`
+                ),
+              ],
               action
             );
           });
@@ -149,7 +173,6 @@ export const deleteProductCategoryEpic = (action$: AnyAction, state$: any) => {
           return successCommonEpicFlow(
             successResponse,
             [
-              productCategoryActions.getAllProductCategory(),
               controlActions.showInfoMessage(successResponse.message),
               controlActions.disabledStatusBar(),
             ],

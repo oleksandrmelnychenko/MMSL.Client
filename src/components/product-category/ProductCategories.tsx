@@ -5,7 +5,6 @@ import {
   ActionButton,
   Stack,
   Icon,
-  FontWeights,
   ScrollablePane,
 } from 'office-ui-fabric-react';
 import {
@@ -14,11 +13,11 @@ import {
   ICardSectionStyles,
   ICardSectionTokens,
 } from '@uifabric/react-cards';
-import { Text, ITextProps, ITextStyles } from 'office-ui-fabric-react/lib/Text';
+import { Text, ITextStyles } from 'office-ui-fabric-react/lib/Text';
 import './product-category.scss';
 import * as controlAction from '../../redux/actions/control.actions';
 // Import IMG
-
+import * as productCategoryActions from '../../redux/actions/productCategory.actions';
 import productImage from '../../assets/images/product/shirt.jpg';
 import { IApplicationState } from '../../redux/reducers/index';
 import { ProductCategory } from '../../interfaces';
@@ -27,6 +26,8 @@ import {
   DialogArgs,
   CommonDialogType,
 } from '../../redux/reducers/control.reducer';
+import CategoryManagementPanel from './categoryManagement/CategoryManagementPanel';
+import { ProductManagingPanelComponent } from '../../redux/reducers/productCategory.reducer';
 import { assignPendingActions } from '../../helpers/action.helper';
 
 const ProductCategories: React.FC = () => {
@@ -39,7 +40,7 @@ const ProductCategories: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(productCategoryAction.getAllProductCategory());
+    dispatch(productCategoryAction.apiGetAllProductCategory());
   }, []);
 
   const categories = useSelector<IApplicationState, ProductCategory[]>(
@@ -58,7 +59,16 @@ const ProductCategories: React.FC = () => {
           'Delete category',
           `Are you sure you want to delete ${category.name}?`,
           () => {
-            dispatch(productCategoryAction.deleteProductCategory(category.id));
+            let action = assignPendingActions(
+              productCategoryAction.apiDeleteProductCategory(category.id),
+              [],
+              [],
+              (args: any) => {
+                dispatch(productCategoryActions.apiGetAllProductCategory());
+              }
+            );
+
+            dispatch(action);
           },
           () => {}
         )
@@ -125,7 +135,8 @@ const ProductCategories: React.FC = () => {
                 onClick={() => {
                   console.log('ACTION');
                 }}
-                tokens={cardTokens}>
+                tokens={cardTokens}
+              >
                 <Card.Section
                   fill
                   verticalAlign="end"
@@ -142,7 +153,8 @@ const ProductCategories: React.FC = () => {
                       alignItems: 'center',
                     },
                   }}
-                  tokens={backgroundImageCardSectionTokens}>
+                  tokens={backgroundImageCardSectionTokens}
+                >
                   <Text variant="large" styles={textStyles}>
                     {category.name}
                   </Text>
@@ -150,7 +162,8 @@ const ProductCategories: React.FC = () => {
                 <Card.Section
                   horizontal
                   styles={footerCardSectionStyles}
-                  tokens={footerCardSectionTokens}>
+                  tokens={footerCardSectionTokens}
+                >
                   <Icon
                     styles={{
                       root: {
