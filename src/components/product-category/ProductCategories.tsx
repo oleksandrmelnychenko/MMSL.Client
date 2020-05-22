@@ -16,12 +16,14 @@ import {
 } from '@uifabric/react-cards';
 import { Text, ITextProps, ITextStyles } from 'office-ui-fabric-react/lib/Text';
 import './product-category.scss';
-// Import IMG
+import * as productCategoryActions from '../../redux/actions/productCategory.actions';
 
 import productImage from '../../assets/images/product/shirt.jpg';
 import { IApplicationState } from '../../redux/reducers/index';
 import { ProductCategory } from '../../interfaces';
 import { scrollablePaneStyleForDetailList } from '../../common/fabric-styles/styles';
+import CategoryManagementPanel from './categoryManagement/CategoryManagementPanel';
+import { ProductManagingPanelComponent } from '../../redux/reducers/productCategory.reducer';
 
 const ProductCategories: React.FC = () => {
   const cardTokens: ICardTokens = {
@@ -87,8 +89,15 @@ const ProductCategories: React.FC = () => {
                 <div className="content__header__top__controls__control">
                   <ActionButton
                     className="dealerAdd"
-                    onClick={() => {}}
-                    iconProps={{ iconName: 'Add' }}>
+                    onClick={() => {
+                      dispatch(
+                        productCategoryActions.changeManagingPanelContent(
+                          ProductManagingPanelComponent.ProductManaging
+                        )
+                      );
+                    }}
+                    iconProps={{ iconName: 'Add' }}
+                  >
                     New Category
                   </ActionButton>
                 </div>
@@ -105,12 +114,14 @@ const ProductCategories: React.FC = () => {
                 onClick={() => {
                   console.log('ACTION');
                 }}
-                tokens={cardTokens}>
+                tokens={cardTokens}
+              >
                 <Card.Section
                   fill
                   verticalAlign="end"
                   styles={backgroundImageCardSectionStyles}
-                  tokens={backgroundImageCardSectionTokens}>
+                  tokens={backgroundImageCardSectionTokens}
+                >
                   <Text variant="large" styles={textStyles}>
                     {category.name}
                   </Text>
@@ -118,7 +129,8 @@ const ProductCategories: React.FC = () => {
                 <Card.Section
                   horizontal
                   styles={footerCardSectionStyles}
-                  tokens={footerCardSectionTokens}>
+                  tokens={footerCardSectionTokens}
+                >
                   <Icon
                     styles={{
                       root: {
@@ -170,6 +182,8 @@ const ProductCategories: React.FC = () => {
           ))}
         </div>
       </ScrollablePane>
+
+      <CategoryManagementPanel />
     </div>
   );
 };

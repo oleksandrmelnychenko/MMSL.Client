@@ -6,10 +6,15 @@ import { panelStyle } from '../../../common/fabric-styles/styles';
 import PanelTitle from '../../dealers/panel/PanelTitle';
 import CommonManagementActionBar, {
   buildCommonActionItems,
+  hideAddEditPanelActions,
+  SAVE_PANEL_ITEM_NAME,
+  RESET_PANEL_ITEM_NAME,
 } from '../../dealers/panel/CommonManagementActionBar';
 import { IApplicationState } from '../../../redux/reducers';
 import { ProductManagingPanelComponent } from '../../../redux/reducers/productCategory.reducer';
 import * as productCategoryActions from '../../../redux/actions/productCategory.actions';
+import ProductCategoryForm from './ProductCategoryForm';
+import { List } from 'linq-typescript';
 
 export const CategoryManagementPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -25,9 +30,30 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
   let panelTitleText = 'Management Panel';
   let panelDescription = 'Description';
   let panelWidth: number = 600;
-  let content: any = 'Content';
+  let content: any = '';
 
   const actionItems = buildCommonActionItems();
+  actionItems.forEach((item) => {
+    if (item.key === SAVE_PANEL_ITEM_NAME) {
+      item.onClick = () => {
+        let formik: any = formikReference.formik;
+
+        if (formik !== undefined && formik !== null) {
+          formik.submitForm();
+        }
+      };
+
+      item.disabled = formikReference.formik
+        ? !formikReference.formik.dirty
+        : true;
+    } else if (item.key === RESET_PANEL_ITEM_NAME) {
+      item.onClick = () => {
+        formikReference.formik.resetForm();
+      };
+
+      item.disabled = !isDirtyForm;
+    }
+  });
 
   const panelContent: ProductManagingPanelComponent | null = useSelector<
     IApplicationState,
@@ -38,8 +64,18 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
     case ProductManagingPanelComponent.ProductManaging:
       panelTitleText = 'New Product Category';
       panelDescription = '';
+      panelWidth = 400;
 
-      content = 'Product Managing';
+      hideAddEditPanelActions(actionItems);
+
+      content = (
+        <ProductCategoryForm
+          formikReference={formikReference}
+          submitAction={(args: any) => {
+            debugger;
+          }}
+        />
+      );
       break;
     case ProductManagingPanelComponent.Unknown:
       content = null;

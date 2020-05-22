@@ -3,47 +3,46 @@ import { Formik, Form, Field } from 'formik';
 import {
   Stack,
   TextField,
-  Checkbox,
   FontIcon,
   mergeStyles,
   DefaultButton,
 } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
-import { FormicReference, OptionUnit } from '../../../interfaces';
+import { FormicReference, ProductCategory } from '../../../interfaces';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 
-export class ManagingProductUnitFormInitValues {
+export class ProductCategoryFormInitValues {
   constructor() {
-    this.value = '';
-    this.isMandatory = false;
+    this.name = '';
+    this.description = '';
+    this.imageUrl = '';
+
     this.imageFile = null;
     this.isRemovingImage = false;
-    this.imageUrl = '';
   }
 
-  value: string;
+  name: string;
+  description: string;
   imageUrl: string;
-  isMandatory: boolean;
+
   imageFile: any | null;
   isRemovingImage: boolean;
 }
 
-const buildOptionUnit = (
-  values: ManagingProductUnitFormInitValues,
-  relativeOptionGroupId: number | null | undefined,
-  sourceEntity?: OptionUnit
+const buildProductCategory = (
+  values: ProductCategoryFormInitValues,
+  sourceEntity?: ProductCategory
 ) => {
-  let newUnit: OptionUnit;
+  let newUnit: ProductCategory;
 
   if (sourceEntity) {
     newUnit = { ...sourceEntity };
   } else {
-    newUnit = new OptionUnit();
-    newUnit.optionGroupId = relativeOptionGroupId;
+    newUnit = new ProductCategory();
   }
 
-  newUnit.value = values.value;
-  newUnit.isMandatory = values.isMandatory;
+  newUnit.name = values.name;
+  newUnit.description = values.description;
 
   if (!values.isRemovingImage) {
     newUnit.imageBlob = null;
@@ -55,15 +54,13 @@ const buildOptionUnit = (
   return newUnit;
 };
 
-const initDefaultValues = (sourceEntity?: OptionUnit | null) => {
-  const initValues = new ManagingProductUnitFormInitValues();
+const initDefaultValues = (sourceEntity?: ProductCategory | null) => {
+  const initValues = new ProductCategoryFormInitValues();
 
   if (sourceEntity) {
-    initValues.value = sourceEntity.value;
-    initValues.isMandatory = sourceEntity.isMandatory;
-    initValues.isRemovingImage =
-      sourceEntity.imageBlob !== null && sourceEntity.imageBlob !== undefined;
-    initValues.imageUrl = sourceEntity.imageUrl;
+    initValues.name = sourceEntity.name;
+    initValues.description = sourceEntity.description;
+    initValues.imageFile = sourceEntity.imageUrl;
 
     if (initValues.imageUrl && initValues.imageUrl.length > 0) {
       initValues.isRemovingImage = true;
@@ -73,44 +70,41 @@ const initDefaultValues = (sourceEntity?: OptionUnit | null) => {
   return initValues;
 };
 
-export class ManagingProductUnitFormProps {
+export class ProductCategoryFormProps {
   constructor() {
     this.formikReference = new FormicReference();
-    this.optionUnit = null;
-    this.relativeOptionGroupId = null;
     this.submitAction = (args: any) => {};
+    this.productCategory = null;
   }
 
   formikReference: FormicReference;
-  optionUnit?: OptionUnit | null;
-  relativeOptionGroupId: number | null | undefined;
   submitAction: (args: any) => void;
+  productCategory?: ProductCategory | null;
 }
 
-export const ProductCategoryForm: React.FC<ManagingProductUnitFormProps> = (
-  props: ManagingProductUnitFormProps
+export const ProductCategoryForm: React.FC<ProductCategoryFormProps> = (
+  props: ProductCategoryFormProps
 ) => {
-  const initValues = initDefaultValues(props.optionUnit);
+  const initValues = initDefaultValues(props.productCategory);
   const fileInputRef: any = React.createRef();
 
   return (
     <div>
       <Formik
         validationSchema={Yup.object().shape({
-          value: Yup.string()
+          name: Yup.string()
             .min(3)
-            .required(() => 'Value is required'),
-          isMandatory: Yup.boolean(),
+            .required(() => 'Name is required'),
+          description: Yup.string(),
           imageFile: Yup.object().nullable(),
           isRemovingImage: Yup.boolean(),
         })}
         initialValues={initValues}
         onSubmit={(values: any) => {
           props.submitAction(
-            buildOptionUnit(
+            buildProductCategory(
               values,
-              props.relativeOptionGroupId,
-              props.optionUnit as OptionUnit
+              props.productCategory as ProductCategory
             )
           );
         }}
@@ -127,11 +121,11 @@ export const ProductCategoryForm: React.FC<ManagingProductUnitFormProps> = (
         {(formik) => {
           let thumbUrl: string = '';
           if (formik.values.isRemovingImage) {
-            if (props.optionUnit) {
+            if (props.productCategory) {
               if (formik.values.imageFile) {
                 thumbUrl = URL.createObjectURL(formik.values.imageFile);
               } else {
-                thumbUrl = props.optionUnit.imageUrl;
+                thumbUrl = props.productCategory.imageUrl;
               }
             } else {
               if (formik.values.imageFile) {
@@ -182,12 +176,12 @@ export const ProductCategoryForm: React.FC<ManagingProductUnitFormProps> = (
             <Form className="form">
               <div className="dealerFormManage">
                 <Stack horizontal tokens={{ childrenGap: 20 }}>
-                  <Stack grow={1} tokens={{ childrenGap: 20 }}>
-                    <Field name="value">
+                  <Stack grow={1}>
+                    <Field name="name">
                       {() => (
                         <div className="form__group">
                           <TextField
-                            value={formik.values.value}
+                            value={formik.values.name}
                             styles={fabricStyles.textFildLabelStyles}
                             className="form__group__field"
                             label="Value"
@@ -195,13 +189,13 @@ export const ProductCategoryForm: React.FC<ManagingProductUnitFormProps> = (
                             onChange={(args: any) => {
                               let value = args.target.value;
 
-                              formik.setFieldValue('value', value);
-                              formik.setFieldTouched('value');
+                              formik.setFieldValue('name', value);
+                              formik.setFieldTouched('name');
                             }}
                             errorMessage={
-                              formik.errors.value && formik.touched.value ? (
+                              formik.errors.name && formik.touched.name ? (
                                 <span className="form__group__error">
-                                  {formik.errors.value}
+                                  {formik.errors.name}
                                 </span>
                               ) : (
                                 ''
@@ -212,21 +206,34 @@ export const ProductCategoryForm: React.FC<ManagingProductUnitFormProps> = (
                       )}
                     </Field>
 
-                    <Field name="isMandatory">
-                      {() => {
-                        return (
-                          <div className="form__group">
-                            <Checkbox
-                              checked={formik.values.isMandatory}
-                              label="Allow"
-                              onChange={(checked: any, isChecked: any) => {
-                                formik.setFieldValue('isMandatory', isChecked);
-                                formik.setFieldTouched('isMandatory');
-                              }}
-                            />
-                          </div>
-                        );
-                      }}
+                    <Field name="description">
+                      {() => (
+                        <div className="form__group">
+                          <TextField
+                            value={formik.values.description}
+                            styles={fabricStyles.textFildLabelStyles}
+                            className="form__group__field"
+                            label="Description"
+                            required
+                            onChange={(args: any) => {
+                              let value = args.target.value;
+
+                              formik.setFieldValue('description', value);
+                              formik.setFieldTouched('description');
+                            }}
+                            errorMessage={
+                              formik.errors.description &&
+                              formik.touched.description ? (
+                                <span className="form__group__error">
+                                  {formik.errors.description}
+                                </span>
+                              ) : (
+                                ''
+                              )
+                            }
+                          />
+                        </div>
+                      )}
                     </Field>
 
                     <Field name="imageFile">
@@ -234,7 +241,12 @@ export const ProductCategoryForm: React.FC<ManagingProductUnitFormProps> = (
                         return (
                           <div className="form__group">
                             <Stack tokens={{ childrenGap: 10 }}>
-                              <div style={{ position: 'relative' }}>
+                              <div
+                                style={{
+                                  marginTop: '20px',
+                                  position: 'relative',
+                                }}
+                              >
                                 <input
                                   accept="image/*"
                                   ref={fileInputRef}
@@ -259,9 +271,12 @@ export const ProductCategoryForm: React.FC<ManagingProductUnitFormProps> = (
                                         'isRemovingImage',
                                         true
                                       );
+
+                                      args.currentTarget.value = '';
                                     }
                                   }}
                                 />
+
                                 <DefaultButton
                                   iconProps={{ iconName: 'Attach' }}
                                   styles={fabricStyles.btnUploadStyle}

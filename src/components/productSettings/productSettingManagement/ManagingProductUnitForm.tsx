@@ -259,6 +259,8 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                                         'isRemovingImage',
                                         true
                                       );
+
+                                      args.currentTarget.value = '';
                                     }
                                   }}
                                 />

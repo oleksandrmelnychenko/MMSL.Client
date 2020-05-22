@@ -320,7 +320,15 @@ export class ProductCategory extends EntityBaseNamed {
 
     this.measurements = null;
     this.optionGroupMaps = [];
+    this.imageUrl = '';
+
+    this.imageBlob = null;
   }
+
+  imageUrl: string;
   measurements: null;
-  optionGroupMaps: any[];
+  optionGroupMaps: OptionGroup[];
+
+  /// This field is used for just added (not saved) image files. Actual saved image source is provided through `imageUrl`.
+  imageBlob: any;
 }
