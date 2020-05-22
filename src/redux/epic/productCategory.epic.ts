@@ -22,7 +22,7 @@ import StoreHelper from '../../helpers/store.helper';
 
 export const getAllProductCategoryEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productCategoryTypes.GET_ALL_PRODUCT_CATEGORY),
+    ofType(productCategoryTypes.API_GET_ALL_PRODUCT_CATEGORY),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -62,7 +62,7 @@ export const getAllProductCategoryEpic = (action$: AnyAction, state$: any) => {
 
 export const addNewProductCategoryEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productCategoryTypes.ADD_NEW_PRODUCT_CATEGORY),
+    ofType(productCategoryTypes.API_ADD_NEW_PRODUCT_CATEGORY),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -99,7 +99,7 @@ export const addNewProductCategoryEpic = (action$: AnyAction, state$: any) => {
 
 export const updateProductCategoryEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productCategoryTypes.UPDATE_PRODUCT_CATEGORY),
+    ofType(productCategoryTypes.API_UPDATE_PRODUCT_CATEGORY),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -138,7 +138,7 @@ export const updateProductCategoryEpic = (action$: AnyAction, state$: any) => {
 
 export const deleteProductCategoryEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productCategoryTypes.DELETE_PRODUCT_CATEGORY),
+    ofType(productCategoryTypes.API_DELETE_PRODUCT_CATEGORY),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -149,6 +149,7 @@ export const deleteProductCategoryEpic = (action$: AnyAction, state$: any) => {
           return successCommonEpicFlow(
             successResponse,
             [
+              productCategoryActions.getAllProductCategory(),
               controlActions.showInfoMessage(successResponse.message),
               controlActions.disabledStatusBar(),
             ],

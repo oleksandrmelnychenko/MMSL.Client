@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, SyntheticEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as productCategoryAction from '../../redux/actions/productCategory.actions';
 import {
@@ -16,14 +16,18 @@ import {
 } from '@uifabric/react-cards';
 import { Text, ITextProps, ITextStyles } from 'office-ui-fabric-react/lib/Text';
 import './product-category.scss';
-import * as productCategoryActions from '../../redux/actions/productCategory.actions';
+import * as controlAction from '../../redux/actions/control.actions';
+// Import IMG
 
 import productImage from '../../assets/images/product/shirt.jpg';
 import { IApplicationState } from '../../redux/reducers/index';
 import { ProductCategory } from '../../interfaces';
 import { scrollablePaneStyleForDetailList } from '../../common/fabric-styles/styles';
-import CategoryManagementPanel from './categoryManagement/CategoryManagementPanel';
-import { ProductManagingPanelComponent } from '../../redux/reducers/productCategory.reducer';
+import {
+  DialogArgs,
+  CommonDialogType,
+} from '../../redux/reducers/control.reducer';
+import { assignPendingActions } from '../../helpers/action.helper';
 
 const ProductCategories: React.FC = () => {
   const cardTokens: ICardTokens = {
@@ -42,19 +46,26 @@ const ProductCategories: React.FC = () => {
     (state) => state.product.productCategory
   );
 
-  const backgroundImageCardSectionStyles: ICardSectionStyles = {
-    root: {
-      position: 'relative',
-      paddingBottom: 0,
-      marginBottom: '20px',
-      backgroundImage: `url(${productImage})`,
-      backgroundPosition: 'top center',
-      backgroundSize: 'contain',
-      backgroundRepeat: 'no-repeat',
-      height: 220,
-      alignItems: 'center',
-    },
+  const deleteProductCategory = (
+    event: SyntheticEvent,
+    category: ProductCategory
+  ) => {
+    event.stopPropagation();
+    dispatch(
+      controlAction.toggleCommonDialogVisibility(
+        new DialogArgs(
+          CommonDialogType.Delete,
+          'Delete category',
+          `Are you sure you want to delete ${category.name}?`,
+          () => {
+            dispatch(productCategoryAction.deleteProductCategory(category.id));
+          },
+          () => {}
+        )
+      )
+    );
   };
+
   const backgroundImageCardSectionTokens: ICardSectionTokens = { padding: 12 };
   const textStyles: ITextStyles = {
     root: {
@@ -109,19 +120,29 @@ const ProductCategories: React.FC = () => {
       <ScrollablePane styles={scrollablePaneStyleForDetailList}>
         <div className="categories">
           {categories.map((category) => (
-            <div style={{ margin: '12px' }}>
+            <div key={category.id} style={{ margin: '12px' }}>
               <Card
                 onClick={() => {
                   console.log('ACTION');
                 }}
-                tokens={cardTokens}
-              >
+                tokens={cardTokens}>
                 <Card.Section
                   fill
                   verticalAlign="end"
-                  styles={backgroundImageCardSectionStyles}
-                  tokens={backgroundImageCardSectionTokens}
-                >
+                  styles={{
+                    root: {
+                      position: 'relative',
+                      paddingBottom: 0,
+                      marginBottom: '20px',
+                      backgroundImage: `url(${category.imageUrl})`,
+                      backgroundPosition: 'top center',
+                      backgroundSize: 'contain',
+                      backgroundRepeat: 'no-repeat',
+                      height: 220,
+                      alignItems: 'center',
+                    },
+                  }}
+                  tokens={backgroundImageCardSectionTokens}>
                   <Text variant="large" styles={textStyles}>
                     {category.name}
                   </Text>
@@ -129,8 +150,7 @@ const ProductCategories: React.FC = () => {
                 <Card.Section
                   horizontal
                   styles={footerCardSectionStyles}
-                  tokens={footerCardSectionTokens}
-                >
+                  tokens={footerCardSectionTokens}>
                   <Icon
                     styles={{
                       root: {
@@ -175,6 +195,9 @@ const ProductCategories: React.FC = () => {
                         color: '#a4262c',
                       },
                     }}
+                    onClick={(event: SyntheticEvent) =>
+                      deleteProductCategory(event, category)
+                    }
                   />
                 </Card.Section>
               </Card>
