@@ -248,7 +248,7 @@ export const DealerCustomers: React.FC = () => {
                       dealerActions.getStoresByDealer(selectedDealer!.id)
                     );
                   }
-                  formikReference.formik.resetForm();
+                  formikReference.formik?.resetForm();
                 }}
                 customer={dealerCustomerState.selectedCustomer}
               />
