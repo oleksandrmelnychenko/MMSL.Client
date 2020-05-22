@@ -318,9 +318,11 @@ export class ProductCategory extends EntityBaseNamed {
   constructor() {
     super();
 
+    this.imageUrl = '';
     this.measurements = null;
     this.optionGroupMaps = [];
   }
+  imageUrl: string;
   measurements: null;
   optionGroupMaps: any[];
 }

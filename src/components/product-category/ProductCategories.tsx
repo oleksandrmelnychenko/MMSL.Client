@@ -55,7 +55,7 @@ const ProductCategories: React.FC = () => {
       controlAction.toggleCommonDialogVisibility(
         new DialogArgs(
           CommonDialogType.Delete,
-          'Delete dealer',
+          'Delete category',
           `Are you sure you want to delete ${category.name}?`,
           () => {
             dispatch(productCategoryAction.deleteProductCategory(category.id));
@@ -66,19 +66,6 @@ const ProductCategories: React.FC = () => {
     );
   };
 
-  const backgroundImageCardSectionStyles: ICardSectionStyles = {
-    root: {
-      position: 'relative',
-      paddingBottom: 0,
-      marginBottom: '20px',
-      backgroundImage: `url(${productImage})`,
-      backgroundPosition: 'top center',
-      backgroundSize: 'contain',
-      backgroundRepeat: 'no-repeat',
-      height: 220,
-      alignItems: 'center',
-    },
-  };
   const backgroundImageCardSectionTokens: ICardSectionTokens = { padding: 12 };
   const textStyles: ITextStyles = {
     root: {
@@ -135,7 +122,19 @@ const ProductCategories: React.FC = () => {
                 <Card.Section
                   fill
                   verticalAlign="end"
-                  styles={backgroundImageCardSectionStyles}
+                  styles={{
+                    root: {
+                      position: 'relative',
+                      paddingBottom: 0,
+                      marginBottom: '20px',
+                      backgroundImage: `url(${category.imageUrl})`,
+                      backgroundPosition: 'top center',
+                      backgroundSize: 'contain',
+                      backgroundRepeat: 'no-repeat',
+                      height: 220,
+                      alignItems: 'center',
+                    },
+                  }}
                   tokens={backgroundImageCardSectionTokens}>
                   <Text variant="large" styles={textStyles}>
                     {category.name}
