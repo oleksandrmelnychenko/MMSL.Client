@@ -2,11 +2,15 @@ import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import * as productCategoryAction from '../../redux/actions/productCategory.actions';
 import { ActionButton, Stack } from 'office-ui-fabric-react';
+import CategoryManagementPanel from './categoryManagement/CategoryManagementPanel';
+import * as productCategoryActions from '../../redux/actions/productCategory.actions';
+import { ProductManagingPanelComponent } from '../../redux/reducers/productCategory.reducer';
 
 const ProductCategory: React.FC = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(productCategoryAction.getAllProductCategory());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -20,8 +24,15 @@ const ProductCategory: React.FC = () => {
                 <div className="content__header__top__controls__control">
                   <ActionButton
                     className="dealerAdd"
-                    onClick={() => {}}
-                    iconProps={{ iconName: 'Add' }}>
+                    onClick={() => {
+                      dispatch(
+                        productCategoryActions.changeManagingPanelContent(
+                          ProductManagingPanelComponent.ProductManaging
+                        )
+                      );
+                    }}
+                    iconProps={{ iconName: 'Add' }}
+                  >
                     New Category
                   </ActionButton>
                 </div>
@@ -29,6 +40,8 @@ const ProductCategory: React.FC = () => {
             </div>
           </Stack>
         </div>
+
+        <CategoryManagementPanel />
       </div>
     </div>
   );
