@@ -17,6 +17,7 @@
     "@types/react-router-redux": "^5.0.18",
     "@types/redux-logger": "^3.0.7",
     "@types/yup": "^0.28.3",
+    "@uifabric/react-cards": "^0.109.86",
     "formik": "^2.1.4",
     "linq-typescript": "^1.0.251",
     "linqts": "^1.12.6",
