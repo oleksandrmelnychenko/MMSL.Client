@@ -10,9 +10,9 @@ export const getAllProductCategory = createAction(
 export const successGetAllProductCategory = createAction<ProductCategory[]>(
   types.SUCCESS_GET_ALL_PRODUCT_CATEGORY
 );
-// TODO add type
-export const addNewProductCategory = createAction<any>(
-  types.ADD_NEW_PRODUCT_CATEGORY
+
+export const apiAddNewProductCategory = createAction<ProductCategory>(
+  types.API_ADD_NEW_PRODUCT_CATEGORY
 );
 // TODO add type
 // export const successGetAllProductCategory = createAction<ProductCategory[]>(
@@ -24,4 +24,8 @@ export const changeManagingPanelContent = createAction<ProductManagingPanelCompo
 
 export type ChangeManagingPanelContent = ReturnType<
   typeof changeManagingPanelContent
+>;
+
+export type ApiAddNewProductCategory = ReturnType<
+  typeof apiAddNewProductCategory
 >;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Panel, PanelType } from 'office-ui-fabric-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FormicReference } from '../../../interfaces';
+import { FormicReference, ProductCategory } from '../../../interfaces';
 import { panelStyle } from '../../../common/fabric-styles/styles';
 import PanelTitle from '../../dealers/panel/PanelTitle';
 import CommonManagementActionBar, {
@@ -14,7 +14,7 @@ import { IApplicationState } from '../../../redux/reducers';
 import { ProductManagingPanelComponent } from '../../../redux/reducers/productCategory.reducer';
 import * as productCategoryActions from '../../../redux/actions/productCategory.actions';
 import ProductCategoryForm from './ProductCategoryForm';
-import { List } from 'linq-typescript';
+import { assignPendingActions } from '../../../helpers/action.helper';
 
 export const CategoryManagementPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -73,6 +73,15 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
           formikReference={formikReference}
           submitAction={(args: any) => {
             debugger;
+
+            let action = assignPendingActions(
+              productCategoryActions.apiAddNewProductCategory(args),
+              [],
+              [],
+              (args: any) => {}
+            );
+
+            dispatch(action);
           }}
         />
       );
