@@ -120,15 +120,17 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
             props.submitAction(builderAddStore(values) as INewStore);
           }
         }}
-        enableReinitialize={true}
-        validateOnBlur={false}>
-        {(formik) => {
+        innerRef={(formik: any) => {
           props.formikReference.formik = formik;
-
-          if (props.formikReference.isDirtyFunc) {
-            props.formikReference.isDirtyFunc(formik.dirty);
+          if (formik) {
+            if (props.formikReference.isDirtyFunc)
+              props.formikReference.isDirtyFunc(formik.dirty);
           }
-
+        }}
+        enableReinitialize={true}
+        validateOnBlur={false}
+      >
+        {(formik) => {
           return (
             <Form className="form">
               <Stack>

@@ -159,14 +159,17 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
             buildDealerAccount(values, props.dealerAccount as DealerAccount)
           );
         }}
+        innerRef={(formik: any) => {
+          props.formikReference.formik = formik;
+          if (formik) {
+            if (props.formikReference.isDirtyFunc)
+              props.formikReference.isDirtyFunc(formik.dirty);
+          }
+        }}
         validateOnBlur={false}
+        enableReinitialize={true}
       >
         {(formik) => {
-          props.formikReference.formik = formik;
-          if (props.formikReference.isDirtyFunc) {
-            props.formikReference.isDirtyFunc(formik.dirty);
-          }
-
           return (
             <Form className="form">
               <div className="dealerFormManage">

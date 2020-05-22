@@ -78,13 +78,17 @@ export const ManagingvOptionGroupForm: React.FC<ManagingvOptionGroupFormProps> =
             buildOptionGroup(values, props.OptionGroupToEdit as OptionGroup)
           );
         }}
+        innerRef={(formik: any) => {
+          props.formikReference.formik = formik;
+          if (formik) {
+            if (props.formikReference.isDirtyFunc)
+              props.formikReference.isDirtyFunc(formik.dirty);
+          }
+        }}
         validateOnBlur={false}
+        enableReinitialize={true}
       >
         {(formik) => {
-          props.formikReference.formik = formik;
-          if (props.formikReference.isDirtyFunc)
-            props.formikReference.isDirtyFunc(formik.dirty);
-
           return (
             <Form className="form">
               <div className="dealerFormManage">

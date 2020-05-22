@@ -114,13 +114,17 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
             )
           );
         }}
-        validateOnBlur={false}
-        enableReinitialize={true}>
-        {(formik) => {
+        innerRef={(formik: any) => {
           props.formikReference.formik = formik;
-          if (props.formikReference.isDirtyFunc)
-            props.formikReference.isDirtyFunc(formik.dirty);
-
+          if (formik) {
+            if (props.formikReference.isDirtyFunc)
+              props.formikReference.isDirtyFunc(formik.dirty);
+          }
+        }}
+        validateOnBlur={false}
+        enableReinitialize={true}
+      >
+        {(formik) => {
           let thumbUrl: string = '';
           if (formik.values.isRemovingImage) {
             if (props.optionUnit) {
@@ -143,7 +147,8 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                 border: '1px solid #efefef',
                 padding: '6px',
                 borderRadius: '6px',
-              }}>
+              }}
+            >
               <FontIcon
                 style={{
                   position: 'absolute',

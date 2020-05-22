@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ICommandBarItemProps,
   Panel,
   PanelType,
   CommandBar,
+  ActionButton,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
@@ -50,9 +51,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
 
   const [formikReference] = useState<FormicReference>(
     new FormicReference(() => {
-      formikReference.isDirtyFunc = (isDirty: boolean) => {
-        setIsDirtyForm(isDirty);
-      };
+      formikReference.isDirtyFunc = setIsDirtyForm;
     })
   );
 
@@ -91,7 +90,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
     {
       key: 'Save',
       text: 'Save',
-      disabled: !isDirtyForm,
+      disabled: formikReference.formik ? !formikReference.formik.dirty : true,
       iconProps: { iconName: 'Save' },
       onClick: () => {
         let formik: any = formikReference.formik;
@@ -255,6 +254,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
         closeButtonAriaLabel="Close"
       >
         <PanelTitle title={panelTitleText} description={panelDescription} />
+
         <CommandBar
           styles={commandBarStyles}
           items={_items}
