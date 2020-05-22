@@ -3,96 +3,39 @@ import {
   successCommonEpicFlow,
   errorCommonEpicFlow,
 } from './../../helpers/action.helper';
-import { debounceTime, switchMap, mergeMap, catchError } from 'rxjs/operators';
+import { switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
-import * as customerActions from '../../redux/actions/customer.actions';
-import * as customerTypes from '../constants/customer.types.constants';
+import { from } from 'rxjs';
 import { getActiveLanguage } from 'react-localize-redux';
 import {
   ajaxGetWebResponse,
   ajaxPostResponse,
   ajaxPutResponse,
+  ajaxDeleteResponse,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
-import { Pagination } from '../../interfaces';
 import * as controlActions from '../../redux/actions/control.actions';
-import * as dealerActions from '../../redux/actions/dealer.actions';
+import * as productCategoryTypes from '../constants/productCategory.types.constants';
+import * as productCategoryActions from '../actions/productCategory.actions';
 import StoreHelper from '../../helpers/store.helper';
 
-export const getCustomersListPaginatedEpic = (
-  action$: AnyAction,
-  state$: any
-) => {
+export const getAllProductCategoryEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(customerTypes.GET_CUSTOMERS_LIST_PAGINATED),
+    ofType(productCategoryTypes.GET_ALL_PRODUCT_CATEGORY),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
-      const pagination: Pagination = state$.value.dealer.dealerState.pagination;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(api.GET_CUSTOMERS_ALL, state$.value, [
-        { key: 'pageNumber', value: `${pagination.paginationInfo.pageNumber}` },
-        { key: 'limit', value: `${pagination.limit}` },
-        {
-          key: 'searchPhrase',
-          value: `${state$.value.customer.customerState.search}`,
-        },
-        {
-          key: 'storeName',
-          value: `${state$.value.customer.customerState.searchByStore}`,
-        },
-      ]).pipe(
+      return ajaxGetWebResponse(
+        api.GET_ALL_PRODUCT_CATEGORY,
+        state$.value,
+        []
+      ).pipe(
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
             [
-              customerActions.updateCustomersList(successResponse.entities),
-              customerActions.updateCustomersListPaginationInfo(
-                successResponse.paginationInfo
-              ),
-              controlActions.disabledStatusBar(),
-            ],
-            action
-          );
-        }),
-        catchError((errorResponse: any) => {
-          return checkUnauthorized(errorResponse.status, languageCode, () => {
-            return errorCommonEpicFlow(
-              errorResponse,
-              [
-                { type: 'ERROR_GET_CUSTOMERS_LIST' },
-                controlActions.disabledStatusBar(),
-              ],
-              action
-            );
-          });
-        })
-      );
-    })
-  );
-};
-
-export const customerFormStoreAutocompleteTextEpic = (
-  action$: AnyAction,
-  state$: any
-) => {
-  return action$.pipe(
-    ofType(customerTypes.CUSTOMER_FORM_STORE_AUTOCOMPLETE_TEXT),
-    debounceTime(300),
-    switchMap((action: AnyAction) => {
-      const languageCode = getActiveLanguage(state$.value.localize).code;
-      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(api.GET_ALL_STORES, state$.value, [
-        {
-          key: 'searchPhrase',
-          value: `${action.payload}`,
-        },
-      ]).pipe(
-        mergeMap((successResponse: any) => {
-          return successCommonEpicFlow(
-            successResponse,
-            [
-              customerActions.updateCustomerFormStoreAutocompleteList(
+              productCategoryActions.successGetAllProductCategory(
                 successResponse
               ),
               controlActions.disabledStatusBar(),
@@ -105,7 +48,7 @@ export const customerFormStoreAutocompleteTextEpic = (
             return errorCommonEpicFlow(
               errorResponse,
               [
-                customerActions.updateCustomerFormStoreAutocompleteList([]),
+                { type: 'ERROR_GET_ALL_PRODUCT_CATEGORY' },
                 controlActions.disabledStatusBar(),
               ],
               action
@@ -117,25 +60,23 @@ export const customerFormStoreAutocompleteTextEpic = (
   );
 };
 
-export const saveNewCustomerEpic = (action$: AnyAction, state$: any) => {
+export const addNewProductCategoryEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(customerTypes.SAVE_NEW_CUSTOMER),
+    ofType(productCategoryTypes.ADD_NEW_PRODUCT_CATEGORY),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       return ajaxPostResponse(
-        api.CREATE_NEW_STORE_CUSTOMER,
+        api.ADD_PRODUCT_CATEGORY,
         action.payload,
         state$.value,
         true
       ).pipe(
         mergeMap((successResponse: any) => {
+          debugger;
           return successCommonEpicFlow(
             successResponse,
             [
-              dealerActions.updateTargetStoreCustomersList(
-                Array.of(successResponse.body)
-              ),
               controlActions.disabledStatusBar(),
               controlActions.showInfoMessage(successResponse.message),
             ],
@@ -156,24 +97,22 @@ export const saveNewCustomerEpic = (action$: AnyAction, state$: any) => {
   );
 };
 
-export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
+export const updateProductCategoryEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(customerTypes.UPDATE_STORE_CUSTOMER),
+    ofType(productCategoryTypes.UPDATE_PRODUCT_CATEGORY),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       return ajaxPutResponse(
-        api.UPDATE_STORE_CUSTOMER,
+        api.UPDATE_PRODUCT_CATEGORY,
         action.payload,
         state$.value
       ).pipe(
         mergeMap((successResponse: any) => {
+          debugger;
           return successCommonEpicFlow(
             successResponse,
             [
-              customerActions.toggleCustomerForm(false),
-              customerActions.getCustomersListPaginated(),
-              customerActions.selectedCustomer(null),
               controlActions.disabledStatusBar(),
               controlActions.showInfoMessage(successResponse.message),
             ],
@@ -185,8 +124,46 @@ export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
             return errorCommonEpicFlow(
               errorResponse,
               [
-                { type: 'ERROR_UPDATE_STORE_CUSTOMER' },
+                { type: 'ERROR_UPDATE_CATEGORY_PRODUCT' },
                 controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const deleteProductCategoryEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(productCategoryTypes.DELETE_PRODUCT_CATEGORY),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+      return ajaxDeleteResponse(api.DELETE_PRODUCT_CATEGORY, state$.value, [
+        { key: 'productCategoryId', value: `${action.payload}` },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.showInfoMessage(successResponse.message),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while deleteing category. ${errorResponse}`
+                ),
               ],
               action
             );

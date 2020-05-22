@@ -262,7 +262,6 @@ export class OptionGroup extends EntityBaseNamed {
     this.optionUnits = [];
 
     this.groupItemVisualState = new GroupItemVisualState();
-    this.foo = false;
   }
 
   isMandatory: boolean;
@@ -270,7 +269,6 @@ export class OptionGroup extends EntityBaseNamed {
 
   /// Keeps item visual state (is not related to DTO model).
   groupItemVisualState: GroupItemVisualState;
-  foo: boolean;
 }
 
 export class OptionUnit extends EntityBaseNamed {
@@ -314,4 +312,15 @@ export class FormicReference {
 
   formik: any;
   isDirtyFunc?: (isDirty: boolean) => void;
+}
+
+export class ProductCategory extends EntityBaseNamed {
+  constructor() {
+    super();
+
+    this.measurements = null;
+    this.optionGroupMaps = [];
+  }
+  measurements: null;
+  optionGroupMaps: any[];
 }

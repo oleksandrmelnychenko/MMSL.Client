@@ -11,6 +11,7 @@ import { IAuthState, IControlState } from '../../interfaces';
 import { authReducer } from './auth.reducer';
 import { DealerState, dealerReducer } from './dealer.reducer';
 import { controlReducer } from './control.reducer';
+import { ProductState, productReducer } from './productCategory.reducer';
 
 export interface IApplicationState {
   auth: IAuthState;
@@ -20,6 +21,7 @@ export interface IApplicationState {
   dealer: DealerState;
   units: UnitsState;
   customer: CustomerState;
+  product: ProductState;
   productSettings: ProductSettingsState;
 }
 
@@ -31,5 +33,6 @@ export const reducer = combineReducers({
   dealer: dealerReducer,
   units: unitsReducer,
   customer: customerReducer,
+  product: productReducer,
   productSettings: productSettingsReducer,
 });
