@@ -42,3 +42,5 @@ export const UPDATE_PRODUCT_CATEGORY =
   '/product/category/update/product/category';
 export const DELETE_PRODUCT_CATEGORY =
   '/product/category/delete/product/category';
+
+export const GET_MEASUREMENTS_BY_PRODUCT = 'measurements/by/product';

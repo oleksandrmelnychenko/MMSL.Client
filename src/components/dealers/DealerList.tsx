@@ -65,7 +65,7 @@ export const DealerList: React.FC = () => {
     if (dealers.length > 0 && shimmer) {
       dispatch(controlAction.hideGlobalShimmer());
     }
-  }, [dealers]);
+  }, [dealers, dispatch, shimmer]);
 
   const _dealerColumns: IColumn[] = [
     {

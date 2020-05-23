@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Label, PrimaryButton } from 'office-ui-fabric-react';
-
 import * as productCategoryAction from '../../../redux/actions/productCategory.actions';
-import { ToggleDealerPanelWithDetails } from '../../../redux/reducers/dealer.reducer';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
-import { IApplicationState } from '../../../redux/reducers/index';
 import { ProductManagingPanelComponent } from '../../../redux/reducers/productCategory.reducer';
-import { PanelInfo } from '../../../redux/reducers/control.reducer';
 import { useHistory } from 'react-router-dom';
 
 export interface IProductMenuItem {
@@ -25,6 +21,7 @@ const ProductManagementPanel: React.FC = () => {
     return () => {
       dispatch(productCategoryAction.chooseProductCategory(null));
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const menuItem: IProductMenuItem[] = [

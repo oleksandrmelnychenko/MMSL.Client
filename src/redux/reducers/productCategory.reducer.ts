@@ -1,16 +1,16 @@
 import { createReducer } from '@reduxjs/toolkit';
 import * as actions from '../actions/productCategory.actions';
-import { ProductCategory } from '../../interfaces';
+import { ProductCategory, ChooseOptions } from '../../interfaces';
 
 export class ProductState {
   constructor() {
     this.productCategory = [];
     this.productManagementPanelState = new ProductManagementPanelState();
-    this.chooseCategory = null;
+    this.choose = new ChooseOptions();
     this.manageSingleProductState = new ManageSingleProductState();
   }
   productCategory: ProductCategory[];
-  chooseCategory: ProductCategory | null;
+  choose: ChooseOptions;
   productManagementPanelState: ProductManagementPanelState;
   manageSingleProductState: ManageSingleProductState;
 }
@@ -51,6 +51,6 @@ export const productReducer = createReducer(new ProductState(), (builder) =>
       state.manageSingleProductState.targetProductCategory = action.payload;
     })
     .addCase(actions.chooseProductCategory, (state, action) => {
-      state.chooseCategory = action.payload;
+      state.choose.category = action.payload;
     })
 );

@@ -58,6 +58,7 @@ export const DealerCustomers: React.FC = () => {
     return () => {
       dispatch(dealerActions.setSelectedCustomerInCurrentStore(null));
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onRenderCell = (

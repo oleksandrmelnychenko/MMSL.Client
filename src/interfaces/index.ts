@@ -1,7 +1,6 @@
 import { GroupItemVisualState } from './viewModels/index';
 import { CommonDialogState } from '../redux/reducers/control.reducer';
 import { DealerDetilsComponents } from '../redux/reducers/dealer.reducer';
-import { ProductManagingPanelComponent } from '../redux/reducers/productCategory.reducer';
 
 export interface IUserInfo {
   userIdentityId: number;
@@ -332,4 +331,13 @@ export class ProductCategory extends EntityBaseNamed {
 
   /// This field is used for just added (not saved) image files. Actual saved image source is provided through `imageUrl`.
   imageBlob: any;
+}
+
+export class ChooseOptions {
+  constructor() {
+    this.category = null;
+    this.categoryId = null;
+  }
+  category: ProductCategory | null;
+  categoryId: number | null;
 }
