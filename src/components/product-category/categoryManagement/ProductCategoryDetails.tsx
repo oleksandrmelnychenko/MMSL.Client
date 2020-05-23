@@ -25,7 +25,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
   const targetProductCategory: ProductCategory | null | undefined = useSelector<
     IApplicationState,
     ProductCategory | null | undefined
-  >((state) => state.product.chooseCategory);
+  >((state) => state.product.choose.category);
 
   useEffect(() => {
     // let action = assignPendingActions(
@@ -69,8 +69,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
       <Stack
         horizontal
         horizontalAlign="space-between"
-        tokens={{ childrenGap: 20 }}
-      >
+        tokens={{ childrenGap: 20 }}>
         <Stack.Item grow={1} styles={{ root: { maxWidth: '49%' } }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
