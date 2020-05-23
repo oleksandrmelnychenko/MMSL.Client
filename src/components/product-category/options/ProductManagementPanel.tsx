@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Label, PrimaryButton } from 'office-ui-fabric-react';
-
 import * as productCategoryAction from '../../../redux/actions/productCategory.actions';
 import { ToggleDealerPanelWithDetails } from '../../../redux/reducers/dealer.reducer';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,13 +22,14 @@ const ProductManagementPanel: React.FC = () => {
     return () => {
       dispatch(productCategoryAction.chooseProductCategory(null));
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const menuItem: IProductMenuItem[] = [
     {
       title: 'Details',
       className: 'management__btn-detail',
-      componentType: ProductManagingPanelComponent.ProductManaging,
+      componentType: ProductManagingPanelComponent.ProductCategoryDetails,
       isSelected: false,
     },
     {
@@ -65,11 +65,23 @@ const ProductManagementPanel: React.FC = () => {
         <Label
           key={index}
           styles={labelStyle}
-          className={false ? 'selected' : ''}>
+          className={false ? 'selected' : ''}
+        >
           <PrimaryButton
             styles={btnMenuStyle}
             className={item.className}
-            onClick={() => {}}
+            onClick={() => {
+              if (
+                item.componentType ===
+                ProductManagingPanelComponent.ProductCategoryDetails
+              ) {
+                dispatch(
+                  productCategoryAction.changeManagingPanelContent(
+                    ProductManagingPanelComponent.ProductCategoryDetails
+                  )
+                );
+              }
+            }}
             allowDisabledFocus
           />
           {item.title}

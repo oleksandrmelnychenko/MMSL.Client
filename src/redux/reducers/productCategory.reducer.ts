@@ -18,6 +18,7 @@ export class ProductState {
 export enum ProductManagingPanelComponent {
   Unknown,
   ProductManaging,
+  ProductCategoryDetails,
   ProductMeasurement,
   ProductTimeLine,
   EditSingleProduct,

@@ -12,7 +12,6 @@ import { Text } from 'office-ui-fabric-react/lib/Text';
 import './product-category.scss';
 import * as controlAction from '../../redux/actions/control.actions';
 import * as productCategoryActions from '../../redux/actions/productCategory.actions';
-
 import { IApplicationState } from '../../redux/reducers/index';
 import { ProductCategory } from '../../interfaces';
 import {
@@ -42,6 +41,7 @@ const ProductCategories: React.FC = () => {
     return () => {
       dispatch(productCategoryAction.chooseProductCategory(null));
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const categories = useSelector<IApplicationState, ProductCategory[]>(
