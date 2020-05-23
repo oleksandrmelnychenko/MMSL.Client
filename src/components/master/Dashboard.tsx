@@ -1,5 +1,4 @@
 import React from 'react';
-import * as dealerActions from '../../redux/actions/dealer.actions';
 import './dashboard.scss';
 import Header from './header/Header';
 import Footer from './footer/Footer';
@@ -18,7 +17,6 @@ import { stylesPanelInfo } from '../../common/fabric-styles/styles';
 import ProductSettings from '../productSettings/ProductSettings';
 import { IPanelInfo } from '../../interfaces/index';
 import Reports from '../reports/Reports';
-import ProductCategory from '../product-category/ProductCategories';
 import ProductCategoryView from '../product-category/ProductCategoryView';
 
 const Dashboard: React.FC = () => {

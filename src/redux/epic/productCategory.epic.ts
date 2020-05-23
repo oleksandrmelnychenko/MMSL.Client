@@ -301,3 +301,47 @@ export const apiGetProductCategoryByIdEpic = (
     })
   );
 };
+
+export const getMeasurementsByProductEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(productCategoryTypes.API_GET_MEASUREMENTS_BY_PRODUCT),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+      return ajaxGetWebResponse(
+        api.GET_MEASUREMENTS_BY_PRODUCT,
+        state$.value,
+        []
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          debugger;
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              // productCategoryActions.successGetAllProductCategory(
+              //   successResponse
+              // ),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_GET_MEASUREMENTS_BY_PRODUCT' },
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};

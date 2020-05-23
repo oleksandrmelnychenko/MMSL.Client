@@ -38,3 +38,11 @@ export const apiGetProductCategoryById = createAction<number>(
 export const changeTargetSingeleManagingProduct = createAction<ProductCategory | null>(
   types.CHANGE_TARGET_SINGELE_MANAGING_PRODUCT
 );
+
+export const apiGetMeasurementsByProduct = createAction(
+  types.API_GET_MEASUREMENTS_BY_PRODUCT
+);
+
+export const successGetMeasurmentsByProduct = createAction<any>(
+  types.SUCCESS_GET_MEASUREMENTS_BY_PRODUCT
+);

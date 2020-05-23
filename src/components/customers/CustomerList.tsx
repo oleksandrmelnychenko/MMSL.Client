@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  DetailsList,
   IColumn,
   SelectionMode,
   Text,
@@ -125,7 +124,7 @@ export const CustomerList: React.FC = () => {
     if (customersList.length > 0 && shimmer) {
       dispatch(controlAction.hideGlobalShimmer());
     }
-  }, [customersList]);
+  }, [customersList, dispatch, shimmer]);
 
   useEffect(() => {
     if (!selectedCustomer) {

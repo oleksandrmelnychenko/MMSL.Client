@@ -69,7 +69,7 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
   const targetProductCategoryForDetails: ProductCategory | null = useSelector<
     IApplicationState,
     ProductCategory | null
-  >((state) => state.product.chooseCategory);
+  >((state) => state.product.choose.category);
 
   switch (panelContent) {
     case ProductManagingPanelComponent.ProductManaging:
@@ -165,8 +165,7 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
             productCategoryActions.changeTargetSingeleManagingProduct(null)
           );
         }}
-        closeButtonAriaLabel="Close"
-      >
+        closeButtonAriaLabel="Close">
         {panelContent !== null &&
         panelContent !== ProductManagingPanelComponent.Unknown ? (
           <>

@@ -49,7 +49,7 @@ const ProductCategories: React.FC = () => {
   );
 
   const chooseCategory = useSelector<IApplicationState, ProductCategory | null>(
-    (state) => state.product.chooseCategory
+    (state) => state.product.choose.category
   );
 
   const deleteProductCategory = (
@@ -99,8 +99,7 @@ const ProductCategories: React.FC = () => {
                         )
                       );
                     }}
-                    iconProps={{ iconName: 'Add' }}
-                  >
+                    iconProps={{ iconName: 'Add' }}>
                     New Category
                   </ActionButton>
                 </div>
@@ -140,8 +139,7 @@ const ProductCategories: React.FC = () => {
                     dispatch(action);
                   }
                 }}
-                tokens={cardTokens}
-              >
+                tokens={cardTokens}>
                 <Card.Section
                   fill
                   verticalAlign="end"
@@ -158,21 +156,18 @@ const ProductCategories: React.FC = () => {
                       alignItems: 'center',
                     },
                   }}
-                  tokens={backgroundImageCardSectionTokens}
-                >
+                  tokens={backgroundImageCardSectionTokens}>
                   <Text
                     className="category_name"
                     variant="large"
-                    styles={textStyles}
-                  >
+                    styles={textStyles}>
                     {category.name}
                   </Text>
                 </Card.Section>
                 <Card.Section
                   horizontal
                   styles={footerCardSectionStyles}
-                  tokens={footerCardSectionTokens}
-                >
+                  tokens={footerCardSectionTokens}>
                   <Stack.Item grow={1}>
                     <span />
                   </Stack.Item>
