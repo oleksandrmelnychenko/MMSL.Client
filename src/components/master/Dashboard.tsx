@@ -19,6 +19,7 @@ import ProductSettings from '../productSettings/ProductSettings';
 import { IPanelInfo } from '../../interfaces/index';
 import Reports from '../reports/Reports';
 import ProductCategory from '../product-category/ProductCategories';
+import ProductCategoryView from '../product-category/ProductCategoryView';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
@@ -58,9 +59,10 @@ const Dashboard: React.FC = () => {
             <PrivateRoute path={`/en/app/dealers`} component={Dealers} />
             <PrivateRoute path={`/en/app/customer`} component={Customers} />
             <PrivateRoute
-              path={`/en/app/product-category`}
-              component={ProductCategory}
+              path={`/en/app/product`}
+              component={ProductCategoryView}
             />
+
             <PrivateRoute
               path={`/en/app/product-settings`}
               component={ProductSettings}

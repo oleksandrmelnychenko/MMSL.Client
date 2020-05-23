@@ -8,16 +8,18 @@ import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { ProductManagingPanelComponent } from '../../../redux/reducers/productCategory.reducer';
 import { PanelInfo } from '../../../redux/reducers/control.reducer';
+import { useHistory } from 'react-router-dom';
 
 export interface IProductMenuItem {
   title: string;
   className: string;
   componentType: ProductManagingPanelComponent;
-  isSelected?: boolean;
+  onClickFunc?: Function;
 }
 
 const ProductManagementPanel: React.FC = () => {
   const dispatch = useDispatch();
+  let history = useHistory();
 
   useEffect(() => {
     return () => {
@@ -30,38 +32,26 @@ const ProductManagementPanel: React.FC = () => {
       title: 'Details',
       className: 'management__btn-detail',
       componentType: ProductManagingPanelComponent.ProductManaging,
-      isSelected: false,
     },
     {
       title: 'Measurements',
       className: 'management__btn-detail',
       componentType: ProductManagingPanelComponent.ProductMeasurement,
-      isSelected: false,
     },
     {
       title: 'Timeline',
       className: 'management__btn-detail',
       componentType: ProductManagingPanelComponent.ProductTimeLine,
-      isSelected: false,
     },
   ];
 
-  const [menu, setMenu] = useState(menuItem);
-  const changeSelectedMenuItem = (componentType: number) => {
-    const updateMenu = menu.map((item) => {
-      item.isSelected = false;
-      if (item.componentType === componentType) {
-        item.isSelected = true;
-      }
-      return item;
-    });
-
-    setMenu(updateMenu);
+  const redirectToMeasurements = () => {
+    history.push('/en/app/product/measurements');
   };
 
   return (
     <div className="management">
-      {menu.map((item, index) => (
+      {menuItem.map((item, index) => (
         <Label
           key={index}
           styles={labelStyle}
@@ -69,7 +59,11 @@ const ProductManagementPanel: React.FC = () => {
           <PrimaryButton
             styles={btnMenuStyle}
             className={item.className}
-            onClick={() => {}}
+            onClick={
+              ProductManagingPanelComponent.ProductMeasurement
+                ? redirectToMeasurements
+                : () => {}
+            }
             allowDisabledFocus
           />
           {item.title}
