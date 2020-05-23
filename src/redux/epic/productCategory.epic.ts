@@ -311,19 +311,19 @@ export const getMeasurementsByProductEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(
-        api.GET_MEASUREMENTS_BY_PRODUCT,
-        state$.value,
-        []
-      ).pipe(
+      return ajaxGetWebResponse(api.GET_MEASUREMENTS_BY_PRODUCT, state$.value, [
+        {
+          key: 'productCategoryId',
+          value: `${action.payload}`,
+        },
+      ]).pipe(
         mergeMap((successResponse: any) => {
-          debugger;
           return successCommonEpicFlow(
             successResponse,
             [
-              // productCategoryActions.successGetAllProductCategory(
-              //   successResponse
-              // ),
+              productCategoryActions.successGetMeasurmentsByProduct(
+                successResponse
+              ),
               controlActions.disabledStatusBar(),
             ],
             action

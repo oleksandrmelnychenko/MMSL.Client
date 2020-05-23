@@ -337,7 +337,43 @@ export class ChooseOptions {
   constructor() {
     this.category = null;
     this.categoryId = null;
+    this.measurements = [];
   }
   category: ProductCategory | null;
   categoryId: number | null;
+  measurements: Measurement[];
+}
+
+export class Measurement extends EntityBaseNamed {
+  constructor() {
+    super();
+    this.measurementSizes = new MeasurementSizes();
+    this.measurementMapDefinitions = new measurementMapDefinitions();
+  }
+
+  measurementSizes: MeasurementSizes;
+  measurementMapDefinitions: measurementMapDefinitions;
+}
+
+export class measurementMapDefinitions extends EntityBaseNamed {
+  constructor() {
+    super();
+    this.measurementDefinition = new MeasurementDefinition();
+    this.measurementDefinitionId = 0;
+    this.measurementId = 0;
+  }
+  measurementDefinition: MeasurementDefinition;
+  measurementDefinitionId: number;
+  measurementId: number;
+}
+
+export class MeasurementDefinition extends EntityBaseNamed {
+  constructor() {
+    super();
+  }
+}
+export class MeasurementSizes extends EntityBaseNamed {
+  constructor() {
+    super();
+  }
 }

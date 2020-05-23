@@ -9,7 +9,7 @@ import { detailsListStyle } from '../../../common/fabric-styles/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
 import * as controlActions from '../../../redux/actions/control.actions';
-
+import * as productCategoryActions from '../../../redux/actions/productCategory.actions';
 const MeasurementsList: React.FC = () => {
   const dispatch = useDispatch();
 
@@ -17,8 +17,19 @@ const MeasurementsList: React.FC = () => {
     (state) => state.control.isGlobalShimmerActive
   );
 
+  const chooseProductCategoryID = useSelector<IApplicationState, number | null>(
+    (state) => state.product.choose.categoryId
+  );
+
   useEffect(() => {
     dispatch(controlActions.showGlobalShimmer());
+    if (chooseProductCategoryID) {
+      dispatch(
+        productCategoryActions.apiGetMeasurementsByProduct(
+          chooseProductCategoryID
+        )
+      );
+    }
 
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps

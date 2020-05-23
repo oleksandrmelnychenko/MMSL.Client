@@ -54,4 +54,10 @@ export const productReducer = createReducer(new ProductState(), (builder) =>
     .addCase(actions.chooseProductCategory, (state, action) => {
       state.choose.category = action.payload;
     })
+    .addCase(actions.setChooseProductCategoryId, (state, action) => {
+      state.choose.categoryId = action.payload;
+    })
+    .addCase(actions.successGetMeasurmentsByProduct, (state, action) => {
+      state.choose.measurements = action.payload;
+    })
 );

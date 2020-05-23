@@ -39,10 +39,14 @@ export const changeTargetSingeleManagingProduct = createAction<ProductCategory |
   types.CHANGE_TARGET_SINGELE_MANAGING_PRODUCT
 );
 
-export const apiGetMeasurementsByProduct = createAction(
+export const apiGetMeasurementsByProduct = createAction<number>(
   types.API_GET_MEASUREMENTS_BY_PRODUCT
 );
 
 export const successGetMeasurmentsByProduct = createAction<any>(
   types.SUCCESS_GET_MEASUREMENTS_BY_PRODUCT
+);
+
+export const setChooseProductCategoryId = createAction<number>(
+  types.SET_CHOOSE_PRODUCT_CATEGORY_ID
 );
