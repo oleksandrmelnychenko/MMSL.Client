@@ -28,7 +28,7 @@ const ProductManagementPanel: React.FC = () => {
     {
       title: 'Details',
       className: 'management__btn-detail',
-      componentType: ProductManagingPanelComponent.ProductManaging,
+      componentType: ProductManagingPanelComponent.ProductCategoryDetails,
     },
     {
       title: 'Measurements',
@@ -52,15 +52,23 @@ const ProductManagementPanel: React.FC = () => {
         <Label
           key={index}
           styles={labelStyle}
-          className={false ? 'selected' : ''}>
+          className={false ? 'selected' : ''}
+        >
           <PrimaryButton
             styles={btnMenuStyle}
             className={item.className}
-            onClick={
-              ProductManagingPanelComponent.ProductMeasurement
-                ? redirectToMeasurements
-                : () => {}
-            }
+            onClick={() => {
+              if (
+                item.componentType ===
+                ProductManagingPanelComponent.ProductCategoryDetails
+              ) {
+                dispatch(
+                  productCategoryAction.changeManagingPanelContent(
+                    ProductManagingPanelComponent.ProductCategoryDetails
+                  )
+                );
+              }
+            }}
             allowDisabledFocus
           />
           {item.title}

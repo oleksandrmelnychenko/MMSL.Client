@@ -12,7 +12,6 @@ import { Text } from 'office-ui-fabric-react/lib/Text';
 import './product-category.scss';
 import * as controlAction from '../../redux/actions/control.actions';
 import * as productCategoryActions from '../../redux/actions/productCategory.actions';
-
 import { IApplicationState } from '../../redux/reducers/index';
 import { ProductCategory } from '../../interfaces';
 import {
@@ -119,14 +118,25 @@ const ProductCategories: React.FC = () => {
                   const className: any = args?.target?.className;
 
                   if (!className.includes(DATA_SELECTION_DISABLED_CLASS)) {
-                    dispatch(
-                      productCategoryAction.chooseProductCategory(category)
+                    let action = assignPendingActions(
+                      productCategoryActions.apiGetProductCategoryById(
+                        category.id
+                      ),
+                      [],
+                      [],
+                      (args: any) => {
+                        dispatch(
+                          productCategoryAction.chooseProductCategory(category)
+                        );
+                        dispatch(
+                          controlAction.openInfoPanelWithComponent(
+                            ProductManagementPanel
+                          )
+                        );
+                      }
                     );
-                    dispatch(
-                      controlAction.openInfoPanelWithComponent(
-                        ProductManagementPanel
-                      )
-                    );
+
+                    dispatch(action);
                   }
                 }}
                 tokens={cardTokens}>

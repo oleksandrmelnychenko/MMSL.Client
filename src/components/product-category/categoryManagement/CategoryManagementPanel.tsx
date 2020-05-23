@@ -15,6 +15,7 @@ import { ProductManagingPanelComponent } from '../../../redux/reducers/productCa
 import * as productCategoryActions from '../../../redux/actions/productCategory.actions';
 import ProductCategoryForm from './ProductCategoryForm';
 import { assignPendingActions } from '../../../helpers/action.helper';
+import ProductCategoryDetails from './ProductCategoryDetails';
 
 export const CategoryManagementPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -64,6 +65,11 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
     IApplicationState,
     ProductCategory | null
   >((state) => state.product.manageSingleProductState.targetProductCategory);
+
+  const targetProductCategoryForDetails: ProductCategory | null = useSelector<
+    IApplicationState,
+    ProductCategory | null
+  >((state) => state.product.chooseCategory);
 
   switch (panelContent) {
     case ProductManagingPanelComponent.ProductManaging:
@@ -129,8 +135,16 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
       );
 
       break;
-    case ProductManagingPanelComponent.Unknown:
-      content = null;
+    case ProductManagingPanelComponent.ProductCategoryDetails:
+      panelTitleText = 'Manage Option Groups';
+      panelDescription = targetProductCategoryForDetails
+        ? targetProductCategoryForDetails.name
+        : '';
+      panelWidth = 700;
+
+      hideAddEditPanelActions(actionItems);
+
+      content = <ProductCategoryDetails />;
       break;
     default:
       content = null;
