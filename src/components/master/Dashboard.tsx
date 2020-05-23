@@ -32,7 +32,6 @@ const Dashboard: React.FC = () => {
   const location = useLocation();
 
   const dismissPanelInfo = () => {
-    dispatch(dealerActions.setSelectedDealer(null));
     dispatch(controlAction.closeInfoPanelWithComponent());
   };
 

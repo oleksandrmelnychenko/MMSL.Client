@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Label, PrimaryButton } from 'office-ui-fabric-react';
 
-import * as customerActions from '../../../redux/actions/customer.actions';
+import * as productCategoryAction from '../../../redux/actions/productCategory.actions';
 import { ToggleDealerPanelWithDetails } from '../../../redux/reducers/dealer.reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { ProductManagingPanelComponent } from '../../../redux/reducers/productCategory.reducer';
+import { PanelInfo } from '../../../redux/reducers/control.reducer';
 
 export interface IProductMenuItem {
   title: string;
@@ -18,10 +19,11 @@ export interface IProductMenuItem {
 const ProductManagementPanel: React.FC = () => {
   const dispatch = useDispatch();
 
-  const isOpenPanelWithDealerDetails = useSelector<
-    IApplicationState,
-    ToggleDealerPanelWithDetails
-  >((state) => state.dealer.isOpenPanelWithDealerDetails);
+  useEffect(() => {
+    return () => {
+      dispatch(productCategoryAction.chooseProductCategory(null));
+    };
+  }, []);
 
   const menuItem: IProductMenuItem[] = [
     {
@@ -63,9 +65,7 @@ const ProductManagementPanel: React.FC = () => {
         <Label
           key={index}
           styles={labelStyle}
-          className={`${
-            item.isSelected && isOpenPanelWithDealerDetails ? 'selected' : ''
-          }`}>
+          className={false ? 'selected' : ''}>
           <PrimaryButton
             styles={btnMenuStyle}
             className={item.className}
