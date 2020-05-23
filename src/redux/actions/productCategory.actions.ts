@@ -18,10 +18,11 @@ export const apiAddNewProductCategory = createAction<ProductCategory>(
 export const apiDeleteProductCategory = createAction<number>(
   types.API_DELETE_PRODUCT_CATEGORY
 );
-// TODO add type
-// export const successGetAllProductCategory = createAction<ProductCategory[]>(
-//   types.SUCCESS_GET_ALL_PRODUCT_CATEGORY
-// );
+
 export const changeManagingPanelContent = createAction<ProductManagingPanelComponent | null>(
   types.CHANGE_MANAGING_PANEL_CONTENT
+);
+
+export const chooseProductCategory = createAction<ProductCategory | null>(
+  types.CHOOSE_PRODUCT_CATEGORY
 );

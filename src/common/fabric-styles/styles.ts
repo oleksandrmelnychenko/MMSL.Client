@@ -1,4 +1,9 @@
-import { FontWeights } from 'office-ui-fabric-react';
+import { FontWeights, ITextStyles } from 'office-ui-fabric-react';
+import {
+  ICardSectionTokens,
+  ICardSectionStyles,
+  ICardTokens,
+} from '@uifabric/react-cards';
 
 export const panelStyle = {
   main: {
@@ -87,7 +92,7 @@ export const labelStyle = {
   root: {
     width: '90px',
     paddingBottom: '20px',
-    fontSize: '14px',
+    fontSize: '12px',
     lineHeight: '14px',
     textAlign: 'center',
     'font-weight': 400,
@@ -196,4 +201,36 @@ export const btnStyle = {
     marginTop: '20px',
     float: 'right',
   },
+};
+
+export const backgroundImageCardSectionTokens: ICardSectionTokens = {
+  padding: 12,
+};
+export const textStyles: ITextStyles = {
+  root: {
+    color: '#505050',
+    fontWeight: 400,
+    position: 'absolute',
+    bottom: '-30px',
+  },
+};
+
+export const footerCardSectionStyles: ICardSectionStyles = {
+  root: {
+    paddingLeft: '12px',
+    paddingRight: '12px',
+    paddingBottom: '5px',
+    borderTop: '1px solid #F3F2F1',
+  },
+};
+
+export const footerCardSectionTokens: ICardSectionTokens = {
+  padding: '12px 0px 0px',
+};
+
+export const cardTokens: ICardTokens = {
+  childrenGap: '12px',
+  maxWidth: '200px',
+  maxHeight: '200px',
+  height: '200px',
 };
