@@ -60,6 +60,12 @@ const ManagementOptions: React.FC = () => {
   };
 
   useEffect(() => {
+    return () => {
+      dispatch(dealerAction.setSelectedDealer(null));
+    };
+  }, []);
+
+  useEffect(() => {
     changeSelectedMenuItem(isOpenPanelWithDealerDetails.componentType);
   }, [isOpenPanelWithDealerDetails]);
 

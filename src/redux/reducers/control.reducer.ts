@@ -65,7 +65,6 @@ export const controlReducer = createReducer(defaultControlState, (builder) =>
       state.panelInfo.componentInPanelInfo = action.payload;
     })
     .addCase(actions.closeInfoPanelWithComponent, (state) => {
-      debugger;
       state.isCollapseMenu = false;
       state.panelInfo.isOpenPanelInfo = false;
       state.panelInfo.componentInPanelInfo = null;
