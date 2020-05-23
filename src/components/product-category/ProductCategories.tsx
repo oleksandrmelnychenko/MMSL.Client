@@ -32,6 +32,8 @@ import { ProductManagingPanelComponent } from '../../redux/reducers/productCateg
 import { assignPendingActions } from '../../helpers/action.helper';
 import ProductManagementPanel from './options/ProductManagementPanel';
 
+export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
+
 const ProductCategories: React.FC = () => {
   const dispatch = useDispatch();
 
@@ -97,7 +99,8 @@ const ProductCategories: React.FC = () => {
                         )
                       );
                     }}
-                    iconProps={{ iconName: 'Add' }}>
+                    iconProps={{ iconName: 'Add' }}
+                  >
                     New Category
                   </ActionButton>
                 </div>
@@ -112,17 +115,22 @@ const ProductCategories: React.FC = () => {
             <div key={category.id} style={{ margin: '12px' }}>
               <Card
                 className={chooseCategory?.id === category.id ? `selected` : ''}
-                onClick={() => {
-                  dispatch(
-                    productCategoryAction.chooseProductCategory(category)
-                  );
-                  dispatch(
-                    controlAction.openInfoPanelWithComponent(
-                      ProductManagementPanel
-                    )
-                  );
+                onClick={(args: any) => {
+                  const className: any = args?.target?.className;
+
+                  if (!className.includes(DATA_SELECTION_DISABLED_CLASS)) {
+                    dispatch(
+                      productCategoryAction.chooseProductCategory(category)
+                    );
+                    dispatch(
+                      controlAction.openInfoPanelWithComponent(
+                        ProductManagementPanel
+                      )
+                    );
+                  }
                 }}
-                tokens={cardTokens}>
+                tokens={cardTokens}
+              >
                 <Card.Section
                   fill
                   verticalAlign="end"
@@ -139,23 +147,29 @@ const ProductCategories: React.FC = () => {
                       alignItems: 'center',
                     },
                   }}
-                  tokens={backgroundImageCardSectionTokens}>
+                  tokens={backgroundImageCardSectionTokens}
+                >
                   <Text
                     className="category_name"
                     variant="large"
-                    styles={textStyles}>
+                    styles={textStyles}
+                  >
                     {category.name}
                   </Text>
                 </Card.Section>
                 <Card.Section
                   horizontal
                   styles={footerCardSectionStyles}
-                  tokens={footerCardSectionTokens}>
+                  tokens={footerCardSectionTokens}
+                >
                   <Stack.Item grow={1}>
                     <span />
                   </Stack.Item>
                   <Icon
-                    iconName="Edit"
+                    className={DATA_SELECTION_DISABLED_CLASS}
+                    iconName="SingleColumnEdit"
+                    title="Edit"
+                    ariaLabel="Edit"
                     styles={{
                       root: {
                         color: '#0078d4',
@@ -163,9 +177,34 @@ const ProductCategories: React.FC = () => {
                         marginRight: '5px',
                       },
                     }}
+                    onClick={() => {
+                      let action = assignPendingActions(
+                        productCategoryActions.apiGetProductCategoryById(
+                          category.id
+                        ),
+                        [
+                          productCategoryActions.changeManagingPanelContent(
+                            ProductManagingPanelComponent.EditSingleProduct
+                          ),
+                        ],
+                        [],
+                        (args: any) => {
+                          dispatch(
+                            productCategoryActions.changeTargetSingeleManagingProduct(
+                              args
+                            )
+                          );
+                        }
+                      );
+
+                      dispatch(action);
+                    }}
                   />
                   <Icon
+                    className={DATA_SELECTION_DISABLED_CLASS}
                     iconName="Delete"
+                    title="Delete"
+                    ariaLabel="Delete"
                     styles={{
                       root: {
                         color: '#a4262c',

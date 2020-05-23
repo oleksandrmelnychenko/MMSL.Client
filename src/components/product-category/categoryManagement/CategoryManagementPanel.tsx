@@ -27,8 +27,8 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
 
   const [isDirtyForm, setIsDirtyForm] = useState(false);
 
-  let panelTitleText = 'Management Panel';
-  let panelDescription = 'Description';
+  let panelTitleText = '';
+  let panelDescription = '';
   let panelWidth: number = 600;
   let content: any = '';
 
@@ -60,6 +60,11 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
     ProductManagingPanelComponent | null
   >((state) => state.product.productManagementPanelState.panelContent);
 
+  const singleProductForEdit: ProductCategory | null = useSelector<
+    IApplicationState,
+    ProductCategory | null
+  >((state) => state.product.manageSingleProductState.targetProductCategory);
+
   switch (panelContent) {
     case ProductManagingPanelComponent.ProductManaging:
       panelTitleText = 'New Product Category';
@@ -89,6 +94,41 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
         />
       );
       break;
+    case ProductManagingPanelComponent.EditSingleProduct:
+      panelTitleText = 'Details';
+      panelDescription = singleProductForEdit ? singleProductForEdit.name : '';
+      panelWidth = 400;
+
+      hideAddEditPanelActions(actionItems);
+
+      content = (
+        <ProductCategoryForm
+          formikReference={formikReference}
+          productCategory={singleProductForEdit}
+          submitAction={(args: any) => {
+            let action = assignPendingActions(
+              productCategoryActions.apiUpdateProductCategory(args),
+              [],
+              [],
+              (args: any) => {
+                dispatch(
+                  productCategoryActions.changeManagingPanelContent(null)
+                );
+                dispatch(
+                  productCategoryActions.changeTargetSingeleManagingProduct(
+                    null
+                  )
+                );
+                dispatch(productCategoryActions.apiGetAllProductCategory());
+              }
+            );
+
+            dispatch(action);
+          }}
+        />
+      );
+
+      break;
     case ProductManagingPanelComponent.Unknown:
       content = null;
       break;
@@ -106,17 +146,23 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
         customWidth={`${panelWidth}px`}
         onOuterClick={() => {}}
         onDismiss={() => {
-          /// TODO:
-
           dispatch(productCategoryActions.changeManagingPanelContent(null));
+          dispatch(
+            productCategoryActions.changeTargetSingeleManagingProduct(null)
+          );
         }}
         closeButtonAriaLabel="Close"
       >
-        <PanelTitle title={panelTitleText} description={panelDescription} />
+        {panelContent !== null &&
+        panelContent !== ProductManagingPanelComponent.Unknown ? (
+          <>
+            <PanelTitle title={panelTitleText} description={panelDescription} />
 
-        <CommonManagementActionBar actionItems={actionItems} />
+            <CommonManagementActionBar actionItems={actionItems} />
 
-        {content}
+            {content}
+          </>
+        ) : null}
       </Panel>
     </div>
   );

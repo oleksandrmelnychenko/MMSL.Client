@@ -15,6 +15,10 @@ export const apiAddNewProductCategory = createAction<ProductCategory>(
   types.API_ADD_NEW_PRODUCT_CATEGORY
 );
 
+export const apiUpdateProductCategory = createAction<ProductCategory>(
+  types.API_UPDATE_PRODUCT_CATEGORY
+);
+
 export const apiDeleteProductCategory = createAction<number>(
   types.API_DELETE_PRODUCT_CATEGORY
 );
@@ -25,4 +29,12 @@ export const changeManagingPanelContent = createAction<ProductManagingPanelCompo
 
 export const chooseProductCategory = createAction<ProductCategory | null>(
   types.CHOOSE_PRODUCT_CATEGORY
+);
+
+export const apiGetProductCategoryById = createAction<number>(
+  types.API_GET_PRODUCT_CATEGORY_BY_ID
+);
+
+export const changeTargetSingeleManagingProduct = createAction<ProductCategory | null>(
+  types.CHANGE_TARGET_SINGELE_MANAGING_PRODUCT
 );
