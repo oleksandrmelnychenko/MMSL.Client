@@ -6,10 +6,11 @@ export class ProductState {
   constructor() {
     this.productCategory = [];
     this.productManagementPanelState = new ProductManagementPanelState();
+    this.chooseCategory = null;
     this.manageSingleProductState = new ManageSingleProductState();
   }
   productCategory: ProductCategory[];
-
+  chooseCategory: ProductCategory | null;
   productManagementPanelState: ProductManagementPanelState;
   manageSingleProductState: ManageSingleProductState;
 }
@@ -17,6 +18,8 @@ export class ProductState {
 export enum ProductManagingPanelComponent {
   Unknown,
   ProductManaging,
+  ProductMeasurement,
+  ProductTimeLine,
   EditSingleProduct,
 }
 
@@ -46,5 +49,8 @@ export const productReducer = createReducer(new ProductState(), (builder) =>
     })
     .addCase(actions.changeTargetSingeleManagingProduct, (state, action) => {
       state.manageSingleProductState.targetProductCategory = action.payload;
+    })
+    .addCase(actions.chooseProductCategory, (state, action) => {
+      state.chooseCategory = action.payload;
     })
 );

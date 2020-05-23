@@ -1,6 +1,7 @@
 import { GroupItemVisualState } from './viewModels/index';
 import { CommonDialogState } from '../redux/reducers/control.reducer';
 import { DealerDetilsComponents } from '../redux/reducers/dealer.reducer';
+import { ProductManagingPanelComponent } from '../redux/reducers/productCategory.reducer';
 
 export interface IUserInfo {
   userIdentityId: number;
@@ -59,7 +60,7 @@ export interface ImenuItem {
   title: string;
   className: string;
   componentType: DealerDetilsComponents;
-  isSelected: boolean;
+  isSelected?: boolean;
 }
 
 export class EntityBaseNamed extends EntityBase {

@@ -7,21 +7,22 @@ import {
   Icon,
   ScrollablePane,
 } from 'office-ui-fabric-react';
-import {
-  Card,
-  ICardTokens,
-  ICardSectionStyles,
-  ICardSectionTokens,
-} from '@uifabric/react-cards';
-import { Text, ITextStyles } from 'office-ui-fabric-react/lib/Text';
+import { Card } from '@uifabric/react-cards';
+import { Text } from 'office-ui-fabric-react/lib/Text';
 import './product-category.scss';
 import * as controlAction from '../../redux/actions/control.actions';
-// Import IMG
 import * as productCategoryActions from '../../redux/actions/productCategory.actions';
-import productImage from '../../assets/images/product/shirt.jpg';
+
 import { IApplicationState } from '../../redux/reducers/index';
 import { ProductCategory } from '../../interfaces';
-import { scrollablePaneStyleForDetailList } from '../../common/fabric-styles/styles';
+import {
+  scrollablePaneStyleForDetailList,
+  backgroundImageCardSectionTokens,
+  footerCardSectionStyles,
+  footerCardSectionTokens,
+  textStyles,
+  cardTokens,
+} from '../../common/fabric-styles/styles';
 import {
   DialogArgs,
   CommonDialogType,
@@ -29,23 +30,24 @@ import {
 import CategoryManagementPanel from './categoryManagement/CategoryManagementPanel';
 import { ProductManagingPanelComponent } from '../../redux/reducers/productCategory.reducer';
 import { assignPendingActions } from '../../helpers/action.helper';
+import ProductManagementPanel from './options/ProductManagementPanel';
 
 const ProductCategories: React.FC = () => {
-  const cardTokens: ICardTokens = {
-    childrenGap: '12px',
-    maxWidth: '200px',
-    maxHeight: '200px',
-    height: '200px',
-  };
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(productCategoryAction.apiGetAllProductCategory());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      dispatch(productCategoryAction.chooseProductCategory(null));
+    };
   }, []);
 
   const categories = useSelector<IApplicationState, ProductCategory[]>(
     (state) => state.product.productCategory
+  );
+
+  const chooseCategory = useSelector<IApplicationState, ProductCategory | null>(
+    (state) => state.product.chooseCategory
   );
 
   const deleteProductCategory = (
@@ -77,29 +79,6 @@ const ProductCategories: React.FC = () => {
     );
   };
 
-  const backgroundImageCardSectionTokens: ICardSectionTokens = { padding: 12 };
-  const textStyles: ITextStyles = {
-    root: {
-      color: '#505050',
-      fontWeight: 400,
-      position: 'absolute',
-      bottom: '-30px',
-    },
-  };
-
-  const footerCardSectionStyles: ICardSectionStyles = {
-    root: {
-      paddingLeft: '12px',
-      paddingRight: '12px',
-      paddingBottom: '5px',
-      borderTop: '1px solid #F3F2F1',
-    },
-  };
-
-  const footerCardSectionTokens: ICardSectionTokens = {
-    padding: '12px 0px 0px',
-  };
-
   return (
     <div className="content__root">
       <div className="content__header">
@@ -118,8 +97,7 @@ const ProductCategories: React.FC = () => {
                         )
                       );
                     }}
-                    iconProps={{ iconName: 'Add' }}
-                  >
+                    iconProps={{ iconName: 'Add' }}>
                     New Category
                   </ActionButton>
                 </div>
@@ -133,11 +111,18 @@ const ProductCategories: React.FC = () => {
           {categories.map((category) => (
             <div key={category.id} style={{ margin: '12px' }}>
               <Card
+                className={chooseCategory?.id === category.id ? `selected` : ''}
                 onClick={() => {
-                  console.log('ACTION');
+                  dispatch(
+                    productCategoryAction.chooseProductCategory(category)
+                  );
+                  dispatch(
+                    controlAction.openInfoPanelWithComponent(
+                      ProductManagementPanel
+                    )
+                  );
                 }}
-                tokens={cardTokens}
-              >
+                tokens={cardTokens}>
                 <Card.Section
                   fill
                   verticalAlign="end"
@@ -154,31 +139,21 @@ const ProductCategories: React.FC = () => {
                       alignItems: 'center',
                     },
                   }}
-                  tokens={backgroundImageCardSectionTokens}
-                >
-                  <Text variant="large" styles={textStyles}>
+                  tokens={backgroundImageCardSectionTokens}>
+                  <Text
+                    className="category_name"
+                    variant="large"
+                    styles={textStyles}>
                     {category.name}
                   </Text>
                 </Card.Section>
                 <Card.Section
                   horizontal
                   styles={footerCardSectionStyles}
-                  tokens={footerCardSectionTokens}
-                >
-                  <Icon
-                    styles={{
-                      root: {
-                        color: '#0078d4',
-                        marginLeft: '5px',
-                        marginRight: '5px',
-                      },
-                    }}
-                    iconName="Design"
-                    onClick={(event: any) => {
-                      event.stopPropagation();
-                      console.log('ICON ACTION');
-                    }}
-                  />
+                  tokens={footerCardSectionTokens}>
+                  <Stack.Item grow={1}>
+                    <span />
+                  </Stack.Item>
                   <Icon
                     iconName="SingleColumnEdit"
                     title="Edit"
@@ -213,19 +188,6 @@ const ProductCategories: React.FC = () => {
                       dispatch(action);
                     }}
                   />
-                  <Icon
-                    iconName="Timeline"
-                    styles={{
-                      root: {
-                        color: '#0078d4',
-                        marginLeft: '5px',
-                        marginRight: '5px',
-                      },
-                    }}
-                  />
-                  <Stack.Item grow={1}>
-                    <span />
-                  </Stack.Item>
                   <Icon
                     iconName="Delete"
                     title="Delete"
