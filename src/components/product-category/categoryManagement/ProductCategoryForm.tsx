@@ -60,7 +60,8 @@ const initDefaultValues = (sourceEntity?: ProductCategory | null) => {
   if (sourceEntity) {
     initValues.name = sourceEntity.name;
     initValues.description = sourceEntity.description;
-    initValues.imageFile = sourceEntity.imageUrl;
+    initValues.imageUrl = sourceEntity.imageUrl;
+    initValues.imageFile = sourceEntity.imageBlob;
 
     if (initValues.imageUrl && initValues.imageUrl.length > 0) {
       initValues.isRemovingImage = true;

@@ -41,6 +41,7 @@ const ProductCategories: React.FC = () => {
 
   useEffect(() => {
     dispatch(productCategoryAction.apiGetAllProductCategory());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const categories = useSelector<IApplicationState, ProductCategory[]>(
@@ -179,13 +180,37 @@ const ProductCategories: React.FC = () => {
                     }}
                   />
                   <Icon
-                    iconName="Edit"
+                    iconName="SingleColumnEdit"
+                    title="Edit"
+                    ariaLabel="Edit"
                     styles={{
                       root: {
                         color: '#0078d4',
                         marginLeft: '5px',
                         marginRight: '5px',
                       },
+                    }}
+                    onClick={() => {
+                      let action = assignPendingActions(
+                        productCategoryActions.apiGetProductCategoryById(
+                          category.id
+                        ),
+                        [
+                          productCategoryActions.changeManagingPanelContent(
+                            ProductManagingPanelComponent.EditSingleProduct
+                          ),
+                        ],
+                        [],
+                        (args: any) => {
+                          dispatch(
+                            productCategoryActions.changeTargetSingeleManagingProduct(
+                              args
+                            )
+                          );
+                        }
+                      );
+
+                      dispatch(action);
                     }}
                   />
                   <Icon
@@ -203,6 +228,8 @@ const ProductCategories: React.FC = () => {
                   </Stack.Item>
                   <Icon
                     iconName="Delete"
+                    title="Delete"
+                    ariaLabel="Delete"
                     styles={{
                       root: {
                         color: '#a4262c',

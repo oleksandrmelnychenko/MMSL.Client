@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   DetailsList,
   IColumn,
-  Text,
   Selection,
-  MarqueeSelection,
   IDragDropContext,
   mergeStyles,
   getTheme,

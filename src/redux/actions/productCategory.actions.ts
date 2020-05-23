@@ -15,13 +15,27 @@ export const apiAddNewProductCategory = createAction<ProductCategory>(
   types.API_ADD_NEW_PRODUCT_CATEGORY
 );
 
+export const apiUpdateProductCategory = createAction<ProductCategory>(
+  types.API_UPDATE_PRODUCT_CATEGORY
+);
+
 export const apiDeleteProductCategory = createAction<number>(
   types.API_DELETE_PRODUCT_CATEGORY
 );
+
 // TODO add type
 // export const successGetAllProductCategory = createAction<ProductCategory[]>(
 //   types.SUCCESS_GET_ALL_PRODUCT_CATEGORY
 // );
+
 export const changeManagingPanelContent = createAction<ProductManagingPanelComponent | null>(
   types.CHANGE_MANAGING_PANEL_CONTENT
+);
+
+export const apiGetProductCategoryById = createAction<number>(
+  types.API_GET_PRODUCT_CATEGORY_BY_ID
+);
+
+export const changeTargetSingeleManagingProduct = createAction<ProductCategory | null>(
+  types.CHANGE_TARGET_SINGELE_MANAGING_PRODUCT
 );
