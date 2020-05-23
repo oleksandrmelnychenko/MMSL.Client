@@ -37,6 +37,8 @@ export const DELETE_OPTION_UNIT_BY_ID = '/options/units/delete';
 export const GET_OPTION_UNIT_BY_ID = '/options/units/get';
 
 export const GET_ALL_PRODUCT_CATEGORY = '/product/category/get/all';
+export const GET_PRODUCT_CATEGORY_BY_ID =
+  '/product/category/get/product/category';
 export const ADD_PRODUCT_CATEGORY = '/product/category/new/product/category';
 export const UPDATE_PRODUCT_CATEGORY =
   '/product/category/update/product/category';

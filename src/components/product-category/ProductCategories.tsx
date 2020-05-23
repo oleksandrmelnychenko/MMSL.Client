@@ -119,14 +119,25 @@ const ProductCategories: React.FC = () => {
                   const className: any = args?.target?.className;
 
                   if (!className.includes(DATA_SELECTION_DISABLED_CLASS)) {
-                    dispatch(
-                      productCategoryAction.chooseProductCategory(category)
+                    let action = assignPendingActions(
+                      productCategoryActions.apiGetProductCategoryById(
+                        category.id
+                      ),
+                      [],
+                      [],
+                      (args: any) => {
+                        dispatch(
+                          productCategoryAction.chooseProductCategory(category)
+                        );
+                        dispatch(
+                          controlAction.openInfoPanelWithComponent(
+                            ProductManagementPanel
+                          )
+                        );
+                      }
                     );
-                    dispatch(
-                      controlAction.openInfoPanelWithComponent(
-                        ProductManagementPanel
-                      )
-                    );
+
+                    dispatch(action);
                   }
                 }}
                 tokens={cardTokens}

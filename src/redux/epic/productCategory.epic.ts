@@ -272,25 +272,13 @@ export const apiGetProductCategoryByIdEpic = (
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
-      return ajaxGetWebResponse(
-        api.GET_ALL_PRODUCT_CATEGORY,
-        state$.value,
-        []
-      ).pipe(
+      return ajaxGetWebResponse(api.GET_PRODUCT_CATEGORY_BY_ID, state$.value, [
+        { key: `productCategoryId`, value: `${action.payload}` },
+      ]).pipe(
         mergeMap((successResponse: any) => {
-          /// TODO: ask Seronya to make (get by id api)
-          /// very important!!!
-
           return successCommonEpicFlow(
-            new List<EntityBase>(successResponse).firstOrDefault(
-              (item) => item.id === action.payload
-            ),
-            [
-              productCategoryActions.successGetAllProductCategory(
-                successResponse
-              ),
-              controlActions.disabledStatusBar(),
-            ],
+            successResponse,
+            [controlActions.disabledStatusBar()],
             action
           );
         }),
