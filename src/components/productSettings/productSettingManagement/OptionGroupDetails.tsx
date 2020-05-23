@@ -39,7 +39,15 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(productSettingsActions.getAllOptionGroupsList());
+    let action = assignPendingActions(
+      productSettingsActions.getAllOptionGroupsList(),
+      [],
+      [],
+      (args: any) => {
+        dispatch(productSettingsActions.updateOptionGroupList(args));
+      }
+    );
+    dispatch(action);
   }, [dispatch]);
 
   const sectedOptionUnit: OptionUnit | null = useSelector<
@@ -85,12 +93,25 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
                     sectedOptionUnit.id
                   ),
                   [
-                    productSettingsActions.getAllOptionGroupsList(),
                     productSettingsActions.changeTargetOptionunit(null),
                     productSettingsActions.toggleOptionUnitFormVisibility(
                       false
                     ),
-                  ]
+                  ],
+                  [],
+                  (args: any) => {
+                    let action = assignPendingActions(
+                      productSettingsActions.getAllOptionGroupsList(),
+                      [],
+                      [],
+                      (args: any) => {
+                        dispatch(
+                          productSettingsActions.updateOptionGroupList(args)
+                        );
+                      }
+                    );
+                    dispatch(action);
+                  }
                 );
                 dispatch(action);
               },
@@ -134,7 +155,6 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
                       let action = assignPendingActions(
                         productSettingsActions.updateOptionUnit(args),
                         [
-                          productSettingsActions.getAllOptionGroupsList(),
                           productSettingsActions.changeTargetOptionunit(null),
                           productSettingsActions.toggleOptionUnitFormVisibility(
                             false
@@ -142,6 +162,20 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
                         ],
                         [],
                         (successResponseArgs: any) => {
+                          let action = assignPendingActions(
+                            productSettingsActions.getAllOptionGroupsList(),
+                            [],
+                            [],
+                            (args: any) => {
+                              dispatch(
+                                productSettingsActions.updateOptionGroupList(
+                                  args
+                                )
+                              );
+                            }
+                          );
+                          dispatch(action);
+
                           props.formikReference.formik.resetForm();
                         }
                       );
@@ -151,7 +185,6 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
                       let action = assignPendingActions(
                         productSettingsActions.saveNewOptionUnit(args),
                         [
-                          productSettingsActions.getAllOptionGroupsList(),
                           productSettingsActions.changeTargetOptionunit(null),
                           productSettingsActions.toggleOptionUnitFormVisibility(
                             false
@@ -159,6 +192,20 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
                         ],
                         [],
                         (successResponseArgs: any) => {
+                          let action = assignPendingActions(
+                            productSettingsActions.getAllOptionGroupsList(),
+                            [],
+                            [],
+                            (args: any) => {
+                              dispatch(
+                                productSettingsActions.updateOptionGroupList(
+                                  args
+                                )
+                              );
+                            }
+                          );
+                          dispatch(action);
+
                           props.formikReference.formik.resetForm();
                         }
                       );

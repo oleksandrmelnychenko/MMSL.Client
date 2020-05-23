@@ -315,6 +315,21 @@ export class FormicReference {
   isDirtyFunc?: (isDirty: boolean) => void;
 }
 
+export class ProductCategoryMapOptionGroup extends EntityBase {
+  constructor() {
+    super();
+
+    this.productCategoryId = 0;
+    this.optionGroupId = 0;
+  }
+
+  productCategoryId: number;
+  productCategory: ProductCategory | null | undefined;
+
+  optionGroupId: number;
+  optionGroup: OptionGroup | null | undefined;
+}
+
 export class ProductCategory extends EntityBaseNamed {
   constructor() {
     super();
@@ -328,7 +343,7 @@ export class ProductCategory extends EntityBaseNamed {
 
   imageUrl: string;
   measurements: null;
-  optionGroupMaps: OptionGroup[];
+  optionGroupMaps: ProductCategoryMapOptionGroup[];
 
   /// This field is used for just added (not saved) image files. Actual saved image source is provided through `imageUrl`.
   imageBlob: any;

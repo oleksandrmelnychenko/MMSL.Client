@@ -166,10 +166,7 @@ export const getAllOptionGroupsListEpic = (action$: AnyAction, state$: any) => {
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
-            [
-              productSettingsActions.updateOptionGroupList(successResponse),
-              controlActions.disabledStatusBar(),
-            ],
+            [controlActions.disabledStatusBar()],
             action
           );
         }),

@@ -56,7 +56,17 @@ export const ProductSettingsList: React.FC = () => {
   >((state) => state.productSettings.manageSingleOptionUnitState.optionUnit);
 
   useEffect(() => {
-    dispatch(productSettingsActions.getAllOptionGroupsList());
+    let action = assignPendingActions(
+      productSettingsActions.getAllOptionGroupsList(),
+      [],
+      [],
+      (args: any) => {
+        dispatch(productSettingsActions.updateOptionGroupList(args));
+      },
+      (args: any) => {}
+    );
+
+    dispatch(action);
   }, [dispatch]);
 
   useEffect(() => {
@@ -122,7 +132,23 @@ export const ProductSettingsList: React.FC = () => {
                       () => {
                         let action = assignPendingActions(
                           productSettingsActions.deleteOptionUnitById(item.id),
-                          [productSettingsActions.getAllOptionGroupsList()]
+                          [],
+                          [],
+                          (args: any) => {
+                            let action = assignPendingActions(
+                              productSettingsActions.getAllOptionGroupsList(),
+                              [],
+                              [],
+                              (args: any) => {
+                                dispatch(
+                                  productSettingsActions.updateOptionGroupList(
+                                    args
+                                  )
+                                );
+                              }
+                            );
+                            dispatch(action);
+                          }
                         );
                         dispatch(action);
                       },
@@ -321,9 +347,23 @@ export const ProductSettingsList: React.FC = () => {
                                           productSettingsActions.deleteOptionGroupById(
                                             props.group.key
                                           ),
-                                          [
-                                            productSettingsActions.getAllOptionGroupsList(),
-                                          ]
+                                          [],
+                                          [],
+                                          (args: any) => {
+                                            let action = assignPendingActions(
+                                              productSettingsActions.getAllOptionGroupsList(),
+                                              [],
+                                              [],
+                                              (args: any) => {
+                                                dispatch(
+                                                  productSettingsActions.updateOptionGroupList(
+                                                    args
+                                                  )
+                                                );
+                                              }
+                                            );
+                                            dispatch(action);
+                                          }
                                         );
                                         dispatch(action);
                                       },
