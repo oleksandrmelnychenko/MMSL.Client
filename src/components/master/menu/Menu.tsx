@@ -64,7 +64,7 @@ const Menu: React.FC = () => {
     {
       title: 'Product Category',
       className: 'product',
-      link: `/${languageCode}/app/product-category`,
+      link: `/${languageCode}/app/product/product-categories`,
     },
     {
       title: 'Settings',
