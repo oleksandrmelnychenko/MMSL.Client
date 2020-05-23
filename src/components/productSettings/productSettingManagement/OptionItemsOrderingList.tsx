@@ -135,7 +135,21 @@ export const OptionItemsOrderingList: React.FC = () => {
                     })
                     .toArray()
                 ),
-                [productSettingsActions.getAllOptionGroupsList()]
+                [],
+                [],
+                (args: any) => {
+                  let action = assignPendingActions(
+                    productSettingsActions.getAllOptionGroupsList(),
+                    [],
+                    [],
+                    (args: any) => {
+                      dispatch(
+                        productSettingsActions.updateOptionGroupList(args)
+                      );
+                    }
+                  );
+                  dispatch(action);
+                }
               );
               dispatch(action);
             }

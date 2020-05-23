@@ -93,10 +93,19 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
         submitAction={(args: any) => {
           let createAction = assignPendingActions(
             productSettingsActions.saveNewOptionGroup(args),
-            [
-              productSettingsActions.managingPanelContent(null),
-              productSettingsActions.getAllOptionGroupsList(),
-            ]
+            [productSettingsActions.managingPanelContent(null)],
+            [],
+            (args: any) => {
+              let action = assignPendingActions(
+                productSettingsActions.getAllOptionGroupsList(),
+                [],
+                [],
+                (args: any) => {
+                  dispatch(productSettingsActions.updateOptionGroupList(args));
+                }
+              );
+              dispatch(action);
+            }
           );
           dispatch(createAction);
 
@@ -141,13 +150,22 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
           let action = assignPendingActions(
             productSettingsActions.updateOptionUnit(args),
             [
-              productSettingsActions.getAllOptionGroupsList(),
               productSettingsActions.changeTargetOptionGroupForUnitsEdit(null),
               productSettingsActions.managingPanelContent(null),
             ],
             [],
             (args: any) => {
               dispatch(productSettingsActions.updateSingleEditOptionUnit(null));
+
+              let action = assignPendingActions(
+                productSettingsActions.getAllOptionGroupsList(),
+                [],
+                [],
+                (args: any) => {
+                  dispatch(productSettingsActions.updateOptionGroupList(args));
+                }
+              );
+              dispatch(action);
             }
           );
 
@@ -173,12 +191,21 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
             [],
             [],
             () => {
-              dispatch(productSettingsActions.getAllOptionGroupsList());
               formikReference.formik.resetForm();
               dispatch(productSettingsActions.managingPanelContent(null));
               dispatch(
                 productSettingsActions.updateTargetSingleEditOptionGroup(null)
               );
+
+              let action = assignPendingActions(
+                productSettingsActions.getAllOptionGroupsList(),
+                [],
+                [],
+                (args: any) => {
+                  dispatch(productSettingsActions.updateOptionGroupList(args));
+                }
+              );
+              dispatch(action);
             }
           );
           dispatch(createAction);
