@@ -142,6 +142,8 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
         : '';
       panelWidth = 700;
 
+      hideAddEditPanelActions(actionItems);
+
       content = <ProductCategoryDetails />;
       break;
     default:

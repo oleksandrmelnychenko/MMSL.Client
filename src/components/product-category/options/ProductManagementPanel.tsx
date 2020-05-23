@@ -32,7 +32,6 @@ const ProductManagementPanel: React.FC = () => {
       title: 'Details',
       className: 'management__btn-detail',
       componentType: ProductManagingPanelComponent.ProductCategoryDetails,
-      isSelected: false,
     },
     {
       title: 'Measurements',
