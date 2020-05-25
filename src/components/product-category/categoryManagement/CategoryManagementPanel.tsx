@@ -45,17 +45,19 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
 
   let panelTitleText = '';
   let panelDescription = '';
-  let panelWidth: number = 600;
+  let panelWidth: number = 0;
   let content: any = '';
 
   const actionItems = buildCommonActionItems();
   actionItems.forEach((item) => {
     if (item.key === SAVE_PANEL_ITEM_NAME) {
       item.onClick = () => {
-        let formik: any = formikReference.formik;
-
-        if (formik !== undefined && formik !== null) {
-          formik.submitForm();
+        debugger;
+        if (
+          formikReference.formik !== undefined &&
+          formikReference.formik !== null
+        ) {
+          formikReference.formik.submitForm();
         }
       };
 
