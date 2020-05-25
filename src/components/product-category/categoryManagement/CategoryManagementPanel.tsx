@@ -138,7 +138,7 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
       panelDescription = targetProductCategoryForDetails
         ? targetProductCategoryForDetails.name
         : '';
-      panelWidth = 700;
+      panelWidth = 1000;
 
       hideAddEditPanelActions(actionItems);
 
