@@ -16,6 +16,7 @@ import {
   MeasurementSize,
 } from '../../../interfaces';
 import { List } from 'linq-typescript';
+import { useHistory } from 'react-router-dom';
 
 const MeasurementsList: React.FC = () => {
   const dispatch = useDispatch();
@@ -32,9 +33,21 @@ const MeasurementsList: React.FC = () => {
     (state) => state.product.choose.measurements
   );
 
+  const categoryId = useSelector<IApplicationState, number | null>(
+    (state) => state.product.choose.categoryId
+  );
+
   const [columnsHeader, setColumnsHeader] = useState<IColumn[]>([]);
 
   const [listItemSizes, setListItemSizes] = useState<any[]>([]);
+
+  const history = useHistory();
+
+  useEffect(() => {
+    if (!categoryId) {
+      history.push('/en/app/product/product-categories');
+    }
+  }, [categoryId]);
 
   useEffect(() => {
     dispatch(controlActions.showGlobalShimmer());
