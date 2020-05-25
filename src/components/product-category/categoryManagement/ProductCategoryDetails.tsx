@@ -196,6 +196,27 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
               ? 'productCategoryDetails__groupItem selected'
               : 'productCategoryDetails__groupItem'
           }
+          onClick={() => {
+            if (
+              GroupSelectionSource.Assigned !== groupSelection?.selectionSource
+            ) {
+              setgroupSelection({
+                groupId: item.id,
+                groupName: item.name,
+                selectionSource: GroupSelectionSource.Assigned,
+                optionUnits: item.optionUnits,
+              });
+            } else {
+              if (item.id !== groupSelection?.groupId) {
+                setgroupSelection({
+                  groupId: item.id,
+                  groupName: item.name,
+                  selectionSource: GroupSelectionSource.Assigned,
+                  optionUnits: item.optionUnits,
+                });
+              }
+            }
+          }}
         >
           <Stack horizontal tokens={{ childrenGap: 10 }}>
             <Label
@@ -204,28 +225,6 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                   cursor: 'pointer',
                   fontWeight: 400,
                 },
-              }}
-              onClick={() => {
-                if (
-                  GroupSelectionSource.Assigned !==
-                  groupSelection?.selectionSource
-                ) {
-                  setgroupSelection({
-                    groupId: item.id,
-                    groupName: item.name,
-                    selectionSource: GroupSelectionSource.Assigned,
-                    optionUnits: item.optionUnits,
-                  });
-                } else {
-                  if (item.id !== groupSelection?.groupId) {
-                    setgroupSelection({
-                      groupId: item.id,
-                      groupName: item.name,
-                      selectionSource: GroupSelectionSource.Assigned,
-                      optionUnits: item.optionUnits,
-                    });
-                  }
-                }
               }}
             >{`${item.name}`}</Label>{' '}
             <TooltipHost
@@ -286,6 +285,27 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
               ? 'productCategoryDetails__groupItem selected'
               : 'productCategoryDetails__groupItem'
           }
+          onClick={() => {
+            if (
+              GroupSelectionSource.Probable !== groupSelection?.selectionSource
+            ) {
+              setgroupSelection({
+                groupId: item.id,
+                groupName: item.name,
+                selectionSource: GroupSelectionSource.Probable,
+                optionUnits: item.optionUnits,
+              });
+            } else {
+              if (item.id !== groupSelection?.groupId) {
+                setgroupSelection({
+                  groupId: item.id,
+                  groupName: item.name,
+                  selectionSource: GroupSelectionSource.Probable,
+                  optionUnits: item.optionUnits,
+                });
+              }
+            }
+          }}
         >
           <Stack horizontal tokens={{ childrenGap: 10 }}>
             <Checkbox
@@ -312,29 +332,6 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                         cursor: 'pointer',
                         fontWeight: 400,
                       },
-                    }}
-                    onClick={() => {
-                      debugger;
-                      if (
-                        GroupSelectionSource.Probable !==
-                        groupSelection?.selectionSource
-                      ) {
-                        setgroupSelection({
-                          groupId: item.id,
-                          groupName: item.name,
-                          selectionSource: GroupSelectionSource.Probable,
-                          optionUnits: item.optionUnits,
-                        });
-                      } else {
-                        if (item.id !== groupSelection?.groupId) {
-                          setgroupSelection({
-                            groupId: item.id,
-                            groupName: item.name,
-                            selectionSource: GroupSelectionSource.Probable,
-                            optionUnits: item.optionUnits,
-                          });
-                        }
-                      }
                     }}
                   >{`${item.name}`}</Label>
                 </Stack.Item>
@@ -522,7 +519,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                   groupSelection.optionUnits.length > 0 ? (
                     new List<OptionUnit>(groupSelection.optionUnits)
                       .select((item: OptionUnit) => (
-                        <UnitRowItem optionUnit={item} />
+                        <UnitRowItem key={item.id} optionUnit={item} />
                       ))
                       .toArray()
                   ) : (
