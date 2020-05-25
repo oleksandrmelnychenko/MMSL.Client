@@ -189,8 +189,8 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
             groupSelection &&
             groupSelection.selectionSource === GroupSelectionSource.Assigned &&
             groupSelection.groupId === item.id
-              ? 'productCategoryDetails__groupItem__selected'
-              : ''
+              ? 'productCategoryDetails__groupItem selected'
+              : 'productCategoryDetails__groupItem'
           }
         >
           <Stack horizontal tokens={{ childrenGap: 10 }}>
@@ -275,7 +275,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
             groupSelection.selectionSource === GroupSelectionSource.Probable &&
             groupSelection.groupId === item.id
               ? 'productCategoryDetails__groupItem__selected'
-              : ''
+              : 'productCategoryDetails__groupItem'
           }
         >
           <Stack tokens={{ childrenGap: 1 }}>
@@ -434,9 +434,9 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
         horizontalAlign="space-between"
         tokens={{ childrenGap: 20 }}
       >
-        <Stack.Item grow={1}>
+        <Stack.Item grow={1} styles={{ root: { maxWidth: '33%' } }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
-            <div className={'dealer__stores'} data-is-scrollable={true}>
+            <div data-is-scrollable={true}>
               <Separator alignContent="start">Assigned groups</Separator>
 
               {targetProductCategory && targetProductCategory.optionGroupMaps
@@ -455,7 +455,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
           </FocusZone>
         </Stack.Item>
 
-        <Stack.Item grow={1}>
+        <Stack.Item grow={1} styles={{ root: { maxWidth: '33%' } }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
               <Separator alignContent="start">Option Groups</Separator>
@@ -472,7 +472,10 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
           </FocusZone>
         </Stack.Item>
 
-        <Stack.Item grow={3}>
+        <Stack.Item
+          grow={3}
+          styles={{ root: { maxWidth: '33%', minWidth: '33%' } }}
+        >
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
               <Separator alignContent="start">Group units</Separator>
