@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import { Label, PrimaryButton } from 'office-ui-fabric-react';
 import * as productCategoryAction from '../../../redux/actions/productCategory.actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { ProductManagingPanelComponent } from '../../../redux/reducers/productCategory.reducer';
 import { useHistory } from 'react-router-dom';
+import { IApplicationState } from '../../../redux/reducers/index';
+import { ProductCategory } from '../../../interfaces';
 
 export interface IProductMenuItem {
   title: string;
@@ -16,6 +18,10 @@ export interface IProductMenuItem {
 const ProductManagementPanel: React.FC = () => {
   const dispatch = useDispatch();
   let history = useHistory();
+
+  const choseCategory = useSelector<IApplicationState, ProductCategory | null>(
+    (state) => state.product.choose.category
+  );
 
   useEffect(() => {
     return () => {
@@ -43,6 +49,9 @@ const ProductManagementPanel: React.FC = () => {
   ];
 
   const redirectToMeasurements = () => {
+    dispatch(
+      productCategoryAction.setChooseProductCategoryId(choseCategory!.id)
+    );
     history.push('/en/app/product/measurements');
   };
 
@@ -52,8 +61,7 @@ const ProductManagementPanel: React.FC = () => {
         <Label
           key={index}
           styles={labelStyle}
-          className={false ? 'selected' : ''}
-        >
+          className={false ? 'selected' : ''}>
           <PrimaryButton
             styles={btnMenuStyle}
             className={item.className}
@@ -67,6 +75,11 @@ const ProductManagementPanel: React.FC = () => {
                     ProductManagingPanelComponent.ProductCategoryDetails
                   )
                 );
+              } else if (
+                item.componentType ===
+                ProductManagingPanelComponent.ProductMeasurement
+              ) {
+                redirectToMeasurements();
               }
             }}
             allowDisabledFocus
