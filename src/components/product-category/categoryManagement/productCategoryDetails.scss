@@ -1,11 +1,12 @@
 .productCategoryDetails {
     &__groupItem {
-        padding-top: 10px;
+        padding-top: 6px;
         padding-left: 10px;
         padding-right: 10px;
-        padding-bottom: 10px;
+        padding-bottom: 6px;
         position: relative;
         border-left: 3px solid transparent;
+        border-bottom: 1px solid #edebe9;
 
         &.selected {
             border-left: 3px solid #0078d4;

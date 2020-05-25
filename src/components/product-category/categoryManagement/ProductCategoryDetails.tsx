@@ -11,6 +11,8 @@ import {
   TooltipDelay,
   DirectionalHint,
   Checkbox,
+  IFontWeight,
+  StackItem,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
@@ -94,11 +96,13 @@ export enum GroupSelectionSource {
 export class GroupSelection {
   constructor() {
     this.groupId = 0;
+    this.groupName = '';
     this.selectionSource = GroupSelectionSource.Assigned;
     this.optionUnits = [];
   }
 
   groupId: number;
+  groupName: string;
   optionUnits: OptionUnit[];
   selectionSource: GroupSelectionSource;
 }
@@ -198,29 +202,32 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
               styles={{
                 root: {
                   cursor: 'pointer',
+                  fontWeight: 400,
                 },
               }}
               onClick={() => {
-                if (item.id !== groupSelection?.groupId) {
+                if (
+                  GroupSelectionSource.Assigned !==
+                  groupSelection?.selectionSource
+                ) {
                   setgroupSelection({
                     groupId: item.id,
+                    groupName: item.name,
                     selectionSource: GroupSelectionSource.Assigned,
                     optionUnits: item.optionUnits,
                   });
                 } else {
-                  if (
-                    GroupSelectionSource.Assigned !==
-                    groupSelection?.selectionSource
-                  ) {
+                  if (item.id !== groupSelection?.groupId) {
                     setgroupSelection({
                       groupId: item.id,
+                      groupName: item.name,
                       selectionSource: GroupSelectionSource.Assigned,
                       optionUnits: item.optionUnits,
                     });
                   }
                 }
               }}
-            >{`Name: ${item.name}`}</Label>{' '}
+            >{`${item.name}`}</Label>{' '}
             <TooltipHost
               id={`mandatoryTooltip_${key}`}
               calloutProps={{ gapSpace: 0 }}
@@ -232,6 +239,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
               <FontIcon
                 style={{
                   cursor: 'default',
+                  marginTop: '2px',
                 }}
                 iconName="Warning"
                 className={mergeStyles({
@@ -270,72 +278,18 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
       result = (
         <div
           key={key}
+          style={{ height: '50px' }}
           className={
             groupSelection &&
             groupSelection.selectionSource === GroupSelectionSource.Probable &&
             groupSelection.groupId === item.id
-              ? 'productCategoryDetails__groupItem__selected'
+              ? 'productCategoryDetails__groupItem selected'
               : 'productCategoryDetails__groupItem'
           }
         >
-          <Stack tokens={{ childrenGap: 1 }}>
-            <Stack horizontal tokens={{ childrenGap: 10 }}>
-              <Label
-                styles={{
-                  root: {
-                    cursor: 'pointer',
-                  },
-                }}
-                onClick={() => {
-                  if (item.id !== groupSelection?.groupId) {
-                    setgroupSelection({
-                      groupId: item.id,
-                      selectionSource: GroupSelectionSource.Probable,
-                      optionUnits: item.optionUnits,
-                    });
-                  } else {
-                    if (
-                      GroupSelectionSource.Assigned !==
-                      groupSelection?.selectionSource
-                    ) {
-                      setgroupSelection({
-                        groupId: item.id,
-                        selectionSource: GroupSelectionSource.Probable,
-                        optionUnits: item.optionUnits,
-                      });
-                    }
-                  }
-                }}
-              >{`Name: ${item.name}`}</Label>{' '}
-              <TooltipHost
-                id={`mandatoryTooltip_${key}`}
-                calloutProps={{ gapSpace: 0 }}
-                delay={TooltipDelay.zero}
-                directionalHint={DirectionalHint.bottomCenter}
-                styles={{ root: { display: 'inline-block' } }}
-                content={item.isMandatory ? 'Mandatory' : 'Not mandatory'}
-              >
-                <FontIcon
-                  style={{
-                    cursor: 'default',
-                  }}
-                  iconName="Warning"
-                  className={mergeStyles({
-                    fontSize: 16,
-                    color: mandatoryColor,
-                  })}
-                />
-              </TooltipHost>
-              <div style={{ color: 'Red' }}>
-                {vm?.itemAdditionState === ItemAdditionState.NoChanges
-                  ? ''
-                  : vm?.itemAdditionState === ItemAdditionState.WillBeAdded
-                  ? 'Add'
-                  : 'Remove'}
-              </div>
-            </Stack>
-
+          <Stack horizontal tokens={{ childrenGap: 10 }}>
             <Checkbox
+              styles={{ root: { marginTop: '5px' } }}
               onChange={(eventArgs?: any, isChecked?: boolean) => {
                 const vmItem = new List(groupItemVMs).firstOrDefault(
                   (vm) => vm.groupId === item.id
@@ -346,9 +300,90 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                   setGroupItemVMs(new List(groupItemVMs).toArray());
                 }
               }}
-              label="Is assigned"
               checked={isWasAttachedBefore}
             />
+
+            <Stack>
+              <Stack horizontal tokens={{ childrenGap: 10 }}>
+                <Stack.Item>
+                  <Label
+                    styles={{
+                      root: {
+                        cursor: 'pointer',
+                        fontWeight: 400,
+                      },
+                    }}
+                    onClick={() => {
+                      debugger;
+                      if (
+                        GroupSelectionSource.Probable !==
+                        groupSelection?.selectionSource
+                      ) {
+                        setgroupSelection({
+                          groupId: item.id,
+                          groupName: item.name,
+                          selectionSource: GroupSelectionSource.Probable,
+                          optionUnits: item.optionUnits,
+                        });
+                      } else {
+                        if (item.id !== groupSelection?.groupId) {
+                          setgroupSelection({
+                            groupId: item.id,
+                            groupName: item.name,
+                            selectionSource: GroupSelectionSource.Probable,
+                            optionUnits: item.optionUnits,
+                          });
+                        }
+                      }
+                    }}
+                  >{`${item.name}`}</Label>
+                </Stack.Item>
+
+                <Stack.Item>
+                  <TooltipHost
+                    id={`mandatoryTooltip_${key}`}
+                    calloutProps={{ gapSpace: 0 }}
+                    delay={TooltipDelay.zero}
+                    directionalHint={DirectionalHint.bottomCenter}
+                    styles={{ root: { display: 'inline-block' } }}
+                    content={item.isMandatory ? 'Mandatory' : 'Not mandatory'}
+                  >
+                    <FontIcon
+                      style={{
+                        cursor: 'default',
+                        marginTop: '2px',
+                      }}
+                      iconName="Warning"
+                      className={mergeStyles({
+                        fontSize: 16,
+                        color: mandatoryColor,
+                      })}
+                    />
+                  </TooltipHost>
+                </Stack.Item>
+              </Stack>
+
+              <Stack.Item
+                styles={{ root: { position: 'relative', top: '-7px' } }}
+              >
+                <Label
+                  styles={{
+                    root: {
+                      padding: 0,
+                      fontWeight: 400,
+                      fontSize: '12px',
+                      color: '#a19f9d',
+                    },
+                  }}
+                >
+                  {vm?.itemAdditionState === ItemAdditionState.NoChanges
+                    ? ''
+                    : vm?.itemAdditionState === ItemAdditionState.WillBeAdded
+                    ? 'Add'
+                    : 'Remove'}
+                </Label>
+              </Stack.Item>
+            </Stack>
           </Stack>
         </div>
       );
@@ -426,7 +461,6 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
     dirty: false,
   };
 
-  // styles={{ root: { maxWidth: '49%' } }}
   return (
     <div className="productCategoryDetails">
       <Stack
@@ -459,7 +493,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
               <Separator alignContent="start">Option Groups</Separator>
-              <Stack tokens={{ childrenGap: 9 }}>
+              <Stack tokens={{ childrenGap: 0 }}>
                 {allOptionGroups.length > 0
                   ? new List<OptionGroup>(allOptionGroups)
                       .select((item: OptionGroup) =>
@@ -478,18 +512,45 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
         >
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
-              <Separator alignContent="start">Group units</Separator>
-              <Stack tokens={{ childrenGap: 9 }}>
-                {groupSelection &&
-                groupSelection.optionUnits &&
-                groupSelection.optionUnits.length > 0
-                  ? new List<OptionUnit>(groupSelection.optionUnits)
+              <Separator alignContent="start">
+                {groupSelection
+                  ? `${groupSelection.groupName} group units`
+                  : `Group units`}
+              </Separator>
+              <Stack tokens={{ childrenGap: 12 }}>
+                {groupSelection ? (
+                  groupSelection.optionUnits.length > 0 ? (
+                    new List<OptionUnit>(groupSelection.optionUnits)
                       .select((item: OptionUnit) => (
                         <UnitRowItem optionUnit={item} />
                       ))
                       .toArray()
-                  : 'No option groups'}
-                {/* {'No option units'} */}
+                  ) : (
+                    <Label
+                      styles={{
+                        root: {
+                          fontWeight: 400,
+                          fontSize: '12px',
+                          color: '#a19f9d',
+                        },
+                      }}
+                    >
+                      {'There are no units'}
+                    </Label>
+                  )
+                ) : (
+                  <Label
+                    styles={{
+                      root: {
+                        fontWeight: 400,
+                        fontSize: '12px',
+                        color: '#a19f9d',
+                      },
+                    }}
+                  >
+                    {'Select group and explore units'}
+                  </Label>
+                )}
               </Stack>
             </div>
           </FocusZone>
