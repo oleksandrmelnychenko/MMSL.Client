@@ -127,4 +127,20 @@ main.collapse {
             background: url('../../assets/images/dealers/Customer.svg') no-repeat;
         }
     }
+
+    &__btn-measurements {
+        background: url('../../assets/images/menu-icons/ruler.svg') no-repeat;
+
+        &:hover {
+            background: url('../../assets/images/menu-icons/ruler_hover.svg') no-repeat;
+        }
+    }
+
+    &__btn-timeline {
+        background: url('../../assets/images/dealers/stopwatch.svg') no-repeat;
+
+        &:hover {
+            background: url('../../assets/images/dealers/stopwatch_hover.svg') no-repeat;
+        }
+    }
 }
