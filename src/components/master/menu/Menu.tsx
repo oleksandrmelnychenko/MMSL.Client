@@ -6,6 +6,7 @@ import * as controlActions from '../../../redux/actions/control.actions';
 import './menu.scss';
 import { IApplicationState } from '../../../redux/reducers';
 import { LocalizeState, getActiveLanguage } from 'react-localize-redux';
+import * as productSettingsActions from '../../../redux/actions/productSettings.actions';
 
 interface IMenuItem {
   title: string;
@@ -23,6 +24,7 @@ const Menu: React.FC = () => {
   const onMenuClick = () => {
     dispatch(dealerActions.setSelectedDealer(null));
     dispatch(controlActions.closeInfoPanelWithComponent());
+    dispatch(productSettingsActions.updateSearchWordOptionGroup(''));
   };
 
   const menuItem: IMenuItem[] = [
@@ -89,7 +91,8 @@ const Menu: React.FC = () => {
               }}
               className={`menu__link ${item.className}`}
               to={item.link}
-              activeClassName="active">
+              activeClassName="active"
+            >
               {item.title}
             </NavLink>
           </li>
