@@ -39,12 +39,12 @@ const ProductManagementPanel: React.FC = () => {
     },
     {
       title: 'Measurements',
-      className: 'management__btn-detail',
+      className: 'management__btn-measurements',
       componentType: ProductManagingPanelComponent.ProductMeasurement,
     },
     {
       title: 'Timeline',
-      className: 'management__btn-detail',
+      className: 'management__btn-timeline',
       componentType: ProductManagingPanelComponent.ProductTimeLine,
     },
   ];
