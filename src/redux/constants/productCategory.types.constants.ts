@@ -33,3 +33,7 @@ export const SET_CHOOSE_PRODUCT_CATEGORY_ID =
 
 export const UPDATE_OPTIONGROUPS_LIST =
   'product.productCategoryDetails.UPDATE_OPTIONGROUPS_LIST';
+export const API_SAVE_UPDATED_PRODUCT_GROUPS =
+  'product.API.productCategoryDetails.API_SAVE_UPDATED_PRODUCT_GROUPS';
+export const TOGGLE_IS_DETAILSFORM_DISABLED =
+  'product.productCategoryDetails.TOGGLE_IS_DETAILSFORM_DISABLED';

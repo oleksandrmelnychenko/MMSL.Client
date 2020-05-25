@@ -127,7 +127,7 @@ const ProductCategories: React.FC = () => {
                       [],
                       (args: any) => {
                         dispatch(
-                          productCategoryAction.chooseProductCategory(category)
+                          productCategoryAction.chooseProductCategory(args)
                         );
                         dispatch(
                           controlAction.openInfoPanelWithComponent(

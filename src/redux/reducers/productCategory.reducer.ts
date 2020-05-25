@@ -46,8 +46,10 @@ export class ManageSingleProductState {
 export class ProductCategoryDetailsManagingState {
   constructor() {
     this.allOptionGroups = [];
+    this.isDisabled = false;
   }
 
+  isDisabled: boolean;
   allOptionGroups: OptionGroup[];
 }
 
@@ -74,5 +76,8 @@ export const productReducer = createReducer(new ProductState(), (builder) =>
     .addCase(actions.updateOptiongroupsList, (state, action) => {
       state.productCategoryDetailsManagingState.allOptionGroups =
         action.payload;
+    })
+    .addCase(actions.toggleIsDetailsformDisabled, (state, action) => {
+      state.productCategoryDetailsManagingState.isDisabled = action.payload;
     })
 );

@@ -42,6 +42,8 @@ export const GET_PRODUCT_CATEGORY_BY_ID =
 export const ADD_PRODUCT_CATEGORY = '/product/category/new/product/category';
 export const UPDATE_PRODUCT_CATEGORY =
   '/product/category/update/product/category';
+export const UPDATE_PRODUCT_CATEGORY_GROUPS_LIST =
+  '/product/category/update/product/category/option/group';
 export const DELETE_PRODUCT_CATEGORY =
   '/product/category/delete/product/category';
 

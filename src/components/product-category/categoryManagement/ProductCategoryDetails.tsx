@@ -18,13 +18,12 @@ import {
   ProductCategory,
   OptionGroup,
   ProductCategoryMapOptionGroup,
+  FormicReference,
 } from '../../../interfaces';
 import { List } from 'linq-typescript';
 import * as productSettingsActions from '../../../redux/actions/productSettings.actions';
 import * as productCategoryActions from '../../../redux/actions/productCategory.actions';
 import { assignPendingActions } from '../../../helpers/action.helper';
-
-class ProductCategoryDetailsProps {}
 
 const resolveIsWasAddedBefore = (
   groupId: number,
@@ -56,6 +55,7 @@ export class GroupItemViewModel {
   }
 
   private _isCheckedInit: boolean;
+
   groupId: number;
   isChecked: boolean;
   itemAdditionState: ItemAdditionState;
@@ -73,12 +73,26 @@ export class GroupItemViewModel {
   };
 }
 
+export class ProductCategoryDetailsProps {
+  constructor() {
+    this.formikReference = new FormicReference();
+    this.submitAction = (args: any) => {};
+  }
+
+  formikReference: FormicReference;
+  submitAction: (args: any) => void;
+}
+
 export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
   props: ProductCategoryDetailsProps
 ) => {
   const dispatch = useDispatch();
 
   const [groupItemVMs, setGroupItemVMs] = useState<GroupItemViewModel[]>([]);
+
+  const isDetailsDisabled: boolean = useSelector<IApplicationState, boolean>(
+    (state) => state.product.productCategoryDetailsManagingState.isDisabled
+  );
 
   const targetProductCategory: ProductCategory | null | undefined = useSelector<
     IApplicationState,
@@ -124,6 +138,18 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
     }
   }, [targetProductCategory, allOptionGroups, setGroupItemVMs]);
 
+  useEffect(() => {
+    if (props.formikReference && props.formikReference.isDirtyFunc) {
+      props.formikReference.formik.dirty = new List(groupItemVMs).any(
+        (item) => item.itemAdditionState !== ItemAdditionState.NoChanges
+      );
+
+      props.formikReference.isDirtyFunc(
+        props.formikReference.formik.dirty && !isDetailsDisabled
+      );
+    }
+  }, [groupItemVMs, allOptionGroups, props.formikReference, isDetailsDisabled]);
+
   const renderCommonGroupItem = (
     item: OptionGroup | null | undefined,
     key: number | null | undefined
@@ -134,7 +160,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
       let mandatoryColor = item.isMandatory ? '#2b579a' : '#2b579a60';
 
       result = (
-        <Stack horizontal tokens={{ childrenGap: 10 }}>
+        <Stack key={key} horizontal tokens={{ childrenGap: 10 }}>
           <Label>{`Name: ${item.name}`}</Label>{' '}
           <TooltipHost
             id={`mandatoryTooltip_${key}`}
@@ -182,7 +208,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
       }
 
       result = (
-        <Stack tokens={{ childrenGap: 1 }}>
+        <Stack key={key} tokens={{ childrenGap: 1 }}>
           <Stack horizontal tokens={{ childrenGap: 10 }}>
             <Label>{`Name: ${item.name}`}</Label>{' '}
             <TooltipHost
@@ -234,12 +260,82 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
     return result;
   };
 
+  props.formikReference.formik = {
+    submitForm: () => {
+      if (
+        !isDetailsDisabled &&
+        targetProductCategory &&
+        targetProductCategory.measurements
+      ) {
+        const affectedMaps = new List(groupItemVMs)
+          .where(
+            (item) => item.itemAdditionState !== ItemAdditionState.NoChanges
+          )
+          .select((item) => {
+            let result: ProductCategoryMapOptionGroup = new ProductCategoryMapOptionGroup();
+
+            if (item.itemAdditionState === ItemAdditionState.WillBeAdded) {
+              result.productCategoryId = targetProductCategory.id;
+              result.optionGroupId = item.groupId;
+            } else if (
+              item.itemAdditionState === ItemAdditionState.WillBeRemoved
+            ) {
+              const mapToRemove = new List(
+                targetProductCategory.optionGroupMaps
+              ).firstOrDefault((map) => map.optionGroupId === item.groupId);
+
+              if (mapToRemove) {
+                mapToRemove.isDeleted = true;
+                result = mapToRemove;
+              } else {
+                /// TODO: unhandled case
+                console.log('Unknown option group map');
+              }
+            } else {
+              /// TODO: unhandled case
+              console.log('Unknown option group map');
+            }
+
+            return result;
+          })
+          .toArray();
+
+        props.submitAction(affectedMaps);
+      }
+    },
+    resetForm: () => {
+      if (
+        !isDetailsDisabled &&
+        targetProductCategory &&
+        targetProductCategory.optionGroupMaps
+      ) {
+        setGroupItemVMs(
+          new List(allOptionGroups)
+            .select<GroupItemViewModel>((group: OptionGroup) => {
+              let result = new GroupItemViewModel(
+                group.id,
+                resolveIsWasAddedBefore(
+                  group.id,
+                  targetProductCategory.optionGroupMaps
+                )
+              );
+
+              return result;
+            })
+            .toArray()
+        );
+      }
+    },
+    dirty: false,
+  };
+
   return (
     <div>
       <Stack
         horizontal
         horizontalAlign="space-between"
-        tokens={{ childrenGap: 20 }}>
+        tokens={{ childrenGap: 20 }}
+      >
         <Stack.Item grow={1} styles={{ root: { maxWidth: '49%' } }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>

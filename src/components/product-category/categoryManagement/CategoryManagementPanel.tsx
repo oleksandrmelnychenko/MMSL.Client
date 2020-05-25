@@ -28,6 +28,21 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
 
   const [isDirtyForm, setIsDirtyForm] = useState(false);
 
+  const panelContent: ProductManagingPanelComponent | null = useSelector<
+    IApplicationState,
+    ProductManagingPanelComponent | null
+  >((state) => state.product.productManagementPanelState.panelContent);
+
+  const singleProductForEdit: ProductCategory | null = useSelector<
+    IApplicationState,
+    ProductCategory | null
+  >((state) => state.product.manageSingleProductState.targetProductCategory);
+
+  const targetProductCategoryForDetails: ProductCategory | null = useSelector<
+    IApplicationState,
+    ProductCategory | null
+  >((state) => state.product.choose.category);
+
   let panelTitleText = '';
   let panelDescription = '';
   let panelWidth: number = 600;
@@ -44,9 +59,7 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
         }
       };
 
-      item.disabled = formikReference.formik
-        ? !formikReference.formik.dirty
-        : true;
+      item.disabled = !isDirtyForm;
     } else if (item.key === RESET_PANEL_ITEM_NAME) {
       item.onClick = () => {
         formikReference.formik.resetForm();
@@ -55,21 +68,6 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
       item.disabled = !isDirtyForm;
     }
   });
-
-  const panelContent: ProductManagingPanelComponent | null = useSelector<
-    IApplicationState,
-    ProductManagingPanelComponent | null
-  >((state) => state.product.productManagementPanelState.panelContent);
-
-  const singleProductForEdit: ProductCategory | null = useSelector<
-    IApplicationState,
-    ProductCategory | null
-  >((state) => state.product.manageSingleProductState.targetProductCategory);
-
-  const targetProductCategoryForDetails: ProductCategory | null = useSelector<
-    IApplicationState,
-    ProductCategory | null
-  >((state) => state.product.choose.category);
 
   switch (panelContent) {
     case ProductManagingPanelComponent.ProductManaging:
@@ -144,7 +142,42 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
 
       hideAddEditPanelActions(actionItems);
 
-      content = <ProductCategoryDetails />;
+      content = (
+        <ProductCategoryDetails
+          formikReference={formikReference}
+          submitAction={(args: any) => {
+            dispatch(productCategoryActions.toggleIsDetailsformDisabled(true));
+
+            let action = assignPendingActions(
+              productCategoryActions.apiSaveUpdatedProductGroups(args),
+              [productCategoryActions.apiGetAllProductCategory()],
+              [productCategoryActions.toggleIsDetailsformDisabled(false)],
+              (args: any) => {
+                if (targetProductCategoryForDetails) {
+                  let action = assignPendingActions(
+                    productCategoryActions.apiGetProductCategoryById(
+                      targetProductCategoryForDetails?.id
+                    ),
+                    [productCategoryActions.toggleIsDetailsformDisabled(false)],
+                    [productCategoryActions.toggleIsDetailsformDisabled(false)],
+                    (args: any) => {
+                      dispatch(
+                        productCategoryActions.chooseProductCategory(args)
+                      );
+                    },
+                    (args: any) => {}
+                  );
+
+                  dispatch(action);
+                }
+              },
+              (args: any) => {}
+            );
+
+            dispatch(action);
+          }}
+        />
+      );
       break;
     default:
       content = null;
@@ -164,8 +197,10 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
           dispatch(
             productCategoryActions.changeTargetSingeleManagingProduct(null)
           );
+          dispatch(productCategoryActions.updateOptiongroupsList([]));
         }}
-        closeButtonAriaLabel="Close">
+        closeButtonAriaLabel="Close"
+      >
         {panelContent !== null &&
         panelContent !== ProductManagingPanelComponent.Unknown ? (
           <>

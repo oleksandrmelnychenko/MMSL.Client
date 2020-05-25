@@ -54,3 +54,11 @@ export const setChooseProductCategoryId = createAction<number>(
 export const updateOptiongroupsList = createAction<OptionGroup[]>(
   types.UPDATE_OPTIONGROUPS_LIST
 );
+
+export const apiSaveUpdatedProductGroups = createAction<OptionGroup[]>(
+  types.API_SAVE_UPDATED_PRODUCT_GROUPS
+);
+
+export const toggleIsDetailsformDisabled = createAction<boolean>(
+  types.TOGGLE_IS_DETAILSFORM_DISABLED
+);
