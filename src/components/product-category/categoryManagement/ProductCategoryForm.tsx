@@ -98,7 +98,7 @@ export const ProductCategoryForm: React.FC<ProductCategoryFormProps> = (
           name: Yup.string()
             .min(3)
             .required(() => 'Name is required'),
-          description: Yup.string().nullable(),
+          description: Yup.string(),
           imageFile: Yup.object(),
           isRemovingImage: Yup.boolean(),
         })}
@@ -112,7 +112,6 @@ export const ProductCategoryForm: React.FC<ProductCategoryFormProps> = (
           );
         }}
         innerRef={(formik: any) => {
-          props.formikReference.formik = formik;
           if (formik) {
             if (props.formikReference.isDirtyFunc)
               props.formikReference.isDirtyFunc(formik.dirty);
@@ -122,6 +121,8 @@ export const ProductCategoryForm: React.FC<ProductCategoryFormProps> = (
         enableReinitialize={true}
       >
         {(formik) => {
+          props.formikReference.formik = formik;
+
           let thumbUrl: string = '';
           if (formik.values.isRemovingImage) {
             if (props.productCategory) {
