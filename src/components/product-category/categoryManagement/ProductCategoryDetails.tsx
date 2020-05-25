@@ -39,14 +39,38 @@ const resolveIsWasAddedBefore = (
     : false;
 };
 
+export enum ItemAdditionState {
+  NoChanges,
+  WillBeAdded,
+  WillBeRemoved,
+}
+
 export class GroupItemViewModel {
-  constructor(groupId: number) {
+  constructor(groupId: number, isCheckedInit: boolean) {
+    this._isCheckedInit = isCheckedInit;
+
     this.groupId = groupId;
-    this.isChecked = false;
+    this.isChecked = this._isCheckedInit;
+
+    this.itemAdditionState = ItemAdditionState.NoChanges;
   }
 
+  private _isCheckedInit: boolean;
   groupId: number;
   isChecked: boolean;
+  itemAdditionState: ItemAdditionState;
+
+  setIsChecked: (checkedValue: boolean) => void = (checkedValue: boolean) => {
+    this.isChecked = checkedValue;
+
+    if (this._isCheckedInit !== this.isChecked) {
+      if (this.isChecked)
+        this.itemAdditionState = ItemAdditionState.WillBeAdded;
+      else this.itemAdditionState = ItemAdditionState.WillBeRemoved;
+    } else {
+      this.itemAdditionState = ItemAdditionState.NoChanges;
+    }
+  };
 }
 
 export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
@@ -85,10 +109,12 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
       setGroupItemVMs(
         new List(allOptionGroups)
           .select<GroupItemViewModel>((group: OptionGroup) => {
-            let result = new GroupItemViewModel(group.id);
-            result.isChecked = resolveIsWasAddedBefore(
+            let result = new GroupItemViewModel(
               group.id,
-              targetProductCategory.optionGroupMaps
+              resolveIsWasAddedBefore(
+                group.id,
+                targetProductCategory.optionGroupMaps
+              )
             );
 
             return result;
@@ -178,6 +204,13 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                 })}
               />
             </TooltipHost>
+            <div style={{ color: 'Red' }}>
+              {vm?.itemAdditionState === ItemAdditionState.NoChanges
+                ? ''
+                : vm?.itemAdditionState === ItemAdditionState.WillBeAdded
+                ? 'Add'
+                : 'Remove'}
+            </div>
           </Stack>
 
           <Checkbox
@@ -187,8 +220,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
               );
 
               if (vmItem && isChecked !== undefined) {
-                vmItem.isChecked = isChecked;
-
+                vmItem.setIsChecked(isChecked);
                 setGroupItemVMs(new List(groupItemVMs).toArray());
               }
             }}
