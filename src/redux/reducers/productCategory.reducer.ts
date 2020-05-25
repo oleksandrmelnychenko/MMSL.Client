@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import * as actions from '../actions/productCategory.actions';
-import { ProductCategory, ChooseOptions } from '../../interfaces';
+import { ProductCategory, ChooseOptions, OptionGroup } from '../../interfaces';
 
 export class ProductState {
   constructor() {
@@ -8,11 +8,14 @@ export class ProductState {
     this.productManagementPanelState = new ProductManagementPanelState();
     this.choose = new ChooseOptions();
     this.manageSingleProductState = new ManageSingleProductState();
+    this.productCategoryDetailsManagingState = new ProductCategoryDetailsManagingState();
   }
+
   productCategory: ProductCategory[];
   choose: ChooseOptions;
   productManagementPanelState: ProductManagementPanelState;
   manageSingleProductState: ManageSingleProductState;
+  productCategoryDetailsManagingState: ProductCategoryDetailsManagingState;
 }
 
 export enum ProductManagingPanelComponent {
@@ -40,6 +43,14 @@ export class ManageSingleProductState {
   targetProductCategory: ProductCategory | null;
 }
 
+export class ProductCategoryDetailsManagingState {
+  constructor() {
+    this.allOptionGroups = [];
+  }
+
+  allOptionGroups: OptionGroup[];
+}
+
 export const productReducer = createReducer(new ProductState(), (builder) =>
   builder
     .addCase(actions.successGetAllProductCategory, (state, action) => {
@@ -53,5 +64,9 @@ export const productReducer = createReducer(new ProductState(), (builder) =>
     })
     .addCase(actions.chooseProductCategory, (state, action) => {
       state.choose.category = action.payload;
+    })
+    .addCase(actions.updateOptiongroupsList, (state, action) => {
+      state.productCategoryDetailsManagingState.allOptionGroups =
+        action.payload;
     })
 );

@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import * as types from '../constants/productCategory.types.constants';
-import { ProductCategory } from '../../interfaces/index';
+import { ProductCategory, OptionGroup } from '../../interfaces/index';
 import { ProductManagingPanelComponent } from '../reducers/productCategory.reducer';
 
 export const apiGetAllProductCategory = createAction(
@@ -45,4 +45,8 @@ export const apiGetMeasurementsByProduct = createAction(
 
 export const successGetMeasurmentsByProduct = createAction<any>(
   types.SUCCESS_GET_MEASUREMENTS_BY_PRODUCT
+);
+
+export const updateOptiongroupsList = createAction<OptionGroup[]>(
+  types.UPDATE_OPTIONGROUPS_LIST
 );
