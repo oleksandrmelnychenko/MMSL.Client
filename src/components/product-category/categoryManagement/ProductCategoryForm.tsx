@@ -59,7 +59,9 @@ const initDefaultValues = (sourceEntity?: ProductCategory | null) => {
 
   if (sourceEntity) {
     initValues.name = sourceEntity.name;
-    initValues.description = sourceEntity.description;
+    initValues.description = sourceEntity.description
+      ? sourceEntity.description
+      : '';
     initValues.imageUrl = sourceEntity.imageUrl;
     initValues.imageFile = sourceEntity.imageBlob;
 
@@ -96,8 +98,8 @@ export const ProductCategoryForm: React.FC<ProductCategoryFormProps> = (
           name: Yup.string()
             .min(3)
             .required(() => 'Name is required'),
-          description: Yup.string(),
-          imageFile: Yup.object().nullable(),
+          description: Yup.string().nullable(),
+          imageFile: Yup.object(),
           isRemovingImage: Yup.boolean(),
         })}
         initialValues={initValues}
