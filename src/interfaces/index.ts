@@ -362,12 +362,12 @@ export class ChooseOptions {
 export class Measurement extends EntityBaseNamed {
   constructor() {
     super();
-    this.measurementSizes = new MeasurementSizes();
-    this.measurementMapDefinitions = new measurementMapDefinitions();
+    this.measurementSizes = [];
+    this.measurementMapDefinitions = [];
   }
 
-  measurementSizes: MeasurementSizes;
-  measurementMapDefinitions: measurementMapDefinitions;
+  measurementSizes: MeasurementSize[];
+  measurementMapDefinitions: measurementMapDefinitions[];
 }
 
 export class measurementMapDefinitions extends EntityBaseNamed {
@@ -387,8 +387,30 @@ export class MeasurementDefinition extends EntityBaseNamed {
     super();
   }
 }
-export class MeasurementSizes extends EntityBaseNamed {
+export class MeasurementSize extends EntityBaseNamed {
   constructor() {
     super();
+    this.values = [];
+    this.measurementId = 0;
+    this.measurement = null;
   }
+  values: MeasurementSizeValue[];
+  measurementId: number;
+  measurement: any;
+}
+
+export class MeasurementSizeValue extends EntityBaseNamed {
+  constructor() {
+    super();
+    this.values = 0;
+    this.measurementDefinitionId = 0;
+    this.measurementDefinition = null;
+    this.measurementSizeId = 0;
+    this.measurementSize = null;
+  }
+  values: number;
+  measurementDefinitionId: number;
+  measurementDefinition: any;
+  measurementSizeId: number;
+  measurementSize: any;
 }

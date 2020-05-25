@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Label, PrimaryButton } from 'office-ui-fabric-react';
 import * as productCategoryAction from '../../../redux/actions/productCategory.actions';
+import * as controlActions from '../../../redux/actions/control.actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { ProductManagingPanelComponent } from '../../../redux/reducers/productCategory.reducer';
@@ -52,6 +53,7 @@ const ProductManagementPanel: React.FC = () => {
     dispatch(
       productCategoryAction.setChooseProductCategoryId(choseCategory!.id)
     );
+    dispatch(controlActions.closeInfoPanelWithComponent());
     history.push('/en/app/product/measurements');
   };
 
