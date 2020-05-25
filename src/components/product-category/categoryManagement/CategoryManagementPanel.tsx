@@ -52,7 +52,6 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
   actionItems.forEach((item) => {
     if (item.key === SAVE_PANEL_ITEM_NAME) {
       item.onClick = () => {
-        debugger;
         if (
           formikReference.formik !== undefined &&
           formikReference.formik !== null

@@ -64,6 +64,9 @@ const ProductCategories: React.FC = () => {
           'Delete category',
           `Are you sure you want to delete ${category.name}?`,
           () => {
+            dispatch(productCategoryActions.chooseProductCategory(null));
+            dispatch(controlAction.closeInfoPanelWithComponent());
+
             let action = assignPendingActions(
               productCategoryAction.apiDeleteProductCategory(category.id),
               [],
