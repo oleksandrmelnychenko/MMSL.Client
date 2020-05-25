@@ -224,6 +224,49 @@ export const updateProductCategoryEpic = (action$: AnyAction, state$: any) => {
   );
 };
 
+export const apiSaveUpdatedProductGroupsEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(productCategoryTypes.API_SAVE_UPDATED_PRODUCT_GROUPS),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+      return ajaxPutResponse(
+        api.UPDATE_PRODUCT_CATEGORY_GROUPS_LIST,
+        action.payload,
+        state$.value
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.disabledStatusBar(),
+              controlActions.showInfoMessage(successResponse.message),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.showInfoMessage(
+                  `Error occurred while updating product options stack. ${errorResponse}`
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
 export const deleteProductCategoryEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
     ofType(productCategoryTypes.API_DELETE_PRODUCT_CATEGORY),
