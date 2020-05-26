@@ -9,8 +9,8 @@ import {
   DialogType,
 } from 'office-ui-fabric-react';
 import { IApplicationState } from '../../redux/reducers';
-import { DialogArgs, CommonDialogType } from '../../redux/slices/control';
-import { controlActions } from '../../redux/slices/control';
+import { DialogArgs, CommonDialogType } from '../../redux/slices/control.slice';
+import { controlActions } from '../../redux/slices/control.slice';
 
 const CommonDialog: React.FC = () => {
   const dispatch = useDispatch();

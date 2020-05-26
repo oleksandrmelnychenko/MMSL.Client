@@ -1,6 +1,6 @@
 import { TokenHelper } from './token.helper';
 import { of } from 'rxjs';
-import * as authTypes from '../redux/constants/auth.types.constants';
+import { authActions } from '../redux/slices/auth.slice';
 
 export const checkUnauthorized = (
   status: number,
@@ -11,9 +11,7 @@ export const checkUnauthorized = (
 
   if (status === 401) {
     TokenHelper.removeAccessToken();
-    result = of({
-      type: authTypes.LOGOUT,
-    });
+    result = of(authActions.logOut());
   } else {
     result = callBack();
   }

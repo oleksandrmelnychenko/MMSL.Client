@@ -12,7 +12,7 @@ import {
 
 import './account.scss';
 import { IApplicationState } from '../../redux/reducers';
-import * as authAction from '../../redux/actions/auth.actions';
+import { authActions } from '../../redux/slices/auth.slice';
 import { PreloaderModule } from '../../common/preloader/preloader.module/Preloader.module';
 
 export const ForgotPassword: React.FC = () => {
@@ -41,7 +41,7 @@ export const ForgotPassword: React.FC = () => {
   });
 
   const handleClearErrorMessages = () =>
-    errorMessage && dispatch(authAction.clearErrorMessage());
+    errorMessage && dispatch(authActions.clearErrorMessage());
 
   return (
     <div className="container-flex-center">

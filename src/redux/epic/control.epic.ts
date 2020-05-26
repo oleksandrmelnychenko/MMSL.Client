@@ -3,7 +3,7 @@ import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 
 import { mapTo } from 'rxjs/operators';
-import { controlActions } from '../slices/control';
+import { controlActions } from '../slices/control.slice';
 
 export const closeInfoMessageEpic = (action$: AnyAction) => {
   return action$.pipe(

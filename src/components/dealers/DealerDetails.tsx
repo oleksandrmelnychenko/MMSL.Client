@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ManageDealerForm from './dealerManaging/ManageDealerForm';
 import * as dealerActions from '../../redux/actions/dealer.actions';
-import { controlActions } from '../../redux/slices/control';
+import { controlActions } from '../../redux/slices/control.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { assignPendingActions } from '../../helpers/action.helper';
 import { DealerAccount, FormicReference } from '../../interfaces';

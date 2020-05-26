@@ -11,7 +11,7 @@ import CommonDialog from './CommonDialog';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers/index';
 import { Panel, PanelType } from 'office-ui-fabric-react';
-import { controlActions } from '../../redux/slices/control';
+import { controlActions } from '../../redux/slices/control.slice';
 
 import { stylesPanelInfo } from '../../common/fabric-styles/styles';
 import ProductSettings from '../productSettings/ProductSettings';

@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import * as dealerActions from '../../../redux/actions/dealer.actions';
-import { controlActions } from '../../../redux/slices/control';
+import { controlActions } from '../../../redux/slices/control.slice';
 import './menu.scss';
 import { IApplicationState } from '../../../redux/reducers';
 import { LocalizeState, getActiveLanguage } from 'react-localize-redux';

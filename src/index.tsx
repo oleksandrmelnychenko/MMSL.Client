@@ -19,7 +19,7 @@ import { default as Routing } from './components/Routing';
 import globalTranslations from './assets/translation/translations.json';
 import { TokenHelper } from './helpers/token.helper';
 import StoreHelper from './helpers/store.helper';
-import * as authAction from './redux/actions/auth.actions';
+import { authActions } from './redux/slices/auth.slice';
 
 import { loadTheme, createTheme, ITheme } from 'office-ui-fabric-react';
 import { initializeIcons } from 'office-ui-fabric-react';
@@ -92,7 +92,7 @@ store.dispatch(setActiveLanguage(language));
 
 const onInit = ({ store }: { store: any; language: string }) => {
   if (TokenHelper.isAuthenticated()) {
-    store.dispatch(authAction.authSuccessSignInAction(true));
+    store.dispatch(authActions.authSuccessSignInAction(true));
   }
 };
 

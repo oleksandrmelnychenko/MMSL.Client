@@ -16,7 +16,7 @@ import {
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import { Pagination } from '../../interfaces';
-import { controlActions } from '../../redux/slices/control';
+import { controlActions } from '../slices/control.slice';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import StoreHelper from '../../helpers/store.helper';
 

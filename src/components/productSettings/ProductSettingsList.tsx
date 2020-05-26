@@ -27,8 +27,8 @@ import { List } from 'linq-typescript';
 import { scrollablePaneStyleForDetailList } from '../../common/fabric-styles/styles';
 import { DATA_SELECTION_DISABLED_CLASS } from '../dealers/DealerList';
 import UnitRowItem from './UnitRowItem';
-import { controlActions } from '../../redux/slices/control';
-import { DialogArgs, CommonDialogType } from '../../redux/slices/control';
+import { controlActions } from '../../redux/slices/control.slice';
+import { DialogArgs, CommonDialogType } from '../../redux/slices/control.slice';
 
 const _columnIconButtonStyle = {
   root: {

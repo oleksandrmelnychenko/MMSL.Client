@@ -3,7 +3,7 @@ import './dealersPagination.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import * as dealerActions from '../../redux/actions/dealer.actions';
-import { controlActions } from '../../redux/slices/control';
+import { controlActions } from '../../redux/slices/control.slice';
 import ReactPaginate from 'react-paginate';
 import { DealerAccount, PaginationInfo, Pagination } from '../../interfaces';
 import { Stack, FontWeights, Dropdown } from 'office-ui-fabric-react';
