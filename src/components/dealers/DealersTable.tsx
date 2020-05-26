@@ -13,7 +13,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import * as dealerActions from '../../redux/actions/dealer.actions';
-import * as controlActions from '../../redux/actions/control.actions';
+import { controlActions } from '../../redux/slices/control';
 import ReactPaginate from 'react-paginate';
 import { DealerAccount, PaginationInfo } from '../../interfaces';
 import DealersPagination from './DealersPagination';

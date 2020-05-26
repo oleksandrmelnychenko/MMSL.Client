@@ -9,11 +9,8 @@ import {
   DialogType,
 } from 'office-ui-fabric-react';
 import { IApplicationState } from '../../redux/reducers';
-import {
-  DialogArgs,
-  CommonDialogType,
-} from '../../redux/reducers/control.reducer';
-import * as controlAction from '../../redux/actions/control.actions';
+import { DialogArgs, CommonDialogType } from '../../redux/slices/control';
+import { controlActions } from '../../redux/slices/control';
 
 const CommonDialog: React.FC = () => {
   const dispatch = useDispatch();
@@ -50,7 +47,7 @@ const CommonDialog: React.FC = () => {
             <DialogFooter>
               <PrimaryButton
                 onClick={() => {
-                  dispatch(controlAction.toggleCommonDialogVisibility(null));
+                  dispatch(controlActions.toggleCommonDialogVisibility(null));
                   dialogArgs?.onSubmitClick();
                 }}
                 text="Ok"
@@ -61,14 +58,14 @@ const CommonDialog: React.FC = () => {
             <DialogFooter>
               <PrimaryButton
                 onClick={() => {
-                  dispatch(controlAction.toggleCommonDialogVisibility(null));
+                  dispatch(controlActions.toggleCommonDialogVisibility(null));
                   dialogArgs?.onSubmitClick();
                 }}
                 text="Ok"
               />
               <DefaultButton
                 onClick={() => {
-                  dispatch(controlAction.toggleCommonDialogVisibility(null));
+                  dispatch(controlActions.toggleCommonDialogVisibility(null));
                   dialogArgs?.onDeclineClick();
                 }}
                 text="Cancel"

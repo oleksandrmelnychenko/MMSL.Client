@@ -16,13 +16,10 @@ import { IApplicationState } from '../../redux/reducers';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import { DealerAccount } from '../../interfaces';
 import { assignPendingActions } from '../../helpers/action.helper';
-import * as controlAction from '../../redux/actions/control.actions';
+import { controlActions } from '../../redux/slices/control';
 import { ToggleDealerPanelWithDetails } from '../../redux/reducers/dealer.reducer';
 import ManagementOptions from './dealerManaging/ManagementOptions';
-import {
-  DialogArgs,
-  CommonDialogType,
-} from '../../redux/reducers/control.reducer';
+import { DialogArgs, CommonDialogType } from '../../redux/slices/control';
 import {
   detailsListStyle,
   scrollablePaneStyleForDetailList_Dealers,
@@ -57,13 +54,13 @@ export const DealerList: React.FC = () => {
 
   useEffect(() => {
     dispatch(dealerActions.getDealersListPaginated());
-    dispatch(controlAction.showGlobalShimmer());
+    dispatch(controlActions.showGlobalShimmer());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (dealers.length > 0 && shimmer) {
-      dispatch(controlAction.hideGlobalShimmer());
+      dispatch(controlActions.hideGlobalShimmer());
     }
   }, [dealers, dispatch, shimmer]);
 
@@ -139,7 +136,7 @@ export const DealerList: React.FC = () => {
               ariaLabel="Delete"
               onClick={(args: any) => {
                 dispatch(
-                  controlAction.toggleCommonDialogVisibility(
+                  controlActions.toggleCommonDialogVisibility(
                     new DialogArgs(
                       CommonDialogType.Delete,
                       'Delete dealer',
@@ -152,7 +149,7 @@ export const DealerList: React.FC = () => {
                         if (item.id) {
                           actionsQueue.push(
                             dealerActions.setSelectedDealer(null),
-                            controlAction.closeInfoPanelWithComponent(),
+                            controlActions.closeInfoPanelWithComponent(),
                             dealerActions.isOpenPanelWithDealerDetails(
                               new ToggleDealerPanelWithDetails()
                             )
@@ -202,7 +199,7 @@ export const DealerList: React.FC = () => {
                       );
                       dispatch(createAction);
                       dispatch(
-                        controlAction.openInfoPanelWithComponent(
+                        controlActions.openInfoPanelWithComponent(
                           ManagementOptions
                         )
                       );
@@ -210,7 +207,7 @@ export const DealerList: React.FC = () => {
 
                     const unSelectFlow = () => {
                       dispatch(dealerActions.setSelectedDealer(null));
-                      dispatch(controlAction.closeInfoPanelWithComponent());
+                      dispatch(controlActions.closeInfoPanelWithComponent());
                     };
 
                     if (selectedDealerId) {

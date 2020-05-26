@@ -15,11 +15,8 @@ import {
 import { OptionUnit } from '../../../interfaces';
 import { IApplicationState } from '../../../redux/reducers';
 import { assignPendingActions } from '../../../helpers/action.helper';
-import * as controlAction from '../../../redux/actions/control.actions';
-import {
-  DialogArgs,
-  CommonDialogType,
-} from '../../../redux/reducers/control.reducer';
+import { controlActions } from '../../../redux/slices/control';
+import { DialogArgs, CommonDialogType } from '../../../redux/slices/control';
 
 class OptionGroupDetailsProps extends ManagingProductUnitFormProps {
   constructor() {
@@ -82,7 +79,7 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
     props.panelDeleteButton.onClick = () => {
       if (sectedOptionUnit) {
         dispatch(
-          controlAction.toggleCommonDialogVisibility(
+          controlActions.toggleCommonDialogVisibility(
             new DialogArgs(
               CommonDialogType.Delete,
               'Delete option unit',
@@ -128,8 +125,7 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
       <Stack
         horizontal
         horizontalAlign="space-between"
-        tokens={{ childrenGap: 20 }}
-      >
+        tokens={{ childrenGap: 20 }}>
         <Stack.Item grow={1} styles={{ root: { maxWidth: '49%' } }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>

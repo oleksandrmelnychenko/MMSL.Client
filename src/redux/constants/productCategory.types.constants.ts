@@ -37,3 +37,5 @@ export const API_SAVE_UPDATED_PRODUCT_GROUPS =
   'product.API.productCategoryDetails.API_SAVE_UPDATED_PRODUCT_GROUPS';
 export const TOGGLE_IS_DETAILSFORM_DISABLED =
   'product.productCategoryDetails.TOGGLE_IS_DETAILSFORM_DISABLED';
+
+export const API_ADD_NEW_MEASUREMENT = 'product.API.API_ADD_NEW_MEASUREMENT';

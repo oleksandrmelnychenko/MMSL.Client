@@ -27,11 +27,8 @@ import { List } from 'linq-typescript';
 import { scrollablePaneStyleForDetailList } from '../../common/fabric-styles/styles';
 import { DATA_SELECTION_DISABLED_CLASS } from '../dealers/DealerList';
 import UnitRowItem from './UnitRowItem';
-import * as controlAction from '../../redux/actions/control.actions';
-import {
-  DialogArgs,
-  CommonDialogType,
-} from '../../redux/reducers/control.reducer';
+import { controlActions } from '../../redux/slices/control';
+import { DialogArgs, CommonDialogType } from '../../redux/slices/control';
 
 const _columnIconButtonStyle = {
   root: {
@@ -124,7 +121,7 @@ export const ProductSettingsList: React.FC = () => {
               ariaLabel="Delete"
               onClick={(args: any) => {
                 dispatch(
-                  controlAction.toggleCommonDialogVisibility(
+                  controlActions.toggleCommonDialogVisibility(
                     new DialogArgs(
                       CommonDialogType.Delete,
                       'Delete option unit',
@@ -227,13 +224,11 @@ export const ProductSettingsList: React.FC = () => {
                           paddingLeft: '0px',
                           paddingRight: '8px',
                           width: '100%',
-                        }}
-                      >
+                        }}>
                         <Stack
                           horizontal
                           horizontalAlign="space-between"
-                          tokens={{ childrenGap: 0 }}
-                        >
+                          tokens={{ childrenGap: 0 }}>
                           <Stack horizontal tokens={{ childrenGap: 10 }}>
                             {defaultRender(props)}{' '}
                             <TooltipHost
@@ -246,8 +241,7 @@ export const ProductSettingsList: React.FC = () => {
                                 props.group?.rawGroupModel?.isMandatory
                                   ? 'Mandatory'
                                   : 'Not mandatory'
-                              }
-                            >
+                              }>
                               <FontIcon
                                 iconName="Warning"
                                 className={mergeStyles({
@@ -337,7 +331,7 @@ export const ProductSettingsList: React.FC = () => {
                               ariaLabel="Delete"
                               onClick={() => {
                                 dispatch(
-                                  controlAction.toggleCommonDialogVisibility(
+                                  controlActions.toggleCommonDialogVisibility(
                                     new DialogArgs(
                                       CommonDialogType.Delete,
                                       'Delete option group',

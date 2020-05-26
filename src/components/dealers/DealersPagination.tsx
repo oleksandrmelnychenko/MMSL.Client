@@ -3,7 +3,7 @@ import './dealersPagination.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import * as dealerActions from '../../redux/actions/dealer.actions';
-import * as controlActions from '../../redux/actions/control.actions';
+import { controlActions } from '../../redux/slices/control';
 import ReactPaginate from 'react-paginate';
 import { DealerAccount, PaginationInfo, Pagination } from '../../interfaces';
 import { Stack, FontWeights, Dropdown } from 'office-ui-fabric-react';
@@ -65,12 +65,10 @@ export const DealersPagination: React.FC = () => {
               marginTop: '23px',
             }}
             horizontal
-            tokens={{ childrenGap: 12 }}
-          >
+            tokens={{ childrenGap: 12 }}>
             <Text
               style={{ paddingTop: '6px' }}
-              block
-            >{`Total count: ${pagination.paginationInfo.totalItems}`}</Text>
+              block>{`Total count: ${pagination.paginationInfo.totalItems}`}</Text>
             <Dropdown
               options={limitOptions}
               defaultSelectedKey={defaultLimitSelection.key}

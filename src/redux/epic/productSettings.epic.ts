@@ -20,7 +20,7 @@ import {
 } from '../../helpers/epic.helper';
 import StoreHelper from '../../helpers/store.helper';
 import * as api from '../constants/api.constants';
-import * as controlActions from '../../redux/actions/control.actions';
+import { controlActions } from '../../redux/slices/control';
 import * as productSettingsActions from '../../redux/actions/productSettings.actions';
 
 const FORM_DATA_IMAGE_FILE_KEY = 'file';

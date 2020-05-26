@@ -1,5 +1,5 @@
 import { GroupItemVisualState } from './viewModels/index';
-import { CommonDialogState } from '../redux/reducers/control.reducer';
+import { CommonDialogState } from '../redux/slices/control';
 import { DealerDetilsComponents } from '../redux/reducers/dealer.reducer';
 
 export interface IUserInfo {

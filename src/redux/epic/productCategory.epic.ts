@@ -15,7 +15,7 @@ import {
   ajaxPutFormDataResponse,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
-import * as controlActions from '../../redux/actions/control.actions';
+import { controlActions } from '../../redux/slices/control';
 import * as productCategoryTypes from '../constants/productCategory.types.constants';
 import * as productCategoryActions from '../actions/productCategory.actions';
 import StoreHelper from '../../helpers/store.helper';
@@ -379,6 +379,49 @@ export const getMeasurementsByProductEpic = (
               [
                 { type: 'ERROR_GET_MEASUREMENTS_BY_PRODUCT' },
                 controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiAddNewMeasurementEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(productCategoryTypes.API_ADD_NEW_MEASUREMENT),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
+      return ajaxPostFormDataResponse(
+        api.ADD_NEW_MEASUREMENT,
+        action.payload,
+        state$.value,
+        []
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          debugger;
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.disabledStatusBar(),
+              controlActions.showInfoMessage(successResponse.message),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while creating new measurement. ${errorResponse}`
+                ),
               ],
               action
             );
