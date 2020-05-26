@@ -16,7 +16,7 @@ import {
 import * as api from '../constants/api.constants';
 import { Pagination } from '../../interfaces';
 import { controlActions } from '../slices/control.slice';
-import * as dealerActions from '../../redux/actions/dealer.actions';
+import { dealerActions } from '../../redux/slices/dealer.slice';
 import StoreHelper from '../../helpers/store.helper';
 
 export const getCustomersListPaginatedEpic = (

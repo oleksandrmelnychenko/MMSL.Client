@@ -7,9 +7,8 @@ import {
 import { switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
-import * as dealerActions from '../../redux/actions/dealer.actions';
+import { dealerActions } from '../slices/dealer.slice';
 import { controlActions } from '../slices/control.slice';
-import * as dealerTypes from '../constants/dealer.types.constants';
 import { getActiveLanguage } from 'react-localize-redux';
 import {
   ajaxPostResponse,
@@ -21,7 +20,7 @@ import * as api from '../constants/api.constants';
 import {
   ToggleDealerPanelWithDetails,
   DealerDetilsComponents,
-} from '../reducers/dealer.reducer';
+} from '../slices/dealer.slice';
 import StoreHelper from '../../helpers/store.helper';
 
 export const getDealersListPaginatedEpic = (
@@ -29,7 +28,7 @@ export const getDealersListPaginatedEpic = (
   state$: any
 ) => {
   return action$.pipe(
-    ofType(dealerTypes.GET_DEALERS_LIST_PAGINATED),
+    ofType(dealerActions.getDealersListPaginated.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       const pagination: Pagination = state$.value.dealer.dealerState.pagination;
@@ -96,7 +95,7 @@ export const getDealersListPaginatedEpic = (
 
 export const deleteDealerByIdEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(dealerTypes.DELETE_DEALER_BY_ID),
+    ofType(dealerActions.deleteDealerById.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -135,7 +134,7 @@ export const getAndSelectDealersByIdEpic = (
   state$: any
 ) => {
   return action$.pipe(
-    ofType(dealerTypes.GET_AND_SELECT_DEALER_BY_ID),
+    ofType(dealerActions.getAndSelectDealerById.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
@@ -174,7 +173,7 @@ export const getAndSelectDealersByIdEpic = (
 
 export const saveNewDealerEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(dealerTypes.SAVE_NEW_DEALER),
+    ofType(dealerActions.saveNewDealer.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -210,7 +209,7 @@ export const saveNewDealerEpic = (action$: AnyAction, state$: any) => {
 
 export const updateDealerEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(dealerTypes.UPDATE_DEALER),
+    ofType(dealerActions.updateDealer.type),
     switchMap((action: AnyAction) => {
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const languageCode = getActiveLanguage(state$.value.localize).code;
@@ -245,7 +244,7 @@ export const updateDealerEpic = (action$: AnyAction, state$: any) => {
 
 export const getStoresByDealerEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(dealerTypes.GET_STORES_BY_DEALER),
+    ofType(dealerActions.getStoresByDealer.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -281,7 +280,7 @@ export const getStoresByDealerEpic = (action$: AnyAction, state$: any) => {
 
 export const updateDealerStoreEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(dealerTypes.UPDATE_DEALER_STORE),
+    ofType(dealerActions.updateDealerStore.type),
     switchMap((action: AnyAction) => {
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const languageCode = getActiveLanguage(state$.value.localize).code;
@@ -320,7 +319,7 @@ export const addStoreToCurrentDealerEpic = (
   state$: any
 ) => {
   return action$.pipe(
-    ofType(dealerTypes.ADD_STORE_TO_CURRENT_DEALER),
+    ofType(dealerActions.addStoreToCurrentDealer.type),
     switchMap((action: AnyAction) => {
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const languageCode = getActiveLanguage(state$.value.localize).code;
@@ -360,7 +359,7 @@ export const deleteCurrentDealerStoreEpic = (
   state$: any
 ) => {
   return action$.pipe(
-    ofType(dealerTypes.DELETE_CURRENT_DEALER_STORE),
+    ofType(dealerActions.deleteCurrentDealerStore.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -400,7 +399,7 @@ export const getStoreCustomersByStoreIdEpic = (
   state$: any
 ) => {
   return action$.pipe(
-    ofType(dealerTypes.GET_STORE_CUSTOMERS_BY_STORE_ID),
+    ofType(dealerActions.getStoreCustomersByStoreId.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -441,7 +440,7 @@ export const deleteCurrentCustomerFromStoreEpic = (
   state$: any
 ) => {
   return action$.pipe(
-    ofType(dealerTypes.DELETE_CUSTOMER_FROM_STORE),
+    ofType(dealerActions.deleteCurrentCustomerFromStore.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -480,7 +479,7 @@ export const deleteCurrentCustomerFromStoreEpic = (
 
 export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(dealerTypes.UPDATE_STORE_CUSTOMER),
+    ofType(dealerActions.updateStoreCustomer.type),
     switchMap((action: AnyAction) => {
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const languageCode = getActiveLanguage(state$.value.localize).code;

@@ -5,7 +5,7 @@ import { customerActions } from '../../../redux/slices/customer.slice';
 import {
   ToggleDealerPanelWithDetails,
   DealerDetilsComponents,
-} from '../../../redux/reducers/dealer.reducer';
+} from '../../../redux/slices/dealer.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { IApplicationState } from '../../../redux/reducers/index';

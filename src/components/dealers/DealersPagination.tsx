@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import './dealersPagination.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
-import * as dealerActions from '../../redux/actions/dealer.actions';
+import { dealerActions } from '../../redux/slices/dealer.slice';
 import { controlActions } from '../../redux/slices/control.slice';
 import ReactPaginate from 'react-paginate';
 import { DealerAccount, PaginationInfo, Pagination } from '../../interfaces';

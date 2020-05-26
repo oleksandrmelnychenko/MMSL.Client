@@ -9,7 +9,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { FormicReference } from '../../../interfaces';
-import * as dealerActions from '../../../redux/actions/dealer.actions';
+import { dealerActions } from '../../../redux/slices/dealer.slice';
 import { IStore } from '../../../interfaces/index';
 import { Stack } from 'office-ui-fabric-react';
 import PanelTitle from '../panel/PanelTitle';
@@ -26,7 +26,7 @@ import {
 import { List } from 'linq-typescript';
 import ManageCustomerForm from './ManageCustomerForm';
 import { customerActions } from '../../../redux/slices/customer.slice';
-import { DealerState } from '../../../redux/reducers/dealer.reducer';
+import { DealerState } from '../../../redux/slices/dealer.slice';
 
 export const DealerCustomers: React.FC = () => {
   const dispatch = useDispatch();

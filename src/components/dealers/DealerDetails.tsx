@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import ManageDealerForm from './dealerManaging/ManageDealerForm';
-import * as dealerActions from '../../redux/actions/dealer.actions';
+import { dealerActions } from '../../redux/slices/dealer.slice';
 import { controlActions } from '../../redux/slices/control.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { assignPendingActions } from '../../helpers/action.helper';
 import { DealerAccount, FormicReference } from '../../interfaces';
 import { IApplicationState } from '../../redux/reducers';
-import { ToggleDealerPanelWithDetails } from '../../redux/reducers/dealer.reducer';
+import { ToggleDealerPanelWithDetails } from '../../redux/slices/dealer.slice';
 import PanelTitle from './panel/PanelTitle';
 import './dealerDetails.scss';
 import { ICommandBarItemProps, CommandBar } from 'office-ui-fabric-react';

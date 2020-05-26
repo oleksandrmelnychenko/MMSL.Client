@@ -7,9 +7,9 @@ import { combineReducers } from '@reduxjs/toolkit';
 import { localizeReducer, LocalizeState } from 'react-localize-redux';
 import { routerReducer, RouterState } from 'react-router-redux';
 import { IAuthState, IControlState } from '../../interfaces';
-import { DealerState, dealerReducer } from './dealer.reducer';
 import { default as controlReducer } from '../slices/control.slice';
 import { default as authReducer } from '../slices/auth.slice';
+import { default as dealerReducer, DealerState } from '../slices/dealer.slice';
 import {
   default as productReducer,
   ProductState,

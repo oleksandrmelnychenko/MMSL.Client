@@ -10,7 +10,7 @@ import {
 } from 'office-ui-fabric-react';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { DealerAccount, FormicReference } from '../../../interfaces';
-import * as dealerActions from '../../../redux/actions/dealer.actions';
+import { dealerActions } from '../../../redux/slices/dealer.slice';
 import { IStore } from '../../../interfaces/index';
 import FormStore from './FormStore';
 import PanelTitle from '../panel/PanelTitle';
