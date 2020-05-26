@@ -3,11 +3,11 @@ import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 
 import { mapTo } from 'rxjs/operators';
-import * as controlTypes from '../constants/control.types.constants';
+import { controlActions } from '../slices/control';
 
 export const closeInfoMessageEpic = (action$: AnyAction) => {
   return action$.pipe(
-    ofType(controlTypes.SHOW_INFO_MESSAGE),
+    ofType(controlActions.showInfoMessage.type),
     debounceTime(2500),
     mapTo({ type: 'control.CLEAR_INFO_MESSAGE' })
   );

@@ -11,7 +11,7 @@ import { getActiveLanguage } from 'react-localize-redux';
 import { ajaxGetWebResponse } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import * as unitsActions from '../actions/units.actions';
-import * as controlActions from '../actions/control.actions';
+import { controlActions } from '../../redux/slices/control';
 import StoreHelper from '../../helpers/store.helper';
 
 export const getCurrenciesEpic = (action$: AnyAction, state$: any) => {

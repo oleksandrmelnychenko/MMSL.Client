@@ -62,3 +62,7 @@ export const apiSaveUpdatedProductGroups = createAction<OptionGroup[]>(
 export const toggleIsDetailsformDisabled = createAction<boolean>(
   types.TOGGLE_IS_DETAILSFORM_DISABLED
 );
+
+export const apiAddNewMeasurement = createAction<any>(
+  types.API_ADD_NEW_MEASUREMENT
+);

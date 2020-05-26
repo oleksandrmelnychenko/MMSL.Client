@@ -10,7 +10,7 @@ import {
 import { Card } from '@uifabric/react-cards';
 import { Text } from 'office-ui-fabric-react/lib/Text';
 import './product-category.scss';
-import * as controlAction from '../../redux/actions/control.actions';
+import { controlActions } from '../../redux/slices/control';
 import * as productCategoryActions from '../../redux/actions/productCategory.actions';
 import { IApplicationState } from '../../redux/reducers/index';
 import { ProductCategory } from '../../interfaces';
@@ -22,10 +22,7 @@ import {
   textStyles,
   cardTokens,
 } from '../../common/fabric-styles/styles';
-import {
-  DialogArgs,
-  CommonDialogType,
-} from '../../redux/reducers/control.reducer';
+import { DialogArgs, CommonDialogType } from '../../redux/slices/control';
 import CategoryManagementPanel from './categoryManagement/CategoryManagementPanel';
 import { ProductManagingPanelComponent } from '../../redux/reducers/productCategory.reducer';
 import { assignPendingActions } from '../../helpers/action.helper';
@@ -58,14 +55,14 @@ const ProductCategories: React.FC = () => {
   ) => {
     event.stopPropagation();
     dispatch(
-      controlAction.toggleCommonDialogVisibility(
+      controlActions.toggleCommonDialogVisibility(
         new DialogArgs(
           CommonDialogType.Delete,
           'Delete category',
           `Are you sure you want to delete ${category.name}?`,
           () => {
             dispatch(productCategoryActions.chooseProductCategory(null));
-            dispatch(controlAction.closeInfoPanelWithComponent());
+            dispatch(controlActions.closeInfoPanelWithComponent());
 
             let action = assignPendingActions(
               productCategoryAction.apiDeleteProductCategory(category.id),
@@ -132,7 +129,7 @@ const ProductCategories: React.FC = () => {
                           productCategoryAction.chooseProductCategory(args)
                         );
                         dispatch(
-                          controlAction.openInfoPanelWithComponent(
+                          controlActions.openInfoPanelWithComponent(
                             ProductManagementPanel
                           )
                         );

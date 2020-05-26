@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import * as dealerActions from '../../../redux/actions/dealer.actions';
-import * as controlActions from '../../../redux/actions/control.actions';
+import { controlActions } from '../../../redux/slices/control';
 import './menu.scss';
 import { IApplicationState } from '../../../redux/reducers';
 import { LocalizeState, getActiveLanguage } from 'react-localize-redux';
@@ -91,8 +91,7 @@ const Menu: React.FC = () => {
               }}
               className={`menu__link ${item.className}`}
               to={item.link}
-              activeClassName="active"
-            >
+              activeClassName="active">
               {item.title}
             </NavLink>
           </li>

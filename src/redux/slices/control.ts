@@ -1,5 +1,4 @@
-import { createReducer } from '@reduxjs/toolkit';
-import * as actions from '../actions/control.actions';
+import { createSlice } from '@reduxjs/toolkit';
 
 export class CommonDialogState {
   constructor() {
@@ -54,41 +53,61 @@ export const defaultControlState = {
   isMasterBusy: false,
 };
 
-export const controlReducer = createReducer(defaultControlState, (builder) =>
-  builder
-    .addCase(actions.isOpenPanelInfo, (state, action) => {
+const controls = createSlice({
+  name: 'control',
+  initialState: defaultControlState,
+  reducers: {
+    isOpenPanelInfo(state, action) {
       state.panelInfo.isOpenPanelInfo = action.payload;
-    })
-    .addCase(actions.openInfoPanelWithComponent, (state, action) => {
+      return state;
+    },
+    isCollapseMenu(state, action) {
+      state.panelInfo.isOpenPanelInfo = action.payload;
+      return state;
+    },
+    openInfoPanelWithComponent(state, action) {
       state.isCollapseMenu = true;
       state.panelInfo.isOpenPanelInfo = true;
       state.panelInfo.componentInPanelInfo = action.payload;
-    })
-    .addCase(actions.closeInfoPanelWithComponent, (state) => {
+      return state;
+    },
+    closeInfoPanelWithComponent(state) {
       state.isCollapseMenu = false;
       state.panelInfo.isOpenPanelInfo = false;
       state.panelInfo.componentInPanelInfo = null;
-    })
-    .addCase(actions.toggleCommonDialogVisibility, (state, action) => {
+      return state;
+    },
+    toggleCommonDialogVisibility(state, action) {
       state.commonDialog.dialogArgs = action.payload;
-    })
-    .addCase(actions.showInfoMessage, (state, action) => {
+      return state;
+    },
+    showInfoMessage(state, action) {
       state.isActivateStatusBar = false;
       state.infoMessage = action.payload;
-    })
-    .addCase(actions.clearInfoMessage, (state) => {
+      return state;
+    },
+    clearInfoMessage(state) {
       state.infoMessage = '';
-    })
-    .addCase(actions.enableStatusBar, (state) => {
+      return state;
+    },
+    enableStatusBar(state) {
       state.isActivateStatusBar = true;
-    })
-    .addCase(actions.disabledStatusBar, (state) => {
+      return state;
+    },
+    disabledStatusBar(state) {
       state.isActivateStatusBar = false;
-    })
-    .addCase(actions.showGlobalShimmer, (state) => {
+      return state;
+    },
+    showGlobalShimmer(state) {
       state.isGlobalShimmerActive = true;
-    })
-    .addCase(actions.hideGlobalShimmer, (state) => {
+      return state;
+    },
+    hideGlobalShimmer(state) {
       state.isGlobalShimmerActive = false;
-    })
-);
+      return state;
+    },
+  },
+});
+
+export const controlActions = controls.actions;
+export default controls.reducer;

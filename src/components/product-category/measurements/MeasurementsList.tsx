@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import {
   Text,
   ShimmeredDetailsList,
+  Selection,
   SelectionMode,
   IColumn,
 } from 'office-ui-fabric-react';
 import { detailsListStyle } from '../../../common/fabric-styles/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
-import * as controlActions from '../../../redux/actions/control.actions';
+import { controlActions } from '../../../redux/slices/control';
 import * as productCategoryActions from '../../../redux/actions/productCategory.actions';
 import {
   Measurement,
@@ -17,9 +18,22 @@ import {
 } from '../../../interfaces';
 import { List } from 'linq-typescript';
 import { useHistory } from 'react-router-dom';
+import MeasurementsPanel from './MeasurementsPanel';
 
 const MeasurementsList: React.FC = () => {
   const dispatch = useDispatch();
+
+  const [selection] = useState(
+    new Selection({
+      onSelectionChanged: () => {
+        if (selection.count > 0) {
+          dispatch(
+            controlActions.openInfoPanelWithComponent(MeasurementsPanel)
+          );
+        }
+      },
+    })
+  );
 
   const shimmer = useSelector<IApplicationState, boolean>(
     (state) => state.control.isGlobalShimmerActive
@@ -58,22 +72,11 @@ const MeasurementsList: React.FC = () => {
         )
       );
     }
-    return () => {};
+    return () => {
+      dispatch(controlActions.closeInfoPanelWithComponent());
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // const [selection] = useState(
-  //   new Selection({
-  //     onSelectionChanged: () => {
-  //       /// TODO: important
-  //       if (selection.count > 0) {
-  //         customerSelection();
-  //       } else {
-  //         // customerUnSelection();
-  //       }
-  //     },
-  //   })
-  // );
 
   useEffect(() => {
     const total = new List<Measurement>(measurements).sum(
@@ -154,7 +157,7 @@ const MeasurementsList: React.FC = () => {
         enableShimmer={shimmer}
         styles={detailsListStyle}
         items={listItemSizes}
-        // selection={selection}
+        selection={selection}
         selectionMode={SelectionMode.single}
         columns={columnsHeader}
       />

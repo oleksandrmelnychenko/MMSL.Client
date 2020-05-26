@@ -11,7 +11,7 @@ import CommonDialog from './CommonDialog';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers/index';
 import { Panel, PanelType } from 'office-ui-fabric-react';
-import * as controlAction from '../../redux/actions/control.actions';
+import { controlActions } from '../../redux/slices/control';
 
 import { stylesPanelInfo } from '../../common/fabric-styles/styles';
 import ProductSettings from '../productSettings/ProductSettings';
@@ -31,7 +31,7 @@ const Dashboard: React.FC = () => {
   const location = useLocation();
 
   const dismissPanelInfo = () => {
-    dispatch(controlAction.closeInfoPanelWithComponent());
+    dispatch(controlActions.closeInfoPanelWithComponent());
   };
 
   return (

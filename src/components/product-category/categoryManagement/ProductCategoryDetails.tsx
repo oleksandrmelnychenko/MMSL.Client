@@ -29,6 +29,14 @@ import * as productCategoryActions from '../../../redux/actions/productCategory.
 import { assignPendingActions } from '../../../helpers/action.helper';
 import './productCategoryDetails.scss';
 import UnitRowItem from '../../productSettings/UnitRowItem';
+import { FontWeights } from 'office-ui-fabric-react';
+
+const foo = {
+  root: {
+    cursor: 'pointer',
+    fontWeight: FontWeights.regular,
+  },
+};
 
 const resolveIsWasAddedBefore = (
   groupId: number,
@@ -225,8 +233,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                 });
               }
             }
-          }}
-        >
+          }}>
           <Stack horizontal tokens={{ childrenGap: 10 }}>
             <Label
               styles={{
@@ -234,16 +241,14 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                   cursor: 'pointer',
                   fontWeight: 400,
                 },
-              }}
-            >{`${item.name}`}</Label>{' '}
+              }}>{`${item.name}`}</Label>{' '}
             <TooltipHost
               id={`mandatoryTooltip_${key}`}
               calloutProps={{ gapSpace: 0 }}
               delay={TooltipDelay.zero}
               directionalHint={DirectionalHint.bottomCenter}
               styles={{ root: { display: 'inline-block' } }}
-              content={item.isMandatory ? 'Mandatory' : 'Not mandatory'}
-            >
+              content={item.isMandatory ? 'Mandatory' : 'Not mandatory'}>
               <FontIcon
                 style={{
                   cursor: 'default',
@@ -314,8 +319,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                 });
               }
             }
-          }}
-        >
+          }}>
           <Stack horizontal tokens={{ childrenGap: 10 }}>
             <Checkbox
               styles={{ root: { marginTop: '5px' } }}
@@ -341,8 +345,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                         cursor: 'pointer',
                         fontWeight: 400,
                       },
-                    }}
-                  >{`${item.name}`}</Label>
+                    }}>{`${item.name}`}</Label>
                 </Stack.Item>
 
                 <Stack.Item>
@@ -352,8 +355,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                     delay={TooltipDelay.zero}
                     directionalHint={DirectionalHint.bottomCenter}
                     styles={{ root: { display: 'inline-block' } }}
-                    content={item.isMandatory ? 'Mandatory' : 'Not mandatory'}
-                  >
+                    content={item.isMandatory ? 'Mandatory' : 'Not mandatory'}>
                     <FontIcon
                       style={{
                         cursor: 'default',
@@ -370,8 +372,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
               </Stack>
 
               <Stack.Item
-                styles={{ root: { position: 'relative', top: '-7px' } }}
-              >
+                styles={{ root: { position: 'relative', top: '-7px' } }}>
                 <Label
                   styles={{
                     root: {
@@ -380,8 +381,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                       fontSize: '12px',
                       color: '#a19f9d',
                     },
-                  }}
-                >
+                  }}>
                   {vm?.itemAdditionState === ItemAdditionState.NoChanges
                     ? ''
                     : vm?.itemAdditionState === ItemAdditionState.WillBeAdded
@@ -472,8 +472,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
       <Stack
         horizontal
         horizontalAlign="space-between"
-        tokens={{ childrenGap: 20 }}
-      >
+        tokens={{ childrenGap: 20 }}>
         <Stack.Item grow={1} styles={{ root: { maxWidth: '33%' } }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div data-is-scrollable={true}>
@@ -514,8 +513,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
 
         <Stack.Item
           grow={3}
-          styles={{ root: { maxWidth: '33%', minWidth: '33%' } }}
-        >
+          styles={{ root: { maxWidth: '33%', minWidth: '33%' } }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
               <Separator alignContent="start">
@@ -532,17 +530,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                       ))
                       .toArray()
                   ) : (
-                    <Label
-                      styles={{
-                        root: {
-                          fontWeight: 400,
-                          fontSize: '12px',
-                          color: '#a19f9d',
-                        },
-                      }}
-                    >
-                      {'There are no units'}
-                    </Label>
+                    <Label styles={foo}>{'There are no units'}</Label>
                   )
                 ) : (
                   <Label
@@ -552,8 +540,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                         fontSize: '12px',
                         color: '#a19f9d',
                       },
-                    }}
-                  >
+                    }}>
                     {'Select group and explore units'}
                   </Label>
                 )}

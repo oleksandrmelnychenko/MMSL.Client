@@ -18,11 +18,8 @@ import {
   commandBarButtonStyles,
   commandBarStyles,
 } from '../../../common/fabric-styles/styles';
-import * as controlAction from '../../../redux/actions/control.actions';
-import {
-  DialogArgs,
-  CommonDialogType,
-} from '../../../redux/reducers/control.reducer';
+import { controlActions } from '../../../redux/slices/control';
+import { DialogArgs, CommonDialogType } from '../../../redux/slices/control';
 import { assignPendingActions } from '../../../helpers/action.helper';
 
 export const DealerStores: React.FC = () => {
@@ -129,7 +126,7 @@ export const DealerStores: React.FC = () => {
       onClick: () => {
         if (selectedStore) {
           dispatch(
-            controlAction.toggleCommonDialogVisibility(
+            controlActions.toggleCommonDialogVisibility(
               new DialogArgs(
                 CommonDialogType.Delete,
                 'Delete store',

@@ -18,11 +18,8 @@ import {
   commandBarButtonStyles,
   commandBarStyles,
 } from '../../../common/fabric-styles/styles';
-import * as controlAction from '../../../redux/actions/control.actions';
-import {
-  DialogArgs,
-  CommonDialogType,
-} from '../../../redux/reducers/control.reducer';
+import { controlActions } from '../../../redux/slices/control';
+import { DialogArgs, CommonDialogType } from '../../../redux/slices/control';
 import { List } from 'linq-typescript';
 import ManageCustomerForm from './ManageCustomerForm';
 import * as customerActions from '../../../redux/actions/customer.actions';
@@ -111,13 +108,13 @@ export const DealerCustomers: React.FC = () => {
           dispatch(dealerActions.setSelectedCustomerInCurrentStore(null));
         } else {
           dispatch(
-            controlAction.toggleCommonDialogVisibility(
+            controlActions.toggleCommonDialogVisibility(
               new DialogArgs(
                 CommonDialogType.Common,
                 'Information',
                 `Select a store to create in it customers`,
                 () => {
-                  dispatch(controlAction.toggleCommonDialogVisibility(null));
+                  dispatch(controlActions.toggleCommonDialogVisibility(null));
                 },
                 () => {}
               )
@@ -160,7 +157,7 @@ export const DealerCustomers: React.FC = () => {
       onClick: () => {
         if (selectedLocalStore) {
           dispatch(
-            controlAction.toggleCommonDialogVisibility(
+            controlActions.toggleCommonDialogVisibility(
               new DialogArgs(
                 CommonDialogType.Delete,
                 'Delete store',

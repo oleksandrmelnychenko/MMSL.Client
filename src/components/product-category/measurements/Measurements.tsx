@@ -30,6 +30,8 @@ const Measurements: React.FC = () => {
     return () => {};
   }, []);
 
+  const addMeasurement = () => {};
+
   return (
     <div className="content__root">
       <div className="content__header">
@@ -37,6 +39,7 @@ const Measurements: React.FC = () => {
           <Stack>
             <div className="content__header__top_back">
               <ActionButton
+                styles={{ root: { height: '30px' } }}
                 iconProps={backIcon}
                 text="Back to product categories"
                 onClick={() => history.goBack()}
@@ -46,6 +49,17 @@ const Measurements: React.FC = () => {
           <Stack className="measurement">
             <div className="content__header__top__title">
               Measurements of category: {category ? category.name : null}
+              <ActionButton
+                styles={{
+                  root: {
+                    height: '30px',
+                    paddingLeft: '20px',
+                  },
+                }}
+                onClick={addMeasurement}
+                iconProps={{ iconName: 'Add' }}>
+                Add measurement
+              </ActionButton>
             </div>
           </Stack>
         </div>

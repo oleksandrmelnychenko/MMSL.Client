@@ -10,8 +10,8 @@ import { routerReducer, RouterState } from 'react-router-redux';
 import { IAuthState, IControlState } from '../../interfaces';
 import { authReducer } from './auth.reducer';
 import { DealerState, dealerReducer } from './dealer.reducer';
-import { controlReducer } from './control.reducer';
 import { ProductState, productReducer } from './productCategory.reducer';
+import { default as controlReducer } from '../slices/control';
 
 export interface IApplicationState {
   auth: IAuthState;

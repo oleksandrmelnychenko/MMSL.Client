@@ -10,14 +10,13 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import * as customerActions from '../../redux/actions/customer.actions';
-import * as controlActions from '../../redux/actions/control.actions';
+import { controlActions } from '../../redux/slices/control';
 import ManagementPanel from './options/ManagmentPanel';
 import { CustomerListState } from '../../redux/reducers/customer.reducer';
 import {
   scrollablePaneStyleForDetailList,
   detailsListStyle,
 } from '../../common/fabric-styles/styles';
-import * as controlAction from '../../redux/actions/control.actions';
 
 const _customerColumns: IColumn[] = [
   {
@@ -109,7 +108,7 @@ export const CustomerList: React.FC = () => {
   );
 
   useEffect(() => {
-    dispatch(controlAction.showGlobalShimmer());
+    dispatch(controlActions.showGlobalShimmer());
     dispatch(customerActions.getCustomersListPaginated());
     return () => {
       dispatch(customerActions.selectedCustomer(null));
@@ -119,7 +118,7 @@ export const CustomerList: React.FC = () => {
 
   useEffect(() => {
     if (customersList.length > 0 && shimmer) {
-      dispatch(controlAction.hideGlobalShimmer());
+      dispatch(controlActions.hideGlobalShimmer());
     }
   }, [customersList, dispatch, shimmer]);
 
