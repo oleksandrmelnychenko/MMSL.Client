@@ -25,6 +25,7 @@ export enum ProductManagingPanelComponent {
   ProductMeasurement,
   ProductTimeLine,
   EditSingleProduct,
+  MeasurementPanel,
 }
 
 export class ProductManagementPanelState {

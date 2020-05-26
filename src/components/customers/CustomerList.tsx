@@ -92,11 +92,8 @@ export const CustomerList: React.FC = () => {
   const [selection] = useState(
     new Selection({
       onSelectionChanged: () => {
-        /// TODO: important
         if (selection.count > 0) {
           customerSelection();
-        } else {
-          // customerUnSelection();
         }
       },
     })

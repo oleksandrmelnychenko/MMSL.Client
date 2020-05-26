@@ -62,6 +62,19 @@ const MeasurementsList: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // const [selection] = useState(
+  //   new Selection({
+  //     onSelectionChanged: () => {
+  //       /// TODO: important
+  //       if (selection.count > 0) {
+  //         customerSelection();
+  //       } else {
+  //         // customerUnSelection();
+  //       }
+  //     },
+  //   })
+  // );
+
   useEffect(() => {
     const total = new List<Measurement>(measurements).sum(
       (c) => c.measurementSizes.length
@@ -141,7 +154,7 @@ const MeasurementsList: React.FC = () => {
         enableShimmer={shimmer}
         styles={detailsListStyle}
         items={listItemSizes}
-        //   selection={selection}
+        // selection={selection}
         selectionMode={SelectionMode.single}
         columns={columnsHeader}
       />
