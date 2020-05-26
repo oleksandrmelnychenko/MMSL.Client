@@ -43,6 +43,7 @@ const resolveIsWasAddedBefore = (
     : false;
 };
 
+/// Describes group item selection state
 export enum ItemAdditionState {
   NoChanges,
   WillBeAdded,
@@ -88,6 +89,8 @@ export class ProductCategoryDetailsProps {
   submitAction: (args: any) => void;
 }
 
+/// Describes local group selection source from
+/// assigned/probable (left/right column)
 export enum GroupSelectionSource {
   Assigned,
   Probable,
@@ -176,6 +179,12 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
       );
     }
   }, [groupItemVMs, allOptionGroups, props.formikReference, isDetailsDisabled]);
+
+  const renderCommonInnerGroup = (
+    item: OptionGroup | null | undefined,
+    key: number | null | undefined,
+    selectionSource: GroupSelectionSource
+  ) => {};
 
   const renderCommonGroupItem = (
     item: OptionGroup | null | undefined,
