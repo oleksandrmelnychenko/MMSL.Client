@@ -89,7 +89,8 @@ export const DealerCustomers: React.FC = () => {
           } else {
             dispatch(dealerActions.updateTargetStoreCustomersList([]));
           }
-        }}>
+        }}
+      >
         <div className="dealer__store__name">Name: {item.name}</div>
         <div className="dealer__store__address">
           Address:{' '}
@@ -158,13 +159,13 @@ export const DealerCustomers: React.FC = () => {
       iconProps: { iconName: 'Delete' },
       disabled: dealerCustomerState.selectedCustomer ? false : true,
       onClick: () => {
-        if (selectedLocalStore) {
+        if (selectedLocalStore && dealerCustomerState.selectedCustomer) {
           dispatch(
             controlActions.toggleCommonDialogVisibility(
               new DialogArgs(
                 CommonDialogType.Delete,
                 'Delete store',
-                `Are you sure you want to delete ${selectedLocalStore.name}?`,
+                `Are you sure you want to delete ${dealerCustomerState.selectedCustomer.customerName}?`,
                 () => {
                   dispatch(
                     dealerActions.deleteCurrentCustomerFromStore(
@@ -207,7 +208,8 @@ export const DealerCustomers: React.FC = () => {
       <Stack
         horizontal
         horizontalAlign="space-between"
-        tokens={{ childrenGap: 20 }}>
+        tokens={{ childrenGap: 20 }}
+      >
         <Stack grow={1} tokens={{ maxWidth: '32%' }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
