@@ -11,8 +11,6 @@ import {
   TooltipDelay,
   DirectionalHint,
   Checkbox,
-  IFontWeight,
-  StackItem,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
@@ -528,7 +526,18 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                   groupSelection.optionUnits.length > 0 ? (
                     new List<OptionUnit>(groupSelection.optionUnits)
                       .select((item: OptionUnit) => (
-                        <UnitRowItem key={item.id} optionUnit={item} />
+                        <UnitRowItem
+                          takeMarginWhenNoImage={new List(
+                            groupSelection.optionUnits
+                          ).any(
+                            (unitItem) =>
+                              unitItem.imageUrl !== null &&
+                              unitItem.imageUrl !== undefined &&
+                              unitItem.imageUrl.length > 0
+                          )}
+                          key={item.id}
+                          optionUnit={item}
+                        />
                       ))
                       .toArray()
                   ) : (
