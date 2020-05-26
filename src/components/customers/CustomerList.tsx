@@ -9,10 +9,10 @@ import {
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
-import * as customerActions from '../../redux/actions/customer.actions';
+import { customerActions } from '../../redux/slices/customer.slice';
 import { controlActions } from '../../redux/slices/control.slice';
 import ManagementPanel from './options/ManagmentPanel';
-import { CustomerListState } from '../../redux/reducers/customer.reducer';
+import { CustomerListState } from '../../redux/slices/customer.slice';
 import {
   scrollablePaneStyleForDetailList,
   detailsListStyle,

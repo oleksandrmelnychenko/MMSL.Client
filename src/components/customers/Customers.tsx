@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import CustomerList from './CustomerList';
 import CustomerPanel from './customerManaging/CustomerPanel';
-import * as customerActions from '../../redux/actions/customer.actions';
+import { customerActions } from '../../redux/slices/customer.slice';
 
 export const Customers: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -37,8 +37,7 @@ export const Customers: React.FC = (props: any) => {
                             dispatch(customerActions.selectedCustomer(null));
                             dispatch(customerActions.toggleCustomerForm(true));
                           }}
-                          iconProps={{ iconName: 'Add' }}
-                        >
+                          iconProps={{ iconName: 'Add' }}>
                           New customer
                         </ActionButton>
                       </div>

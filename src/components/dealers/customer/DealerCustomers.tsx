@@ -25,7 +25,7 @@ import {
 } from '../../../redux/slices/control.slice';
 import { List } from 'linq-typescript';
 import ManageCustomerForm from './ManageCustomerForm';
-import * as customerActions from '../../../redux/actions/customer.actions';
+import { customerActions } from '../../../redux/slices/customer.slice';
 import { DealerState } from '../../../redux/reducers/dealer.reducer';
 
 export const DealerCustomers: React.FC = () => {
@@ -89,8 +89,7 @@ export const DealerCustomers: React.FC = () => {
           } else {
             dispatch(dealerActions.updateTargetStoreCustomersList([]));
           }
-        }}
-      >
+        }}>
         <div className="dealer__store__name">Name: {item.name}</div>
         <div className="dealer__store__address">
           Address:{' '}
@@ -208,8 +207,7 @@ export const DealerCustomers: React.FC = () => {
       <Stack
         horizontal
         horizontalAlign="space-between"
-        tokens={{ childrenGap: 20 }}
-      >
+        tokens={{ childrenGap: 20 }}>
         <Stack grow={1} tokens={{ maxWidth: '32%' }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>

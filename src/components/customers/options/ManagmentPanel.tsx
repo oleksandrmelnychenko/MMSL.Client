@@ -1,7 +1,7 @@
 import React from 'react';
 import { Label, PrimaryButton } from 'office-ui-fabric-react';
 
-import * as customerActions from '../../../redux/actions/customer.actions';
+import { customerActions } from '../../../redux/slices/customer.slice';
 import {
   ToggleDealerPanelWithDetails,
   DealerDetilsComponents,
