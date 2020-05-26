@@ -110,7 +110,7 @@ const ProductCategories: React.FC = () => {
       <ScrollablePane styles={scrollablePaneStyleForDetailList}>
         <div className="categories">
           {categories.map((category) => (
-            <div key={category.id} style={{ margin: '12px' }}>
+            <div key={category.id} style={{ margin: '12px 24px 12px 0' }}>
               <Card
                 styles={{ root: { padding: '9px' } }}
                 className={chooseCategory?.id === category.id ? `selected` : ''}
