@@ -1,8 +1,8 @@
-import { StoreCustomer } from './../../interfaces/index';
+import { StoreCustomer, Pagination } from './../../interfaces/index';
 import { createReducer } from '@reduxjs/toolkit';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import { IStore } from '../../interfaces/index';
-import { DealerAccount, Pagination } from '../../interfaces';
+import { DealerAccount } from '../../interfaces';
 
 /// Dealer reducer state
 export class DealerState {
@@ -94,7 +94,10 @@ export const dealerReducer = createReducer(new DealerState(), (builder) =>
       state.dealerState.pagination = action.payload;
     })
     .addCase(dealerActions.updateDealerListPaginationInfo, (state, action) => {
-      state.dealerState.pagination.paginationInfo = action.payload;
+      let newPagination = { ...state.dealerState.pagination };
+      newPagination.paginationInfo = action.payload;
+
+      state.dealerState.pagination = newPagination;
     })
     .addCase(dealerActions.isOpenPanelWithDealerDetails, (state, action) => {
       state.isOpenPanelWithDealerDetails = action.payload;
