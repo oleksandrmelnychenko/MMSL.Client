@@ -102,7 +102,8 @@ const ProductCategories: React.FC = () => {
                         )
                       );
                     }}
-                    iconProps={{ iconName: 'Add' }}>
+                    iconProps={{ iconName: 'Add' }}
+                  >
                     New Category
                   </ActionButton>
                 </div>
@@ -116,6 +117,7 @@ const ProductCategories: React.FC = () => {
           {categories.map((category) => (
             <div key={category.id} style={{ margin: '12px' }}>
               <Card
+                styles={{ root: { padding: '9px' } }}
                 className={chooseCategory?.id === category.id ? `selected` : ''}
                 onClick={(args: any) => {
                   const className: any = args?.target?.className;
@@ -142,7 +144,8 @@ const ProductCategories: React.FC = () => {
                     dispatch(action);
                   }
                 }}
-                tokens={cardTokens}>
+                tokens={cardTokens}
+              >
                 <Card.Section
                   fill
                   verticalAlign="end"
@@ -159,18 +162,21 @@ const ProductCategories: React.FC = () => {
                       alignItems: 'center',
                     },
                   }}
-                  tokens={backgroundImageCardSectionTokens}>
+                  tokens={backgroundImageCardSectionTokens}
+                >
                   <Text
                     className="category_name"
                     variant="large"
-                    styles={textStyles}>
+                    styles={textStyles}
+                  >
                     {category.name}
                   </Text>
                 </Card.Section>
                 <Card.Section
                   horizontal
                   styles={footerCardSectionStyles}
-                  tokens={footerCardSectionTokens}>
+                  tokens={footerCardSectionTokens}
+                >
                   <Stack.Item grow={1}>
                     <span />
                   </Stack.Item>
