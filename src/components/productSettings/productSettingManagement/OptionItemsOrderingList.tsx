@@ -14,7 +14,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
 import { assignPendingActions } from '../../../helpers/action.helper';
-import * as productSettingsActions from '../../../redux/actions/productSettings.actions';
+import { productSettingsActions } from '../../../redux/slices/productSettings.slice';
 import { ModifiedOptionUnitOrder, OptionUnit } from '../../../interfaces';
 import { List } from 'linq-typescript';
 import { DATA_SELECTION_DISABLED_CLASS } from '../../dealers/DealerList';
@@ -57,8 +57,7 @@ export const OptionItemsOrderingList: React.FC = () => {
           <div
             className={`list__item${
               item.id === selectedOptionUnitId ? ' selected' : ''
-            }`}
-          >
+            }`}>
             <div className="list__description">
               <div className="list__description__name">{item.value}</div>
               <div className="list__description__mandatory">
@@ -187,8 +186,7 @@ export const OptionItemsOrderingList: React.FC = () => {
                     )
                   );
                 }
-              }}
-            >
+              }}>
               <DetailsRow
                 styles={{
                   cell: {

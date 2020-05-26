@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Stack, ActionButton, SearchBox } from 'office-ui-fabric-react';
 import ProductSettingsList from './ProductSettingsList';
 import ProductSettingsManagementPanel from './productSettingManagement/ProductSettingsManagementPanel';
-import * as productSettingsActions from '../../redux/actions/productSettings.actions';
-import { ManagingPanelComponent } from '../../redux/reducers/productSettings.reducer';
+import { productSettingsActions } from '../../redux/slices/productSettings.slice';
+import { ManagingPanelComponent } from '../../redux/slices/productSettings.slice';
 import { IApplicationState } from '../../redux/reducers';
 
 export const ProductSettings: React.FC = (props: any) => {
@@ -44,8 +44,7 @@ export const ProductSettings: React.FC = (props: any) => {
                               )
                             );
                           }}
-                          iconProps={{ iconName: 'Add' }}
-                        >
+                          iconProps={{ iconName: 'Add' }}>
                           New group
                         </ActionButton>
                       </div>

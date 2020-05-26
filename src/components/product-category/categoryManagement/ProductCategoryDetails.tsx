@@ -22,7 +22,7 @@ import {
   OptionUnit,
 } from '../../../interfaces';
 import { List } from 'linq-typescript';
-import * as productSettingsActions from '../../../redux/actions/productSettings.actions';
+import { productSettingsActions } from '../../../redux/slices/productSettings.slice';
 import { productActions } from '../../../redux/slices/product.slice';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import './productCategoryDetails.scss';
