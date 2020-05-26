@@ -26,7 +26,7 @@ const ProductManagementPanel: React.FC = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(productCategoryAction.chooseProductCategory(null));
+      // dispatch(productCategoryAction.chooseProductCategory(null));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
