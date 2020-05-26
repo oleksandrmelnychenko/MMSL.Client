@@ -27,14 +27,6 @@ import * as productCategoryActions from '../../../redux/actions/productCategory.
 import { assignPendingActions } from '../../../helpers/action.helper';
 import './productCategoryDetails.scss';
 import UnitRowItem from '../../productSettings/UnitRowItem';
-import { FontWeights } from 'office-ui-fabric-react';
-
-const foo = {
-  root: {
-    cursor: 'pointer',
-    fontWeight: FontWeights.regular,
-  },
-};
 
 const resolveIsWasAddedBefore = (
   groupId: number,
@@ -186,21 +178,104 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
     }
   }, [groupItemVMs, allOptionGroups, props.formikReference, isDetailsDisabled]);
 
-  const renderCommonInnerGroup = (
-    item: OptionGroup | null | undefined,
-    key: number | null | undefined,
+  /// Group selection flow
+  const onSelectGroup = (
+    item: OptionGroup,
     selectionSource: GroupSelectionSource
-  ) => {};
+  ) => {
+    if (selectionSource !== groupSelection?.selectionSource) {
+      setgroupSelection({
+        groupId: item.id,
+        groupName: item.name,
+        selectionSource: selectionSource,
+        optionUnits: item.optionUnits,
+      });
+    } else {
+      if (item.id !== groupSelection?.groupId) {
+        setgroupSelection({
+          groupId: item.id,
+          groupName: item.name,
+          selectionSource: selectionSource,
+          optionUnits: item.optionUnits,
+        });
+      }
+    }
+  };
 
-  const renderCommonGroupItem = (
+  /// Build single hint lable
+  const renderHintLable = (textMessage: string): JSX.Element => {
+    const result = (
+      <Label
+        styles={{
+          root: {
+            fontWeight: 400,
+            fontSize: '12px',
+            color: '#a19f9d',
+          },
+        }}
+      >
+        {textMessage}
+      </Label>
+    );
+
+    return result;
+  };
+
+  /// Render common `option group inner block`
+  const renderOptionGroupCommons = (
+    item: OptionGroup | null | undefined,
+    key: number | null | undefined
+  ): JSX.Element => {
+    let result = <div>{'Undefined option group commons'}</div>;
+
+    if (item && key) {
+      let mandatoryColor = item.isMandatory ? '#2b579a' : '#2b579a60';
+
+      result = (
+        <Stack horizontal tokens={{ childrenGap: 10 }}>
+          <Label
+            styles={{
+              root: {
+                cursor: 'pointer',
+                fontWeight: 400,
+              },
+            }}
+          >{`${item.name}`}</Label>{' '}
+          <TooltipHost
+            id={`mandatoryTooltip_${key}`}
+            calloutProps={{ gapSpace: 0 }}
+            delay={TooltipDelay.zero}
+            directionalHint={DirectionalHint.bottomCenter}
+            styles={{ root: { display: 'inline-block' } }}
+            content={item.isMandatory ? 'Mandatory' : 'Not mandatory'}
+          >
+            <FontIcon
+              style={{
+                cursor: 'default',
+                marginTop: '2px',
+              }}
+              iconName="Warning"
+              className={mergeStyles({
+                fontSize: 16,
+                color: mandatoryColor,
+              })}
+            />
+          </TooltipHost>
+        </Stack>
+      );
+    }
+
+    return result;
+  };
+
+  /// Render `assigned` group item
+  const renderAssignedGroupItem = (
     item: OptionGroup | null | undefined,
     key: number | null | undefined
   ): JSX.Element => {
     let result: JSX.Element = <div>{'Undefined option group'}</div>;
 
     if (item && key) {
-      let mandatoryColor = item.isMandatory ? '#2b579a' : '#2b579a60';
-
       result = (
         <div
           key={key}
@@ -211,55 +286,9 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
               ? 'productCategoryDetails__groupItem selected'
               : 'productCategoryDetails__groupItem'
           }
-          onClick={() => {
-            if (
-              GroupSelectionSource.Assigned !== groupSelection?.selectionSource
-            ) {
-              setgroupSelection({
-                groupId: item.id,
-                groupName: item.name,
-                selectionSource: GroupSelectionSource.Assigned,
-                optionUnits: item.optionUnits,
-              });
-            } else {
-              if (item.id !== groupSelection?.groupId) {
-                setgroupSelection({
-                  groupId: item.id,
-                  groupName: item.name,
-                  selectionSource: GroupSelectionSource.Assigned,
-                  optionUnits: item.optionUnits,
-                });
-              }
-            }
-          }}>
-          <Stack horizontal tokens={{ childrenGap: 10 }}>
-            <Label
-              styles={{
-                root: {
-                  cursor: 'pointer',
-                  fontWeight: 400,
-                },
-              }}>{`${item.name}`}</Label>{' '}
-            <TooltipHost
-              id={`mandatoryTooltip_${key}`}
-              calloutProps={{ gapSpace: 0 }}
-              delay={TooltipDelay.zero}
-              directionalHint={DirectionalHint.bottomCenter}
-              styles={{ root: { display: 'inline-block' } }}
-              content={item.isMandatory ? 'Mandatory' : 'Not mandatory'}>
-              <FontIcon
-                style={{
-                  cursor: 'default',
-                  marginTop: '2px',
-                }}
-                iconName="Warning"
-                className={mergeStyles({
-                  fontSize: 16,
-                  color: mandatoryColor,
-                })}
-              />
-            </TooltipHost>
-          </Stack>
+          onClick={() => onSelectGroup(item, GroupSelectionSource.Assigned)}
+        >
+          {renderOptionGroupCommons(item, key)}
         </div>
       );
     }
@@ -267,6 +296,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
     return result;
   };
 
+  /// Render `assignable` group item
   const renderAssignableCommonGroupItem = (
     item: OptionGroup | null | undefined,
     key: number | null | undefined
@@ -274,8 +304,6 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
     let result: JSX.Element = <div>{'Undefined option group'}</div>;
 
     if (item && key && targetProductCategory) {
-      let mandatoryColor = item.isMandatory ? '#2b579a' : '#2b579a60';
-
       let isWasAttachedBefore: boolean = false;
 
       const vm = new List(groupItemVMs).firstOrDefault(
@@ -297,27 +325,8 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
               ? 'productCategoryDetails__groupItem selected'
               : 'productCategoryDetails__groupItem'
           }
-          onClick={() => {
-            if (
-              GroupSelectionSource.Probable !== groupSelection?.selectionSource
-            ) {
-              setgroupSelection({
-                groupId: item.id,
-                groupName: item.name,
-                selectionSource: GroupSelectionSource.Probable,
-                optionUnits: item.optionUnits,
-              });
-            } else {
-              if (item.id !== groupSelection?.groupId) {
-                setgroupSelection({
-                  groupId: item.id,
-                  groupName: item.name,
-                  selectionSource: GroupSelectionSource.Probable,
-                  optionUnits: item.optionUnits,
-                });
-              }
-            }
-          }}>
+          onClick={() => onSelectGroup(item, GroupSelectionSource.Probable)}
+        >
           <Stack horizontal tokens={{ childrenGap: 10 }}>
             <Checkbox
               styles={{ root: { marginTop: '5px' } }}
@@ -335,42 +344,11 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
             />
 
             <Stack>
-              <Stack horizontal tokens={{ childrenGap: 10 }}>
-                <Stack.Item>
-                  <Label
-                    styles={{
-                      root: {
-                        cursor: 'pointer',
-                        fontWeight: 400,
-                      },
-                    }}>{`${item.name}`}</Label>
-                </Stack.Item>
-
-                <Stack.Item>
-                  <TooltipHost
-                    id={`mandatoryTooltip_${key}`}
-                    calloutProps={{ gapSpace: 0 }}
-                    delay={TooltipDelay.zero}
-                    directionalHint={DirectionalHint.bottomCenter}
-                    styles={{ root: { display: 'inline-block' } }}
-                    content={item.isMandatory ? 'Mandatory' : 'Not mandatory'}>
-                    <FontIcon
-                      style={{
-                        cursor: 'default',
-                        marginTop: '2px',
-                      }}
-                      iconName="Warning"
-                      className={mergeStyles({
-                        fontSize: 16,
-                        color: mandatoryColor,
-                      })}
-                    />
-                  </TooltipHost>
-                </Stack.Item>
-              </Stack>
+              {renderOptionGroupCommons(item, key)}
 
               <Stack.Item
-                styles={{ root: { position: 'relative', top: '-7px' } }}>
+                styles={{ root: { position: 'relative', top: '-7px' } }}
+              >
                 <Label
                   styles={{
                     root: {
@@ -379,7 +357,8 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                       fontSize: '12px',
                       color: '#a19f9d',
                     },
-                  }}>
+                  }}
+                >
                   {vm?.itemAdditionState === ItemAdditionState.NoChanges
                     ? ''
                     : vm?.itemAdditionState === ItemAdditionState.WillBeAdded
@@ -470,7 +449,8 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
       <Stack
         horizontal
         horizontalAlign="space-between"
-        tokens={{ childrenGap: 20 }}>
+        tokens={{ childrenGap: 20 }}
+      >
         <Stack.Item grow={1} styles={{ root: { maxWidth: '33%' } }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div data-is-scrollable={true}>
@@ -481,13 +461,13 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                     targetProductCategory.optionGroupMaps
                   )
                     .select((item: ProductCategoryMapOptionGroup) =>
-                      renderCommonGroupItem(
+                      renderAssignedGroupItem(
                         item.optionGroup,
                         item.optionGroup?.id
                       )
                     )
                     .toArray()
-                : 'No assignments'}
+                : renderHintLable('No assignments')}
             </div>
           </FocusZone>
         </Stack.Item>
@@ -503,7 +483,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                         renderAssignableCommonGroupItem(item, item.id)
                       )
                       .toArray()
-                  : 'No option groups'}
+                  : renderHintLable('No option groups')}
               </Stack>
             </div>
           </FocusZone>
@@ -511,7 +491,8 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
 
         <Stack.Item
           grow={3}
-          styles={{ root: { maxWidth: '33%', minWidth: '33%' } }}>
+          styles={{ root: { maxWidth: '33%', minWidth: '33%' } }}
+        >
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
               <Separator alignContent="start">
@@ -520,39 +501,26 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                   : `Group units`}
               </Separator>
               <Stack tokens={{ childrenGap: 12 }}>
-                {groupSelection ? (
-                  groupSelection.optionUnits.length > 0 ? (
-                    new List<OptionUnit>(groupSelection.optionUnits)
-                      .select((item: OptionUnit) => (
-                        <UnitRowItem
-                          takeMarginWhenNoImage={new List(
-                            groupSelection.optionUnits
-                          ).any(
-                            (unitItem) =>
-                              unitItem.imageUrl !== null &&
-                              unitItem.imageUrl !== undefined &&
-                              unitItem.imageUrl.length > 0
-                          )}
-                          key={item.id}
-                          optionUnit={item}
-                        />
-                      ))
-                      .toArray()
-                  ) : (
-                    <Label styles={foo}>{'There are no units'}</Label>
-                  )
-                ) : (
-                  <Label
-                    styles={{
-                      root: {
-                        fontWeight: 400,
-                        fontSize: '12px',
-                        color: '#a19f9d',
-                      },
-                    }}>
-                    {'Select group and explore units'}
-                  </Label>
-                )}
+                {groupSelection
+                  ? groupSelection.optionUnits.length > 0
+                    ? new List<OptionUnit>(groupSelection.optionUnits)
+                        .select((item: OptionUnit) => (
+                          <UnitRowItem
+                            takeMarginWhenNoImage={new List(
+                              groupSelection.optionUnits
+                            ).any(
+                              (unitItem) =>
+                                unitItem.imageUrl !== null &&
+                                unitItem.imageUrl !== undefined &&
+                                unitItem.imageUrl.length > 0
+                            )}
+                            key={item.id}
+                            optionUnit={item}
+                          />
+                        ))
+                        .toArray()
+                    : renderHintLable('There are no units')
+                  : renderHintLable('Select group and explore units')}
               </Stack>
             </div>
           </FocusZone>
