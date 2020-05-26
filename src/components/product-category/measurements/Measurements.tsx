@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import * as productCategoryAction from '../../../redux/actions/productCategory.actions';
+import { productActions } from '../../../redux/slices/product.slice';
 import {
   Stack,
   ScrollablePane,

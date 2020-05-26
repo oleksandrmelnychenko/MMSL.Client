@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { Label, PrimaryButton } from 'office-ui-fabric-react';
-import * as productCategoryAction from '../../../redux/actions/productCategory.actions';
+import { productActions } from '../../../redux/slices/product.slice';
 import { controlActions } from '../../../redux/slices/control.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
-import { ProductManagingPanelComponent } from '../../../redux/reducers/productCategory.reducer';
+import { ProductManagingPanelComponent } from '../../../redux/slices/product.slice';
 import { useHistory } from 'react-router-dom';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { ProductCategory } from '../../../interfaces';
@@ -50,9 +50,7 @@ const ProductManagementPanel: React.FC = () => {
   ];
 
   const redirectToMeasurements = () => {
-    dispatch(
-      productCategoryAction.setChooseProductCategoryId(choseCategory!.id)
-    );
+    dispatch(productActions.setChooseProductCategoryId(choseCategory!.id));
     dispatch(controlActions.closeInfoPanelWithComponent());
     history.push('/en/app/product/measurements');
   };
@@ -73,7 +71,7 @@ const ProductManagementPanel: React.FC = () => {
                 ProductManagingPanelComponent.ProductCategoryDetails
               ) {
                 dispatch(
-                  productCategoryAction.changeManagingPanelContent(
+                  productActions.changeManagingPanelContent(
                     ProductManagingPanelComponent.ProductCategoryDetails
                   )
                 );

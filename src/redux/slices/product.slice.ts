@@ -1,6 +1,5 @@
-import { createReducer } from '@reduxjs/toolkit';
-import * as actions from '../actions/productCategory.actions';
-import { ProductCategory, ChooseOptions, OptionGroup } from '../../interfaces';
+import { createSlice } from '@reduxjs/toolkit';
+import { ProductCategory, OptionGroup, ChooseOptions } from '../../interfaces';
 
 export class ProductState {
   constructor() {
@@ -54,31 +53,70 @@ export class ProductCategoryDetailsManagingState {
   allOptionGroups: OptionGroup[];
 }
 
-export const productReducer = createReducer(new ProductState(), (builder) =>
-  builder
-    .addCase(actions.successGetAllProductCategory, (state, action) => {
+const product = createSlice({
+  name: 'product',
+  initialState: new ProductState(),
+  reducers: {
+    apiGetAllProductCategory(state) {
+      return state;
+    },
+    apiAddNewProductCategory(state, action) {
+      return state;
+    },
+    apiUpdateProductCategory(state, action) {
+      return state;
+    },
+    apiDeleteProductCategory(state, action) {
+      return state;
+    },
+    apiGetProductCategoryById(state, action) {
+      return state;
+    },
+    apiGetMeasurementsByProduct(state, action) {
+      return state;
+    },
+    apiSaveUpdatedProductGroups(state, action) {
+      return state;
+    },
+    apiAddNewMeasurement(state, action) {
+      return state;
+    },
+    successGetAllProductCategory(state, action) {
       state.productCategory = action.payload;
-    })
-    .addCase(actions.changeManagingPanelContent, (state, action) => {
+      return state;
+    },
+    changeManagingPanelContent(state, action) {
       state.productManagementPanelState.panelContent = action.payload;
-    })
-    .addCase(actions.changeTargetSingeleManagingProduct, (state, action) => {
+      return state;
+    },
+
+    changeTargetSingeleManagingProduct(state, action) {
       state.manageSingleProductState.targetProductCategory = action.payload;
-    })
-    .addCase(actions.chooseProductCategory, (state, action) => {
+      return state;
+    },
+    chooseProductCategory(state, action) {
       state.choose.category = action.payload;
-    })
-    .addCase(actions.setChooseProductCategoryId, (state, action) => {
+      return state;
+    },
+    setChooseProductCategoryId(state, action) {
       state.choose.categoryId = action.payload;
-    })
-    .addCase(actions.successGetMeasurmentsByProduct, (state, action) => {
+      return state;
+    },
+    successGetMeasurmentsByProduct(state, action) {
       state.choose.measurements = action.payload;
-    })
-    .addCase(actions.updateOptiongroupsList, (state, action) => {
+      return state;
+    },
+    updateOptiongroupsList(state, action) {
       state.productCategoryDetailsManagingState.allOptionGroups =
         action.payload;
-    })
-    .addCase(actions.toggleIsDetailsformDisabled, (state, action) => {
+      return state;
+    },
+    toggleIsDetailsformDisabled(state, action) {
       state.productCategoryDetailsManagingState.isDisabled = action.payload;
-    })
-);
+      return state;
+    },
+  },
+});
+
+export const productActions = product.actions;
+export default product.reducer;

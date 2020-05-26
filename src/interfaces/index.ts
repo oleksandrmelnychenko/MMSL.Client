@@ -27,7 +27,6 @@ export interface IAuthState {
   isAuth: boolean;
   errorMessage: string;
   isError: boolean;
-  userInfo: IUserInfo;
 }
 
 export interface IPanelInfo {

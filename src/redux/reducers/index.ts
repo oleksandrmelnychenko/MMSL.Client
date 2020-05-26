@@ -9,9 +9,10 @@ import { localizeReducer, LocalizeState } from 'react-localize-redux';
 import { routerReducer, RouterState } from 'react-router-redux';
 import { IAuthState, IControlState } from '../../interfaces';
 import { DealerState, dealerReducer } from './dealer.reducer';
-import { ProductState, productReducer } from './productCategory.reducer';
 import { default as controlReducer } from '../slices/control.slice';
 import { default as authReducer } from '../slices/auth.slice';
+import { default as productReducer } from '../slices/product.slice';
+import { ProductState } from '../slices/product.slice';
 
 export interface IApplicationState {
   auth: IAuthState;

@@ -16,8 +16,8 @@ import {
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import { controlActions } from '../slices/control.slice';
-import * as productCategoryTypes from '../constants/productCategory.types.constants';
-import * as productCategoryActions from '../actions/productCategory.actions';
+
+import { productActions } from '../slices/product.slice';
 import StoreHelper from '../../helpers/store.helper';
 import { List } from 'linq-typescript';
 import { EntityBase } from '../../interfaces';
@@ -26,7 +26,7 @@ const FORM_DATA_IMAGE_FILE_KEY = 'file';
 
 export const getAllProductCategoryEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productCategoryTypes.API_GET_ALL_PRODUCT_CATEGORY),
+    ofType(productActions.apiGetAllProductCategory.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -39,9 +39,7 @@ export const getAllProductCategoryEpic = (action$: AnyAction, state$: any) => {
           return successCommonEpicFlow(
             successResponse,
             [
-              productCategoryActions.successGetAllProductCategory(
-                successResponse
-              ),
+              productActions.successGetAllProductCategory(successResponse),
               controlActions.disabledStatusBar(),
             ],
             action
@@ -69,7 +67,7 @@ export const apiAddNewProductCategoryEpic = (
   state$: any
 ) => {
   return action$.pipe(
-    ofType(productCategoryTypes.API_ADD_NEW_PRODUCT_CATEGORY),
+    ofType(productActions.apiAddNewProductCategory.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -126,7 +124,7 @@ export const apiUpdateProductCategoryEpic = (
   state$: any
 ) => {
   return action$.pipe(
-    ofType(productCategoryTypes.API_UPDATE_PRODUCT_CATEGORY),
+    ofType(productActions.apiUpdateProductCategory.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -188,7 +186,7 @@ export const apiUpdateProductCategoryEpic = (
 
 export const updateProductCategoryEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productCategoryTypes.API_UPDATE_PRODUCT_CATEGORY),
+    ofType(productActions.apiUpdateProductCategory.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -229,7 +227,7 @@ export const apiSaveUpdatedProductGroupsEpic = (
   state$: any
 ) => {
   return action$.pipe(
-    ofType(productCategoryTypes.API_SAVE_UPDATED_PRODUCT_GROUPS),
+    ofType(productActions.apiSaveUpdatedProductGroups.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -269,7 +267,7 @@ export const apiSaveUpdatedProductGroupsEpic = (
 
 export const deleteProductCategoryEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productCategoryTypes.API_DELETE_PRODUCT_CATEGORY),
+    ofType(productActions.apiDeleteProductCategory.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -310,7 +308,7 @@ export const apiGetProductCategoryByIdEpic = (
   state$: any
 ) => {
   return action$.pipe(
-    ofType(productCategoryTypes.API_GET_PRODUCT_CATEGORY_BY_ID),
+    ofType(productActions.apiGetProductCategoryById.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -350,7 +348,7 @@ export const getMeasurementsByProductEpic = (
   state$: any
 ) => {
   return action$.pipe(
-    ofType(productCategoryTypes.API_GET_MEASUREMENTS_BY_PRODUCT),
+    ofType(productActions.apiGetMeasurementsByProduct.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -364,9 +362,7 @@ export const getMeasurementsByProductEpic = (
           return successCommonEpicFlow(
             successResponse,
             [
-              productCategoryActions.successGetMeasurmentsByProduct(
-                successResponse
-              ),
+              productActions.successGetMeasurmentsByProduct(successResponse),
               controlActions.disabledStatusBar(),
             ],
             action
@@ -391,7 +387,7 @@ export const getMeasurementsByProductEpic = (
 
 export const apiAddNewMeasurementEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productCategoryTypes.API_ADD_NEW_MEASUREMENT),
+    ofType(productActions.apiAddNewMeasurement.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());

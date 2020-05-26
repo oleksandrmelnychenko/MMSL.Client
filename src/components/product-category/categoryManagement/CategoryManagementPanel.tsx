@@ -11,8 +11,8 @@ import CommonManagementActionBar, {
   RESET_PANEL_ITEM_NAME,
 } from '../../dealers/panel/CommonManagementActionBar';
 import { IApplicationState } from '../../../redux/reducers';
-import { ProductManagingPanelComponent } from '../../../redux/reducers/productCategory.reducer';
-import * as productCategoryActions from '../../../redux/actions/productCategory.actions';
+import { ProductManagingPanelComponent } from '../../../redux/slices/product.slice';
+import { productActions } from '../../../redux/slices/product.slice';
 import ProductCategoryForm from './ProductCategoryForm';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import ProductCategoryDetails from './ProductCategoryDetails';
@@ -83,14 +83,12 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
           formikReference={formikReference}
           submitAction={(args: any) => {
             let action = assignPendingActions(
-              productCategoryActions.apiAddNewProductCategory(args),
+              productActions.apiAddNewProductCategory(args),
               [],
               [],
               (args: any) => {
-                dispatch(
-                  productCategoryActions.changeManagingPanelContent(null)
-                );
-                dispatch(productCategoryActions.apiGetAllProductCategory());
+                dispatch(productActions.changeManagingPanelContent(null));
+                dispatch(productActions.apiGetAllProductCategory());
               }
             );
 
@@ -112,19 +110,15 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
           productCategory={singleProductForEdit}
           submitAction={(args: any) => {
             let action = assignPendingActions(
-              productCategoryActions.apiUpdateProductCategory(args),
+              productActions.apiUpdateProductCategory(args),
               [],
               [],
               (args: any) => {
+                dispatch(productActions.changeManagingPanelContent(null));
                 dispatch(
-                  productCategoryActions.changeManagingPanelContent(null)
+                  productActions.changeTargetSingeleManagingProduct(null)
                 );
-                dispatch(
-                  productCategoryActions.changeTargetSingeleManagingProduct(
-                    null
-                  )
-                );
-                dispatch(productCategoryActions.apiGetAllProductCategory());
+                dispatch(productActions.apiGetAllProductCategory());
               }
             );
 
@@ -147,24 +141,22 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
         <ProductCategoryDetails
           formikReference={formikReference}
           submitAction={(args: any) => {
-            dispatch(productCategoryActions.toggleIsDetailsformDisabled(true));
+            dispatch(productActions.toggleIsDetailsformDisabled(true));
 
             let action = assignPendingActions(
-              productCategoryActions.apiSaveUpdatedProductGroups(args),
-              [productCategoryActions.apiGetAllProductCategory()],
-              [productCategoryActions.toggleIsDetailsformDisabled(false)],
+              productActions.apiSaveUpdatedProductGroups(args),
+              [productActions.apiGetAllProductCategory()],
+              [productActions.toggleIsDetailsformDisabled(false)],
               (args: any) => {
                 if (targetProductCategoryForDetails) {
                   let action = assignPendingActions(
-                    productCategoryActions.apiGetProductCategoryById(
+                    productActions.apiGetProductCategoryById(
                       targetProductCategoryForDetails?.id
                     ),
-                    [productCategoryActions.toggleIsDetailsformDisabled(false)],
-                    [productCategoryActions.toggleIsDetailsformDisabled(false)],
+                    [productActions.toggleIsDetailsformDisabled(false)],
+                    [productActions.toggleIsDetailsformDisabled(false)],
                     (args: any) => {
-                      dispatch(
-                        productCategoryActions.chooseProductCategory(args)
-                      );
+                      dispatch(productActions.chooseProductCategory(args));
                     },
                     (args: any) => {}
                   );
@@ -194,14 +186,11 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
         customWidth={`${panelWidth}px`}
         onOuterClick={() => {}}
         onDismiss={() => {
-          dispatch(productCategoryActions.changeManagingPanelContent(null));
-          dispatch(
-            productCategoryActions.changeTargetSingeleManagingProduct(null)
-          );
-          dispatch(productCategoryActions.updateOptiongroupsList([]));
+          dispatch(productActions.changeManagingPanelContent(null));
+          dispatch(productActions.changeTargetSingeleManagingProduct(null));
+          dispatch(productActions.updateOptiongroupsList([]));
         }}
-        closeButtonAriaLabel="Close"
-      >
+        closeButtonAriaLabel="Close">
         {panelContent !== null &&
         panelContent !== ProductManagingPanelComponent.Unknown ? (
           <>

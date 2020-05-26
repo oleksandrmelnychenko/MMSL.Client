@@ -1,6 +1,6 @@
 import React, { useEffect, SyntheticEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import * as productCategoryAction from '../../redux/actions/productCategory.actions';
+import { productActions } from '../../redux/slices/product.slice';
 import {
   ActionButton,
   Stack,
@@ -11,7 +11,6 @@ import { Card } from '@uifabric/react-cards';
 import { Text } from 'office-ui-fabric-react/lib/Text';
 import './product-category.scss';
 import { controlActions } from '../../redux/slices/control.slice';
-import * as productCategoryActions from '../../redux/actions/productCategory.actions';
 import { IApplicationState } from '../../redux/reducers/index';
 import { ProductCategory } from '../../interfaces';
 import {
@@ -24,7 +23,7 @@ import {
 } from '../../common/fabric-styles/styles';
 import { DialogArgs, CommonDialogType } from '../../redux/slices/control.slice';
 import CategoryManagementPanel from './categoryManagement/CategoryManagementPanel';
-import { ProductManagingPanelComponent } from '../../redux/reducers/productCategory.reducer';
+import { ProductManagingPanelComponent } from '../../redux/slices/product.slice';
 import { assignPendingActions } from '../../helpers/action.helper';
 import ProductManagementPanel from './options/ProductManagementPanel';
 
@@ -34,7 +33,7 @@ const ProductCategories: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(productCategoryAction.apiGetAllProductCategory());
+    dispatch(productActions.apiGetAllProductCategory());
     return () => {
       // dispatch(productCategoryAction.chooseProductCategory(null));
     };
@@ -61,15 +60,15 @@ const ProductCategories: React.FC = () => {
           'Delete category',
           `Are you sure you want to delete ${category.name}?`,
           () => {
-            dispatch(productCategoryActions.chooseProductCategory(null));
+            dispatch(productActions.chooseProductCategory(null));
             dispatch(controlActions.closeInfoPanelWithComponent());
 
             let action = assignPendingActions(
-              productCategoryAction.apiDeleteProductCategory(category.id),
+              productActions.apiDeleteProductCategory(category.id),
               [],
               [],
               (args: any) => {
-                dispatch(productCategoryActions.apiGetAllProductCategory());
+                dispatch(productActions.apiGetAllProductCategory());
               }
             );
 
@@ -94,7 +93,7 @@ const ProductCategories: React.FC = () => {
                     className="dealerAdd"
                     onClick={() => {
                       dispatch(
-                        productCategoryActions.changeManagingPanelContent(
+                        productActions.changeManagingPanelContent(
                           ProductManagingPanelComponent.ProductManaging
                         )
                       );
@@ -120,15 +119,11 @@ const ProductCategories: React.FC = () => {
 
                   if (!className.includes(DATA_SELECTION_DISABLED_CLASS)) {
                     let action = assignPendingActions(
-                      productCategoryActions.apiGetProductCategoryById(
-                        category.id
-                      ),
+                      productActions.apiGetProductCategoryById(category.id),
                       [],
                       [],
                       (args: any) => {
-                        dispatch(
-                          productCategoryAction.chooseProductCategory(args)
-                        );
+                        dispatch(productActions.chooseProductCategory(args));
                         dispatch(
                           controlActions.openInfoPanelWithComponent(
                             ProductManagementPanel
@@ -186,18 +181,16 @@ const ProductCategories: React.FC = () => {
                     }}
                     onClick={() => {
                       let action = assignPendingActions(
-                        productCategoryActions.apiGetProductCategoryById(
-                          category.id
-                        ),
+                        productActions.apiGetProductCategoryById(category.id),
                         [
-                          productCategoryActions.changeManagingPanelContent(
+                          productActions.changeManagingPanelContent(
                             ProductManagingPanelComponent.EditSingleProduct
                           ),
                         ],
                         [],
                         (args: any) => {
                           dispatch(
-                            productCategoryActions.changeTargetSingeleManagingProduct(
+                            productActions.changeTargetSingeleManagingProduct(
                               args
                             )
                           );
