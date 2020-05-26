@@ -8,7 +8,7 @@ import { switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import * as dealerActions from '../../redux/actions/dealer.actions';
-import { controlActions } from '../../redux/slices/control';
+import { controlActions } from '../slices/control.slice';
 import * as dealerTypes from '../constants/dealer.types.constants';
 import { getActiveLanguage } from 'react-localize-redux';
 import {

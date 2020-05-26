@@ -15,8 +15,11 @@ import {
 import { OptionUnit } from '../../../interfaces';
 import { IApplicationState } from '../../../redux/reducers';
 import { assignPendingActions } from '../../../helpers/action.helper';
-import { controlActions } from '../../../redux/slices/control';
-import { DialogArgs, CommonDialogType } from '../../../redux/slices/control';
+import { controlActions } from '../../../redux/slices/control.slice';
+import {
+  DialogArgs,
+  CommonDialogType,
+} from '../../../redux/slices/control.slice';
 
 class OptionGroupDetailsProps extends ManagingProductUnitFormProps {
   constructor() {

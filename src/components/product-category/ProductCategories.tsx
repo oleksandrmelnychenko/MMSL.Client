@@ -10,7 +10,7 @@ import {
 import { Card } from '@uifabric/react-cards';
 import { Text } from 'office-ui-fabric-react/lib/Text';
 import './product-category.scss';
-import { controlActions } from '../../redux/slices/control';
+import { controlActions } from '../../redux/slices/control.slice';
 import * as productCategoryActions from '../../redux/actions/productCategory.actions';
 import { IApplicationState } from '../../redux/reducers/index';
 import { ProductCategory } from '../../interfaces';
@@ -22,7 +22,7 @@ import {
   textStyles,
   cardTokens,
 } from '../../common/fabric-styles/styles';
-import { DialogArgs, CommonDialogType } from '../../redux/slices/control';
+import { DialogArgs, CommonDialogType } from '../../redux/slices/control.slice';
 import CategoryManagementPanel from './categoryManagement/CategoryManagementPanel';
 import { ProductManagingPanelComponent } from '../../redux/reducers/productCategory.reducer';
 import { assignPendingActions } from '../../helpers/action.helper';
@@ -99,8 +99,7 @@ const ProductCategories: React.FC = () => {
                         )
                       );
                     }}
-                    iconProps={{ iconName: 'Add' }}
-                  >
+                    iconProps={{ iconName: 'Add' }}>
                     New Category
                   </ActionButton>
                 </div>
@@ -141,8 +140,7 @@ const ProductCategories: React.FC = () => {
                     dispatch(action);
                   }
                 }}
-                tokens={cardTokens}
-              >
+                tokens={cardTokens}>
                 <Card.Section
                   fill
                   verticalAlign="end"
@@ -159,21 +157,18 @@ const ProductCategories: React.FC = () => {
                       alignItems: 'center',
                     },
                   }}
-                  tokens={backgroundImageCardSectionTokens}
-                >
+                  tokens={backgroundImageCardSectionTokens}>
                   <Text
                     className="category_name"
                     variant="large"
-                    styles={textStyles}
-                  >
+                    styles={textStyles}>
                     {category.name}
                   </Text>
                 </Card.Section>
                 <Card.Section
                   horizontal
                   styles={footerCardSectionStyles}
-                  tokens={footerCardSectionTokens}
-                >
+                  tokens={footerCardSectionTokens}>
                   <Stack.Item grow={1}>
                     <span />
                   </Stack.Item>

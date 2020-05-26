@@ -15,7 +15,7 @@ import {
   ajaxPutFormDataResponse,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
-import { controlActions } from '../../redux/slices/control';
+import { controlActions } from '../slices/control.slice';
 import * as productCategoryTypes from '../constants/productCategory.types.constants';
 import * as productCategoryActions from '../actions/productCategory.actions';
 import StoreHelper from '../../helpers/store.helper';

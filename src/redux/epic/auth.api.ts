@@ -6,14 +6,13 @@ import { switchMap, mergeMap, catchError } from 'rxjs/operators';
 import * as API from '../constants/api.constants';
 import { ajaxPostResponse } from '../../helpers/epic.helper';
 import { TokenHelper } from '../../helpers/token.helper';
-import * as authTypes from '../constants/auth.types.constants';
+import { authActions } from '../slices/auth.slice';
 import { getActiveLanguage } from 'react-localize-redux';
-import { SignInAction } from '../../redux/actions/auth.actions';
 
 export const signInEpic = (action$: AnyAction, state$: any) =>
   action$.pipe(
-    ofType(authTypes.REQUEST_SIGNIN),
-    switchMap((action: SignInAction) => {
+    ofType(authActions.signInAction.type),
+    switchMap((action: AnyAction) => {
       const currentLanguage = getActiveLanguage(state$.value.localize).code;
       return ajaxPostResponse(
         API.SIGN_IN_API,
@@ -24,22 +23,18 @@ export const signInEpic = (action$: AnyAction, state$: any) =>
           TokenHelper.SetToken(res.body.token);
 
           return of(
-            {
-              type: authTypes.SUCCESS_SIGNIN,
-              payload: true,
-            },
+            authActions.authSuccessSignInAction(true),
             push(`/${currentLanguage}/app`)
           );
         }),
         catchError((error) => {
           const serverMessage = error.response.message;
-          return of({
-            type: authTypes.FAILURE_SIGNIN,
-            payload: {
+          return of(
+            authActions.failureSignInAction({
               isError: true,
               errorMessage: serverMessage,
-            },
-          });
+            })
+          );
         })
       );
     })

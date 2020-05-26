@@ -14,7 +14,7 @@ import { getTranslate, LocalizeState } from 'react-localize-redux';
 import './header.scss';
 import { TokenHelper } from '../../../helpers/token.helper';
 import { IApplicationState } from '../../../redux/reducers';
-import * as authAction from '../../../redux/actions/auth.actions';
+import { authActions } from '../../../redux/slices/auth.slice';
 
 const Header: React.FC = () => {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const Header: React.FC = () => {
 
   const logOut = (event: any) => {
     event!.stopPropagation();
-    dispatch(authAction.logOut());
+    dispatch(authActions.logOut());
     TokenHelper.removeAccessToken();
   };
 

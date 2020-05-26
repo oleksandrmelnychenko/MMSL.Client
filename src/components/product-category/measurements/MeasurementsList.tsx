@@ -9,7 +9,7 @@ import {
 import { detailsListStyle } from '../../../common/fabric-styles/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
-import { controlActions } from '../../../redux/slices/control';
+import { controlActions } from '../../../redux/slices/control.slice';
 import * as productCategoryActions from '../../../redux/actions/productCategory.actions';
 import {
   Measurement,

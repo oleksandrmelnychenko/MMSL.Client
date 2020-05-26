@@ -18,8 +18,11 @@ import {
   commandBarButtonStyles,
   commandBarStyles,
 } from '../../../common/fabric-styles/styles';
-import { controlActions } from '../../../redux/slices/control';
-import { DialogArgs, CommonDialogType } from '../../../redux/slices/control';
+import { controlActions } from '../../../redux/slices/control.slice';
+import {
+  DialogArgs,
+  CommonDialogType,
+} from '../../../redux/slices/control.slice';
 import { assignPendingActions } from '../../../helpers/action.helper';
 
 export const DealerStores: React.FC = () => {

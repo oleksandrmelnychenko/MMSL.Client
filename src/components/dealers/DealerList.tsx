@@ -16,10 +16,10 @@ import { IApplicationState } from '../../redux/reducers';
 import * as dealerActions from '../../redux/actions/dealer.actions';
 import { DealerAccount } from '../../interfaces';
 import { assignPendingActions } from '../../helpers/action.helper';
-import { controlActions } from '../../redux/slices/control';
+import { controlActions } from '../../redux/slices/control.slice';
 import { ToggleDealerPanelWithDetails } from '../../redux/reducers/dealer.reducer';
 import ManagementOptions from './dealerManaging/ManagementOptions';
-import { DialogArgs, CommonDialogType } from '../../redux/slices/control';
+import { DialogArgs, CommonDialogType } from '../../redux/slices/control.slice';
 import {
   detailsListStyle,
   scrollablePaneStyleForDetailList_Dealers,

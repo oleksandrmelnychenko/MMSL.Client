@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import './account.scss';
 import { IApplicationState } from '../../redux/reducers';
-import * as authAction from '../../redux/actions/auth.actions';
+import { authActions } from '../../redux/slices/auth.slice';
 import { PreloaderModule } from '../../common/preloader/preloader.module/Preloader.module';
 import { IAuthentication } from '../../interfaces';
 
@@ -45,7 +45,7 @@ export const SignIn: React.FC = () => {
   });
 
   const handleClearErrorMessages = () =>
-    errorMessage && dispatch(authAction.clearErrorMessage());
+    errorMessage && dispatch(authActions.clearErrorMessage());
 
   return (
     <div className="container-flex-center">
@@ -78,7 +78,7 @@ export const SignIn: React.FC = () => {
               password: values.password,
             };
 
-            dispatch(authAction.signInAction(data));
+            dispatch(authActions.signInAction(data));
           }}>
           {({ errors, touched }) => (
             <Form>
