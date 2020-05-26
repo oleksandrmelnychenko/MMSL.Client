@@ -6,17 +6,16 @@ import {
 import { switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
-import * as unitsTypes from '../constants/units.types.constants';
 import { getActiveLanguage } from 'react-localize-redux';
 import { ajaxGetWebResponse } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
-import * as unitsActions from '../actions/units.actions';
+import { unitsActions } from '../slices/units.slice';
 import { controlActions } from '../slices/control.slice';
 import StoreHelper from '../../helpers/store.helper';
 
 export const getCurrenciesEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(unitsTypes.GET_CURRENCIES),
+    ofType(unitsActions.getCurrencies.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -47,7 +46,7 @@ export const getCurrenciesEpic = (action$: AnyAction, state$: any) => {
 
 export const getPaymentTypesEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(unitsTypes.GET_PAYMENT_TYPES),
+    ofType(unitsActions.getPaymentTypes.type),
     switchMap((action: AnyAction) => {
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const languageCode = getActiveLanguage(state$.value.localize).code;
