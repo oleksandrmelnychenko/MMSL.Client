@@ -19,9 +19,11 @@ import { useId } from '@uifabric/react-hooks';
 export class UnitRowItemProps {
   constructor() {
     this.optionUnit = new OptionUnit();
+    this.takeMarginWhenNoImage = false;
   }
 
   optionUnit: OptionUnit;
+  takeMarginWhenNoImage?: boolean;
 }
 
 export const UnitRowItem: React.FC<UnitRowItemProps> = (
@@ -38,6 +40,18 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
 
   let allowColor = props.optionUnit.isMandatory ? '#2b579a' : '#2b579a60';
 
+  let infoStyle: any = {};
+
+  if (props.takeMarginWhenNoImage === true) {
+    if (props.optionUnit.imageUrl) {
+      if (props.optionUnit.imageUrl.length < 1) {
+        infoStyle = { root: { position: 'relative', left: '88px' } };
+      }
+    } else {
+      infoStyle = { root: { position: 'relative', left: '88px' } };
+    }
+  }
+
   return (
     <Stack horizontal tokens={{ childrenGap: 20 }}>
       {props.optionUnit.imageUrl && props.optionUnit.imageUrl.length > 0 ? (
@@ -46,7 +60,7 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
         </Stack.Item>
       ) : null}
 
-      <Stack>
+      <Stack styles={infoStyle}>
         <Stack.Item>
           <Text
             variant={'mediumPlus' as ITextProps['variant']}
