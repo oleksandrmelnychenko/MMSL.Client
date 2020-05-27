@@ -72,7 +72,7 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
 
   switch (panelContent) {
     case ProductManagingPanelComponent.ProductManaging:
-      panelTitleText = 'New Product Category';
+      panelTitleText = 'New Product';
       panelDescription = '';
       panelWidth = 400;
 
@@ -129,10 +129,12 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
 
       break;
     case ProductManagingPanelComponent.ProductCategoryDetails:
-      panelTitleText = 'Manage Option Groups';
-      panelDescription = targetProductCategoryForDetails
+      const productName = targetProductCategoryForDetails
         ? targetProductCategoryForDetails.name
         : '';
+
+      panelTitleText = `${productName} configuration`;
+
       panelWidth = 1000;
 
       hideAddEditPanelActions(actionItems);
@@ -190,7 +192,8 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
           dispatch(productActions.changeTargetSingeleManagingProduct(null));
           dispatch(productActions.updateOptiongroupsList([]));
         }}
-        closeButtonAriaLabel="Close">
+        closeButtonAriaLabel="Close"
+      >
         {panelContent !== null &&
         panelContent !== ProductManagingPanelComponent.Unknown ? (
           <>

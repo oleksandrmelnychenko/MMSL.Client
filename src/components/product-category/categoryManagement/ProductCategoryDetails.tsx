@@ -212,7 +212,8 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
             fontSize: '12px',
             color: '#a19f9d',
           },
-        }}>
+        }}
+      >
         {textMessage}
       </Label>
     );
@@ -225,7 +226,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
     item: OptionGroup | null | undefined,
     key: number | null | undefined
   ): JSX.Element => {
-    let result = <div>{'Undefined option group commons'}</div>;
+    let result = <div>{'Undefined style'}</div>;
 
     if (item && key) {
       let mandatoryColor = item.isMandatory ? '#2b579a' : '#2b579a60';
@@ -238,14 +239,16 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                 cursor: 'pointer',
                 fontWeight: 400,
               },
-            }}>{`${item.name}`}</Label>{' '}
+            }}
+          >{`${item.name}`}</Label>{' '}
           <TooltipHost
             id={`mandatoryTooltip_${key}`}
             calloutProps={{ gapSpace: 0 }}
             delay={TooltipDelay.zero}
             directionalHint={DirectionalHint.bottomCenter}
             styles={{ root: { display: 'inline-block' } }}
-            content={item.isMandatory ? 'Mandatory' : 'Not mandatory'}>
+            content={item.isMandatory ? 'Mandatory' : 'Not mandatory'}
+          >
             <FontIcon
               style={{
                 cursor: 'default',
@@ -270,7 +273,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
     item: OptionGroup | null | undefined,
     key: number | null | undefined
   ): JSX.Element => {
-    let result: JSX.Element = <div>{'Undefined option group'}</div>;
+    let result: JSX.Element = <div>{'Undefined style'}</div>;
 
     if (item && key) {
       result = (
@@ -283,7 +286,8 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
               ? 'productCategoryDetails__groupItem selected'
               : 'productCategoryDetails__groupItem'
           }
-          onClick={() => onSelectGroup(item, GroupSelectionSource.Assigned)}>
+          onClick={() => onSelectGroup(item, GroupSelectionSource.Assigned)}
+        >
           {renderOptionGroupCommons(item, key)}
         </div>
       );
@@ -321,7 +325,8 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
               ? 'productCategoryDetails__groupItem selected'
               : 'productCategoryDetails__groupItem'
           }
-          onClick={() => onSelectGroup(item, GroupSelectionSource.Probable)}>
+          onClick={() => onSelectGroup(item, GroupSelectionSource.Probable)}
+        >
           <Stack horizontal tokens={{ childrenGap: 10 }}>
             <Checkbox
               styles={{ root: { marginTop: '5px' } }}
@@ -342,7 +347,8 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
               {renderOptionGroupCommons(item, key)}
 
               <Stack.Item
-                styles={{ root: { position: 'relative', top: '-7px' } }}>
+                styles={{ root: { position: 'relative', top: '-7px' } }}
+              >
                 <Label
                   styles={{
                     root: {
@@ -351,7 +357,8 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                       fontSize: '12px',
                       color: '#a19f9d',
                     },
-                  }}>
+                  }}
+                >
                   {vm?.itemAdditionState === ItemAdditionState.NoChanges
                     ? ''
                     : vm?.itemAdditionState === ItemAdditionState.WillBeAdded
@@ -442,7 +449,8 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
       <Stack
         horizontal
         horizontalAlign="space-between"
-        tokens={{ childrenGap: 20 }}>
+        tokens={{ childrenGap: 20 }}
+      >
         <Stack.Item grow={1} styles={{ root: { maxWidth: '33%' } }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div data-is-scrollable={true}>
@@ -483,13 +491,14 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
 
         <Stack.Item
           grow={3}
-          styles={{ root: { maxWidth: '33%', minWidth: '33%' } }}>
+          styles={{ root: { maxWidth: '33%', minWidth: '33%' } }}
+        >
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
               <Separator alignContent="start">
                 {groupSelection
-                  ? `${groupSelection.groupName} style settings`
-                  : `Style settings`}
+                  ? `${groupSelection.groupName} settings`
+                  : `Settings`}
               </Separator>
               <Stack tokens={{ childrenGap: 12 }}>
                 {groupSelection

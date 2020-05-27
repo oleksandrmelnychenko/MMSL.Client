@@ -99,7 +99,7 @@ const ProductCategories: React.FC = () => {
                       );
                     }}
                     iconProps={{ iconName: 'Add' }}>
-                    New Category
+                    New Product
                   </ActionButton>
                 </div>
               </Stack>
