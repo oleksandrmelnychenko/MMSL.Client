@@ -9,6 +9,6 @@ export const closeInfoMessageEpic = (action$: AnyAction) => {
   return action$.pipe(
     ofType(controlActions.showInfoMessage.type),
     debounceTime(2500),
-    mapTo({ type: 'control.CLEAR_INFO_MESSAGE' })
+    mapTo(controlActions.clearInfoMessage())
   );
 };

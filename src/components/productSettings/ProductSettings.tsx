@@ -30,7 +30,7 @@ export const ProductSettings: React.FC = (props: any) => {
               <div className="productSettings__header__top">
                 <Stack horizontal>
                   <div className="productSettings__header__top__title">
-                    Settings
+                    Styles
                   </div>
                   <div className="productSettings__header__top__controls">
                     <Stack horizontal tokens={{ childrenGap: 10 }}>

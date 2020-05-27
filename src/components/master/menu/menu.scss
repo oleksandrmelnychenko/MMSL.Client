@@ -8,13 +8,26 @@
     height: calc(100vh - 75px);
     text-align: left;
     padding: 5px 0 0 0;
-    border-right: 1px solid #eaeaea;
     box-shadow: 1px 0px 0 rgba(0, 0, 0, 0.08);
     overflow: hidden;
     transition: all .4s ease-in-out;
 
+    &__list {
+        &_sub {
+            background-color: #dcdcdc;
+        }
+    }
+
     &__item {
         white-space: nowrap;
+
+        &_with-sub-menu {
+            background-color: #dcdcdc;
+        }
+
+        &:hover {
+            background-color: #cfcfcf;
+        }
     }
 
     &__link {
@@ -30,7 +43,7 @@
         &.active {
             border-left: 3px solid #358bd5;
             color: #358bd5;
-            background-color: #dcdcdc;
+            background-color: #cfcfcf;
         }
 
         &:before {

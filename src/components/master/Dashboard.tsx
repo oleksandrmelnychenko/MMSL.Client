@@ -61,10 +61,7 @@ const Dashboard: React.FC = () => {
               component={ProductCategoryView}
             />
 
-            <PrivateRoute
-              path={`/en/app/product-settings`}
-              component={ProductSettings}
-            />
+            <PrivateRoute path={`/en/app/styles`} component={ProductSettings} />
             <PrivateRoute path={`/en/app/reports`} component={Reports} />
           </Switch>
         </div>

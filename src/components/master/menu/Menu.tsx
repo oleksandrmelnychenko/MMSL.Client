@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { dealerActions } from '../../../redux/slices/dealer.slice';
@@ -12,6 +12,7 @@ interface IMenuItem {
   title: string;
   className: string;
   link: string;
+  children?: IMenuItem[];
 }
 
 const Menu: React.FC = () => {
@@ -21,13 +22,20 @@ const Menu: React.FC = () => {
   );
   const languageCode = getActiveLanguage(localize).code;
 
+  const [isOpenSubMenu, setIsOpenSubMenu] = useState(false);
+
   const onMenuClick = () => {
+    setIsOpenSubMenu(false);
     dispatch(dealerActions.setSelectedDealer(null));
     dispatch(controlActions.closeInfoPanelWithComponent());
     dispatch(productSettingsActions.updateSearchWordOptionGroup(''));
   };
 
-  const menuItem: IMenuItem[] = [
+  const toggleSubMenu = () => {
+    setIsOpenSubMenu(!isOpenSubMenu);
+  };
+
+  const menu: IMenuItem[] = [
     {
       title: 'Dashboard',
       className: 'dashboard',
@@ -59,19 +67,36 @@ const Menu: React.FC = () => {
       link: `/${languageCode}/app/documents`,
     },
     {
-      title: ' Activity History',
+      title: 'Activity History',
       className: 'activity',
       link: `/${languageCode}/app/activity`,
     },
     {
-      title: 'Product Category',
+      title: 'Products',
       className: 'product',
       link: `/${languageCode}/app/product/product-categories`,
     },
     {
       title: 'Settings',
       className: 'settings',
-      link: `/${languageCode}/app/product-settings`,
+      link: `/${languageCode}/app/styles`,
+      children: [
+        {
+          title: 'Styles',
+          className: 'stock',
+          link: `/${languageCode}/app/styles`,
+        },
+        {
+          title: 'Measurements',
+          className: 'documents',
+          link: `/${languageCode}/app/measurements`,
+        },
+        {
+          title: 'Timelines',
+          className: 'activity',
+          link: `/${languageCode}/app/timelines`,
+        },
+      ],
     },
     {
       title: 'Reports',
@@ -80,25 +105,33 @@ const Menu: React.FC = () => {
     },
   ];
 
-  return (
-    <div className="menu">
-      <ul className="menu__list">
-        {menuItem.map((item, index) => (
-          <li key={index} className="menu__item">
-            <NavLink
-              onClick={() => {
-                onMenuClick();
-              }}
-              className={`menu__link ${item.className}`}
-              to={item.link}
-              activeClassName="active">
-              {item.title}
-            </NavLink>
-          </li>
-        ))}
-      </ul>
-    </div>
+  const renderList = (list: IMenuItem[], isSubMenu?: boolean) => (
+    <ul className={`menu__list${isSubMenu ? ` menu__list_sub` : null}`}>
+      {list.map((item, index) => (
+        <li
+          key={index}
+          className={`menu__item${
+            item.children && isOpenSubMenu ? ' menu__item_with-sub-menu' : null
+          }`}>
+          <NavLink
+            onClick={() => {
+              item.children ? setIsOpenSubMenu(true) : onMenuClick();
+            }}
+            className={`menu__link ${item.className}`}
+            to={item.link}
+            activeClassName={!item.children ? 'active' : ''}>
+            {item.title}
+          </NavLink>
+
+          {item.children && isOpenSubMenu
+            ? renderList(item.children, true)
+            : null}
+        </li>
+      ))}
+    </ul>
   );
+
+  return <div className="menu">{renderList(menu)}</div>;
 };
 
 export default Menu;
