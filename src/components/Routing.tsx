@@ -23,16 +23,28 @@ export const Routing: React.FC<IRoutingProps> = (props) => {
   );
 
   const languageCode = getActiveLanguage(localize).code;
-
   if (!auth.isAuth)
     return (
-      <>
-        <Redirect to={`/${languageCode}/account-security`} />
+      <Switch>
+        <Redirect exact from={`/`} to={`/${languageCode}`} />
+
+        <Redirect
+          exact
+          from={`/${languageCode}`}
+          to={`/${languageCode}/account-security`}
+        />
+
+        <Redirect
+          exact
+          from={`/${languageCode}/account-security`}
+          to={`/${languageCode}/account-security/sign-in`}
+        />
+
         <Route
           path={`/${languageCode}/account-security`}
           component={AccountSecurity}
         />
-      </>
+      </Switch>
     );
 
   return (
@@ -40,11 +52,6 @@ export const Routing: React.FC<IRoutingProps> = (props) => {
       <Redirect exact from="/" to={`/${languageCode}`} />
 
       <Redirect exact from={`/${languageCode}`} to={`/${languageCode}/app`} />
-
-      <Route
-        path={`/${languageCode}/account-security`}
-        component={AccountSecurity}
-      />
 
       <PrivateRoute path={`/${languageCode}/app`} component={Dashboard} />
 

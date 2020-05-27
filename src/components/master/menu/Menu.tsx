@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { dealerActions } from '../../../redux/slices/dealer.slice';
 import { controlActions } from '../../../redux/slices/control.slice';
 import './menu.scss';
@@ -30,10 +30,21 @@ const Menu: React.FC = () => {
     dispatch(controlActions.closeInfoPanelWithComponent());
     dispatch(productSettingsActions.updateSearchWordOptionGroup(''));
   };
+  const history = useLocation();
 
-  const toggleSubMenu = () => {
-    setIsOpenSubMenu(!isOpenSubMenu);
-  };
+  const pathNamesSubMenu = [
+    `/${languageCode}/app/styles`,
+    `/${languageCode}/app/measurements`,
+    `/${languageCode}/app/timelines`,
+  ];
+
+  useEffect(() => {
+    if (pathNamesSubMenu.includes(history.pathname)) {
+      setIsOpenSubMenu(true);
+    }
+  }, [history]);
+
+  console.log(history.pathname);
 
   const menu: IMenuItem[] = [
     {
