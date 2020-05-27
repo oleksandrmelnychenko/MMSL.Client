@@ -446,7 +446,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
         <Stack.Item grow={1} styles={{ root: { maxWidth: '33%' } }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div data-is-scrollable={true}>
-              <Separator alignContent="start">Assigned groups</Separator>
+              <Separator alignContent="start">Assigned styles</Separator>
 
               {targetProductCategory && targetProductCategory.optionGroupMaps
                 ? new List<ProductCategoryMapOptionGroup>(
@@ -467,7 +467,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
         <Stack.Item grow={1} styles={{ root: { maxWidth: '33%' } }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
-              <Separator alignContent="start">Option Groups</Separator>
+              <Separator alignContent="start">Available styles</Separator>
               <Stack tokens={{ childrenGap: 0 }}>
                 {allOptionGroups.length > 0
                   ? new List<OptionGroup>(allOptionGroups)
@@ -488,8 +488,8 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
             <div className={'dealer__stores'} data-is-scrollable={true}>
               <Separator alignContent="start">
                 {groupSelection
-                  ? `${groupSelection.groupName} group units`
-                  : `Group units`}
+                  ? `${groupSelection.groupName} style settings`
+                  : `Style settings`}
               </Separator>
               <Stack tokens={{ childrenGap: 12 }}>
                 {groupSelection
