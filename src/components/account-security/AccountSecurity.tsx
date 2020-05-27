@@ -16,38 +16,15 @@ const AccountSecurity: React.FC<IAccountSecurityProps> = (props) => {
     (state) => state.localize
   );
   const current = getActiveLanguage(localize);
-  const ChangeLocaleSegment = (code: string) => {
-    const segments = props.match.url.substr(1).split('/');
-    segments[0] = code;
-
-    let url = '';
-    segments.forEach((element: string) => {
-      return (url += '/' + element);
-    });
-    return url;
-  };
 
   return (
     <Switch>
-      <Redirect
-        exact
-        from={`${props.match.url}`}
-        to={`${props.match.url}/sign-in`}
-      />
-
-      <Redirect
-        exact
-        from={`${props.match.url}`}
-        to={`${ChangeLocaleSegment(current.code)}`}
-      />
-
-      <Route exact path={`${props.match.url}/sign-in`} component={SignIn} />
-
       <Route
-        exact
         path={`${props.match.url}/forgot-password`}
         component={ForgotPassword}
       />
+
+      <Route path={`${props.match.url}/sign-in`} component={SignIn} />
 
       <Redirect from="*" to={`/${current.code}/404`} />
     </Switch>
