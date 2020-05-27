@@ -381,11 +381,8 @@ export class measurementMapDefinitions extends EntityBaseNamed {
   measurementId: number;
 }
 
-export class MeasurementDefinition extends EntityBaseNamed {
-  constructor() {
-    super();
-  }
-}
+export class MeasurementDefinition extends EntityBaseNamed {}
+
 export class MeasurementSize extends EntityBaseNamed {
   constructor() {
     super();
