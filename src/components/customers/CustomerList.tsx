@@ -6,6 +6,12 @@ import {
   Selection,
   ScrollablePane,
   ShimmeredDetailsList,
+  IDetailsHeaderProps,
+  IRenderFunction,
+  TooltipHost,
+  Sticky,
+  StickyPositionType,
+  IDetailsColumnRenderTooltipProps,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -135,10 +141,31 @@ export const CustomerList: React.FC = () => {
     dispatch(controlActions.openInfoPanelWithComponent(ManagementPanel));
   };
 
+  const onRenderDetailsHeader: IRenderFunction<IDetailsHeaderProps> = (
+    props,
+    defaultRender
+  ) => {
+    if (!props) {
+      return null;
+    }
+    const onRenderColumnHeaderTooltip: IRenderFunction<IDetailsColumnRenderTooltipProps> = (
+      tooltipHostProps
+    ) => <TooltipHost {...tooltipHostProps} />;
+    return (
+      <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced>
+        {defaultRender!({
+          ...props,
+          onRenderColumnHeaderTooltip,
+        })}
+      </Sticky>
+    );
+  };
+
   return (
     <div>
       <ScrollablePane styles={scrollablePaneStyleForDetailList}>
         <ShimmeredDetailsList
+          onRenderDetailsHeader={onRenderDetailsHeader}
           enableShimmer={shimmer}
           styles={detailsListStyle}
           items={customersList}

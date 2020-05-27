@@ -10,6 +10,10 @@ import {
   DetailsRow,
   ScrollablePane,
   ShimmeredDetailsList,
+  IRenderFunction,
+  IDetailsHeaderProps,
+  IDetailsColumnRenderTooltipProps,
+  TooltipHost,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -25,6 +29,7 @@ import {
   scrollablePaneStyleForDetailList_Dealers,
   columnIconButtonStyle,
 } from '../../common/fabric-styles/styles';
+import { Sticky, StickyPositionType } from 'office-ui-fabric-react/lib/Sticky';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
@@ -174,10 +179,31 @@ export const DealerList: React.FC = () => {
     },
   ];
 
+  const onRenderDetailsHeader: IRenderFunction<IDetailsHeaderProps> = (
+    props,
+    defaultRender
+  ) => {
+    if (!props) {
+      return null;
+    }
+    const onRenderColumnHeaderTooltip: IRenderFunction<IDetailsColumnRenderTooltipProps> = (
+      tooltipHostProps
+    ) => <TooltipHost {...tooltipHostProps} />;
+    return (
+      <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced>
+        {defaultRender!({
+          ...props,
+          onRenderColumnHeaderTooltip,
+        })}
+      </Sticky>
+    );
+  };
+
   return (
     <div className="dealerList">
       <ScrollablePane styles={scrollablePaneStyleForDetailList_Dealers}>
         <ShimmeredDetailsList
+          onRenderDetailsHeader={onRenderDetailsHeader}
           enableShimmer={shimmer}
           styles={detailsListStyle}
           items={dealers}
