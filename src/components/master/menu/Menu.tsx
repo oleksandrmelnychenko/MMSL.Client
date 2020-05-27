@@ -115,12 +115,12 @@ const Menu: React.FC = () => {
   ];
 
   const renderList = (list: IMenuItem[], isSubMenu?: boolean) => (
-    <ul className={`menu__list${isSubMenu ? ` menu__list_sub` : null}`}>
+    <ul className={`menu__list${isSubMenu ? ' menu__list_sub' : ''}`}>
       {list.map((item, index) => (
         <li
           key={index}
           className={`menu__item${
-            item.children && isOpenSubMenu ? ' menu__item_with-sub-menu' : null
+            item.children && isOpenSubMenu ? ' menu__item_with-sub-menu' : ''
           }`}>
           <NavLink
             onClick={() => {
