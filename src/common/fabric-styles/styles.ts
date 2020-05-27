@@ -24,7 +24,7 @@ export const detailsListStyle = {
 
 export const stylesPanelInfo = {
   main: {
-    left: '46px',
+    left: '45px',
     top: '51px',
     width: '138px',
     height: 'calc(100vh - 76px)',
