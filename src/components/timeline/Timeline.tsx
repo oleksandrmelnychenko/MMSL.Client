@@ -185,19 +185,23 @@ export const Timeline: React.FC = () => {
   ];
 
   return (
-    <div className="productSettings">
-      <div className="productSettings__root">
+    <div className="content">
+      <div className="content__root">
         <Stack verticalAlign="space-around">
           <Stack.Item align="stretch">
-            <div className="productSettings__header">
-              <div className="productSettings__header__top">
+            <div className="content__header">
+              <div className="content__header__top">
                 <Stack horizontal>
-                  <div className="productSettings__header__top__title">
-                    Timeline
-                  </div>
-                  <div className="productSettings__header__top__controls">
+                  <div className="content__header__top__title">Timeline</div>
+                  <div className="content__header__top__controls">
                     <Stack horizontal tokens={{ childrenGap: 10 }}>
-                      <div className="productSettings__header__top__controls__control"></div>
+                      <div className="content__header__top__controls__control">
+                        <ActionButton
+                          onClick={() => {}}
+                          iconProps={{ iconName: 'Add' }}>
+                          New timeline
+                        </ActionButton>
+                      </div>
                     </Stack>
                   </div>
                 </Stack>
