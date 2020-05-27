@@ -1,9 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
-import { Stack, TextField } from 'office-ui-fabric-react';
+import {
+  Text,
+  Label,
+  Stack,
+  TextField,
+  ActionButton,
+  IconButton,
+} from 'office-ui-fabric-react';
 import * as Yup from 'yup';
-import { FormicReference, Measurement } from '../../../interfaces';
+import {
+  FormicReference,
+  Measurement,
+  MeasurementDefinition,
+} from '../../../interfaces';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
+import './measurementForm.scss';
+import { List } from 'linq-typescript';
 
 export class MeasurementFormInitValues {
   constructor() {
@@ -58,13 +71,59 @@ export class MeasurementFormProps {
   measurement?: Measurement | null;
 }
 
+export class DefinitionRowItem {
+  constructor() {
+    this.name = '';
+    this.isEditingName = false;
+  }
+
+  name: string;
+  isEditingName: boolean;
+}
+
 export const MeasurementForm: React.FC<MeasurementFormProps> = (
   props: MeasurementFormProps
 ) => {
+  const [isRowInputVisible, setIsRowInputVisible] = useState(false);
+  const [addedRows, setAddedRows] = useState<DefinitionRowItem[]>([]);
+  const [newRowNameInput, setNewRowNameInput] = useState<string>('');
+  const [inputRef] = useState<any>(React.createRef());
+  const [inputEditRef] = useState<any>(React.createRef());
+
   const initValues = initDefaultValues(props.measurement);
 
+  useEffect(() => {
+    if (isRowInputVisible && inputRef && inputRef.current && inputRef.focus) {
+      inputRef.focus();
+    }
+  }, [isRowInputVisible, inputRef]);
+
+  useEffect(() => {
+    if (
+      addedRows &&
+      new List(addedRows).any((item) => item.isEditingName) &&
+      inputEditRef &&
+      inputEditRef.current &&
+      inputEditRef.focus
+    ) {
+      inputEditRef.focus();
+    }
+  }, [addedRows, inputEditRef]);
+
+  /// Creates new instance of Definition item and clear input
+  const createNewRowItem = () => {
+    if (newRowNameInput) {
+      const newRowDefinition = new DefinitionRowItem();
+      newRowDefinition.name = newRowNameInput;
+
+      setAddedRows(new List(addedRows).concat([newRowDefinition]).toArray());
+    }
+
+    setNewRowNameInput('');
+  };
+
   return (
-    <div>
+    <div className="measurementsForm">
       <Formik
         validationSchema={Yup.object().shape({
           name: Yup.string()
@@ -94,65 +153,225 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
           return (
             <Form className="form">
               <div className="dealerFormManage">
-                <Stack grow={1}>
-                  <Field name="name">
-                    {() => (
-                      <div className="form__group">
-                        <TextField
-                          value={formik.values.name}
-                          styles={fabricStyles.textFildLabelStyles}
-                          className="form__group__field"
-                          label="Value"
-                          required
-                          onChange={(args: any) => {
-                            let value = args.target.value;
+                <Stack tokens={{ childrenGap: '20px' }}>
+                  <Stack>
+                    <Field name="name">
+                      {() => (
+                        <div className="form__group">
+                          <TextField
+                            value={formik.values.name}
+                            styles={fabricStyles.textFildLabelStyles}
+                            className="form__group__field"
+                            label="Name"
+                            required
+                            onChange={(args: any) => {
+                              let value = args.target.value;
 
-                            formik.setFieldValue('name', value);
-                            formik.setFieldTouched('name');
-                          }}
-                          errorMessage={
-                            formik.errors.name && formik.touched.name ? (
-                              <span className="form__group__error">
-                                {formik.errors.name}
-                              </span>
-                            ) : (
-                              ''
-                            )
-                          }
-                        />
-                      </div>
-                    )}
-                  </Field>
+                              formik.setFieldValue('name', value);
+                              formik.setFieldTouched('name');
+                            }}
+                            errorMessage={
+                              formik.errors.name && formik.touched.name ? (
+                                <span className="form__group__error">
+                                  {formik.errors.name}
+                                </span>
+                              ) : (
+                                ''
+                              )
+                            }
+                          />
+                        </div>
+                      )}
+                    </Field>
+                  </Stack>
+                  <Stack>
+                    <ActionButton
+                      onClick={() => {
+                        setIsRowInputVisible(!isRowInputVisible);
+                        createNewRowItem();
+                      }}
+                      iconProps={{
+                        iconName: 'BoxAdditionSolid',
+                        styles: {
+                          root: {
+                            fontSize: '20px',
+                          },
+                        },
+                      }}
+                      styles={{
+                        root: {
+                          position: 'relative',
+                          left: '-9px',
+                        },
+                      }}
+                      allowDisabledFocus
+                    >
+                      New column
+                    </ActionButton>
 
-                  <Field name="description">
-                    {() => (
-                      <div className="form__group">
-                        <TextField
-                          value={formik.values.description}
-                          styles={fabricStyles.textFildLabelStyles}
-                          className="form__group__field"
-                          label="Description"
-                          required
-                          onChange={(args: any) => {
-                            let value = args.target.value;
+                    <Stack tokens={{ childrenGap: '12px' }}>
+                      {isRowInputVisible ? (
+                        <Stack.Item>
+                          <div className="measurementsForm__rowInput">
+                            <div className="measurementsForm__rowInput__innerBorder">
+                              <TextField
+                                autoFocus
+                                componentRef={inputRef}
+                                value={newRowNameInput}
+                                onKeyPress={(args: any) => {
+                                  if (args) {
+                                    if (args.charCode === 13) {
+                                      createNewRowItem();
+                                      setIsRowInputVisible(false);
+                                    }
+                                  }
+                                }}
+                                onChange={(args: any) => {
+                                  let value = args.target.value;
 
-                            formik.setFieldValue('description', value);
-                            formik.setFieldTouched('description');
-                          }}
-                          errorMessage={
-                            formik.errors.description &&
-                            formik.touched.description ? (
-                              <span className="form__group__error">
-                                {formik.errors.description}
-                              </span>
-                            ) : (
-                              ''
-                            )
-                          }
-                        />
-                      </div>
-                    )}
-                  </Field>
+                                  setNewRowNameInput(value);
+                                }}
+                                onFocus={(args: any) => {}}
+                                onBlur={(args: any) => {
+                                  createNewRowItem();
+                                  setIsRowInputVisible(false);
+                                }}
+                                borderless={true}
+                                resizable={false}
+                              />
+                            </div>
+                          </div>
+                        </Stack.Item>
+                      ) : null}
+
+                      <Stack tokens={{ childrenGap: '6px' }}>
+                        {addedRows.map((addedRowItem, index) => {
+                          return (
+                            <div
+                              className="measurementsForm__definitionItem"
+                              key={index}
+                            >
+                              <div className="measurementsForm__definitionItem__options">
+                                <Stack
+                                  tokens={{ childrenGap: '5px' }}
+                                  styles={{ root: { margin: '6px' } }}
+                                  horizontal
+                                  horizontalAlign="end"
+                                >
+                                  <IconButton
+                                    onClick={() => {
+                                      const rowList = new List(addedRows);
+
+                                      rowList.forEach(
+                                        (item) => (item.isEditingName = false)
+                                      );
+
+                                      if (addedRowItem) {
+                                        addedRowItem.isEditingName = true;
+                                      }
+
+                                      setAddedRows(rowList.toArray());
+                                    }}
+                                    styles={{
+                                      root: {
+                                        height: '27px',
+                                        width: '27px',
+                                        border: '1px solid rgba(199,224,244,1)',
+                                      },
+                                    }}
+                                    iconProps={{
+                                      iconName: 'EditSolid12',
+                                      styles: {
+                                        root: {
+                                          fontSize: '14px',
+                                        },
+                                      },
+                                    }}
+                                    title="Edit name"
+                                  />
+                                  <IconButton
+                                    onClick={() => {
+                                      const rowList = new List(addedRows);
+                                      rowList.remove(addedRowItem);
+
+                                      setAddedRows(rowList.toArray());
+                                    }}
+                                    styles={{
+                                      root: {
+                                        height: '27px',
+                                        width: '27px',
+                                        border: '1px solid rgba(199,224,244,1)',
+                                      },
+                                    }}
+                                    iconProps={{
+                                      iconName: 'Cancel',
+                                      styles: {
+                                        root: {
+                                          fontSize: '14px',
+                                          fontWeight: 600,
+                                          color: '#a4373a',
+                                        },
+                                      },
+                                    }}
+                                    title="Delete"
+                                  />
+                                </Stack>
+                              </div>
+
+                              {addedRowItem.isEditingName ? (
+                                <div className="measurementsForm__definitionItem__editNameInput">
+                                  <TextField
+                                    autoFocus
+                                    componentRef={inputEditRef}
+                                    borderless
+                                    value={addedRowItem.name}
+                                    onKeyPress={(args: any) => {
+                                      if (args) {
+                                        if (args.charCode === 13) {
+                                          const rowList = new List(addedRows);
+
+                                          rowList.forEach(
+                                            (item) =>
+                                              (item.isEditingName = false)
+                                          );
+
+                                          setAddedRows(rowList.toArray());
+                                        }
+                                      }
+                                    }}
+                                    onChange={(args: any) => {
+                                      addedRowItem.name = args.target.value;
+
+                                      setAddedRows(
+                                        new List(addedRows).toArray()
+                                      );
+                                    }}
+                                    onBlur={(args: any) => {
+                                      const rowList = new List(addedRows);
+
+                                      rowList.forEach(
+                                        (item) => (item.isEditingName = false)
+                                      );
+
+                                      setAddedRows(rowList.toArray());
+                                    }}
+                                  />
+                                </div>
+                              ) : (
+                                <Text
+                                  nowrap
+                                  block
+                                  styles={{ root: { maxWidth: '250px' } }}
+                                >
+                                  {addedRowItem.name}
+                                </Text>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </Stack>
+                    </Stack>
+                  </Stack>
                 </Stack>
               </div>
             </Form>

@@ -40,7 +40,8 @@ export const DealerCustomersList: React.FC = () => {
               dealerActions.setSelectedCustomerInCurrentStore(selectedCustomer)
             );
           }
-        }}>
+        }}
+      >
         <div className="dealer__store__name">User name: {item.userName}</div>
         <div className="dealer__store__address">
           Name: {`${item.customerName}`}
