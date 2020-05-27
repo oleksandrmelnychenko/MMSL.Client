@@ -4,7 +4,6 @@ import Header from './header/Header';
 import Footer from './footer/Footer';
 import Menu from './menu/Menu';
 import { Switch, useLocation, Route } from 'react-router-dom';
-import PrivateRoute from '../PrivateRoute';
 import Dealers from '../dealers/Dealers';
 import Customers from '../customers/Customers';
 import CommonDialog from './CommonDialog';
@@ -19,6 +18,7 @@ import { IPanelInfo } from '../../interfaces/index';
 import Reports from '../reports/Reports';
 import ProductCategoryView from '../product-category/ProductCategoryView';
 import Measurements from '../measurements/Measurements';
+import Timeline from '../timeline/Timeline';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
@@ -55,18 +55,13 @@ const Dashboard: React.FC = () => {
 
         <div className="content">
           <Switch>
-            <PrivateRoute path={`/en/app/dealers`} component={Dealers} />
-            <PrivateRoute path={`/en/app/customer`} component={Customers} />
-            <PrivateRoute
-              path={`/en/app/product`}
-              component={ProductCategoryView}
-            />
-            <PrivateRoute
-              path={`/en/app/measurements`}
-              component={Measurements}
-            />
-            <PrivateRoute path={`/en/app/styles`} component={ProductSettings} />
-            <PrivateRoute path={`/en/app/reports`} component={Reports} />
+            <Route path={`/en/app/dealers`} component={Dealers} />
+            <Route path={`/en/app/customer`} component={Customers} />
+            <Route path={`/en/app/product`} component={ProductCategoryView} />
+            <Route path={`/en/app/measurements`} component={Measurements} />
+            <Route path={`/en/app/timeline`} component={Timeline} />
+            <Route path={`/en/app/styles`} component={ProductSettings} />
+            <Route path={`/en/app/reports`} component={Reports} />
           </Switch>
         </div>
       </main>

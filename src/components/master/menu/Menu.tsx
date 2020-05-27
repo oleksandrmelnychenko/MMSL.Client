@@ -35,7 +35,7 @@ const Menu: React.FC = () => {
   const pathNamesSubMenu = [
     `/${languageCode}/app/styles`,
     `/${languageCode}/app/measurements`,
-    `/${languageCode}/app/timelines`,
+    `/${languageCode}/app/timeline`,
   ];
 
   useEffect(() => {
@@ -101,9 +101,9 @@ const Menu: React.FC = () => {
           link: `/${languageCode}/app/measurements`,
         },
         {
-          title: 'Timelines',
+          title: 'Timeline',
           className: 'timeline',
-          link: `/${languageCode}/app/timelines`,
+          link: `/${languageCode}/app/timeline`,
         },
       ],
     },
