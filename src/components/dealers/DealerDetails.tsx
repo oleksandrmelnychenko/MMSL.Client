@@ -64,12 +64,14 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
     },
   ];
 
+  const description = [
+    selectedDealer ? selectedDealer.companyName : '',
+    selectedDealer ? selectedDealer.email : '',
+  ];
+
   return (
     <div className="dealerDetails">
-      <PanelTitle
-        title={'Details'}
-        description={[selectedDealer.companyName, selectedDealer.email]}
-      />
+      <PanelTitle title={'Details'} description={description as any} />
       <CommandBar
         styles={commandBarStyles}
         items={_items}

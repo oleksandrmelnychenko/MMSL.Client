@@ -1,46 +1,65 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { productActions } from '../../redux/slices/product.slice';
 import {
   Stack,
   ScrollablePane,
   ActionButton,
-  IIconProps,
-  Dropdown,
   Label,
-  DropdownMenuItemType,
-  ComboBox,
-  IDropdownOption,
+  PrimaryButton,
 } from 'office-ui-fabric-react';
-
 import { scrollablePaneStyleForDetailList } from '../../common/fabric-styles/styles';
-import { IApplicationState } from '../../redux/reducers/index';
-import { ProductCategory } from '../../interfaces';
-import { useHistory } from 'react-router-dom';
+import { IApplicationState } from '../../redux/reducers';
+import { Measurement } from '../../interfaces';
+import MeasurementSelector from './MeasurementSelector';
+import MeasurementManagingPanel from './measurementManaging/MeasurementManagingPanel';
+import {
+  measurementActions,
+  ManagingMeasurementPanelComponent,
+} from '../../redux/slices/measurement.slice';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
 const Measurements: React.FC = () => {
   const dispatch = useDispatch();
 
-  const category = useSelector<IApplicationState, ProductCategory | null>(
-    (state) => state.product.choose.category
+  const targetMeasurement: Measurement | null | undefined = useSelector<
+    IApplicationState,
+    Measurement | null | undefined
+  >((state) => state.measurements.targetMeasurement);
+
+  const isMeasurementsWasRequested: boolean = useSelector<
+    IApplicationState,
+    boolean
+  >((state) => state.measurements.isMeasurementsWasRequested);
+
+  const isAnyMeasurements: boolean = useSelector<IApplicationState, boolean>(
+    (state) => state.measurements.measurementList.length > 0
   );
 
   useEffect(() => {
     return () => {};
-  }, []);
+  }, [dispatch]);
 
   const addMeasurement = () => {};
+
+  const mainContentHideableStyle =
+    isMeasurementsWasRequested && isAnyMeasurements ? {} : { display: 'none' };
+
+  const hintContentHideableStyle =
+    isMeasurementsWasRequested && !isAnyMeasurements
+      ? { height: '100%' }
+      : { display: 'none' };
 
   return (
     <div className="content__root">
       <div className="content__header">
-        <div className="content__header__top">
+        <div className="content__header__top" style={mainContentHideableStyle}>
           <Stack className="measurement">
-            <div className="content__header__top__title">
+            <Stack horizontal tokens={{ childrenGap: 90 }}>
+              <div className="content__header__top__title">Measurements</div>
+
               <Stack horizontal>
-                <Label>Measurements</Label>
+                <MeasurementSelector />
 
                 <ActionButton
                   styles={{
@@ -54,25 +73,53 @@ const Measurements: React.FC = () => {
                 >
                   Add measurement
                 </ActionButton>
-
-                <ComboBox
-                  allowFreeform={true}
-                  autoComplete={true ? 'on' : 'off'}
-                  options={[
-                    { key: 'A', text: 'Option A' },
-                    { key: 'B', text: 'Option B' },
-                    { key: 'C', text: 'Option C' },
-                    { key: 'D', text: 'Option D' },
-                  ]}
-                />
               </Stack>
-            </div>
+            </Stack>
           </Stack>
         </div>
       </div>
       <ScrollablePane styles={scrollablePaneStyleForDetailList}>
-        {'Main content'}
+        <div style={mainContentHideableStyle}>
+          {targetMeasurement ? `${targetMeasurement.name}` : null}
+        </div>
+        <div style={hintContentHideableStyle}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: 'inherit',
+            }}
+          >
+            <Stack>
+              <Label
+                styles={{
+                  root: {
+                    color: '#484848',
+                    fontSize: '18px',
+                  },
+                }}
+              >
+                Create your first measurement
+              </Label>
+              <Stack.Item align={'center'}>
+                <PrimaryButton
+                  text={'Create measurement'}
+                  onClick={() => {
+                    dispatch(
+                      measurementActions.changeManagingMeasurementPanelContent(
+                        ManagingMeasurementPanelComponent.CreateNewMeasurement
+                      )
+                    );
+                  }}
+                />
+              </Stack.Item>
+            </Stack>
+          </div>
+        </div>
       </ScrollablePane>
+
+      <MeasurementManagingPanel />
     </div>
   );
 };

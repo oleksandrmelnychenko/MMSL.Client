@@ -18,6 +18,10 @@ import {
   default as customerReducer,
   CustomerState,
 } from '../slices/customer.slice';
+import {
+  default as measurementsStateReducer,
+  MeasurementsState,
+} from '../slices/measurement.slice';
 
 export interface IApplicationState {
   auth: IAuthState;
@@ -29,6 +33,7 @@ export interface IApplicationState {
   customer: CustomerState;
   product: ProductState;
   productSettings: ProductSettingsState;
+  measurements: MeasurementsState;
 }
 
 export const reducer = combineReducers({
@@ -41,4 +46,5 @@ export const reducer = combineReducers({
   customer: customerReducer,
   product: productReducer,
   productSettings: productSettingsReducer,
+  measurements: measurementsStateReducer,
 });

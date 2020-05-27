@@ -6,6 +6,7 @@ import * as controlEpic from './control.epic';
 import * as customerEpic from './customer.epic';
 import * as productSettings from './productSettings.epic';
 import * as productCategory from './productCategory.epic';
+import * as measurements from './measurements.epic';
 
 const arrayEpic = [
   ...Object.values(authEpic),
@@ -15,6 +16,7 @@ const arrayEpic = [
   ...Object.values(controlEpic),
   ...Object.values(productSettings),
   ...Object.values(productCategory),
+  ...Object.values(measurements),
 ];
 
 export const rootEpic = combineEpics(...arrayEpic);

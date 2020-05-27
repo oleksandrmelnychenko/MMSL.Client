@@ -194,7 +194,8 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
           dispatch(productActions.changeTargetSingeleManagingProduct(null));
           dispatch(productActions.updateOptiongroupsList([]));
         }}
-        closeButtonAriaLabel="Close">
+        closeButtonAriaLabel="Close"
+      >
         {panelContent !== null &&
         panelContent !== ProductManagingPanelComponent.Unknown ? (
           <>

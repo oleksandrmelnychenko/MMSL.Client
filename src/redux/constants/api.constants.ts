@@ -47,5 +47,6 @@ export const UPDATE_PRODUCT_CATEGORY_GROUPS_LIST =
 export const DELETE_PRODUCT_CATEGORY =
   '/product/category/delete/product/category';
 
+export const GET_ALL_MEASUREMENTS = '/measurements/get/all';
 export const GET_MEASUREMENTS_BY_PRODUCT = '/measurements/by/product';
 export const ADD_NEW_MEASUREMENT = '/measurements/new/measurement';

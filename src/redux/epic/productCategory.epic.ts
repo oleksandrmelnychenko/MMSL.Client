@@ -399,7 +399,6 @@ export const apiAddNewMeasurementEpic = (action$: AnyAction, state$: any) => {
         []
       ).pipe(
         mergeMap((successResponse: any) => {
-          debugger;
           return successCommonEpicFlow(
             successResponse,
             [
