@@ -9,7 +9,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { FormicReference } from '../../../interfaces';
-import * as dealerActions from '../../../redux/actions/dealer.actions';
+import { dealerActions } from '../../../redux/slices/dealer.slice';
 import { IStore } from '../../../interfaces/index';
 import { Stack } from 'office-ui-fabric-react';
 import PanelTitle from '../panel/PanelTitle';
@@ -25,8 +25,8 @@ import {
 } from '../../../redux/slices/control.slice';
 import { List } from 'linq-typescript';
 import ManageCustomerForm from './ManageCustomerForm';
-import * as customerActions from '../../../redux/actions/customer.actions';
-import { DealerState } from '../../../redux/reducers/dealer.reducer';
+import { customerActions } from '../../../redux/slices/customer.slice';
+import { DealerState } from '../../../redux/slices/dealer.slice';
 
 export const DealerCustomers: React.FC = () => {
   const dispatch = useDispatch();
@@ -89,8 +89,7 @@ export const DealerCustomers: React.FC = () => {
           } else {
             dispatch(dealerActions.updateTargetStoreCustomersList([]));
           }
-        }}
-      >
+        }}>
         <div className="dealer__store__name">Name: {item.name}</div>
         <div className="dealer__store__address">
           Address:{' '}
@@ -208,8 +207,7 @@ export const DealerCustomers: React.FC = () => {
       <Stack
         horizontal
         horizontalAlign="space-between"
-        tokens={{ childrenGap: 20 }}
-      >
+        tokens={{ childrenGap: 20 }}>
         <Stack grow={1} tokens={{ maxWidth: '32%' }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>

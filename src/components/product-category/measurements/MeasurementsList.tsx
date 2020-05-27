@@ -10,7 +10,7 @@ import { detailsListStyle } from '../../../common/fabric-styles/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
 import { controlActions } from '../../../redux/slices/control.slice';
-import * as productCategoryActions from '../../../redux/actions/productCategory.actions';
+import { productActions } from '../../../redux/slices/product.slice';
 import {
   Measurement,
   measurementMapDefinitions,
@@ -67,9 +67,7 @@ const MeasurementsList: React.FC = () => {
     dispatch(controlActions.showGlobalShimmer());
     if (chooseProductCategoryID) {
       dispatch(
-        productCategoryActions.apiGetMeasurementsByProduct(
-          chooseProductCategoryID
-        )
+        productActions.apiGetMeasurementsByProduct(chooseProductCategoryID)
       );
     }
     return () => {

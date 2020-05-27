@@ -19,7 +19,7 @@ import {
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 import * as fabricControlSettings from '../../../common/fabric-control-settings/fabricControlSettings';
 import { useDispatch, useSelector } from 'react-redux';
-import * as customerActions from '../../../redux/actions/customer.actions';
+import { customerActions } from '../../../redux/slices/customer.slice';
 import { IApplicationState } from '../../../redux/reducers';
 
 export class CreateStoreCustomerFormInitValues {
@@ -153,8 +153,7 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
           }
         }}
         validateOnBlur={false}
-        enableReinitialize={true}
-      >
+        enableReinitialize={true}>
         {(formik) => {
           return (
             <Form className="form">

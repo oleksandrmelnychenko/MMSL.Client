@@ -1,6 +1,6 @@
 import { GroupItemVisualState } from './viewModels/index';
 import { CommonDialogState } from '../redux/slices/control.slice';
-import { DealerDetilsComponents } from '../redux/reducers/dealer.reducer';
+import { DealerDetilsComponents } from '../redux/slices/dealer.slice';
 
 export interface IUserInfo {
   userIdentityId: number;
@@ -27,7 +27,6 @@ export interface IAuthState {
   isAuth: boolean;
   errorMessage: string;
   isError: boolean;
-  userInfo: IUserInfo;
 }
 
 export interface IPanelInfo {

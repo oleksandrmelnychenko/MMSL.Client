@@ -13,11 +13,11 @@ import {
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
-import * as dealerActions from '../../redux/actions/dealer.actions';
+import { dealerActions } from '../../redux/slices/dealer.slice';
 import { DealerAccount } from '../../interfaces';
 import { assignPendingActions } from '../../helpers/action.helper';
 import { controlActions } from '../../redux/slices/control.slice';
-import { ToggleDealerPanelWithDetails } from '../../redux/reducers/dealer.reducer';
+import { ToggleDealerPanelWithDetails } from '../../redux/slices/dealer.slice';
 import ManagementOptions from './dealerManaging/ManagementOptions';
 import { DialogArgs, CommonDialogType } from '../../redux/slices/control.slice';
 import {

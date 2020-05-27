@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import * as productSettingsActions from '../../../redux/actions/productSettings.actions';
+import { productSettingsActions } from '../../../redux/slices/productSettings.slice';
 import OptionItemsOrderingList from './OptionItemsOrderingList';
 import ManagingProductUnitForm, {
   ManagingProductUnitFormProps,

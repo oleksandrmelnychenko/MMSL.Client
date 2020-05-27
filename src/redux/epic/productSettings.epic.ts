@@ -12,7 +12,6 @@ import {
 import { switchMap, mergeMap, catchError, debounceTime } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
-import * as productSettingsTypes from '../constants/productSettings.types.constants';
 import { getActiveLanguage } from 'react-localize-redux';
 import {
   ajaxPostResponse,
@@ -21,14 +20,14 @@ import {
 import StoreHelper from '../../helpers/store.helper';
 import * as api from '../constants/api.constants';
 import { controlActions } from '../slices/control.slice';
-import * as productSettingsActions from '../../redux/actions/productSettings.actions';
+import { productSettingsActions } from '../slices/productSettings.slice';
 
 const FORM_DATA_IMAGE_FILE_KEY = 'file';
 
 export const getOptionGroupByIdEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
     ofType(
-      productSettingsTypes.GET_AND_SELECT_OPTION_GROUP_FOR_SINGLE_EDIT_BY_ID
+      productSettingsActions.getAndSelectOptionGroupForSingleEditById.type
     ),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
@@ -66,7 +65,7 @@ export const getOptionGroupByIdEpic = (action$: AnyAction, state$: any) => {
 
 export const saveEditOptionGroupEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productSettingsTypes.SAVE_EDIT_OPTION_GROUP),
+    ofType(productSettingsActions.saveEditOptionGroup.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
 
@@ -110,7 +109,7 @@ export const saveEditOptionGroupEpic = (action$: AnyAction, state$: any) => {
 
 export const saveNewOptionGroupEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productSettingsTypes.SAVE_NEW_OPTION_GROUP),
+    ofType(productSettingsActions.saveNewOptionGroup.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -153,7 +152,7 @@ export const saveNewOptionGroupEpic = (action$: AnyAction, state$: any) => {
 
 export const getAllOptionGroupsListEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productSettingsTypes.GET_ALL_OPTION_GROUPS_LIST),
+    ofType(productSettingsActions.getAllOptionGroupsList.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -191,7 +190,7 @@ export const getAllOptionGroupsListEpic = (action$: AnyAction, state$: any) => {
 
 export const searchOptionGroupEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productSettingsTypes.GET_BY_SEARCH_OPTION_GROUPS),
+    ofType(productSettingsActions.getBySearchOptionGroups.type),
     debounceTime(500),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
@@ -233,7 +232,7 @@ export const searchOptionGroupEpic = (action$: AnyAction, state$: any) => {
 
 export const modifyOptionUnitsOrderEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productSettingsTypes.MODIFY_OPTION_UNITS_ORDER),
+    ofType(productSettingsActions.modifyOptionUnitsOrder.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -270,7 +269,7 @@ export const modifyOptionUnitsOrderEpic = (action$: AnyAction, state$: any) => {
 
 export const updateOptionUnitEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productSettingsTypes.UPDATE_OPTION_UNIT),
+    ofType(productSettingsActions.updateOptionUnit.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -335,7 +334,7 @@ export const updateOptionUnitEpic = (action$: AnyAction, state$: any) => {
 
 export const saveNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productSettingsTypes.SAVE_NEW_OPTION_UNIT),
+    ofType(productSettingsActions.saveNewOptionUnit.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -404,7 +403,7 @@ export const saveNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
 
 export const deleteOptionUnitByIdEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productSettingsTypes.DELETE_OPTION_UNIT_BY_ID),
+    ofType(productSettingsActions.deleteOptionUnitById.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -445,7 +444,7 @@ export const getAndSelectOptionGroupByIdEpic = (
   state$: any
 ) => {
   return action$.pipe(
-    ofType(productSettingsTypes.GET_AND_SELECT_OPTION_GROUP_BY_ID),
+    ofType(productSettingsActions.getAndSelectOptionGroupById.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -488,9 +487,7 @@ export const getAndSelectOptionUnitForSingleEditByIdEpic = (
   state$: any
 ) => {
   return action$.pipe(
-    ofType(
-      productSettingsTypes.GET_AND_SELECT_OPTION_UNIT_FOR_SINGLE_EDIT_BY_ID
-    ),
+    ofType(productSettingsActions.getAndSelectOptionUnitForSingleEditById.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
 
@@ -528,7 +525,7 @@ export const getAndSelectOptionUnitForSingleEditByIdEpic = (
 
 export const deleteOptionGroupByIdEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productSettingsTypes.DELETE_OPTION_GROUP_BY_ID),
+    ofType(productSettingsActions.deleteOptionGroupById.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
 

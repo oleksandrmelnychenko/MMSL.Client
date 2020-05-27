@@ -6,8 +6,8 @@ import { FormicReference, OptionGroup, OptionUnit } from '../../../interfaces';
 import { panelStyle } from '../../../common/fabric-styles/styles';
 import PanelTitle from '../../dealers/panel/PanelTitle';
 import ManagingProductGroupForm from './ManagingProductGroupForm';
-import * as productSettingsActions from '../../../redux/actions/productSettings.actions';
-import { ManagingPanelComponent } from '../../../redux/reducers/productSettings.reducer';
+import { productSettingsActions } from '../../../redux/slices/productSettings.slice';
+import { ManagingPanelComponent } from '../../../redux/slices/productSettings.slice';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { List } from 'linq-typescript';
 import { OptionGroupDetails } from './OptionGroupDetails';
@@ -234,8 +234,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
             productSettingsActions.updateTargetSingleEditOptionGroup(null)
           );
         }}
-        closeButtonAriaLabel="Close"
-      >
+        closeButtonAriaLabel="Close">
         <PanelTitle title={panelTitleText} description={panelDescription} />
 
         <CommonManagementActionBar actionItems={actionItems} />

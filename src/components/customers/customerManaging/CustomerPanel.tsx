@@ -15,7 +15,7 @@ import {
 } from '../../../common/fabric-styles/styles';
 import PanelTitle from '../../dealers/panel/PanelTitle';
 import ManageCustomerForm from './ManageCustomerForm';
-import * as customerActions from '../../../redux/actions/customer.actions';
+import { customerActions } from '../../../redux/slices/customer.slice';
 import { assignPendingActions } from '../../../helpers/action.helper';
 
 export const CustomerPanel: React.FC = (props: any) => {

@@ -4,11 +4,11 @@ import { Panel, PanelType } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import DealerStores from './store/DealerStores';
-import * as dealerActions from '../../redux/actions/dealer.actions';
+import { dealerActions } from '../../redux/slices/dealer.slice';
 import {
   ToggleDealerPanelWithDetails,
   DealerDetilsComponents,
-} from '../../redux/reducers/dealer.reducer';
+} from '../../redux/slices/dealer.slice';
 import DealerDetails from './DealerDetails';
 import AddressDetails from './address/AddressDetails';
 import DealerCustomers from './customer/DealerCustomers';

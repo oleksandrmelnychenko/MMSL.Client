@@ -27,7 +27,7 @@ export const stylesPanelInfo = {
     left: '46px',
     top: '51px',
     width: '138px',
-    height: 'calc(100vh - 81px)',
+    height: 'calc(100vh - 76px)',
     borderRight: '1px solid #e8e8e8',
     boxShadow: 'none',
   },

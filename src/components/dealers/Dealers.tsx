@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import CreateDealerPanel from './dealerManaging/CreateDealerPanel';
 import DealerList from './DealerList';
-import * as dealerActions from '../../redux/actions/dealer.actions';
+import { dealerActions } from '../../redux/slices/dealer.slice';
 import { DatePicker, DayOfWeek } from 'office-ui-fabric-react';
 import DealerPanel from './DealerPanel';
 import * as fabricControlSettings from '../../common/fabric-control-settings/fabricControlSettings';
@@ -50,8 +50,7 @@ export const Dealers: React.FC = (props: any) => {
                           onClick={() =>
                             dispatch(dealerActions.toggleNewDealerForm(true))
                           }
-                          iconProps={{ iconName: 'Add' }}
-                        >
+                          iconProps={{ iconName: 'Add' }}>
                           New dealer
                         </ActionButton>
                       </div>

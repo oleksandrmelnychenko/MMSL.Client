@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { Label, PrimaryButton } from 'office-ui-fabric-react';
-import * as productCategoryAction from '../../../redux/actions/productCategory.actions';
+import { productActions } from '../../../redux/slices/product.slice';
 import { controlActions } from '../../../redux/slices/control.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
-import { ProductManagingPanelComponent } from '../../../redux/reducers/productCategory.reducer';
+import { ProductManagingPanelComponent } from '../../../redux/slices/product.slice';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { ProductCategory } from '../../../interfaces';
 
@@ -46,7 +46,7 @@ const MeasurementsPanel: React.FC = () => {
             className={item.className}
             onClick={() => {
               dispatch(
-                productCategoryAction.changeManagingPanelContent(
+                productActions.changeManagingPanelContent(
                   ProductManagingPanelComponent.ProductCategoryDetails
                 )
               );

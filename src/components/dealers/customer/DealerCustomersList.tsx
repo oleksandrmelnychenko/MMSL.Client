@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { StoreCustomer } from '../../../interfaces';
 import { List } from 'linq-typescript';
-import * as dealerActions from '../../../redux/actions/dealer.actions';
+import { dealerActions } from '../../../redux/slices/dealer.slice';
 
 export const DealerCustomersList: React.FC = () => {
   const dispatch = useDispatch();

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Label, PrimaryButton } from 'office-ui-fabric-react';
 
-import * as dealerAction from '../../../redux/actions/dealer.actions';
+import { dealerActions } from '../../../redux/slices/dealer.slice';
 import {
   ToggleDealerPanelWithDetails,
   DealerDetilsComponents,
-} from '../../../redux/reducers/dealer.reducer';
+} from '../../../redux/slices/dealer.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { IApplicationState } from '../../../redux/reducers/index';
@@ -61,7 +61,7 @@ const ManagementOptions: React.FC = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(dealerAction.setSelectedDealer(null));
+      dispatch(dealerActions.setSelectedDealer(null));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -89,7 +89,7 @@ const ManagementOptions: React.FC = () => {
               openDetailsArgs.componentType = item.componentType;
 
               dispatch(
-                dealerAction.isOpenPanelWithDealerDetails(openDetailsArgs)
+                dealerActions.isOpenPanelWithDealerDetails(openDetailsArgs)
               );
             }}
             allowDisabledFocus

@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import * as dealerActions from '../../../redux/actions/dealer.actions';
+import { dealerActions } from '../../../redux/slices/dealer.slice';
 import { controlActions } from '../../../redux/slices/control.slice';
 import './menu.scss';
 import { IApplicationState } from '../../../redux/reducers';
 import { LocalizeState, getActiveLanguage } from 'react-localize-redux';
-import * as productSettingsActions from '../../../redux/actions/productSettings.actions';
+import { productSettingsActions } from '../../../redux/slices/productSettings.slice';
 
 interface IMenuItem {
   title: string;

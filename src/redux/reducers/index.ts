@@ -1,17 +1,23 @@
-import {
-  ProductSettingsState,
-  productSettingsReducer,
-} from './productSettings.reducer';
-import { CustomerState, customerReducer } from './customer.reducer';
-import { UnitsState, unitsReducer } from './units.reducer';
 import { combineReducers } from '@reduxjs/toolkit';
 import { localizeReducer, LocalizeState } from 'react-localize-redux';
 import { routerReducer, RouterState } from 'react-router-redux';
 import { IAuthState, IControlState } from '../../interfaces';
-import { DealerState, dealerReducer } from './dealer.reducer';
-import { ProductState, productReducer } from './productCategory.reducer';
 import { default as controlReducer } from '../slices/control.slice';
+import {
+  default as productSettingsReducer,
+  ProductSettingsState,
+} from '../slices/productSettings.slice';
 import { default as authReducer } from '../slices/auth.slice';
+import { default as unitsReducer, UnitsState } from '../slices/units.slice';
+import { default as dealerReducer, DealerState } from '../slices/dealer.slice';
+import {
+  default as productReducer,
+  ProductState,
+} from '../slices/product.slice';
+import {
+  default as customerReducer,
+  CustomerState,
+} from '../slices/customer.slice';
 
 export interface IApplicationState {
   auth: IAuthState;
