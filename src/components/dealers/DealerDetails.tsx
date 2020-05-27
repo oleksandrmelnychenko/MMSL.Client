@@ -9,7 +9,11 @@ import { IApplicationState } from '../../redux/reducers';
 import { ToggleDealerPanelWithDetails } from '../../redux/slices/dealer.slice';
 import PanelTitle from './panel/PanelTitle';
 import './dealerDetails.scss';
-import { ICommandBarItemProps, CommandBar } from 'office-ui-fabric-react';
+import {
+  ICommandBarItemProps,
+  CommandBar,
+  Separator,
+} from 'office-ui-fabric-react';
 import {
   commandBarButtonStyles,
   commandBarStyles,
@@ -59,15 +63,12 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
       buttonStyles: commandBarButtonStyles,
     },
   ];
+
   return (
     <div className="dealerDetails">
       <PanelTitle
         title={'Details'}
-        description={
-          selectedDealer
-            ? `${selectedDealer.companyName} | ${selectedDealer.email}`
-            : ''
-        }
+        description={[selectedDealer.companyName, selectedDealer.email]}
       />
       <CommandBar
         styles={commandBarStyles}

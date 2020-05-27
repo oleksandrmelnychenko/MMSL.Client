@@ -78,7 +78,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
   });
 
   let panelTitleText = 'Management Panel';
-  let panelDescription = '';
+  let panelDescription = null;
   let panelWidth: number = 600;
   let content: any = null;
 
@@ -117,7 +117,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
     panelTitleText = 'Manage Option Units';
     panelWidth = 700;
     if (sectedOptionGroup) {
-      panelDescription = sectedOptionGroup.name;
+      panelDescription = [sectedOptionGroup.name];
     }
 
     content = (
@@ -137,7 +137,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
     panelWidth = 420;
     panelTitleText = 'Details';
     if (sectedSingleOptionUnit) {
-      panelDescription = sectedSingleOptionUnit.value;
+      panelDescription = [sectedSingleOptionUnit.value];
     }
     hideAddEditPanelActions(actionItems);
 
@@ -178,7 +178,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
     panelWidth = 420;
     panelTitleText = 'Details';
     if (sectedSingleOptionGroup) {
-      panelDescription = sectedSingleOptionGroup.name;
+      panelDescription = [sectedSingleOptionGroup.name];
     }
 
     content = (

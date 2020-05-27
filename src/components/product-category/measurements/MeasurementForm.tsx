@@ -44,7 +44,7 @@ export const MeasurementForm: React.FC = (props: any) => {
   >((state) => state.product.choose.category);
 
   let panelTitleText = '';
-  let panelDescription = '';
+  let panelDescription = null;
   let panelWidth: number = 0;
   let content: any = '';
 
@@ -73,7 +73,7 @@ export const MeasurementForm: React.FC = (props: any) => {
   switch (panelContent) {
     case ProductManagingPanelComponent.ProductManaging:
       panelTitleText = 'New Product Category';
-      panelDescription = '';
+      panelDescription = null;
       panelWidth = 400;
 
       hideAddEditPanelActions(actionItems);
@@ -99,7 +99,9 @@ export const MeasurementForm: React.FC = (props: any) => {
       break;
     case ProductManagingPanelComponent.EditSingleProduct:
       panelTitleText = 'Details';
-      panelDescription = singleProductForEdit ? singleProductForEdit.name : '';
+      panelDescription = singleProductForEdit
+        ? [singleProductForEdit.name]
+        : null;
       panelWidth = 400;
 
       hideAddEditPanelActions(actionItems);
@@ -131,8 +133,8 @@ export const MeasurementForm: React.FC = (props: any) => {
     case ProductManagingPanelComponent.ProductCategoryDetails:
       panelTitleText = 'Manage Option Groups';
       panelDescription = targetProductCategoryForDetails
-        ? targetProductCategoryForDetails.name
-        : '';
+        ? [targetProductCategoryForDetails.name]
+        : null;
       panelWidth = 1000;
 
       hideAddEditPanelActions(actionItems);

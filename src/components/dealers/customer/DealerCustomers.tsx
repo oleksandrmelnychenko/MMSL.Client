@@ -193,8 +193,8 @@ export const DealerCustomers: React.FC = () => {
         title={'Customers'}
         description={
           selectedDealer
-            ? `${selectedDealer.companyName} | ${selectedDealer.email}`
-            : ''
+            ? [selectedDealer.companyName, selectedDealer.email]
+            : null
         }
       />
       <div>

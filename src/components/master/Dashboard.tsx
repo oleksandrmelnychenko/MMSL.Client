@@ -3,7 +3,7 @@ import './dashboard.scss';
 import Header from './header/Header';
 import Footer from './footer/Footer';
 import Menu from './menu/Menu';
-import { Switch, useLocation } from 'react-router-dom';
+import { Switch, useLocation, Route } from 'react-router-dom';
 import PrivateRoute from '../PrivateRoute';
 import Dealers from '../dealers/Dealers';
 import Customers from '../customers/Customers';
@@ -46,9 +46,8 @@ const Dashboard: React.FC = () => {
           isBlocking={false}
           styles={stylesPanelInfo}
           isOpen={panelInfo.isOpenPanelInfo}
-          onDismiss={dismissPanelInfo}
-        >
-          <PrivateRoute
+          onDismiss={dismissPanelInfo}>
+          <Route
             path={location.pathname}
             component={panelInfo.componentInPanelInfo}
           />

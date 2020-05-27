@@ -44,8 +44,6 @@ const Menu: React.FC = () => {
     }
   }, [history]);
 
-  console.log(history.pathname);
-
   const menu: IMenuItem[] = [
     {
       title: 'Dashboard',
