@@ -100,7 +100,7 @@ export const ProductSettingsList: React.FC = () => {
               className={DATA_SELECTION_DISABLED_CLASS}
               styles={_columnIconButtonStyle}
               height={20}
-              iconProps={{ iconName: 'SingleColumnEdit' }}
+              iconProps={{ iconName: 'Edit' }}
               title="Edit"
               ariaLabel="Edit"
               onClick={() => {
@@ -288,7 +288,7 @@ export const ProductSettingsList: React.FC = () => {
                               }}
                               height={20}
                               iconProps={{
-                                iconName: 'SingleColumnEdit',
+                                iconName: 'Edit',
                               }}
                               title="Edit"
                               ariaLabel="Edit"

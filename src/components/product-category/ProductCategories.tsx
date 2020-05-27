@@ -85,7 +85,7 @@ const ProductCategories: React.FC = () => {
       <div className="content__header">
         <div className="content__header__top">
           <Stack horizontal>
-            <div className="content__header__top__title">Product Category</div>
+            <div className="content__header__top__title">Products</div>
             <div className="content__header__top__controls">
               <Stack horizontal tokens={{ childrenGap: 10 }}>
                 <div className="content__header__top__controls__control">
@@ -169,7 +169,7 @@ const ProductCategories: React.FC = () => {
                   </Stack.Item>
                   <Icon
                     className={DATA_SELECTION_DISABLED_CLASS}
-                    iconName="SingleColumnEdit"
+                    iconName="Edit"
                     title="Edit"
                     ariaLabel="Edit"
                     styles={{
