@@ -64,7 +64,8 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
         <Stack.Item>
           <Text
             variant={'mediumPlus' as ITextProps['variant']}
-            styles={{ root: { color: '#484848', fontWeight: 400 } }}>
+            styles={{ root: { color: '#484848', fontWeight: 400 } }}
+          >
             {props.optionUnit.value}
           </Text>
         </Stack.Item>
@@ -76,12 +77,15 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
               delay={TooltipDelay.zero}
               directionalHint={DirectionalHint.bottomCenter}
               styles={{ root: { display: 'inline-block' } }}
-              content={
-                props.optionUnit.isMandatory ? 'Allowed' : 'Not allowed'
-              }>
+              content={props.optionUnit.isMandatory ? 'Allowed' : 'Not allowed'}
+            >
               <FontIcon
                 iconName="Unlock"
-                className={mergeStyles({ fontSize: 16, color: allowColor })}
+                className={mergeStyles({
+                  fontSize: 16,
+                  color: allowColor,
+                  cursor: 'default',
+                })}
               />
             </TooltipHost>
           </Stack>

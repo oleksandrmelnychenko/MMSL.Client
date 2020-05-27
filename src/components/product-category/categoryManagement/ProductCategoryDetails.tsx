@@ -404,11 +404,11 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                 result = mapToRemove;
               } else {
                 /// TODO: unhandled case
-                console.log('Unknown option group map');
+                console.log('Unknown style map');
               }
             } else {
               /// TODO: unhandled case
-              console.log('Unknown option group map');
+              console.log('Unknown style map');
             }
 
             return result;
@@ -467,7 +467,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                       )
                     )
                     .toArray()
-                : renderHintLable('No assignments')}
+                : renderHintLable('No assigned styles')}
             </div>
           </FocusZone>
         </Stack.Item>
@@ -483,7 +483,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                         renderAssignableCommonGroupItem(item, item.id)
                       )
                       .toArray()
-                  : renderHintLable('No option groups')}
+                  : renderHintLable('No styles')}
               </Stack>
             </div>
           </FocusZone>
@@ -519,8 +519,8 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
                           />
                         ))
                         .toArray()
-                    : renderHintLable('There are no units')
-                  : renderHintLable('Select group and explore units')}
+                    : renderHintLable('There are no settings')
+                  : renderHintLable('Select style and explore settings')}
               </Stack>
             </div>
           </FocusZone>
