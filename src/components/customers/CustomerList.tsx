@@ -19,6 +19,7 @@ import { customerActions } from '../../redux/slices/customer.slice';
 import { controlActions } from '../../redux/slices/control.slice';
 import ManagementPanel from './options/ManagmentPanel';
 import { CustomerListState } from '../../redux/slices/customer.slice';
+import { FontWeights } from 'office-ui-fabric-react';
 import {
   scrollablePaneStyleForDetailList,
   detailsListStyle,
@@ -150,7 +151,11 @@ export const CustomerList: React.FC = () => {
     }
     const onRenderColumnHeaderTooltip: IRenderFunction<IDetailsColumnRenderTooltipProps> = (
       tooltipHostProps
-    ) => <TooltipHost {...tooltipHostProps} />;
+    ) => (
+      <div className="list__header">
+        <TooltipHost {...tooltipHostProps} />
+      </div>
+    );
     return (
       <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced>
         {defaultRender!({

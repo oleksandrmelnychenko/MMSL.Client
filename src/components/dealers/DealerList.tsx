@@ -188,7 +188,11 @@ export const DealerList: React.FC = () => {
     }
     const onRenderColumnHeaderTooltip: IRenderFunction<IDetailsColumnRenderTooltipProps> = (
       tooltipHostProps
-    ) => <TooltipHost className="TEST!!!!!!!" {...tooltipHostProps} />;
+    ) => (
+      <div className="list__header">
+        <TooltipHost {...tooltipHostProps} />
+      </div>
+    );
     return (
       <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced>
         {defaultRender!({

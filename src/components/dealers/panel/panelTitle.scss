@@ -12,8 +12,9 @@
     }
 
     &__description {
-        color: lighten($color: #484848, $amount: 20%);
+        color: lighten($color: #505050, $amount: 40%);
         margin-left: 0 !important;
+        font-weight: 300;
     }
 
 }

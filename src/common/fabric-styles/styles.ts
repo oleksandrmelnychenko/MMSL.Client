@@ -14,16 +14,7 @@ export const panelStyle = {
   },
 };
 
-export const detailsListStyle = {
-  root: {},
-  headerWrapper: {
-    isRowHeader: {
-      root: {
-        color: 'red',
-      },
-    },
-  },
-};
+export const detailsListStyle = {};
 
 export const stylesPanelInfo = {
   main: {
