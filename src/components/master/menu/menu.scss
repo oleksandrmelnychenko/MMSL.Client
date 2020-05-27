@@ -97,6 +97,18 @@
         &.reports:before {
             background-image: url('../../../assets/images/menu-icons/reports.svg');
         }
+
+        &.styles:before {
+            background-image: url('../../../assets/images/menu-icons/style.svg');
+        }
+
+        &.measurements:before {
+            background-image: url('../../../assets/images/menu-icons/measurement.svg');
+        }
+
+        &.timeline:before {
+            background-image: url('../../../assets/images/menu-icons/stopwatch.svg');
+        }
     }
 
 }

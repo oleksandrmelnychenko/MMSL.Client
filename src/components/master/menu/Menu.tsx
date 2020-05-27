@@ -92,17 +92,17 @@ const Menu: React.FC = () => {
       children: [
         {
           title: 'Styles',
-          className: 'stock',
+          className: 'styles',
           link: `/${languageCode}/app/styles`,
         },
         {
           title: 'Measurements',
-          className: 'documents',
+          className: 'measurements',
           link: `/${languageCode}/app/measurements`,
         },
         {
           title: 'Timelines',
-          className: 'activity',
+          className: 'timeline',
           link: `/${languageCode}/app/timelines`,
         },
       ],

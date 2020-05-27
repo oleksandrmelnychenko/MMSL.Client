@@ -15,10 +15,13 @@ export const panelStyle = {
 };
 
 export const detailsListStyle = {
-  root: {
-    // paddingLeft: '12px',
-    // paddingRight: '12px',
-    // 'overflow-x': 'hidden',
+  root: {},
+  headerWrapper: {
+    isRowHeader: {
+      root: {
+        color: 'red',
+      },
+    },
   },
 };
 
