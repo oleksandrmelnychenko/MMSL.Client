@@ -85,7 +85,7 @@ const ProductCategories: React.FC = () => {
       <div className="content__header">
         <div className="content__header__top">
           <Stack horizontal>
-            <div className="content__header__top__title">Product Category</div>
+            <div className="content__header__top__title">Product</div>
             <div className="content__header__top__controls">
               <Stack horizontal tokens={{ childrenGap: 10 }}>
                 <div className="content__header__top__controls__control">
@@ -98,8 +98,9 @@ const ProductCategories: React.FC = () => {
                         )
                       );
                     }}
-                    iconProps={{ iconName: 'Add' }}>
-                    New Category
+                    iconProps={{ iconName: 'Add' }}
+                  >
+                    New Product
                   </ActionButton>
                 </div>
               </Stack>
@@ -135,7 +136,8 @@ const ProductCategories: React.FC = () => {
                     dispatch(action);
                   }
                 }}
-                tokens={cardTokens}>
+                tokens={cardTokens}
+              >
                 <Card.Section
                   fill
                   verticalAlign="end"
@@ -152,18 +154,21 @@ const ProductCategories: React.FC = () => {
                       alignItems: 'center',
                     },
                   }}
-                  tokens={backgroundImageCardSectionTokens}>
+                  tokens={backgroundImageCardSectionTokens}
+                >
                   <Text
                     className="category_name"
                     variant="large"
-                    styles={textStyles}>
+                    styles={textStyles}
+                  >
                     {category.name}
                   </Text>
                 </Card.Section>
                 <Card.Section
                   horizontal
                   styles={footerCardSectionStyles}
-                  tokens={footerCardSectionTokens}>
+                  tokens={footerCardSectionTokens}
+                >
                   <Stack.Item grow={1}>
                     <span />
                   </Stack.Item>

@@ -18,6 +18,7 @@ import ProductSettings from '../productSettings/ProductSettings';
 import { IPanelInfo } from '../../interfaces/index';
 import Reports from '../reports/Reports';
 import ProductCategoryView from '../product-category/ProductCategoryView';
+import Measurements from '../measurements/Measurements';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
@@ -45,7 +46,8 @@ const Dashboard: React.FC = () => {
           isBlocking={false}
           styles={stylesPanelInfo}
           isOpen={panelInfo.isOpenPanelInfo}
-          onDismiss={dismissPanelInfo}>
+          onDismiss={dismissPanelInfo}
+        >
           <PrivateRoute
             path={location.pathname}
             component={panelInfo.componentInPanelInfo}
@@ -60,7 +62,10 @@ const Dashboard: React.FC = () => {
               path={`/en/app/product`}
               component={ProductCategoryView}
             />
-
+            <PrivateRoute
+              path={`/en/app/measurements`}
+              component={Measurements}
+            />
             <PrivateRoute path={`/en/app/styles`} component={ProductSettings} />
             <PrivateRoute path={`/en/app/reports`} component={Reports} />
           </Switch>
