@@ -185,44 +185,42 @@ export const Timeline: React.FC = () => {
   ];
 
   return (
-    <div className="content">
-      <div className="content__root">
-        <Stack verticalAlign="space-around">
-          <Stack.Item align="stretch">
-            <div className="content__header">
-              <div className="content__header__top">
-                <Stack horizontal>
-                  <div className="content__header__top__title">Timeline</div>
-                  <div className="content__header__top__controls">
-                    <Stack horizontal tokens={{ childrenGap: 10 }}>
-                      <div className="content__header__top__controls__control">
-                        <ActionButton
-                          onClick={() => {}}
-                          iconProps={{ iconName: 'Add' }}>
-                          New timeline
-                        </ActionButton>
-                      </div>
-                    </Stack>
-                  </div>
-                </Stack>
-              </div>
+    <div className="content__root">
+      <Stack verticalAlign="space-around">
+        <Stack.Item align="stretch">
+          <div className="content__header">
+            <div className="content__header__top">
+              <Stack horizontal>
+                <div className="content__header__top__title">Timeline</div>
+                <div className="content__header__top__controls">
+                  <Stack horizontal tokens={{ childrenGap: 10 }}>
+                    <div className="content__header__top__controls__control">
+                      <ActionButton
+                        onClick={() => {}}
+                        iconProps={{ iconName: 'Add' }}>
+                        New timeline
+                      </ActionButton>
+                    </div>
+                  </Stack>
+                </div>
+              </Stack>
             </div>
-          </Stack.Item>
-          <Stack.Item>
-            <ScrollablePane styles={scrollablePaneStyleForDetailList}>
-              <ShimmeredDetailsList
-                onRenderDetailsHeader={onRenderDetailsHeader}
-                enableShimmer={false}
-                styles={detailsListStyle}
-                items={timelineItems}
-                //   selection={selection}
-                selectionMode={SelectionMode.none}
-                columns={_customerColumns}
-              />
-            </ScrollablePane>
-          </Stack.Item>
-        </Stack>
-      </div>
+          </div>
+        </Stack.Item>
+        <Stack.Item>
+          <ScrollablePane styles={scrollablePaneStyleForDetailList}>
+            <ShimmeredDetailsList
+              onRenderDetailsHeader={onRenderDetailsHeader}
+              enableShimmer={false}
+              styles={detailsListStyle}
+              items={timelineItems}
+              //   selection={selection}
+              selectionMode={SelectionMode.none}
+              columns={_customerColumns}
+            />
+          </ScrollablePane>
+        </Stack.Item>
+      </Stack>
     </div>
   );
 };

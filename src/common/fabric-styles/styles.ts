@@ -126,6 +126,31 @@ export const textFildLabelStyles = {
   },
 };
 
+export const textFildUnderlineLabelStyles = {
+  wrapper: {
+    padding: '0px',
+    borderColor: '#f0f0f0',
+  },
+  subComponentStyles: {
+    label: {
+      root: {
+        fontWeight: FontWeights.regular,
+      },
+      selectors: {
+        '&:after': {
+          content: '',
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          width: '1px',
+          height: '1px',
+          background: 'red',
+        },
+      },
+    },
+  },
+};
+
 export const datePickerStyles = {
   styles: {
     subComponentStyles: {
