@@ -14,6 +14,7 @@ import { IApplicationState } from '../../../redux/reducers';
 import { ManagingMeasurementPanelComponent } from '../../../redux/slices/measurement.slice';
 import MeasurementForm from './MeasurementForm';
 import { measurementActions } from '../../../redux/slices/measurement.slice';
+import MeasurementEditForm from './MeasurementEditForm';
 
 export const MeasurementManagingPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
   >((state) => state.measurements.managingMeasurementPanelContent);
 
   let panelTitleText = '';
-  let panelDescription: string[] = [];
+  let panelDescription: string[] | null = null;
   let panelWidth: number = 0;
   let content: any = '';
 
@@ -75,6 +76,24 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
         />
       );
       break;
+
+    case ManagingMeasurementPanelComponent.EditMeasurement:
+      panelTitleText = 'Edit Measurement';
+      panelDescription = null;
+      panelWidth = 300;
+
+      hideAddEditPanelActions(actionItems);
+
+      content = (
+        <MeasurementEditForm
+          formikReference={formikReference}
+          submitAction={(args: any) => {
+            debugger;
+          }}
+        />
+      );
+      break;
+
     default:
       content = null;
       break;
@@ -93,8 +112,7 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
             measurementActions.changeManagingMeasurementPanelContent(null)
           );
         }}
-        closeButtonAriaLabel="Close"
-      >
+        closeButtonAriaLabel="Close">
         {contentType !== null ? (
           <>
             <PanelTitle title={panelTitleText} description={panelDescription} />

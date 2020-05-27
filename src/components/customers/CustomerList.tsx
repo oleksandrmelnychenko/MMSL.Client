@@ -19,7 +19,6 @@ import { customerActions } from '../../redux/slices/customer.slice';
 import { controlActions } from '../../redux/slices/control.slice';
 import ManagementPanel from './options/ManagmentPanel';
 import { CustomerListState } from '../../redux/slices/customer.slice';
-import { FontWeights } from 'office-ui-fabric-react';
 import {
   scrollablePaneStyleForDetailList,
   detailsListStyle,
