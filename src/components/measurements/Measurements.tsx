@@ -77,6 +77,7 @@ const Measurements: React.FC = () => {
               <Stack horizontal tokens={{ childrenGap: '6px' }}>
                 <Stack horizontal tokens={{ childrenGap: '6px' }}>
                   <CommandBarButton
+                    text="Add new measurement"
                     styles={{
                       root: {
                         height: '30px',
@@ -85,20 +86,44 @@ const Measurements: React.FC = () => {
                     }}
                     onClick={() => addMeasurement()}
                     iconProps={{ iconName: 'Add' }}
-                  >
-                    Add measurement
-                  </CommandBarButton>
+                  />
 
                   <MeasurementSelector />
                 </Stack>
 
-                <Separator
-                  vertical
-                  // styles={{ root: { position: 'relative', left: '3px' } }}
+                <Separator vertical />
+
+                <CommandBarButton
+                  disabled={targetMeasurement ? false : true}
+                  text="Add size"
+                  styles={{
+                    root: {
+                      height: '30px',
+                      padding: '16px',
+                    },
+                    label: {
+                      fontWeight: FontWeights.regular,
+                    },
+                  }}
+                  onClick={() => {
+                    if (targetMeasurement) {
+                      dispatch(
+                        measurementActions.changeManagingMeasurementPanelContent(
+                          ManagingMeasurementPanelComponent.AddChartSize
+                        )
+                      );
+                    }
+                  }}
+                  iconProps={{ iconName: 'InsertRowsBelow' }}
                 />
+
+                <Separator vertical />
+
                 <Stack horizontal tokens={{ childrenGap: '0px' }}>
                   <Stack horizontal>
                     <CommandBarButton
+                      text="Edit"
+                      disabled={targetMeasurement ? false : true}
                       styles={{
                         root: {
                           height: '30px',
@@ -118,11 +143,10 @@ const Measurements: React.FC = () => {
                         }
                       }}
                       iconProps={{ iconName: 'Edit' }}
-                    >
-                      Edit
-                    </CommandBarButton>
+                    />
 
                     <CommandBarButton
+                      text="Delete"
                       disabled={targetMeasurement ? false : true}
                       styles={{
                         root: {
@@ -201,9 +225,7 @@ const Measurements: React.FC = () => {
                           },
                         },
                       }}
-                    >
-                      Delete
-                    </CommandBarButton>
+                    />
                   </Stack>
                 </Stack>
               </Stack>
