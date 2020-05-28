@@ -7,10 +7,12 @@ import { switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import { getActiveLanguage } from 'react-localize-redux';
-import { ajaxGetWebResponse } from '../../helpers/epic.helper';
+import {
+  ajaxGetWebResponse,
+  ajaxPostResponse,
+} from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import { controlActions } from '../slices/control.slice';
-
 import { measurementActions } from '../../redux/slices/measurement.slice';
 import StoreHelper from '../../helpers/store.helper';
 
@@ -40,6 +42,54 @@ export const apiGetAllMeasurementsEpic = (action$: AnyAction, state$: any) => {
                 measurementActions.updateisMeasurementsWasRequested(true),
                 controlActions.showInfoMessage(
                   `Error occurred while getting measurements list. ${errorResponse}`
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiCreateNewMeasurementEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(measurementActions.apiCreateNewMeasurement.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
+      return ajaxPostResponse(
+        api.ADD_NEW_MEASUREMENT,
+        action.payload,
+        state$.value,
+        true
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.showInfoMessage(
+                `New measurement successfully created.`
+              ),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_CREATE_NEW_MEASUREMENT' },
+                controlActions.showInfoMessage(
+                  `Error occurred while creating new measurement. ${errorResponse}`
                 ),
                 controlActions.disabledStatusBar(),
               ],

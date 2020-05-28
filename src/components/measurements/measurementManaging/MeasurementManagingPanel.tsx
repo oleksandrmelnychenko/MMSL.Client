@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Panel, PanelType } from 'office-ui-fabric-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FormicReference } from '../../../interfaces';
+import { FormicReference, Measurement } from '../../../interfaces';
 import { panelStyle } from '../../../common/fabric-styles/styles';
 import PanelTitle from '../../dealers/panel/PanelTitle';
 import CommonManagementActionBar, {
@@ -15,6 +15,8 @@ import { ManagingMeasurementPanelComponent } from '../../../redux/slices/measure
 import MeasurementForm from './MeasurementForm';
 import { measurementActions } from '../../../redux/slices/measurement.slice';
 import MeasurementEditForm from './MeasurementEditForm';
+import { assignPendingActions } from '../../../helpers/action.helper';
+import { List } from 'linq-typescript';
 
 export const MeasurementManagingPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -71,7 +73,36 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
         <MeasurementForm
           formikReference={formikReference}
           submitAction={(args: any) => {
-            debugger;
+            let action = assignPendingActions(
+              measurementActions.apiCreateNewMeasurement(args),
+              [],
+              [],
+              (args: any) => {
+                let action = assignPendingActions(
+                  measurementActions.apiGetAllMeasurements(),
+                  [
+                    measurementActions.changeManagingMeasurementPanelContent(
+                      null
+                    ),
+                  ],
+                  [],
+                  (args: any) => {
+                    dispatch(measurementActions.updateMeasurementsList(args));
+                    dispatch(
+                      measurementActions.changeSelectedMeasurement(
+                        new List<Measurement>(args).firstOrDefault()
+                      )
+                    );
+                  },
+                  (args: any) => {}
+                );
+
+                dispatch(action);
+              },
+              (args: any) => {}
+            );
+
+            dispatch(action);
           }}
         />
       );
@@ -87,9 +118,7 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
       content = (
         <MeasurementEditForm
           formikReference={formikReference}
-          submitAction={(args: any) => {
-            debugger;
-          }}
+          submitAction={(args: any) => {}}
         />
       );
       break;
@@ -112,7 +141,8 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
             measurementActions.changeManagingMeasurementPanelContent(null)
           );
         }}
-        closeButtonAriaLabel="Close">
+        closeButtonAriaLabel="Close"
+      >
         {contentType !== null ? (
           <>
             <PanelTitle title={panelTitleText} description={panelDescription} />
