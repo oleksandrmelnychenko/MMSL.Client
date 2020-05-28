@@ -8,6 +8,7 @@ import {
   MeasurementDefinition,
   MeasurementMapDefinition,
   MeasurementSize,
+  MeasurementMapSize,
 } from '../../../interfaces';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 import './sizeForm.scss';
@@ -77,21 +78,54 @@ export class SizesFormProps {
 }
 
 export class DefinitionValueItem {
-  constructor(mapDefinition: MeasurementMapDefinition) {
+  private _initValue: string;
+
+  constructor(
+    mapDefinition: MeasurementMapDefinition,
+    size?: MeasurementMapSize
+  ) {
     this.sourceMapDefinition = mapDefinition;
+    this.sizeMap = size;
 
     this.name =
       mapDefinition && mapDefinition.measurementDefinition
         ? mapDefinition.measurementDefinition.name
         : '';
 
+    this._initValue = '';
     this.value = '';
+    this.isDirty = false;
+
+    if (size) {
+      /// TODO: vadymk for edit
+    }
   }
 
   name: string;
   value: string;
 
+  isDirty: boolean;
+
   sourceMapDefinition: MeasurementMapDefinition;
+  sizeMap: MeasurementMapSize | null | undefined;
+
+  resolveIsDirty: () => boolean = () => {
+    let isDirtyResult: boolean = false;
+
+    // if (this.sizeMap) {
+    //   /// TODO: vadymk for edit
+    //   debugger;
+    // } else {
+    //   isDirtyResult = true;
+    // }
+
+    if (this._initValue !== this.value) {
+      isDirtyResult = true;
+    }
+
+    this.isDirty = isDirtyResult;
+    return isDirtyResult;
+  };
 }
 
 export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
@@ -119,8 +153,10 @@ export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
           (mapDefinition: MeasurementMapDefinition) => {
             let result = new DefinitionValueItem(mapDefinition);
 
-            /// TODO: vadymk resolve init value (for edit)
-            debugger;
+            if (props.size) {
+              /// TODO: vadymk resolve init value (for edit)
+              debugger;
+            }
 
             return result;
           }
@@ -129,7 +165,7 @@ export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
 
       setValueItems(valueItems);
     }
-  }, [targetMeasurement]);
+  }, [targetMeasurement, props.size]);
 
   if (props.measurement !== targetMeasurement) {
     setTargetMeasurement(props.measurement);
@@ -169,7 +205,11 @@ export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
 
           if (formik) {
             if (props.formikReference.isDirtyFunc) {
-              const isDirty = formik.dirty;
+              const isDirty =
+                formik.dirty ||
+                new List(valueItems).any((valueItem) =>
+                  valueItem.resolveIsDirty()
+                );
 
               props.formikReference.isDirtyFunc(isDirty);
             }
@@ -234,10 +274,13 @@ export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
                                 <div className="sizeForm__definitionItem__editNameInput">
                                   <TextField
                                     borderless
-                                    value={'no binding'}
+                                    value={valueItem.value}
                                     onChange={(args: any) => {
-                                      // addedRowItem.name = args.target.value;
-                                      // setAddedRows(new List(addedRows).toArray());
+                                      valueItem.value = args.target.value;
+                                      valueItem.resolveIsDirty();
+                                      setValueItems(
+                                        new List(valueItems).toArray()
+                                      );
                                     }}
                                   />
                                 </div>

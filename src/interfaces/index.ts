@@ -390,7 +390,14 @@ export class MeasurementDefinition extends EntityBaseNamed {
   isDefault: boolean;
 }
 
-export class MeasurementSize extends EntityBaseNamed {}
+export class MeasurementSize extends EntityBaseNamed {
+  constructor() {
+    super();
+    this.measurementMapValues = [];
+  }
+
+  measurementMapValues: MeasurementMapValue[];
+}
 
 export class MeasurementMapSize extends EntityBase {
   constructor() {
