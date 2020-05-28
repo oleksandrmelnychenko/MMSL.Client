@@ -14,9 +14,8 @@ import { IApplicationState } from '../../../redux/reducers';
 import { ManagingMeasurementPanelComponent } from '../../../redux/slices/measurement.slice';
 import MeasurementForm from './MeasurementForm';
 import { measurementActions } from '../../../redux/slices/measurement.slice';
-import MeasurementEditForm from './MeasurementEditForm';
+import SizesForm from './SizesForm';
 import { assignPendingActions } from '../../../helpers/action.helper';
-import { List } from 'linq-typescript';
 
 export const MeasurementManagingPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -150,7 +149,22 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
         />
       );
       break;
+    case ManagingMeasurementPanelComponent.AddChartSize:
+      panelTitleText = 'Add size';
+      panelDescription = [targetMeasurement ? targetMeasurement.name : ''];
+      panelWidth = 400;
 
+      hideAddEditPanelActions(actionItems);
+
+      content = (
+        <SizesForm
+          formikReference={formikReference}
+          submitAction={(args: any) => {
+            debugger;
+          }}
+        />
+      );
+      break;
     default:
       content = null;
       break;
