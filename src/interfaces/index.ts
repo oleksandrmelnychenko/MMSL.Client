@@ -381,18 +381,47 @@ export class MeasurementMapDefinition extends EntityBaseNamed {
   measurementId: number;
 }
 
-export class MeasurementDefinition extends EntityBaseNamed {}
-
-export class MeasurementSize extends EntityBaseNamed {
+export class MeasurementDefinition extends EntityBaseNamed {
   constructor() {
     super();
-    this.values = [];
-    this.measurementId = 0;
-    this.measurement = null;
+    this.isDefault = false;
   }
-  values: MeasurementSizeValue[];
+
+  isDefault: boolean;
+}
+
+export class MeasurementSize extends EntityBaseNamed {}
+
+export class MeasurementMapSize extends EntityBase {
+  constructor() {
+    super();
+    this.measurementId = 0;
+    this.measurementSizeId = 0;
+  }
+
   measurementId: number;
-  measurement: any;
+  measurement: Measurement | null | undefined;
+
+  measurementSizeId: number;
+  measurementSize: MeasurementSize | null | undefined;
+}
+
+export class MeasurementMapValue extends EntityBaseNamed {
+  constructor() {
+    super();
+    this.value = 0;
+  }
+
+  productCategoryId: number | null | undefined;
+  productCategory: ProductCategory | null | undefined;
+
+  measurementSizeId: number | null | undefined;
+  measurementSize: MeasurementMapSize | null | undefined;
+
+  measurementDefinitionId: number | null | undefined;
+  measurementDefinition: MeasurementDefinition | null | undefined;
+
+  value: number;
 }
 
 export class MeasurementSizeValue extends EntityBaseNamed {
