@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Stack, TextField, Separator } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import { FormicReference, Measurement } from '../../../interfaces';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
+
+import { useDispatch } from 'react-redux';
+import { measurementActions } from '../../../redux/slices/measurement.slice';
 
 export class MeasurementFormInitValues {
   constructor() {
@@ -62,6 +65,11 @@ export const MeasurementEditForm: React.FC<MeasurementEditFormProps> = (
   props: MeasurementEditFormProps
 ) => {
   const initValues = initDefaultValues(props.measurement);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(measurementActions.apiGetMeasurementById(3));
+  }, []);
 
   return (
     <div>
@@ -81,15 +89,13 @@ export const MeasurementEditForm: React.FC<MeasurementEditFormProps> = (
           }
         }}
         validateOnBlur={false}
-        enableReinitialize={true}
-      >
+        enableReinitialize={true}>
         {(formik) => {
           return (
             <Form className="form">
               <Separator
                 styles={{ root: { paddingBottom: '20px' } }}
-                alignContent="start"
-              >
+                alignContent="start">
                 Column names
               </Separator>
               <Stack grow={1}>

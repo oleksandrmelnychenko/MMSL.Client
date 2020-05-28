@@ -101,3 +101,41 @@ export const apiCreateNewMeasurementEpic = (
     })
   );
 };
+
+export const apiGetMeasurementByIdEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(measurementActions.apiGetMeasurementById.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+      return ajaxGetWebResponse(api.GET_ALL_MEASUREMENTS, state$.value, [
+        { key: 'measurementId', value: `${action.payload}` },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          debugger;
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_GET_MEASUREMENT_BY_ID' },
+                measurementActions.updateisMeasurementsWasRequested(true),
+                controlActions.showInfoMessage(
+                  `Error occurred while getting measurement by id. ${errorResponse}`
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};

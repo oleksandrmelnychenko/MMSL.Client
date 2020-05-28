@@ -77,8 +77,7 @@ const Measurements: React.FC = () => {
                       },
                     }}
                     onClick={() => addMeasurement()}
-                    iconProps={{ iconName: 'Add' }}
-                  >
+                    iconProps={{ iconName: 'Add' }}>
                     Add measurement
                   </CommandBarButton>
 
@@ -101,8 +100,7 @@ const Measurements: React.FC = () => {
                           color: '#a4373a',
                         },
                       },
-                    }}
-                  >
+                    }}>
                     Delete
                   </CommandBarButton>
                 </Stack>
@@ -116,17 +114,16 @@ const Measurements: React.FC = () => {
         <div style={mainContentHideableStyle}>
           {targetMeasurement ? `${targetMeasurement.name}` : null}
         </div>
-        {/* <ActionButton
+        <ActionButton
           onClick={() => {
             dispatch(
               measurementActions.changeManagingMeasurementPanelContent(
                 ManagingMeasurementPanelComponent.EditMeasurement
               )
             );
-          }}
-        >
+          }}>
           EDIT
-        </ActionButton> */}
+        </ActionButton>
         <div style={hintContentHideableStyle}>
           <div
             style={{
@@ -134,8 +131,7 @@ const Measurements: React.FC = () => {
               justifyContent: 'center',
               alignItems: 'center',
               height: 'inherit',
-            }}
-          >
+            }}>
             <Stack>
               <Label
                 styles={{
@@ -143,8 +139,7 @@ const Measurements: React.FC = () => {
                     color: '#484848',
                     fontSize: '18px',
                   },
-                }}
-              >
+                }}>
                 Create your first measurement
               </Label>
               <Stack.Item align={'center'}>
