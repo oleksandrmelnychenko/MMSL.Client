@@ -75,23 +75,7 @@ const Measurements: React.FC = () => {
               <div className="content__header__top__title">Measurements</div>
 
               <Stack horizontal tokens={{ childrenGap: '6px' }}>
-                <Stack horizontal tokens={{ childrenGap: '6px' }}>
-                  <CommandBarButton
-                    text="Add new measurement"
-                    styles={{
-                      root: {
-                        height: '30px',
-                        padding: '16px',
-                      },
-                    }}
-                    onClick={() => addMeasurement()}
-                    iconProps={{ iconName: 'Add' }}
-                  />
-
-                  <MeasurementSelector />
-                </Stack>
-
-                <Separator vertical />
+                <MeasurementSelector />
 
                 <CommandBarButton
                   disabled={targetMeasurement ? false : true}
@@ -228,6 +212,20 @@ const Measurements: React.FC = () => {
                     />
                   </Stack>
                 </Stack>
+
+                <Separator vertical />
+
+                <CommandBarButton
+                  text="Add new measurement"
+                  styles={{
+                    root: {
+                      height: '30px',
+                      padding: '16px',
+                    },
+                  }}
+                  onClick={() => addMeasurement()}
+                  iconProps={{ iconName: 'Add' }}
+                />
               </Stack>
             </Stack>
           </Stack>
