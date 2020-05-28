@@ -26,11 +26,22 @@ const MeasurementSelector: React.FC = () => {
       [],
       (args: any) => {
         dispatch(measurementActions.updateMeasurementsList(args));
-        dispatch(
-          measurementActions.changeSelectedMeasurement(
-            new List<Measurement>(args).firstOrDefault()
-          )
-        );
+
+        const measurementId = new List<Measurement>(args).firstOrDefault()?.id;
+
+        if (measurementId) {
+          let getChartAction = assignPendingActions(
+            measurementActions.apiGetMeasurementById(measurementId),
+            [],
+            [],
+            (args: any) => {
+              dispatch(measurementActions.changeSelectedMeasurement(args));
+            },
+            (args: any) => {}
+          );
+
+          dispatch(getChartAction);
+        }
       },
       (args: any) => {}
     );
@@ -76,21 +87,22 @@ const MeasurementSelector: React.FC = () => {
           index?: number,
           value?: string
         ) => {
-          if (option) {
-            /// TODO: probably use `get measurement by id` (when api will be prepared)
-            dispatch(
-              measurementActions.changeSelectedMeasurement(
-                (option as any).measurement
-              )
+          let measurementId = (option as any)?.measurement?.id;
+
+          if (measurementId) {
+            let action = assignPendingActions(
+              measurementActions.apiGetMeasurementById(measurementId),
+              [],
+              [],
+              (args: any) => {
+                dispatch(measurementActions.changeSelectedMeasurement(args));
+              },
+              (args: any) => {}
             );
+
+            dispatch(action);
           } else {
-            dispatch(
-              measurementActions.changeSelectedMeasurement(
-                new List<Measurement>(
-                  measurements ? measurements : []
-                ).firstOrDefault()
-              )
-            );
+            dispatch(measurementActions.changeSelectedMeasurement(null));
           }
         }}
       />

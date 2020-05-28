@@ -120,6 +120,7 @@ export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
             let result = new DefinitionValueItem(mapDefinition);
 
             /// TODO: vadymk resolve init value (for edit)
+            debugger;
 
             return result;
           }
