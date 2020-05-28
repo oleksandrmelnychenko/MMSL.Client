@@ -23,6 +23,7 @@ import { authActions } from './redux/slices/auth.slice';
 
 import { loadTheme, createTheme, ITheme } from 'office-ui-fabric-react';
 import { initializeIcons } from 'office-ui-fabric-react';
+import { push } from 'react-router-redux';
 
 const mmslTheme: ITheme = createTheme({
   palette: {
@@ -93,6 +94,8 @@ store.dispatch(setActiveLanguage(language));
 const onInit = ({ store }: { store: any; language: string }) => {
   if (TokenHelper.isAuthenticated()) {
     store.dispatch(authActions.authSuccessSignInAction(true));
+  } else {
+    store.dispatch(push('/'));
   }
 };
 
