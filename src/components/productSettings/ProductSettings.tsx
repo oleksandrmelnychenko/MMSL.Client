@@ -45,7 +45,7 @@ export const ProductSettings: React.FC = (props: any) => {
                             );
                           }}
                           iconProps={{ iconName: 'Add' }}>
-                          New group
+                          New style
                         </ActionButton>
                       </div>
                       <div className="productSettings__header__top__controls__control">
