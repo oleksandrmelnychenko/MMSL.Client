@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
   Text,
-  Label,
   Stack,
   TextField,
   ActionButton,
@@ -72,13 +71,27 @@ export class MeasurementFormProps {
 }
 
 export class DefinitionRowItem {
-  constructor() {
+  constructor(source: MeasurementDefinition) {
     this.name = '';
     this.isEditingName = false;
+
+    this.source = source;
   }
 
   name: string;
   isEditingName: boolean;
+
+  source: MeasurementDefinition;
+
+  resolveIsDirty: () => boolean = () => {
+    let isDirty = false;
+
+    if (this.name !== this.source?.name) {
+      isDirty = true;
+    }
+
+    return isDirty;
+  };
 }
 
 export const MeasurementForm: React.FC<MeasurementFormProps> = (
@@ -90,14 +103,19 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
   const [inputRef] = useState<any>(React.createRef());
   const [inputEditRef] = useState<any>(React.createRef());
 
+  /// TODO: extract existing rows (for Measurement edit)
   const initValues = initDefaultValues(props.measurement);
+  /// TODO: extract existing rows (for Measurement edit)
 
+  /// Efect to focus on new "main" row item input
   useEffect(() => {
     if (isRowInputVisible && inputRef && inputRef.current && inputRef.focus) {
       inputRef.focus();
     }
   }, [isRowInputVisible, inputRef]);
 
+  /// Efect to focus on concrete row item input (when editing
+  /// concrete item name)
   useEffect(() => {
     if (
       addedRows &&
@@ -113,7 +131,9 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
   /// Creates new instance of Definition item and clear input
   const createNewRowItem = () => {
     if (newRowNameInput) {
-      const newRowDefinition = new DefinitionRowItem();
+      const newRowDefinition = new DefinitionRowItem(
+        new MeasurementDefinition()
+      );
       newRowDefinition.name = newRowNameInput;
 
       setAddedRows(new List(addedRows).concat([newRowDefinition]).toArray());
@@ -138,12 +158,26 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
             buildMeasurement(values, props.measurement as Measurement)
           );
         }}
+        onReset={(values: any, formikHelpers: any) => {
+          /// TODO: extract existing rows (for Measurement edit)
+          setAddedRows([]);
+          setNewRowNameInput('');
+          setIsRowInputVisible(false);
+          /// TODO: extract existing rows (for Measurement edit)
+        }}
         innerRef={(formik: any) => {
           props.formikReference.formik = formik;
 
           if (formik) {
-            if (props.formikReference.isDirtyFunc)
-              props.formikReference.isDirtyFunc(formik.dirty);
+            if (props.formikReference.isDirtyFunc) {
+              const isDirty =
+                formik.dirty ||
+                new List(addedRows).any((item) => item.resolveIsDirty());
+
+              console.log(`F ${isDirty}`);
+
+              props.formikReference.isDirtyFunc(isDirty);
+            }
           }
         }}
         validateOnBlur={false}
@@ -227,9 +261,7 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
                                   }
                                 }}
                                 onChange={(args: any) => {
-                                  let value = args.target.value;
-
-                                  setNewRowNameInput(value);
+                                  setNewRowNameInput(args.target.value);
                                 }}
                                 onFocus={(args: any) => {}}
                                 onBlur={(args: any) => {
