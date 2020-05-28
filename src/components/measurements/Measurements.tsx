@@ -17,6 +17,13 @@ import {
   measurementActions,
   ManagingMeasurementPanelComponent,
 } from '../../redux/slices/measurement.slice';
+import {
+  controlActions,
+  DialogArgs,
+  CommonDialogType,
+} from '../../redux/slices/control.slice';
+import { assignPendingActions } from '../../helpers/action.helper';
+import { List } from 'linq-typescript';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
@@ -83,6 +90,7 @@ const Measurements: React.FC = () => {
                   </CommandBarButton>
 
                   <CommandBarButton
+                    disabled={targetMeasurement ? false : true}
                     styles={{
                       root: {
                         height: '30px',
@@ -90,7 +98,62 @@ const Measurements: React.FC = () => {
                       },
                     }}
                     onClick={() => {
-                      debugger;
+                      if (targetMeasurement) {
+                        dispatch(
+                          controlActions.toggleCommonDialogVisibility(
+                            new DialogArgs(
+                              CommonDialogType.Delete,
+                              'Delete measurement',
+                              `Are you sure you want to delete ${targetMeasurement.name}?`,
+                              () => {
+                                dispatch(
+                                  controlActions.closeInfoPanelWithComponent()
+                                );
+
+                                let action = assignPendingActions(
+                                  measurementActions.apiDeleteMeasurementById(
+                                    targetMeasurement.id
+                                  ),
+                                  [],
+                                  [],
+                                  (args: any) => {
+                                    dispatch(
+                                      measurementActions.changeSelectedMeasurement(
+                                        null
+                                      )
+                                    );
+
+                                    let action = assignPendingActions(
+                                      measurementActions.apiGetAllMeasurements(),
+                                      [],
+                                      [],
+                                      (args: any) => {
+                                        dispatch(
+                                          measurementActions.updateMeasurementsList(
+                                            args
+                                          )
+                                        );
+                                        dispatch(
+                                          measurementActions.changeSelectedMeasurement(
+                                            new List<Measurement>(
+                                              args
+                                            ).firstOrDefault()
+                                          )
+                                        );
+                                      }
+                                    );
+
+                                    dispatch(action);
+                                  }
+                                );
+
+                                dispatch(action);
+                              },
+                              () => {}
+                            )
+                          )
+                        );
+                      }
                     }}
                     iconProps={{
                       iconName: 'Cancel',
