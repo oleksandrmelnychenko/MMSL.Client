@@ -7,8 +7,6 @@ import { IApplicationState } from '../../redux/reducers';
 import { Measurement } from '../../interfaces';
 import { List } from 'linq-typescript';
 
-export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
-
 const MeasurementSelector: React.FC = () => {
   const dispatch = useDispatch();
 
@@ -59,6 +57,19 @@ const MeasurementSelector: React.FC = () => {
         allowFreeform={true}
         autoComplete={true ? 'on' : 'off'}
         options={itemOptions}
+        styles={
+          {
+            // root: {
+            //   border: '1px solid #c8c8c8',
+            // },
+            // optionsContainerWrapper: {
+            //   border: '1px solid #c8c8c8',
+            // },
+            // optionsContainer: {
+            //   border: '1px solid #c8c8c8',
+            // },
+          }
+        }
         onChange={(
           event: React.FormEvent<IComboBox>,
           option?: IComboBoxOption,

@@ -34,6 +34,11 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
     ManagingMeasurementPanelComponent | null
   >((state) => state.measurements.managingMeasurementPanelContent);
 
+  const targetMeasurement: Measurement | null | undefined = useSelector<
+    IApplicationState,
+    Measurement | null | undefined
+  >((state) => state.measurements.targetMeasurement);
+
   let panelTitleText = '';
   let panelDescription: string[] | null = null;
   let panelWidth: number = 0;
@@ -61,6 +66,35 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
     }
   });
 
+  const onSuccessCreateUpdateMeasurementFlow = (
+    affectedMeasurementId: number
+  ) => {
+    let getAllMeasurementsAction = assignPendingActions(
+      measurementActions.apiGetAllMeasurements(),
+      [],
+      [],
+      (args: any) => {
+        dispatch(measurementActions.updateMeasurementsList(args));
+      },
+      (args: any) => {}
+    );
+    dispatch(getAllMeasurementsAction);
+
+    let getNewMeasurementByIdAction = assignPendingActions(
+      measurementActions.apiGetMeasurementById(affectedMeasurementId),
+      [],
+      [],
+      (args: any) => {
+        dispatch(measurementActions.changeSelectedMeasurement(args));
+        dispatch(
+          measurementActions.changeManagingMeasurementPanelContent(null)
+        );
+      },
+      (args: any) => {}
+    );
+    dispatch(getNewMeasurementByIdAction);
+  };
+
   switch (contentType) {
     case ManagingMeasurementPanelComponent.CreateNewMeasurement:
       panelTitleText = 'New Measurement';
@@ -78,26 +112,7 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
               [],
               [],
               (args: any) => {
-                let action = assignPendingActions(
-                  measurementActions.apiGetAllMeasurements(),
-                  [
-                    measurementActions.changeManagingMeasurementPanelContent(
-                      null
-                    ),
-                  ],
-                  [],
-                  (args: any) => {
-                    dispatch(measurementActions.updateMeasurementsList(args));
-                    dispatch(
-                      measurementActions.changeSelectedMeasurement(
-                        new List<Measurement>(args).firstOrDefault()
-                      )
-                    );
-                  },
-                  (args: any) => {}
-                );
-
-                dispatch(action);
+                onSuccessCreateUpdateMeasurementFlow(args.body.id);
               },
               (args: any) => {}
             );
@@ -109,16 +124,29 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
       break;
 
     case ManagingMeasurementPanelComponent.EditMeasurement:
-      panelTitleText = 'Edit Measurement';
-      panelDescription = null;
-      panelWidth = 300;
+      panelTitleText = 'Edit';
+      panelDescription = [targetMeasurement ? targetMeasurement.name : ''];
+      panelWidth = 400;
 
       hideAddEditPanelActions(actionItems);
 
       content = (
-        <MeasurementEditForm
+        <MeasurementForm
+          measurement={targetMeasurement}
           formikReference={formikReference}
-          submitAction={(args: any) => {}}
+          submitAction={(args: any) => {
+            let action = assignPendingActions(
+              measurementActions.apiUpdateMeasurement(args),
+              [],
+              [],
+              (args: any) => {
+                onSuccessCreateUpdateMeasurementFlow(args.body.id);
+              },
+              (args: any) => {}
+            );
+
+            dispatch(action);
+          }}
         />
       );
       break;

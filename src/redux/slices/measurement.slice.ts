@@ -22,6 +22,7 @@ export class ManagingMeasurementState {
 export enum ManagingMeasurementPanelComponent {
   CreateNewMeasurement,
   EditMeasurement,
+  AddChartSize,
 }
 
 const measurements = createSlice({
@@ -33,6 +34,9 @@ const measurements = createSlice({
       return state;
     },
     apiCreateNewMeasurement(state, action) {
+      return state;
+    },
+    apiUpdateMeasurement(state, action) {
       return state;
     },
     apiGetMeasurementById(state, action: { type: string; payload: number }) {

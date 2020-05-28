@@ -13,7 +13,7 @@ import { controlActions } from '../../../redux/slices/control.slice';
 import { productActions } from '../../../redux/slices/product.slice';
 import {
   Measurement,
-  measurementMapDefinitions,
+  MeasurementMapDefinition,
   MeasurementSize,
 } from '../../../interfaces';
 import { List } from 'linq-typescript';
@@ -103,7 +103,7 @@ const MeasurementsList: React.FC = () => {
     ];
 
     const measurementHeader = new List(measurements)
-      .selectMany<measurementMapDefinitions>(
+      .selectMany<MeasurementMapDefinition>(
         (measurement) => measurement.measurementMapDefinitions
       )
       .select((definition) => {

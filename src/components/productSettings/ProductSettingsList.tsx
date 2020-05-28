@@ -224,11 +224,13 @@ export const ProductSettingsList: React.FC = () => {
                           paddingLeft: '0px',
                           paddingRight: '8px',
                           width: '100%',
-                        }}>
+                        }}
+                      >
                         <Stack
                           horizontal
                           horizontalAlign="space-between"
-                          tokens={{ childrenGap: 0 }}>
+                          tokens={{ childrenGap: 0 }}
+                        >
                           <Stack horizontal tokens={{ childrenGap: 10 }}>
                             {defaultRender(props)}{' '}
                             <TooltipHost
@@ -241,7 +243,8 @@ export const ProductSettingsList: React.FC = () => {
                                 props.group?.rawGroupModel?.isMandatory
                                   ? 'Mandatory'
                                   : 'Not mandatory'
-                              }>
+                              }
+                            >
                               <FontIcon
                                 iconName="Warning"
                                 className={mergeStyles({
