@@ -175,8 +175,7 @@ export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
           }
         }}
         validateOnBlur={false}
-        enableReinitialize={true}
-      >
+        enableReinitialize={true}>
         {(formik) => {
           return (
             <Form className="form">
@@ -219,15 +218,15 @@ export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
                       (valueItem: DefinitionValueItem, index: number) => {
                         return (
                           <div className="sizeForm__definitionItem" key={index}>
-                            <Stack horizontal>
-                              <Stack.Item>
-                                <Text
-                                  nowrap
-                                  block
-                                  styles={{ root: { maxWidth: '250px' } }}
-                                >
-                                  {valueItem.name}
-                                </Text>
+                            <Stack horizontal horizontalAlign="space-between">
+                              <Stack.Item
+                                styles={{
+                                  root: {
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                  },
+                                }}>
+                                <Text>{valueItem.name}</Text>
                               </Stack.Item>
                               <Stack.Item>
                                 <div className="sizeForm__definitionItem__editNameInput">

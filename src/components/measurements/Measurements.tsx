@@ -114,7 +114,7 @@ const Measurements: React.FC = () => {
                           padding: '16px',
                         },
                         label: {
-                          fontWeight: FontWeights.bold,
+                          fontWeight: FontWeights.regular,
                         },
                       }}
                       onClick={() => {
@@ -138,7 +138,7 @@ const Measurements: React.FC = () => {
                           padding: '16px',
                         },
                         label: {
-                          fontWeight: FontWeights.bold,
+                          fontWeight: FontWeights.light,
                         },
                       }}
                       onClick={() => {
