@@ -10,6 +10,7 @@ import { getActiveLanguage } from 'react-localize-redux';
 import {
   ajaxGetWebResponse,
   ajaxPostResponse,
+  ajaxDeleteResponse,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import { controlActions } from '../slices/control.slice';
@@ -128,6 +129,53 @@ export const apiGetMeasurementByIdEpic = (action$: AnyAction, state$: any) => {
                 measurementActions.updateisMeasurementsWasRequested(true),
                 controlActions.showInfoMessage(
                   `Error occurred while getting measurement by id. ${errorResponse}`
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiDeleteMeasurementByIdEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(measurementActions.apiDeleteMeasurementById.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+      return ajaxDeleteResponse(api.DELETE_MEASUREMENT, state$.value, [
+        {
+          key: 'measurementId',
+          value: `${action.payload}`,
+        },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.showInfoMessage(
+                `New measurement successfully created.`
+              ),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_DELETE_MEASUREMENT' },
+                controlActions.showInfoMessage(
+                  `Error occurred while deleting measurement. ${errorResponse}`
                 ),
                 controlActions.disabledStatusBar(),
               ],
