@@ -27,8 +27,7 @@ const MeasurementSelector: React.FC = () => {
       [],
       [],
       (args: any) => {
-        // dispatch(measurementActions.updateMeasurementsList(args));
-        dispatch(measurementActions.updateMeasurementsList([]));
+        dispatch(measurementActions.updateMeasurementsList(args));
         dispatch(
           measurementActions.changeSelectedMeasurement(
             new List<Measurement>(args).firstOrDefault()

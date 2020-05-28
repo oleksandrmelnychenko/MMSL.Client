@@ -40,7 +40,13 @@ const Measurements: React.FC = () => {
     return () => {};
   }, [dispatch]);
 
-  const addMeasurement = () => {};
+  const addMeasurement = () => {
+    dispatch(
+      measurementActions.changeManagingMeasurementPanelContent(
+        ManagingMeasurementPanelComponent.CreateNewMeasurement
+      )
+    );
+  };
 
   const mainContentHideableStyle =
     isMeasurementsWasRequested && isAnyMeasurements ? {} : { display: 'none' };
@@ -68,8 +74,9 @@ const Measurements: React.FC = () => {
                       paddingLeft: '20px',
                     },
                   }}
-                  onClick={addMeasurement}
-                  iconProps={{ iconName: 'Add' }}>
+                  onClick={() => addMeasurement()}
+                  iconProps={{ iconName: 'Add' }}
+                >
                   Add measurement
                 </ActionButton>
               </Stack>
@@ -89,7 +96,8 @@ const Measurements: React.FC = () => {
                 ManagingMeasurementPanelComponent.EditMeasurement
               )
             );
-          }}>
+          }}
+        >
           EDIT
         </ActionButton>
         <div style={hintContentHideableStyle}>
@@ -99,7 +107,8 @@ const Measurements: React.FC = () => {
               justifyContent: 'center',
               alignItems: 'center',
               height: 'inherit',
-            }}>
+            }}
+          >
             <Stack>
               <Label
                 styles={{
@@ -107,19 +116,14 @@ const Measurements: React.FC = () => {
                     color: '#484848',
                     fontSize: '18px',
                   },
-                }}>
+                }}
+              >
                 Create your first measurement
               </Label>
               <Stack.Item align={'center'}>
                 <PrimaryButton
                   text={'Create measurement'}
-                  onClick={() => {
-                    dispatch(
-                      measurementActions.changeManagingMeasurementPanelContent(
-                        ManagingMeasurementPanelComponent.CreateNewMeasurement
-                      )
-                    );
-                  }}
+                  onClick={() => addMeasurement()}
                 />
               </Stack.Item>
             </Stack>

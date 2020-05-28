@@ -128,23 +128,6 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
     }
   }, [addedRows, inputEditRef]);
 
-  /// TODO: need to be tested (resolve is form is dirt due to each row `dirty state`)
-  // useEffect(() => {
-  //   if (
-  //     props.formikReference &&
-  //     props.formikReference.formik &&
-  //     props.formikReference.isDirtyFunc
-  //   ) {
-  //     const isDirty =
-  //       props.formikReference.formik ||
-  //       new List(addedRows).any((item) => item.resolveIsDirty());
-
-  //     console.log(`E ${isDirty}`);
-
-  //     props.formikReference.isDirtyFunc(isDirty);
-  //   }
-  // }, [addedRows, props.formikReference]);
-
   /// Creates new instance of Definition item and clear input
   const createNewRowItem = () => {
     if (newRowNameInput) {
