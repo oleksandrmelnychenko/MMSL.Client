@@ -6,6 +6,7 @@ import {
   ActionButton,
   Label,
   PrimaryButton,
+  CommandBarButton,
 } from 'office-ui-fabric-react';
 import { scrollablePaneStyleForDetailList } from '../../common/fabric-styles/styles';
 import { IApplicationState } from '../../redux/reducers';
@@ -64,21 +65,47 @@ const Measurements: React.FC = () => {
             <Stack horizontal tokens={{ childrenGap: 90 }}>
               <div className="content__header__top__title">Measurements</div>
 
-              <Stack horizontal>
+              <Stack horizontal tokens={{ childrenGap: '12px' }}>
                 <MeasurementSelector />
 
-                <ActionButton
-                  styles={{
-                    root: {
-                      height: '30px',
-                      paddingLeft: '20px',
-                    },
-                  }}
-                  onClick={() => addMeasurement()}
-                  iconProps={{ iconName: 'Add' }}
-                >
-                  Add measurement
-                </ActionButton>
+                <Stack horizontal>
+                  <CommandBarButton
+                    styles={{
+                      root: {
+                        height: '30px',
+                        padding: '16px',
+                      },
+                    }}
+                    onClick={() => addMeasurement()}
+                    iconProps={{ iconName: 'Add' }}
+                  >
+                    Add measurement
+                  </CommandBarButton>
+
+                  <CommandBarButton
+                    styles={{
+                      root: {
+                        height: '30px',
+                        padding: '16px',
+                      },
+                    }}
+                    onClick={() => {
+                      debugger;
+                    }}
+                    iconProps={{
+                      iconName: 'Cancel',
+                      styles: {
+                        root: {
+                          fontSize: '14px',
+                          fontWeight: 600,
+                          color: '#a4373a',
+                        },
+                      },
+                    }}
+                  >
+                    Delete
+                  </CommandBarButton>
+                </Stack>
               </Stack>
             </Stack>
           </Stack>
@@ -89,7 +116,7 @@ const Measurements: React.FC = () => {
         <div style={mainContentHideableStyle}>
           {targetMeasurement ? `${targetMeasurement.name}` : null}
         </div>
-        <ActionButton
+        {/* <ActionButton
           onClick={() => {
             dispatch(
               measurementActions.changeManagingMeasurementPanelContent(
@@ -99,7 +126,7 @@ const Measurements: React.FC = () => {
           }}
         >
           EDIT
-        </ActionButton>
+        </ActionButton> */}
         <div style={hintContentHideableStyle}>
           <div
             style={{
