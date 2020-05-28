@@ -22,6 +22,11 @@ import { DATA_SELECTION_DISABLED_CLASS } from '../dealers/DealerList';
 import './measurementChartGrid.scss';
 import { List } from 'linq-typescript';
 import { firstCellStyle } from '../../common/fabric-styles/styles';
+import {
+  controlActions,
+  CommonDialogType,
+  DialogArgs,
+} from '../../redux/slices/control.slice';
 
 const _columnIconButtonStyle = {
   root: {
@@ -56,7 +61,7 @@ const MeasurementChartGrid: React.FC = () => {
       onRender: (item: any) => {
         return (
           <Stack horizontal disableShrink>
-            <IconButton
+            {/* <IconButton
               data-selection-disabled={true}
               className={DATA_SELECTION_DISABLED_CLASS}
               styles={_columnIconButtonStyle}
@@ -65,7 +70,7 @@ const MeasurementChartGrid: React.FC = () => {
               title="Edit"
               ariaLabel="Edit"
               onClick={() => {}}
-            />
+            /> */}
             <IconButton
               data-selection-disabled={true}
               className={DATA_SELECTION_DISABLED_CLASS}
@@ -74,7 +79,25 @@ const MeasurementChartGrid: React.FC = () => {
               iconProps={{ iconName: 'Delete' }}
               title="Delete"
               ariaLabel="Delete"
-              onClick={(args: any) => {}}
+              onClick={(args: any) => {
+                if (item && item.measurementSize) {
+                  dispatch(
+                    controlActions.toggleCommonDialogVisibility(
+                      new DialogArgs(
+                        CommonDialogType.Delete,
+                        'Delete size',
+                        `Are you sure you want to delete ${item.measurementSize.name}?`,
+                        () => {
+                          dispatch(
+                            controlActions.closeInfoPanelWithComponent()
+                          );
+                        },
+                        () => {}
+                      )
+                    )
+                  );
+                }
+              }}
             />
           </Stack>
         );
@@ -99,17 +122,59 @@ const MeasurementChartGrid: React.FC = () => {
           isResizable: true,
           isCollapsible: true,
           data: 'string',
-          onRender: (item: any) => {
+          onRender: (item?: any, index?: number, column?: IColumn) => {
             let cellValue = '-';
+
+            if (
+              item &&
+              item.measurementSize &&
+              item.measurementSize.measurementMapValues &&
+              column &&
+              (column as any).rawSourceContext
+            ) {
+              const truthValue: any = new List(
+                item.measurementSize.measurementMapValues
+              ).firstOrDefault(
+                (mapValueItem: any) =>
+                  mapValueItem.measurementDefinitionId ===
+                  (column as any).rawSourceContext.measurementDefinitionId
+              );
+
+              if (truthValue) {
+                cellValue = truthValue.value;
+              }
+            }
 
             return <Text style={firstCellStyle}>{cellValue}</Text>;
           },
           isPadded: true,
+          rawSourceContext: definitionMapItem,
         };
       })
       .toArray();
 
-    chartColumns = new List(dynamicChartColumns).concat(chartColumns).toArray();
+    const list = new List(dynamicChartColumns);
+    list.insert(0, {
+      key: 'sizeName',
+      name: 'Size',
+      minWidth: 20,
+      maxWidth: 50,
+      isResizable: true,
+      isCollapsible: true,
+      data: 'string',
+      onRender: (item?: any, index?: number, column?: IColumn) => {
+        let cellValue = '-';
+
+        if (item && item.measurementSize) {
+          cellValue = item.measurementSize.name;
+        }
+
+        return <Text style={firstCellStyle}>{`${cellValue}`}</Text>;
+      },
+      isPadded: true,
+    });
+
+    chartColumns = list.concat(chartColumns).toArray();
   }
   if (chartColumns.length <= 1) chartColumns = [];
 
