@@ -91,10 +91,9 @@ export const TimelinePanel: React.FC = (props: any) => {
         dispatch(productSettingsActions.closeTimelineFormPanel());
       }}>
       <PanelTitle
-        title={
-          selectedDeliveryTimeline
-            ? `Timeline: ${selectedDeliveryTimeline.name}`
-            : 'Create new timeline'
+        title={selectedDeliveryTimeline ? `Edit` : 'Create new timeline'}
+        description={
+          selectedDeliveryTimeline ? [selectedDeliveryTimeline.name] : null
         }
       />
       <CommandBar
