@@ -1,11 +1,12 @@
 import './customers.scss';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SearchBox, ActionButton, Stack } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import CustomerList from './CustomerList';
 import CustomerPanel from './customerManaging/CustomerPanel';
 import { customerActions } from '../../redux/slices/customer.slice';
+import { controlActions } from '../../redux/slices/control.slice';
 
 export const Customers: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -17,6 +18,12 @@ export const Customers: React.FC = (props: any) => {
     (state) => state.customer.customerState.searchByStore
   );
 
+  useEffect(() => {
+    return () => {
+      dispatch(controlActions.closeInfoPanelWithComponent());
+      dispatch(customerActions.clearCustomerList());
+    };
+  }, []);
   const searchBoxStyles = { root: { width: 200 } };
 
   return (

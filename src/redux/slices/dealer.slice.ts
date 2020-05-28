@@ -87,6 +87,10 @@ const dealer = createSlice({
       state.dealerState.dealersList = action.payload;
       return state;
     },
+    clearDealersList(state) {
+      state.dealerState.dealersList = [];
+      return state;
+    },
     getDealersListPaginated(state) {
       return state;
     },

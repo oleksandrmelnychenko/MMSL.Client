@@ -45,6 +45,10 @@ const customer = createSlice({
       state.customerState.customersList = action.payload;
       return state;
     },
+    clearCustomerList(state) {
+      state.customerState.customersList = [];
+      return state;
+    },
     updateCustomersListPaginationInfo(state, action) {
       state.customerState.pagination.paginationInfo = action.payload;
       return state;

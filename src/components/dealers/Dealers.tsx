@@ -31,6 +31,12 @@ export const Dealers: React.FC = (props: any) => {
     dispatch(dealerActions.getDealersListPaginated());
   }, [fromDate, toDate, dispatch]);
 
+  useEffect(() => {
+    return () => {
+      dispatch(dealerActions.clearDealersList());
+    };
+  }, []);
+
   const datePickerWidth = { root: { width: '150px' } };
 
   return (
