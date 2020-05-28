@@ -243,8 +243,7 @@ const Measurements: React.FC = () => {
               justifyContent: 'center',
               alignItems: 'center',
               height: 'inherit',
-            }}
-          >
+            }}>
             <Stack>
               <Label
                 styles={{
@@ -252,8 +251,7 @@ const Measurements: React.FC = () => {
                     color: '#484848',
                     fontSize: '18px',
                   },
-                }}
-              >
+                }}>
                 Create your first measurement
               </Label>
               <Stack.Item align={'center'}>
