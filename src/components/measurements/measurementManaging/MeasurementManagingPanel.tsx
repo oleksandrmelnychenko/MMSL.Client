@@ -158,6 +158,7 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
 
       content = (
         <SizesForm
+          measurement={targetMeasurement}
           formikReference={formikReference}
           submitAction={(args: any) => {
             debugger;
