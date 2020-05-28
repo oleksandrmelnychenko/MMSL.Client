@@ -176,6 +176,19 @@ export const comboBoxStyles = {
   },
 };
 
+export const cellStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  height: '100%',
+};
+
+export const firstCellStyle = {
+  paddingLeft: '7px',
+  display: 'flex',
+  alignItems: 'center',
+  height: '100%',
+};
+
 export const commandBarStyles = {
   root: {
     background: '#f0f0f0',

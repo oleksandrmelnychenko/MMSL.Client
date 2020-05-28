@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { OptionGroup, OptionUnit } from '../../interfaces';
+import { OptionGroup, OptionUnit, DeliveryTimeline } from '../../interfaces';
 import { GroupItemVisualState } from '../../interfaces/viewModels';
 import { List } from 'linq-typescript';
 
@@ -11,6 +11,7 @@ export class ProductSettingsState {
     this.managingOptionUnitsState = new ManagingOptionUnitsState();
     this.manageSingleOptionUnitState = new ManageSingleOptionUnitState();
     this.manageSingleOptionGroupState = new ManageSingleOptionGroupState();
+    this.manageTimelineState = new ManageTimelineState();
   }
 
   managingPanelContent: ManagingPanelComponent | null;
@@ -19,6 +20,7 @@ export class ProductSettingsState {
   managingOptionUnitsState: ManagingOptionUnitsState;
   manageSingleOptionUnitState: ManageSingleOptionUnitState;
   manageSingleOptionGroupState: ManageSingleOptionGroupState;
+  manageTimelineState: ManageTimelineState;
 
   setOptionGroupsList: (source: OptionGroup[]) => void = (
     source: OptionGroup[]
@@ -48,6 +50,17 @@ export enum ManagingPanelComponent {
   ManageUnits,
   ManageSingleOptionUnit,
   ManageSingleOptionGroup,
+}
+
+export class ManageTimelineState {
+  constructor() {
+    this.isTimelineFormPanelOpen = false;
+    this.deliveryTimelines = [];
+    this.selectedDeliveryTimeline = null;
+  }
+  isTimelineFormPanelOpen: boolean;
+  deliveryTimelines: DeliveryTimeline[];
+  selectedDeliveryTimeline: DeliveryTimeline | null;
 }
 
 export class ManagingOptionUnitsState {
@@ -130,7 +143,58 @@ const productSettings = createSlice({
       }
       return state;
     },
-
+    openTimelineFormPanel(state) {
+      state.manageTimelineState.isTimelineFormPanelOpen = true;
+      return state;
+    },
+    closeTimelineFormPanel(state) {
+      state.manageTimelineState.isTimelineFormPanelOpen = false;
+      return state;
+    },
+    apiGetAllDeliveryTimeline(state) {
+      return state;
+    },
+    successGetAllDeliveryTimelines(
+      state,
+      action: { type: string; payload: DeliveryTimeline[] }
+    ) {
+      state.manageTimelineState.deliveryTimelines = action.payload;
+      return state;
+    },
+    clearAllDeliveryTimelines(state) {
+      state.manageTimelineState.deliveryTimelines = [];
+      return state;
+    },
+    apiCreateNewDeliveryTimeline(
+      state,
+      action: { type: string; payload: DeliveryTimeline }
+    ) {
+      return state;
+    },
+    selectedDeliveryTimeLine(state, action: { type: string; payload: number }) {
+      state.manageTimelineState.selectedDeliveryTimeline = new List<
+        DeliveryTimeline
+      >(state.manageTimelineState.deliveryTimelines).first(
+        (timeline) => timeline.id === action.payload
+      );
+      return state;
+    },
+    clearSelectedDeliveryTimeLine(state) {
+      state.manageTimelineState.selectedDeliveryTimeline = null;
+      return state;
+    },
+    apiUpdateDeliveryTimeline(
+      state,
+      action: { type: string; payload: DeliveryTimeline }
+    ) {
+      return state;
+    },
+    apiDeleteDeliveryTimeline(
+      state,
+      action: { type: string; payload: number }
+    ) {
+      return state;
+    },
     changeTargetOptionGroupForUnitsEdit(state, action) {
       state.managingOptionUnitsState.targetOptionGroup = action.payload;
 

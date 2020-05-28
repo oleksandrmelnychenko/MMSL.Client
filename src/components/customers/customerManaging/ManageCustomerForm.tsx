@@ -8,8 +8,6 @@ import {
   ComboBox,
   DayOfWeek,
   IComboBoxOption,
-  IComboBox,
-  PrimaryButton,
 } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import {

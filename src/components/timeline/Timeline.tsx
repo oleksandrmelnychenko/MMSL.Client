@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   IColumn,
   SelectionMode,
   Text,
-  Selection,
   ScrollablePane,
   ShimmeredDetailsList,
   IDetailsHeaderProps,
@@ -17,117 +16,159 @@ import {
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
-import { customerActions } from '../../redux/slices/customer.slice';
-import { controlActions } from '../../redux/slices/control.slice';
-// import ManagementPanel from './options/ManagmentPanel';
-import { CustomerListState } from '../../redux/slices/customer.slice';
+import {
+  controlActions,
+  DialogArgs,
+  CommonDialogType,
+} from '../../redux/slices/control.slice';
+import { productSettingsActions } from '../../redux/slices/productSettings.slice';
 import {
   scrollablePaneStyleForDetailList,
   detailsListStyle,
+  columnIconButtonStyle,
+  firstCellStyle,
+  cellStyle,
 } from '../../common/fabric-styles/styles';
-
-const cellStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  height: '100%',
-};
-
-const _customerColumns: IColumn[] = [
-  {
-    key: 'name',
-    name: '',
-    minWidth: 16,
-    maxWidth: 200,
-
-    onRender: (item: any, index?: number) => {
-      return <Text style={cellStyle}>{item.name}</Text>;
-    },
-  },
-  {
-    key: 'ivory',
-    name: 'Ivory',
-    minWidth: 70,
-    maxWidth: 90,
-    isResizable: true,
-    isCollapsible: true,
-    data: 'string',
-    onRender: (item: any) => {
-      return <Text style={cellStyle}>{item.ivory}</Text>;
-    },
-    isPadded: true,
-  },
-  {
-    key: 'silver',
-    name: 'Silver',
-    minWidth: 70,
-    maxWidth: 90,
-    isResizable: true,
-    isCollapsible: true,
-    data: 'string',
-    onRender: (item: any) => {
-      return <Text style={cellStyle}>{item.silver}</Text>;
-    },
-    isPadded: true,
-  },
-  {
-    key: 'black',
-    name: 'Black',
-    minWidth: 70,
-    maxWidth: 90,
-    isResizable: true,
-    isCollapsible: true,
-    data: 'string',
-    onRender: (item: any) => {
-      return <Text style={cellStyle}>{item.black}</Text>;
-    },
-    isPadded: true,
-  },
-  {
-    key: 'gold',
-    name: 'Gold',
-    minWidth: 70,
-    maxWidth: 90,
-    isResizable: true,
-    isCollapsible: true,
-    data: 'string',
-    onRender: (item: any) => {
-      return <Text style={cellStyle}>{item.gold}</Text>;
-    },
-    isPadded: true,
-  },
-  {
-    key: 'action',
-    name: 'Action',
-    minWidth: 70,
-    maxWidth: 200,
-    isResizable: true,
-    isCollapsible: true,
-    data: 'string',
-    onRender: (item: any) => {
-      return (
-        <>
-          <ActionButton iconProps={{ iconName: 'Edit' }}></ActionButton>
-          <ActionButton iconProps={{ iconName: 'Delete' }}></ActionButton>
-        </>
-      );
-    },
-    isPadded: true,
-  },
-];
+import TimelinePanel from './TimelinePanel';
+import { DeliveryTimeline } from '../../interfaces/index';
 
 export const Timeline: React.FC = () => {
   const dispatch = useDispatch();
+
+  const _customerColumns: IColumn[] = [
+    {
+      key: 'name',
+      name: '',
+      minWidth: 16,
+      maxWidth: 200,
+
+      onRender: (item: any, index?: number) => {
+        return <Text style={firstCellStyle}>{item.name}</Text>;
+      },
+    },
+    {
+      key: 'ivory',
+      name: 'Ivory',
+      minWidth: 70,
+      maxWidth: 90,
+      isResizable: true,
+      isCollapsible: true,
+      data: 'string',
+      onRender: (item: any) => {
+        return <Text style={cellStyle}>{item.ivory}</Text>;
+      },
+      isPadded: true,
+    },
+    {
+      key: 'silver',
+      name: 'Silver',
+      minWidth: 70,
+      maxWidth: 90,
+      isResizable: true,
+      isCollapsible: true,
+      data: 'string',
+      onRender: (item: any) => {
+        return <Text style={cellStyle}>{item.silver}</Text>;
+      },
+      isPadded: true,
+    },
+    {
+      key: 'black',
+      name: 'Black',
+      minWidth: 70,
+      maxWidth: 90,
+      isResizable: true,
+      isCollapsible: true,
+      data: 'string',
+      onRender: (item: any) => {
+        return <Text style={cellStyle}>{item.black}</Text>;
+      },
+      isPadded: true,
+    },
+    {
+      key: 'gold',
+      name: 'Gold',
+      minWidth: 70,
+      maxWidth: 90,
+      isResizable: true,
+      isCollapsible: true,
+      data: 'string',
+      onRender: (item: any) => {
+        return <Text style={cellStyle}>{item.gold}</Text>;
+      },
+      isPadded: true,
+    },
+    {
+      key: 'action',
+      name: 'Action',
+      minWidth: 70,
+      maxWidth: 200,
+      isResizable: true,
+      isCollapsible: true,
+      data: 'string',
+      onRender: (item: any) => {
+        return (
+          <>
+            <ActionButton
+              styles={columnIconButtonStyle}
+              iconProps={{ iconName: 'Edit' }}
+              onClick={() => {
+                dispatch(
+                  productSettingsActions.selectedDeliveryTimeLine(item.id)
+                );
+                dispatch(productSettingsActions.openTimelineFormPanel());
+              }}></ActionButton>
+            <ActionButton
+              styles={columnIconButtonStyle}
+              iconProps={{ iconName: 'Delete' }}
+              onClick={() => {
+                dispatch(
+                  controlActions.toggleCommonDialogVisibility(
+                    new DialogArgs(
+                      CommonDialogType.Delete,
+                      'Delete delivery timeline',
+                      `Are you sure you want to delete ${item.name}?`,
+                      () => {
+                        dispatch(
+                          productSettingsActions.apiDeleteDeliveryTimeline(
+                            item.id
+                          )
+                        );
+                      },
+                      () => {}
+                    )
+                  )
+                );
+              }}></ActionButton>
+          </>
+        );
+      },
+      isPadded: true,
+    },
+  ];
 
   const shimmer = useSelector<IApplicationState, boolean>(
     (state) => state.control.isGlobalShimmerActive
   );
 
+  const deliveryTimelines = useSelector<IApplicationState, DeliveryTimeline[]>(
+    (state) => state.productSettings.manageTimelineState.deliveryTimelines
+  );
+
   useEffect(() => {
     dispatch(controlActions.showGlobalShimmer());
-
-    return () => {};
+    dispatch(productSettingsActions.apiGetAllDeliveryTimeline());
+    return () => {
+      dispatch(productSettingsActions.clearAllDeliveryTimelines());
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (deliveryTimelines.length > 0) {
+      dispatch(controlActions.hideGlobalShimmer());
+    }
+  }, [deliveryTimelines, dispatch]);
 
   const onRenderDetailsHeader: IRenderFunction<IDetailsHeaderProps> = (
     props,
@@ -153,37 +194,6 @@ export const Timeline: React.FC = () => {
     );
   };
 
-  const timelineItems = [
-    {
-      name: 'Normal Delivery',
-      ivory: 30,
-      silver: 30,
-      black: 45,
-      gold: 45,
-    },
-    {
-      name: 'Priority',
-      ivory: 21,
-      silver: 21,
-      black: 30,
-      gold: 30,
-    },
-    {
-      name: 'Out of Stock',
-      ivory: 14,
-      silver: 14,
-      black: 14,
-      gold: 14,
-    },
-    {
-      name: 'Cut Length Fabric',
-      ivory: 14,
-      silver: 14,
-      black: 14,
-      gold: 14,
-    },
-  ];
-
   return (
     <div className="content__root">
       <Stack verticalAlign="space-around">
@@ -196,7 +206,11 @@ export const Timeline: React.FC = () => {
                   <Stack horizontal tokens={{ childrenGap: 10 }}>
                     <div className="content__header__top__controls__control">
                       <ActionButton
-                        onClick={() => {}}
+                        onClick={() => {
+                          dispatch(
+                            productSettingsActions.openTimelineFormPanel()
+                          );
+                        }}
                         iconProps={{ iconName: 'Add' }}>
                         New timeline
                       </ActionButton>
@@ -211,16 +225,16 @@ export const Timeline: React.FC = () => {
           <ScrollablePane styles={scrollablePaneStyleForDetailList}>
             <ShimmeredDetailsList
               onRenderDetailsHeader={onRenderDetailsHeader}
-              enableShimmer={false}
+              enableShimmer={shimmer}
               styles={detailsListStyle}
-              items={timelineItems}
-              //   selection={selection}
+              items={deliveryTimelines}
               selectionMode={SelectionMode.none}
               columns={_customerColumns}
             />
           </ScrollablePane>
         </Stack.Item>
       </Stack>
+      <TimelinePanel />
     </div>
   );
 };

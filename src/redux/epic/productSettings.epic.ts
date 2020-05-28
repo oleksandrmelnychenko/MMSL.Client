@@ -562,3 +562,182 @@ export const deleteOptionGroupByIdEpic = (action$: AnyAction, state$: any) => {
     })
   );
 };
+
+export const getAllDeliveryTimelinesEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(productSettingsActions.apiGetAllDeliveryTimeline.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
+      return ajaxGetWebResponse(
+        api.GET_ALL_DELIVERY_TIMELINES,
+        state$.value
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              productSettingsActions.successGetAllDeliveryTimelines(
+                successResponse
+              ),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while getting delivery timelines. ${errorResponse}`
+                ),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const addNewDeliveryTimelineEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(productSettingsActions.apiCreateNewDeliveryTimeline.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
+      return ajaxPostResponse(
+        api.ADD_DELIVERY_TIMELINE,
+        action.payload,
+        state$.value,
+        true
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              productSettingsActions.apiGetAllDeliveryTimeline(),
+              controlActions.showInfoMessage(successResponse.message),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while creating new delivery timeline. ${errorResponse}`
+                ),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const updateDeliveryTimelineEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(productSettingsActions.apiUpdateDeliveryTimeline.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
+      return ajaxPutResponse(
+        api.UPDATE_DELIVERY_TIMELINE,
+        action.payload,
+        state$.value
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          debugger;
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              productSettingsActions.apiGetAllDeliveryTimeline(),
+              controlActions.showInfoMessage(successResponse.message),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while updating delivery timeline. ${errorResponse}`
+                ),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const deleteDeliveryTimelineByIdEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(productSettingsActions.apiDeleteDeliveryTimeline.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
+      return ajaxDeleteResponse(
+        api.DELETE_DELIVERY_TIMELINE_BY_ID,
+        state$.value,
+        [{ key: 'deliveryTimelineId', value: `${action.payload}` }]
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              productSettingsActions.apiGetAllDeliveryTimeline(),
+              controlActions.showInfoMessage(successResponse.message),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while deleting delivery timeline. ${errorResponse}`
+                ),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};

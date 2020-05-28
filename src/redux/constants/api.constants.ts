@@ -51,3 +51,8 @@ export const GET_ALL_MEASUREMENTS = '/measurements/get/all';
 export const GET_MEASUREMENTS_BY_PRODUCT = '/measurements/by/product';
 export const ADD_NEW_MEASUREMENT = '/measurements/new/measurement';
 export const DELETE_MEASUREMENT = '/measurements/delete/measurement';
+
+export const GET_ALL_DELIVERY_TIMELINES = '/delivery/timelines/get/all';
+export const ADD_DELIVERY_TIMELINE = '/delivery/timelines/new';
+export const UPDATE_DELIVERY_TIMELINE = '/delivery/timelines/update';
+export const DELETE_DELIVERY_TIMELINE_BY_ID = '/delivery/timelines/delete';
