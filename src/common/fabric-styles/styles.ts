@@ -171,6 +171,9 @@ export const comboBoxStyles = {
     paddingTop: '15px',
     paddingBottom: '5px',
   },
+  optionsContainer: {
+    maxHeight: '30vh',
+  },
 };
 
 export const commandBarStyles = {

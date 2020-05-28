@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
   Stack,
@@ -8,6 +8,8 @@ import {
   ComboBox,
   DayOfWeek,
   IComboBoxOption,
+  IComboBox,
+  PrimaryButton,
 } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import {
@@ -118,6 +120,10 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
       });
     });
   }
+
+  useEffect(() => {
+    dispatch(customerActions.customerFormStoreAutocompleteText(''));
+  }, []);
 
   return (
     <div>
@@ -260,7 +266,7 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                                 ? `${formik.values.store.id}`
                                 : ''
                             }
-                            allowFreeform={true}
+                            allowFreeform
                             onPendingValueChanged={(
                               option?: IComboBoxOption,
                               index?: number,
@@ -286,7 +292,7 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                                   (option as any).rawValue
                                 );
                                 formik.setFieldTouched('store');
-                                /// Remove all syggestions and set just one selected item
+                                /// Remove all suggestions and set just one selected item
                                 dispatch(
                                   customerActions.updateCustomerFormStoreAutocompleteList(
                                     [(option as any).rawValue]
@@ -305,7 +311,6 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                             }}
                             styles={fabricStyles.comboBoxStyles}
                             required
-                            autoComplete={true ? 'on' : 'off'}
                             options={autocompleteOptions}
                             errorMessage={
                               formik.errors.store && formik.touched.store
@@ -321,6 +326,7 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                         </div>
                       )}
                     </Field>
+
                     <Field name="phoneNumber">
                       {() => (
                         <div className="form__group">

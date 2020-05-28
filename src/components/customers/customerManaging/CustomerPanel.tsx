@@ -77,7 +77,13 @@ export const CustomerPanel: React.FC = (props: any) => {
           dispatch(customerActions.toggleCustomerForm(false));
         }}
         closeButtonAriaLabel="Close">
-        <PanelTitle title={'New Customer'} />
+        <PanelTitle
+          title={
+            selectedCustomer
+              ? `Customer: ${selectedCustomer.userName}`
+              : `New Customer`
+          }
+        />
         <CommandBar
           styles={commandBarStyles}
           items={_items}
