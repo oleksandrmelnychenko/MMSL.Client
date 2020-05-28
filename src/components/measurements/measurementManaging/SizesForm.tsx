@@ -24,25 +24,33 @@ export class SizeInitValues {
   description: string;
 }
 
-const buildMeasurement = (
+const buildSize = (
   values: SizeInitValues,
-  measurementDefinitions: MeasurementDefinition[],
-  sourceEntity?: Measurement
+  measurement: Measurement | null | undefined,
+  valueItems: DefinitionValueItem[],
+  sourceEntity?: MeasurementMapSize
 ) => {
   let newUnit: any = {
-    productCategoryId: null,
-    baseMeasurementId: null,
     name: '',
-    measurementDefinitions: [],
+    description: '',
+    measurementId: 0,
+    valueDataContracts: [],
   };
 
-  //   newUnit.name = values.name;
-  //   newUnit.description = values.description;
-  //   newUnit.measurementDefinitions = measurementDefinitions;
+  newUnit.name = values.name;
+  newUnit.description = values.description;
+  newUnit.measurementId = measurement ? measurement.id : 0;
 
-  //   if (sourceEntity) {
-  //     newUnit.id = sourceEntity.id;
-  //   }
+  newUnit.valueDataContracts = new List(valueItems)
+    .select((valueItem) => {
+      return {
+        measurementDefinitionId:
+          valueItem.sourceMapDefinition.measurementDefinitionId,
+        value: parseFloat(valueItem.value),
+      };
+    })
+    .where((itemContract) => !isNaN(itemContract.value))
+    .toArray();
 
   return newUnit;
 };
@@ -58,6 +66,30 @@ const initDefaultValues = (sourceEntity?: MeasurementSize | null) => {
   }
 
   return initValues;
+};
+
+const initValueItemsDefaults = (
+  measurement: Measurement | null | undefined
+) => {
+  let result: DefinitionValueItem[] = [];
+
+  if (measurement) {
+    result = new List(
+      measurement.measurementMapDefinitions
+        ? measurement.measurementMapDefinitions
+        : []
+    )
+      .select<DefinitionValueItem>(
+        (mapDefinition: MeasurementMapDefinition) => {
+          let result = new DefinitionValueItem(mapDefinition);
+
+          return result;
+        }
+      )
+      .toArray();
+  }
+
+  return result;
 };
 
 export class SizesFormProps {
@@ -112,13 +144,6 @@ export class DefinitionValueItem {
   resolveIsDirty: () => boolean = () => {
     let isDirtyResult: boolean = false;
 
-    // if (this.sizeMap) {
-    //   /// TODO: vadymk for edit
-    //   debugger;
-    // } else {
-    //   isDirtyResult = true;
-    // }
-
     if (this._initValue !== this.value) {
       isDirtyResult = true;
     }
@@ -144,26 +169,7 @@ export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
 
   useEffect(() => {
     if (targetMeasurement) {
-      const valueItems = new List(
-        targetMeasurement.measurementMapDefinitions
-          ? targetMeasurement.measurementMapDefinitions
-          : []
-      )
-        .select<DefinitionValueItem>(
-          (mapDefinition: MeasurementMapDefinition) => {
-            let result = new DefinitionValueItem(mapDefinition);
-
-            if (props.size) {
-              /// TODO: vadymk resolve init value (for edit)
-              debugger;
-            }
-
-            return result;
-          }
-        )
-        .toArray();
-
-      setValueItems(valueItems);
+      setValueItems(initValueItemsDefaults(targetMeasurement));
     }
   }, [targetMeasurement, props.size]);
 
@@ -180,25 +186,10 @@ export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
         })}
         initialValues={initValues}
         onSubmit={(values: any) => {
-          debugger;
-          //   props.submitAction(
-          // buildMeasurement(
-          //   values,
-          //   new List(addedRows)
-          //     .where((item) => item.resolveIsDirty())
-          //     .select((item) => item.buildUpdatedSource())
-          //     .concat(
-          //       new List(deletedRows)
-          //         .select((item) => item.buildUpdatedSource())
-          //         .toArray()
-          //     )
-          //     .toArray(),
-          //   props.measurement as Measurement
-          // )
-          //   );
+          props.submitAction(buildSize(values, targetMeasurement, valueItems));
         }}
         onReset={(values: any, formikHelpers: any) => {
-          debugger;
+          setValueItems(initValueItemsDefaults(targetMeasurement));
         }}
         innerRef={(formik: any) => {
           props.formikReference.formik = formik;
@@ -216,7 +207,8 @@ export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
           }
         }}
         validateOnBlur={false}
-        enableReinitialize={true}>
+        enableReinitialize={true}
+      >
         {(formik) => {
           return (
             <Form className="form">
@@ -266,12 +258,14 @@ export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
                                     display: 'flex',
                                     alignItems: 'center',
                                   },
-                                }}>
+                                }}
+                              >
                                 <Text>{valueItem.name}</Text>
                               </Stack.Item>
                               <Stack.Item>
                                 <div className="sizeForm__definitionItem__editNameInput">
                                   <TextField
+                                    type="number"
                                     borderless
                                     value={valueItem.value}
                                     onChange={(args: any) => {

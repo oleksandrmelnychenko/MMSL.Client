@@ -15,10 +15,6 @@ export class MeasurementsState {
   targetMeasurement: Measurement | null | undefined;
 }
 
-export class ManagingMeasurementState {
-  constructor() {}
-}
-
 export enum ManagingMeasurementPanelComponent {
   CreateNewMeasurement,
   EditMeasurement,
@@ -42,8 +38,10 @@ const measurements = createSlice({
     apiGetMeasurementById(state, action: { type: string; payload: number }) {
       return state;
     },
-
     apiDeleteMeasurementById(state, action: { type: string; payload: number }) {
+      return state;
+    },
+    apiCreateNewMeasurementSize(state, action) {
       return state;
     },
     updateisMeasurementsWasRequested(

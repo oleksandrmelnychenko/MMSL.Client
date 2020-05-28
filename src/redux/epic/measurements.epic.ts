@@ -230,3 +230,49 @@ export const apiUpdateMeasurementEpic = (action$: AnyAction, state$: any) => {
     })
   );
 };
+
+export const apiCreateNewMeasurementSizeEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(measurementActions.apiCreateNewMeasurementSize.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
+      return ajaxPostResponse(
+        api.CREATE_MEASUREMENT_SIZE,
+        action.payload,
+        state$.value,
+        true
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.showInfoMessage(`New size successfully created.`),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_CREATE_NEW_MEASUREMENT_SIZE' },
+                controlActions.showInfoMessage(
+                  `Error occurred while creating new measurement size. ${errorResponse}`
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};

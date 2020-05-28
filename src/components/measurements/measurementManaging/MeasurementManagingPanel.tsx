@@ -161,7 +161,35 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
           measurement={targetMeasurement}
           formikReference={formikReference}
           submitAction={(args: any) => {
-            debugger;
+            let action = assignPendingActions(
+              measurementActions.apiCreateNewMeasurementSize(args),
+              [],
+              [],
+              (args: any) => {
+                let getNewMeasurementByIdAction = assignPendingActions(
+                  measurementActions.apiGetMeasurementById(
+                    targetMeasurement ? targetMeasurement.id : 0
+                  ),
+                  [],
+                  [],
+                  (args: any) => {
+                    dispatch(
+                      measurementActions.changeSelectedMeasurement(args)
+                    );
+                    dispatch(
+                      measurementActions.changeManagingMeasurementPanelContent(
+                        null
+                      )
+                    );
+                  },
+                  (args: any) => {}
+                );
+                dispatch(getNewMeasurementByIdAction);
+              },
+              (args: any) => {}
+            );
+
+            dispatch(action);
           }}
         />
       );

@@ -58,3 +58,5 @@ export const ADD_DELIVERY_TIMELINE = '/delivery/timelines/new';
 export const UPDATE_DELIVERY_TIMELINE = '/delivery/timelines/update';
 export const DELETE_DELIVERY_TIMELINE_BY_ID = '/delivery/timelines/delete';
 export const UPDATE_MEASUREMENT = '/measurements/update/measurement';
+
+export const CREATE_MEASUREMENT_SIZE = '/measurements/sizes/add';
