@@ -90,7 +90,13 @@ export const TimelinePanel: React.FC = (props: any) => {
       onDismiss={() => {
         dispatch(productSettingsActions.closeTimelineFormPanel());
       }}>
-      <PanelTitle title={'Edit Timeline'} />
+      <PanelTitle
+        title={
+          selectedDeliveryTimeline
+            ? `Timeline: ${selectedDeliveryTimeline.name}`
+            : 'Create new timeline'
+        }
+      />
       <CommandBar
         styles={commandBarStyles}
         items={_items}
