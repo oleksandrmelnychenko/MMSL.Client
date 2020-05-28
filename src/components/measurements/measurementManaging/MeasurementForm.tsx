@@ -12,6 +12,7 @@ import {
   FormicReference,
   Measurement,
   MeasurementDefinition,
+  measurementMapDefinitions,
 } from '../../../interfaces';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 import './measurementForm.scss';
@@ -43,6 +44,11 @@ const buildMeasurement = (
   newUnit.description = values.description;
   newUnit.measurementDefinitions = measurementDefinitions;
 
+  if (sourceEntity) {
+    newUnit.id = sourceEntity.id;
+  }
+
+  debugger;
   return newUnit;
 };
 
@@ -59,6 +65,24 @@ const initDefaultValues = (sourceEntity?: Measurement | null) => {
   return initValues;
 };
 
+const initDefinitionItemsDefaults: (
+  sourceEntity?: Measurement | null
+) => DefinitionRowItem[] = (sourceEntity?: Measurement | null) => {
+  let defaults: DefinitionRowItem[] = [];
+
+  if (sourceEntity && sourceEntity.measurementMapDefinitions) {
+    defaults = new List(sourceEntity.measurementMapDefinitions)
+      .select<DefinitionRowItem>((itemMap: measurementMapDefinitions) => {
+        const resultItem = new DefinitionRowItem(itemMap);
+
+        return resultItem;
+      })
+      .toArray();
+  }
+
+  return defaults;
+};
+
 export class MeasurementFormProps {
   constructor() {
     this.formikReference = new FormicReference();
@@ -72,22 +96,27 @@ export class MeasurementFormProps {
 }
 
 export class DefinitionRowItem {
-  constructor(source: MeasurementDefinition) {
-    this.name = '';
+  constructor(source: measurementMapDefinitions) {
     this.isEditingName = false;
-
     this.source = source;
+
+    this.name =
+      source && source.measurementDefinition
+        ? source.measurementDefinition.name
+        : '';
+    this.isDeleted = false;
   }
 
-  name: string;
   isEditingName: boolean;
+  name: string;
+  isDeleted: boolean;
 
-  source: MeasurementDefinition;
+  source: measurementMapDefinitions;
 
   resolveIsDirty: () => boolean = () => {
     let isDirty = false;
 
-    if (this.name !== this.source?.name) {
+    if (this.name !== this.source?.measurementDefinition?.name) {
       isDirty = true;
     }
 
@@ -95,10 +124,15 @@ export class DefinitionRowItem {
   };
 
   buildUpdatedSource: () => MeasurementDefinition = () => {
-    let builtMeasurementDefinition: MeasurementDefinition = { ...this.source };
+    let builtMeasurementDefinition: any = {
+      ...this.source.measurementDefinition,
+    };
 
     builtMeasurementDefinition.name = this.name;
+    builtMeasurementDefinition.isDeleted = this.isDeleted;
+    builtMeasurementDefinition.mapId = this.source.id;
 
+    debugger;
     return builtMeasurementDefinition;
   };
 }
@@ -108,13 +142,33 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
 ) => {
   const [isRowInputVisible, setIsRowInputVisible] = useState(false);
   const [addedRows, setAddedRows] = useState<DefinitionRowItem[]>([]);
+  const [deletedRows, setDeletedRows] = useState<DefinitionRowItem[]>([]);
   const [newRowNameInput, setNewRowNameInput] = useState<string>('');
   const [inputRef] = useState<any>(React.createRef());
   const [inputEditRef] = useState<any>(React.createRef());
+  const [editingMeasurement, setEditingMeasurement] = useState<
+    Measurement | null | undefined
+  >(null);
 
   /// TODO: extract existing rows (for Measurement edit)
   const initValues = initDefaultValues(props.measurement);
   /// TODO: extract existing rows (for Measurement edit)
+  if (props.measurement && props.measurement !== editingMeasurement) {
+    setEditingMeasurement(props.measurement);
+  }
+
+  /// Reset appropriate local state
+  useEffect(() => {
+    return () => {
+      setEditingMeasurement(null);
+    };
+  }, [setEditingMeasurement]);
+
+  useEffect(() => {
+    if (editingMeasurement && editingMeasurement.measurementMapDefinitions) {
+      setAddedRows(initDefinitionItemsDefaults(editingMeasurement));
+    }
+  }, [editingMeasurement]);
 
   /// Efect to focus on new "main" row item input
   useEffect(() => {
@@ -141,7 +195,7 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
   const createNewRowItem = () => {
     if (newRowNameInput) {
       const newRowDefinition = new DefinitionRowItem(
-        new MeasurementDefinition()
+        new measurementMapDefinitions()
       );
       newRowDefinition.name = newRowNameInput;
 
@@ -149,6 +203,44 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
     }
 
     setNewRowNameInput('');
+  };
+
+  /// Deletes instance of Definition item
+  const deleteRowItem: (itemToDelete: DefinitionRowItem) => void = (
+    itemToDelete: DefinitionRowItem
+  ) => {
+    const rowList = new List(addedRows);
+    rowList.remove(itemToDelete);
+
+    if (itemToDelete.source && itemToDelete.source.id !== 0) {
+      const deletedRowsList = new List(deletedRows);
+
+      if (
+        !deletedRowsList.any(
+          (deletedRow) => deletedRow.source.id === itemToDelete.source.id
+        )
+      ) {
+        itemToDelete.isDeleted = true;
+        setDeletedRows(deletedRowsList.concat([itemToDelete]).toArray());
+      }
+    }
+
+    setAddedRows(rowList.toArray());
+  };
+
+  /// Occurs when "inner" row item "name input" finish edit
+  const onFinishRowItemNameEditFlow: (
+    affectedItem: DefinitionRowItem
+  ) => void = (affectedItem: DefinitionRowItem) => {
+    const rowList = new List(addedRows);
+
+    rowList.forEach((item) => (item.isEditingName = false));
+
+    setAddedRows(rowList.toArray());
+
+    if (affectedItem.name.length < 1) {
+      deleteRowItem(affectedItem);
+    }
   };
 
   return (
@@ -167,17 +259,21 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
               values,
               new List(addedRows)
                 .select((item) => item.buildUpdatedSource())
+                .concat(
+                  new List(deletedRows)
+                    .select((item) => item.buildUpdatedSource())
+                    .toArray()
+                )
                 .toArray(),
               props.measurement as Measurement
             )
           );
         }}
         onReset={(values: any, formikHelpers: any) => {
-          /// TODO: extract existing rows (for Measurement edit)
-          setAddedRows([]);
+          setAddedRows(initDefinitionItemsDefaults(editingMeasurement));
+          setDeletedRows([]);
           setNewRowNameInput('');
           setIsRowInputVisible(false);
-          /// TODO: extract existing rows (for Measurement edit)
         }}
         innerRef={(formik: any) => {
           props.formikReference.formik = formik;
@@ -186,7 +282,8 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
             if (props.formikReference.isDirtyFunc) {
               const isDirty =
                 formik.dirty ||
-                new List(addedRows).any((item) => item.resolveIsDirty());
+                new List(addedRows).any((item) => item.resolveIsDirty()) ||
+                deletedRows.length > 0;
 
               props.formikReference.isDirtyFunc(isDirty);
             }
@@ -334,12 +431,7 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
                                     title="Edit name"
                                   />
                                   <IconButton
-                                    onClick={() => {
-                                      const rowList = new List(addedRows);
-                                      rowList.remove(addedRowItem);
-
-                                      setAddedRows(rowList.toArray());
-                                    }}
+                                    onClick={() => deleteRowItem(addedRowItem)}
                                     styles={{
                                       root: {
                                         height: '27px',
@@ -372,14 +464,9 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
                                     onKeyPress={(args: any) => {
                                       if (args) {
                                         if (args.charCode === 13) {
-                                          const rowList = new List(addedRows);
-
-                                          rowList.forEach(
-                                            (item) =>
-                                              (item.isEditingName = false)
+                                          onFinishRowItemNameEditFlow(
+                                            addedRowItem
                                           );
-
-                                          setAddedRows(rowList.toArray());
                                         }
                                       }
                                     }}
@@ -391,13 +478,7 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
                                       );
                                     }}
                                     onBlur={(args: any) => {
-                                      const rowList = new List(addedRows);
-
-                                      rowList.forEach(
-                                        (item) => (item.isEditingName = false)
-                                      );
-
-                                      setAddedRows(rowList.toArray());
+                                      onFinishRowItemNameEditFlow(addedRowItem);
                                     }}
                                   />
                                 </div>

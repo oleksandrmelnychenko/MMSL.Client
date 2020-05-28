@@ -11,6 +11,8 @@ import {
   ajaxGetWebResponse,
   ajaxPostResponse,
   ajaxDeleteResponse,
+  ajaxPutFormDataResponse,
+  ajaxPutResponse,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import { controlActions } from '../slices/control.slice';
@@ -176,6 +178,49 @@ export const apiDeleteMeasurementByIdEpic = (
                 { type: 'ERROR_DELETE_MEASUREMENT' },
                 controlActions.showInfoMessage(
                   `Error occurred while deleting measurement. ${errorResponse}`
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiUpdateMeasurementEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(measurementActions.apiUpdateMeasurement.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+      return ajaxPutResponse(
+        api.UPDATE_MEASUREMENT,
+        action.payload,
+        state$.value
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.showInfoMessage(
+                `Measurement successfully updated.`
+              ),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_UPDATE_MEASUREMENT' },
+                controlActions.showInfoMessage(
+                  `Error occurred while updating measurement. ${errorResponse}`
                 ),
                 controlActions.disabledStatusBar(),
               ],

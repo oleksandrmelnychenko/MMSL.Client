@@ -59,6 +59,19 @@ const MeasurementSelector: React.FC = () => {
         allowFreeform={true}
         autoComplete={true ? 'on' : 'off'}
         options={itemOptions}
+        styles={
+          {
+            // root: {
+            //   border: '1px solid #c8c8c8',
+            // },
+            // optionsContainerWrapper: {
+            //   border: '1px solid #c8c8c8',
+            // },
+            // optionsContainer: {
+            //   border: '1px solid #c8c8c8',
+            // },
+          }
+        }
         onChange={(
           event: React.FormEvent<IComboBox>,
           option?: IComboBoxOption,

@@ -7,6 +7,8 @@ import {
   Label,
   PrimaryButton,
   CommandBarButton,
+  Separator,
+  FontWeights,
 } from 'office-ui-fabric-react';
 import { scrollablePaneStyleForDetailList } from '../../common/fabric-styles/styles';
 import { IApplicationState } from '../../redux/reducers';
@@ -72,10 +74,8 @@ const Measurements: React.FC = () => {
             <Stack horizontal tokens={{ childrenGap: 90 }}>
               <div className="content__header__top__title">Measurements</div>
 
-              <Stack horizontal tokens={{ childrenGap: '12px' }}>
-                <MeasurementSelector />
-
-                <Stack horizontal>
+              <Stack horizontal tokens={{ childrenGap: '6px' }}>
+                <Stack horizontal tokens={{ childrenGap: '6px' }}>
                   <CommandBarButton
                     styles={{
                       root: {
@@ -84,88 +84,127 @@ const Measurements: React.FC = () => {
                       },
                     }}
                     onClick={() => addMeasurement()}
-                    iconProps={{ iconName: 'Add' }}>
+                    iconProps={{ iconName: 'Add' }}
+                  >
                     Add measurement
                   </CommandBarButton>
 
-                  <CommandBarButton
-                    disabled={targetMeasurement ? false : true}
-                    styles={{
-                      root: {
-                        height: '30px',
-                        padding: '16px',
-                      },
-                    }}
-                    onClick={() => {
-                      if (targetMeasurement) {
-                        dispatch(
-                          controlActions.toggleCommonDialogVisibility(
-                            new DialogArgs(
-                              CommonDialogType.Delete,
-                              'Delete measurement',
-                              `Are you sure you want to delete ${targetMeasurement.name}?`,
-                              () => {
-                                dispatch(
-                                  controlActions.closeInfoPanelWithComponent()
-                                );
+                  <MeasurementSelector />
+                </Stack>
 
-                                let action = assignPendingActions(
-                                  measurementActions.apiDeleteMeasurementById(
-                                    targetMeasurement.id
-                                  ),
-                                  [],
-                                  [],
-                                  (args: any) => {
-                                    dispatch(
-                                      measurementActions.changeSelectedMeasurement(
-                                        null
-                                      )
-                                    );
-
-                                    let action = assignPendingActions(
-                                      measurementActions.apiGetAllMeasurements(),
-                                      [],
-                                      [],
-                                      (args: any) => {
-                                        dispatch(
-                                          measurementActions.updateMeasurementsList(
-                                            args
-                                          )
-                                        );
-                                        dispatch(
-                                          measurementActions.changeSelectedMeasurement(
-                                            new List<Measurement>(
-                                              args
-                                            ).firstOrDefault()
-                                          )
-                                        );
-                                      }
-                                    );
-
-                                    dispatch(action);
-                                  }
-                                );
-
-                                dispatch(action);
-                              },
-                              () => {}
-                            )
-                          )
-                        );
-                      }
-                    }}
-                    iconProps={{
-                      iconName: 'Cancel',
-                      styles: {
+                <Separator
+                  vertical
+                  // styles={{ root: { position: 'relative', left: '3px' } }}
+                />
+                <Stack horizontal tokens={{ childrenGap: '0px' }}>
+                  <Stack horizontal>
+                    <CommandBarButton
+                      styles={{
                         root: {
-                          fontSize: '14px',
-                          fontWeight: 600,
-                          color: '#a4373a',
+                          height: '30px',
+                          padding: '16px',
                         },
-                      },
-                    }}>
-                    Delete
-                  </CommandBarButton>
+                        label: {
+                          fontWeight: FontWeights.bold,
+                        },
+                      }}
+                      onClick={() => {
+                        if (targetMeasurement) {
+                          dispatch(
+                            measurementActions.changeManagingMeasurementPanelContent(
+                              ManagingMeasurementPanelComponent.EditMeasurement
+                            )
+                          );
+                        }
+                      }}
+                      iconProps={{ iconName: 'Edit' }}
+                    >
+                      Edit
+                    </CommandBarButton>
+
+                    <CommandBarButton
+                      disabled={targetMeasurement ? false : true}
+                      styles={{
+                        root: {
+                          height: '30px',
+                          padding: '16px',
+                        },
+                        label: {
+                          fontWeight: FontWeights.bold,
+                        },
+                      }}
+                      onClick={() => {
+                        if (targetMeasurement) {
+                          dispatch(
+                            controlActions.toggleCommonDialogVisibility(
+                              new DialogArgs(
+                                CommonDialogType.Delete,
+                                'Delete measurement',
+                                `Are you sure you want to delete ${targetMeasurement.name}?`,
+                                () => {
+                                  dispatch(
+                                    controlActions.closeInfoPanelWithComponent()
+                                  );
+
+                                  let action = assignPendingActions(
+                                    measurementActions.apiDeleteMeasurementById(
+                                      targetMeasurement.id
+                                    ),
+                                    [],
+                                    [],
+                                    (args: any) => {
+                                      dispatch(
+                                        measurementActions.changeSelectedMeasurement(
+                                          null
+                                        )
+                                      );
+
+                                      let action = assignPendingActions(
+                                        measurementActions.apiGetAllMeasurements(),
+                                        [],
+                                        [],
+                                        (args: any) => {
+                                          dispatch(
+                                            measurementActions.updateMeasurementsList(
+                                              args
+                                            )
+                                          );
+                                          dispatch(
+                                            measurementActions.changeSelectedMeasurement(
+                                              new List<Measurement>(
+                                                args
+                                              ).firstOrDefault()
+                                            )
+                                          );
+                                        }
+                                      );
+
+                                      dispatch(action);
+                                    }
+                                  );
+
+                                  dispatch(action);
+                                },
+                                () => {}
+                              )
+                            )
+                          );
+                        }
+                      }}
+                      iconProps={{
+                        iconName: 'Cancel',
+                        styles: {
+                          root: {
+                            fontSize: '14px',
+                            fontWeight: 600,
+                            color: '#a4373a',
+                          },
+                        },
+                      }}
+                    >
+                      Delete
+                    </CommandBarButton>
+                  </Stack>
                 </Stack>
               </Stack>
             </Stack>
@@ -184,7 +223,8 @@ const Measurements: React.FC = () => {
                 ManagingMeasurementPanelComponent.EditMeasurement
               )
             );
-          }}>
+          }}
+        >
           EDIT
         </ActionButton>
         <div style={hintContentHideableStyle}>
@@ -194,7 +234,8 @@ const Measurements: React.FC = () => {
               justifyContent: 'center',
               alignItems: 'center',
               height: 'inherit',
-            }}>
+            }}
+          >
             <Stack>
               <Label
                 styles={{
@@ -202,7 +243,8 @@ const Measurements: React.FC = () => {
                     color: '#484848',
                     fontSize: '18px',
                   },
-                }}>
+                }}
+              >
                 Create your first measurement
               </Label>
               <Stack.Item align={'center'}>

@@ -51,3 +51,4 @@ export const GET_ALL_MEASUREMENTS = '/measurements/get/all';
 export const GET_MEASUREMENTS_BY_PRODUCT = '/measurements/by/product';
 export const ADD_NEW_MEASUREMENT = '/measurements/new/measurement';
 export const DELETE_MEASUREMENT = '/measurements/delete/measurement';
+export const UPDATE_MEASUREMENT = '/measurements/update/measurement';
