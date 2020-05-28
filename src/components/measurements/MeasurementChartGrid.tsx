@@ -149,7 +149,8 @@ const MeasurementChartGrid: React.FC = () => {
   return (
     <div
       className="measurementChartGrid"
-      style={{ borderTop: '1px solid #dfdfdf' }}>
+      style={{ borderTop: '1px solid #dfdfdf' }}
+    >
       <DetailsList
         onRenderDetailsHeader={onRenderDetailsHeader}
         styles={{ root: { overflowX: 'hidden' } }}
@@ -158,8 +159,8 @@ const MeasurementChartGrid: React.FC = () => {
         columns={chartColumns}
         layoutMode={DetailsListLayoutMode.justified}
         items={
-          targetMeasurementChart && targetMeasurementChart.measurementSizes
-            ? targetMeasurementChart.measurementSizes
+          targetMeasurementChart && targetMeasurementChart.measurementMapSizes
+            ? targetMeasurementChart.measurementMapSizes
             : []
         }
         checkboxVisibility={CheckboxVisibility.hidden}

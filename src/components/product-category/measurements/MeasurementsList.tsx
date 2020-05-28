@@ -77,9 +77,7 @@ const MeasurementsList: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const total = new List<Measurement>(measurements).sum(
-      (c) => c.measurementSizes.length
-    );
+    const total = new List<Measurement>(measurements).sum((c) => 0);
 
     if (listItemSizes.length < total) {
       builderDetailList();
@@ -141,9 +139,7 @@ const MeasurementsList: React.FC = () => {
 
   const builderDetailsRow = () => {
     const measurementsSizes = new List(measurements)
-      .selectMany<MeasurementSize>(
-        (measurement) => measurement.measurementSizes
-      )
+      .selectMany<MeasurementSize>((measurement) => [])
       .toArray();
 
     setListItemSizes(measurementsSizes);
