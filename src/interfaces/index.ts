@@ -439,3 +439,19 @@ export class MeasurementSizeValue extends EntityBaseNamed {
   measurementSizeId: number;
   measurementSize: any;
 }
+
+export class DeliveryTimeline extends EntityBase {
+  constructor() {
+    super();
+    this.name = '';
+    this.ivory = '';
+    this.silver = '';
+    this.black = '';
+    this.gold = '';
+  }
+  name: string;
+  ivory: string;
+  silver: string;
+  black: string;
+  gold: string;
+}

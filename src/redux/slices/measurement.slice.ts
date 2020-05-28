@@ -42,6 +42,7 @@ const measurements = createSlice({
     apiGetMeasurementById(state, action: { type: string; payload: number }) {
       return state;
     },
+
     apiDeleteMeasurementById(state, action: { type: string; payload: number }) {
       return state;
     },

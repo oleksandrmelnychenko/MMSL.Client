@@ -60,6 +60,10 @@ export const DealerList: React.FC = () => {
   useEffect(() => {
     dispatch(dealerActions.getDealersListPaginated());
     dispatch(controlActions.showGlobalShimmer());
+    return () => {
+      dispatch(dealerActions.getAndSelectDealerById(null));
+      dispatch(controlActions.closeInfoPanelWithComponent());
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
