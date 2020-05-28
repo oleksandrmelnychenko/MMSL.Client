@@ -361,11 +361,11 @@ export class ChooseOptions {
 export class Measurement extends EntityBaseNamed {
   constructor() {
     super();
-    this.measurementSizes = [];
+    this.measurementMapSizes = [];
     this.measurementMapDefinitions = [];
   }
 
-  measurementSizes: MeasurementSize[];
+  measurementMapSizes: MeasurementMapSize[];
   measurementMapDefinitions: MeasurementMapDefinition[];
 }
 

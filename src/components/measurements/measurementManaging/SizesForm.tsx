@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
-import { Stack, TextField } from 'office-ui-fabric-react';
+import { Stack, TextField, Separator, Text } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import {
   FormicReference,
@@ -10,7 +10,8 @@ import {
   MeasurementSize,
 } from '../../../interfaces';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
-import './measurementForm.scss';
+import './sizeForm.scss';
+import { List } from 'linq-typescript';
 
 export class SizeInitValues {
   constructor() {
@@ -61,71 +62,83 @@ const initDefaultValues = (sourceEntity?: MeasurementSize | null) => {
 export class SizesFormProps {
   constructor() {
     this.formikReference = new FormicReference();
-    this.submitAction = (args: any) => {};
+
+    this.measurement = null;
     this.size = null;
+
+    this.submitAction = (args: any) => {};
   }
 
   formikReference: FormicReference;
+  measurement: Measurement | null | undefined;
+  size?: MeasurementSize | null | undefined;
+
   submitAction: (args: any) => void;
-  size?: MeasurementSize | null;
 }
 
-export class DefinitionRowItem {
-  constructor(source: MeasurementMapDefinition) {
-    this.isEditingName = false;
-    this.source = source;
+export class DefinitionValueItem {
+  constructor(mapDefinition: MeasurementMapDefinition) {
+    this.sourceMapDefinition = mapDefinition;
 
     this.name =
-      source && source.measurementDefinition
-        ? source.measurementDefinition.name
+      mapDefinition && mapDefinition.measurementDefinition
+        ? mapDefinition.measurementDefinition.name
         : '';
-    this.isDeleted = false;
+
+    this.value = '';
   }
 
-  isEditingName: boolean;
   name: string;
-  isDeleted: boolean;
+  value: string;
 
-  source: MeasurementMapDefinition;
-
-  resolveIsDirty: () => boolean = () => {
-    let isDirty = false;
-
-    if (
-      this.name !== this.source?.measurementDefinition?.name ||
-      this.isDeleted !== this.source?.measurementDefinition?.isDeleted
-    ) {
-      isDirty = true;
-    }
-
-    return isDirty;
-  };
-
-  buildUpdatedSource: () => MeasurementDefinition = () => {
-    let builtMeasurementDefinition: any = {
-      ...this.source.measurementDefinition,
-    };
-
-    builtMeasurementDefinition.name = this.name;
-    builtMeasurementDefinition.isDeleted = this.isDeleted;
-    builtMeasurementDefinition.mapId = this.source.id;
-
-    return builtMeasurementDefinition;
-  };
+  sourceMapDefinition: MeasurementMapDefinition;
 }
 
 export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
   const initValues = initDefaultValues(props.size);
 
+  const [targetMeasurement, setTargetMeasurement] = useState<
+    Measurement | null | undefined
+  >();
+  const [valueItems, setValueItems] = useState<DefinitionValueItem[]>([]);
+
   useEffect(() => {
-    return () => {};
-  }, []);
+    return () => {
+      setTargetMeasurement(null);
+    };
+  }, [setTargetMeasurement]);
+
+  useEffect(() => {
+    if (targetMeasurement) {
+      const valueItems = new List(
+        targetMeasurement.measurementMapDefinitions
+          ? targetMeasurement.measurementMapDefinitions
+          : []
+      )
+        .select<DefinitionValueItem>(
+          (mapDefinition: MeasurementMapDefinition) => {
+            let result = new DefinitionValueItem(mapDefinition);
+
+            /// TODO: vadymk resolve init value (for edit)
+
+            return result;
+          }
+        )
+        .toArray();
+
+      setValueItems(valueItems);
+    }
+  }, [targetMeasurement]);
+
+  if (props.measurement !== targetMeasurement) {
+    setTargetMeasurement(props.measurement);
+  }
 
   return (
-    <div className="measurementsForm">
+    <div className="sizeForm">
       <Formik
         validationSchema={Yup.object().shape({
-          name: Yup.string().required(() => 'Name is required'),
+          name: Yup.string().required(() => 'Size name is required'),
           description: Yup.string(),
         })}
         initialValues={initValues}
@@ -198,6 +211,41 @@ export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
                         </div>
                       )}
                     </Field>
+                  </Stack>
+
+                  <Stack tokens={{ childrenGap: '6px' }}>
+                    <Separator alignContent="start">Columns (charts)</Separator>
+                    {valueItems.map(
+                      (valueItem: DefinitionValueItem, index: number) => {
+                        return (
+                          <div className="sizeForm__definitionItem" key={index}>
+                            <Stack horizontal>
+                              <Stack.Item>
+                                <Text
+                                  nowrap
+                                  block
+                                  styles={{ root: { maxWidth: '250px' } }}
+                                >
+                                  {valueItem.name}
+                                </Text>
+                              </Stack.Item>
+                              <Stack.Item>
+                                <div className="sizeForm__definitionItem__editNameInput">
+                                  <TextField
+                                    borderless
+                                    value={'no binding'}
+                                    onChange={(args: any) => {
+                                      // addedRowItem.name = args.target.value;
+                                      // setAddedRows(new List(addedRows).toArray());
+                                    }}
+                                  />
+                                </div>
+                              </Stack.Item>
+                            </Stack>
+                          </div>
+                        );
+                      }
+                    )}
                   </Stack>
                 </Stack>
               </div>
