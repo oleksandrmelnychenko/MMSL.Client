@@ -125,9 +125,6 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
           measurement={targetMeasurement}
           formikReference={formikReference}
           submitAction={(args: any) => {
-            /// TODO: vadymk
-            debugger;
-
             let action = assignPendingActions(
               measurementActions.apiUpdateMeasurement(args),
               [],

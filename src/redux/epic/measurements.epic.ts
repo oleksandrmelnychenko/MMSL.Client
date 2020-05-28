@@ -11,7 +11,6 @@ import {
   ajaxGetWebResponse,
   ajaxPostResponse,
   ajaxDeleteResponse,
-  ajaxPutFormDataResponse,
   ajaxPutResponse,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
@@ -115,7 +114,6 @@ export const apiGetMeasurementByIdEpic = (action$: AnyAction, state$: any) => {
         { key: 'measurementId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
-          debugger;
           return successCommonEpicFlow(
             successResponse,
             [controlActions.disabledStatusBar()],

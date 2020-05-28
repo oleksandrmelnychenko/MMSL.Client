@@ -48,7 +48,6 @@ const buildMeasurement = (
     newUnit.id = sourceEntity.id;
   }
 
-  debugger;
   return newUnit;
 };
 
@@ -116,7 +115,10 @@ export class DefinitionRowItem {
   resolveIsDirty: () => boolean = () => {
     let isDirty = false;
 
-    if (this.name !== this.source?.measurementDefinition?.name) {
+    if (
+      this.name !== this.source?.measurementDefinition?.name ||
+      this.isDeleted !== this.source?.measurementDefinition?.isDeleted
+    ) {
       isDirty = true;
     }
 
@@ -132,7 +134,6 @@ export class DefinitionRowItem {
     builtMeasurementDefinition.isDeleted = this.isDeleted;
     builtMeasurementDefinition.mapId = this.source.id;
 
-    debugger;
     return builtMeasurementDefinition;
   };
 }
@@ -258,6 +259,7 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
             buildMeasurement(
               values,
               new List(addedRows)
+                .where((item) => item.resolveIsDirty())
                 .select((item) => item.buildUpdatedSource())
                 .concat(
                   new List(deletedRows)
