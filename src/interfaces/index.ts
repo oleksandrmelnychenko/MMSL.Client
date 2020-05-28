@@ -366,10 +366,10 @@ export class Measurement extends EntityBaseNamed {
   }
 
   measurementSizes: MeasurementSize[];
-  measurementMapDefinitions: measurementMapDefinitions[];
+  measurementMapDefinitions: MeasurementMapDefinition[];
 }
 
-export class measurementMapDefinitions extends EntityBaseNamed {
+export class MeasurementMapDefinition extends EntityBaseNamed {
   constructor() {
     super();
     this.measurementDefinition = new MeasurementDefinition();

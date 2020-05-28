@@ -66,6 +66,35 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
     }
   });
 
+  const onSuccessCreateUpdateMeasurementFlow = (
+    affectedMeasurementId: number
+  ) => {
+    let getAllMeasurementsAction = assignPendingActions(
+      measurementActions.apiGetAllMeasurements(),
+      [],
+      [],
+      (args: any) => {
+        dispatch(measurementActions.updateMeasurementsList(args));
+      },
+      (args: any) => {}
+    );
+    dispatch(getAllMeasurementsAction);
+
+    let getNewMeasurementByIdAction = assignPendingActions(
+      measurementActions.apiGetMeasurementById(affectedMeasurementId),
+      [],
+      [],
+      (args: any) => {
+        dispatch(measurementActions.changeSelectedMeasurement(args));
+        dispatch(
+          measurementActions.changeManagingMeasurementPanelContent(null)
+        );
+      },
+      (args: any) => {}
+    );
+    dispatch(getNewMeasurementByIdAction);
+  };
+
   switch (contentType) {
     case ManagingMeasurementPanelComponent.CreateNewMeasurement:
       panelTitleText = 'New Measurement';
@@ -83,26 +112,7 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
               [],
               [],
               (args: any) => {
-                let action = assignPendingActions(
-                  measurementActions.apiGetAllMeasurements(),
-                  [
-                    measurementActions.changeManagingMeasurementPanelContent(
-                      null
-                    ),
-                  ],
-                  [],
-                  (args: any) => {
-                    dispatch(measurementActions.updateMeasurementsList(args));
-                    dispatch(
-                      measurementActions.changeSelectedMeasurement(
-                        new List<Measurement>(args).firstOrDefault()
-                      )
-                    );
-                  },
-                  (args: any) => {}
-                );
-
-                dispatch(action);
+                onSuccessCreateUpdateMeasurementFlow(args.body.id);
               },
               (args: any) => {}
             );
@@ -130,26 +140,7 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
               [],
               [],
               (args: any) => {
-                let action = assignPendingActions(
-                  measurementActions.apiGetAllMeasurements(),
-                  [
-                    measurementActions.changeManagingMeasurementPanelContent(
-                      null
-                    ),
-                  ],
-                  [],
-                  (args: any) => {
-                    dispatch(measurementActions.updateMeasurementsList(args));
-                    dispatch(
-                      measurementActions.changeSelectedMeasurement(
-                        new List<Measurement>(args).firstOrDefault()
-                      )
-                    );
-                  },
-                  (args: any) => {}
-                );
-
-                dispatch(action);
+                onSuccessCreateUpdateMeasurementFlow(args.body.id);
               },
               (args: any) => {}
             );

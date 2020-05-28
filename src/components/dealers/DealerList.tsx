@@ -250,7 +250,8 @@ export const DealerList: React.FC = () => {
                       selectFlow();
                     }
                   }
-                }}>
+                }}
+              >
                 <DetailsRow {...args} />
               </div>
             );

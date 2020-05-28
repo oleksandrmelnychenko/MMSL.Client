@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Stack,
   ScrollablePane,
-  ActionButton,
   Label,
   PrimaryButton,
   CommandBarButton,
@@ -25,6 +24,7 @@ import {
   CommonDialogType,
 } from '../../redux/slices/control.slice';
 import { assignPendingActions } from '../../helpers/action.helper';
+import MeasurementChartGrid from './MeasurementChartGrid';
 import { List } from 'linq-typescript';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
@@ -214,19 +214,8 @@ const Measurements: React.FC = () => {
 
       <ScrollablePane styles={scrollablePaneStyleForDetailList}>
         <div style={mainContentHideableStyle}>
-          {targetMeasurement ? `${targetMeasurement.name}` : null}
+          {targetMeasurement ? <MeasurementChartGrid /> : null}
         </div>
-        <ActionButton
-          onClick={() => {
-            dispatch(
-              measurementActions.changeManagingMeasurementPanelContent(
-                ManagingMeasurementPanelComponent.EditMeasurement
-              )
-            );
-          }}
-        >
-          EDIT
-        </ActionButton>
         <div style={hintContentHideableStyle}>
           <div
             style={{

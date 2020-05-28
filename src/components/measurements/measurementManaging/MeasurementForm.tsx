@@ -12,7 +12,7 @@ import {
   FormicReference,
   Measurement,
   MeasurementDefinition,
-  measurementMapDefinitions,
+  MeasurementMapDefinition,
 } from '../../../interfaces';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 import './measurementForm.scss';
@@ -71,7 +71,7 @@ const initDefinitionItemsDefaults: (
 
   if (sourceEntity && sourceEntity.measurementMapDefinitions) {
     defaults = new List(sourceEntity.measurementMapDefinitions)
-      .select<DefinitionRowItem>((itemMap: measurementMapDefinitions) => {
+      .select<DefinitionRowItem>((itemMap: MeasurementMapDefinition) => {
         const resultItem = new DefinitionRowItem(itemMap);
 
         return resultItem;
@@ -95,7 +95,7 @@ export class MeasurementFormProps {
 }
 
 export class DefinitionRowItem {
-  constructor(source: measurementMapDefinitions) {
+  constructor(source: MeasurementMapDefinition) {
     this.isEditingName = false;
     this.source = source;
 
@@ -110,7 +110,7 @@ export class DefinitionRowItem {
   name: string;
   isDeleted: boolean;
 
-  source: measurementMapDefinitions;
+  source: MeasurementMapDefinition;
 
   resolveIsDirty: () => boolean = () => {
     let isDirty = false;
@@ -196,7 +196,7 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
   const createNewRowItem = () => {
     if (newRowNameInput) {
       const newRowDefinition = new DefinitionRowItem(
-        new measurementMapDefinitions()
+        new MeasurementMapDefinition()
       );
       newRowDefinition.name = newRowNameInput;
 

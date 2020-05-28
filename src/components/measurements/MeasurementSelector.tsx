@@ -7,8 +7,6 @@ import { IApplicationState } from '../../redux/reducers';
 import { Measurement } from '../../interfaces';
 import { List } from 'linq-typescript';
 
-export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
-
 const MeasurementSelector: React.FC = () => {
   const dispatch = useDispatch();
 

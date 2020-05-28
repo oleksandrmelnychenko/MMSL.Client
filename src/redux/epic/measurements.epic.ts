@@ -110,7 +110,7 @@ export const apiGetMeasurementByIdEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(api.GET_ALL_MEASUREMENTS, state$.value, [
+      return ajaxGetWebResponse(api.GET_MEASUREMENT_BY_ID, state$.value, [
         { key: 'measurementId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
@@ -161,7 +161,7 @@ export const apiDeleteMeasurementByIdEpic = (
             successResponse,
             [
               controlActions.showInfoMessage(
-                `New measurement successfully created.`
+                `New measurement successfully deleted.`
               ),
               controlActions.disabledStatusBar(),
             ],
