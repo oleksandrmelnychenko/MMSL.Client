@@ -120,8 +120,7 @@ export const ProductCategoryForm: React.FC<ProductCategoryFormProps> = (
           }
         }}
         validateOnBlur={false}
-        enableReinitialize={true}
-      >
+        enableReinitialize={true}>
         {(formik) => {
           let thumbUrl: string = '';
           if (formik.values.isRemovingImage) {
@@ -145,8 +144,7 @@ export const ProductCategoryForm: React.FC<ProductCategoryFormProps> = (
                 border: '1px solid #efefef',
                 padding: '6px',
                 borderRadius: '6px',
-              }}
-            >
+              }}>
               <FontIcon
                 style={{
                   position: 'absolute',
@@ -218,7 +216,6 @@ export const ProductCategoryForm: React.FC<ProductCategoryFormProps> = (
                             styles={fabricStyles.textFildLabelStyles}
                             className="form__group__field"
                             label="Description"
-                            required
                             onChange={(args: any) => {
                               let value = args.target.value;
 
@@ -249,8 +246,7 @@ export const ProductCategoryForm: React.FC<ProductCategoryFormProps> = (
                                 style={{
                                   marginTop: '20px',
                                   position: 'relative',
-                                }}
-                              >
+                                }}>
                                 <input
                                   accept="image/*"
                                   ref={fileInputRef}
