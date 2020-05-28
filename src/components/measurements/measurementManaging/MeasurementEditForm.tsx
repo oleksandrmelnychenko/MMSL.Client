@@ -68,7 +68,6 @@ export const MeasurementEditForm: React.FC<MeasurementEditFormProps> = (
       <Formik
         initialValues={initValues}
         onSubmit={(values: any) => {
-          debugger;
           //   props.submitAction(
           //     buildMeasurement(values, props.measurement as Measurement)
           //   );
@@ -82,13 +81,15 @@ export const MeasurementEditForm: React.FC<MeasurementEditFormProps> = (
           }
         }}
         validateOnBlur={false}
-        enableReinitialize={true}>
+        enableReinitialize={true}
+      >
         {(formik) => {
           return (
             <Form className="form">
               <Separator
                 styles={{ root: { paddingBottom: '20px' } }}
-                alignContent="start">
+                alignContent="start"
+              >
                 Column names
               </Separator>
               <Stack grow={1}>

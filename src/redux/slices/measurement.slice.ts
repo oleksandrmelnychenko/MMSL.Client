@@ -32,6 +32,9 @@ const measurements = createSlice({
     apiGetAllMeasurements(state) {
       return state;
     },
+    apiCreateNewMeasurement(state, action) {
+      return state;
+    },
     updateisMeasurementsWasRequested(
       state,
       action: { type: string; payload: boolean }

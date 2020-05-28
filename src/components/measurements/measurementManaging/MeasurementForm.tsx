@@ -29,18 +29,19 @@ export class MeasurementFormInitValues {
 
 const buildMeasurement = (
   values: MeasurementFormInitValues,
+  measurementDefinitions: MeasurementDefinition[],
   sourceEntity?: Measurement
 ) => {
-  let newUnit: Measurement;
-
-  if (sourceEntity) {
-    newUnit = { ...sourceEntity };
-  } else {
-    newUnit = new Measurement();
-  }
+  let newUnit: any = {
+    productCategoryId: null,
+    baseMeasurementId: null,
+    name: '',
+    measurementDefinitions: [],
+  };
 
   newUnit.name = values.name;
   newUnit.description = values.description;
+  newUnit.measurementDefinitions = measurementDefinitions;
 
   return newUnit;
 };
@@ -91,6 +92,14 @@ export class DefinitionRowItem {
     }
 
     return isDirty;
+  };
+
+  buildUpdatedSource: () => MeasurementDefinition = () => {
+    let builtMeasurementDefinition: MeasurementDefinition = { ...this.source };
+
+    builtMeasurementDefinition.name = this.name;
+
+    return builtMeasurementDefinition;
   };
 }
 
@@ -153,9 +162,14 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
         })}
         initialValues={initValues}
         onSubmit={(values: any) => {
-          debugger;
           props.submitAction(
-            buildMeasurement(values, props.measurement as Measurement)
+            buildMeasurement(
+              values,
+              new List(addedRows)
+                .select((item) => item.buildUpdatedSource())
+                .toArray(),
+              props.measurement as Measurement
+            )
           );
         }}
         onReset={(values: any, formikHelpers: any) => {
@@ -173,8 +187,6 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
               const isDirty =
                 formik.dirty ||
                 new List(addedRows).any((item) => item.resolveIsDirty());
-
-              console.log(`F ${isDirty}`);
 
               props.formikReference.isDirtyFunc(isDirty);
             }
