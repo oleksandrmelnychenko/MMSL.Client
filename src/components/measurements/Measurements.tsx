@@ -115,7 +115,7 @@ const Measurements: React.FC = () => {
                   tokens={{
                     ...horizontalGapStackTokens,
                     childrenGap: 6,
-                    padding: '12px 5px 10px 10px',
+                    padding: '18px 5px 10px 8px',
                   }}
                 >
                   <MeasurementSelector />
@@ -264,7 +264,7 @@ const Measurements: React.FC = () => {
           <ScrollablePane
             styles={{
               ...scrollablePaneStyleForDetailList,
-              root: { ...scrollablePaneStyleForDetailList.root, top: '115px' },
+              root: { ...scrollablePaneStyleForDetailList.root, top: '134px' },
             }}
           >
             <div style={mainContentHideableStyle}>

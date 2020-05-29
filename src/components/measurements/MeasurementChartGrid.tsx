@@ -180,7 +180,8 @@ const MeasurementChartGrid: React.FC = () => {
             index?: number,
             column?: IColumn
           ) => {
-            let cellValue = '-';
+            const cellValueStub = '-';
+            let cellValue = cellValueStub;
 
             if (
               item &&
@@ -201,6 +202,13 @@ const MeasurementChartGrid: React.FC = () => {
                 cellValue = truthValue.value;
               }
             }
+
+            if (
+              cellValue === '' ||
+              cellValue === null ||
+              cellValue === undefined
+            )
+              cellValue = cellValueStub;
 
             return <Text>{cellValue}</Text>;
           },
@@ -279,7 +287,9 @@ const MeasurementChartGrid: React.FC = () => {
     >
       <DetailsList
         onRenderDetailsHeader={onRenderDetailsHeader}
-        styles={{ root: { overflowX: 'hidden' } }}
+        styles={{
+          root: { overflowX: 'hidden' },
+        }}
         selection={selection}
         isHeaderVisible={true}
         columns={chartColumns}

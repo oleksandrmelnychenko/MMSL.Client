@@ -49,6 +49,8 @@ const buildSize = (
         const valueDataContract: any = {};
         valueDataContract.id = valueItem.getMapValueId();
         valueDataContract.value = parseFloat(valueItem.value);
+        valueDataContract.measurementDefinitionId =
+          valueItem.sourceMapDefinition.measurementDefinitionId;
 
         if (isNaN(valueDataContract.value)) valueDataContract.value = null;
 
