@@ -5,6 +5,7 @@ import {
   ActionButton,
   Stack,
   Icon,
+  Image,
   ScrollablePane,
 } from 'office-ui-fabric-react';
 import { Card } from '@uifabric/react-cards';
@@ -111,9 +112,12 @@ const ProductCategories: React.FC = () => {
             styles={fabricStyles.scrollablePaneStyleForDetailList}>
             <div className="categories">
               {categories.map((category) => (
-                <div key={category.id} style={{ margin: '12px 24px 12px 0' }}>
+                <div
+                  className="product"
+                  key={category.id}
+                  style={{ margin: '12px 24px 12px 0', position: 'relative' }}>
                   <Card
-                    styles={{ root: { padding: '9px' } }}
+                    styles={fabricStyles.cardStyle}
                     className={
                       chooseCategory?.id === category.id ? `selected` : ''
                     }
@@ -141,23 +145,12 @@ const ProductCategories: React.FC = () => {
                       }
                     }}
                     tokens={fabricStyles.cardTokens}>
-                    <Card.Section
-                      fill
-                      verticalAlign="end"
-                      styles={{
-                        root: {
-                          position: 'relative',
-                          paddingBottom: 0,
-                          marginBottom: '20px',
-                          backgroundImage: `url(${category.imageUrl})`,
-                          backgroundPosition: 'top center',
-                          backgroundSize: 'contain',
-                          backgroundRepeat: 'no-repeat',
-                          height: 220,
-                          alignItems: 'center',
-                        },
-                      }}
-                      tokens={fabricStyles.backgroundImageCardSectionTokens}>
+                    <Card.Section fill verticalAlign="end">
+                      <Image
+                        src={category.imageUrl}
+                        styles={fabricStyles.marginImageCenter}></Image>
+                    </Card.Section>
+                    <Card.Section>
                       <Text
                         className="category_name"
                         variant="large"
@@ -166,12 +159,10 @@ const ProductCategories: React.FC = () => {
                       </Text>
                     </Card.Section>
                     <Card.Section
+                      className="product_actions"
                       horizontal
                       styles={fabricStyles.footerCardSectionStyles}
                       tokens={fabricStyles.footerCardSectionTokens}>
-                      <Stack.Item grow={1}>
-                        <span />
-                      </Stack.Item>
                       <Icon
                         className={DATA_SELECTION_DISABLED_CLASS}
                         iconName="Edit"

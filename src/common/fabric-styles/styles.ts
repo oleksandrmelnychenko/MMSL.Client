@@ -236,15 +236,10 @@ export const btnStyle = {
   },
 };
 
-export const backgroundImageCardSectionTokens: ICardSectionTokens = {
-  padding: 12,
-};
 export const textStyles: ITextStyles = {
   root: {
     color: '#505050',
     fontWeight: 400,
-    position: 'absolute',
-    bottom: '-30px',
   },
 };
 
@@ -283,12 +278,24 @@ export const searchBoxStyles = { root: { width: 200 } };
 
 export const editCardIcon = {
   root: {
-    color: '#0078d4',
+    color: '#fff',
   },
 };
 
 export const deleteIconRedColor = {
   root: {
-    color: '#a4262c',
+    color: '#fff',
   },
+};
+
+export const cardStyle = {
+  root: {
+    minWidth: '200px',
+    padding: '9px',
+    borderRadius: '6px',
+  },
+};
+
+export const marginImageCenter = {
+  root: { margin: '0 auto', height: '140px' },
 };
