@@ -26,7 +26,7 @@ import { ManagingPanelComponent } from '../../redux/slices/productSettings.slice
 import { List } from 'linq-typescript';
 import { scrollablePaneStyleForDetailList } from '../../common/fabric-styles/styles';
 import { DATA_SELECTION_DISABLED_CLASS } from '../dealers/DealerList';
-import UnitRowItem from './UnitRowItem';
+import UnitRowItem from './UnitStyleItem';
 import { controlActions } from '../../redux/slices/control.slice';
 import { DialogArgs, CommonDialogType } from '../../redux/slices/control.slice';
 
@@ -46,7 +46,6 @@ export const ProductSettingsList: React.FC = () => {
     IApplicationState,
     OptionGroup[]
   >((state) => state.productSettings.optionGroupsList);
-
   const singleOptionForEdit: OptionUnit | null | undefined = useSelector<
     IApplicationState,
     OptionUnit | null | undefined
@@ -77,7 +76,7 @@ export const ProductSettingsList: React.FC = () => {
   const customerColumns: IColumn[] = [
     {
       key: 'index',
-      name: '#',
+      name: '',
       minWidth: 16,
       maxWidth: 200,
       onColumnClick: () => {},
@@ -224,13 +223,11 @@ export const ProductSettingsList: React.FC = () => {
                           paddingLeft: '0px',
                           paddingRight: '8px',
                           width: '100%',
-                        }}
-                      >
+                        }}>
                         <Stack
                           horizontal
                           horizontalAlign="space-between"
-                          tokens={{ childrenGap: 0 }}
-                        >
+                          tokens={{ childrenGap: 0 }}>
                           <Stack horizontal tokens={{ childrenGap: 10 }}>
                             {defaultRender(props)}{' '}
                             <TooltipHost
@@ -243,8 +240,7 @@ export const ProductSettingsList: React.FC = () => {
                                 props.group?.rawGroupModel?.isMandatory
                                   ? 'Mandatory'
                                   : 'Not mandatory'
-                              }
-                            >
+                              }>
                               <FontIcon
                                 iconName="Warning"
                                 className={mergeStyles({

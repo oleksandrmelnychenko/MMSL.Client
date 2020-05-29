@@ -1,4 +1,9 @@
-import { FontWeights, ITextStyles, IStackTokens } from 'office-ui-fabric-react';
+import {
+  FontWeights,
+  ITextStyles,
+  IStackTokens,
+  OverflowButtonType,
+} from 'office-ui-fabric-react';
 import {
   ICardSectionTokens,
   ICardSectionStyles,
@@ -31,6 +36,14 @@ export const scrollablePaneStyleForDetailList = {
   root: {
     top: '77px',
     bottom: '12px',
+  },
+};
+
+export const scrollablePaneStyleForStylesList = {
+  root: {
+    top: '77px',
+    bottom: '12px',
+    paddingLeft: '18px',
   },
 };
 

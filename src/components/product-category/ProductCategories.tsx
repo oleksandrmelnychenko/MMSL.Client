@@ -113,7 +113,7 @@ const ProductCategories: React.FC = () => {
             <div className="categories">
               {categories.map((category) => (
                 <div
-                  className="product"
+                  className="card"
                   key={category.id}
                   style={{ margin: '12px 24px 12px 0', position: 'relative' }}>
                   <Card
@@ -159,7 +159,7 @@ const ProductCategories: React.FC = () => {
                       </Text>
                     </Card.Section>
                     <Card.Section
-                      className="product_actions"
+                      className="card_actions"
                       horizontal
                       styles={fabricStyles.footerCardSectionStyles}
                       tokens={fabricStyles.footerCardSectionTokens}>

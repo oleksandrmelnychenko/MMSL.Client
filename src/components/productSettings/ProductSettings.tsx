@@ -1,8 +1,13 @@
 import './productSettings.scss';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Stack, ActionButton, Text, SearchBox } from 'office-ui-fabric-react';
-import ProductSettingsList from './ProductSettingsList';
+import {
+  Stack,
+  ActionButton,
+  Text,
+  SearchBox,
+  ScrollablePane,
+} from 'office-ui-fabric-react';
 import ProductSettingsManagementPanel from './productSettingManagement/ProductSettingsManagementPanel';
 import { productSettingsActions } from '../../redux/slices/productSettings.slice';
 import { ManagingPanelComponent } from '../../redux/slices/productSettings.slice';
@@ -12,6 +17,8 @@ import {
   horizontalGapStackTokens,
   searchBoxStyles,
 } from '../../common/fabric-styles/styles';
+import StylesList from './StylesList';
+import * as fabricStyles from '../../common/fabric-styles/styles';
 
 export const ProductSettings: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -68,7 +75,10 @@ export const ProductSettings: React.FC = (props: any) => {
           </div>
         </Stack.Item>
         <Stack.Item>
-          <ProductSettingsList />
+          <ScrollablePane
+            styles={fabricStyles.scrollablePaneStyleForStylesList}>
+            <StylesList />
+          </ScrollablePane>
         </Stack.Item>
       </Stack>
       <ProductSettingsManagementPanel />

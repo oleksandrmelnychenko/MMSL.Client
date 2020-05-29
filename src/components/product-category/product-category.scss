@@ -15,15 +15,15 @@
         }
     }
 
-    .product {
+    .card {
         &:hover {
-            .product_actions {
+            .card_actions {
                 display: flex;
                 opacity: 1;
             }
         }
 
-        .product_actions {
+        .card_actions {
             position: absolute;
             top: 0;
             left: 0;

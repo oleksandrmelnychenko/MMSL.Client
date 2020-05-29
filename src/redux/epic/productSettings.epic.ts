@@ -498,6 +498,7 @@ export const getAndSelectOptionUnitForSingleEditByIdEpic = (
           return successCommonEpicFlow(
             successResponse,
             [
+              controlActions.showInfoMessage(successResponse.message),
               productSettingsActions.updateSingleEditOptionUnit(
                 successResponse
               ),
