@@ -25,7 +25,6 @@ import {
 import { DATA_SELECTION_DISABLED_CLASS } from '../dealers/DealerList';
 import './measurementChartGrid.scss';
 import { List } from 'linq-typescript';
-import { firstCellStyle } from '../../common/fabric-styles/styles';
 import {
   measurementActions,
   ManagingMeasurementPanelComponent,
@@ -203,7 +202,7 @@ const MeasurementChartGrid: React.FC = () => {
               }
             }
 
-            return <Text style={firstCellStyle}>{cellValue}</Text>;
+            return <Text>{cellValue}</Text>;
           },
           isPadded: true,
           rawSourceContext: definitionMapItem,
@@ -231,7 +230,7 @@ const MeasurementChartGrid: React.FC = () => {
           cellValue = item.measurementSize.name;
         }
 
-        return <Text style={firstCellStyle}>{`${cellValue}`}</Text>;
+        return <Text>{`${cellValue}`}</Text>;
       },
       isPadded: true,
     });
