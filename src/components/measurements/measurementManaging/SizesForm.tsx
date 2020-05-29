@@ -328,7 +328,15 @@ export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
                     {valueItems.map(
                       (valueItem: DefinitionValueItem, index: number) => {
                         return (
-                          <div className="sizeForm__definitionItem" key={index}>
+                          // sizeForm__definitionItem
+                          <div
+                            className={
+                              valueItem.isDirty
+                                ? 'sizeForm__definitionItem isDirty'
+                                : 'sizeForm__definitionItem'
+                            }
+                            key={index}
+                          >
                             <Stack horizontal horizontalAlign="space-between">
                               <Stack.Item
                                 styles={{

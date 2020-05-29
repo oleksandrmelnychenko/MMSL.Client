@@ -15,6 +15,7 @@ import {
   Sticky,
   StickyPositionType,
   DetailsListLayoutMode,
+  IDetailsRowProps,
 } from 'office-ui-fabric-react';
 import { IApplicationState } from '../../redux/reducers';
 import {
