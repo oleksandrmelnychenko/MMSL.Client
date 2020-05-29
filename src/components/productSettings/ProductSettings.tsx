@@ -1,17 +1,20 @@
 import './productSettings.scss';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Stack, ActionButton, SearchBox } from 'office-ui-fabric-react';
+import { Stack, ActionButton, Text, SearchBox } from 'office-ui-fabric-react';
 import ProductSettingsList from './ProductSettingsList';
 import ProductSettingsManagementPanel from './productSettingManagement/ProductSettingsManagementPanel';
 import { productSettingsActions } from '../../redux/slices/productSettings.slice';
 import { ManagingPanelComponent } from '../../redux/slices/productSettings.slice';
 import { IApplicationState } from '../../redux/reducers';
+import {
+  mainTitleContent,
+  horizontalGapStackTokens,
+  searchBoxStyles,
+} from '../../common/fabric-styles/styles';
 
 export const ProductSettings: React.FC = (props: any) => {
   const dispatch = useDispatch();
-
-  const searchBoxStyles = { root: { width: 200 } };
 
   const searchWord: string = useSelector<IApplicationState, string>(
     (state) => state.productSettings.searchWordOptionGroup
@@ -22,62 +25,53 @@ export const ProductSettings: React.FC = (props: any) => {
   }, [searchWord, dispatch]);
 
   return (
-    <div className="productSettings">
-      <div className="productSettings__root">
-        <Stack verticalAlign="space-around">
-          <Stack.Item align="stretch">
-            <div className="productSettings__header">
-              <div className="productSettings__header__top">
-                <Stack horizontal>
-                  <div className="productSettings__header__top__title">
-                    Styles
-                  </div>
-                  <div className="productSettings__header__top__controls">
-                    <Stack horizontal tokens={{ childrenGap: 10 }}>
-                      <div className="productSettings__header__top__controls__control">
-                        <ActionButton
-                          className="productSettingsAdd"
-                          onClick={() => {
-                            dispatch(
-                              productSettingsActions.managingPanelContent(
-                                ManagingPanelComponent.ManageGroups
-                              )
-                            );
-                          }}
-                          iconProps={{ iconName: 'Add' }}>
-                          New style
-                        </ActionButton>
-                      </div>
-                      <div className="productSettings__header__top__controls__control">
-                        <SearchBox
-                          className="productSettingsSearch"
-                          value={searchWord}
-                          styles={searchBoxStyles}
-                          onChange={(args: any) => {
-                            let value = args?.target?.value;
+    <div className="content__root">
+      <Stack verticalAlign="space-around">
+        <Stack.Item align="stretch">
+          <div className="content__header">
+            <div className="content__header__top">
+              <Stack
+                horizontal
+                verticalAlign="center"
+                tokens={horizontalGapStackTokens}>
+                <Text variant="xLarge" nowrap block styles={mainTitleContent}>
+                  Styles
+                </Text>
+                <ActionButton
+                  className="productSettingsAdd"
+                  onClick={() => {
+                    dispatch(
+                      productSettingsActions.managingPanelContent(
+                        ManagingPanelComponent.ManageGroups
+                      )
+                    );
+                  }}
+                  iconProps={{ iconName: 'Add' }}>
+                  New style
+                </ActionButton>
+                <SearchBox
+                  className="productSettingsSearch"
+                  value={searchWord}
+                  styles={searchBoxStyles}
+                  onChange={(args: any) => {
+                    let value = args?.target?.value;
 
-                            dispatch(
-                              productSettingsActions.updateSearchWordOptionGroup(
-                                value ? value : ''
-                              )
-                            );
-                          }}
-                        />
-                      </div>
-                    </Stack>
-                  </div>
-                </Stack>
-              </div>
+                    dispatch(
+                      productSettingsActions.updateSearchWordOptionGroup(
+                        value ? value : ''
+                      )
+                    );
+                  }}
+                />
+              </Stack>
             </div>
-          </Stack.Item>
-
-          <Stack.Item>
-            <ProductSettingsList />
-          </Stack.Item>
-        </Stack>
-
-        <ProductSettingsManagementPanel />
-      </div>
+          </div>
+        </Stack.Item>
+        <Stack.Item>
+          <ProductSettingsList />
+        </Stack.Item>
+      </Stack>
+      <ProductSettingsManagementPanel />
     </div>
   );
 };

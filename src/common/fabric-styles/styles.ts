@@ -1,4 +1,4 @@
-import { FontWeights, ITextStyles } from 'office-ui-fabric-react';
+import { FontWeights, ITextStyles, IStackTokens } from 'office-ui-fabric-react';
 import {
   ICardSectionTokens,
   ICardSectionStyles,
@@ -268,4 +268,29 @@ export const cardTokens: ICardTokens = {
   maxWidth: '200px',
   maxHeight: '200px',
   height: '200px',
+};
+
+export const mainTitleContent = {
+  root: {
+    color: '#484848',
+  },
+};
+
+export const horizontalGapStackTokens: IStackTokens = {
+  childrenGap: 20,
+  padding: '5px 10px 5px',
+};
+
+export const searchBoxStyles = { root: { width: 200 } };
+
+export const editCardIcon = {
+  root: {
+    color: '#0078d4',
+  },
+};
+
+export const deleteIconRedColor = {
+  root: {
+    color: '#a4262c',
+  },
 };
