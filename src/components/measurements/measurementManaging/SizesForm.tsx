@@ -42,6 +42,7 @@ const buildSize = (
     sizePayload.id = sourceEntity.measurementSizeId;
     sizePayload.name = values.name;
     sizePayload.description = values.description;
+    sizePayload.measurementId = measurement ? measurement.id : 0;
 
     sizePayload.valueDataContracts = dirtyValueItemsList
       .select((valueItem) => {
@@ -53,6 +54,9 @@ const buildSize = (
 
         return valueDataContract;
       })
+      .where(
+        (itemContract) => itemContract.value !== null && itemContract.id !== 0
+      )
       .toArray();
   } else {
     /// Creating new size flow
@@ -71,8 +75,6 @@ const buildSize = (
       .where((itemContract) => !isNaN(itemContract.value))
       .toArray();
   }
-
-  debugger;
 
   return sizePayload;
 };

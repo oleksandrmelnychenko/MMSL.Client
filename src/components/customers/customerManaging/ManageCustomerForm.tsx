@@ -121,7 +121,7 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
 
   useEffect(() => {
     dispatch(customerActions.customerFormStoreAutocompleteText(''));
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>
@@ -157,7 +157,8 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
           }
         }}
         validateOnBlur={false}
-        enableReinitialize={true}>
+        enableReinitialize={true}
+      >
         {(formik) => {
           return (
             <Form className="form">

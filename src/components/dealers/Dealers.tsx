@@ -52,7 +52,8 @@ export const Dealers: React.FC = (props: any) => {
               <Stack
                 horizontal
                 verticalAlign="center"
-                tokens={horizontalGapStackTokens}>
+                tokens={horizontalGapStackTokens}
+              >
                 <Text variant="xLarge" nowrap block styles={mainTitleContent}>
                   Dealers
                 </Text>
@@ -61,7 +62,8 @@ export const Dealers: React.FC = (props: any) => {
                   onClick={() =>
                     dispatch(dealerActions.toggleNewDealerForm(true))
                   }
-                  iconProps={{ iconName: 'Add' }}>
+                  iconProps={{ iconName: 'Add' }}
+                >
                   New dealer
                 </ActionButton>
                 <DatePicker

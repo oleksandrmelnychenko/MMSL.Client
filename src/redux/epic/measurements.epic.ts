@@ -333,6 +333,7 @@ export const apiDeleteMeasurementSizeByIdEpic = (
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
+      debugger;
       return ajaxDeleteResponse(api.DELETE_MEASUREMENT_SIZE, state$.value, [
         {
           key: 'measurementId',
@@ -344,6 +345,7 @@ export const apiDeleteMeasurementSizeByIdEpic = (
         },
       ]).pipe(
         mergeMap((successResponse: any) => {
+          debugger;
           return successCommonEpicFlow(
             successResponse,
             [
@@ -354,6 +356,7 @@ export const apiDeleteMeasurementSizeByIdEpic = (
           );
         }),
         catchError((errorResponse: any) => {
+          debugger;
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             return errorCommonEpicFlow(
               errorResponse,

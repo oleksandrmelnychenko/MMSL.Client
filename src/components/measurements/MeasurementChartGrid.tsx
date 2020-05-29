@@ -121,7 +121,6 @@ const MeasurementChartGrid: React.FC = () => {
                               [],
                               [],
                               (args: any) => {
-                                debugger;
                                 let getNewMeasurementByIdAction = assignPendingActions(
                                   measurementActions.apiGetMeasurementById(
                                     targetMeasurementChart
@@ -131,7 +130,6 @@ const MeasurementChartGrid: React.FC = () => {
                                   [],
                                   [],
                                   (args: any) => {
-                                    debugger;
                                     dispatch(
                                       measurementActions.changeSelectedMeasurement(
                                         args
