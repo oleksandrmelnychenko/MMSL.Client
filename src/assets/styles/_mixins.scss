@@ -1,13 +1,13 @@
 @import './variables';
 
 @mixin hover-default {
-  border-color: $color_yellow;
-  box-shadow: 0px 5px 10px rgba(255, 184, 0, 0.2);
+  border-color: $color_blue;
+  box-shadow: 0px 5px 10px rgba(0, 120, 212, 0.2);
 }
 
 @mixin hover-block {
-  border-color: $color_yellow;
-  box-shadow: 0px 5px 10px rgba(255, 184, 0, 0.2);
+  border-color: $color_blue;
+  box-shadow: 0px 5px 10px rgba(0, 120, 212, 0.2);
 }
 
 @mixin status-icon($color) {

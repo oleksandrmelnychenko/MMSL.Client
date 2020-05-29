@@ -1,12 +1,16 @@
 import './customers.scss';
 import React, { useEffect } from 'react';
-import { SearchBox, ActionButton, Stack } from 'office-ui-fabric-react';
+import { SearchBox, ActionButton, Text, Stack } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import CustomerList from './CustomerList';
 import CustomerPanel from './customerManaging/CustomerPanel';
 import { customerActions } from '../../redux/slices/customer.slice';
 import { controlActions } from '../../redux/slices/control.slice';
+import {
+  horizontalGapStackTokens,
+  mainTitleContent,
+} from '../../common/fabric-styles/styles';
 
 export const Customers: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -27,88 +31,68 @@ export const Customers: React.FC = (props: any) => {
   const searchBoxStyles = { root: { width: 200 } };
 
   return (
-    <div className="customers">
-      <div className="customers__root">
-        <Stack verticalAlign="space-around">
-          <Stack.Item align="stretch">
-            <div className="customers__header">
-              <div className="customers__header__top">
-                <Stack horizontal>
-                  <div className="customers__header__top__title">Customers</div>
-                  <div className="customers__header__top__controls">
-                    <Stack horizontal tokens={{ childrenGap: 10 }}>
-                      <div className="customers__header__top__controls__control">
-                        <ActionButton
-                          className="customersAdd"
-                          onClick={() => {
-                            dispatch(customerActions.selectedCustomer(null));
-                            dispatch(customerActions.toggleCustomerForm(true));
-                          }}
-                          iconProps={{ iconName: 'Add' }}>
-                          New customer
-                        </ActionButton>
-                      </div>
-                      <div className="customers__header__top__controls__control">
-                        <SearchBox
-                          className="customersSearch"
-                          value={searchText}
-                          styles={searchBoxStyles}
-                          placeholder="Find customer"
-                          onChange={(args: any) => {
-                            if (args) {
-                              let value = args.target.value;
-                              dispatch(customerActions.searchCustomer(value));
-                              dispatch(
-                                customerActions.getCustomersListPaginated()
-                              );
-                            } else {
-                              dispatch(customerActions.searchCustomer(''));
-                              dispatch(
-                                customerActions.getCustomersListPaginated()
-                              );
-                            }
-                          }}
-                        />
-                      </div>
-                      <div className="customers__header__top__controls__control">
-                        <SearchBox
-                          className="customersSearch"
-                          value={searchByStoreText}
-                          styles={searchBoxStyles}
-                          placeholder="Find by store"
-                          onChange={(args: any) => {
-                            if (args) {
-                              let value = args.target.value;
-                              dispatch(
-                                customerActions.searchCustomerByStore(value)
-                              );
-                              dispatch(
-                                customerActions.getCustomersListPaginated()
-                              );
-                            } else {
-                              dispatch(
-                                customerActions.searchCustomerByStore('')
-                              );
-                              dispatch(
-                                customerActions.getCustomersListPaginated()
-                              );
-                            }
-                          }}
-                        />
-                      </div>
-                    </Stack>
-                  </div>
-                </Stack>
-              </div>
+    <div className="content__root">
+      <Stack verticalAlign="space-around">
+        <Stack.Item align="stretch">
+          <div className="content__header">
+            <div className="content__header__top">
+              <Stack
+                horizontal
+                verticalAlign="center"
+                tokens={horizontalGapStackTokens}>
+                <Text variant="xLarge" nowrap block styles={mainTitleContent}>
+                  Customers
+                </Text>
+                <ActionButton
+                  className="customersAdd"
+                  onClick={() => {
+                    dispatch(customerActions.selectedCustomer(null));
+                    dispatch(customerActions.toggleCustomerForm(true));
+                  }}
+                  iconProps={{ iconName: 'Add' }}>
+                  New customer
+                </ActionButton>
+                <SearchBox
+                  className="customersSearch"
+                  value={searchText}
+                  styles={searchBoxStyles}
+                  placeholder="Find customer"
+                  onChange={(args: any) => {
+                    if (args) {
+                      let value = args.target.value;
+                      dispatch(customerActions.searchCustomer(value));
+                      dispatch(customerActions.getCustomersListPaginated());
+                    } else {
+                      dispatch(customerActions.searchCustomer(''));
+                      dispatch(customerActions.getCustomersListPaginated());
+                    }
+                  }}
+                />
+                <SearchBox
+                  className="customersSearch"
+                  value={searchByStoreText}
+                  styles={searchBoxStyles}
+                  placeholder="Find by store"
+                  onChange={(args: any) => {
+                    if (args) {
+                      let value = args.target.value;
+                      dispatch(customerActions.searchCustomerByStore(value));
+                      dispatch(customerActions.getCustomersListPaginated());
+                    } else {
+                      dispatch(customerActions.searchCustomerByStore(''));
+                      dispatch(customerActions.getCustomersListPaginated());
+                    }
+                  }}
+                />
+              </Stack>
             </div>
-          </Stack.Item>
-          <Stack.Item>
-            <CustomerList />
-          </Stack.Item>
-        </Stack>
-
-        <CustomerPanel />
-      </div>
+          </div>
+        </Stack.Item>
+        <Stack.Item>
+          <CustomerList />
+        </Stack.Item>
+      </Stack>
+      <CustomerPanel />
     </div>
   );
 };

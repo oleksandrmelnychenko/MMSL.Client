@@ -20,7 +20,12 @@
     box-shadow: -5px 0 11px 1px rgba(0, 0, 0, 0.09);
 
     @media screen and (max-width: 590px) {
-      padding: 0 20px;
+      width: calc(100% - 30px);
+      padding: 40px 60px;
+    }
+
+    @media screen and (max-width: 475px) {
+      padding: 20px;
     }
   }
 
@@ -43,7 +48,7 @@
 
     @media screen and (max-width: 425px) {
       padding-bottom: 30px;
-      font-size: 18px;
+      font-size: 14px;
     }
 
     letter-spacing: 0.7px;
@@ -57,7 +62,7 @@
     transition: 0.3s color ease;
 
     &:hover {
-      color: $color_green;
+      color: $color_blue;
     }
   }
 }

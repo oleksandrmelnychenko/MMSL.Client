@@ -13,14 +13,7 @@ import './product-category.scss';
 import { controlActions } from '../../redux/slices/control.slice';
 import { IApplicationState } from '../../redux/reducers/index';
 import { ProductCategory } from '../../interfaces';
-import {
-  scrollablePaneStyleForDetailList,
-  backgroundImageCardSectionTokens,
-  footerCardSectionStyles,
-  footerCardSectionTokens,
-  textStyles,
-  cardTokens,
-} from '../../common/fabric-styles/styles';
+import * as fabricStyles from '../../common/fabric-styles/styles';
 import { DialogArgs, CommonDialogType } from '../../redux/slices/control.slice';
 import CategoryManagementPanel from './categoryManagement/CategoryManagementPanel';
 import { ProductManagingPanelComponent } from '../../redux/slices/product.slice';
@@ -82,149 +75,150 @@ const ProductCategories: React.FC = () => {
 
   return (
     <div className="content__root">
-      <div className="content__header">
-        <div className="content__header__top">
-          <Stack horizontal>
-            <div className="content__header__top__title">Products</div>
-            <div className="content__header__top__controls">
-              <Stack horizontal tokens={{ childrenGap: 10 }}>
-                <div className="content__header__top__controls__control">
-                  <ActionButton
-                    className="dealerAdd"
-                    onClick={() => {
-                      dispatch(
-                        productActions.changeManagingPanelContent(
-                          ProductManagingPanelComponent.ProductManaging
-                        )
-                      );
-                    }}
-                    iconProps={{ iconName: 'Add' }}
-                  >
-                    New Product
-                  </ActionButton>
-                </div>
+      <Stack verticalAlign="space-around">
+        <Stack.Item align="stretch">
+          <div className="content__header">
+            <div className="content__header__top">
+              <Stack
+                horizontal
+                verticalAlign="center"
+                tokens={fabricStyles.horizontalGapStackTokens}>
+                <Text
+                  variant="xLarge"
+                  nowrap
+                  block
+                  styles={fabricStyles.mainTitleContent}>
+                  Products
+                </Text>
+                <ActionButton
+                  className="dealerAdd"
+                  onClick={() => {
+                    dispatch(
+                      productActions.changeManagingPanelContent(
+                        ProductManagingPanelComponent.ProductManaging
+                      )
+                    );
+                  }}
+                  iconProps={{ iconName: 'Add' }}>
+                  New Product
+                </ActionButton>
               </Stack>
             </div>
-          </Stack>
-        </div>
-      </div>
-      <ScrollablePane styles={scrollablePaneStyleForDetailList}>
-        <div className="categories">
-          {categories.map((category) => (
-            <div key={category.id} style={{ margin: '12px 24px 12px 0' }}>
-              <Card
-                styles={{ root: { padding: '9px' } }}
-                className={chooseCategory?.id === category.id ? `selected` : ''}
-                onClick={(args: any) => {
-                  const className: any = args?.target?.className;
-
-                  if (!className.includes(DATA_SELECTION_DISABLED_CLASS)) {
-                    let action = assignPendingActions(
-                      productActions.apiGetProductCategoryById(category.id),
-                      [],
-                      [],
-                      (args: any) => {
-                        dispatch(productActions.chooseProductCategory(args));
-                        dispatch(
-                          controlActions.openInfoPanelWithComponent(
-                            ProductManagementPanel
-                          )
-                        );
-                      }
-                    );
-
-                    dispatch(action);
-                  }
-                }}
-                tokens={cardTokens}
-              >
-                <Card.Section
-                  fill
-                  verticalAlign="end"
-                  styles={{
-                    root: {
-                      position: 'relative',
-                      paddingBottom: 0,
-                      marginBottom: '20px',
-                      backgroundImage: `url(${category.imageUrl})`,
-                      backgroundPosition: 'top center',
-                      backgroundSize: 'contain',
-                      backgroundRepeat: 'no-repeat',
-                      height: 220,
-                      alignItems: 'center',
-                    },
-                  }}
-                  tokens={backgroundImageCardSectionTokens}
-                >
-                  <Text
-                    className="category_name"
-                    variant="large"
-                    styles={textStyles}
-                  >
-                    {category.name}
-                  </Text>
-                </Card.Section>
-                <Card.Section
-                  horizontal
-                  styles={footerCardSectionStyles}
-                  tokens={footerCardSectionTokens}
-                >
-                  <Stack.Item grow={1}>
-                    <span />
-                  </Stack.Item>
-                  <Icon
-                    className={DATA_SELECTION_DISABLED_CLASS}
-                    iconName="Edit"
-                    title="Edit"
-                    ariaLabel="Edit"
-                    styles={{
-                      root: {
-                        color: '#0078d4',
-                        marginLeft: '5px',
-                        marginRight: '5px',
-                      },
-                    }}
-                    onClick={() => {
-                      let action = assignPendingActions(
-                        productActions.apiGetProductCategoryById(category.id),
-                        [
-                          productActions.changeManagingPanelContent(
-                            ProductManagingPanelComponent.EditSingleProduct
-                          ),
-                        ],
-                        [],
-                        (args: any) => {
-                          dispatch(
-                            productActions.changeTargetSingeleManagingProduct(
-                              args
-                            )
-                          );
-                        }
-                      );
-
-                      dispatch(action);
-                    }}
-                  />
-                  <Icon
-                    className={DATA_SELECTION_DISABLED_CLASS}
-                    iconName="Delete"
-                    title="Delete"
-                    ariaLabel="Delete"
-                    styles={{
-                      root: {
-                        color: '#a4262c',
-                      },
-                    }}
-                    onClick={(event: SyntheticEvent) =>
-                      deleteProductCategory(event, category)
+          </div>
+        </Stack.Item>
+        <Stack.Item>
+          <ScrollablePane
+            styles={fabricStyles.scrollablePaneStyleForDetailList}>
+            <div className="categories">
+              {categories.map((category) => (
+                <div key={category.id} style={{ margin: '12px 24px 12px 0' }}>
+                  <Card
+                    styles={{ root: { padding: '9px' } }}
+                    className={
+                      chooseCategory?.id === category.id ? `selected` : ''
                     }
-                  />
-                </Card.Section>
-              </Card>
+                    onClick={(args: any) => {
+                      const className: any = args?.target?.className;
+
+                      if (!className.includes(DATA_SELECTION_DISABLED_CLASS)) {
+                        let action = assignPendingActions(
+                          productActions.apiGetProductCategoryById(category.id),
+                          [],
+                          [],
+                          (args: any) => {
+                            dispatch(
+                              productActions.chooseProductCategory(args)
+                            );
+                            dispatch(
+                              controlActions.openInfoPanelWithComponent(
+                                ProductManagementPanel
+                              )
+                            );
+                          }
+                        );
+
+                        dispatch(action);
+                      }
+                    }}
+                    tokens={fabricStyles.cardTokens}>
+                    <Card.Section
+                      fill
+                      verticalAlign="end"
+                      styles={{
+                        root: {
+                          position: 'relative',
+                          paddingBottom: 0,
+                          marginBottom: '20px',
+                          backgroundImage: `url(${category.imageUrl})`,
+                          backgroundPosition: 'top center',
+                          backgroundSize: 'contain',
+                          backgroundRepeat: 'no-repeat',
+                          height: 220,
+                          alignItems: 'center',
+                        },
+                      }}
+                      tokens={fabricStyles.backgroundImageCardSectionTokens}>
+                      <Text
+                        className="category_name"
+                        variant="large"
+                        styles={fabricStyles.textStyles}>
+                        {category.name}
+                      </Text>
+                    </Card.Section>
+                    <Card.Section
+                      horizontal
+                      styles={fabricStyles.footerCardSectionStyles}
+                      tokens={fabricStyles.footerCardSectionTokens}>
+                      <Stack.Item grow={1}>
+                        <span />
+                      </Stack.Item>
+                      <Icon
+                        className={DATA_SELECTION_DISABLED_CLASS}
+                        iconName="Edit"
+                        title="Edit"
+                        ariaLabel="Edit"
+                        styles={fabricStyles.editCardIcon}
+                        onClick={() => {
+                          let action = assignPendingActions(
+                            productActions.apiGetProductCategoryById(
+                              category.id
+                            ),
+                            [
+                              productActions.changeManagingPanelContent(
+                                ProductManagingPanelComponent.EditSingleProduct
+                              ),
+                            ],
+                            [],
+                            (args: any) => {
+                              dispatch(
+                                productActions.changeTargetSingeleManagingProduct(
+                                  args
+                                )
+                              );
+                            }
+                          );
+
+                          dispatch(action);
+                        }}
+                      />
+                      <Icon
+                        className={DATA_SELECTION_DISABLED_CLASS}
+                        iconName="Delete"
+                        title="Delete"
+                        ariaLabel="Delete"
+                        styles={fabricStyles.deleteIconRedColor}
+                        onClick={(event: SyntheticEvent) =>
+                          deleteProductCategory(event, category)
+                        }
+                      />
+                    </Card.Section>
+                  </Card>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </ScrollablePane>
+          </ScrollablePane>
+        </Stack.Item>
+      </Stack>
 
       <CategoryManagementPanel />
     </div>

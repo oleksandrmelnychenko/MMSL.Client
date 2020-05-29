@@ -12,16 +12,18 @@
   background: $color_white;
   transition: 0.3s background-color ease;
   box-sizing: border-box;
+  border-radius: 2px;
 
   &-submit {
     width: 100%;
     margin-top: 5px;
-    background: $color_grey;
+    background: $color_blue;
     color: $color_white;
-    border: 1px solid $color_grey;
+    border: 1px solid $color_blue;
 
     &:hover {
-      background-color: $color_black;
+      background-color: rgb(16, 110, 190);
+      border-color: rgb(16, 110, 190);
     }
   }
 
@@ -30,15 +32,15 @@
     color: $color_white;
     font-size: 16px;
     font-weight: 400;
-    background: $color_grey;
+    background: $color_blue;
 
     @media screen and (max-width: 470px) {
       font-size: 14px;
-      padding-left: 25px;
     }
 
     &:hover {
-      background-color: $color_black;
+      background-color: rgb(16, 110, 190);
+      border-color: rgb(16, 110, 190);
     }
   }
 

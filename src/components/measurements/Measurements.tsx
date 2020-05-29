@@ -2,12 +2,15 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Stack,
+  Image,
   ScrollablePane,
   Label,
   PrimaryButton,
   CommandBarButton,
   Separator,
   FontWeights,
+  IImageProps,
+  ImageFit,
 } from 'office-ui-fabric-react';
 import { scrollablePaneStyleForDetailList } from '../../common/fabric-styles/styles';
 import { IApplicationState } from '../../redux/reducers';
@@ -26,6 +29,7 @@ import {
 import { assignPendingActions } from '../../helpers/action.helper';
 import MeasurementChartGrid from './MeasurementChartGrid';
 import { List } from 'linq-typescript';
+import NoMeasurementImg from '../../assets/images/no-objects/noneMeasurement.svg';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
@@ -65,6 +69,14 @@ const Measurements: React.FC = () => {
     isMeasurementsWasRequested && !isAnyMeasurements
       ? { height: '100%' }
       : { display: 'none' };
+
+  const imageProps: Partial<IImageProps> = {
+    styles: {
+      root: {
+        margin: '0 auto',
+      },
+    },
+  };
 
   return (
     <div className="content__root">
@@ -243,6 +255,7 @@ const Measurements: React.FC = () => {
             }}
           >
             <Stack>
+              <Image {...imageProps} src={NoMeasurementImg} />
               <Label
                 styles={{
                   root: {

@@ -101,7 +101,7 @@ const Menu: React.FC = () => {
           link: `/${languageCode}/app/measurements`,
         },
         {
-          title: 'Timeline',
+          title: 'Delivery timeline',
           className: 'timeline',
           link: `/${languageCode}/app/timeline`,
         },
