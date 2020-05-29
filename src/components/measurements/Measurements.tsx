@@ -120,6 +120,32 @@ const Measurements: React.FC = () => {
                 >
                   <MeasurementSelector />
 
+                  <CommandBarButton
+                    disabled={targetMeasurement ? false : true}
+                    text="New size"
+                    styles={{
+                      root: {
+                        height: '30px',
+                        padding: '16px',
+                      },
+                      label: {
+                        fontWeight: FontWeights.regular,
+                      },
+                    }}
+                    onClick={() => {
+                      if (targetMeasurement) {
+                        dispatch(
+                          measurementActions.changeManagingMeasurementPanelContent(
+                            ManagingMeasurementPanelComponent.AddChartSize
+                          )
+                        );
+                      }
+                    }}
+                    iconProps={{ iconName: 'InsertRowsBelow' }}
+                  />
+
+                  <Separator vertical />
+
                   <Stack horizontal tokens={{ childrenGap: '0px' }}>
                     <Stack horizontal>
                       <CommandBarButton
@@ -229,32 +255,6 @@ const Measurements: React.FC = () => {
                       />
                     </Stack>
                   </Stack>
-
-                  <Separator vertical />
-
-                  <CommandBarButton
-                    disabled={targetMeasurement ? false : true}
-                    text="Add size"
-                    styles={{
-                      root: {
-                        height: '30px',
-                        padding: '16px',
-                      },
-                      label: {
-                        fontWeight: FontWeights.regular,
-                      },
-                    }}
-                    onClick={() => {
-                      if (targetMeasurement) {
-                        dispatch(
-                          measurementActions.changeManagingMeasurementPanelContent(
-                            ManagingMeasurementPanelComponent.AddChartSize
-                          )
-                        );
-                      }
-                    }}
-                    iconProps={{ iconName: 'InsertRowsBelow' }}
-                  />
                 </Stack>
               </Stack>
             </div>
