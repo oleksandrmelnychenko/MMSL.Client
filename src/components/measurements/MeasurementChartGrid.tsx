@@ -15,7 +15,6 @@ import {
   Sticky,
   StickyPositionType,
   DetailsListLayoutMode,
-  IDetailsRowProps,
 } from 'office-ui-fabric-react';
 import { IApplicationState } from '../../redux/reducers';
 import {
@@ -36,6 +35,7 @@ import {
   CommonDialogType,
 } from '../../redux/slices/control.slice';
 import { assignPendingActions } from '../../helpers/action.helper';
+import { defaultCellStyle } from '../../common/fabric-styles/styles';
 
 const _columnIconButtonStyle = {
   root: {
@@ -211,7 +211,7 @@ const MeasurementChartGrid: React.FC = () => {
             )
               cellValue = cellValueStub;
 
-            return <Text>{cellValue}</Text>;
+            return <Text style={defaultCellStyle}>{cellValue}</Text>;
           },
           isPadded: true,
           rawSourceContext: definitionMapItem,
@@ -239,7 +239,7 @@ const MeasurementChartGrid: React.FC = () => {
           cellValue = item.measurementSize.name;
         }
 
-        return <Text>{`${cellValue}`}</Text>;
+        return <Text style={defaultCellStyle}>{`${cellValue}`}</Text>;
       },
       isPadded: true,
     });
@@ -300,9 +300,10 @@ const MeasurementChartGrid: React.FC = () => {
   };
 
   return (
+    //
     <div
       className="measurementChartGrid"
-      style={{ borderTop: '1px solid #dfdfdf' }}
+      style={{ borderTop: '1px solid #dfdfdf', paddingTop: '16px' }}
     >
       <DetailsList
         onRenderDetailsHeader={onRenderDetailsHeader}

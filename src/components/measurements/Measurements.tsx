@@ -91,7 +91,7 @@ const Measurements: React.FC = () => {
               className="content__header__top"
               style={mainContentHideableStyle}
             >
-              <Stack tokens={{ childrenGap: 12 }}>
+              <Stack tokens={{ childrenGap: 14 }}>
                 <Stack horizontal tokens={horizontalGapStackTokens}>
                   <Text variant="xLarge" nowrap block styles={mainTitleContent}>
                     Measurements
@@ -264,7 +264,7 @@ const Measurements: React.FC = () => {
           <ScrollablePane
             styles={{
               ...scrollablePaneStyleForDetailList,
-              root: { ...scrollablePaneStyleForDetailList.root, top: '134px' },
+              root: { ...scrollablePaneStyleForDetailList.root, top: '140px' },
             }}
           >
             <div style={mainContentHideableStyle}>
