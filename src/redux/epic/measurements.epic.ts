@@ -276,3 +276,99 @@ export const apiCreateNewMeasurementSizeEpic = (
     })
   );
 };
+
+export const apiUpdateMeasurementSizeEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(measurementActions.apiUpdateMeasurementSize.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
+      debugger;
+      return ajaxPutResponse(
+        api.UPDATE_MEASUREMENT_SIZE,
+        action.payload,
+        state$.value
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.showInfoMessage(`Size successfully updated.`),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_UPDATE_SIZE' },
+                controlActions.showInfoMessage(
+                  `Error occurred while updating size. ${errorResponse}`
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiDeleteMeasurementSizeByIdEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(measurementActions.apiDeleteMeasurementSizeById.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
+      return ajaxDeleteResponse(api.DELETE_MEASUREMENT_SIZE, state$.value, [
+        {
+          key: 'measurementId',
+          value: `${action.payload.measurementId}`,
+        },
+        {
+          key: 'sizeId',
+          value: `${action.payload.sizeId}`,
+        },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.showInfoMessage(`Size successfully deleted.`),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_DELETE_SIZE' },
+                controlActions.showInfoMessage(
+                  `Error occurred while deleting size. ${errorResponse}`
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};

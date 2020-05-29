@@ -70,162 +70,159 @@ const Measurements: React.FC = () => {
     <div className="content__root">
       <div className="content__header">
         <div className="content__header__top" style={mainContentHideableStyle}>
-          <Stack className="measurement">
+          <Stack className="measurement" tokens={{ childrenGap: 12 }}>
             <Stack horizontal tokens={{ childrenGap: 90 }}>
               <div className="content__header__top__title">Measurements</div>
 
-              <Stack horizontal tokens={{ childrenGap: '6px' }}>
-                <MeasurementSelector />
+              <CommandBarButton
+                text="New measurement"
+                styles={{
+                  root: {
+                    height: '30px',
+                    padding: '16px',
+                  },
+                }}
+                onClick={() => addMeasurement()}
+                iconProps={{ iconName: 'Add' }}
+              />
+            </Stack>
+            <Stack horizontal tokens={{ childrenGap: '6px' }}>
+              <MeasurementSelector />
 
-                <CommandBarButton
-                  disabled={targetMeasurement ? false : true}
-                  text="Add size"
-                  styles={{
-                    root: {
-                      height: '30px',
-                      padding: '16px',
-                    },
-                    label: {
-                      fontWeight: FontWeights.regular,
-                    },
-                  }}
-                  onClick={() => {
-                    if (targetMeasurement) {
-                      dispatch(
-                        measurementActions.changeManagingMeasurementPanelContent(
-                          ManagingMeasurementPanelComponent.AddChartSize
-                        )
-                      );
-                    }
-                  }}
-                  iconProps={{ iconName: 'InsertRowsBelow' }}
-                />
+              <CommandBarButton
+                disabled={targetMeasurement ? false : true}
+                text="Add size"
+                styles={{
+                  root: {
+                    height: '30px',
+                    padding: '16px',
+                  },
+                  label: {
+                    fontWeight: FontWeights.regular,
+                  },
+                }}
+                onClick={() => {
+                  if (targetMeasurement) {
+                    dispatch(
+                      measurementActions.changeManagingMeasurementPanelContent(
+                        ManagingMeasurementPanelComponent.AddChartSize
+                      )
+                    );
+                  }
+                }}
+                iconProps={{ iconName: 'InsertRowsBelow' }}
+              />
 
-                <Separator vertical />
+              <Separator vertical />
 
-                <Stack horizontal tokens={{ childrenGap: '0px' }}>
-                  <Stack horizontal>
-                    <CommandBarButton
-                      text="Edit"
-                      disabled={targetMeasurement ? false : true}
-                      styles={{
-                        root: {
-                          height: '30px',
-                          padding: '16px',
-                        },
-                        label: {
-                          fontWeight: FontWeights.regular,
-                        },
-                      }}
-                      onClick={() => {
-                        if (targetMeasurement) {
-                          dispatch(
-                            measurementActions.changeManagingMeasurementPanelContent(
-                              ManagingMeasurementPanelComponent.EditMeasurement
-                            )
-                          );
-                        }
-                      }}
-                      iconProps={{ iconName: 'Edit' }}
-                    />
+              <Stack horizontal tokens={{ childrenGap: '0px' }}>
+                <Stack horizontal>
+                  <CommandBarButton
+                    text="Edit"
+                    disabled={targetMeasurement ? false : true}
+                    styles={{
+                      root: {
+                        height: '30px',
+                        padding: '16px',
+                      },
+                      label: {
+                        fontWeight: FontWeights.regular,
+                      },
+                    }}
+                    onClick={() => {
+                      if (targetMeasurement) {
+                        dispatch(
+                          measurementActions.changeManagingMeasurementPanelContent(
+                            ManagingMeasurementPanelComponent.EditMeasurement
+                          )
+                        );
+                      }
+                    }}
+                    iconProps={{ iconName: 'Edit' }}
+                  />
 
-                    <CommandBarButton
-                      text="Delete"
-                      disabled={targetMeasurement ? false : true}
-                      styles={{
-                        root: {
-                          height: '30px',
-                          padding: '16px',
-                        },
-                        label: {
-                          fontWeight: FontWeights.light,
-                        },
-                      }}
-                      onClick={() => {
-                        if (targetMeasurement) {
-                          dispatch(
-                            controlActions.toggleCommonDialogVisibility(
-                              new DialogArgs(
-                                CommonDialogType.Delete,
-                                'Delete measurement',
-                                `Are you sure you want to delete ${targetMeasurement.name}?`,
-                                () => {
-                                  dispatch(
-                                    controlActions.closeInfoPanelWithComponent()
-                                  );
+                  <CommandBarButton
+                    text="Delete"
+                    disabled={targetMeasurement ? false : true}
+                    styles={{
+                      root: {
+                        height: '30px',
+                        padding: '16px',
+                      },
+                      label: {
+                        fontWeight: FontWeights.light,
+                      },
+                    }}
+                    onClick={() => {
+                      if (targetMeasurement) {
+                        dispatch(
+                          controlActions.toggleCommonDialogVisibility(
+                            new DialogArgs(
+                              CommonDialogType.Delete,
+                              'Delete measurement',
+                              `Are you sure you want to delete ${targetMeasurement.name}?`,
+                              () => {
+                                dispatch(
+                                  controlActions.closeInfoPanelWithComponent()
+                                );
 
-                                  let action = assignPendingActions(
-                                    measurementActions.apiDeleteMeasurementById(
-                                      targetMeasurement.id
-                                    ),
-                                    [],
-                                    [],
-                                    (args: any) => {
-                                      dispatch(
-                                        measurementActions.changeSelectedMeasurement(
-                                          null
-                                        )
-                                      );
+                                let action = assignPendingActions(
+                                  measurementActions.apiDeleteMeasurementById(
+                                    targetMeasurement.id
+                                  ),
+                                  [],
+                                  [],
+                                  (args: any) => {
+                                    dispatch(
+                                      measurementActions.changeSelectedMeasurement(
+                                        null
+                                      )
+                                    );
 
-                                      let action = assignPendingActions(
-                                        measurementActions.apiGetAllMeasurements(),
-                                        [],
-                                        [],
-                                        (args: any) => {
-                                          dispatch(
-                                            measurementActions.updateMeasurementsList(
+                                    let action = assignPendingActions(
+                                      measurementActions.apiGetAllMeasurements(),
+                                      [],
+                                      [],
+                                      (args: any) => {
+                                        dispatch(
+                                          measurementActions.updateMeasurementsList(
+                                            args
+                                          )
+                                        );
+                                        dispatch(
+                                          measurementActions.changeSelectedMeasurement(
+                                            new List<Measurement>(
                                               args
-                                            )
-                                          );
-                                          dispatch(
-                                            measurementActions.changeSelectedMeasurement(
-                                              new List<Measurement>(
-                                                args
-                                              ).firstOrDefault()
-                                            )
-                                          );
-                                        }
-                                      );
+                                            ).firstOrDefault()
+                                          )
+                                        );
+                                      }
+                                    );
 
-                                      dispatch(action);
-                                    }
-                                  );
+                                    dispatch(action);
+                                  }
+                                );
 
-                                  dispatch(action);
-                                },
-                                () => {}
-                              )
+                                dispatch(action);
+                              },
+                              () => {}
                             )
-                          );
-                        }
-                      }}
-                      iconProps={{
-                        iconName: 'Cancel',
-                        styles: {
-                          root: {
-                            fontSize: '14px',
-                            fontWeight: 600,
-                            color: '#a4373a',
-                          },
+                          )
+                        );
+                      }
+                    }}
+                    iconProps={{
+                      iconName: 'Cancel',
+                      styles: {
+                        root: {
+                          fontSize: '14px',
+                          fontWeight: 600,
+                          color: '#a4373a',
                         },
-                      }}
-                    />
-                  </Stack>
+                      },
+                    }}
+                  />
                 </Stack>
-
-                <Separator vertical />
-
-                <CommandBarButton
-                  text="Add new measurement"
-                  styles={{
-                    root: {
-                      height: '30px',
-                      padding: '16px',
-                    },
-                  }}
-                  onClick={() => addMeasurement()}
-                  iconProps={{ iconName: 'Add' }}
-                />
               </Stack>
             </Stack>
           </Stack>
@@ -243,7 +240,8 @@ const Measurements: React.FC = () => {
               justifyContent: 'center',
               alignItems: 'center',
               height: 'inherit',
-            }}>
+            }}
+          >
             <Stack>
               <Label
                 styles={{
@@ -251,7 +249,8 @@ const Measurements: React.FC = () => {
                     color: '#484848',
                     fontSize: '18px',
                   },
-                }}>
+                }}
+              >
                 Create your first measurement
               </Label>
               <Stack.Item align={'center'}>

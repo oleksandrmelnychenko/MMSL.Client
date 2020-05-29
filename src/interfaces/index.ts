@@ -423,7 +423,7 @@ export class MeasurementMapValue extends EntityBaseNamed {
   productCategory: ProductCategory | null | undefined;
 
   measurementSizeId: number | null | undefined;
-  measurementSize: MeasurementMapSize | null | undefined;
+  measurementSize: MeasurementSize | null | undefined;
 
   measurementDefinitionId: number | null | undefined;
   measurementDefinition: MeasurementDefinition | null | undefined;

@@ -60,3 +60,5 @@ export const DELETE_DELIVERY_TIMELINE_BY_ID = '/delivery/timelines/delete';
 export const UPDATE_MEASUREMENT = '/measurements/update/measurement';
 
 export const CREATE_MEASUREMENT_SIZE = '/measurements/sizes/add';
+export const UPDATE_MEASUREMENT_SIZE = '/measurements/sizes/update';
+export const DELETE_MEASUREMENT_SIZE = '/measurements/sizes/delete';

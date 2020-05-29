@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Panel, PanelType } from 'office-ui-fabric-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FormicReference, Measurement } from '../../../interfaces';
+import {
+  FormicReference,
+  Measurement,
+  MeasurementMapSize,
+} from '../../../interfaces';
 import { panelStyle } from '../../../common/fabric-styles/styles';
 import PanelTitle from '../../dealers/panel/PanelTitle';
 import CommonManagementActionBar, {
@@ -37,6 +41,14 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
     IApplicationState,
     Measurement | null | undefined
   >((state) => state.measurements.targetMeasurement);
+
+  const targetSizeChartForEdit:
+    | MeasurementMapSize
+    | null
+    | undefined = useSelector<
+    IApplicationState,
+    MeasurementMapSize | null | undefined
+  >((state) => state.measurements.managingSizeChartState.targetSizeChart);
 
   let panelTitleText = '';
   let panelDescription: string[] | null = null;
@@ -194,6 +206,62 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
         />
       );
       break;
+    case ManagingMeasurementPanelComponent.EditChartSize:
+      panelTitleText = 'Edit size';
+      panelDescription = [
+        targetSizeChartForEdit?.measurementSize
+          ? targetSizeChartForEdit.measurementSize.name
+          : '',
+        targetMeasurement ? targetMeasurement.name : '',
+      ];
+      panelWidth = 400;
+      hideAddEditPanelActions(actionItems);
+
+      content = (
+        <SizesForm
+          measurement={targetMeasurement}
+          size={targetSizeChartForEdit}
+          formikReference={formikReference}
+          submitAction={(args: any) => {
+            debugger;
+
+            let action = assignPendingActions(
+              measurementActions.apiUpdateMeasurementSize(args),
+              [],
+              [],
+              (args: any) => {
+                debugger;
+                let getNewMeasurementByIdAction = assignPendingActions(
+                  measurementActions.apiGetMeasurementById(
+                    targetMeasurement ? targetMeasurement.id : 0
+                  ),
+                  [],
+                  [],
+                  (args: any) => {
+                    debugger;
+                    dispatch(
+                      measurementActions.changeSelectedMeasurement(args)
+                    );
+                    dispatch(
+                      measurementActions.changeManagingMeasurementPanelContent(
+                        null
+                      )
+                    );
+                    dispatch(measurementActions.changeSizeForEdit(null));
+                  },
+                  (args: any) => {}
+                );
+                dispatch(getNewMeasurementByIdAction);
+              },
+              (args: any) => {}
+            );
+
+            dispatch(action);
+          }}
+        />
+      );
+
+      break;
     default:
       content = null;
       break;
@@ -211,6 +279,7 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
           dispatch(
             measurementActions.changeManagingMeasurementPanelContent(null)
           );
+          dispatch(measurementActions.changeSizeForEdit(null));
         }}
         closeButtonAriaLabel="Close"
       >

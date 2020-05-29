@@ -17,21 +17,30 @@ import {
   DetailsListLayoutMode,
 } from 'office-ui-fabric-react';
 import { IApplicationState } from '../../redux/reducers';
-import { Measurement, MeasurementMapDefinition } from '../../interfaces';
+import {
+  Measurement,
+  MeasurementMapDefinition,
+  MeasurementMapSize,
+} from '../../interfaces';
 import { DATA_SELECTION_DISABLED_CLASS } from '../dealers/DealerList';
 import './measurementChartGrid.scss';
 import { List } from 'linq-typescript';
 import { firstCellStyle } from '../../common/fabric-styles/styles';
 import {
+  measurementActions,
+  ManagingMeasurementPanelComponent,
+} from '../../redux/slices/measurement.slice';
+import {
   controlActions,
-  CommonDialogType,
   DialogArgs,
+  CommonDialogType,
 } from '../../redux/slices/control.slice';
+import { assignPendingActions } from '../../helpers/action.helper';
 
 const _columnIconButtonStyle = {
   root: {
     height: '20px',
-    marginTop: '15px',
+    marginTop: '0px',
   },
 };
 
@@ -58,10 +67,10 @@ const MeasurementChartGrid: React.FC = () => {
       isResizable: true,
       isCollapsible: true,
       data: 'string',
-      onRender: (item: any) => {
+      onRender: (item: MeasurementMapSize) => {
         return (
           <Stack horizontal disableShrink>
-            {/* <IconButton
+            <IconButton
               data-selection-disabled={true}
               className={DATA_SELECTION_DISABLED_CLASS}
               styles={_columnIconButtonStyle}
@@ -69,8 +78,15 @@ const MeasurementChartGrid: React.FC = () => {
               iconProps={{ iconName: 'Edit' }}
               title="Edit"
               ariaLabel="Edit"
-              onClick={() => {}}
-            /> */}
+              onClick={() => {
+                dispatch(measurementActions.changeSizeForEdit(item));
+                dispatch(
+                  measurementActions.changeManagingMeasurementPanelContent(
+                    ManagingMeasurementPanelComponent.EditChartSize
+                  )
+                );
+              }}
+            />
             <IconButton
               data-selection-disabled={true}
               className={DATA_SELECTION_DISABLED_CLASS}
@@ -80,7 +96,7 @@ const MeasurementChartGrid: React.FC = () => {
               title="Delete"
               ariaLabel="Delete"
               onClick={(args: any) => {
-                if (item && item.measurementSize) {
+                if (item && item.measurementSize && targetMeasurementChart) {
                   dispatch(
                     controlActions.toggleCommonDialogVisibility(
                       new DialogArgs(
@@ -88,9 +104,49 @@ const MeasurementChartGrid: React.FC = () => {
                         'Delete size',
                         `Are you sure you want to delete ${item.measurementSize.name}?`,
                         () => {
-                          dispatch(
-                            controlActions.closeInfoPanelWithComponent()
-                          );
+                          if (
+                            item &&
+                            item.measurementSize &&
+                            targetMeasurementChart
+                          ) {
+                            dispatch(
+                              controlActions.closeInfoPanelWithComponent()
+                            );
+
+                            let action = assignPendingActions(
+                              measurementActions.apiDeleteMeasurementSizeById({
+                                measurementId: targetMeasurementChart.id,
+                                sizeId: item.measurementSize.id,
+                              }),
+                              [],
+                              [],
+                              (args: any) => {
+                                debugger;
+                                let getNewMeasurementByIdAction = assignPendingActions(
+                                  measurementActions.apiGetMeasurementById(
+                                    targetMeasurementChart
+                                      ? targetMeasurementChart.id
+                                      : 0
+                                  ),
+                                  [],
+                                  [],
+                                  (args: any) => {
+                                    debugger;
+                                    dispatch(
+                                      measurementActions.changeSelectedMeasurement(
+                                        args
+                                      )
+                                    );
+                                  },
+                                  (args: any) => {}
+                                );
+                                dispatch(getNewMeasurementByIdAction);
+                              },
+                              (args: any) => {}
+                            );
+
+                            dispatch(action);
+                          }
                         },
                         () => {}
                       )
@@ -122,7 +178,11 @@ const MeasurementChartGrid: React.FC = () => {
           isResizable: true,
           isCollapsible: true,
           data: 'string',
-          onRender: (item?: any, index?: number, column?: IColumn) => {
+          onRender: (
+            item?: MeasurementMapSize,
+            index?: number,
+            column?: IColumn
+          ) => {
             let cellValue = '-';
 
             if (
@@ -162,7 +222,11 @@ const MeasurementChartGrid: React.FC = () => {
       isResizable: true,
       isCollapsible: true,
       data: 'string',
-      onRender: (item?: any, index?: number, column?: IColumn) => {
+      onRender: (
+        item?: MeasurementMapSize,
+        index?: number,
+        column?: IColumn
+      ) => {
         let cellValue = '-';
 
         if (item && item.measurementSize) {
