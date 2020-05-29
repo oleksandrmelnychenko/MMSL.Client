@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { Panel, PanelType } from 'office-ui-fabric-react';
+import {
+  Panel,
+  PanelType,
+  Sticky,
+  ScrollablePane,
+} from 'office-ui-fabric-react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   FormicReference,
@@ -20,6 +25,16 @@ import MeasurementForm from './MeasurementForm';
 import { measurementActions } from '../../../redux/slices/measurement.slice';
 import SizesForm from './SizesForm';
 import { assignPendingActions } from '../../../helpers/action.helper';
+
+export const managingScrollablePanelStyle = {
+  root: {
+    marginLeft: '24px',
+    marginRight: '0px',
+    marginBottom: '20px',
+    marginTop: '50px',
+    paddingRight: '24px',
+  },
+};
 
 export const MeasurementManagingPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -285,11 +300,20 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
       >
         {contentType !== null ? (
           <>
-            <PanelTitle title={panelTitleText} description={panelDescription} />
+            <ScrollablePane styles={managingScrollablePanelStyle}>
+              <Sticky>
+                <div style={{ marginRight: '24px' }}>
+                  <PanelTitle
+                    title={panelTitleText}
+                    description={panelDescription}
+                  />
 
-            <CommonManagementActionBar actionItems={actionItems} />
+                  <CommonManagementActionBar actionItems={actionItems} />
+                </div>
+              </Sticky>
 
-            {content}
+              <div style={{ marginRight: '24px' }}>{content}</div>
+            </ScrollablePane>
           </>
         ) : null}
       </Panel>

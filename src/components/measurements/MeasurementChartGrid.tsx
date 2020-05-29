@@ -15,6 +15,9 @@ import {
   Sticky,
   StickyPositionType,
   DetailsListLayoutMode,
+  DetailsRow,
+  ConstrainMode,
+  SelectionMode,
 } from 'office-ui-fabric-react';
 import { IApplicationState } from '../../redux/reducers';
 import {
@@ -54,6 +57,11 @@ const MeasurementChartGrid: React.FC = () => {
     Measurement | null | undefined
   >((state) => state.measurements.targetMeasurement);
 
+  const selectedSizeId: number | null | undefined = useSelector<
+    IApplicationState,
+    number | null | undefined
+  >((state) => state.measurements.selectedSize?.id);
+
   useEffect(() => {
     return () => {};
   }, [dispatch]);
@@ -63,9 +71,8 @@ const MeasurementChartGrid: React.FC = () => {
       key: 'actions',
       name: 'Actions',
       minWidth: 70,
-      maxWidth: 130,
-      isResizable: true,
-      isCollapsible: true,
+      isResizable: false,
+      isCollapsible: false,
       data: 'string',
       onRender: (item: MeasurementMapSize) => {
         return (
@@ -112,7 +119,6 @@ const MeasurementChartGrid: React.FC = () => {
                             dispatch(
                               controlActions.closeInfoPanelWithComponent()
                             );
-
                             let action = assignPendingActions(
                               measurementActions.apiDeleteMeasurementSizeById({
                                 measurementId: targetMeasurementChart.id,
@@ -142,7 +148,6 @@ const MeasurementChartGrid: React.FC = () => {
                               },
                               (args: any) => {}
                             );
-
                             dispatch(action);
                           }
                         },
@@ -174,8 +179,10 @@ const MeasurementChartGrid: React.FC = () => {
           minWidth: 20,
           maxWidth: 50,
           isResizable: true,
-          isCollapsible: true,
+          isCollapsible: false,
           data: 'string',
+          isPadded: true,
+          rawSourceContext: definitionMapItem,
           onRender: (
             item?: MeasurementMapSize,
             index?: number,
@@ -213,8 +220,6 @@ const MeasurementChartGrid: React.FC = () => {
 
             return <Text style={defaultCellStyle}>{cellValue}</Text>;
           },
-          isPadded: true,
-          rawSourceContext: definitionMapItem,
         };
       })
       .toArray();
@@ -224,9 +229,9 @@ const MeasurementChartGrid: React.FC = () => {
       key: 'sizeName',
       name: 'Size',
       minWidth: 20,
-      maxWidth: 50,
+      maxWidth: 100,
       isResizable: true,
-      isCollapsible: true,
+      isCollapsible: false,
       data: 'string',
       onRender: (
         item?: MeasurementMapSize,
@@ -250,7 +255,7 @@ const MeasurementChartGrid: React.FC = () => {
       maxWidth: 1,
       minWidth: 1,
       isResizable: false,
-      isCollapsible: false,
+      isCollapsable: false,
       data: 'string',
       onRender: (
         item?: MeasurementMapSize,
@@ -265,6 +270,11 @@ const MeasurementChartGrid: React.FC = () => {
     chartColumns = list.concat(chartColumns).toArray();
   }
   if (chartColumns.length <= 1) chartColumns = [];
+
+  const items =
+    targetMeasurementChart && targetMeasurementChart.measurementMapSizes
+      ? targetMeasurementChart.measurementMapSizes
+      : [];
 
   const onRenderDetailsHeader: IRenderFunction<IDetailsHeaderProps> = (
     props,
@@ -290,51 +300,215 @@ const MeasurementChartGrid: React.FC = () => {
     //     />
 
     return (
-      <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced>
+      // <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced>
+      //   {defaultRender!({
+      //     ...props,
+      //     onRenderColumnHeaderTooltip,
+      //   })}
+      // </Sticky>
+      <div>
         {defaultRender!({
           ...props,
           onRenderColumnHeaderTooltip,
         })}
-      </Sticky>
+      </div>
     );
   };
 
   return (
-    //
     <div
       className="measurementChartGrid"
-      style={{ borderTop: '1px solid #dfdfdf', paddingTop: '16px' }}
+      style={{
+        position: 'relative',
+        borderTop: '1px solid #dfdfdf',
+        paddingTop: '16px',
+      }}
     >
       <DetailsList
         onRenderDetailsHeader={onRenderDetailsHeader}
         styles={{
-          root: { overflowX: 'hidden' },
+          root: {
+            position: 'absolute',
+            top: '16px',
+            zIndex: 0,
+            left: '0',
+            overflowX: 'auto',
+            width: '100%',
+          },
         }}
         selection={selection}
+        constrainMode={ConstrainMode.horizontalConstrained}
         isHeaderVisible={true}
         columns={chartColumns}
         layoutMode={DetailsListLayoutMode.justified}
-        items={
-          targetMeasurementChart && targetMeasurementChart.measurementMapSizes
-            ? targetMeasurementChart.measurementMapSizes
-            : []
-        }
+        items={items}
+        selectionMode={SelectionMode.single}
+        // onRenderCheckbox={() => {
+        //   return null;
+        // }}
         checkboxVisibility={CheckboxVisibility.hidden}
-        //   onRenderRow={(args: any) => {
-        //     return (
-        //       <div style={{ paddingLeft: '60px' }}>
-        //         <DetailsRow
-        //           styles={{
-        //             root: {
-        //               paddingLeft: '12px',
-        //             },
-        //           }}
-        //           {...args}
-        //         />
-        //       </div>
-        //     );
-        //   }}
+        onRenderRow={(args: any) => {
+          return (
+            <div
+            // onClick={(clickArgs: any) => {
+            //   const offsetParent: any =
+            //     clickArgs?.target?.offsetParent?.className;
+
+            //   if (!offsetParent.includes(DATA_SELECTION_DISABLED_CLASS)) {
+            //     const selectFlow = () => {
+            //       dispatch(measurementActions.changeSelectedSize(args.item));
+            //     };
+
+            //     const unSelectFlow = () => {
+            //       dispatch(measurementActions.changeSelectedSize(null));
+            //     };
+
+            //     if (selectedSizeId) {
+            //       if (selectedSizeId === args.item.id) {
+            //         unSelectFlow();
+            //       } else {
+            //         selectFlow();
+            //       }
+            //     } else {
+            //       selectFlow();
+            //     }
+            //   }
+            // }}
+            >
+              <DetailsRow {...args} />
+            </div>
+          );
+        }}
       />
+
+      {/* <div
+        style={{
+          position: 'absolute',
+          top: '15px',
+          left: '0px',
+        }}
+      >
+        <Stack>
+          <div style={{ height: '44px', width: '79px' }}></div>
+
+          {items.map((item, index) => {
+            const opacityValue = item.id === selectedSizeId ? 1 : 0;
+            const pointerEvents = item.id === selectedSizeId ? 'auto' : 'none';
+
+            return (
+              <Stack
+                horizontal
+                disableShrink
+                styles={{
+                  root: {
+                    // background: 'rgb(237, 235, 233)',
+                    background: 'Red',
+                    padding: '12px 6px 12px 9px',
+                    // opacity: `${opacityValue}`,
+                    // pointerEvents: `${pointerEvents}`,
+                  },
+                }}
+              >
+                <IconButton
+                  data-selection-disabled={true}
+                  className={DATA_SELECTION_DISABLED_CLASS}
+                  styles={_columnIconButtonStyle}
+                  height={20}
+                  iconProps={{ iconName: 'Edit' }}
+                  title="Edit"
+                  ariaLabel="Edit"
+                  onClick={() => {
+                    if (item.id === selectedSizeId) {
+                      dispatch(measurementActions.changeSizeForEdit(item));
+                      dispatch(
+                        measurementActions.changeManagingMeasurementPanelContent(
+                          ManagingMeasurementPanelComponent.EditChartSize
+                        )
+                      );
+                    }
+                  }}
+                />
+                <IconButton
+                  data-selection-disabled={true}
+                  className={DATA_SELECTION_DISABLED_CLASS}
+                  styles={_columnIconButtonStyle}
+                  height={20}
+                  iconProps={{ iconName: 'Delete' }}
+                  title="Delete"
+                  ariaLabel="Delete"
+                  onClick={(args: any) => {
+                    if (item.id === selectedSizeId) {
+                      if (
+                        item &&
+                        item.measurementSize &&
+                        targetMeasurementChart
+                      ) {
+                        dispatch(
+                          controlActions.toggleCommonDialogVisibility(
+                            new DialogArgs(
+                              CommonDialogType.Delete,
+                              'Delete size',
+                              `Are you sure you want to delete ${item.measurementSize.name}?`,
+                              () => {
+                                if (
+                                  item &&
+                                  item.measurementSize &&
+                                  targetMeasurementChart
+                                ) {
+                                  dispatch(
+                                    controlActions.closeInfoPanelWithComponent()
+                                  );
+
+                                  let action = assignPendingActions(
+                                    measurementActions.apiDeleteMeasurementSizeById(
+                                      {
+                                        measurementId:
+                                          targetMeasurementChart.id,
+                                        sizeId: item.measurementSize.id,
+                                      }
+                                    ),
+                                    [],
+                                    [],
+                                    (args: any) => {
+                                      let getNewMeasurementByIdAction = assignPendingActions(
+                                        measurementActions.apiGetMeasurementById(
+                                          targetMeasurementChart
+                                            ? targetMeasurementChart.id
+                                            : 0
+                                        ),
+                                        [],
+                                        [],
+                                        (args: any) => {
+                                          dispatch(
+                                            measurementActions.changeSelectedMeasurement(
+                                              args
+                                            )
+                                          );
+                                        },
+                                        (args: any) => {}
+                                      );
+                                      dispatch(getNewMeasurementByIdAction);
+                                    },
+                                    (args: any) => {}
+                                  );
+
+                                  dispatch(action);
+                                }
+                              },
+                              () => {}
+                            )
+                          )
+                        );
+                      }
+                    }
+                  }}
+                />
+              </Stack>
+            );
+          })}
+        </Stack>
+      </div>
+     */}
     </div>
   );
 };

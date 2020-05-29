@@ -11,6 +11,7 @@ import {
   FontWeights,
   IImageProps,
   Text,
+  ScrollbarVisibility,
 } from 'office-ui-fabric-react';
 import {
   scrollablePaneStyleForDetailList,
@@ -220,12 +221,24 @@ const Measurements: React.FC = () => {
                                                 args
                                               )
                                             );
+
+                                            let getNewMeasurementByIdAction = assignPendingActions(
+                                              measurementActions.apiGetMeasurementById(
+                                                args.length > 0 ? args[0].id : 0
+                                              ),
+                                              [],
+                                              [],
+                                              (args: any) => {
+                                                dispatch(
+                                                  measurementActions.changeSelectedMeasurement(
+                                                    args
+                                                  )
+                                                );
+                                              },
+                                              (args: any) => {}
+                                            );
                                             dispatch(
-                                              measurementActions.changeSelectedMeasurement(
-                                                new List<Measurement>(
-                                                  args
-                                                ).firstOrDefault()
-                                              )
+                                              getNewMeasurementByIdAction
                                             );
                                           }
                                         );
