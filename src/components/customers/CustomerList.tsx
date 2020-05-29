@@ -22,18 +22,21 @@ import { CustomerListState } from '../../redux/slices/customer.slice';
 import {
   scrollablePaneStyleForDetailList,
   detailsListStyle,
+  defaultCellStyle,
 } from '../../common/fabric-styles/styles';
 
 const _customerColumns: IColumn[] = [
   {
     key: 'index',
-    name: '#',
+    name: '',
     minWidth: 16,
     maxWidth: 24,
     onColumnClick: () => {},
     onRender: (item: any, index?: number) => {
       return (
-        <Text>{index !== null && index !== undefined ? index + 1 : -1}</Text>
+        <Text style={defaultCellStyle}>
+          {index !== null && index !== undefined ? index + 1 : -1}
+        </Text>
       );
     },
   },
@@ -46,7 +49,7 @@ const _customerColumns: IColumn[] = [
     isCollapsible: true,
     data: 'string',
     onRender: (item: any) => {
-      return <Text>{item.userName}</Text>;
+      return <Text style={defaultCellStyle}>{item.userName}</Text>;
     },
     isPadded: true,
   },
@@ -59,7 +62,7 @@ const _customerColumns: IColumn[] = [
     isCollapsible: true,
     data: 'string',
     onRender: (item: any) => {
-      return <Text>{item.email}</Text>;
+      return <Text style={defaultCellStyle}>{item.email}</Text>;
     },
     isPadded: true,
   },
@@ -72,7 +75,7 @@ const _customerColumns: IColumn[] = [
     isCollapsible: true,
     data: 'string',
     onRender: (item: any) => {
-      return <Text>{item.customerName}</Text>;
+      return <Text style={defaultCellStyle}>{item.customerName}</Text>;
     },
     isPadded: true,
   },
@@ -85,7 +88,11 @@ const _customerColumns: IColumn[] = [
     isCollapsible: true,
     data: 'string',
     onRender: (item: any) => {
-      return <Text>{item.store ? item.store.name : ''}</Text>;
+      return (
+        <Text style={defaultCellStyle}>
+          {item.store ? item.store.name : ''}
+        </Text>
+      );
     },
     isPadded: true,
   },

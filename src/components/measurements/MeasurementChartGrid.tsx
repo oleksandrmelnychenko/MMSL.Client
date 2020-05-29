@@ -21,12 +21,12 @@ import { Measurement, MeasurementMapDefinition } from '../../interfaces';
 import { DATA_SELECTION_DISABLED_CLASS } from '../dealers/DealerList';
 import './measurementChartGrid.scss';
 import { List } from 'linq-typescript';
-import { firstCellStyle } from '../../common/fabric-styles/styles';
 import {
   controlActions,
   CommonDialogType,
   DialogArgs,
 } from '../../redux/slices/control.slice';
+import { cellStyle } from '../../common/fabric-styles/styles';
 
 const _columnIconButtonStyle = {
   root: {
@@ -145,7 +145,7 @@ const MeasurementChartGrid: React.FC = () => {
               }
             }
 
-            return <Text style={firstCellStyle}>{cellValue}</Text>;
+            return <Text style={cellStyle}>{cellValue}</Text>;
           },
           isPadded: true,
           rawSourceContext: definitionMapItem,
@@ -169,7 +169,7 @@ const MeasurementChartGrid: React.FC = () => {
           cellValue = item.measurementSize.name;
         }
 
-        return <Text style={firstCellStyle}>{`${cellValue}`}</Text>;
+        return <Text style={cellStyle}>{`${cellValue}`}</Text>;
       },
       isPadded: true,
     });
@@ -214,8 +214,7 @@ const MeasurementChartGrid: React.FC = () => {
   return (
     <div
       className="measurementChartGrid"
-      style={{ borderTop: '1px solid #dfdfdf' }}
-    >
+      style={{ borderTop: '1px solid #dfdfdf' }}>
       <DetailsList
         onRenderDetailsHeader={onRenderDetailsHeader}
         styles={{ root: { overflowX: 'hidden' } }}
