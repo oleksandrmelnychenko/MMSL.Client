@@ -243,6 +243,24 @@ const MeasurementChartGrid: React.FC = () => {
       isPadded: true,
     });
 
+    list.insert(0, {
+      key: 'stubPadding',
+      name: '',
+      maxWidth: 1,
+      minWidth: 1,
+      isResizable: false,
+      isCollapsible: false,
+      data: 'string',
+      onRender: (
+        item?: MeasurementMapSize,
+        index?: number,
+        column?: IColumn
+      ) => {
+        return null;
+      },
+      isPadded: false,
+    });
+
     chartColumns = list.concat(chartColumns).toArray();
   }
   if (chartColumns.length <= 1) chartColumns = [];
