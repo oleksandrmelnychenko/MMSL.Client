@@ -388,10 +388,14 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
                       ) : null}
 
                       <Stack tokens={{ childrenGap: '6px' }}>
-                        {addedRows.map((addedRowItem, index) => {
+                        {addedRows.map((chartRowItem, index) => {
                           return (
                             <div
-                              className="measurementsForm__definitionItem"
+                              className={
+                                chartRowItem.resolveIsDirty()
+                                  ? 'measurementsForm__definitionItem isDirty'
+                                  : 'measurementsForm__definitionItem'
+                              }
                               key={index}
                             >
                               <div className="measurementsForm__definitionItem__options">
@@ -409,8 +413,8 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
                                         (item) => (item.isEditingName = false)
                                       );
 
-                                      if (addedRowItem) {
-                                        addedRowItem.isEditingName = true;
+                                      if (chartRowItem) {
+                                        chartRowItem.isEditingName = true;
                                       }
 
                                       setAddedRows(rowList.toArray());
@@ -433,7 +437,7 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
                                     title="Edit name"
                                   />
                                   <IconButton
-                                    onClick={() => deleteRowItem(addedRowItem)}
+                                    onClick={() => deleteRowItem(chartRowItem)}
                                     styles={{
                                       root: {
                                         height: '27px',
@@ -456,31 +460,31 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
                                 </Stack>
                               </div>
 
-                              {addedRowItem.isEditingName ? (
+                              {chartRowItem.isEditingName ? (
                                 <div className="measurementsForm__definitionItem__editNameInput">
                                   <TextField
                                     autoFocus
                                     componentRef={inputEditRef}
                                     borderless
-                                    value={addedRowItem.name}
+                                    value={chartRowItem.name}
                                     onKeyPress={(args: any) => {
                                       if (args) {
                                         if (args.charCode === 13) {
                                           onFinishRowItemNameEditFlow(
-                                            addedRowItem
+                                            chartRowItem
                                           );
                                         }
                                       }
                                     }}
                                     onChange={(args: any) => {
-                                      addedRowItem.name = args.target.value;
+                                      chartRowItem.name = args.target.value;
 
                                       setAddedRows(
                                         new List(addedRows).toArray()
                                       );
                                     }}
                                     onBlur={(args: any) => {
-                                      onFinishRowItemNameEditFlow(addedRowItem);
+                                      onFinishRowItemNameEditFlow(chartRowItem);
                                     }}
                                   />
                                 </div>
@@ -490,7 +494,7 @@ export const MeasurementForm: React.FC<MeasurementFormProps> = (
                                   block
                                   styles={{ root: { maxWidth: '250px' } }}
                                 >
-                                  {addedRowItem.name}
+                                  {chartRowItem.name}
                                 </Text>
                               )}
                             </div>
