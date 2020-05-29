@@ -70,6 +70,7 @@ const MeasurementSelector: React.FC = () => {
         label="Size charts"
         autoComplete={true ? 'on' : 'off'}
         options={itemOptions}
+        useComboBoxAsMenuWidth={true}
         styles={{
           ...fabricStyles.comboBoxStyles,
           container: { marginTop: '-41px' },
