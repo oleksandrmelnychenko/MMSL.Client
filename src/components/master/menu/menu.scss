@@ -18,15 +18,22 @@
         }
     }
 
+    &__item.menu__item_with-sub-menu {
+        &:hover {
+            background: #dcdcdc;
+        }
+    }
+
     &__item {
         white-space: nowrap;
 
-        &_with-sub-menu {
-            background-color: #dcdcdc;
-        }
-
         &:hover {
             background-color: #cfcfcf;
+
+        }
+
+        &_with-sub-menu {
+            background-color: #dcdcdc;
         }
     }
 
