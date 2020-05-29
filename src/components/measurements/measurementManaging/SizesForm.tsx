@@ -54,9 +54,9 @@ const buildSize = (
 
         return valueDataContract;
       })
-      .where(
-        (itemContract) => itemContract.value !== null && itemContract.id !== 0
-      )
+      // .where(
+      //   (itemContract) => itemContract.value !== null && itemContract.id !== 0
+      // )
       .toArray();
   } else {
     /// Creating new size flow
@@ -184,7 +184,9 @@ export class DefinitionValueItem {
     } else {
       /// If `init mapValue` is NULL item is handled as
       /// new value, so it's becomes dirty.
-      isDirtyResult = true;
+      if (this.value !== '') {
+        isDirtyResult = true;
+      }
     }
 
     this.isDirty = isDirtyResult;
