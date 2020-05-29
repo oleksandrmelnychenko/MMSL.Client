@@ -194,17 +194,22 @@ img {
   }
 }
 
-.ms-Panel-closeButton {
-  position: absolute;
-  margin: 0;
-  top: 18px;
-  right: 14px;
+input::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: lighten($color: #605e5c, $amount: 20%) !important;
 }
 
-.short-account-info+.ms-Button-menuIcon {
-  display: none;
+input::-moz-placeholder {
+  /* Firefox 19+ */
+  color: lighten($color: #605e5c, $amount: 20%) !important;
 }
 
-.short-account-info+.ms-Button-menuIcon.is-expanded {
-  display: none;
+input:-ms-input-placeholder {
+  /* IE 10+ */
+  color: lighten($color: #605e5c, $amount: 20%) !important;
+}
+
+input:-moz-placeholder {
+  /* Firefox 18- */
+  color: lighten($color: #605e5c, $amount: 20%) !important;
 }

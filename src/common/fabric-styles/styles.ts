@@ -177,16 +177,14 @@ export const comboBoxStyles = {
 };
 
 export const cellStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  height: '100%',
-};
-
-export const firstCellStyle = {
   paddingLeft: '7px',
   display: 'flex',
   alignItems: 'center',
   height: '100%',
+  color: '#000',
+};
+export const defaultCellStyle = {
+  color: '#000',
 };
 
 export const commandBarStyles = {
@@ -278,7 +276,7 @@ export const mainTitleContent = {
 
 export const horizontalGapStackTokens: IStackTokens = {
   childrenGap: 20,
-  padding: '5px 10px 5px',
+  padding: '5px 10px 5px 6px',
 };
 
 export const searchBoxStyles = { root: { width: 200 } };

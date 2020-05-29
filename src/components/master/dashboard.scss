@@ -10,6 +10,10 @@
     transition: all 0.3s linear;
     height: calc(100vh - 100px);
 
+    &__root {
+        border-bottom: 1px solid #dfdfdf;
+    }
+
     &__header {
 
         padding: 12px;
@@ -141,12 +145,13 @@ main.collapse {
 }
 
 .list__header {
-    div>span {
-        padding-left: 21px;
-    }
+    // div>span {
+    //     padding-left: 21px;
+    // }
 
     span>span {
         font-weight: 400;
-        color: #000;
+        color: #323130;
+        font-size: 16px;
     }
 }

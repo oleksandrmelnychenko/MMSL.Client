@@ -26,7 +26,6 @@ import {
   scrollablePaneStyleForDetailList,
   detailsListStyle,
   columnIconButtonStyle,
-  firstCellStyle,
   cellStyle,
   horizontalGapStackTokens,
   mainTitleContent,
@@ -45,7 +44,7 @@ export const Timeline: React.FC = () => {
       maxWidth: 200,
 
       onRender: (item: any, index?: number) => {
-        return <Text style={firstCellStyle}>{item.name}</Text>;
+        return <Text style={cellStyle}>{item.name}</Text>;
       },
     },
     {

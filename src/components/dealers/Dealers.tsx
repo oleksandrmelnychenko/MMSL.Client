@@ -101,7 +101,8 @@ export const Dealers: React.FC = (props: any) => {
                 <SearchBox
                   className="dealerSearch"
                   value={searchText}
-                  styles={{ root: { width: 200 } }}
+                  placeholder="Find dealer"
+                  styles={{ root: { width: 200 }, field: { color: 'red' } }}
                   onChange={(args: any) => {
                     if (args) {
                       let value = args.target.value;

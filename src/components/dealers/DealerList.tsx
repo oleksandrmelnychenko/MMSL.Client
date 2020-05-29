@@ -1,4 +1,3 @@
-import './dealerList.scss';
 import React, { useEffect, useState } from 'react';
 import {
   IColumn,
@@ -26,8 +25,9 @@ import ManagementOptions from './dealerManaging/ManagementOptions';
 import { DialogArgs, CommonDialogType } from '../../redux/slices/control.slice';
 import {
   detailsListStyle,
-  scrollablePaneStyleForDetailList_Dealers,
   columnIconButtonStyle,
+  defaultCellStyle,
+  scrollablePaneStyleForDetailList,
 } from '../../common/fabric-styles/styles';
 import { Sticky, StickyPositionType } from 'office-ui-fabric-react/lib/Sticky';
 
@@ -76,13 +76,15 @@ export const DealerList: React.FC = () => {
   const _dealerColumns: IColumn[] = [
     {
       key: 'index',
-      name: '#',
+      name: '',
       minWidth: 16,
       maxWidth: 24,
       onColumnClick: () => {},
       onRender: (item: any, index?: number) => {
         return (
-          <Text>{index !== null && index !== undefined ? index + 1 : -1}</Text>
+          <Text style={defaultCellStyle}>
+            {index !== null && index !== undefined ? index + 1 : -1}
+          </Text>
         );
       },
     },
@@ -95,7 +97,7 @@ export const DealerList: React.FC = () => {
       isCollapsible: true,
       data: 'string',
       onRender: (item: any) => {
-        return <Text>{item.name}</Text>;
+        return <Text style={defaultCellStyle}>{item.name}</Text>;
       },
       isPadded: true,
     },
@@ -108,7 +110,7 @@ export const DealerList: React.FC = () => {
       isCollapsible: true,
       data: 'string',
       onRender: (item: any) => {
-        return <Text>{item.email}</Text>;
+        return <Text style={defaultCellStyle}>{item.email}</Text>;
       },
       isPadded: true,
     },
@@ -121,7 +123,7 @@ export const DealerList: React.FC = () => {
       isCollapsible: true,
       data: 'string',
       onRender: (item: any) => {
-        return <Text>{item.companyName}</Text>;
+        return <Text style={defaultCellStyle}>{item.companyName}</Text>;
       },
       isPadded: true,
     },
@@ -208,61 +210,60 @@ export const DealerList: React.FC = () => {
   };
 
   return (
-    <div className="dealerList">
-      <ScrollablePane styles={scrollablePaneStyleForDetailList_Dealers}>
-        <ShimmeredDetailsList
-          onRenderDetailsHeader={onRenderDetailsHeader}
-          enableShimmer={shimmer}
-          styles={detailsListStyle}
-          items={dealers}
-          selection={selection}
-          selectionMode={SelectionMode.single}
-          columns={_dealerColumns}
-          onRenderRow={(args: any) => {
-            return (
-              <div
-                onClick={(clickArgs: any) => {
-                  const offsetParent: any =
-                    clickArgs?.target?.offsetParent?.className;
+    // <div className="dealerList">
+    <ScrollablePane styles={scrollablePaneStyleForDetailList}>
+      <ShimmeredDetailsList
+        onRenderDetailsHeader={onRenderDetailsHeader}
+        enableShimmer={shimmer}
+        styles={detailsListStyle}
+        items={dealers}
+        selection={selection}
+        selectionMode={SelectionMode.single}
+        columns={_dealerColumns}
+        onRenderRow={(args: any) => {
+          return (
+            <div
+              onClick={(clickArgs: any) => {
+                const offsetParent: any =
+                  clickArgs?.target?.offsetParent?.className;
 
-                  if (!offsetParent.includes(DATA_SELECTION_DISABLED_CLASS)) {
-                    const selectFlow = () => {
-                      let createAction = assignPendingActions(
-                        dealerActions.getAndSelectDealerById(args.item.id),
-                        []
-                      );
-                      dispatch(createAction);
-                      dispatch(
-                        controlActions.openInfoPanelWithComponent(
-                          ManagementOptions
-                        )
-                      );
-                    };
+                if (!offsetParent.includes(DATA_SELECTION_DISABLED_CLASS)) {
+                  const selectFlow = () => {
+                    let createAction = assignPendingActions(
+                      dealerActions.getAndSelectDealerById(args.item.id),
+                      []
+                    );
+                    dispatch(createAction);
+                    dispatch(
+                      controlActions.openInfoPanelWithComponent(
+                        ManagementOptions
+                      )
+                    );
+                  };
 
-                    const unSelectFlow = () => {
-                      dispatch(dealerActions.setSelectedDealer(null));
-                      dispatch(controlActions.closeInfoPanelWithComponent());
-                    };
+                  const unSelectFlow = () => {
+                    dispatch(dealerActions.setSelectedDealer(null));
+                    dispatch(controlActions.closeInfoPanelWithComponent());
+                  };
 
-                    if (selectedDealerId) {
-                      if (selectedDealerId === args.item.id) {
-                        unSelectFlow();
-                      } else {
-                        selectFlow();
-                      }
+                  if (selectedDealerId) {
+                    if (selectedDealerId === args.item.id) {
+                      unSelectFlow();
                     } else {
                       selectFlow();
                     }
+                  } else {
+                    selectFlow();
                   }
-                }}
-              >
-                <DetailsRow {...args} />
-              </div>
-            );
-          }}
-        />
-      </ScrollablePane>
-    </div>
+                }
+              }}>
+              <DetailsRow {...args} />
+            </div>
+          );
+        }}
+      />
+    </ScrollablePane>
+    // </div>
   );
 };
 
