@@ -263,7 +263,9 @@ export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
           );
         }}
         onReset={(values: any, formikHelpers: any) => {
-          setValueItems(initValueItemsDefaults(targetMeasurement));
+          setValueItems(
+            initValueItemsDefaults(targetMeasurement, sizeChartForEdit)
+          );
         }}
         innerRef={(formik: any) => {
           props.formikReference.formik = formik;
