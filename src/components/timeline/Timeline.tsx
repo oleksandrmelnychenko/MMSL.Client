@@ -28,6 +28,8 @@ import {
   columnIconButtonStyle,
   firstCellStyle,
   cellStyle,
+  horizontalGapStackTokens,
+  mainTitleContent,
 } from '../../common/fabric-styles/styles';
 import TimelinePanel from './TimelinePanel';
 import { DeliveryTimeline } from '../../interfaces/index';
@@ -200,23 +202,20 @@ export const Timeline: React.FC = () => {
         <Stack.Item align="stretch">
           <div className="content__header">
             <div className="content__header__top">
-              <Stack horizontal>
-                <div className="content__header__top__title">Timeline</div>
-                <div className="content__header__top__controls">
-                  <Stack horizontal tokens={{ childrenGap: 10 }}>
-                    <div className="content__header__top__controls__control">
-                      <ActionButton
-                        onClick={() => {
-                          dispatch(
-                            productSettingsActions.openTimelineFormPanel()
-                          );
-                        }}
-                        iconProps={{ iconName: 'Add' }}>
-                        New timeline
-                      </ActionButton>
-                    </div>
-                  </Stack>
-                </div>
+              <Stack
+                horizontal
+                verticalAlign="center"
+                tokens={horizontalGapStackTokens}>
+                <Text variant="xLarge" nowrap block styles={mainTitleContent}>
+                  Delivery timeline
+                </Text>
+                <ActionButton
+                  onClick={() => {
+                    dispatch(productSettingsActions.openTimelineFormPanel());
+                  }}
+                  iconProps={{ iconName: 'Add' }}>
+                  New timeline
+                </ActionButton>
               </Stack>
             </div>
           </div>
