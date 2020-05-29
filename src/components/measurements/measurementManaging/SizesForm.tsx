@@ -9,6 +9,7 @@ import {
   MeasurementMapDefinition,
   MeasurementSize,
   MeasurementMapSize,
+  MeasurementMapValue,
 } from '../../../interfaces';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 import './sizeForm.scss';
@@ -28,52 +29,78 @@ const buildSize = (
   values: SizeInitValues,
   measurement: Measurement | null | undefined,
   valueItems: DefinitionValueItem[],
-  sourceEntity?: MeasurementMapSize
+  sourceEntity?: MeasurementMapSize | null | undefined
 ) => {
-  let newUnit: any = {
-    name: '',
-    description: '',
-    measurementId: 0,
-    valueDataContracts: [],
-  };
+  const sizePayload: any = {};
 
-  newUnit.name = values.name;
-  newUnit.description = values.description;
-  newUnit.measurementId = measurement ? measurement.id : 0;
-
-  newUnit.valueDataContracts = new List(valueItems)
-    .select((valueItem) => {
-      return {
-        measurementDefinitionId:
-          valueItem.sourceMapDefinition.measurementDefinitionId,
-        value: parseFloat(valueItem.value),
-      };
-    })
-    .where((itemContract) => !isNaN(itemContract.value))
-    .toArray();
-
-  return newUnit;
-};
-
-const initDefaultValues = (sourceEntity?: MeasurementSize | null) => {
-  const initValues: SizeInitValues = new SizeInitValues();
+  const dirtyValueItemsList = new List<DefinitionValueItem>(
+    valueItems
+  ).where((item) => item.resolveIsDirty());
 
   if (sourceEntity) {
-    initValues.name = sourceEntity.name;
-    initValues.description = sourceEntity.description
-      ? sourceEntity.description
-      : '';
+    /// Editing size flow
+    sizePayload.id = sourceEntity.measurementSizeId;
+    sizePayload.name = values.name;
+    sizePayload.description = values.description;
+    sizePayload.measurementId = measurement ? measurement.id : 0;
+
+    sizePayload.valueDataContracts = dirtyValueItemsList
+      .select((valueItem) => {
+        const valueDataContract: any = {};
+        valueDataContract.id = valueItem.getMapValueId();
+        valueDataContract.value = parseFloat(valueItem.value);
+        valueDataContract.measurementDefinitionId =
+          valueItem.sourceMapDefinition.measurementDefinitionId;
+
+        if (isNaN(valueDataContract.value)) valueDataContract.value = null;
+
+        return valueDataContract;
+      })
+      // .where(
+      //   (itemContract) => itemContract.value !== null && itemContract.id !== 0
+      // )
+      .toArray();
+  } else {
+    /// Creating new size flow
+    sizePayload.name = values.name;
+    sizePayload.description = values.description;
+    sizePayload.measurementId = measurement ? measurement.id : 0;
+
+    sizePayload.valueDataContracts = dirtyValueItemsList
+      .select((valueItem) => {
+        return {
+          measurementDefinitionId:
+            valueItem.sourceMapDefinition.measurementDefinitionId,
+          value: parseFloat(valueItem.value),
+        };
+      })
+      .where((itemContract) => !isNaN(itemContract.value))
+      .toArray();
+  }
+
+  return sizePayload;
+};
+
+const initDefaultValues = (
+  sourceEntity?: MeasurementMapSize | null | undefined
+) => {
+  const initValues: SizeInitValues = new SizeInitValues();
+
+  if (sourceEntity?.measurementSize) {
+    initValues.name = sourceEntity.measurementSize.name;
+    initValues.description = sourceEntity.measurementSize.description;
   }
 
   return initValues;
 };
 
 const initValueItemsDefaults = (
-  measurement: Measurement | null | undefined
+  measurement: Measurement | null | undefined,
+  sourceEntity?: MeasurementMapSize | null | undefined
 ) => {
   let result: DefinitionValueItem[] = [];
 
-  if (measurement) {
+  if (measurement?.measurementMapDefinitions) {
     result = new List(
       measurement.measurementMapDefinitions
         ? measurement.measurementMapDefinitions
@@ -81,9 +108,27 @@ const initValueItemsDefaults = (
     )
       .select<DefinitionValueItem>(
         (mapDefinition: MeasurementMapDefinition) => {
-          let result = new DefinitionValueItem(mapDefinition);
+          const resultItem = new DefinitionValueItem(mapDefinition);
 
-          return result;
+          const targetDefinitionId = mapDefinition.measurementDefinitionId;
+
+          if (sourceEntity?.measurementSize?.measurementMapValues) {
+            const targetMapValue:
+              | MeasurementMapValue
+              | null
+              | undefined = new List<MeasurementMapValue>(
+              sourceEntity.measurementSize.measurementMapValues
+            ).firstOrDefault(
+              (mapValueItem) =>
+                mapValueItem.measurementDefinitionId === targetDefinitionId
+            );
+
+            if (targetMapValue) {
+              resultItem.setMapValue(targetMapValue);
+            }
+          }
+
+          return resultItem;
         }
       )
       .toArray();
@@ -104,33 +149,24 @@ export class SizesFormProps {
 
   formikReference: FormicReference;
   measurement: Measurement | null | undefined;
-  size?: MeasurementSize | null | undefined;
+  size?: MeasurementMapSize | null | undefined;
 
   submitAction: (args: any) => void;
 }
 
 export class DefinitionValueItem {
-  private _initValue: string;
+  private _mapValue: MeasurementMapValue | null | undefined;
 
-  constructor(
-    mapDefinition: MeasurementMapDefinition,
-    size?: MeasurementMapSize
-  ) {
+  constructor(mapDefinition: MeasurementMapDefinition) {
     this.sourceMapDefinition = mapDefinition;
-    this.sizeMap = size;
 
     this.name =
       mapDefinition && mapDefinition.measurementDefinition
         ? mapDefinition.measurementDefinition.name
         : '';
 
-    this._initValue = '';
     this.value = '';
     this.isDirty = false;
-
-    if (size) {
-      /// TODO: vadymk for edit
-    }
   }
 
   name: string;
@@ -139,17 +175,48 @@ export class DefinitionValueItem {
   isDirty: boolean;
 
   sourceMapDefinition: MeasurementMapDefinition;
-  sizeMap: MeasurementMapSize | null | undefined;
 
   resolveIsDirty: () => boolean = () => {
     let isDirtyResult: boolean = false;
 
-    if (this._initValue !== this.value) {
-      isDirtyResult = true;
+    if (this._mapValue) {
+      /// If `init map value` is not null and is different
+      /// to `item input value` - state becomes `dirty`
+      if (this.value !== `${this._mapValue.value}`) isDirtyResult = true;
+    } else {
+      /// If `init mapValue` is NULL item is handled as
+      /// new value, so it's becomes dirty.
+      if (this.value !== '') {
+        isDirtyResult = true;
+      }
     }
 
     this.isDirty = isDirtyResult;
     return isDirtyResult;
+  };
+
+  setMapValue: (mapValue: MeasurementMapValue | null | undefined) => void = (
+    mapValue: MeasurementMapValue | null | undefined
+  ) => {
+    this._mapValue = mapValue;
+
+    if (this._mapValue) {
+      this.value = `${this._mapValue.value}`;
+    } else {
+      this.value = '';
+    }
+  };
+
+  /// Returns "relative map value" id, if "relative value"
+  /// is not exist - id will be 0
+  getMapValueId: () => number = () => {
+    let idResult = 0;
+
+    if (this._mapValue) {
+      idResult = this._mapValue.id;
+    }
+
+    return idResult;
   };
 }
 
@@ -159,23 +226,30 @@ export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
   const [targetMeasurement, setTargetMeasurement] = useState<
     Measurement | null | undefined
   >();
+  const [sizeChartForEdit, setSizeChartForEdit] = useState<
+    MeasurementMapSize | null | undefined
+  >();
   const [valueItems, setValueItems] = useState<DefinitionValueItem[]>([]);
 
   useEffect(() => {
     return () => {
       setTargetMeasurement(null);
+      setSizeChartForEdit(null);
     };
-  }, [setTargetMeasurement]);
+  }, [setTargetMeasurement, setSizeChartForEdit]);
 
   useEffect(() => {
     if (targetMeasurement) {
-      setValueItems(initValueItemsDefaults(targetMeasurement));
+      setValueItems(
+        initValueItemsDefaults(targetMeasurement, sizeChartForEdit)
+      );
     }
-  }, [targetMeasurement, props.size]);
+  }, [targetMeasurement, sizeChartForEdit]);
 
-  if (props.measurement !== targetMeasurement) {
+  if (props.measurement !== targetMeasurement)
     setTargetMeasurement(props.measurement);
-  }
+
+  if (props.size !== sizeChartForEdit) setSizeChartForEdit(props.size);
 
   return (
     <div className="sizeForm">
@@ -186,10 +260,14 @@ export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
         })}
         initialValues={initValues}
         onSubmit={(values: any) => {
-          props.submitAction(buildSize(values, targetMeasurement, valueItems));
+          props.submitAction(
+            buildSize(values, targetMeasurement, valueItems, sizeChartForEdit)
+          );
         }}
         onReset={(values: any, formikHelpers: any) => {
-          setValueItems(initValueItemsDefaults(targetMeasurement));
+          setValueItems(
+            initValueItemsDefaults(targetMeasurement, sizeChartForEdit)
+          );
         }}
         innerRef={(formik: any) => {
           props.formikReference.formik = formik;
@@ -250,7 +328,15 @@ export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
                     {valueItems.map(
                       (valueItem: DefinitionValueItem, index: number) => {
                         return (
-                          <div className="sizeForm__definitionItem" key={index}>
+                          // sizeForm__definitionItem
+                          <div
+                            className={
+                              valueItem.isDirty
+                                ? 'sizeForm__definitionItem isDirty'
+                                : 'sizeForm__definitionItem'
+                            }
+                            key={index}
+                          >
                             <Stack horizontal horizontalAlign="space-between">
                               <Stack.Item
                                 styles={{

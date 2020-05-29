@@ -13,8 +13,12 @@
         position: relative;
         padding: 10px 3px 8px 9px;
         border: 1px solid rgb(200, 200, 200);
-        border-left: 3px solid #0078d4;
+        border-left: 3px solid rgb(200, 200, 200);
         height: 42px;
+
+        &.isDirty {
+            border-left: 3px solid #0078d4;
+        }
 
         &__options {
             position: absolute;

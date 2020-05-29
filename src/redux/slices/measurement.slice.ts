@@ -1,4 +1,4 @@
-import { Measurement } from './../../interfaces/index';
+import { Measurement, MeasurementMapSize } from './../../interfaces/index';
 import { createSlice } from '@reduxjs/toolkit';
 
 export class MeasurementsState {
@@ -7,18 +7,26 @@ export class MeasurementsState {
     this.measurementList = [];
     this.targetMeasurement = null;
     this.managingMeasurementPanelContent = null;
+    this.managingSizeChartState = {
+      targetSizeChart: null,
+    };
   }
 
   managingMeasurementPanelContent: ManagingMeasurementPanelComponent | null;
   isMeasurementsWasRequested: boolean;
   measurementList: Measurement[];
   targetMeasurement: Measurement | null | undefined;
+
+  managingSizeChartState: {
+    targetSizeChart: MeasurementMapSize | null | undefined;
+  };
 }
 
 export enum ManagingMeasurementPanelComponent {
   CreateNewMeasurement,
   EditMeasurement,
   AddChartSize,
+  EditChartSize,
 }
 
 const measurements = createSlice({
@@ -42,6 +50,18 @@ const measurements = createSlice({
       return state;
     },
     apiCreateNewMeasurementSize(state, action) {
+      return state;
+    },
+    apiUpdateMeasurementSize(state, action) {
+      return state;
+    },
+    apiDeleteMeasurementSizeById(
+      state,
+      action: {
+        type: string;
+        payload: { measurementId: number; sizeId: number };
+      }
+    ) {
       return state;
     },
     updateisMeasurementsWasRequested(
@@ -76,6 +96,14 @@ const measurements = createSlice({
       }
     ) {
       state.managingMeasurementPanelContent = action.payload;
+
+      return state;
+    },
+    changeSizeForEdit(
+      state,
+      action: { type: string; payload: MeasurementMapSize | null | undefined }
+    ) {
+      state.managingSizeChartState.targetSizeChart = action.payload;
 
       return state;
     },

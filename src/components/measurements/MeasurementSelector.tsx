@@ -6,6 +6,7 @@ import { assignPendingActions } from '../../helpers/action.helper';
 import { IApplicationState } from '../../redux/reducers';
 import { Measurement } from '../../interfaces';
 import { List } from 'linq-typescript';
+import * as fabricStyles from '../../common/fabric-styles/styles';
 
 const MeasurementSelector: React.FC = () => {
   const dispatch = useDispatch();
@@ -66,21 +67,14 @@ const MeasurementSelector: React.FC = () => {
       <ComboBox
         selectedKey={targetMeasurement ? `${targetMeasurement.id}` : null}
         allowFreeform={true}
+        label="Size charts"
         autoComplete={true ? 'on' : 'off'}
         options={itemOptions}
-        styles={
-          {
-            // root: {
-            //   border: '1px solid #c8c8c8',
-            // },
-            // optionsContainerWrapper: {
-            //   border: '1px solid #c8c8c8',
-            // },
-            // optionsContainer: {
-            //   border: '1px solid #c8c8c8',
-            // },
-          }
-        }
+        useComboBoxAsMenuWidth={true}
+        styles={{
+          ...fabricStyles.comboBoxStyles,
+          container: { marginTop: '-41px' },
+        }}
         onChange={(
           event: React.FormEvent<IComboBox>,
           option?: IComboBoxOption,
