@@ -39,3 +39,12 @@ export const signInEpic = (action$: AnyAction, state$: any) =>
       );
     })
   );
+
+export const logOutEpic = (action$: AnyAction, state$: any) =>
+  action$.pipe(
+    ofType(authActions.logOut.type),
+    switchMap((action: AnyAction) => {
+      const currentLanguage = getActiveLanguage(state$.value.localize).code;
+      return of(push(`/${currentLanguage}/account-security/sign-in`));
+    })
+  );
