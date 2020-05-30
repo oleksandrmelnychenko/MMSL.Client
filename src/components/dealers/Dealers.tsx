@@ -52,8 +52,7 @@ export const Dealers: React.FC = (props: any) => {
               <Stack
                 horizontal
                 verticalAlign="center"
-                tokens={horizontalGapStackTokens}
-              >
+                tokens={horizontalGapStackTokens}>
                 <Text variant="xLarge" nowrap block styles={mainTitleContent}>
                   Dealers
                 </Text>
@@ -62,8 +61,7 @@ export const Dealers: React.FC = (props: any) => {
                   onClick={() =>
                     dispatch(dealerActions.toggleNewDealerForm(true))
                   }
-                  iconProps={{ iconName: 'Add' }}
-                >
+                  iconProps={{ iconName: 'Add' }}>
                   New dealer
                 </ActionButton>
                 <DatePicker
@@ -102,7 +100,7 @@ export const Dealers: React.FC = (props: any) => {
                   className="dealerSearch"
                   value={searchText}
                   placeholder="Find dealer"
-                  styles={{ root: { width: 200 }, field: { color: 'red' } }}
+                  styles={{ root: { width: 200 } }}
                   onChange={(args: any) => {
                     if (args) {
                       let value = args.target.value;
