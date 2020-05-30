@@ -7,7 +7,6 @@ export class MeasurementsState {
     this.measurementList = [];
     this.targetMeasurement = null;
     this.managingMeasurementPanelContent = null;
-    this.selectedSize = null;
     this.managingSizeChartState = {
       targetSizeChart: null,
     };
@@ -17,7 +16,6 @@ export class MeasurementsState {
   isMeasurementsWasRequested: boolean;
   measurementList: Measurement[];
   targetMeasurement: Measurement | null | undefined;
-  selectedSize: MeasurementMapSize | null | undefined;
 
   managingSizeChartState: {
     targetSizeChart: MeasurementMapSize | null | undefined;
@@ -79,14 +77,6 @@ const measurements = createSlice({
       action: { type: string; payload: Measurement[] }
     ) {
       state.measurementList = action.payload;
-
-      return state;
-    },
-    changeSelectedSize(
-      state,
-      action: { type: string; payload: MeasurementMapSize | null | undefined }
-    ) {
-      state.selectedSize = action.payload;
 
       return state;
     },

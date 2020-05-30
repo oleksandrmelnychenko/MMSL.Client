@@ -238,14 +238,11 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
           size={targetSizeChartForEdit}
           formikReference={formikReference}
           submitAction={(args: any) => {
-            debugger;
-
             let action = assignPendingActions(
               measurementActions.apiUpdateMeasurementSize(args),
               [],
               [],
               (args: any) => {
-                debugger;
                 let getNewMeasurementByIdAction = assignPendingActions(
                   measurementActions.apiGetMeasurementById(
                     targetMeasurement ? targetMeasurement.id : 0
@@ -253,7 +250,6 @@ export const MeasurementManagingPanel: React.FC = (props: any) => {
                   [],
                   [],
                   (args: any) => {
-                    debugger;
                     dispatch(
                       measurementActions.changeSelectedMeasurement(args)
                     );

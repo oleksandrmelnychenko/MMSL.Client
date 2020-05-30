@@ -85,7 +85,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
   if (panelContent === ManagingPanelComponent.ManageGroups) {
     hideAddEditPanelActions(actionItems);
     panelWidth = 420;
-    panelTitleText = 'New Option Group';
+    panelTitleText = 'New Style';
 
     content = (
       <ManagingProductGroupForm
@@ -234,7 +234,8 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
             productSettingsActions.updateTargetSingleEditOptionGroup(null)
           );
         }}
-        closeButtonAriaLabel="Close">
+        closeButtonAriaLabel="Close"
+      >
         <PanelTitle title={panelTitleText} description={panelDescription} />
 
         <CommonManagementActionBar actionItems={actionItems} />

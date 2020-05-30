@@ -123,9 +123,7 @@ export const saveNewOptionGroupEpic = (action$: AnyAction, state$: any) => {
           return successCommonEpicFlow(
             successResponse,
             [
-              controlActions.showInfoMessage(
-                'New option group created successfully'
-              ),
+              controlActions.showInfoMessage('New style created successfully'),
               controlActions.disabledStatusBar(),
             ],
             action
@@ -137,7 +135,7 @@ export const saveNewOptionGroupEpic = (action$: AnyAction, state$: any) => {
               errorResponse,
               [
                 controlActions.showInfoMessage(
-                  `Error occurred while creating new option group. ${errorResponse}`
+                  `Error occurred while creating new style. ${errorResponse}`
                 ),
                 controlActions.disabledStatusBar(),
               ],

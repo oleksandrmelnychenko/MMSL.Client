@@ -218,6 +218,17 @@ export class DefinitionValueItem {
 
     return idResult;
   };
+
+  updateInitMapValue = () => {
+    if (this._mapValue) {
+      let value: any = parseFloat(this.value);
+
+      if (isNaN(value)) {
+        value = null;
+      }
+      this._mapValue.value = value;
+    }
+  };
 }
 
 export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
