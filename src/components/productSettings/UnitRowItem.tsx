@@ -1,5 +1,4 @@
 import React from 'react';
-import './productSettingsLsit.scss';
 import {
   Text,
   Image,

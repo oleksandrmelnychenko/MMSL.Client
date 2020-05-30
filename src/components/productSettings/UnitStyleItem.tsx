@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import './productSettingsLsit.scss';
 import { Text, Image, Icon, Stack } from 'office-ui-fabric-react';
 import { OptionUnit } from '../../interfaces';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,8 +41,10 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
       ? ManagingPanelComponent.ManageSingleOptionUnit
       : null;
 
-    dispatch(productSettingsActions.managingPanelContent(panelContentType));
-  }, [singleOptionForEdit, dispatch]);
+    if (singleOptionForEdit) {
+      dispatch(productSettingsActions.managingPanelContent(panelContentType));
+    }
+  }, [singleOptionForEdit]);
 
   let allowColor = props.optionUnit.isMandatory ? '#2b579a' : '#2b579a60';
 
