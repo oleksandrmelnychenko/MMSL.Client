@@ -2,7 +2,7 @@ import {
   FontWeights,
   ITextStyles,
   IStackTokens,
-  OverflowButtonType,
+  mergeStyles,
 } from 'office-ui-fabric-react';
 import {
   ICardSectionTokens,
@@ -298,6 +298,21 @@ export const editCardIcon = {
 export const deleteIconRedColor = {
   root: {
     color: '#fff',
+  },
+};
+
+export const cardIcon = mergeStyles({
+  fontSize: 16,
+  paddingRight: '5px',
+  cursor: 'default',
+  display: 'inline-block',
+});
+
+export const cardText = {
+  root: {
+    color: '#484848',
+    fontWeight: FontWeights.regular,
+    width: '120px',
   },
 };
 

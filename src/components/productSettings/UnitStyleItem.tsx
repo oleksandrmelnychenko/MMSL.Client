@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './productSettingsLsit.scss';
-import { Text, Image, mergeStyles, Icon, Stack } from 'office-ui-fabric-react';
+import { Text, Image, Icon, Stack } from 'office-ui-fabric-react';
 import { OptionUnit } from '../../interfaces';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -61,22 +61,19 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
         <Card.Section>
           <Stack horizontal>
             <Icon
-              iconName="Unlock"
-              className={mergeStyles({
-                fontSize: 16,
-                paddingRight: '5px',
-                color: allowColor,
-                cursor: 'default',
-                display: 'inline-block',
-              })}
+              iconName={props.optionUnit.isMandatory ? 'Unlock' : 'Lock'}
+              className={fabricStyles.cardIcon}
+              styles={{
+                root: {
+                  color: allowColor,
+                },
+              }}
             />
             <Text
               block
               nowrap
               variant="mediumPlus"
-              styles={{
-                root: { color: '#484848', fontWeight: 400, width: '120px' },
-              }}>
+              styles={fabricStyles.cardText}>
               {props.optionUnit.value}
             </Text>
           </Stack>

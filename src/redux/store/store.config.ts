@@ -9,11 +9,15 @@ export const initStore = (history: any) => {
   const simpleRouter = routerMiddleware(history);
   const epicMiddleware = createEpicMiddleware();
 
-  const logger = createLogger({
-    collapsed: true,
-  });
+  let middleware = [];
 
-  const middleware = [epicMiddleware, simpleRouter, logger];
+  if (process.env.NODE_ENV !== 'production') {
+    const logger = createLogger({
+      collapsed: true,
+    });
+
+    middleware = [epicMiddleware, simpleRouter, logger];
+  } else middleware = [epicMiddleware, simpleRouter];
 
   const store = configureStore({
     reducer,
