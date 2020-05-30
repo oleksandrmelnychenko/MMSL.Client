@@ -34,8 +34,8 @@ function CommandBarItemCreator(
 
 const GetCommandBarItemKeysForDisable = (items: CommandBarItem[]) => {
   let keyArray: string[] = [];
-  items.forEach((c) => {
-    keyArray.push(CommandBarItem[c]);
+  items.forEach((item) => {
+    keyArray.push(CommandBarItem[item]);
   });
 
   return keyArray;

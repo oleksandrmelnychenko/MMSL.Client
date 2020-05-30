@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ICommandBarItemProps } from 'office-ui-fabric-react';
 import { IControlState } from '../../interfaces';
+import { RightPanel } from '../../components/master/panel/RightPanel';
 
 export class CommonDialogState {
   constructor() {
@@ -126,29 +127,25 @@ const controls = createSlice({
       return state;
     },
     openRightPanel(state, action) {
-      return Object.assign(state, {
-        rightPanel: Object.assign({}, state.rightPanel, {
-          title: action.payload.title,
-          width: action.payload.width,
-          commandBarClassName: action.payload.commandBarClassName,
-          description: action.payload.description,
-          commandBarItems: [],
-          closeFunctions: action.payload.closeFunctions,
-          component: action.payload.component,
-        } as any),
-      } as IControlState);
+      state.rightPanel = {
+        ...state.rightPanel,
+        title: action.payload.title,
+        width: action.payload.width,
+        commandBarClassName: action.payload.commandBarClassName,
+        description: action.payload.description,
+        commandBarItems: [],
+        closeFunctions: action.payload.closeFunctions,
+        component: action.payload.component,
+      };
+      return state;
     },
     setPanelButtons(state, action) {
-      return Object.assign(state, {
-        rightPanel: Object.assign({}, state.rightPanel, {
-          commandBarItems: action.payload,
-        } as any),
-      } as IControlState);
+      state.rightPanel.commandBarItems = action.payload;
+      return state;
     },
     closeRightPanel(state) {
-      return Object.assign(state, {
-        rightPanel: new RightPanelProps(),
-      } as IControlState);
+      state.rightPanel = new RightPanelProps();
+      return state;
     },
   },
 });
