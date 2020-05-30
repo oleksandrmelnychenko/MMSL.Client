@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { ICommandBarItemProps } from 'office-ui-fabric-react';
+import { IControlState } from '../../interfaces';
 
 export class CommonDialogState {
   constructor() {
@@ -34,6 +36,22 @@ export enum CommonDialogType {
   Delete,
 }
 
+export class RightPanelProps {
+  constructor() {
+    this.title = '';
+    this.width = '600px';
+    this.closeFunctions = null;
+    this.component = null;
+  }
+  title: string;
+  description?: string;
+  width: string;
+  commandBarItems?: any[];
+  commandBarClassName?: string;
+  closeFunctions: any;
+  component: any;
+}
+
 export class PanelInfo {
   constructor() {
     this.isOpenPanelInfo = false;
@@ -47,6 +65,7 @@ export const defaultControlState = {
   isGlobalShimmerActive: false,
   isCollapseMenu: false,
   panelInfo: new PanelInfo(),
+  rightPanel: new RightPanelProps(),
   commonDialog: new CommonDialogState(),
   infoMessage: '',
   isActivateStatusBar: false,
@@ -105,6 +124,31 @@ const controls = createSlice({
     hideGlobalShimmer(state) {
       state.isGlobalShimmerActive = false;
       return state;
+    },
+    openRightPanel(state, action) {
+      return Object.assign(state, {
+        rightPanel: Object.assign({}, state.rightPanel, {
+          title: action.payload.title,
+          width: action.payload.width,
+          commandBarClassName: action.payload.commandBarClassName,
+          description: action.payload.description,
+          commandBarItems: [],
+          closeFunctions: action.payload.closeFunctions,
+          component: action.payload.component,
+        } as any),
+      } as IControlState);
+    },
+    setPanelButtons(state, action) {
+      return Object.assign(state, {
+        rightPanel: Object.assign({}, state.rightPanel, {
+          commandBarItems: action.payload,
+        } as any),
+      } as IControlState);
+    },
+    closeRightPanel(state) {
+      return Object.assign(state, {
+        rightPanel: new RightPanelProps(),
+      } as IControlState);
     },
   },
 });

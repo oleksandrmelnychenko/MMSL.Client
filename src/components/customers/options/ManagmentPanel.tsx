@@ -9,7 +9,12 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { IApplicationState } from '../../../redux/reducers/index';
-import { ImenuItem } from '../../../interfaces';
+import { ImenuItem, StoreCustomer } from '../../../interfaces';
+import {
+  controlActions,
+  RightPanelProps,
+} from '../../../redux/slices/control.slice';
+import ManageCustomerForm from '../../customers/customerManaging/ManageCustomerForm';
 
 const ManagementPanel: React.FC = () => {
   const dispatch = useDispatch();
@@ -28,6 +33,10 @@ const ManagementPanel: React.FC = () => {
     },
   ];
 
+  const selectedCustomer = useSelector<IApplicationState, StoreCustomer | null>(
+    (state) => state.customer.customerState.selectedCustomer
+  );
+
   return (
     <div className="management">
       {menuItem.map((item, index) => (
@@ -41,7 +50,17 @@ const ManagementPanel: React.FC = () => {
             styles={btnMenuStyle}
             className={item.className}
             onClick={() => {
-              dispatch(customerActions.toggleCustomerForm(true));
+              dispatch(
+                controlActions.openRightPanel({
+                  title: `Customer: ${selectedCustomer!.userName}`,
+                  width: '400px',
+                  closeFunctions: () => {
+                    dispatch(controlActions.closeRightPanel());
+                    dispatch(customerActions.selectedCustomer(null));
+                  },
+                  component: ManageCustomerForm,
+                })
+              );
             }}
             allowDisabledFocus
           />

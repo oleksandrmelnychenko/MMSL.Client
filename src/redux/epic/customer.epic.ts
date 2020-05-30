@@ -170,7 +170,7 @@ export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
           return successCommonEpicFlow(
             successResponse,
             [
-              customerActions.toggleCustomerForm(false),
+              controlActions.closeRightPanel(),
               customerActions.getCustomersListPaginated(),
               customerActions.selectedCustomer(null),
               controlActions.disabledStatusBar(),

@@ -4,13 +4,16 @@ import { SearchBox, ActionButton, Text, Stack } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import CustomerList from './CustomerList';
-import CustomerPanel from './customerManaging/CustomerPanel';
 import { customerActions } from '../../redux/slices/customer.slice';
-import { controlActions } from '../../redux/slices/control.slice';
+import {
+  controlActions,
+  RightPanelProps,
+} from '../../redux/slices/control.slice';
 import {
   horizontalGapStackTokens,
   mainTitleContent,
 } from '../../common/fabric-styles/styles';
+import ManageCustomerForm from '../customers/customerManaging/ManageCustomerForm';
 
 export const Customers: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -40,14 +43,23 @@ export const Customers: React.FC = (props: any) => {
                 horizontal
                 verticalAlign="center"
                 tokens={horizontalGapStackTokens}>
-                <Text variant="xLarge" nowrap block styles={mainTitleContent}>
+                <Text variant="xLarge" block styles={mainTitleContent}>
                   Customers
                 </Text>
                 <ActionButton
                   className="customersAdd"
                   onClick={() => {
                     dispatch(customerActions.selectedCustomer(null));
-                    dispatch(customerActions.toggleCustomerForm(true));
+                    dispatch(
+                      controlActions.openRightPanel({
+                        title: 'New Customer',
+                        width: '400px',
+                        closeFunctions: () => {
+                          dispatch(controlActions.closeRightPanel());
+                        },
+                        component: ManageCustomerForm,
+                      })
+                    );
                   }}
                   iconProps={{ iconName: 'Add' }}>
                   New customer
@@ -92,7 +104,6 @@ export const Customers: React.FC = (props: any) => {
           <CustomerList />
         </Stack.Item>
       </Stack>
-      <CustomerPanel />
     </div>
   );
 };

@@ -86,7 +86,6 @@ const ProductCategories: React.FC = () => {
                 tokens={fabricStyles.horizontalGapStackTokens}>
                 <Text
                   variant="xLarge"
-                  nowrap
                   block
                   styles={fabricStyles.mainTitleContent}>
                   Products

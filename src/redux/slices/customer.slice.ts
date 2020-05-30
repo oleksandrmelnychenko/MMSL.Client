@@ -73,10 +73,6 @@ const customer = createSlice({
       state.customerState.searchByStore = action.payload;
       return state;
     },
-    toggleCustomerForm(state, action) {
-      state.manageCustomerForm.isFormVisible = action.payload;
-      return state;
-    },
     selectedCustomer(state, action) {
       state.customerState.selectedCustomer = action.payload;
       return state;
