@@ -29,11 +29,8 @@ export class CustomerListState {
 
 export class ManageCustomerFormState {
   constructor() {
-    this.isFormVisible = false;
     this.storesAutocomplete = [];
   }
-
-  isFormVisible: boolean;
   storesAutocomplete: IStore[];
 }
 

@@ -54,11 +54,9 @@ export enum ManagingPanelComponent {
 
 export class ManageTimelineState {
   constructor() {
-    this.isTimelineFormPanelOpen = false;
     this.deliveryTimelines = [];
     this.selectedDeliveryTimeline = null;
   }
-  isTimelineFormPanelOpen: boolean;
   deliveryTimelines: DeliveryTimeline[];
   selectedDeliveryTimeline: DeliveryTimeline | null;
 }
@@ -141,14 +139,6 @@ const productSettings = createSlice({
         }
       } else {
       }
-      return state;
-    },
-    openTimelineFormPanel(state) {
-      state.manageTimelineState.isTimelineFormPanelOpen = true;
-      return state;
-    },
-    closeTimelineFormPanel(state) {
-      state.manageTimelineState.isTimelineFormPanelOpen = false;
       return state;
     },
     apiGetAllDeliveryTimeline(state) {
