@@ -327,3 +327,20 @@ export const cardStyle = {
 export const marginImageCenter = {
   root: { margin: '0 auto', height: '140px' },
 };
+
+export const stackStyleList = {
+  root: {
+    height: '40px',
+    borderBottom: '1px solid #dfdfdf',
+    borderTop: '1px solid #dfdfdf',
+    paddingTop: '5px',
+    paddingBottom: '5px',
+    marginBottom: '15px',
+    marginTop: '15px',
+  },
+};
+export const textStackStyle = {
+  root: {
+    fontSize: '16px',
+  },
+};
