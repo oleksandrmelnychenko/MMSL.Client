@@ -1,5 +1,8 @@
 import { GroupItemVisualState } from './viewModels/index';
-import { CommonDialogState } from '../redux/slices/control.slice';
+import {
+  CommonDialogState,
+  RightPanelProps,
+} from '../redux/slices/control.slice';
 import { DealerDetilsComponents } from '../redux/slices/dealer.slice';
 
 export interface IUserInfo {
@@ -38,6 +41,7 @@ export interface IControlState {
   isGlobalShimmerActive: boolean;
   isCollapseMenu: boolean;
   panelInfo: IPanelInfo;
+  rightPanel: RightPanelProps;
   commonDialog: CommonDialogState;
   infoMessage: string;
   isActivateStatusBar: boolean;

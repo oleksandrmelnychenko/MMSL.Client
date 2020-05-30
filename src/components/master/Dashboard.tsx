@@ -10,15 +10,19 @@ import CommonDialog from './CommonDialog';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers/index';
 import { Panel, PanelType } from 'office-ui-fabric-react';
-import { controlActions } from '../../redux/slices/control.slice';
+import {
+  controlActions,
+  RightPanelProps,
+} from '../../redux/slices/control.slice';
 
-import { stylesPanelInfo } from '../../common/fabric-styles/styles';
+import { stylesPanelInfo, panelStyle } from '../../common/fabric-styles/styles';
 import ProductSettings from '../productSettings/ProductSettings';
 import { IPanelInfo } from '../../interfaces/index';
 import Reports from '../reports/Reports';
 import ProductCategoryView from '../product-category/ProductCategoryView';
 import Measurements from '../measurements/Measurements';
 import Timeline from '../timeline/Timeline';
+import { RightPanel } from './panel/RightPanel';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
@@ -34,6 +38,10 @@ const Dashboard: React.FC = () => {
   const dismissPanelInfo = () => {
     dispatch(controlActions.closeInfoPanelWithComponent());
   };
+
+  const rightPanel = useSelector<IApplicationState, RightPanelProps>(
+    (state) => state.control.rightPanel
+  );
 
   return (
     <>
@@ -67,6 +75,19 @@ const Dashboard: React.FC = () => {
       </main>
 
       <Footer />
+      {!!rightPanel.title && (
+        <Panel
+          type={PanelType.custom}
+          customWidth={rightPanel.width}
+          isBlocking={true}
+          styles={panelStyle}
+          isOpen={!!rightPanel.title}
+          onDismiss={() => {
+            rightPanel.closeFunctions();
+          }}>
+          <Route path={location.pathname} component={RightPanel} />
+        </Panel>
+      )}
 
       <CommonDialog />
     </>

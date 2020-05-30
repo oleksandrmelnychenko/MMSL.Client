@@ -29,11 +29,8 @@ export class CustomerListState {
 
 export class ManageCustomerFormState {
   constructor() {
-    this.isFormVisible = false;
     this.storesAutocomplete = [];
   }
-
-  isFormVisible: boolean;
   storesAutocomplete: IStore[];
 }
 
@@ -71,10 +68,6 @@ const customer = createSlice({
     },
     searchCustomerByStore(state, action) {
       state.customerState.searchByStore = action.payload;
-      return state;
-    },
-    toggleCustomerForm(state, action) {
-      state.manageCustomerForm.isFormVisible = action.payload;
       return state;
     },
     selectedCustomer(state, action) {

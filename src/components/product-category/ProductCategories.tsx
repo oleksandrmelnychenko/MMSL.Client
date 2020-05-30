@@ -29,7 +29,8 @@ const ProductCategories: React.FC = () => {
   useEffect(() => {
     dispatch(productActions.apiGetAllProductCategory());
     return () => {
-      // dispatch(productCategoryAction.chooseProductCategory(null));
+      dispatch(productActions.chooseProductCategory(null));
+      dispatch(controlActions.closeInfoPanelWithComponent());
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -86,7 +87,6 @@ const ProductCategories: React.FC = () => {
                 tokens={fabricStyles.horizontalGapStackTokens}>
                 <Text
                   variant="xLarge"
-                  nowrap
                   block
                   styles={fabricStyles.mainTitleContent}>
                   Products

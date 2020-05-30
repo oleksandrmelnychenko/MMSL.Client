@@ -41,7 +41,7 @@ export const ProductSettings: React.FC = (props: any) => {
                 horizontal
                 verticalAlign="center"
                 tokens={horizontalGapStackTokens}>
-                <Text variant="xLarge" nowrap block styles={mainTitleContent}>
+                <Text variant="xLarge" block styles={mainTitleContent}>
                   Styles
                 </Text>
                 <ActionButton

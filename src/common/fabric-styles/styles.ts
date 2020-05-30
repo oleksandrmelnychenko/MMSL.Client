@@ -2,7 +2,7 @@ import {
   FontWeights,
   ITextStyles,
   IStackTokens,
-  OverflowButtonType,
+  mergeStyles,
 } from 'office-ui-fabric-react';
 import {
   ICardSectionTokens,
@@ -301,6 +301,21 @@ export const deleteIconRedColor = {
   },
 };
 
+export const cardIcon = mergeStyles({
+  fontSize: 16,
+  paddingRight: '5px',
+  cursor: 'default',
+  display: 'inline-block',
+});
+
+export const cardText = {
+  root: {
+    color: '#484848',
+    fontWeight: FontWeights.regular,
+    width: '120px',
+  },
+};
+
 export const cardStyle = {
   root: {
     minWidth: '200px',
@@ -311,4 +326,21 @@ export const cardStyle = {
 
 export const marginImageCenter = {
   root: { margin: '0 auto', height: '140px' },
+};
+
+export const stackStyleList = {
+  root: {
+    height: '40px',
+    borderBottom: '1px solid #dfdfdf',
+    borderTop: '1px solid #dfdfdf',
+    paddingTop: '5px',
+    paddingBottom: '5px',
+    marginBottom: '15px',
+    marginTop: '15px',
+  },
+};
+export const textStackStyle = {
+  root: {
+    fontSize: '16px',
+  },
 };

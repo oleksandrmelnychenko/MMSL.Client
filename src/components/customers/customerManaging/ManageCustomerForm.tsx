@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
   Stack,
@@ -20,7 +20,15 @@ import * as fabricStyles from '../../../common/fabric-styles/styles';
 import * as fabricControlSettings from '../../../common/fabric-control-settings/fabricControlSettings';
 import { useDispatch, useSelector } from 'react-redux';
 import { customerActions } from '../../../redux/slices/customer.slice';
-import { IApplicationState } from '../../../redux/reducers';
+import {
+  GetCommandBarItemProps,
+  CommandBarItem,
+  ChangeItemsDisabledState,
+} from '../../../helpers/commandBar.helper';
+import { controlActions } from '../../../redux/slices/control.slice';
+import { IApplicationState } from '../../../redux/reducers/index';
+import { assignPendingActions } from '../../../helpers/action.helper';
+import { List } from 'linq-typescript';
 
 export class CreateStoreCustomerFormInitValues {
   constructor() {
@@ -40,7 +48,7 @@ export class CreateStoreCustomerFormInitValues {
   store: IStore | null;
 }
 
-const buildNewStoreCustomerAccount = (
+const buildCustomerAccountData = (
   values: any,
   sourceEntity?: StoreCustomer
 ) => {
@@ -84,28 +92,28 @@ const initDefaultValuesForNewStoreCustomerForm = (
   return initValues;
 };
 
-class ManageCustomerFormProps {
-  constructor() {
-    this.formikReference = new FormicReference();
-    this.customer = null;
-    this.submitAction = (args: any) => {};
-  }
-
-  formikReference: FormicReference;
-  customer?: StoreCustomer | null;
-  submitAction: (args: any) => void;
-}
-
-export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
-  props: ManageCustomerFormProps
-) => {
+export const ManageCustomerForm: React.FC = () => {
   const dispatch = useDispatch();
-
-  const initValues = initDefaultValuesForNewStoreCustomerForm(props.customer);
 
   const storesAutocomplete = useSelector<IApplicationState, IStore[]>(
     (state) => state.customer.manageCustomerForm.storesAutocomplete
   );
+
+  const selectedCustomer = useSelector<IApplicationState, StoreCustomer | null>(
+    (state) => state.customer.customerState.selectedCustomer
+  );
+
+  const initValues = initDefaultValuesForNewStoreCustomerForm(selectedCustomer);
+
+  const commandBarItems = useSelector<IApplicationState, any>(
+    (state) => state.control.rightPanel.commandBarItems
+  );
+
+  const [formikReference] = useState<FormicReference>(
+    new FormicReference(() => {})
+  );
+
+  const [isFormikDirty, setFormikDirty] = useState<boolean>(false);
 
   let autocompleteOptions: any[] = [];
 
@@ -118,6 +126,35 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
       });
     });
   }
+
+  useEffect(() => {
+    if (formikReference.formik) {
+      dispatch(
+        controlActions.setPanelButtons([
+          GetCommandBarItemProps(CommandBarItem.Save, () => {
+            formikReference.formik.submitForm();
+          }),
+          GetCommandBarItemProps(CommandBarItem.Reset, () => {
+            formikReference.formik.resetForm();
+          }),
+        ])
+      );
+    }
+  }, [formikReference, dispatch]);
+
+  useEffect(() => {
+    if (new List(commandBarItems).any()) {
+      dispatch(
+        controlActions.setPanelButtons(
+          ChangeItemsDisabledState(
+            commandBarItems,
+            [CommandBarItem.Reset, CommandBarItem.Save],
+            !isFormikDirty
+          )
+        )
+      );
+    }
+  }, [isFormikDirty, dispatch]);
 
   useEffect(() => {
     dispatch(customerActions.customerFormStoreAutocompleteText(''));
@@ -142,23 +179,31 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
         })}
         initialValues={initValues}
         onSubmit={(values: any) => {
-          props.submitAction(
-            buildNewStoreCustomerAccount(
-              values,
-              props.customer as StoreCustomer
-            )
-          );
+          if (selectedCustomer) {
+            dispatch(
+              customerActions.updateStoreCustomer(
+                buildCustomerAccountData(values, selectedCustomer)
+              )
+            );
+          } else {
+            let createAction = assignPendingActions(
+              customerActions.saveNewCustomer(buildCustomerAccountData(values)),
+              [
+                customerActions.getCustomersListPaginated(),
+                controlActions.closeRightPanel(),
+              ]
+            );
+            dispatch(createAction);
+          }
         }}
         innerRef={(formik: any) => {
-          props.formikReference.formik = formik;
+          formikReference.formik = formik;
           if (formik) {
-            if (props.formikReference.isDirtyFunc)
-              props.formikReference.isDirtyFunc(formik.dirty);
+            setFormikDirty(formik.dirty);
           }
         }}
         validateOnBlur={false}
-        enableReinitialize={true}
-      >
+        enableReinitialize={true}>
         {(formik) => {
           return (
             <Form className="form">

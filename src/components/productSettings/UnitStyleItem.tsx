@@ -1,14 +1,5 @@
 import React, { useEffect } from 'react';
-import './productSettingsLsit.scss';
-import {
-  Text,
-  Image,
-  ITextProps,
-  FontIcon,
-  mergeStyles,
-  Icon,
-  Stack,
-} from 'office-ui-fabric-react';
+import { Text, Image, Icon, Stack } from 'office-ui-fabric-react';
 import { OptionUnit } from '../../interfaces';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -24,7 +15,6 @@ import { Card } from '@uifabric/react-cards';
 import * as fabricStyles from '../../common/fabric-styles/styles';
 import { assignPendingActions } from '../../helpers/action.helper';
 import { IApplicationState } from '../../redux/reducers';
-import { horizontalGapStackTokens } from '../../common/fabric-styles/styles';
 
 export class UnitRowItemProps {
   constructor() {
@@ -51,22 +41,12 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
       ? ManagingPanelComponent.ManageSingleOptionUnit
       : null;
 
-    dispatch(productSettingsActions.managingPanelContent(panelContentType));
-  }, [singleOptionForEdit, dispatch]);
+    if (singleOptionForEdit) {
+      dispatch(productSettingsActions.managingPanelContent(panelContentType));
+    }
+  }, [singleOptionForEdit]);
 
   let allowColor = props.optionUnit.isMandatory ? '#2b579a' : '#2b579a60';
-
-  let infoStyle: any = {};
-
-  if (props.takeMarginWhenNoImage === true) {
-    if (props.optionUnit.imageUrl) {
-      if (props.optionUnit.imageUrl.length < 1) {
-        infoStyle = { root: { position: 'relative', left: '88px' } };
-      }
-    } else {
-      infoStyle = { root: { position: 'relative', left: '88px' } };
-    }
-  }
 
   return (
     <div className="card" style={{ position: 'relative' }}>
@@ -82,22 +62,19 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
         <Card.Section>
           <Stack horizontal>
             <Icon
-              iconName="Unlock"
-              className={mergeStyles({
-                fontSize: 16,
-                paddingRight: '5px',
-                color: allowColor,
-                cursor: 'default',
-                display: 'inline-block',
-              })}
+              iconName={props.optionUnit.isMandatory ? 'Unlock' : 'Lock'}
+              className={fabricStyles.cardIcon}
+              styles={{
+                root: {
+                  color: allowColor,
+                },
+              }}
             />
             <Text
               block
               nowrap
               variant="mediumPlus"
-              styles={{
-                root: { color: '#484848', fontWeight: 400, width: '120px' },
-              }}>
+              styles={fabricStyles.cardText}>
               {props.optionUnit.value}
             </Text>
           </Stack>

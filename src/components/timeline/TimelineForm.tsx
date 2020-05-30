@@ -1,25 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Stack, TextField } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import { FormicReference } from '../../interfaces';
 import * as fabricStyles from '../../common/fabric-styles/styles';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { DeliveryTimeline } from '../../interfaces/index';
 import { productSettingsActions } from '../../redux/slices/productSettings.slice';
-
-class ManageTimelineFormProps {
-  constructor() {
-    this.formikReference = new FormicReference();
-    this.currentTimeline = null;
-    this.submitAction = (args: any) => {};
-  }
-
-  formikReference: FormicReference;
-  currentTimeline?: DeliveryTimeline | null;
-  submitAction: (args: any) => void;
-}
+import { IApplicationState } from '../../redux/reducers';
+import { controlActions } from '../../redux/slices/control.slice';
+import {
+  GetCommandBarItemProps,
+  CommandBarItem,
+  ChangeItemsDisabledState,
+} from '../../helpers/commandBar.helper';
+import { List } from 'linq-typescript';
 
 const buildDeliveryTimeline = (values: any, sourceEntity?: any) => {
   let timeline = new DeliveryTimeline();
@@ -52,18 +48,66 @@ const initDefaultValuesForTimelineForm = (sourceEntity?: DeliveryTimeline) => {
   return initValues;
 };
 
-export const TimelineForm: React.FC<ManageTimelineFormProps> = (
-  props: ManageTimelineFormProps
-) => {
+export const TimelineForm: React.FC = () => {
   const dispatch = useDispatch();
-  const initValues = initDefaultValuesForTimelineForm(
-    props.currentTimeline as DeliveryTimeline
+
+  const selectedDeliveryTimeline = useSelector<
+    IApplicationState,
+    DeliveryTimeline | null
+  >(
+    (state) =>
+      state.productSettings.manageTimelineState.selectedDeliveryTimeline
   );
+
+  const initValues = initDefaultValuesForTimelineForm(
+    selectedDeliveryTimeline!
+  );
+
+  const commandBarItems = useSelector<IApplicationState, any>(
+    (state) => state.control.rightPanel.commandBarItems
+  );
+
+  const [formikReference] = useState<FormicReference>(
+    new FormicReference(() => {})
+  );
+
+  const [isFormikDirty, setFormikDirty] = useState<boolean>(false);
+
   useEffect(() => {
     return () => {
       dispatch(productSettingsActions.clearSelectedDeliveryTimeLine());
     };
   }, []);
+
+  useEffect(() => {
+    if (formikReference.formik) {
+      dispatch(
+        controlActions.setPanelButtons([
+          GetCommandBarItemProps(CommandBarItem.Save, () => {
+            formikReference.formik.submitForm();
+          }),
+          GetCommandBarItemProps(CommandBarItem.Reset, () => {
+            formikReference.formik.resetForm();
+          }),
+        ])
+      );
+    }
+  }, [formikReference]);
+
+  useEffect(() => {
+    if (new List(commandBarItems).any()) {
+      dispatch(
+        controlActions.setPanelButtons(
+          ChangeItemsDisabledState(
+            commandBarItems,
+            [CommandBarItem.Reset, CommandBarItem.Save],
+            !isFormikDirty
+          )
+        )
+      );
+    }
+  }, [isFormikDirty]);
+
   return (
     <div>
       <Formik
@@ -78,15 +122,25 @@ export const TimelineForm: React.FC<ManageTimelineFormProps> = (
         })}
         initialValues={initValues}
         onSubmit={(values: any) => {
-          props.submitAction(
-            buildDeliveryTimeline(values, props.currentTimeline)
-          );
+          if (selectedDeliveryTimeline) {
+            dispatch(
+              productSettingsActions.apiUpdateDeliveryTimeline(
+                buildDeliveryTimeline(values, selectedDeliveryTimeline)
+              )
+            );
+          } else {
+            dispatch(
+              productSettingsActions.apiCreateNewDeliveryTimeline(
+                buildDeliveryTimeline(values)
+              )
+            );
+          }
+          dispatch(controlActions.closeRightPanel());
         }}
         innerRef={(formik: any) => {
-          props.formikReference.formik = formik;
+          formikReference.formik = formik;
           if (formik) {
-            if (props.formikReference.isDirtyFunc)
-              props.formikReference.isDirtyFunc(formik.dirty);
+            setFormikDirty(formik.dirty);
           }
         }}
         validateOnBlur={false}

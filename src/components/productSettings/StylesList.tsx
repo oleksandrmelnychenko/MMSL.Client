@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import './productSettingsLsit.scss';
+import React, { useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -20,7 +19,6 @@ import {
   FontIcon,
   Text,
   mergeStyles,
-  IconButton,
   ActionButton,
 } from 'office-ui-fabric-react';
 import {
@@ -28,6 +26,7 @@ import {
   DialogArgs,
   CommonDialogType,
 } from '../../redux/slices/control.slice';
+import * as fabricStyles from '../../common/fabric-styles/styles';
 
 export const StylesList: React.FC = () => {
   const dispatch = useDispatch();
@@ -41,26 +40,9 @@ export const StylesList: React.FC = () => {
           verticalAlign="center"
           horizontalAlign="space-between"
           tokens={{ childrenGap: 0 }}
-          styles={{
-            root: {
-              height: '40px',
-              borderBottom: '1px solid #dfdfdf',
-              borderTop: '1px solid #dfdfdf',
-              paddingTop: '5px',
-              paddingBottom: '5px',
-              marginBottom: '15px',
-              marginTop: '15px',
-            },
-          }}>
+          styles={fabricStyles.stackStyleList}>
           <Stack horizontal tokens={{ childrenGap: 10 }}>
-            <Text
-              styles={{
-                root: {
-                  fontSize: '16px',
-                },
-              }}>
-              {item.name}
-            </Text>
+            <Text styles={fabricStyles.textStackStyle}>{item.name}</Text>
             <TooltipHost
               id={`mandatoryTooltip_${item.id}`}
               calloutProps={{ gapSpace: 0 }}
@@ -80,12 +62,7 @@ export const StylesList: React.FC = () => {
 
           <Stack horizontal tokens={{ childrenGap: 10 }}>
             <ActionButton
-              styles={{
-                root: {
-                  height: '20px',
-                },
-              }}
-              height={20}
+              styles={fabricStyles.columnIconButtonStyle}
               iconProps={{
                 iconName: 'Settings',
               }}
@@ -107,12 +84,7 @@ export const StylesList: React.FC = () => {
             />
 
             <ActionButton
-              styles={{
-                root: {
-                  height: '20px',
-                },
-              }}
-              height={20}
+              styles={fabricStyles.columnIconButtonStyle}
               iconProps={{
                 iconName: 'Edit',
               }}
@@ -143,13 +115,7 @@ export const StylesList: React.FC = () => {
             />
 
             <ActionButton
-              styles={{
-                root: {
-                  height: '20px',
-                  marginRight: '90px',
-                },
-              }}
-              height={20}
+              styles={fabricStyles.columnIconButtonStyle}
               iconProps={{
                 iconName: 'Delete',
               }}
@@ -230,11 +196,7 @@ export const StylesList: React.FC = () => {
   }, [dispatch]);
 
   return (
-    <div
-      style={{
-        overflow: 'hidden',
-        padding: '15px',
-      }}>
+    <div className="wrapper-list">
       <List items={outionGroups} onRenderCell={onRenderCell} />
     </div>
   );

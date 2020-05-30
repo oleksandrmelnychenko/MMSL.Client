@@ -30,11 +30,19 @@ import {
   horizontalGapStackTokens,
   mainTitleContent,
 } from '../../common/fabric-styles/styles';
-import TimelinePanel from './TimelinePanel';
 import { DeliveryTimeline } from '../../interfaces/index';
+import TimelineForm from './TimelineForm';
 
 export const Timeline: React.FC = () => {
   const dispatch = useDispatch();
+
+  const selectedDeliveryTimeline = useSelector<
+    IApplicationState,
+    DeliveryTimeline | null
+  >(
+    (state) =>
+      state.productSettings.manageTimelineState.selectedDeliveryTimeline
+  );
 
   const _customerColumns: IColumn[] = [
     {
@@ -117,7 +125,19 @@ export const Timeline: React.FC = () => {
                 dispatch(
                   productSettingsActions.selectedDeliveryTimeLine(item.id)
                 );
-                dispatch(productSettingsActions.openTimelineFormPanel());
+                dispatch(
+                  controlActions.openRightPanel({
+                    title: 'Edit timeline',
+                    description: selectedDeliveryTimeline
+                      ? selectedDeliveryTimeline.name
+                      : null,
+                    width: '400px',
+                    closeFunctions: () => {
+                      dispatch(controlActions.closeRightPanel());
+                    },
+                    component: TimelineForm,
+                  })
+                );
               }}></ActionButton>
             <ActionButton
               styles={columnIconButtonStyle}
@@ -210,7 +230,16 @@ export const Timeline: React.FC = () => {
                 </Text>
                 <ActionButton
                   onClick={() => {
-                    dispatch(productSettingsActions.openTimelineFormPanel());
+                    dispatch(
+                      controlActions.openRightPanel({
+                        title: 'New timeline',
+                        width: '400px',
+                        closeFunctions: () => {
+                          dispatch(controlActions.closeRightPanel());
+                        },
+                        component: TimelineForm,
+                      })
+                    );
                   }}
                   iconProps={{ iconName: 'Add' }}>
                   New timeline
@@ -232,7 +261,6 @@ export const Timeline: React.FC = () => {
           </ScrollablePane>
         </Stack.Item>
       </Stack>
-      <TimelinePanel />
     </div>
   );
 };
