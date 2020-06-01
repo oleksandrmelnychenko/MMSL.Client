@@ -203,7 +203,7 @@ export class Address extends EntityBase {
 
 export class Pagination {
   constructor() {
-    this.limit = 99;
+    this.limit = 9999;
     this.paginationInfo = new PaginationInfo();
     this.paginationInfo.pageNumber = 1;
   }

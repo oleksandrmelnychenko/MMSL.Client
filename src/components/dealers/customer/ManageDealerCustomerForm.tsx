@@ -129,7 +129,7 @@ export const ManageCustomerForm: React.FC = () => {
 
       dispatch(controlActions.setPanelButtons(buttons));
     }
-  }, [formikReference]);
+  }, [formikReference, dispatch]);
 
   let autocompleteOptions: any[] = [];
 
@@ -169,7 +169,8 @@ export const ManageCustomerForm: React.FC = () => {
           }
         }}
         enableReinitialize={true}
-        validateOnBlur={false}>
+        validateOnBlur={false}
+      >
         {(formik) => {
           return (
             <Form className="form">
