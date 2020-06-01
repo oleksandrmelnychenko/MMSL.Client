@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { ImenuItem } from '../../../interfaces';
+import { controlActions } from '../../../redux/slices/control.slice';
+import ManageDealerForm from './ManageDealerForm';
 
 const ManagementOptions: React.FC = () => {
   const dispatch = useDispatch();
@@ -24,24 +26,39 @@ const ManagementOptions: React.FC = () => {
       title: 'Stores',
       className: 'management__btn-add',
       componentType: DealerDetilsComponents.DealerStores,
+      onClickAction: () => {},
       isSelected: false,
     },
     {
       title: 'Details',
       className: 'management__btn-detail',
       componentType: DealerDetilsComponents.DealerDetails,
+      onClickAction: () => {
+        dispatch(
+          controlActions.openRightPanel({
+            title: 'Edit dealer',
+            width: '600px',
+            closeFunctions: () => {
+              dispatch(controlActions.closeRightPanel());
+            },
+            component: ManageDealerForm,
+          })
+        );
+      },
       isSelected: false,
     },
     {
       title: 'Address',
       className: 'management__btn-address',
       componentType: DealerDetilsComponents.DealerAddress,
+      onClickAction: () => {},
       isSelected: false,
     },
     {
       title: 'Customer',
       className: 'management__btn-customer',
       componentType: DealerDetilsComponents.DealerCustomers,
+      onClickAction: () => {},
       isSelected: false,
     },
   ];
@@ -83,14 +100,18 @@ const ManagementOptions: React.FC = () => {
             styles={btnMenuStyle}
             className={item.className}
             onClick={() => {
-              changeSelectedMenuItem(item.componentType);
-              const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
-              openDetailsArgs.isOpen = true;
-              openDetailsArgs.componentType = item.componentType;
+              if (item.componentType === DealerDetilsComponents.DealerDetails) {
+                if (item.onClickAction) item.onClickAction();
+              } else {
+                changeSelectedMenuItem(item.componentType);
+                const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
+                openDetailsArgs.isOpen = true;
+                openDetailsArgs.componentType = item.componentType;
 
-              dispatch(
-                dealerActions.isOpenPanelWithDealerDetails(openDetailsArgs)
-              );
+                dispatch(
+                  dealerActions.isOpenPanelWithDealerDetails(openDetailsArgs)
+                );
+              }
             }}
             allowDisabledFocus
           />

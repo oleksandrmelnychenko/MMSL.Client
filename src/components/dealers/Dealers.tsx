@@ -12,7 +12,10 @@ import * as fabricControlSettings from '../../common/fabric-control-settings/fab
 import {
   horizontalGapStackTokens,
   mainTitleContent,
+  columnIconButtonStyle,
 } from '../../common/fabric-styles/styles';
+import { controlActions } from '../../redux/slices/control.slice';
+import ManageDealerForm from './dealerManaging/ManageDealerForm';
 
 export const Dealers: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -57,11 +60,20 @@ export const Dealers: React.FC = (props: any) => {
                   Dealers
                 </Text>
                 <ActionButton
-                  className="dealerAdd"
-                  onClick={() =>
-                    dispatch(dealerActions.toggleNewDealerForm(true))
-                  }
-                  iconProps={{ iconName: 'Add' }}>
+                  styles={columnIconButtonStyle}
+                  iconProps={{ iconName: 'Add' }}
+                  onClick={() => {
+                    dispatch(
+                      controlActions.openRightPanel({
+                        title: 'Add dealer',
+                        width: '600px',
+                        closeFunctions: () => {
+                          dispatch(controlActions.closeRightPanel());
+                        },
+                        component: ManageDealerForm,
+                      })
+                    );
+                  }}>
                   New dealer
                 </ActionButton>
                 <DatePicker

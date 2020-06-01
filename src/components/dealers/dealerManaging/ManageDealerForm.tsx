@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
   Toggle,
@@ -19,18 +19,16 @@ import {
 } from '../../../interfaces';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 import { List } from 'linq-typescript';
-
-class ManageDealerFormProps {
-  constructor() {
-    this.formikReference = new FormicReference();
-    this.dealerAccount = null;
-    this.submitAction = (args: any) => {};
-  }
-
-  formikReference: FormicReference;
-  dealerAccount?: DealerAccount | null;
-  submitAction: (args: any) => void;
-}
+import { useSelector, useDispatch } from 'react-redux';
+import { IApplicationState } from '../../../redux/reducers';
+import { controlActions } from '../../../redux/slices/control.slice';
+import {
+  CommandBarItem,
+  GetCommandBarItemProps,
+  ChangeItemsDisabledState,
+} from '../../../helpers/commandBar.helper';
+import { assignPendingActions } from '../../../helpers/action.helper';
+import { dealerActions } from '../../../redux/slices/dealer.slice';
 
 const resolveDefaultDropDownValue = (
   limitOptions: any[],
@@ -87,7 +85,7 @@ const initDefaultValues = (account?: DealerAccount | null) => {
     creditAllowed: false,
   };
 
-  if (account !== null && account !== undefined) {
+  if (account) {
     formikInitValues.companyName = account.companyName;
     formikInitValues.name = account.name;
     formikInitValues.email = account.email;
@@ -103,9 +101,52 @@ const initDefaultValues = (account?: DealerAccount | null) => {
   return formikInitValues;
 };
 
-export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
-  props: ManageDealerFormProps
-) => {
+export const ManageDealerForm: React.FC = () => {
+  const commandBarItems = useSelector<IApplicationState, any>(
+    (state) => state.control.rightPanel.commandBarItems
+  );
+
+  const dealerAccount = useSelector<IApplicationState, DealerAccount | null>(
+    (state) => state.dealer.selectedDealer
+  );
+
+  const [formikReference] = useState<FormicReference>(
+    new FormicReference(() => {})
+  );
+
+  const [isFormikDirty, setFormikDirty] = useState<boolean>(false);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (formikReference.formik) {
+      dispatch(
+        controlActions.setPanelButtons([
+          GetCommandBarItemProps(CommandBarItem.Save, () => {
+            formikReference.formik.submitForm();
+          }),
+          GetCommandBarItemProps(CommandBarItem.Reset, () => {
+            formikReference.formik.resetForm();
+          }),
+        ])
+      );
+    }
+  }, [formikReference]);
+
+  useEffect(() => {
+    if (new List(commandBarItems).any()) {
+      dispatch(
+        controlActions.setPanelButtons(
+          ChangeItemsDisabledState(
+            commandBarItems,
+            [CommandBarItem.Reset, CommandBarItem.Save],
+            !isFormikDirty
+          )
+        )
+      );
+    }
+  }, [isFormikDirty]);
+
   const currencyOptions = [
     {
       key: '2',
@@ -132,7 +173,7 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
     } as IDropdownOption,
   ];
 
-  const formikInitValues = initDefaultValues(props.dealerAccount);
+  const formikInitValues = initDefaultValues(dealerAccount);
 
   return (
     <div>
@@ -155,20 +196,29 @@ export const ManageDealerForm: React.FC<ManageDealerFormProps> = (
         })}
         initialValues={formikInitValues}
         onSubmit={(values: any) => {
-          props.submitAction(
-            buildDealerAccount(values, props.dealerAccount as DealerAccount)
-          );
+          let createAction;
+          if (dealerAccount) {
+            createAction = assignPendingActions(
+              dealerActions.updateDealer(
+                buildDealerAccount(values, dealerAccount)
+              )
+            );
+          } else {
+            createAction = assignPendingActions(
+              dealerActions.saveNewDealer(buildDealerAccount(values)),
+              [dealerActions.getDealersListPaginated()]
+            );
+          }
+          dispatch(createAction);
         }}
         innerRef={(formik: any) => {
-          props.formikReference.formik = formik;
+          formikReference.formik = formik;
           if (formik) {
-            if (props.formikReference.isDirtyFunc)
-              props.formikReference.isDirtyFunc(formik.dirty);
+            setFormikDirty(formik.dirty);
           }
         }}
         validateOnBlur={false}
-        enableReinitialize={true}
-      >
+        enableReinitialize={true}>
         {(formik) => {
           return (
             <Form className="form">

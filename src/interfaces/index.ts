@@ -62,6 +62,7 @@ export interface ImenuItem {
   title: string;
   className: string;
   componentType: DealerDetilsComponents;
+  onClickAction?: Function;
   isSelected?: boolean;
 }
 
