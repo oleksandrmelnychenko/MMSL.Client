@@ -83,7 +83,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
         contactEmail: selectedStore.contactEmail,
         billingEmail: selectedStore.billingEmail,
         addressLine1: selectedStore.address.addressLine1,
-        addressLine2: selectedStore.address.addressLine1,
+        addressLine2: selectedStore.address.addressLine2,
         city: selectedStore.address.city,
         country: selectedStore.address.country,
         state: selectedStore.address.state,
