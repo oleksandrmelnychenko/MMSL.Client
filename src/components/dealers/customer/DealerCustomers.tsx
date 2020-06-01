@@ -25,6 +25,7 @@ import {
 } from '../../../redux/slices/control.slice';
 import { List } from 'linq-typescript';
 import ManageCustomerForm from './ManageDealerCustomerForm';
+
 import { customerActions } from '../../../redux/slices/customer.slice';
 import { DealerState } from '../../../redux/slices/dealer.slice';
 
@@ -230,30 +231,30 @@ export const DealerCustomers: React.FC = () => {
             <>
               <Separator alignContent="start">Customers form</Separator>
               <ManageCustomerForm
-              // formikReference={formikReference}
-              // submitAction={(args: any) => {
-              //   const value = { ...args, storeId: selectedLocalStore.id };
-              //   if (dealerCustomerState.selectedCustomer) {
-              //     dispatch(
-              //       dealerActions.updateStoreCustomer({
-              //         ...value,
-              //         id: dealerCustomerState.selectedCustomer.id,
-              //       })
-              //     );
-              //   } else {
-              //     dispatch(customerActions.saveNewCustomer(value));
-              //     dispatch(
-              //       dealerActions.getStoreCustomersByStoreId(
-              //         selectedLocalStore.id!
-              //       )
-              //     );
-              //     dispatch(
-              //       dealerActions.getStoresByDealer(selectedDealer!.id)
-              //     );
-              //   }
-              //   formikReference.formik?.resetForm();
-              // }}
-              // customer={dealerCustomerState.selectedCustomer}
+                formikReference={formikReference}
+                submitAction={(args: any) => {
+                  const value = { ...args, storeId: selectedLocalStore.id };
+                  if (dealerCustomerState.selectedCustomer) {
+                    dispatch(
+                      dealerActions.updateStoreCustomer({
+                        ...value,
+                        id: dealerCustomerState.selectedCustomer.id,
+                      })
+                    );
+                  } else {
+                    dispatch(customerActions.saveNewCustomer(value));
+                    dispatch(
+                      dealerActions.getStoreCustomersByStoreId(
+                        selectedLocalStore.id!
+                      )
+                    );
+                    dispatch(
+                      dealerActions.getStoresByDealer(selectedDealer!.id)
+                    );
+                  }
+                  formikReference.formik?.resetForm();
+                }}
+                customer={dealerCustomerState.selectedCustomer}
               />
             </>
           ) : null}
