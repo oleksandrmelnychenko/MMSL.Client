@@ -128,8 +128,7 @@ const MeasurementChartGrid: React.FC = () => {
           right: '0',
           top: '0',
         }}
-        ref={refference}
-      >
+        ref={refference}>
         <Stack
           // styles={{
           //   root: {
@@ -139,8 +138,7 @@ const MeasurementChartGrid: React.FC = () => {
           //   },
           // }}
           horizontal
-          disableShrink
-        >
+          disableShrink>
           <IconButton
             data-selection-disabled={true}
             className={DATA_SELECTION_DISABLED_CLASS}
@@ -269,6 +267,7 @@ const MeasurementChartGrid: React.FC = () => {
   const onRenderRow = (args: any) => {
     return (
       <div
+        className="cell__grid"
         onMouseEnter={() => {
           if (args.item && args.item.content) {
             if (args.item.customRef.current) {
@@ -286,8 +285,7 @@ const MeasurementChartGrid: React.FC = () => {
 
             args.item.isSelected = false;
           }
-        }}
-      >
+        }}>
         <DetailsRow {...args} />
       </div>
     );
@@ -457,8 +455,7 @@ const MeasurementChartGrid: React.FC = () => {
             <Stack
               styles={{ root: { position: 'relative' } }}
               horizontal
-              horizontalAlign="space-between"
-            >
+              horizontalAlign="space-between">
               <Stack.Item>
                 <Text style={defaultCellStyle}>{`${cellValue}`}</Text>
               </Stack.Item>
@@ -595,8 +592,7 @@ const MeasurementChartGrid: React.FC = () => {
         position: 'relative',
         borderTop: '1px solid #dfdfdf',
         paddingTop: '16px',
-      }}
-    >
+      }}>
       {/* Main data grid with dynamic columns */}
       <DetailsList
         onRenderRow={onRenderRow}
@@ -688,8 +684,7 @@ const MeasurementChartGrid: React.FC = () => {
                 <Stack
                   styles={{ root: { position: 'relative' } }}
                   horizontal
-                  horizontalAlign="space-between"
-                >
+                  horizontalAlign="space-between">
                   <Stack.Item>
                     <Text style={defaultCellStyle}>{`${cellValue}`}</Text>
                   </Stack.Item>

@@ -98,38 +98,40 @@ class ManageCustomerFormProps {
   customer?: StoreCustomer | null;
   submitAction: (args: any) => void;
 }
+export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
+  props: ManageCustomerFormProps
+) => {
+  const initValues = initDefaultValuesForNewStoreCustomerForm(props.customer);
 
-export const ManageCustomerForm: React.FC = () => {
-  const initValues = initDefaultValuesForNewStoreCustomerForm();
   const storesAutocomplete = useSelector<IApplicationState, IStore[]>(
     (state) => state.customer.manageCustomerForm.storesAutocomplete
   );
 
-  const [formikReference] = useState<FormicReference>(
-    new FormicReference(() => {})
-  );
+  // const [formikReference] = useState<FormicReference>(
+  //   new FormicReference(() => {})
+  // );
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (formikReference.formik) {
-      let buttons = [];
+  // useEffect(() => {
+  //   if (formikReference.formik) {
+  //     let buttons = [];
 
-      buttons.push(
-        GetCommandBarItemProps(CommandBarItem.Save, () => {
-          formikReference.formik.submitForm();
-        })
-      );
+  //     buttons.push(
+  //       GetCommandBarItemProps(CommandBarItem.Save, () => {
+  //         formikReference.formik.submitForm();
+  //       })
+  //     );
 
-      buttons.push(
-        GetCommandBarItemProps(CommandBarItem.Delete, () => {
-          // dispatch(userManagementActions.api_removeUser(selectedUser.NetUid));
-        })
-      );
+  //     buttons.push(
+  //       GetCommandBarItemProps(CommandBarItem.Delete, () => {
+  //         // dispatch(userManagementActions.api_removeUser(selectedUser.NetUid));
+  //       })
+  //     );
 
-      dispatch(controlActions.setPanelButtons(buttons));
-    }
-  }, [formikReference]);
+  //     dispatch(controlActions.setPanelButtons(buttons));
+  //   }
+  // }, [formikReference]);
 
   let autocompleteOptions: any[] = [];
 
@@ -159,13 +161,14 @@ export const ManageCustomerForm: React.FC = () => {
         })}
         initialValues={initValues}
         onSubmit={(values: any) => {
-          // submitAction(buildNewStoreCustomerAccount(values));
+          props.submitAction(buildNewStoreCustomerAccount(values));
         }}
         innerRef={(formik: any) => {
-          formikReference.formik = formik;
+          props.formikReference.formik = formik;
+
           if (formik) {
-            if (formikReference.isDirtyFunc)
-              formikReference.isDirtyFunc(formik.dirty);
+            if (props.formikReference.isDirtyFunc)
+              props.formikReference.isDirtyFunc(formik.dirty);
           }
         }}
         enableReinitialize={true}
