@@ -1,5 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ProductCategory, OptionGroup, ChooseOptions } from '../../interfaces';
+import {
+  ProductCategory,
+  OptionGroup,
+  ChooseOptions,
+  Measurement,
+} from '../../interfaces';
 
 export class ProductState {
   constructor() {
@@ -8,6 +13,7 @@ export class ProductState {
     this.choose = new ChooseOptions();
     this.manageSingleProductState = new ManageSingleProductState();
     this.productCategoryDetailsManagingState = new ProductCategoryDetailsManagingState();
+    this.productMeasurementsState = new ProductMeasurementsState();
   }
 
   productCategory: ProductCategory[];
@@ -15,6 +21,7 @@ export class ProductState {
   productManagementPanelState: ProductManagementPanelState;
   manageSingleProductState: ManageSingleProductState;
   productCategoryDetailsManagingState: ProductCategoryDetailsManagingState;
+  productMeasurementsState: ProductMeasurementsState;
 }
 
 export enum ProductManagingPanelComponent {
@@ -53,10 +60,53 @@ export class ProductCategoryDetailsManagingState {
   allOptionGroups: OptionGroup[];
 }
 
+export class ProductMeasurementsState {
+  constructor() {
+    this.isMeasurementsWasRequested = false;
+    this.measurementList = [];
+    this.targetMeasurement = null;
+  }
+
+  isMeasurementsWasRequested: boolean;
+  measurementList: Measurement[];
+  targetMeasurement: Measurement | null | undefined;
+}
+
 const product = createSlice({
   name: 'product',
   initialState: new ProductState(),
   reducers: {
+    apiGetAllProductMeasurementsByProductId(
+      state,
+      action: { type: string; payload: number }
+    ) {
+      return state;
+    },
+    updateIsProductMeasurementsWasRequested(
+      state,
+      action: { type: string; payload: boolean }
+    ) {
+      state.productMeasurementsState.isMeasurementsWasRequested =
+        action.payload;
+
+      return state;
+    },
+    updateProductMeasurementsList(
+      state,
+      action: { type: string; payload: Measurement[] }
+    ) {
+      state.productMeasurementsState.measurementList = action.payload;
+
+      return state;
+    },
+    changeSelectedProductMeasurement(
+      state,
+      action: { type: string; payload: Measurement | null | undefined }
+    ) {
+      state.productMeasurementsState.targetMeasurement = action.payload;
+
+      return state;
+    },
     apiGetAllProductCategory(state) {
       return state;
     },

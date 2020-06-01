@@ -24,6 +24,8 @@ import {
   ManagingMeasurementPanelComponent,
 } from '../../../redux/slices/measurement.slice';
 import NoMeasurementImg from '../../../assets/images/no-objects/noneMeasurement.svg';
+import ProductMeasurementSelector from './ProductMeasurementSelector';
+import ProductMeasurementChartGrid from './ProductMeasurementChartGrid';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
@@ -34,16 +36,21 @@ const Measurements: React.FC = () => {
     (state) => state.product.choose.category
   );
 
-  const isMeasurementsWasRequested: boolean = useSelector<
+  const isProductMeasurementsWasRequested: boolean = useSelector<
     IApplicationState,
     boolean
-  >((state) => state.measurements.isMeasurementsWasRequested);
-
-  const isAnyMeasurements: boolean = useSelector<IApplicationState, boolean>(
-    (state) => state.measurements.measurementList.length > 0
+  >(
+    (state) => state.product.productMeasurementsState.isMeasurementsWasRequested
   );
 
-  const targetMeasurement: Measurement | null | undefined = useSelector<
+  const isAnyProductMeasurements: boolean = useSelector<
+    IApplicationState,
+    boolean
+  >(
+    (state) => state.product.productMeasurementsState.measurementList.length > 0
+  );
+
+  const targetProductMeasurement: Measurement | null | undefined = useSelector<
     IApplicationState,
     Measurement | null | undefined
   >((state) => state.measurements.targetMeasurement);
@@ -55,7 +62,7 @@ const Measurements: React.FC = () => {
   }, [targetProduct]);
 
   const hintContentHideableStyle =
-    isMeasurementsWasRequested && !isAnyMeasurements
+    isProductMeasurementsWasRequested && !isAnyProductMeasurements
       ? { height: '100%' }
       : { display: 'none' };
 
@@ -68,7 +75,9 @@ const Measurements: React.FC = () => {
   };
 
   const mainContentHideableStyle =
-    isMeasurementsWasRequested && isAnyMeasurements ? {} : { display: 'none' };
+    isProductMeasurementsWasRequested && isAnyProductMeasurements
+      ? {}
+      : { display: 'none' };
 
   const addMeasurement = () => {
     debugger;
@@ -115,10 +124,10 @@ const Measurements: React.FC = () => {
                     padding: '18px 5px 10px 8px',
                   }}
                 >
-                  {/* <MeasurementSelector /> */}
+                  <ProductMeasurementSelector />
 
                   <CommandBarButton
-                    disabled={targetMeasurement ? false : true}
+                    disabled={targetProductMeasurement ? false : true}
                     text="New size"
                     styles={{
                       root: {
@@ -130,7 +139,7 @@ const Measurements: React.FC = () => {
                       },
                     }}
                     onClick={() => {
-                      if (targetMeasurement) {
+                      if (targetProductMeasurement) {
                         dispatch(
                           measurementActions.changeManagingMeasurementPanelContent(
                             ManagingMeasurementPanelComponent.AddChartSize
@@ -147,7 +156,7 @@ const Measurements: React.FC = () => {
                     <Stack horizontal>
                       <CommandBarButton
                         text="Edit"
-                        disabled={targetMeasurement ? false : true}
+                        disabled={targetProductMeasurement ? false : true}
                         styles={{
                           root: {
                             height: '30px',
@@ -158,7 +167,7 @@ const Measurements: React.FC = () => {
                           },
                         }}
                         onClick={() => {
-                          if (targetMeasurement) {
+                          if (targetProductMeasurement) {
                             dispatch(
                               measurementActions.changeManagingMeasurementPanelContent(
                                 ManagingMeasurementPanelComponent.EditMeasurement
@@ -171,7 +180,7 @@ const Measurements: React.FC = () => {
 
                       <CommandBarButton
                         text="Delete"
-                        disabled={targetMeasurement ? false : true}
+                        disabled={targetProductMeasurement ? false : true}
                         styles={{
                           root: {
                             height: '30px',
@@ -182,7 +191,7 @@ const Measurements: React.FC = () => {
                           },
                         }}
                         onClick={() => {
-                          if (targetMeasurement) {
+                          if (targetProductMeasurement) {
                           }
                         }}
                         iconProps={{
@@ -211,7 +220,9 @@ const Measurements: React.FC = () => {
             }}
           >
             <div style={mainContentHideableStyle}>
-              {targetMeasurement ? 'Grid' : null}
+              {targetProductMeasurement ? (
+                <ProductMeasurementChartGrid />
+              ) : null}
             </div>
             <div style={hintContentHideableStyle}>
               <div

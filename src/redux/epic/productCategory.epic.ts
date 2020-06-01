@@ -16,11 +16,8 @@ import {
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import { controlActions } from '../slices/control.slice';
-
 import { productActions } from '../slices/product.slice';
 import StoreHelper from '../../helpers/store.helper';
-import { List } from 'linq-typescript';
-import { EntityBase } from '../../interfaces';
 
 const FORM_DATA_IMAGE_FILE_KEY = 'file';
 
@@ -417,6 +414,52 @@ export const apiAddNewMeasurementEpic = (action$: AnyAction, state$: any) => {
                 controlActions.showInfoMessage(
                   `Error occurred while creating new measurement. ${errorResponse}`
                 ),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiGetAllProductMeasurementsByProductIdEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(productActions.apiGetAllProductMeasurementsByProductId.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
+      return ajaxGetWebResponse(
+        api.GET_ALL_MEASUREMENTS_BY_PRODUCT,
+        state$.value,
+        [{ key: 'productId', value: `${action.payload}` }]
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              productActions.updateIsProductMeasurementsWasRequested(true),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_GET_MEASUREMENTS_BY_PRODUCT' },
+                productActions.updateIsProductMeasurementsWasRequested(true),
+                controlActions.showInfoMessage(
+                  `Error occurred while getting measurements by product. ${errorResponse}`
+                ),
+                controlActions.disabledStatusBar(),
               ],
               action
             );
