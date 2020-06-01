@@ -112,7 +112,7 @@ const ChartGridCell: React.FC<IChartGridCellProps> = (
       {isInEditMode ? (
         <Formik
           validationSchema={Yup.object().shape({
-            sizeValue: Yup.number().nullable(),
+            sizeValue: Yup.string().nullable(),
           })}
           initialValues={init}
           onSubmit={(values: any) => {}}
@@ -123,6 +123,7 @@ const ChartGridCell: React.FC<IChartGridCellProps> = (
                 <Field name="sizeValue">
                   {() => (
                     <TextField
+                      type="number"
                       styles={{ root: { position: 'absolute', top: '6px' } }}
                       autoFocus
                       componentRef={inputEditRef}
