@@ -26,6 +26,8 @@ import {
 import NoMeasurementImg from '../../../assets/images/no-objects/noneMeasurement.svg';
 import ProductMeasurementSelector from './ProductMeasurementSelector';
 import ProductMeasurementChartGrid from './ProductMeasurementChartGrid';
+// import MeasurementManagingPanel from './management/MeasurementManagingPanel';
+import { productActions } from '../../../redux/slices/product.slice';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
@@ -80,9 +82,8 @@ const Measurements: React.FC = () => {
       : { display: 'none' };
 
   const addMeasurement = () => {
-    debugger;
     // dispatch(
-    //   measurementActions.changeManagingMeasurementPanelContent(
+    //   productActions.changeManagingProductMeasurementPanelContent(
     //     ManagingMeasurementPanelComponent.CreateNewMeasurement
     //   )
     // );
@@ -257,6 +258,8 @@ const Measurements: React.FC = () => {
           </ScrollablePane>
         </Stack.Item>
       </Stack>
+
+      {/* <MeasurementManagingPanel /> */}
     </div>
   );
 };

@@ -8,9 +8,9 @@ import {
   MeasurementMapDefinition,
   MeasurementMapSize,
   MeasurementMapValue,
-} from '../../../interfaces';
-import * as fabricStyles from '../../../common/fabric-styles/styles';
-import './sizeForm.scss';
+} from '../../../../interfaces';
+import * as fabricStyles from '../../../../common/fabric-styles/styles';
+import '../../../measurements/measurementManaging/sizeForm.scss';
 import { List } from 'linq-typescript';
 
 export class SizeInitValues {

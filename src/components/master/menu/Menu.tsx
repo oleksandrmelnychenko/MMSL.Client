@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
 import { dealerActions } from '../../../redux/slices/dealer.slice';
 import { controlActions } from '../../../redux/slices/control.slice';
+import { productActions } from '../../../redux/slices/product.slice';
 import './menu.scss';
 import { IApplicationState } from '../../../redux/reducers';
 import { LocalizeState, getActiveLanguage } from 'react-localize-redux';
@@ -29,6 +30,7 @@ const Menu: React.FC = () => {
     dispatch(dealerActions.setSelectedDealer(null));
     dispatch(controlActions.closeInfoPanelWithComponent());
     dispatch(productSettingsActions.updateSearchWordOptionGroup(''));
+    dispatch(productActions.disposeProductCategoryStates());
   };
   const history = useLocation();
 

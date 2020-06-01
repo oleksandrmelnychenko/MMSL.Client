@@ -5,6 +5,7 @@ import {
   ChooseOptions,
   Measurement,
 } from '../../interfaces';
+import { ManagingMeasurementPanelComponent } from './measurement.slice';
 
 export class ProductState {
   constructor() {
@@ -65,8 +66,10 @@ export class ProductMeasurementsState {
     this.isMeasurementsWasRequested = false;
     this.measurementList = [];
     this.targetMeasurement = null;
+    this.managingMeasurementPanelContent = null;
   }
 
+  managingMeasurementPanelContent: ManagingMeasurementPanelComponent | null;
   isMeasurementsWasRequested: boolean;
   measurementList: Measurement[];
   targetMeasurement: Measurement | null | undefined;
@@ -104,6 +107,28 @@ const product = createSlice({
       action: { type: string; payload: Measurement | null | undefined }
     ) {
       state.productMeasurementsState.targetMeasurement = action.payload;
+
+      return state;
+    },
+    changeManagingProductMeasurementPanelContent(
+      state,
+      action: {
+        type: string;
+        payload: ManagingMeasurementPanelComponent | null;
+      }
+    ) {
+      state.productMeasurementsState.managingMeasurementPanelContent =
+        action.payload;
+
+      return state;
+    },
+    disposeProductCategoryStates(state) {
+      state.productCategory = [];
+      state.productManagementPanelState = new ProductManagementPanelState();
+      state.choose = new ChooseOptions();
+      state.manageSingleProductState = new ManageSingleProductState();
+      state.productCategoryDetailsManagingState = new ProductCategoryDetailsManagingState();
+      state.productMeasurementsState = new ProductMeasurementsState();
 
       return state;
     },
