@@ -101,7 +101,7 @@ export const ManagingvOptionGroupForm: React.FC<ManagingvOptionGroupFormProps> =
                             value={formik.values.name}
                             styles={fabricStyles.textFildLabelStyles}
                             className="form__group__field"
-                            label="User name"
+                            label="Name"
                             required
                             onChange={(args: any) => {
                               let value = args.target.value;
