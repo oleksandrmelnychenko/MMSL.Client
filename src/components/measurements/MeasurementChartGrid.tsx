@@ -43,32 +43,6 @@ import { defaultCellStyle } from '../../common/fabric-styles/styles';
 import { DefinitionValueItem } from './measurementManaging/SizesForm';
 import ChartGridCell from './ChartGridCell';
 
-// export class EditSizePayload {
-//   constructor(
-//     editedMapSize: MeasurementMapSize,
-//     editValueItems: DefinitionValueItem[]
-//   ) {
-//     this.editedSizeMap = editedMapSize;
-//     this.definitionValueItems = editValueItems;
-//   }
-
-//   editedSizeMap: MeasurementMapSize;
-//   definitionValueItems: DefinitionValueItem[];
-// }
-
-export class EditSizePayload {
-  constructor(
-    editedMapSize: MeasurementMapSize,
-    editValueItems: DefinitionValueItem
-  ) {
-    this.editedSizeMap = editedMapSize;
-    this.definitionValueItems = editValueItems;
-  }
-
-  editedSizeMap: MeasurementMapSize;
-  definitionValueItems: DefinitionValueItem;
-}
-
 const _columnIconButtonStyle = {
   root: {
     height: '20px',
@@ -87,35 +61,10 @@ const MeasurementChartGrid: React.FC = () => {
     })
   );
 
-  const [editedSizePayload, setEditedSizePayload] = useState<
-    EditSizePayload | null | undefined
-  >(null);
-
   const targetMeasurementChart: Measurement | null | undefined = useSelector<
     IApplicationState,
     Measurement | null | undefined
   >((state) => state.measurements.targetMeasurement);
-
-  useEffect(() => {
-    return () => {};
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (editedSizePayload) {
-      document.addEventListener('click', (event: any) => {
-        let targetId = `${event.target.id}`;
-
-        if (targetId && targetId.includes('TextField')) {
-          /// TODO: vadymk need to know that click was in the text field
-          /// and prevent `stop editing`
-        } else {
-          if (targetId !== 'measurementChartGrid') setEditedSizePayload(null);
-        }
-      });
-    } else {
-      document.addEventListener('click', (event: any) => null);
-    }
-  }, [editedSizePayload]);
 
   const onRenderFrezeOptions = (item: any) => {
     const refference: any = React.createRef();
@@ -128,17 +77,9 @@ const MeasurementChartGrid: React.FC = () => {
           right: '0',
           top: '0',
         }}
-        ref={refference}>
-        <Stack
-          // styles={{
-          //   root: {
-          //     position: 'absolute',
-          //     right: '0',
-          //     top: '0',
-          //   },
-          // }}
-          horizontal
-          disableShrink>
+        ref={refference}
+      >
+        <Stack horizontal disableShrink>
           <IconButton
             data-selection-disabled={true}
             className={DATA_SELECTION_DISABLED_CLASS}
@@ -267,7 +208,6 @@ const MeasurementChartGrid: React.FC = () => {
   const onRenderRow = (args: any) => {
     return (
       <div
-        className="cell__grid"
         onMouseEnter={() => {
           if (args.item && args.item.content) {
             if (args.item.customRef.current) {
@@ -285,7 +225,8 @@ const MeasurementChartGrid: React.FC = () => {
 
             args.item.isSelected = false;
           }
-        }}>
+        }}
+      >
         <DetailsRow {...args} />
       </div>
     );
@@ -311,94 +252,11 @@ const MeasurementChartGrid: React.FC = () => {
     };
   };
 
-  const findColumnSizeValue = (item?: MeasurementMapSize, column?: IColumn) => {
-    let truthValue: MeasurementMapValue | null | undefined;
-
-    if (
-      item &&
-      item.measurementSize &&
-      item.measurementSize.measurementMapValues &&
-      column &&
-      (column as any).rawSourceContext
-    ) {
-      truthValue = new List(
-        item.measurementSize.measurementMapValues
-      ).firstOrDefault(
-        (mapValueItem: any) =>
-          mapValueItem.measurementDefinitionId ===
-          (column as any).rawSourceContext.measurementDefinitionId
-      );
-    }
-
-    return truthValue;
-  };
-
   const onRenderDynamicSizeValueCell = (
     item?: MeasurementMapSize,
     index?: number,
     column?: IColumn
   ) => {
-    // const cellValueStub = '-';
-    // let cellValue = cellValueStub;
-    // let renderResult = null;
-
-    // if (item && column) {
-    //   const truthValue:
-    //     | MeasurementMapValue
-    //     | null
-    //     | undefined = findColumnSizeValue(item, column);
-
-    //   if (truthValue) {
-    //     cellValue = `${truthValue.value}`;
-    //   }
-
-    //   if (cellValue === '' || cellValue === null || cellValue === undefined)
-    //     cellValue = cellValueStub;
-
-    //   if (
-    //     editedSizePayload?.editedSizeMap?.id === item.id &&
-    //     (column as any).rawSourceContext.id ===
-    //       editedSizePayload?.definitionValueItems?.sourceMapDefinition?.id
-    //   ) {
-    //     let inputValue = editedSizePayload.definitionValueItems.value;
-
-    //     renderResult = (
-    //       <TextField
-    //         borderless
-    //         type="number"
-    //         value={inputValue}
-    //         styles={{ root: { border: '1px solid black' } }}
-    //         onChange={(args: any) => {
-    //           if (editedSizePayload) {
-    //             editedSizePayload.definitionValueItems.value =
-    //               args.target.value;
-    //             editedSizePayload.definitionValueItems.resolveIsDirty();
-
-    //             const newSizePayload = { ...editedSizePayload };
-    //             newSizePayload.definitionValueItems =
-    //               editedSizePayload.definitionValueItems;
-
-    //             setEditedSizePayload(newSizePayload);
-    //           }
-    //         }}
-    //       />
-    //     );
-    //   } else {
-    //     renderResult = (
-    //       <Text
-    //         onDoubleClick={() => {
-    //           if (item && (column as any).rawSourceContext) {
-    //             onBeginRowEdit(item, (column as any).rawSourceContext);
-    //           }
-    //         }}
-    //         style={defaultCellStyle}
-    //       >
-    //         {cellValue}
-    //       </Text>
-    //     );
-    //   }
-    // }
-
     return (
       <ChartGridCell
         mapSize={item}
@@ -455,7 +313,8 @@ const MeasurementChartGrid: React.FC = () => {
             <Stack
               styles={{ root: { position: 'relative' } }}
               horizontal
-              horizontalAlign="space-between">
+              horizontalAlign="space-between"
+            >
               <Stack.Item>
                 <Text style={defaultCellStyle}>{`${cellValue}`}</Text>
               </Stack.Item>
@@ -480,110 +339,6 @@ const MeasurementChartGrid: React.FC = () => {
 
   const columns = buildDynamicChartColumns();
 
-  const onBeginRowEdit = (
-    sizeItemRow: MeasurementMapSize,
-    definition: MeasurementMapDefinition
-  ) => {
-    if (sizeItemRow && targetMeasurementChart) {
-      let result: DefinitionValueItem | null | undefined = null;
-
-      if (targetMeasurementChart?.measurementMapDefinitions) {
-        result = new List(
-          targetMeasurementChart.measurementMapDefinitions
-            ? targetMeasurementChart.measurementMapDefinitions
-            : []
-        )
-          .where((_) => _.id === definition.id)
-          .select<DefinitionValueItem>(
-            (mapDefinition: MeasurementMapDefinition) => {
-              const resultItem = new DefinitionValueItem(mapDefinition);
-
-              const targetDefinitionId = mapDefinition.measurementDefinitionId;
-
-              if (sizeItemRow?.measurementSize?.measurementMapValues) {
-                const targetMapValue:
-                  | MeasurementMapValue
-                  | null
-                  | undefined = new List<MeasurementMapValue>(
-                  sizeItemRow.measurementSize.measurementMapValues
-                ).firstOrDefault(
-                  (mapValueItem) =>
-                    mapValueItem.measurementDefinitionId === targetDefinitionId
-                );
-
-                if (targetMapValue) {
-                  resultItem.setMapValue(targetMapValue);
-                }
-              }
-
-              return resultItem;
-            }
-          )
-          .firstOrDefault();
-      }
-
-      if (result) {
-        const editSizePayload = new EditSizePayload(sizeItemRow, result);
-        setEditedSizePayload(editSizePayload);
-      } else {
-        // onEndSizeEdit();
-      }
-    } else {
-      // onEndSizeEdit();
-    }
-  };
-
-  const onEndSizeEdit = () => {
-    if (
-      targetMeasurementChart &&
-      editedSizePayload &&
-      editedSizePayload.editedSizeMap &&
-      editedSizePayload.editedSizeMap.measurementSize &&
-      editedSizePayload.definitionValueItems &&
-      editedSizePayload.definitionValueItems.resolveIsDirty()
-    ) {
-      const sizePayload: any = {};
-
-      sizePayload.id = editedSizePayload.editedSizeMap.measurementSizeId;
-      sizePayload.name = editedSizePayload.editedSizeMap.measurementSize.name;
-      sizePayload.description =
-        editedSizePayload.editedSizeMap.measurementSize.description;
-      sizePayload.measurementId = targetMeasurementChart.id;
-
-      let value: any = parseFloat(editedSizePayload.definitionValueItems.value);
-
-      if (isNaN(value)) {
-        value = null;
-      }
-
-      sizePayload.valueDataContracts = [
-        {
-          id: editedSizePayload.definitionValueItems.getMapValueId(),
-          value: value,
-          measurementDefinitionId:
-            editedSizePayload.definitionValueItems.sourceMapDefinition
-              .measurementDefinitionId,
-        },
-      ];
-
-      let action = assignPendingActions(
-        measurementActions.apiUpdateMeasurementSize(sizePayload),
-        [],
-        [],
-        (args: any) => {
-          editedSizePayload.definitionValueItems.updateInitMapValue();
-          setEditedSizePayload(null);
-        },
-        (args: any) => {}
-      );
-
-      dispatch(action);
-
-      setEditedSizePayload(null);
-    }
-    setEditedSizePayload(null);
-  };
-
   return (
     <div
       id="measurementChartGrid"
@@ -592,22 +347,12 @@ const MeasurementChartGrid: React.FC = () => {
         position: 'relative',
         borderTop: '1px solid #dfdfdf',
         paddingTop: '16px',
-      }}>
+      }}
+    >
       {/* Main data grid with dynamic columns */}
       <DetailsList
         onRenderRow={onRenderRow}
         onRenderDetailsHeader={onRenderDetailsHeader}
-        onActiveItemChanged={(item?: any, index?: number) => {
-          if (
-            editedSizePayload &&
-            editedSizePayload.editedSizeMap.id !== item.id
-          ) {
-            // onEndSizeEdit();
-          }
-        }}
-        onItemInvoked={(item?: any, index?: number, ev?: Event) => {
-          // onBeginRowEdit(item);
-        }}
         styles={{
           root: {
             position: 'absolute',
@@ -633,17 +378,6 @@ const MeasurementChartGrid: React.FC = () => {
       <DetailsList
         onRenderRow={onRenderRow}
         onRenderDetailsHeader={onRenderDetailsHeader}
-        onActiveItemChanged={(item?: any, index?: number) => {
-          if (
-            editedSizePayload &&
-            editedSizePayload.editedSizeMap.id !== item.id
-          ) {
-            // onEndSizeEdit();
-          }
-        }}
-        onItemInvoked={(item?: any, index?: number, ev?: Event) => {
-          // onBeginRowEdit(item);
-        }}
         styles={{
           root: {
             position: 'absolute',
@@ -672,7 +406,6 @@ const MeasurementChartGrid: React.FC = () => {
             isCollapsible: false,
             isPadded: false,
             data: 'string',
-
             onRender: (item?: any, index?: number, column?: IColumn) => {
               let cellValue = '-';
 
@@ -684,7 +417,8 @@ const MeasurementChartGrid: React.FC = () => {
                 <Stack
                   styles={{ root: { position: 'relative' } }}
                   horizontal
-                  horizontalAlign="space-between">
+                  horizontalAlign="space-between"
+                >
                   <Stack.Item>
                     <Text style={defaultCellStyle}>{`${cellValue}`}</Text>
                   </Stack.Item>

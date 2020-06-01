@@ -172,7 +172,8 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
           }
         }}
         enableReinitialize={true}
-        validateOnBlur={false}>
+        validateOnBlur={false}
+      >
         {(formik) => {
           return (
             <Form className="form">

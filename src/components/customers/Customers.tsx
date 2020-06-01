@@ -30,7 +30,7 @@ export const Customers: React.FC = (props: any) => {
       dispatch(controlActions.closeInfoPanelWithComponent());
       dispatch(customerActions.clearCustomerList());
     };
-  }, []);
+  }, [dispatch]);
   const searchBoxStyles = { root: { width: 200 } };
 
   return (
@@ -42,7 +42,8 @@ export const Customers: React.FC = (props: any) => {
               <Stack
                 horizontal
                 verticalAlign="center"
-                tokens={horizontalGapStackTokens}>
+                tokens={horizontalGapStackTokens}
+              >
                 <Text variant="xLarge" block styles={mainTitleContent}>
                   Customers
                 </Text>
@@ -61,7 +62,8 @@ export const Customers: React.FC = (props: any) => {
                       })
                     );
                   }}
-                  iconProps={{ iconName: 'Add' }}>
+                  iconProps={{ iconName: 'Add' }}
+                >
                   New customer
                 </ActionButton>
                 <SearchBox

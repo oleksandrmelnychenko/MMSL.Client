@@ -64,8 +64,7 @@ export const DealerList: React.FC = () => {
       dispatch(dealerActions.getAndSelectDealerById(null));
       dispatch(controlActions.closeInfoPanelWithComponent());
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (dealers.length > 0 && shimmer) {
