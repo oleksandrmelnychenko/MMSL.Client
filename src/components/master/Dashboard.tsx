@@ -54,7 +54,8 @@ const Dashboard: React.FC = () => {
           isBlocking={false}
           styles={stylesPanelInfo}
           isOpen={panelInfo.isOpenPanelInfo}
-          onDismiss={dismissPanelInfo}>
+          onDismiss={dismissPanelInfo}
+        >
           <Route
             path={location.pathname}
             component={panelInfo.componentInPanelInfo}
@@ -84,7 +85,8 @@ const Dashboard: React.FC = () => {
           isOpen={!!rightPanel.title}
           onDismiss={() => {
             rightPanel.closeFunctions();
-          }}>
+          }}
+        >
           <Route path={location.pathname} component={RightPanel} />
         </Panel>
       )}

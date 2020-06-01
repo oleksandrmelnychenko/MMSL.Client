@@ -11,7 +11,6 @@ import {
   FontWeights,
   IImageProps,
   Text,
-  ScrollbarVisibility,
 } from 'office-ui-fabric-react';
 import {
   scrollablePaneStyleForDetailList,
@@ -33,7 +32,6 @@ import {
 } from '../../redux/slices/control.slice';
 import { assignPendingActions } from '../../helpers/action.helper';
 import MeasurementChartGrid from './MeasurementChartGrid';
-import { List } from 'linq-typescript';
 import NoMeasurementImg from '../../assets/images/no-objects/noneMeasurement.svg';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';

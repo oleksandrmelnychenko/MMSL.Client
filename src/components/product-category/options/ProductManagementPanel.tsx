@@ -25,10 +25,7 @@ const ProductManagementPanel: React.FC = () => {
   );
 
   useEffect(() => {
-    return () => {
-      // dispatch(productCategoryAction.chooseProductCategory(null));
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {};
   }, []);
 
   const menuItem: IProductMenuItem[] = [
@@ -51,7 +48,7 @@ const ProductManagementPanel: React.FC = () => {
 
   const redirectToMeasurements = () => {
     dispatch(productActions.setChooseProductCategoryId(choseCategory!.id));
-    dispatch(controlActions.closeInfoPanelWithComponent());
+    // dispatch(controlActions.closeInfoPanelWithComponent());
     history.push('/en/app/product/measurements');
   };
 
@@ -61,7 +58,8 @@ const ProductManagementPanel: React.FC = () => {
         <Label
           key={index}
           styles={labelStyle}
-          className={false ? 'selected' : ''}>
+          className={false ? 'selected' : ''}
+        >
           <PrimaryButton
             styles={btnMenuStyle}
             className={item.className}

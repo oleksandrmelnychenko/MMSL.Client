@@ -121,14 +121,16 @@ const Menu: React.FC = () => {
           key={index}
           className={`menu__item${
             item.children && isOpenSubMenu ? ' menu__item_with-sub-menu' : ''
-          }`}>
+          }`}
+        >
           <NavLink
             onClick={() => {
               item.children ? setIsOpenSubMenu(true) : onMenuClick();
             }}
             className={`menu__link ${item.className}`}
             to={item.link}
-            activeClassName={!item.children ? 'active' : ''}>
+            activeClassName={!item.children ? 'active' : ''}
+          >
             {item.title}
           </NavLink>
 

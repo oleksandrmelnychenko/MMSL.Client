@@ -28,12 +28,7 @@ const ProductCategories: React.FC = () => {
 
   useEffect(() => {
     dispatch(productActions.apiGetAllProductCategory());
-    return () => {
-      dispatch(productActions.chooseProductCategory(null));
-      dispatch(controlActions.closeInfoPanelWithComponent());
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   const categories = useSelector<IApplicationState, ProductCategory[]>(
     (state) => state.product.productCategory
@@ -84,11 +79,13 @@ const ProductCategories: React.FC = () => {
               <Stack
                 horizontal
                 verticalAlign="center"
-                tokens={fabricStyles.horizontalGapStackTokens}>
+                tokens={fabricStyles.horizontalGapStackTokens}
+              >
                 <Text
                   variant="xLarge"
                   block
-                  styles={fabricStyles.mainTitleContent}>
+                  styles={fabricStyles.mainTitleContent}
+                >
                   Products
                 </Text>
                 <ActionButton
@@ -100,7 +97,8 @@ const ProductCategories: React.FC = () => {
                       )
                     );
                   }}
-                  iconProps={{ iconName: 'Add' }}>
+                  iconProps={{ iconName: 'Add' }}
+                >
                   New Product
                 </ActionButton>
               </Stack>
@@ -109,13 +107,15 @@ const ProductCategories: React.FC = () => {
         </Stack.Item>
         <Stack.Item>
           <ScrollablePane
-            styles={fabricStyles.scrollablePaneStyleForDetailList}>
+            styles={fabricStyles.scrollablePaneStyleForDetailList}
+          >
             <div className="categories">
               {categories.map((category) => (
                 <div
                   className="card"
                   key={category.id}
-                  style={{ margin: '12px 24px 12px 0', position: 'relative' }}>
+                  style={{ margin: '12px 24px 12px 0', position: 'relative' }}
+                >
                   <Card
                     styles={fabricStyles.cardStyle}
                     className={
@@ -144,17 +144,20 @@ const ProductCategories: React.FC = () => {
                         dispatch(action);
                       }
                     }}
-                    tokens={fabricStyles.cardTokens}>
+                    tokens={fabricStyles.cardTokens}
+                  >
                     <Card.Section fill verticalAlign="end">
                       <Image
                         src={category.imageUrl}
-                        styles={fabricStyles.marginImageCenter}></Image>
+                        styles={fabricStyles.marginImageCenter}
+                      ></Image>
                     </Card.Section>
                     <Card.Section>
                       <Text
                         className="category_name"
                         variant="large"
-                        styles={fabricStyles.textStyles}>
+                        styles={fabricStyles.textStyles}
+                      >
                         {category.name}
                       </Text>
                     </Card.Section>
@@ -162,7 +165,8 @@ const ProductCategories: React.FC = () => {
                       className="card_actions"
                       horizontal
                       styles={fabricStyles.footerCardSectionStyles}
-                      tokens={fabricStyles.footerCardSectionTokens}>
+                      tokens={fabricStyles.footerCardSectionTokens}
+                    >
                       <Icon
                         className={DATA_SELECTION_DISABLED_CLASS}
                         iconName="Edit"
