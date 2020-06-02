@@ -26,8 +26,9 @@ import {
 import NoMeasurementImg from '../../../assets/images/no-objects/noneMeasurement.svg';
 import ProductMeasurementSelector from './ProductMeasurementSelector';
 import ProductMeasurementChartGrid from './ProductMeasurementChartGrid';
-// import MeasurementManagingPanel from './management/MeasurementManagingPanel';
-import { productActions } from '../../../redux/slices/product.slice';
+import { controlActions } from '../../../redux/slices/control.slice';
+import MeasurementManagingPanel from '../../measurements/measurementManaging/MeasurementManagingPanel';
+import MeasurementForm from './management/MeasurementForm';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
@@ -81,12 +82,42 @@ const Measurements: React.FC = () => {
       ? {}
       : { display: 'none' };
 
+  const deleteMeasurement = () => {
+    if (targetProductMeasurement) {
+    }
+  };
+
   const addMeasurement = () => {
-    // dispatch(
-    //   productActions.changeManagingProductMeasurementPanelContent(
-    //     ManagingMeasurementPanelComponent.CreateNewMeasurement
-    //   )
-    // );
+    dispatch(
+      controlActions.openRightPanel({
+        title: 'New Measurement',
+        width: '400px',
+        closeFunctions: () => {
+          dispatch(controlActions.closeRightPanel());
+        },
+        component: MeasurementForm,
+      })
+    );
+  };
+
+  const editMeasurement = () => {
+    if (targetProductMeasurement) {
+      dispatch(
+        measurementActions.changeManagingMeasurementPanelContent(
+          ManagingMeasurementPanelComponent.EditMeasurement
+        )
+      );
+    }
+  };
+
+  const addNewSize = () => {
+    if (targetProductMeasurement) {
+      dispatch(
+        measurementActions.changeManagingMeasurementPanelContent(
+          ManagingMeasurementPanelComponent.AddChartSize
+        )
+      );
+    }
   };
 
   return (
@@ -139,15 +170,7 @@ const Measurements: React.FC = () => {
                         fontWeight: FontWeights.regular,
                       },
                     }}
-                    onClick={() => {
-                      if (targetProductMeasurement) {
-                        dispatch(
-                          measurementActions.changeManagingMeasurementPanelContent(
-                            ManagingMeasurementPanelComponent.AddChartSize
-                          )
-                        );
-                      }
-                    }}
+                    onClick={() => addNewSize()}
                     iconProps={{ iconName: 'InsertRowsBelow' }}
                   />
 
@@ -167,15 +190,7 @@ const Measurements: React.FC = () => {
                             fontWeight: FontWeights.regular,
                           },
                         }}
-                        onClick={() => {
-                          if (targetProductMeasurement) {
-                            dispatch(
-                              measurementActions.changeManagingMeasurementPanelContent(
-                                ManagingMeasurementPanelComponent.EditMeasurement
-                              )
-                            );
-                          }
-                        }}
+                        onClick={() => editMeasurement()}
                         iconProps={{ iconName: 'Edit' }}
                       />
 
@@ -191,10 +206,7 @@ const Measurements: React.FC = () => {
                             fontWeight: FontWeights.light,
                           },
                         }}
-                        onClick={() => {
-                          if (targetProductMeasurement) {
-                          }
-                        }}
+                        onClick={() => deleteMeasurement()}
                         iconProps={{
                           iconName: 'Cancel',
                           styles: {
@@ -259,7 +271,7 @@ const Measurements: React.FC = () => {
         </Stack.Item>
       </Stack>
 
-      {/* <MeasurementManagingPanel /> */}
+      <MeasurementManagingPanel />
     </div>
   );
 };

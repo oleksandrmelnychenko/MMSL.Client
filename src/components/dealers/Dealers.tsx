@@ -55,7 +55,8 @@ export const Dealers: React.FC = (props: any) => {
               <Stack
                 horizontal
                 verticalAlign="center"
-                tokens={horizontalGapStackTokens}>
+                tokens={horizontalGapStackTokens}
+              >
                 <Text variant="xLarge" block styles={mainTitleContent}>
                   Dealers
                 </Text>
@@ -73,7 +74,8 @@ export const Dealers: React.FC = (props: any) => {
                         component: ManageDealerForm,
                       })
                     );
-                  }}>
+                  }}
+                >
                   New dealer
                 </ActionButton>
                 <DatePicker

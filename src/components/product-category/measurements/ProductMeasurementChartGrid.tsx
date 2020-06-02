@@ -131,7 +131,6 @@ const ProductMeasurementChartGrid: React.FC = () => {
                           targetProduct
                         ) {
                           /// TODO:
-                          debugger;
                           //   dispatch(
                           //     controlActions.closeInfoPanelWithComponent()
                           //   );
