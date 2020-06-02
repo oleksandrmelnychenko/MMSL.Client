@@ -114,7 +114,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
       />
     );
   } else if (panelContent === ManagingPanelComponent.ManageUnits) {
-    panelTitleText = 'Manage Option Units';
+    panelTitleText = 'Manage Style';
     panelWidth = 700;
     if (sectedOptionGroup) {
       panelDescription = [sectedOptionGroup.name];
@@ -234,8 +234,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
             productSettingsActions.updateTargetSingleEditOptionGroup(null)
           );
         }}
-        closeButtonAriaLabel="Close"
-      >
+        closeButtonAriaLabel="Close">
         <PanelTitle title={panelTitleText} description={panelDescription} />
 
         <CommonManagementActionBar actionItems={actionItems} />

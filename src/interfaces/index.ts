@@ -336,14 +336,14 @@ export class ProductCategoryMapOptionGroup extends EntityBase {
 export class ProductCategory extends EntityBaseNamed {
   constructor() {
     super();
-
+    this.deliveryTimelineProductMaps = [];
     this.measurements = null;
     this.optionGroupMaps = [];
     this.imageUrl = '';
 
     this.imageBlob = null;
   }
-
+  deliveryTimelineProductMaps: ProductDeliveryTimeline[];
   imageUrl: string;
   measurements: null;
   optionGroupMaps: ProductCategoryMapOptionGroup[];
@@ -357,10 +357,12 @@ export class ChooseOptions {
     this.category = null;
     this.categoryId = null;
     this.measurements = [];
+    this.selectedTimeline = new ProductDeliveryTimelineSelected();
   }
   category: ProductCategory | null;
   categoryId: number | null;
   measurements: Measurement[];
+  selectedTimeline: ProductDeliveryTimelineSelected;
 }
 
 export class Measurement extends EntityBaseNamed {
@@ -466,4 +468,32 @@ export class DeliveryTimeline extends EntityBase {
   silver: string;
   black: string;
   gold: string;
+}
+
+export class ProductDeliveryTimeline extends EntityBase {
+  constructor() {
+    super();
+
+    this.deliveryTimelines = [];
+    this.deliveryTimelineId = 0;
+    this.productCategoryId = 0;
+  }
+
+  deliveryTimelines: DeliveryTimeline[];
+  deliveryTimelineId: number;
+  productCategoryId: number;
+}
+
+export class ProductDeliveryTimelineSelected extends EntityBase {
+  constructor() {
+    super();
+
+    this.deliveryTimeline = new DeliveryTimeline();
+    this.deliveryTimelineId = 0;
+    this.productCategoryId = 0;
+  }
+
+  deliveryTimeline: DeliveryTimeline;
+  deliveryTimelineId: number;
+  productCategoryId: number;
 }

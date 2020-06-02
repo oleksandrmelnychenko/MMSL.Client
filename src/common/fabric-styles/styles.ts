@@ -3,6 +3,7 @@ import {
   ITextStyles,
   IStackTokens,
   mergeStyles,
+  IImageProps,
 } from 'office-ui-fabric-react';
 import {
   ICardSectionTokens,
@@ -21,6 +22,14 @@ export const panelStyle = {
 
 export const detailsListStyle = {};
 
+export const imageProps: Partial<IImageProps> = {
+  styles: {
+    root: {
+      margin: '0 auto',
+    },
+  },
+};
+
 export const stylesPanelInfo = {
   main: {
     left: '45px',
@@ -36,6 +45,13 @@ export const scrollablePaneStyleForDetailList = {
   root: {
     top: '77px',
     bottom: '12px',
+  },
+};
+
+export const scrollablePaneStyleForDetailListWithDoubleHeader = {
+  root: {
+    top: '90px',
+    bottom: '10px',
   },
 };
 

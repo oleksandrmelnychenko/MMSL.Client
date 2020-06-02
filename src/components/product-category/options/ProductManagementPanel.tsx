@@ -13,7 +13,7 @@ export interface IProductMenuItem {
   title: string;
   className: string;
   componentType: ProductManagingPanelComponent;
-  onClickFunc?: Function;
+  onClickFunc: Function;
 }
 
 const ProductManagementPanel: React.FC = () => {
@@ -33,24 +33,34 @@ const ProductManagementPanel: React.FC = () => {
       title: 'Details',
       className: 'management__btn-detail',
       componentType: ProductManagingPanelComponent.ProductCategoryDetails,
+      onClickFunc: () => {
+        dispatch(
+          productActions.changeManagingPanelContent(
+            ProductManagingPanelComponent.ProductCategoryDetails
+          )
+        );
+      },
     },
     {
       title: 'Measurements',
       className: 'management__btn-measurements',
       componentType: ProductManagingPanelComponent.ProductMeasurement,
+      onClickFunc: () => {
+        dispatch(productActions.setChooseProductCategoryId(choseCategory!.id));
+        dispatch(controlActions.closeInfoPanelWithComponent());
+        history.push('/en/app/product/measurements');
+      },
     },
     {
       title: 'Timeline',
       className: 'management__btn-timeline',
       componentType: ProductManagingPanelComponent.ProductTimeLine,
+      onClickFunc: () => {
+        dispatch(controlActions.closeInfoPanelWithComponent());
+        history.push('/en/app/product/delivery-timeline');
+      },
     },
   ];
-
-  const redirectToMeasurements = () => {
-    dispatch(productActions.setChooseProductCategoryId(choseCategory!.id));
-    // dispatch(controlActions.closeInfoPanelWithComponent());
-    history.push('/en/app/product/measurements');
-  };
 
   return (
     <div className="management">
@@ -58,27 +68,12 @@ const ProductManagementPanel: React.FC = () => {
         <Label
           key={index}
           styles={labelStyle}
-          className={false ? 'selected' : ''}
-        >
+          className={false ? 'selected' : ''}>
           <PrimaryButton
             styles={btnMenuStyle}
             className={item.className}
             onClick={() => {
-              if (
-                item.componentType ===
-                ProductManagingPanelComponent.ProductCategoryDetails
-              ) {
-                dispatch(
-                  productActions.changeManagingPanelContent(
-                    ProductManagingPanelComponent.ProductCategoryDetails
-                  )
-                );
-              } else if (
-                item.componentType ===
-                ProductManagingPanelComponent.ProductMeasurement
-              ) {
-                redirectToMeasurements();
-              }
+              item.onClickFunc();
             }}
             allowDisabledFocus
           />
