@@ -12,6 +12,17 @@ import {
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
 import '../../../measurements/measurementManaging/sizeForm.scss';
 import { List } from 'linq-typescript';
+import { controlActions } from '../../../../redux/slices/control.slice';
+import { measurementActions } from '../../../../redux/slices/measurement.slice';
+import { productActions } from '../../../../redux/slices/product.slice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  GetCommandBarItemProps,
+  CommandBarItem,
+  ChangeItemsDisabledState,
+} from '../../../../helpers/commandBar.helper';
+import { IApplicationState } from '../../../../redux/reducers';
+import { assignPendingActions } from '../../../../helpers/action.helper';
 
 export class SizeInitValues {
   constructor() {
@@ -79,7 +90,37 @@ const buildSize = (
   return sizePayload;
 };
 
-const initDefaultValues = (
+const _buildNewSizePayload = (
+  values: SizeInitValues,
+  measurement: Measurement,
+  valueItems: DefinitionValueItem[]
+) => {
+  const sizePayload: any = {
+    name: values.name,
+    description: values.description,
+    measurementId: measurement.id,
+    valueDataContracts: [],
+  };
+
+  const dirtyValueItemsList = new List<DefinitionValueItem>(
+    valueItems
+  ).where((item) => item.resolveIsDirty());
+
+  sizePayload.valueDataContracts = dirtyValueItemsList
+    .select((valueItem) => {
+      return {
+        measurementDefinitionId:
+          valueItem.sourceMapDefinition.measurementDefinitionId,
+        value: parseFloat(valueItem.value),
+      };
+    })
+    .where((itemContract) => !isNaN(itemContract.value))
+    .toArray();
+
+  return sizePayload;
+};
+
+const _initDefaultValues = (
   sourceEntity?: MeasurementMapSize | null | undefined
 ) => {
   const initValues: SizeInitValues = new SizeInitValues();
@@ -92,7 +133,7 @@ const initDefaultValues = (
   return initValues;
 };
 
-const initValueItemsDefaults = (
+const _initValueItemsDefaults = (
   measurement: Measurement | null | undefined,
   sourceEntity?: MeasurementMapSize | null | undefined
 ) => {
@@ -134,23 +175,6 @@ const initValueItemsDefaults = (
 
   return result;
 };
-
-export class SizesFormProps {
-  constructor() {
-    this.formikReference = new FormicReference();
-
-    this.measurement = null;
-    this.size = null;
-
-    this.submitAction = (args: any) => {};
-  }
-
-  formikReference: FormicReference;
-  measurement: Measurement | null | undefined;
-  size?: MeasurementMapSize | null | undefined;
-
-  submitAction: (args: any) => void;
-}
 
 export class DefinitionValueItem {
   private _mapValue: MeasurementMapValue | null | undefined;
@@ -229,36 +253,93 @@ export class DefinitionValueItem {
   };
 }
 
-export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
-  const initValues = initDefaultValues(props.size);
+export const SizesForm: React.FC = () => {
+  const dispatch = useDispatch();
 
-  const [targetMeasurement, setTargetMeasurement] = useState<
-    Measurement | null | undefined
-  >();
-  const [sizeChartForEdit, setSizeChartForEdit] = useState<
-    MeasurementMapSize | null | undefined
-  >();
+  const initValues = _initDefaultValues(null);
+
+  const [formikReference] = useState<FormicReference>(
+    new FormicReference(() => {})
+  );
+  const [isFormikDirty, setFormikDirty] = useState<boolean>(false);
   const [valueItems, setValueItems] = useState<DefinitionValueItem[]>([]);
 
-  useEffect(() => {
-    return () => {
-      setTargetMeasurement(null);
-      setSizeChartForEdit(null);
-    };
-  }, [setTargetMeasurement, setSizeChartForEdit]);
+  const measurement = useSelector<
+    IApplicationState,
+    Measurement | null | undefined
+  >((state) => state.product.productMeasurementsState.targetMeasurement);
+
+  const commandBarItems = useSelector<IApplicationState, any>(
+    (state) => state.control.rightPanel.commandBarItems
+  );
 
   useEffect(() => {
-    if (targetMeasurement) {
-      setValueItems(
-        initValueItemsDefaults(targetMeasurement, sizeChartForEdit)
+    if (formikReference.formik) {
+      dispatch(
+        controlActions.setPanelButtons([
+          GetCommandBarItemProps(CommandBarItem.Save, () => {
+            formikReference.formik.submitForm();
+          }),
+          GetCommandBarItemProps(CommandBarItem.Reset, () => {
+            formikReference.formik.resetForm();
+          }),
+        ])
       );
     }
-  }, [targetMeasurement, sizeChartForEdit]);
+  }, [formikReference, dispatch]);
 
-  if (props.measurement !== targetMeasurement)
-    setTargetMeasurement(props.measurement);
+  useEffect(() => {
+    if (new List(commandBarItems).any()) {
+      dispatch(
+        controlActions.setPanelButtons(
+          ChangeItemsDisabledState(
+            commandBarItems,
+            [CommandBarItem.Reset, CommandBarItem.Save],
+            !isFormikDirty
+          )
+        )
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFormikDirty, dispatch]);
 
-  if (props.size !== sizeChartForEdit) setSizeChartForEdit(props.size);
+  useEffect(() => {
+    setValueItems(_initValueItemsDefaults(measurement, null));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // if (props.size !== sizeChartForEdit) setSizeChartForEdit(props.size);
+
+  const createNewSize = (values: SizeInitValues) => {
+    if (measurement) {
+      const payload = _buildNewSizePayload(values, measurement, valueItems);
+
+      dispatch(
+        assignPendingActions(
+          measurementActions.apiCreateNewMeasurementSize(payload),
+          [],
+          [],
+          (args: any) => {
+            dispatch(
+              assignPendingActions(
+                measurementActions.apiGetMeasurementById(measurement.id),
+                [],
+                [],
+                (args: any) => {
+                  dispatch(
+                    productActions.changeSelectedProductMeasurement(args)
+                  );
+                  dispatch(controlActions.closeRightPanel());
+                },
+                (args: any) => {}
+              )
+            );
+          },
+          (args: any) => {}
+        )
+      );
+    }
+  };
 
   return (
     <div className="sizeForm">
@@ -269,29 +350,23 @@ export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
         })}
         initialValues={initValues}
         onSubmit={(values: any) => {
-          props.submitAction(
-            buildSize(values, targetMeasurement, valueItems, sizeChartForEdit)
-          );
+          // props.submitAction(
+          //   buildSize(values, targetMeasurement, valueItems, null)
+          // );
+          createNewSize(values);
         }}
         onReset={(values: any, formikHelpers: any) => {
-          setValueItems(
-            initValueItemsDefaults(targetMeasurement, sizeChartForEdit)
-          );
+          setValueItems(_initValueItemsDefaults(measurement, null));
         }}
         innerRef={(formik: any) => {
-          props.formikReference.formik = formik;
-
-          if (formik) {
-            if (props.formikReference.isDirtyFunc) {
-              const isDirty =
-                formik.dirty ||
+          formikReference.formik = formik;
+          if (formik)
+            setFormikDirty(
+              formik.dirty ||
                 new List(valueItems).any((valueItem) =>
                   valueItem.resolveIsDirty()
-                );
-
-              props.formikReference.isDirtyFunc(isDirty);
-            }
-          }
+                )
+            );
         }}
         validateOnBlur={false}
         enableReinitialize={true}
@@ -366,6 +441,16 @@ export const SizesForm: React.FC<SizesFormProps> = (props: SizesFormProps) => {
                                     onChange={(args: any) => {
                                       valueItem.value = args.target.value;
                                       valueItem.resolveIsDirty();
+
+                                      const isAnyDirtyChart =
+                                        new List(valueItems).any((valueItem) =>
+                                          valueItem.resolveIsDirty()
+                                        ) || isFormikDirty;
+
+                                      if (isAnyDirtyChart !== isFormikDirty) {
+                                        setFormikDirty(isAnyDirtyChart);
+                                      }
+
                                       setValueItems(
                                         new List(valueItems).toArray()
                                       );

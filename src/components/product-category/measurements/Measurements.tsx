@@ -19,10 +19,7 @@ import {
   mainTitleContent,
   scrollablePaneStyleForDetailList,
 } from '../../../common/fabric-styles/styles';
-import {
-  measurementActions,
-  ManagingMeasurementPanelComponent,
-} from '../../../redux/slices/measurement.slice';
+import { measurementActions } from '../../../redux/slices/measurement.slice';
 import { productActions } from '../../../redux/slices/product.slice';
 import NoMeasurementImg from '../../../assets/images/no-objects/noneMeasurement.svg';
 import ProductMeasurementSelector from './ProductMeasurementSelector';
@@ -35,6 +32,7 @@ import {
 import MeasurementForm from './management/MeasurementForm';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { List } from 'linq-typescript';
+import SizesForm from './management/SizesForm';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
@@ -193,9 +191,15 @@ const Measurements: React.FC = () => {
   const addNewSize = () => {
     if (targetProductMeasurement) {
       dispatch(
-        measurementActions.changeManagingMeasurementPanelContent(
-          ManagingMeasurementPanelComponent.AddChartSize
-        )
+        controlActions.openRightPanel({
+          title: 'Add size',
+          description: targetProductMeasurement.name,
+          width: '400px',
+          closeFunctions: () => {
+            dispatch(controlActions.closeRightPanel());
+          },
+          component: SizesForm,
+        })
       );
     }
   };
