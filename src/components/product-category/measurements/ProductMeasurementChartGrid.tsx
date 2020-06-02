@@ -37,8 +37,10 @@ import {
   DialogArgs,
   CommonDialogType,
 } from '../../../redux/slices/control.slice';
+import { productActions } from '../../../redux/slices/product.slice';
 import { defaultCellStyle } from '../../../common/fabric-styles/styles';
 import ProductChartGridCell from './ProductChartGridCell';
+import SizesForm from './management/SizesForm';
 
 const _columnIconButtonStyle = {
   root: {
@@ -94,11 +96,23 @@ const ProductMeasurementChartGrid: React.FC = () => {
             title="Edit"
             ariaLabel="Edit"
             onClick={() => {
-              dispatch(measurementActions.changeSizeForEdit(item));
               dispatch(
-                measurementActions.changeManagingMeasurementPanelContent(
-                  ManagingMeasurementPanelComponent.EditChartSize
-                )
+                productActions.changeProductMeasurementSizeForEdit(item)
+              );
+
+              dispatch(
+                controlActions.openRightPanel({
+                  title: 'Edit size',
+                  description: item.name,
+                  width: '400px',
+                  closeFunctions: () => {
+                    dispatch(
+                      productActions.changeProductMeasurementSizeForEdit(null)
+                    );
+                    dispatch(controlActions.closeRightPanel());
+                  },
+                  component: SizesForm,
+                })
               );
             }}
           />

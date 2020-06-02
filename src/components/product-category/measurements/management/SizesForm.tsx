@@ -34,62 +34,6 @@ export class SizeInitValues {
   description: string;
 }
 
-const buildSize = (
-  values: SizeInitValues,
-  measurement: Measurement | null | undefined,
-  valueItems: DefinitionValueItem[],
-  sourceEntity?: MeasurementMapSize | null | undefined
-) => {
-  const sizePayload: any = {};
-
-  const dirtyValueItemsList = new List<DefinitionValueItem>(
-    valueItems
-  ).where((item) => item.resolveIsDirty());
-
-  if (sourceEntity) {
-    /// Editing size flow
-    sizePayload.id = sourceEntity.measurementSizeId;
-    sizePayload.name = values.name;
-    sizePayload.description = values.description;
-    sizePayload.measurementId = measurement ? measurement.id : 0;
-
-    sizePayload.valueDataContracts = dirtyValueItemsList
-      .select((valueItem) => {
-        const valueDataContract: any = {};
-        valueDataContract.id = valueItem.getMapValueId();
-        valueDataContract.value = parseFloat(valueItem.value);
-        valueDataContract.measurementDefinitionId =
-          valueItem.sourceMapDefinition.measurementDefinitionId;
-
-        if (isNaN(valueDataContract.value)) valueDataContract.value = null;
-
-        return valueDataContract;
-      })
-      // .where(
-      //   (itemContract) => itemContract.value !== null && itemContract.id !== 0
-      // )
-      .toArray();
-  } else {
-    /// Creating new size flow
-    sizePayload.name = values.name;
-    sizePayload.description = values.description;
-    sizePayload.measurementId = measurement ? measurement.id : 0;
-
-    sizePayload.valueDataContracts = dirtyValueItemsList
-      .select((valueItem) => {
-        return {
-          measurementDefinitionId:
-            valueItem.sourceMapDefinition.measurementDefinitionId,
-          value: parseFloat(valueItem.value),
-        };
-      })
-      .where((itemContract) => !isNaN(itemContract.value))
-      .toArray();
-  }
-
-  return sizePayload;
-};
-
 const _buildNewSizePayload = (
   values: SizeInitValues,
   measurement: Measurement,
@@ -115,6 +59,44 @@ const _buildNewSizePayload = (
       };
     })
     .where((itemContract) => !isNaN(itemContract.value))
+    .toArray();
+
+  return sizePayload;
+};
+
+const _buildEditedSizePayload = (
+  values: SizeInitValues,
+  measurement: Measurement,
+  valueItems: DefinitionValueItem[],
+  sourceEntity: MeasurementMapSize
+) => {
+  const sizePayload: any = {
+    id: sourceEntity.measurementSizeId,
+    name: values.name,
+    description: values.description,
+    measurementId: measurement.id,
+    valueDataContracts: [],
+  };
+
+  const dirtyValueItemsList = new List<DefinitionValueItem>(
+    valueItems
+  ).where((item) => item.resolveIsDirty());
+
+  sizePayload.valueDataContracts = dirtyValueItemsList
+    .select((valueItem) => {
+      const valueDataContract: any = {};
+      valueDataContract.id = valueItem.getMapValueId();
+      valueDataContract.value = parseFloat(valueItem.value);
+      valueDataContract.measurementDefinitionId =
+        valueItem.sourceMapDefinition.measurementDefinitionId;
+
+      if (isNaN(valueDataContract.value)) valueDataContract.value = null;
+
+      return valueDataContract;
+    })
+    // .where(
+    //   (itemContract) => itemContract.value !== null && itemContract.id !== 0
+    // )
     .toArray();
 
   return sizePayload;
@@ -256,8 +238,6 @@ export class DefinitionValueItem {
 export const SizesForm: React.FC = () => {
   const dispatch = useDispatch();
 
-  const initValues = _initDefaultValues(null);
-
   const [formikReference] = useState<FormicReference>(
     new FormicReference(() => {})
   );
@@ -268,6 +248,11 @@ export const SizesForm: React.FC = () => {
     IApplicationState,
     Measurement | null | undefined
   >((state) => state.product.productMeasurementsState.targetMeasurement);
+
+  const sizeForEdit = useSelector<
+    IApplicationState,
+    MeasurementMapSize | null | undefined
+  >((state) => state.product.productMeasurementsState.sizeForEdit);
 
   const commandBarItems = useSelector<IApplicationState, any>(
     (state) => state.control.rightPanel.commandBarItems
@@ -304,11 +289,9 @@ export const SizesForm: React.FC = () => {
   }, [isFormikDirty, dispatch]);
 
   useEffect(() => {
-    setValueItems(_initValueItemsDefaults(measurement, null));
+    setValueItems(_initValueItemsDefaults(measurement, sizeForEdit));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // if (props.size !== sizeChartForEdit) setSizeChartForEdit(props.size);
 
   const createNewSize = (values: SizeInitValues) => {
     if (measurement) {
@@ -341,6 +324,47 @@ export const SizesForm: React.FC = () => {
     }
   };
 
+  const createEditedSize = (
+    values: SizeInitValues,
+    sourceEntity: MeasurementMapSize
+  ) => {
+    if (measurement && sizeForEdit) {
+      const payload = _buildEditedSizePayload(
+        values,
+        measurement,
+        valueItems,
+        sizeForEdit
+      );
+
+      dispatch(
+        assignPendingActions(
+          measurementActions.apiUpdateMeasurementSize(payload),
+          [],
+          [],
+          (args: any) => {
+            dispatch(
+              assignPendingActions(
+                measurementActions.apiGetMeasurementById(measurement.id),
+                [],
+                [],
+                (args: any) => {
+                  dispatch(
+                    productActions.changeSelectedProductMeasurement(args)
+                  );
+                  dispatch(controlActions.closeRightPanel());
+                },
+                (args: any) => {}
+              )
+            );
+          },
+          (args: any) => {}
+        )
+      );
+    }
+  };
+
+  const initValues = _initDefaultValues(sizeForEdit);
+
   return (
     <div className="sizeForm">
       <Formik
@@ -350,13 +374,11 @@ export const SizesForm: React.FC = () => {
         })}
         initialValues={initValues}
         onSubmit={(values: any) => {
-          // props.submitAction(
-          //   buildSize(values, targetMeasurement, valueItems, null)
-          // );
-          createNewSize(values);
+          if (sizeForEdit) createEditedSize(values, sizeForEdit);
+          else createNewSize(values);
         }}
         onReset={(values: any, formikHelpers: any) => {
-          setValueItems(_initValueItemsDefaults(measurement, null));
+          setValueItems(_initValueItemsDefaults(measurement, sizeForEdit));
         }}
         innerRef={(formik: any) => {
           formikReference.formik = formik;

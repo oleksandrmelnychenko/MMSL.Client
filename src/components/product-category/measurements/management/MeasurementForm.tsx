@@ -218,7 +218,6 @@ export const MeasurementForm: React.FC = () => {
     itemToDelete: ChartItemInitPayload,
     inputState: IChartItemInputState
   ) => {
-    debugger;
     if (inputState.name.length < 1 || inputState.isRemoved) {
       const rowList = new List(charts);
       rowList.remove(itemToDelete);
