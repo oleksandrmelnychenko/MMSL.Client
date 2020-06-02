@@ -8,17 +8,17 @@ import { ProductManagingPanelComponent } from '../../../redux/slices/product.sli
 import { useHistory } from 'react-router-dom';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { ProductCategory } from '../../../interfaces';
-import ProductMeasurementPanel from './ProductMeasurementPanel';
+import { IProductMenuItem } from './ProductManagementPanel';
 
-export interface IProductMenuItem {
-  title: string;
-  className: string;
-  componentType: ProductManagingPanelComponent;
-  onClickFunc: Function;
-  isDisabled: boolean;
-}
+// export interface IProductMenuItem {
+//   title: string;
+//   className: string;
+//   componentType: ProductManagingPanelComponent;
+//   onClickFunc: Function;
+//   isDisabled: boolean;
+// }
 
-const ProductManagementPanel: React.FC = () => {
+const ProductMeasurementPanel: React.FC = () => {
   const dispatch = useDispatch();
   let history = useHistory();
 
@@ -32,46 +32,52 @@ const ProductManagementPanel: React.FC = () => {
 
   const menuItem: IProductMenuItem[] = [
     {
-      title: 'Details',
-      className: 'management__btn-detail',
+      title: 'Back',
+      className: 'management__btn-back',
       componentType: ProductManagingPanelComponent.ProductCategoryDetails,
       isDisabled: choseCategory ? false : true,
       onClickFunc: () => {
-        dispatch(
-          productActions.changeManagingPanelContent(
-            ProductManagingPanelComponent.ProductCategoryDetails
-          )
-        );
+        // dispatch(
+        //   productActions.changeManagingPanelContent(
+        //     ProductManagingPanelComponent.ProductCategoryDetails
+        //   )
+        // );
       },
     },
     {
-      title: 'Measurements',
-      className: 'management__btn-measurements',
+      title: 'New measurement',
+      className: 'management__btn-new-measurement',
       componentType: ProductManagingPanelComponent.ProductMeasurement,
       isDisabled: choseCategory ? false : true,
       onClickFunc: () => {
         // dispatch(productActions.setChooseProductCategoryId(choseCategory!.id));
-        dispatch(controlActions.closeInfoPanelWithComponent());
-        dispatch(
-          controlActions.openInfoPanelWithComponent(ProductMeasurementPanel)
-        );
-
-        if (choseCategory) {
-          history.push(`/en/app/product/measurements/${choseCategory.id}`);
-        } else {
-          dispatch(controlActions.closeInfoPanelWithComponent());
-          history.push(`/en/app/product`);
-        }
+        // dispatch(controlActions.closeInfoPanelWithComponent());
+        // if (choseCategory) {
+        //   history.push(`/en/app/product/measurements/${choseCategory.id}`);
+        // } else {
+        //   dispatch(controlActions.closeInfoPanelWithComponent());
+        //   history.push(`/en/app/product`);
+        // }
       },
     },
     {
-      title: 'Timeline',
-      className: 'management__btn-timeline',
+      title: 'Edit',
+      className: 'management__btn-edit',
       componentType: ProductManagingPanelComponent.ProductTimeLine,
       isDisabled: choseCategory ? false : true,
       onClickFunc: () => {
-        dispatch(controlActions.closeInfoPanelWithComponent());
-        history.push('/en/app/product/delivery-timeline');
+        // dispatch(controlActions.closeInfoPanelWithComponent());
+        // history.push('/en/app/product/delivery-timeline');
+      },
+    },
+    {
+      title: 'Delete',
+      className: 'management__btn-delete',
+      componentType: ProductManagingPanelComponent.ProductTimeLine,
+      isDisabled: choseCategory ? false : true,
+      onClickFunc: () => {
+        // dispatch(controlActions.closeInfoPanelWithComponent());
+        // history.push('/en/app/product/delivery-timeline');
       },
     },
   ];
@@ -100,4 +106,4 @@ const ProductManagementPanel: React.FC = () => {
   );
 };
 
-export default ProductManagementPanel;
+export default ProductMeasurementPanel;

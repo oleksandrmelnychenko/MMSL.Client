@@ -125,23 +125,25 @@ const ProductCategories: React.FC = () => {
                       const className: any = args?.target?.className;
 
                       if (!className.includes(DATA_SELECTION_DISABLED_CLASS)) {
-                        let action = assignPendingActions(
-                          productActions.apiGetProductCategoryById(category.id),
-                          [],
-                          [],
-                          (args: any) => {
-                            dispatch(
-                              productActions.chooseProductCategory(args)
-                            );
-                            dispatch(
-                              controlActions.openInfoPanelWithComponent(
-                                ProductManagementPanel
-                              )
-                            );
-                          }
+                        dispatch(
+                          assignPendingActions(
+                            productActions.apiGetProductCategoryById(
+                              category.id
+                            ),
+                            [],
+                            [],
+                            (args: any) => {
+                              dispatch(
+                                productActions.chooseProductCategory(args)
+                              );
+                              dispatch(
+                                controlActions.openInfoPanelWithComponent(
+                                  ProductManagementPanel
+                                )
+                              );
+                            }
+                          )
                         );
-
-                        dispatch(action);
                       }
                     }}
                     tokens={fabricStyles.cardTokens}

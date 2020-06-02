@@ -355,12 +355,10 @@ export class ProductCategory extends EntityBaseNamed {
 export class ChooseOptions {
   constructor() {
     this.category = null;
-    this.categoryId = null;
     this.measurements = [];
     this.selectedTimeline = new ProductDeliveryTimelineSelected();
   }
   category: ProductCategory | null;
-  categoryId: number | null;
   measurements: Measurement[];
   selectedTimeline: ProductDeliveryTimelineSelected;
 }

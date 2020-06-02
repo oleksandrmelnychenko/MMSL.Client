@@ -47,20 +47,19 @@ const Menu: React.FC = () => {
     }
   };
 
-  // Old pages, are not neccessary now
-  // const history = useLocation();
-  // Old pages, are not neccessary now
-  // const pathNamesSubMenu = [
-  //   `/${languageCode}/app/styles`,
-  //   `/${languageCode}/app/measurements`,
-  //   `/${languageCode}/app/timeline`,
-  // ];
-  // Old pages, are not neccessary now
-  // useEffect(() => {
-  //   if (pathNamesSubMenu.includes(history.pathname)) {
-  //     setIsOpenSubMenu(true);
-  //   }
-  // }, [history]);
+  const history = useLocation();
+
+  const pathNamesSubMenu = [
+    `/${languageCode}/app/styles`,
+    // Old pages, are not neccessary now
+    // `/${languageCode}/app/measurements`,
+    // `/${languageCode}/app/timeline`,
+  ];
+  useEffect(() => {
+    if (pathNamesSubMenu.includes(history.pathname)) {
+      setIsOpenSubMenu(true);
+    }
+  }, [history]);
 
   const menu: IMenuItem[] = [
     {
@@ -108,12 +107,12 @@ const Menu: React.FC = () => {
       className: 'settings',
       link: `/${languageCode}/app/styles`,
       children: [
+        {
+          title: 'Styles',
+          className: 'styles',
+          link: `/${languageCode}/app/styles`,
+        },
         // Old pages, are not neccessary now
-        // {
-        //   title: 'Styles',
-        //   className: 'styles',
-        //   link: `/${languageCode}/app/styles`,
-        // },
         // {
         //   title: 'Measurements',
         //   className: 'measurements',

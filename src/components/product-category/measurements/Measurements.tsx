@@ -33,11 +33,17 @@ import MeasurementForm from './management/MeasurementForm';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { List } from 'linq-typescript';
 import SizesForm from './management/SizesForm';
+import { useHistory } from 'react-router-dom';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
 const Measurements: React.FC = () => {
   const dispatch = useDispatch();
+  // const history = useHistory();
+
+  // const targetCategory = useSelector<IApplicationState, ProductCategory | null>(
+  //   (state) => state.product.choose.category
+  // );
 
   const targetProduct = useSelector<IApplicationState, ProductCategory | null>(
     (state) => state.product.choose.category
@@ -66,6 +72,36 @@ const Measurements: React.FC = () => {
     IApplicationState,
     Measurement[]
   >((state) => state.product.productMeasurementsState.measurementList);
+
+  // if (
+  //   history.location &&
+  //   history.location.pathname.includes('app/product/measurements/')
+  // ) {
+  //   if (!targetProduct) {
+  //     const lastSegment: any = new List(
+  //       history.location.pathname.split('/')
+  //     ).lastOrDefault();
+  //     const categoryId: number = parseInt(lastSegment ? lastSegment : '');
+  //     if (categoryId && !isNaN(categoryId)) {
+  //       dispatch(
+  //         assignPendingActions(
+  //           productActions.apiGetProductCategoryById(categoryId),
+  //           [],
+  //           [],
+  //           (args: any) => {
+  //             // dispatch(productActions.chooseProductCategory(args));
+  //             debugger;
+  //             // dispatch(
+  //             //   controlActions.openInfoPanelWithComponent(
+  //             //     ProductManagementPanel
+  //             //   )
+  //             // );
+  //           }
+  //         )
+  //       );
+  //     }
+  //   }
+  // }
 
   useEffect(() => {}, [dispatch]);
 

@@ -151,9 +151,6 @@ const product = createSlice({
     chooseProductCategory(state, action) {
       state.choose.category = action.payload;
     },
-    setChooseProductCategoryId(state, action) {
-      state.choose.categoryId = action.payload;
-    },
     successGetMeasurmentsByProduct(state, action) {
       state.choose.measurements = action.payload;
     },
