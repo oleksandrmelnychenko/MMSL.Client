@@ -40,7 +40,7 @@ export const apiGetAllMeasurementsEpic = (action$: AnyAction, state$: any) => {
             return errorCommonEpicFlow(
               errorResponse,
               [
-                { type: 'ERROR_GET_MEASUREMENTS_BY_PRODUCT' },
+                { type: 'ERROR_GET_ALL_MEASUREMENTS' },
                 measurementActions.updateisMeasurementsWasRequested(true),
                 controlActions.showInfoMessage(
                   `Error occurred while getting measurements list. ${errorResponse}`

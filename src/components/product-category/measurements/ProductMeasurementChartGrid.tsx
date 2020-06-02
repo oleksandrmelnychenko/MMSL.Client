@@ -18,27 +18,27 @@ import {
   SelectionMode,
   getId,
 } from 'office-ui-fabric-react';
-import { IApplicationState } from '../../redux/reducers';
+import { IApplicationState } from '../../../redux/reducers';
 import {
   Measurement,
   MeasurementMapDefinition,
   MeasurementMapSize,
-} from '../../interfaces';
-import { DATA_SELECTION_DISABLED_CLASS } from '../dealers/DealerList';
-import './measurementChartGrid.scss';
+  ProductCategory,
+} from '../../../interfaces';
+import { DATA_SELECTION_DISABLED_CLASS } from '../../dealers/DealerList';
+import './productMeasurementChartGrid.scss';
 import { List } from 'linq-typescript';
 import {
   measurementActions,
   ManagingMeasurementPanelComponent,
-} from '../../redux/slices/measurement.slice';
+} from '../../../redux/slices/measurement.slice';
 import {
   controlActions,
   DialogArgs,
   CommonDialogType,
-} from '../../redux/slices/control.slice';
-import { assignPendingActions } from '../../helpers/action.helper';
-import { defaultCellStyle } from '../../common/fabric-styles/styles';
-import ChartGridCell from './ChartGridCell';
+} from '../../../redux/slices/control.slice';
+import { defaultCellStyle } from '../../../common/fabric-styles/styles';
+import ProductChartGridCell from './ProductChartGridCell';
 
 const _columnIconButtonStyle = {
   root: {
@@ -49,7 +49,7 @@ const _columnIconButtonStyle = {
 
 const FROZEN_COLUMN_WIDTH = 130;
 
-const MeasurementChartGrid: React.FC = () => {
+const ProductMeasurementChartGrid: React.FC = () => {
   const dispatch = useDispatch();
 
   const [selection] = useState(
@@ -58,10 +58,18 @@ const MeasurementChartGrid: React.FC = () => {
     })
   );
 
-  const targetMeasurementChart: Measurement | null | undefined = useSelector<
+  const targetProductMeasurementChart:
+    | Measurement
+    | null
+    | undefined = useSelector<
     IApplicationState,
     Measurement | null | undefined
-  >((state) => state.measurements.targetMeasurement);
+  >((state) => state.product.productMeasurementsState.targetMeasurement);
+
+  const targetProduct: ProductCategory | null | undefined = useSelector<
+    IApplicationState,
+    ProductCategory | null | undefined
+  >((state) => state.product.choose.category);
 
   const onRenderFrezeOptions = (item: any) => {
     const refference: any = React.createRef();
@@ -103,7 +111,12 @@ const MeasurementChartGrid: React.FC = () => {
             title="Delete"
             ariaLabel="Delete"
             onClick={(args: any) => {
-              if (item && item.measurementSize && targetMeasurementChart) {
+              if (
+                item &&
+                item.measurementSize &&
+                targetProductMeasurementChart &&
+                targetProduct
+              ) {
                 dispatch(
                   controlActions.toggleCommonDialogVisibility(
                     new DialogArgs(
@@ -114,41 +127,44 @@ const MeasurementChartGrid: React.FC = () => {
                         if (
                           item &&
                           item.measurementSize &&
-                          targetMeasurementChart
+                          targetProductMeasurementChart &&
+                          targetProduct
                         ) {
-                          dispatch(
-                            controlActions.closeInfoPanelWithComponent()
-                          );
-                          let action = assignPendingActions(
-                            measurementActions.apiDeleteMeasurementSizeById({
-                              measurementId: targetMeasurementChart.id,
-                              sizeId: item.measurementSize.id,
-                            }),
-                            [],
-                            [],
-                            (args: any) => {
-                              let getNewMeasurementByIdAction = assignPendingActions(
-                                measurementActions.apiGetMeasurementById(
-                                  targetMeasurementChart
-                                    ? targetMeasurementChart.id
-                                    : 0
-                                ),
-                                [],
-                                [],
-                                (args: any) => {
-                                  dispatch(
-                                    measurementActions.changeSelectedMeasurement(
-                                      args
-                                    )
-                                  );
-                                },
-                                (args: any) => {}
-                              );
-                              dispatch(getNewMeasurementByIdAction);
-                            },
-                            (args: any) => {}
-                          );
-                          dispatch(action);
+                          /// TODO:
+                          //   dispatch(
+                          //     controlActions.closeInfoPanelWithComponent()
+                          //   );
+                          //   let action = assignPendingActions(
+                          //     measurementActions.apiDeleteMeasurementSizeById({
+                          //       measurementId: targetProductMeasurementChart.id,
+                          //       sizeId: item.measurementSize.id,
+                          //     }),
+                          //     [],
+                          //     [],
+                          //     (args: any) => {
+                          //       let getNewMeasurementByIdAction = assignPendingActions(
+                          //         measurementActions.apiGetMeasurementById(
+                          //           targetMeasurementChart
+                          //             ? targetMeasurementChart.id
+                          //             : 0
+                          //         ),
+                          //         [],
+                          //         [],
+                          //         (args: any) => {
+                          //           dispatch(
+                          //             measurementActions.changeSelectedMeasurement(
+                          //               args
+                          //             )
+                          //           );
+                          //         },
+                          //         (args: any) => {}
+                          //       );
+                          //       dispatch(getNewMeasurementByIdAction);
+                          //     },
+                          //     (args: any) => {}
+                          //   );
+                          //   dispatch(action);
+                          // }
                         }
                       },
                       () => {}
@@ -255,21 +271,23 @@ const MeasurementChartGrid: React.FC = () => {
     column?: IColumn
   ) => {
     return (
-      <ChartGridCell
+      <ProductChartGridCell
         mapSize={item}
         chartColumn={(column as any).rawSourceContext}
-        measurementChart={targetMeasurementChart}
+        measurementChart={targetProductMeasurementChart}
+        productCategory={targetProduct}
       />
     );
   };
 
   const buildDynamicChartColumns = () => {
     if (
-      targetMeasurementChart &&
-      targetMeasurementChart.measurementMapDefinitions
+      targetProduct &&
+      targetProductMeasurementChart &&
+      targetProductMeasurementChart.measurementMapDefinitions
     ) {
       const dynamicChartSizeColumns: any[] = new List(
-        targetMeasurementChart.measurementMapDefinitions
+        targetProductMeasurementChart.measurementMapDefinitions
       )
         .select((definitionMapItem: MeasurementMapDefinition) => {
           return {
@@ -326,11 +344,11 @@ const MeasurementChartGrid: React.FC = () => {
     }
   };
 
-  // targetProductMeasurementChart && targetProduct
-
   const items =
-    targetMeasurementChart && targetMeasurementChart.measurementMapSizes
-      ? targetMeasurementChart.measurementMapSizes.map((item: any) => {
+    targetProduct &&
+    targetProductMeasurementChart &&
+    targetProductMeasurementChart.measurementMapSizes
+      ? targetProductMeasurementChart.measurementMapSizes.map((item: any) => {
           item.content = onRenderFrezeOptions(item);
           return item;
         })
@@ -340,7 +358,7 @@ const MeasurementChartGrid: React.FC = () => {
 
   return (
     <div
-      className="measurementChartGrid"
+      className="productMeasurementChartGrid"
       style={{
         position: 'relative',
         borderTop: '1px solid #dfdfdf',
@@ -431,4 +449,4 @@ const MeasurementChartGrid: React.FC = () => {
   );
 };
 
-export default MeasurementChartGrid;
+export default ProductMeasurementChartGrid;

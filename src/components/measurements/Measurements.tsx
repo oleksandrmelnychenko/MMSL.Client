@@ -20,7 +20,6 @@ import {
 import { IApplicationState } from '../../redux/reducers';
 import { Measurement } from '../../interfaces';
 import MeasurementSelector from './MeasurementSelector';
-import MeasurementManagingPanel from './measurementManaging/MeasurementManagingPanel';
 import {
   measurementActions,
   ManagingMeasurementPanelComponent,
@@ -314,8 +313,6 @@ const Measurements: React.FC = () => {
           </ScrollablePane>
         </Stack.Item>
       </Stack>
-
-      <MeasurementManagingPanel />
     </div>
   );
 };

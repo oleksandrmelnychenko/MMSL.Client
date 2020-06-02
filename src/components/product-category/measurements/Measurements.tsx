@@ -23,7 +23,18 @@ import {
   measurementActions,
   ManagingMeasurementPanelComponent,
 } from '../../../redux/slices/measurement.slice';
+import { productActions } from '../../../redux/slices/product.slice';
 import NoMeasurementImg from '../../../assets/images/no-objects/noneMeasurement.svg';
+import ProductMeasurementSelector from './ProductMeasurementSelector';
+import ProductMeasurementChartGrid from './ProductMeasurementChartGrid';
+import {
+  controlActions,
+  DialogArgs,
+  CommonDialogType,
+} from '../../../redux/slices/control.slice';
+import MeasurementForm from './management/MeasurementForm';
+import { assignPendingActions } from '../../../helpers/action.helper';
+import { List } from 'linq-typescript';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
@@ -34,19 +45,29 @@ const Measurements: React.FC = () => {
     (state) => state.product.choose.category
   );
 
-  const isMeasurementsWasRequested: boolean = useSelector<
+  const isProductMeasurementsWasRequested: boolean = useSelector<
     IApplicationState,
     boolean
-  >((state) => state.measurements.isMeasurementsWasRequested);
-
-  const isAnyMeasurements: boolean = useSelector<IApplicationState, boolean>(
-    (state) => state.measurements.measurementList.length > 0
+  >(
+    (state) => state.product.productMeasurementsState.isMeasurementsWasRequested
   );
 
-  const targetMeasurement: Measurement | null | undefined = useSelector<
+  const isAnyProductMeasurements: boolean = useSelector<
+    IApplicationState,
+    boolean
+  >(
+    (state) => state.product.productMeasurementsState.measurementList.length > 0
+  );
+
+  const targetProductMeasurement: Measurement | null | undefined = useSelector<
     IApplicationState,
     Measurement | null | undefined
-  >((state) => state.measurements.targetMeasurement);
+  >((state) => state.product.productMeasurementsState.targetMeasurement);
+
+  const measurements: Measurement[] = useSelector<
+    IApplicationState,
+    Measurement[]
+  >((state) => state.product.productMeasurementsState.measurementList);
 
   useEffect(() => {}, [dispatch]);
 
@@ -55,7 +76,7 @@ const Measurements: React.FC = () => {
   }, [targetProduct]);
 
   const hintContentHideableStyle =
-    isMeasurementsWasRequested && !isAnyMeasurements
+    isProductMeasurementsWasRequested && !isAnyProductMeasurements
       ? { height: '100%' }
       : { display: 'none' };
 
@@ -68,15 +89,104 @@ const Measurements: React.FC = () => {
   };
 
   const mainContentHideableStyle =
-    isMeasurementsWasRequested && isAnyMeasurements ? {} : { display: 'none' };
+    isProductMeasurementsWasRequested && isAnyProductMeasurements
+      ? {}
+      : { display: 'none' };
+
+  const deleteMeasurement = () => {
+    if (targetProductMeasurement) {
+      dispatch(
+        controlActions.toggleCommonDialogVisibility(
+          new DialogArgs(
+            CommonDialogType.Delete,
+            'Delete measurement',
+            `Are you sure you want to delete ${targetProductMeasurement.name}?`,
+            () => {
+              dispatch(
+                /// Delete measurement
+                assignPendingActions(
+                  measurementActions.apiDeleteMeasurementById(
+                    targetProductMeasurement.id
+                  ),
+                  [],
+                  [],
+                  (args: any) => {
+                    dispatch(
+                      /// Clear target delete measurement
+                      productActions.changeSelectedProductMeasurement(null)
+                    );
+                    const updatedMeasurements = new List(measurements)
+                      .where((item) => item.id !== args.body)
+                      .toArray();
+
+                    dispatch(
+                      productActions.updateProductMeasurementsList(
+                        updatedMeasurements
+                      )
+                    );
+
+                    if (updatedMeasurements.length > 0) {
+                      dispatch(
+                        /// Select first measurement
+                        assignPendingActions(
+                          measurementActions.apiGetMeasurementById(
+                            updatedMeasurements[0].id
+                          ),
+                          [],
+                          [],
+                          (args: any) => {
+                            dispatch(
+                              productActions.changeSelectedProductMeasurement(
+                                args
+                              )
+                            );
+                          },
+                          (args: any) => {}
+                        )
+                      );
+                    }
+                  }
+                )
+              );
+            },
+            () => {}
+          )
+        )
+      );
+    }
+  };
 
   const addMeasurement = () => {
-    debugger;
-    // dispatch(
-    //   measurementActions.changeManagingMeasurementPanelContent(
-    //     ManagingMeasurementPanelComponent.CreateNewMeasurement
-    //   )
-    // );
+    dispatch(
+      controlActions.openRightPanel({
+        title: 'New Measurement',
+        width: '400px',
+        closeFunctions: () => {
+          dispatch(controlActions.closeRightPanel());
+        },
+        component: MeasurementForm,
+      })
+    );
+  };
+
+  const editMeasurement = () => {
+    if (targetProductMeasurement) {
+      dispatch(
+        measurementActions.changeManagingMeasurementPanelContent(
+          ManagingMeasurementPanelComponent.EditMeasurement
+        )
+      );
+    }
+  };
+
+  const addNewSize = () => {
+    if (targetProductMeasurement) {
+      dispatch(
+        measurementActions.changeManagingMeasurementPanelContent(
+          ManagingMeasurementPanelComponent.AddChartSize
+        )
+      );
+    }
   };
 
   return (
@@ -115,10 +225,10 @@ const Measurements: React.FC = () => {
                     padding: '18px 5px 10px 8px',
                   }}
                 >
-                  {/* <MeasurementSelector /> */}
+                  <ProductMeasurementSelector />
 
                   <CommandBarButton
-                    disabled={targetMeasurement ? false : true}
+                    disabled={targetProductMeasurement ? false : true}
                     text="New size"
                     styles={{
                       root: {
@@ -129,15 +239,7 @@ const Measurements: React.FC = () => {
                         fontWeight: FontWeights.regular,
                       },
                     }}
-                    onClick={() => {
-                      if (targetMeasurement) {
-                        dispatch(
-                          measurementActions.changeManagingMeasurementPanelContent(
-                            ManagingMeasurementPanelComponent.AddChartSize
-                          )
-                        );
-                      }
-                    }}
+                    onClick={() => addNewSize()}
                     iconProps={{ iconName: 'InsertRowsBelow' }}
                   />
 
@@ -147,7 +249,7 @@ const Measurements: React.FC = () => {
                     <Stack horizontal>
                       <CommandBarButton
                         text="Edit"
-                        disabled={targetMeasurement ? false : true}
+                        disabled={targetProductMeasurement ? false : true}
                         styles={{
                           root: {
                             height: '30px',
@@ -157,21 +259,13 @@ const Measurements: React.FC = () => {
                             fontWeight: FontWeights.regular,
                           },
                         }}
-                        onClick={() => {
-                          if (targetMeasurement) {
-                            dispatch(
-                              measurementActions.changeManagingMeasurementPanelContent(
-                                ManagingMeasurementPanelComponent.EditMeasurement
-                              )
-                            );
-                          }
-                        }}
+                        onClick={() => editMeasurement()}
                         iconProps={{ iconName: 'Edit' }}
                       />
 
                       <CommandBarButton
                         text="Delete"
-                        disabled={targetMeasurement ? false : true}
+                        disabled={targetProductMeasurement ? false : true}
                         styles={{
                           root: {
                             height: '30px',
@@ -181,10 +275,7 @@ const Measurements: React.FC = () => {
                             fontWeight: FontWeights.light,
                           },
                         }}
-                        onClick={() => {
-                          if (targetMeasurement) {
-                          }
-                        }}
+                        onClick={() => deleteMeasurement()}
                         iconProps={{
                           iconName: 'Cancel',
                           styles: {
@@ -211,7 +302,9 @@ const Measurements: React.FC = () => {
             }}
           >
             <div style={mainContentHideableStyle}>
-              {targetMeasurement ? 'Grid' : null}
+              {targetProductMeasurement ? (
+                <ProductMeasurementChartGrid />
+              ) : null}
             </div>
             <div style={hintContentHideableStyle}>
               <div
