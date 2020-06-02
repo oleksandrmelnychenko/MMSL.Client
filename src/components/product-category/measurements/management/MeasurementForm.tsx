@@ -100,10 +100,10 @@ export const MeasurementForm: React.FC = () => {
     new FormicReference(() => {})
   );
   const [isFormikDirty, setFormikDirty] = useState<boolean>(false);
-  const [measurementCharts, setMeasurementCharts] = useState<
-    ChartItemInitPayload[]
-  >([]);
-  const [deletedRows, setDeletedRows] = useState<ChartItemInitPayload[]>([]);
+  const [charts, setCharts] = useState<ChartItemInitPayload[]>([]);
+  const [deletedCharts, setDeletedCharts] = useState<ChartItemInitPayload[]>(
+    []
+  );
 
   const commandBarItems = useSelector<IApplicationState, any>(
     (state) => state.control.rightPanel.commandBarItems
@@ -156,9 +156,7 @@ export const MeasurementForm: React.FC = () => {
       newRowDefinition.isDeleted = false;
       newRowDefinition.rawSource = new MeasurementMapDefinition();
 
-      setMeasurementCharts(
-        new List(measurementCharts).concat([newRowDefinition]).toArray()
-      );
+      setCharts(new List(charts).concat([newRowDefinition]).toArray());
     }
   };
 
@@ -167,24 +165,24 @@ export const MeasurementForm: React.FC = () => {
     inputState: IChartItemInputState
   ) => {
     if (inputState.name.length < 1 || inputState.isRemoved) {
-      const rowList = new List(measurementCharts);
+      const rowList = new List(charts);
       rowList.remove(itemToDelete);
 
       if (itemToDelete.rawSource && itemToDelete.rawSource.id !== 0) {
-        const deletedRowsList = new List(deletedRows);
+        const toDelete = new List(deletedCharts);
 
         if (
-          !deletedRowsList.any(
+          !toDelete.any(
             (deletedRow) =>
               deletedRow.rawSource.id === itemToDelete.rawSource.id
           )
         ) {
           itemToDelete.isDeleted = true;
-          setDeletedRows(deletedRowsList.concat([itemToDelete]).toArray());
+          setDeletedCharts(toDelete.concat([itemToDelete]).toArray());
         }
       }
 
-      setMeasurementCharts(rowList.toArray());
+      setCharts(rowList.toArray());
     }
   };
 
@@ -217,7 +215,7 @@ export const MeasurementForm: React.FC = () => {
           if (productCategory) {
             const payload = _buildNewMeasurementPayload(
               values,
-              new List(measurementCharts).concat(deletedRows).toArray(),
+              new List(charts).concat(deletedCharts).toArray(),
               productCategory
             );
 
@@ -244,17 +242,15 @@ export const MeasurementForm: React.FC = () => {
         }}
         onReset={(values: any, formikHelpers: any) => {
           /// TODO
-          setMeasurementCharts([]);
-          setDeletedRows([]);
+          setCharts([]);
+          setDeletedCharts([]);
         }}
         innerRef={(formik: any) => {
           formikReference.formik = formik;
           if (formik)
             setFormikDirty(
               formik.dirty ||
-                new List(measurementCharts).any((item) =>
-                  isChartItemDirty(item)
-                )
+                new List(charts).any((item) => isChartItemDirty(item))
             );
         }}
         validateOnBlur={false}
@@ -303,7 +299,7 @@ export const MeasurementForm: React.FC = () => {
 
                     <Stack tokens={{ childrenGap: '12px' }}>
                       <Stack tokens={{ childrenGap: '6px' }}>
-                        {measurementCharts.map((item, index) => {
+                        {charts.map((item, index) => {
                           return (
                             <EditChartItem
                               key={index}
