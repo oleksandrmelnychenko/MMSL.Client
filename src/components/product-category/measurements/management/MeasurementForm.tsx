@@ -9,7 +9,7 @@ import {
   ProductCategory,
 } from '../../../../interfaces';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
-import '../../../measurements/measurementManaging/measurementForm.scss';
+import './measurementForm.scss';
 import { List } from 'linq-typescript';
 import { useDispatch, useSelector } from 'react-redux';
 import { controlActions } from '../../../../redux/slices/control.slice';

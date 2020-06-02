@@ -20,7 +20,6 @@ import ProductSettings from '../productSettings/ProductSettings';
 import { IPanelInfo } from '../../interfaces/index';
 import Reports from '../reports/Reports';
 import ProductCategoryView from '../product-category/ProductCategoryView';
-import Measurements from '../measurements/Measurements';
 import Timeline from '../timeline/Timeline';
 import { RightPanel } from './panel/RightPanel';
 
@@ -67,9 +66,10 @@ const Dashboard: React.FC = () => {
             <Route path={`/en/app/dealers`} component={Dealers} />
             <Route path={`/en/app/customer`} component={Customers} />
             <Route path={`/en/app/product`} component={ProductCategoryView} />
-            <Route path={`/en/app/measurements`} component={Measurements} />
-            <Route path={`/en/app/timeline`} component={Timeline} />
-            <Route path={`/en/app/styles`} component={ProductSettings} />
+            {/* Old pages not neccessary now */}
+            {/* <Route path={`/en/app/timeline`} component={Timeline} /> */}
+            {/* Old pages not neccessary now */}
+            {/* <Route path={`/en/app/styles`} component={ProductSettings} /> */}
             <Route path={`/en/app/reports`} component={Reports} />
           </Switch>
         </div>

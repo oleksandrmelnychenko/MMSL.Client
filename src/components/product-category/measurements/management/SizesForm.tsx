@@ -10,7 +10,7 @@ import {
   MeasurementMapValue,
 } from '../../../../interfaces';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
-import '../../../measurements/measurementManaging/sizeForm.scss';
+import './sizeForm.scss';
 import { List } from 'linq-typescript';
 import { controlActions } from '../../../../redux/slices/control.slice';
 import { measurementActions } from '../../../../redux/slices/measurement.slice';

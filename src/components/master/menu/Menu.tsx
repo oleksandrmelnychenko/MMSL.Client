@@ -16,6 +16,17 @@ interface IMenuItem {
   children?: IMenuItem[];
 }
 
+const DASHBOARD_MENU_TITLE: string = 'Dashboard';
+const ORDER_MENU_TITLE: string = 'Order';
+const CUSTOMER_MENU_TITLE: string = 'Customer';
+const DEALERS_MENU_TITLE: string = 'Dealers';
+const STOCK_MENU_TITLE: string = 'Stock';
+const DOCUMENTS_MENU_TITLE: string = 'Documents';
+const ACTIVITY_HISTORY_MENU_TITLE: string = 'Activity History';
+const PRODUCTS_MENU_TITLE: string = 'Products';
+const SETTINGS_MENU_TITLE: string = 'Settings';
+const REPORTS_MENU_TITLE: string = 'Reports';
+
 const Menu: React.FC = () => {
   const dispatch = useDispatch();
   const localize = useSelector<IApplicationState, LocalizeState>(
@@ -25,92 +36,98 @@ const Menu: React.FC = () => {
 
   const [isOpenSubMenu, setIsOpenSubMenu] = useState(false);
 
-  const onMenuClick = () => {
+  const onMenuClick = (item: IMenuItem) => {
     setIsOpenSubMenu(false);
     dispatch(dealerActions.setSelectedDealer(null));
     dispatch(controlActions.closeInfoPanelWithComponent());
     dispatch(productSettingsActions.updateSearchWordOptionGroup(''));
-    dispatch(productActions.disposeProductCategoryStates());
-  };
-  const history = useLocation();
 
-  const pathNamesSubMenu = [
-    `/${languageCode}/app/styles`,
-    `/${languageCode}/app/measurements`,
-    `/${languageCode}/app/timeline`,
-  ];
-
-  useEffect(() => {
-    if (pathNamesSubMenu.includes(history.pathname)) {
-      setIsOpenSubMenu(true);
+    if (item.title !== PRODUCTS_MENU_TITLE) {
+      dispatch(productActions.disposeProductCategoryStates());
     }
-  }, [history]);
+  };
+
+  // Old pages, are not neccessary now
+  // const history = useLocation();
+  // Old pages, are not neccessary now
+  // const pathNamesSubMenu = [
+  //   `/${languageCode}/app/styles`,
+  //   `/${languageCode}/app/measurements`,
+  //   `/${languageCode}/app/timeline`,
+  // ];
+  // Old pages, are not neccessary now
+  // useEffect(() => {
+  //   if (pathNamesSubMenu.includes(history.pathname)) {
+  //     setIsOpenSubMenu(true);
+  //   }
+  // }, [history]);
 
   const menu: IMenuItem[] = [
     {
-      title: 'Dashboard',
+      title: DASHBOARD_MENU_TITLE,
       className: 'dashboard',
       link: `/${languageCode}/app/dashboard`,
     },
     {
-      title: 'Order',
+      title: ORDER_MENU_TITLE,
       className: 'order',
       link: `/${languageCode}/app/order`,
     },
     {
-      title: 'Customer',
+      title: CUSTOMER_MENU_TITLE,
       className: 'customer',
       link: `/${languageCode}/app/customer`,
     },
     {
-      title: 'Dealers',
+      title: DEALERS_MENU_TITLE,
       className: 'dealers',
       link: `/${languageCode}/app/dealers`,
     },
     {
-      title: 'Stock',
+      title: STOCK_MENU_TITLE,
       className: 'stock',
       link: `/${languageCode}/app/stock`,
     },
     {
-      title: 'Documents',
+      title: DOCUMENTS_MENU_TITLE,
       className: 'documents',
       link: `/${languageCode}/app/documents`,
     },
     {
-      title: 'Activity History',
+      title: ACTIVITY_HISTORY_MENU_TITLE,
       className: 'activity',
       link: `/${languageCode}/app/activity`,
     },
     {
-      title: 'Products',
+      title: PRODUCTS_MENU_TITLE,
       className: 'product',
       link: `/${languageCode}/app/product/product-categories`,
     },
     {
-      title: 'Settings',
+      title: SETTINGS_MENU_TITLE,
       className: 'settings',
       link: `/${languageCode}/app/styles`,
       children: [
-        {
-          title: 'Styles',
-          className: 'styles',
-          link: `/${languageCode}/app/styles`,
-        },
-        {
-          title: 'Measurements',
-          className: 'measurements',
-          link: `/${languageCode}/app/measurements`,
-        },
-        {
-          title: 'Delivery timeline',
-          className: 'timeline',
-          link: `/${languageCode}/app/timeline`,
-        },
+        // Old pages, are not neccessary now
+        // {
+        //   title: 'Styles',
+        //   className: 'styles',
+        //   link: `/${languageCode}/app/styles`,
+        // },
+        // {
+        //   title: 'Measurements',
+        //   className: 'measurements',
+        //   link: `/${languageCode}/app/measurements`,
+        // },
+        // {
+        //   title: 'Delivery timeline',
+        //   className: 'timeline',
+        //   link: `/${languageCode}/app/timeline`,
+        // },
       ],
     },
     {
-      title: 'Reports',
+      title: REPORTS_MENU_TITLE,
       className: 'reports',
       link: `/${languageCode}/app/reports`,
     },
@@ -127,7 +144,7 @@ const Menu: React.FC = () => {
         >
           <NavLink
             onClick={() => {
-              item.children ? setIsOpenSubMenu(true) : onMenuClick();
+              item.children ? setIsOpenSubMenu(true) : onMenuClick(item);
             }}
             className={`menu__link ${item.className}`}
             to={item.link}
