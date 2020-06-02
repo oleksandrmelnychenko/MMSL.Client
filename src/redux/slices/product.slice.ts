@@ -65,11 +65,13 @@ export class ProductMeasurementsState {
     this.isMeasurementsWasRequested = false;
     this.measurementList = [];
     this.targetMeasurement = null;
+    this.measurementForEdit = null;
   }
 
   isMeasurementsWasRequested: boolean;
   measurementList: Measurement[];
   targetMeasurement: Measurement | null | undefined;
+  measurementForEdit: Measurement | null | undefined;
 }
 
 const product = createSlice({
@@ -104,6 +106,14 @@ const product = createSlice({
       action: { type: string; payload: Measurement | null | undefined }
     ) {
       state.productMeasurementsState.targetMeasurement = action.payload;
+
+      return state;
+    },
+    changeProductMeasurementForEdit(
+      state,
+      action: { type: string; payload: Measurement | null | undefined }
+    ) {
+      state.productMeasurementsState.measurementForEdit = action.payload;
 
       return state;
     },

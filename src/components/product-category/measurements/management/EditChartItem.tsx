@@ -84,7 +84,7 @@ export const EditChartItem: React.FC<EditChartItemProps> = (
                 setIsRemoved(true);
 
                 props.onEditCompleted({
-                  name: nameInput,
+                  name: props.payload.name,
                   isRemoved: true,
                 });
               }}

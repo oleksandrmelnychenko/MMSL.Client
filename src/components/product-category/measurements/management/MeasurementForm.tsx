@@ -43,14 +43,14 @@ const _buildNewMeasurementPayload = (
   charts: ChartItemInitPayload[],
   productCategory: ProductCategory
 ) => {
-  let newUnit: any = {
+  let payload: any = {
     productCategoryId: productCategory!.id,
     name: values.name,
     description: values.description,
     measurementDefinitions: [],
   };
 
-  newUnit.measurementDefinitions = new List(charts)
+  payload.measurementDefinitions = new List(charts)
     .select((item) => {
       return {
         name: item.name,
@@ -60,7 +60,34 @@ const _buildNewMeasurementPayload = (
     })
     .toArray();
 
-  return newUnit;
+  return payload;
+};
+
+const _buildEditedMeasurementPayload = (
+  values: MeasurementFormInitValues,
+  charts: ChartItemInitPayload[],
+  sourceEntity: Measurement
+) => {
+  let payload: any = {
+    id: sourceEntity.id,
+    name: values.name,
+    description: values.description,
+    measurementDefinitions: [],
+  };
+
+  payload.measurementDefinitions = new List(charts)
+    .select((item) => {
+      return {
+        id: item.rawSource.measurementDefinition.id,
+        orderIndex: 0,
+        name: item.name,
+        isDeleted: item.isDeleted,
+        mapId: item.rawSource.id,
+      };
+    })
+    .toArray();
+
+  return payload;
 };
 
 const _initDefaultValues = (sourceEntity?: Measurement | null) => {
@@ -76,21 +103,38 @@ const _initDefaultValues = (sourceEntity?: Measurement | null) => {
   return initValues;
 };
 
-const initDefinitionItemsDefaults = (sourceEntity?: Measurement | null) => {
+const _initDefaultCharts = (sourceEntity?: Measurement | null) => {
   let defaults: any[] = [];
 
-  /// TODO:
-  // if (sourceEntity && sourceEntity.measurementMapDefinitions) {
-  //   defaults = new List(sourceEntity.measurementMapDefinitions)
-  //     .select<DefinitionRowItem>((itemMap: MeasurementMapDefinition) => {
-  //       const resultItem = new DefinitionRowItem(itemMap);
+  if (sourceEntity?.measurementMapDefinitions) {
+    defaults = new List(sourceEntity.measurementMapDefinitions)
+      .select<ChartItemInitPayload>((itemMap: MeasurementMapDefinition) => {
+        const resultItem = new ChartItemInitPayload();
+        resultItem.isDeleted = itemMap.measurementDefinition.isDeleted;
+        resultItem.name = itemMap.measurementDefinition.name;
+        resultItem.rawSource = itemMap;
 
-  //       return resultItem;
-  //     })
-  //     .toArray();
-  // }
+        return resultItem;
+      })
+      .toArray();
+  }
 
   return defaults;
+};
+
+const _isChartItemDirty: (item: ChartItemInitPayload) => boolean = (
+  item: ChartItemInitPayload
+) => {
+  let isDirty = false;
+
+  if (
+    item.rawSource.measurementDefinition.name !== item.name ||
+    item.rawSource.measurementDefinition.isDeleted !== item.isDeleted ||
+    item.rawSource.id === 0
+  )
+    isDirty = true;
+
+  return isDirty;
 };
 
 export const MeasurementForm: React.FC = () => {
@@ -117,6 +161,16 @@ export const MeasurementForm: React.FC = () => {
     IApplicationState,
     ProductCategory | null
   >((state) => state.product.choose.category);
+
+  const measurementToEdit = useSelector<
+    IApplicationState,
+    Measurement | null | undefined
+  >((state) => state.product.productMeasurementsState.measurementForEdit);
+
+  useEffect(() => {
+    setCharts(_initDefaultCharts(measurementToEdit));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (formikReference.formik) {
@@ -164,6 +218,7 @@ export const MeasurementForm: React.FC = () => {
     itemToDelete: ChartItemInitPayload,
     inputState: IChartItemInputState
   ) => {
+    debugger;
     if (inputState.name.length < 1 || inputState.isRemoved) {
       const rowList = new List(charts);
       rowList.remove(itemToDelete);
@@ -186,19 +241,77 @@ export const MeasurementForm: React.FC = () => {
     }
   };
 
-  const isChartItemDirty: (item: ChartItemInitPayload) => boolean = (
-    item: ChartItemInitPayload
-  ) => {
-    let isDirty = false;
+  const editMeasurement = (values: MeasurementFormInitValues) => {
+    if (productCategory && measurementToEdit) {
+      const payload = _buildEditedMeasurementPayload(
+        values,
+        new List(charts)
+          .concat(deletedCharts)
+          .where((item) => _isChartItemDirty(item))
+          .toArray(),
+        measurementToEdit
+      );
+      dispatch(
+        assignPendingActions(
+          measurementActions.apiUpdateMeasurement(payload),
+          [],
+          [],
+          (args: any) => {
+            const listo = new List(measurements)
+              .select((item) => {
+                let result = item;
 
-    if (
-      item.rawSource.measurementDefinition.name !== item.name ||
-      item.rawSource.measurementDefinition.isDeleted !== item.isDeleted ||
-      item.rawSource.id === 0
-    )
-      isDirty = true;
+                if (item.id === args.body.id) {
+                  result = args.body;
+                }
 
-    return isDirty;
+                return result;
+              })
+              .toArray();
+
+            dispatch(productActions.updateProductMeasurementsList(listo));
+            dispatch(
+              productActions.changeSelectedProductMeasurement(args.body)
+            );
+            dispatch(productActions.changeProductMeasurementForEdit(null));
+            dispatch(controlActions.closeRightPanel());
+          },
+          (args: any) => {}
+        )
+      );
+    }
+  };
+
+  const createNewMeasurement = (values: MeasurementFormInitValues) => {
+    if (productCategory) {
+      const payload = _buildNewMeasurementPayload(
+        values,
+        new List(charts)
+          .concat(deletedCharts)
+          .where((item) => _isChartItemDirty(item))
+          .toArray(),
+        productCategory
+      );
+      dispatch(
+        assignPendingActions(
+          measurementActions.apiCreateNewMeasurement(payload),
+          [],
+          [],
+          (args: any) => {
+            dispatch(
+              productActions.updateProductMeasurementsList(
+                new List(measurements).concat([args.body]).toArray()
+              )
+            );
+            dispatch(
+              productActions.changeSelectedProductMeasurement(args.body)
+            );
+            dispatch(controlActions.closeRightPanel());
+          },
+          (args: any) => {}
+        )
+      );
+    }
   };
 
   return (
@@ -210,39 +323,13 @@ export const MeasurementForm: React.FC = () => {
             .required(() => 'Name is required'),
           description: Yup.string(),
         })}
-        initialValues={_initDefaultValues(null)}
+        initialValues={_initDefaultValues(measurementToEdit)}
         onSubmit={(values: any) => {
-          if (productCategory) {
-            const payload = _buildNewMeasurementPayload(
-              values,
-              new List(charts).concat(deletedCharts).toArray(),
-              productCategory
-            );
-
-            dispatch(
-              assignPendingActions(
-                measurementActions.apiCreateNewMeasurement(payload),
-                [],
-                [],
-                (args: any) => {
-                  dispatch(
-                    productActions.updateProductMeasurementsList(
-                      new List(measurements).concat([args.body]).toArray()
-                    )
-                  );
-                  dispatch(
-                    productActions.changeSelectedProductMeasurement(args.body)
-                  );
-                  dispatch(controlActions.closeRightPanel());
-                },
-                (args: any) => {}
-              )
-            );
-          }
+          if (measurementToEdit) editMeasurement(values);
+          else createNewMeasurement(values);
         }}
         onReset={(values: any, formikHelpers: any) => {
-          /// TODO
-          setCharts([]);
+          setCharts(_initDefaultCharts(measurementToEdit));
           setDeletedCharts([]);
         }}
         innerRef={(formik: any) => {
@@ -250,7 +337,7 @@ export const MeasurementForm: React.FC = () => {
           if (formik)
             setFormikDirty(
               formik.dirty ||
-                new List(charts).any((item) => isChartItemDirty(item))
+                new List(charts).any((item) => _isChartItemDirty(item))
             );
         }}
         validateOnBlur={false}
@@ -271,9 +358,7 @@ export const MeasurementForm: React.FC = () => {
                           label="Name"
                           required
                           onChange={(args: any) => {
-                            let value = args.target.value;
-
-                            formik.setFieldValue('name', value);
+                            formik.setFieldValue('name', args.target.value);
                             formik.setFieldTouched('name');
                           }}
                           errorMessage={
@@ -304,7 +389,7 @@ export const MeasurementForm: React.FC = () => {
                             <EditChartItem
                               key={index}
                               payload={item}
-                              isDirtyCheck={() => isChartItemDirty(item)}
+                              isDirtyCheck={() => _isChartItemDirty(item)}
                               onEditCompleted={(
                                 inputState: IChartItemInputState
                               ) => {
@@ -312,6 +397,15 @@ export const MeasurementForm: React.FC = () => {
                                 item.isDeleted = inputState.isRemoved;
 
                                 tryDeleteItem(item, inputState);
+
+                                const isAnyDirtyChart =
+                                  new List(charts).any((_) =>
+                                    _isChartItemDirty(_)
+                                  ) || isFormikDirty;
+
+                                if (isAnyDirtyChart !== isFormikDirty) {
+                                  setFormikDirty(isAnyDirtyChart);
+                                }
                               }}
                             />
                           );

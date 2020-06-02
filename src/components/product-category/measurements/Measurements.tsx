@@ -172,9 +172,20 @@ const Measurements: React.FC = () => {
   const editMeasurement = () => {
     if (targetProductMeasurement) {
       dispatch(
-        measurementActions.changeManagingMeasurementPanelContent(
-          ManagingMeasurementPanelComponent.EditMeasurement
-        )
+        productActions.changeProductMeasurementForEdit(targetProductMeasurement)
+      );
+
+      dispatch(
+        controlActions.openRightPanel({
+          title: 'Edit Measurement',
+          description: targetProductMeasurement.name,
+          width: '400px',
+          closeFunctions: () => {
+            dispatch(controlActions.closeRightPanel());
+            dispatch(productActions.changeProductMeasurementForEdit(null));
+          },
+          component: MeasurementForm,
+        })
       );
     }
   };
