@@ -714,6 +714,7 @@ export const deleteDeliveryTimelineByIdEpic = (
           return successCommonEpicFlow(
             successResponse,
             [
+              productSettingsActions.apiGetAllDeliveryTimeline(),
               controlActions.showInfoMessage(successResponse.message),
               controlActions.disabledStatusBar(),
             ],
