@@ -23,12 +23,18 @@ import {
   measurementActions,
   ManagingMeasurementPanelComponent,
 } from '../../../redux/slices/measurement.slice';
+import { productActions } from '../../../redux/slices/product.slice';
 import NoMeasurementImg from '../../../assets/images/no-objects/noneMeasurement.svg';
 import ProductMeasurementSelector from './ProductMeasurementSelector';
 import ProductMeasurementChartGrid from './ProductMeasurementChartGrid';
-import { controlActions } from '../../../redux/slices/control.slice';
-import MeasurementManagingPanel from '../../measurements/measurementManaging/MeasurementManagingPanel';
+import {
+  controlActions,
+  DialogArgs,
+  CommonDialogType,
+} from '../../../redux/slices/control.slice';
 import MeasurementForm from './management/MeasurementForm';
+import { assignPendingActions } from '../../../helpers/action.helper';
+import { List } from 'linq-typescript';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
@@ -56,7 +62,12 @@ const Measurements: React.FC = () => {
   const targetProductMeasurement: Measurement | null | undefined = useSelector<
     IApplicationState,
     Measurement | null | undefined
-  >((state) => state.measurements.targetMeasurement);
+  >((state) => state.product.productMeasurementsState.targetMeasurement);
+
+  const measurements: Measurement[] = useSelector<
+    IApplicationState,
+    Measurement[]
+  >((state) => state.product.productMeasurementsState.measurementList);
 
   useEffect(() => {}, [dispatch]);
 
@@ -84,6 +95,64 @@ const Measurements: React.FC = () => {
 
   const deleteMeasurement = () => {
     if (targetProductMeasurement) {
+      dispatch(
+        controlActions.toggleCommonDialogVisibility(
+          new DialogArgs(
+            CommonDialogType.Delete,
+            'Delete measurement',
+            `Are you sure you want to delete ${targetProductMeasurement.name}?`,
+            () => {
+              dispatch(
+                /// Delete measurement
+                assignPendingActions(
+                  measurementActions.apiDeleteMeasurementById(
+                    targetProductMeasurement.id
+                  ),
+                  [],
+                  [],
+                  (args: any) => {
+                    dispatch(
+                      /// Clear target delete measurement
+                      productActions.changeSelectedProductMeasurement(null)
+                    );
+                    const updatedMeasurements = new List(measurements)
+                      .where((item) => item.id !== args.body)
+                      .toArray();
+
+                    dispatch(
+                      productActions.updateProductMeasurementsList(
+                        updatedMeasurements
+                      )
+                    );
+
+                    if (updatedMeasurements.length > 0) {
+                      dispatch(
+                        /// Select first measurement
+                        assignPendingActions(
+                          measurementActions.apiGetMeasurementById(
+                            updatedMeasurements[0].id
+                          ),
+                          [],
+                          [],
+                          (args: any) => {
+                            dispatch(
+                              productActions.changeSelectedProductMeasurement(
+                                args
+                              )
+                            );
+                          },
+                          (args: any) => {}
+                        )
+                      );
+                    }
+                  }
+                )
+              );
+            },
+            () => {}
+          )
+        )
+      );
     }
   };
 
@@ -270,8 +339,6 @@ const Measurements: React.FC = () => {
           </ScrollablePane>
         </Stack.Item>
       </Stack>
-
-      <MeasurementManagingPanel />
     </div>
   );
 };
