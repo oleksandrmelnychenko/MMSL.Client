@@ -13,6 +13,7 @@ import {
   ajaxDeleteResponse,
   ajaxPostFormDataResponse,
   ajaxPutFormDataResponse,
+  ajaxPostResponse,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import { controlActions } from '../slices/control.slice';
@@ -416,6 +417,51 @@ export const apiAddNewMeasurementEpic = (action$: AnyAction, state$: any) => {
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
                   `Error occurred while creating new measurement. ${errorResponse}`
+                ),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiAssignProductTimelineEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(productActions.assignProductDeliveryTimeline.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
+      return ajaxPostResponse(
+        api.PRODUCT_DELIVERY_TIMELINE_ASSIGN,
+        action.payload,
+        state$.value,
+        true
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.disabledStatusBar(),
+              controlActions.showInfoMessage(successResponse.message),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while assign timeline for the product. ${errorResponse}`
                 ),
               ],
               action
