@@ -137,9 +137,10 @@ const ProductCategories: React.FC = () => {
                                 productActions.chooseProductCategory(args)
                               );
                               dispatch(
-                                controlActions.openInfoPanelWithComponent(
-                                  ProductManagementPanel
-                                )
+                                controlActions.openInfoPanelWithComponent({
+                                  component: ProductManagementPanel,
+                                  onDismisPendingAction: () => {},
+                                })
                               );
                             }
                           )

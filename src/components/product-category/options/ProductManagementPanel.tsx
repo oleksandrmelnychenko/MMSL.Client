@@ -53,7 +53,12 @@ const ProductManagementPanel: React.FC = () => {
         // dispatch(productActions.setChooseProductCategoryId(choseCategory!.id));
         dispatch(controlActions.closeInfoPanelWithComponent());
         dispatch(
-          controlActions.openInfoPanelWithComponent(ProductMeasurementPanel)
+          controlActions.openInfoPanelWithComponent({
+            component: ProductMeasurementPanel,
+            onDismisPendingAction: () => {
+              history.push('/en/app/product/product-categories');
+            },
+          })
         );
 
         if (choseCategory) {

@@ -32,9 +32,18 @@ export interface IAuthState {
   isError: boolean;
 }
 
-export interface IPanelInfo {
+export class IPanelInfo {
+  constructor() {
+    this.isOpenPanelInfo = false;
+    this.hasCloseButton = false;
+
+    this.onDismisPendingAction = () => {};
+  }
+
   isOpenPanelInfo: boolean;
   componentInPanelInfo: any;
+  hasCloseButton: boolean;
+  onDismisPendingAction: () => void;
 }
 
 export interface IControlState {

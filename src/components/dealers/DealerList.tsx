@@ -234,9 +234,10 @@ export const DealerList: React.FC = () => {
                     );
                     dispatch(createAction);
                     dispatch(
-                      controlActions.openInfoPanelWithComponent(
-                        ManagementOptions
-                      )
+                      controlActions.openInfoPanelWithComponent({
+                        component: ManagementOptions,
+                        onDismisPendingAction: () => {},
+                      })
                     );
                   };
 

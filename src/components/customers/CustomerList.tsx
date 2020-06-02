@@ -145,7 +145,12 @@ export const CustomerList: React.FC = () => {
   const customerSelection = () => {
     const selectedCustomer = selection.getSelection()[0] as any;
     dispatch(customerActions.selectedCustomer(selectedCustomer));
-    dispatch(controlActions.openInfoPanelWithComponent(ManagementPanel));
+    dispatch(
+      controlActions.openInfoPanelWithComponent({
+        component: ManagementPanel,
+        onDismisPendingAction: () => {},
+      })
+    );
   };
 
   const onRenderDetailsHeader: IRenderFunction<IDetailsHeaderProps> = (

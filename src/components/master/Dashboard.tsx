@@ -20,21 +20,15 @@ import Reports from '../reports/Reports';
 import ProductCategoryView from '../product-category/ProductCategoryView';
 import { RightPanel } from './panel/RightPanel';
 import ProductSettings from '../productSettings/ProductSettings';
+import DashboardLeftMenuPanel from './DashboardLeftMenuPanel';
 
 const Dashboard: React.FC = () => {
   const dispatch = useDispatch();
   const isCollapseMenu = useSelector<IApplicationState, boolean>(
     (state) => state.control.isCollapseMenu
   );
-  const panelInfo = useSelector<IApplicationState, IPanelInfo>(
-    (state) => state.control.panelInfo
-  );
 
   const location = useLocation();
-
-  const dismissPanelInfo = () => {
-    dispatch(controlActions.closeInfoPanelWithComponent());
-  };
 
   const rightPanel = useSelector<IApplicationState, RightPanelProps>(
     (state) => state.control.rightPanel
@@ -46,18 +40,7 @@ const Dashboard: React.FC = () => {
       <main className={isCollapseMenu ? 'collapse' : ''}>
         <Menu />
 
-        <Panel
-          type={PanelType.smallFixedNear}
-          isBlocking={false}
-          styles={stylesPanelInfo}
-          isOpen={panelInfo.isOpenPanelInfo}
-          onDismiss={dismissPanelInfo}
-        >
-          <Route
-            path={location.pathname}
-            component={panelInfo.componentInPanelInfo}
-          />
-        </Panel>
+        <DashboardLeftMenuPanel />
 
         <div className="content">
           <Switch>

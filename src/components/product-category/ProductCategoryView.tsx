@@ -39,9 +39,12 @@ const ProductCategoryView: React.FC = () => {
               (args: any) => {
                 dispatch(productActions.chooseProductCategory(args));
                 dispatch(
-                  controlActions.openInfoPanelWithComponent(
-                    ProductMeasurementPanel
-                  )
+                  controlActions.openInfoPanelWithComponent({
+                    component: ProductMeasurementPanel,
+                    onDismisPendingAction: () => {
+                      history.push('/en/app/product/product-categories');
+                    },
+                  })
                 );
               }
             )

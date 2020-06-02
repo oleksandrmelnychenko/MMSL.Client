@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ICommandBarItemProps } from 'office-ui-fabric-react';
-import { IControlState } from '../../interfaces';
+import { IControlState, IPanelInfo } from '../../interfaces';
 import { RightPanel } from '../../components/master/panel/RightPanel';
 
 export class CommonDialogState {
@@ -53,19 +53,19 @@ export class RightPanelProps {
   component: any;
 }
 
-export class PanelInfo {
-  constructor() {
-    this.isOpenPanelInfo = false;
-    this.componentInPanelInfo = null;
-  }
-  isOpenPanelInfo: boolean;
-  componentInPanelInfo: React.FC | null;
-}
+// export class PanelInfo {
+//   constructor() {
+//     this.isOpenPanelInfo = false;
+//     this.componentInPanelInfo = null;
+//   }
+//   isOpenPanelInfo: boolean;
+//   componentInPanelInfo: React.FC | null;
+// }
 
 export const defaultControlState = {
   isGlobalShimmerActive: false,
   isCollapseMenu: false,
-  panelInfo: new PanelInfo(),
+  panelInfo: new IPanelInfo(),
   rightPanel: new RightPanelProps(),
   commonDialog: new CommonDialogState(),
   infoMessage: '',
@@ -85,16 +85,26 @@ const controls = createSlice({
       state.panelInfo.isOpenPanelInfo = action.payload;
       return state;
     },
-    openInfoPanelWithComponent(state, action) {
+    openInfoPanelWithComponent(
+      state,
+      action: {
+        type: string;
+        payload: {
+          component: any;
+          onDismisPendingAction: () => void;
+        };
+      }
+    ) {
       state.isCollapseMenu = true;
       state.panelInfo.isOpenPanelInfo = true;
-      state.panelInfo.componentInPanelInfo = action.payload;
+      state.panelInfo.componentInPanelInfo = action.payload.component;
+      state.panelInfo.onDismisPendingAction =
+        action.payload.onDismisPendingAction;
       return state;
     },
     closeInfoPanelWithComponent(state) {
       state.isCollapseMenu = false;
-      state.panelInfo.isOpenPanelInfo = false;
-      state.panelInfo.componentInPanelInfo = null;
+      state.panelInfo = new IPanelInfo();
       return state;
     },
     toggleCommonDialogVisibility(state, action) {
