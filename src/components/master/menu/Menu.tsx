@@ -38,6 +38,7 @@ const Menu: React.FC = () => {
 
   const onMenuClick = (item: IMenuItem) => {
     setIsOpenSubMenu(false);
+    debugger;
     dispatch(dealerActions.setSelectedDealer(null));
     dispatch(controlActions.closeInfoPanelWithComponent());
     dispatch(productSettingsActions.updateSearchWordOptionGroup(''));
@@ -106,24 +107,24 @@ const Menu: React.FC = () => {
       title: SETTINGS_MENU_TITLE,
       className: 'settings',
       link: `/${languageCode}/app/styles`,
-      children: [
-        // Old pages, are not neccessary now
-        // {
-        //   title: 'Styles',
-        //   className: 'styles',
-        //   link: `/${languageCode}/app/styles`,
-        // },
-        // {
-        //   title: 'Measurements',
-        //   className: 'measurements',
-        //   link: `/${languageCode}/app/measurements`,
-        // },
-        // {
-        //   title: 'Delivery timeline',
-        //   className: 'timeline',
-        //   link: `/${languageCode}/app/timeline`,
-        // },
-      ],
+      // Old pages, are not neccessary now
+      // children: [
+      // {
+      //   title: 'Styles',
+      //   className: 'styles',
+      //   link: `/${languageCode}/app/styles`,
+      // },
+      // {
+      //   title: 'Measurements',
+      //   className: 'measurements',
+      //   link: `/${languageCode}/app/measurements`,
+      // },
+      // {
+      //   title: 'Delivery timeline',
+      //   className: 'timeline',
+      //   link: `/${languageCode}/app/timeline`,
+      // },
+      // ],
     },
     {
       title: REPORTS_MENU_TITLE,
