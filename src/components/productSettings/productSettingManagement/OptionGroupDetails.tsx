@@ -12,7 +12,7 @@ import {
   Separator,
   ICommandBarItemProps,
 } from 'office-ui-fabric-react';
-import { OptionUnit } from '../../../interfaces';
+import { OptionUnit, ProductCategory } from '../../../interfaces';
 import { IApplicationState } from '../../../redux/reducers';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { controlActions } from '../../../redux/slices/control.slice';
@@ -38,16 +38,14 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
 ) => {
   const dispatch = useDispatch();
 
+  const targetProduct: ProductCategory | null = useSelector<
+    IApplicationState,
+    ProductCategory | null
+  >((state) => state.product.choose.category);
+
   useEffect(() => {
-    let action = assignPendingActions(
-      productSettingsActions.getAllOptionGroupsList(),
-      [],
-      [],
-      (args: any) => {
-        dispatch(productSettingsActions.updateOptionGroupList(args));
-      }
-    );
-    dispatch(action);
+    if (targetProduct?.id) getProductStyles(targetProduct.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   const sectedOptionUnit: OptionUnit | null = useSelector<
@@ -68,6 +66,20 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
     (state) =>
       state.productSettings.managingOptionUnitsState.isOptionUnitFormVisible
   );
+
+  const getProductStyles: (productId: number) => void = (productId: number) => {
+    dispatch(
+      assignPendingActions(
+        productSettingsActions.apiGetAllOptionGroupsByProductIdList(productId),
+        [],
+        [],
+        (args: any) => {
+          dispatch(productSettingsActions.updateOptionGroupList(args));
+        },
+        (args: any) => {}
+      )
+    );
+  };
 
   if (props.panelNewButton) {
     props.panelNewButton.onClick = () => {
@@ -100,17 +112,7 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
                   ],
                   [],
                   (args: any) => {
-                    let action = assignPendingActions(
-                      productSettingsActions.getAllOptionGroupsList(),
-                      [],
-                      [],
-                      (args: any) => {
-                        dispatch(
-                          productSettingsActions.updateOptionGroupList(args)
-                        );
-                      }
-                    );
-                    dispatch(action);
+                    if (targetProduct?.id) getProductStyles(targetProduct.id);
                   }
                 );
                 dispatch(action);
@@ -128,7 +130,8 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
       <Stack
         horizontal
         horizontalAlign="space-between"
-        tokens={{ childrenGap: 20 }}>
+        tokens={{ childrenGap: 20 }}
+      >
         <Stack.Item grow={1} styles={{ root: { maxWidth: '49%' } }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
@@ -161,19 +164,8 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
                         ],
                         [],
                         (successResponseArgs: any) => {
-                          let action = assignPendingActions(
-                            productSettingsActions.getAllOptionGroupsList(),
-                            [],
-                            [],
-                            (args: any) => {
-                              dispatch(
-                                productSettingsActions.updateOptionGroupList(
-                                  args
-                                )
-                              );
-                            }
-                          );
-                          dispatch(action);
+                          if (targetProduct?.id)
+                            getProductStyles(targetProduct.id);
 
                           props.formikReference.formik.resetForm();
                         }
@@ -191,19 +183,8 @@ export const OptionGroupDetails: React.FC<OptionGroupDetailsProps> = (
                         ],
                         [],
                         (successResponseArgs: any) => {
-                          let action = assignPendingActions(
-                            productSettingsActions.getAllOptionGroupsList(),
-                            [],
-                            [],
-                            (args: any) => {
-                              dispatch(
-                                productSettingsActions.updateOptionGroupList(
-                                  args
-                                )
-                              );
-                            }
-                          );
-                          dispatch(action);
+                          if (targetProduct?.id)
+                            getProductStyles(targetProduct.id);
 
                           props.formikReference.formik.resetForm();
                         }

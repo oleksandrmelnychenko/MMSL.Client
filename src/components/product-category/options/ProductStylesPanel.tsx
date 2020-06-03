@@ -6,12 +6,7 @@ import {
   TooltipDelay,
   DirectionalHint,
 } from 'office-ui-fabric-react';
-import { productActions } from '../../../redux/slices/product.slice';
-import {
-  controlActions,
-  DialogArgs,
-  CommonDialogType,
-} from '../../../redux/slices/control.slice';
+import { controlActions } from '../../../redux/slices/control.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { ProductManagingPanelComponent } from '../../../redux/slices/product.slice';
@@ -21,7 +16,10 @@ import { ProductCategory } from '../../../interfaces';
 import ProductManagementPanel, {
   IProductMenuItem,
 } from './ProductManagementPanel';
-import ProductDeliverTimelineForm from '../delivery-timeline/ProductDeliverTimelineForm';
+import {
+  productSettingsActions,
+  ManagingPanelComponent,
+} from '../../../redux/slices/productSettings.slice';
 
 const ProductStylesPanel: React.FC = () => {
   const dispatch = useDispatch();
@@ -59,11 +57,10 @@ const ProductStylesPanel: React.FC = () => {
         : 'management__btn-new_style management__btn-disabled',
       componentType: ProductManagingPanelComponent.ProductMeasurement,
       isDisabled: choseCategory ? false : true,
-      tooltip: 'Create new style',
+      tooltip: 'Create new product style',
       onClickFunc: () => {
         if (choseCategory) {
           /// TODO:
-          debugger;
           //   dispatch(productActions.selectedTimeline(null));
           //   dispatch(
           //     controlActions.openRightPanel({
@@ -75,6 +72,11 @@ const ProductStylesPanel: React.FC = () => {
           //       component: ProductDeliverTimelineForm,
           //     })
           //   );
+          dispatch(
+            productSettingsActions.managingPanelContent(
+              ManagingPanelComponent.ManageGroups
+            )
+          );
         }
       },
     } as IProductMenuItem,

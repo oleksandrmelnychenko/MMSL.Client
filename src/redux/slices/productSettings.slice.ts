@@ -218,9 +218,14 @@ const productSettings = createSlice({
     saveNewOptionGroup(state, action) {
       return state;
     },
-    getAllOptionGroupsList(state) {
-      return state;
-    },
+    apiGetAllOptionGroupsByProductIdList(
+      state,
+      action: { type: string; payload: number }
+    ) {},
+    apiSearchOptionGroupsByProductIdList(
+      state,
+      action: { type: string; payload: number }
+    ) {},
     modifyOptionUnitsOrder(state, action) {
       return state;
     },
@@ -233,12 +238,10 @@ const productSettings = createSlice({
     deleteOptionUnitById(state, action) {
       return state;
     },
-    getAndSelectOptionGroupById(state, action) {
+    apiGetAndSelectOptionGroupById(state, action) {
       return state;
     },
-    getBySearchOptionGroups(state) {
-      return state;
-    },
+
     getAndSelectOptionUnitForSingleEditById(state, action) {
       return state;
     },

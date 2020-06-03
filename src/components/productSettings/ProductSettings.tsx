@@ -19,16 +19,28 @@ import {
 } from '../../common/fabric-styles/styles';
 import StylesList from './StylesList';
 import * as fabricStyles from '../../common/fabric-styles/styles';
+import { ProductCategory } from '../../interfaces';
 
 export const ProductSettings: React.FC = (props: any) => {
   const dispatch = useDispatch();
+
+  const targetProduct: ProductCategory | null = useSelector<
+    IApplicationState,
+    ProductCategory | null
+  >((state) => state.product.choose.category);
 
   const searchWord: string = useSelector<IApplicationState, string>(
     (state) => state.productSettings.searchWordOptionGroup
   );
 
   useEffect(() => {
-    dispatch(productSettingsActions.getBySearchOptionGroups());
+    if (targetProduct?.id)
+      dispatch(
+        productSettingsActions.apiSearchOptionGroupsByProductIdList(
+          targetProduct.id
+        )
+      );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchWord, dispatch]);
 
   return (
@@ -40,29 +52,32 @@ export const ProductSettings: React.FC = (props: any) => {
               <Stack
                 horizontal
                 verticalAlign="center"
-                tokens={horizontalGapStackTokens}>
+                tokens={horizontalGapStackTokens}
+              >
                 <Text variant="xLarge" block styles={mainTitleContent}>
                   Styles
                 </Text>
-                <ActionButton
+                {/* Old pattern */}
+                {/* <ActionButton
                   className="productSettingsAdd"
                   onClick={() => {
+                    /// TODO: use new pattern
                     dispatch(
                       productSettingsActions.managingPanelContent(
                         ManagingPanelComponent.ManageGroups
                       )
                     );
                   }}
-                  iconProps={{ iconName: 'Add' }}>
+                  iconProps={{ iconName: 'Add' }}
+                >
                   New style
-                </ActionButton>
+                </ActionButton> */}
                 <SearchBox
                   className="productSettingsSearch"
                   value={searchWord}
                   styles={searchBoxStyles}
                   onChange={(args: any) => {
                     let value = args?.target?.value;
-
                     dispatch(
                       productSettingsActions.updateSearchWordOptionGroup(
                         value ? value : ''
@@ -76,11 +91,13 @@ export const ProductSettings: React.FC = (props: any) => {
         </Stack.Item>
         <Stack.Item>
           <ScrollablePane
-            styles={fabricStyles.scrollablePaneStyleForStylesList}>
+            styles={fabricStyles.scrollablePaneStyleForStylesList}
+          >
             <StylesList />
           </ScrollablePane>
         </Stack.Item>
       </Stack>
+      {/* TODO: use new pattern */}
       <ProductSettingsManagementPanel />
     </div>
   );

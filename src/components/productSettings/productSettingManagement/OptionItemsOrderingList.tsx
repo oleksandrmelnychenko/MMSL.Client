@@ -15,7 +15,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { productSettingsActions } from '../../../redux/slices/productSettings.slice';
-import { ModifiedOptionUnitOrder, OptionUnit } from '../../../interfaces';
+import {
+  ModifiedOptionUnitOrder,
+  OptionUnit,
+  ProductCategory,
+} from '../../../interfaces';
 import { List } from 'linq-typescript';
 import { DATA_SELECTION_DISABLED_CLASS } from '../../dealers/DealerList';
 
@@ -27,6 +31,11 @@ export const OptionItemsOrderingList: React.FC = () => {
     OptionUnit | null | undefined
   >();
   const [draggedIndex, setDraggedIndex] = useState<number>(-1);
+
+  const targetProduct: ProductCategory | null = useSelector<
+    IApplicationState,
+    ProductCategory | null
+  >((state) => state.product.choose.category);
 
   const optionUnits: OptionUnit[] = useSelector<
     IApplicationState,
@@ -57,7 +66,8 @@ export const OptionItemsOrderingList: React.FC = () => {
           <div
             className={`list__item${
               item.id === selectedOptionUnitId ? ' selected' : ''
-            }`}>
+            }`}
+          >
             <div className="list__description">
               <div className="list__description__name">{item.value}</div>
               <div className="list__description__mandatory">
@@ -72,6 +82,20 @@ export const OptionItemsOrderingList: React.FC = () => {
       },
     },
   ];
+
+  const getProductStyles: (productId: number) => void = (productId: number) => {
+    dispatch(
+      assignPendingActions(
+        productSettingsActions.apiGetAllOptionGroupsByProductIdList(productId),
+        [],
+        [],
+        (args: any) => {
+          dispatch(productSettingsActions.updateOptionGroupList(args));
+        },
+        (args: any) => {}
+      )
+    );
+  };
 
   return (
     <div>
@@ -137,17 +161,7 @@ export const OptionItemsOrderingList: React.FC = () => {
                 [],
                 [],
                 (args: any) => {
-                  let action = assignPendingActions(
-                    productSettingsActions.getAllOptionGroupsList(),
-                    [],
-                    [],
-                    (args: any) => {
-                      dispatch(
-                        productSettingsActions.updateOptionGroupList(args)
-                      );
-                    }
-                  );
-                  dispatch(action);
+                  if (targetProduct?.id) getProductStyles(targetProduct.id);
                 }
               );
               dispatch(action);
@@ -186,7 +200,8 @@ export const OptionItemsOrderingList: React.FC = () => {
                     )
                   );
                 }
-              }}>
+              }}
+            >
               <DetailsRow
                 styles={{
                   cell: {

@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { Panel, PanelType } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
-import { FormicReference, OptionGroup, OptionUnit } from '../../../interfaces';
+import {
+  FormicReference,
+  OptionGroup,
+  OptionUnit,
+  ProductCategory,
+} from '../../../interfaces';
 import { panelStyle } from '../../../common/fabric-styles/styles';
 import PanelTitle from '../../dealers/panel/PanelTitle';
 import ManagingProductGroupForm from './ManagingProductGroupForm';
@@ -31,6 +36,11 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
   );
 
   const [isDirtyForm, setIsDirtyForm] = useState(false);
+
+  const targetProduct: ProductCategory | null = useSelector<
+    IApplicationState,
+    ProductCategory | null
+  >((state) => state.product.choose.category);
 
   const panelContent: ManagingPanelComponent | null = useSelector<
     IApplicationState,
@@ -82,6 +92,20 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
   let panelWidth: number = 600;
   let content: any = null;
 
+  const getProductStyles: (productId: number) => void = (productId: number) => {
+    dispatch(
+      assignPendingActions(
+        productSettingsActions.apiGetAllOptionGroupsByProductIdList(productId),
+        [],
+        [],
+        (args: any) => {
+          dispatch(productSettingsActions.updateOptionGroupList(args));
+        },
+        (args: any) => {}
+      )
+    );
+  };
+
   if (panelContent === ManagingPanelComponent.ManageGroups) {
     hideAddEditPanelActions(actionItems);
     panelWidth = 420;
@@ -96,15 +120,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
             [productSettingsActions.managingPanelContent(null)],
             [],
             (args: any) => {
-              let action = assignPendingActions(
-                productSettingsActions.getAllOptionGroupsList(),
-                [],
-                [],
-                (args: any) => {
-                  dispatch(productSettingsActions.updateOptionGroupList(args));
-                }
-              );
-              dispatch(action);
+              if (targetProduct?.id) getProductStyles(targetProduct.id);
             }
           );
           dispatch(createAction);
@@ -157,15 +173,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
             (args: any) => {
               dispatch(productSettingsActions.updateSingleEditOptionUnit(null));
 
-              let action = assignPendingActions(
-                productSettingsActions.getAllOptionGroupsList(),
-                [],
-                [],
-                (args: any) => {
-                  dispatch(productSettingsActions.updateOptionGroupList(args));
-                }
-              );
-              dispatch(action);
+              if (targetProduct?.id) getProductStyles(targetProduct.id);
             }
           );
 
@@ -197,15 +205,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
                 productSettingsActions.updateTargetSingleEditOptionGroup(null)
               );
 
-              let action = assignPendingActions(
-                productSettingsActions.getAllOptionGroupsList(),
-                [],
-                [],
-                (args: any) => {
-                  dispatch(productSettingsActions.updateOptionGroupList(args));
-                }
-              );
-              dispatch(action);
+              if (targetProduct?.id) getProductStyles(targetProduct.id);
             }
           );
           dispatch(createAction);
@@ -234,7 +234,8 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
             productSettingsActions.updateTargetSingleEditOptionGroup(null)
           );
         }}
-        closeButtonAriaLabel="Close">
+        closeButtonAriaLabel="Close"
+      >
         <PanelTitle title={panelTitleText} description={panelDescription} />
 
         <CommonManagementActionBar actionItems={actionItems} />

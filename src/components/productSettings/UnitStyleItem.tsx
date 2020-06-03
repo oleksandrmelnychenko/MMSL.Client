@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Text, Image, Icon, Stack } from 'office-ui-fabric-react';
-import { OptionUnit } from '../../interfaces';
+import { OptionUnit, ProductCategory } from '../../interfaces';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   productSettingsActions,
@@ -31,6 +31,11 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
 ) => {
   const dispatch = useDispatch();
 
+  const targetProduct: ProductCategory | null = useSelector<
+    IApplicationState,
+    ProductCategory | null
+  >((state) => state.product.choose.category);
+
   const singleOptionForEdit: OptionUnit | null | undefined = useSelector<
     IApplicationState,
     OptionUnit | null | undefined
@@ -48,16 +53,32 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
 
   let allowColor = props.optionUnit.isMandatory ? '#2b579a' : '#2b579a60';
 
+  const getProductStyles: (productId: number) => void = (productId: number) => {
+    dispatch(
+      assignPendingActions(
+        productSettingsActions.apiGetAllOptionGroupsByProductIdList(productId),
+        [],
+        [],
+        (args: any) => {
+          dispatch(productSettingsActions.updateOptionGroupList(args));
+        },
+        (args: any) => {}
+      )
+    );
+  };
+
   return (
     <div className="card" style={{ position: 'relative' }}>
       <Card
         styles={fabricStyles.cardStyle}
         onClick={(args: any) => {}}
-        tokens={fabricStyles.cardTokens}>
+        tokens={fabricStyles.cardTokens}
+      >
         <Card.Section fill verticalAlign="end">
           <Image
             src={props.optionUnit.imageUrl}
-            styles={fabricStyles.marginImageCenter}></Image>
+            styles={fabricStyles.marginImageCenter}
+          ></Image>
         </Card.Section>
         <Card.Section>
           <Stack horizontal>
@@ -74,7 +95,8 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
               block
               nowrap
               variant="mediumPlus"
-              styles={fabricStyles.cardText}>
+              styles={fabricStyles.cardText}
+            >
               {props.optionUnit.value}
             </Text>
           </Stack>
@@ -83,7 +105,8 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
           className="card_actions"
           horizontal
           styles={fabricStyles.footerCardSectionStyles}
-          tokens={fabricStyles.footerCardSectionTokens}>
+          tokens={fabricStyles.footerCardSectionTokens}
+        >
           <Icon
             data-selection-disabled={true}
             styles={fabricStyles.editCardIcon}
@@ -117,19 +140,8 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
                         [],
                         [],
                         (args: any) => {
-                          let action = assignPendingActions(
-                            productSettingsActions.getAllOptionGroupsList(),
-                            [],
-                            [],
-                            (args: any) => {
-                              dispatch(
-                                productSettingsActions.updateOptionGroupList(
-                                  args
-                                )
-                              );
-                            }
-                          );
-                          dispatch(action);
+                          if (targetProduct?.id)
+                            getProductStyles(targetProduct.id);
                         }
                       );
                       dispatch(action);

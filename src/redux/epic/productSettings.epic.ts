@@ -148,16 +148,24 @@ export const saveNewOptionGroupEpic = (action$: AnyAction, state$: any) => {
   );
 };
 
-export const getAllOptionGroupsListEpic = (action$: AnyAction, state$: any) => {
+export const apiGetAllOptionGroupsByProductIdListEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
   return action$.pipe(
-    ofType(productSettingsActions.getAllOptionGroupsList.type),
+    ofType(productSettingsActions.apiGetAllOptionGroupsByProductIdList.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
       return ajaxGetWebResponse(api.GET_ALL_OPTION_GROUPS, state$.value, [
         {
           key: 'search',
           value: `${state$.value.productSettings.searchWordOptionGroup}`,
+        },
+        {
+          key: 'productCategoryId',
+          value: `${action.payload}`,
         },
       ]).pipe(
         mergeMap((successResponse: any) => {
@@ -186,9 +194,12 @@ export const getAllOptionGroupsListEpic = (action$: AnyAction, state$: any) => {
   );
 };
 
-export const searchOptionGroupEpic = (action$: AnyAction, state$: any) => {
+export const apiSearchOptionGroupsByProductIdListEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
   return action$.pipe(
-    ofType(productSettingsActions.getBySearchOptionGroups.type),
+    ofType(productSettingsActions.apiSearchOptionGroupsByProductIdList.type),
     debounceTime(500),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
@@ -197,6 +208,10 @@ export const searchOptionGroupEpic = (action$: AnyAction, state$: any) => {
         {
           key: 'search',
           value: `${state$.value.productSettings.searchWordOptionGroup}`,
+        },
+        {
+          key: 'productCategoryId',
+          value: `${action.payload}`,
         },
       ]).pipe(
         mergeMap((successResponse: any) => {
@@ -437,12 +452,13 @@ export const deleteOptionUnitByIdEpic = (action$: AnyAction, state$: any) => {
   );
 };
 
+/// TODO: need to re-check
 export const getAndSelectOptionGroupByIdEpic = (
   action$: AnyAction,
   state$: any
 ) => {
   return action$.pipe(
-    ofType(productSettingsActions.getAndSelectOptionGroupById.type),
+    ofType(productSettingsActions.apiGetAndSelectOptionGroupById.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
