@@ -338,7 +338,9 @@ const Measurements: React.FC = () => {
                   height: 'inherit',
                 }}
               >
-                <Stack>
+                <Stack
+                  styles={{ root: { position: 'relative', top: '-131px' } }}
+                >
                   <Image {...imageProps} src={NoMeasurementImg} />
                   <Label
                     styles={{

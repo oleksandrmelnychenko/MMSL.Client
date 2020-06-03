@@ -31,6 +31,7 @@ export const measurementsPanelDismisActions = () => {
   return [
     productActions.changeSelectedProductMeasurement(null),
     productActions.updateProductMeasurementsList([]),
+    productActions.updateIsProductMeasurementsWasRequested(false),
   ];
 };
 
