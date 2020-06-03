@@ -170,6 +170,14 @@ main.collapse {
             background: url('../../assets/images/measurements/delete_hover.svg') no-repeat;
         }
     }
+
+    &__btn-back_measurement {
+        background: url('../../assets/images/measurements/back_in_circle.svg') no-repeat;
+
+        &:hover {
+            background: url('../../assets/images/measurements/back_in_circle_hover.svg') no-repeat;
+        }
+    }
 }
 
 .list__header {

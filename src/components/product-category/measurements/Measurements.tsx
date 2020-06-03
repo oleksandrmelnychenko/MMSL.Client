@@ -263,7 +263,8 @@ const Measurements: React.FC = () => {
                     iconProps={{ iconName: 'InsertRowsBelow' }}
                   /> */}
 
-                  <Separator vertical />
+                  {/* Old pattern need to be removed */}
+                  {/* <Separator vertical /> */}
 
                   <Stack horizontal tokens={{ childrenGap: '0px' }}>
                     <Stack horizontal>
