@@ -17,15 +17,11 @@ import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { ProductManagingPanelComponent } from '../../../redux/slices/product.slice';
 import { useHistory } from 'react-router-dom';
 import { IApplicationState } from '../../../redux/reducers/index';
-import { ProductCategory, Measurement } from '../../../interfaces';
+import { ProductCategory } from '../../../interfaces';
 import ProductManagementPanel, {
   IProductMenuItem,
 } from './ProductManagementPanel';
-import MeasurementForm from '../measurements/management/MeasurementForm';
-import { assignPendingActions } from '../../../helpers/action.helper';
-import { measurementActions } from '../../../redux/slices/measurement.slice';
-import { List } from 'linq-typescript';
-import SizesForm from '../measurements/management/SizesForm';
+import ProductDeliverTimelineForm from '../delivery-timeline/ProductDeliverTimelineForm';
 
 const ProductTimelinesPanel: React.FC = () => {
   const dispatch = useDispatch();
@@ -34,16 +30,6 @@ const ProductTimelinesPanel: React.FC = () => {
   const choseCategory = useSelector<IApplicationState, ProductCategory | null>(
     (state) => state.product.choose.category
   );
-
-  const targetProductMeasurement: Measurement | null | undefined = useSelector<
-    IApplicationState,
-    Measurement | null | undefined
-  >((state) => state.product.productMeasurementsState.targetMeasurement);
-
-  const measurements: Measurement[] = useSelector<
-    IApplicationState,
-    Measurement[]
-  >((state) => state.product.productMeasurementsState.measurementList);
 
   useEffect(() => {
     return () => {};
@@ -54,7 +40,7 @@ const ProductTimelinesPanel: React.FC = () => {
       title: 'Back',
       className: 'management__btn-back_measurement',
       componentType: ProductManagingPanelComponent.ProductCategoryDetails,
-      isDisabled: choseCategory ? false : true,
+      isDisabled: false,
       tooltip: 'Go back to products',
       onClickFunc: () => {
         history.push('/en/app/product/product-categories');
@@ -68,46 +54,23 @@ const ProductTimelinesPanel: React.FC = () => {
     } as IProductMenuItem,
     {
       title: 'New',
-      className: 'management__btn-new_measurement',
+      className: choseCategory
+        ? 'management__btn-new_measurement'
+        : 'management__btn-new_measurement management__btn-disabled',
       componentType: ProductManagingPanelComponent.ProductMeasurement,
       isDisabled: choseCategory ? false : true,
-      tooltip: 'Create new measurement',
+      tooltip: 'Create new timeline',
       onClickFunc: () => {
-        dispatch(
-          controlActions.openRightPanel({
-            title: 'New Measurement',
-            width: '400px',
-            closeFunctions: () => {
-              dispatch(controlActions.closeRightPanel());
-            },
-            component: MeasurementForm,
-          })
-        );
-      },
-    } as IProductMenuItem,
-    {
-      title: 'Edit',
-      className: 'management__btn-edit_measurement',
-      componentType: ProductManagingPanelComponent.ProductTimeLine,
-      isDisabled: choseCategory && targetProductMeasurement ? false : true,
-      tooltip: 'Edit measurement',
-      onClickFunc: () => {
-        if (targetProductMeasurement) {
-          dispatch(
-            productActions.changeProductMeasurementForEdit(
-              targetProductMeasurement
-            )
-          );
+        if (choseCategory) {
+          dispatch(productActions.selectedTimeline(null));
           dispatch(
             controlActions.openRightPanel({
-              title: 'Edit Measurement',
-              description: targetProductMeasurement.name,
+              title: 'New timeline',
               width: '400px',
               closeFunctions: () => {
                 dispatch(controlActions.closeRightPanel());
-                dispatch(productActions.changeProductMeasurementForEdit(null));
               },
-              component: MeasurementForm,
+              component: ProductDeliverTimelineForm,
             })
           );
         }
@@ -119,7 +82,8 @@ const ProductTimelinesPanel: React.FC = () => {
     <div className="management">
       {menuItem.map((item, index) => (
         <TooltipHost
-          id={`{${index}_measurementOptionPanel}`}
+          key={index}
+          id={`{${index}_timelineOptionPanel}`}
           calloutProps={{ gapSpace: 0 }}
           delay={TooltipDelay.zero}
           directionalHint={DirectionalHint.rightCenter}
@@ -127,9 +91,9 @@ const ProductTimelinesPanel: React.FC = () => {
           content={(item as any).tooltip}
         >
           <Label
-            key={index}
             styles={labelStyle}
-            className={false ? 'selected' : ''}
+            disabled={item.isDisabled}
+            className={false ? `selected` : ''}
           >
             <PrimaryButton
               disabled={item.isDisabled}

@@ -54,7 +54,7 @@ const ProductMeasurementPanel: React.FC = () => {
       title: 'Back',
       className: 'management__btn-back_measurement',
       componentType: ProductManagingPanelComponent.ProductCategoryDetails,
-      isDisabled: choseCategory ? false : true,
+      isDisabled: false,
       tooltip: 'Go back to products',
       onClickFunc: () => {
         history.push('/en/app/product/product-categories');
@@ -68,26 +68,33 @@ const ProductMeasurementPanel: React.FC = () => {
     } as IProductMenuItem,
     {
       title: 'New',
-      className: 'management__btn-new_measurement',
+      className: choseCategory
+        ? 'management__btn-new_measurement'
+        : 'management__btn-new_measurement management__btn-disabled',
       componentType: ProductManagingPanelComponent.ProductMeasurement,
       isDisabled: choseCategory ? false : true,
       tooltip: 'Create new measurement',
       onClickFunc: () => {
-        dispatch(
-          controlActions.openRightPanel({
-            title: 'New Measurement',
-            width: '400px',
-            closeFunctions: () => {
-              dispatch(controlActions.closeRightPanel());
-            },
-            component: MeasurementForm,
-          })
-        );
+        if (choseCategory) {
+          dispatch(
+            controlActions.openRightPanel({
+              title: 'New Measurement',
+              width: '400px',
+              closeFunctions: () => {
+                dispatch(controlActions.closeRightPanel());
+              },
+              component: MeasurementForm,
+            })
+          );
+        }
       },
     } as IProductMenuItem,
     {
       title: 'Edit',
-      className: 'management__btn-edit_measurement',
+      className:
+        choseCategory && targetProductMeasurement
+          ? 'management__btn-edit_measurement'
+          : 'management__btn-edit_measurement management__btn-disabled',
       componentType: ProductManagingPanelComponent.ProductTimeLine,
       isDisabled: choseCategory && targetProductMeasurement ? false : true,
       tooltip: 'Edit measurement',
@@ -114,30 +121,11 @@ const ProductMeasurementPanel: React.FC = () => {
       },
     } as IProductMenuItem,
     {
-      title: 'New size',
-      className: 'management__btn-new_size_measurement',
-      componentType: ProductManagingPanelComponent.ProductTimeLine,
-      isDisabled: choseCategory && targetProductMeasurement ? false : true,
-      tooltip: 'Add new measurement size',
-      onClickFunc: () => {
-        if (targetProductMeasurement) {
-          dispatch(
-            controlActions.openRightPanel({
-              title: 'Add size',
-              description: targetProductMeasurement.name,
-              width: '400px',
-              closeFunctions: () => {
-                dispatch(controlActions.closeRightPanel());
-              },
-              component: SizesForm,
-            })
-          );
-        }
-      },
-    } as IProductMenuItem,
-    {
       title: 'Delete',
-      className: 'management__btn-delete_measurement',
+      className:
+        choseCategory && targetProductMeasurement
+          ? 'management__btn-delete_measurement'
+          : 'management__btn-delete_measurement management__btn-disabled',
       componentType: ProductManagingPanelComponent.ProductTimeLine,
       isDisabled: choseCategory && targetProductMeasurement ? false : true,
       tooltip: 'Delete measurement',
@@ -204,12 +192,38 @@ const ProductMeasurementPanel: React.FC = () => {
         }
       },
     } as IProductMenuItem,
+    {
+      title: 'New size',
+      className:
+        choseCategory && targetProductMeasurement
+          ? 'management__btn-new_size_measurement'
+          : 'management__btn-new_size_measurement management__btn-disabled',
+      componentType: ProductManagingPanelComponent.ProductTimeLine,
+      isDisabled: choseCategory && targetProductMeasurement ? false : true,
+      tooltip: 'Add new measurement size',
+      onClickFunc: () => {
+        if (targetProductMeasurement) {
+          dispatch(
+            controlActions.openRightPanel({
+              title: 'Add size',
+              description: targetProductMeasurement.name,
+              width: '400px',
+              closeFunctions: () => {
+                dispatch(controlActions.closeRightPanel());
+              },
+              component: SizesForm,
+            })
+          );
+        }
+      },
+    } as IProductMenuItem,
   ];
 
   return (
     <div className="management">
       {menuItem.map((item, index) => (
         <TooltipHost
+          key={index}
           id={`{${index}_measurementOptionPanel}`}
           calloutProps={{ gapSpace: 0 }}
           delay={TooltipDelay.zero}
@@ -217,11 +231,7 @@ const ProductMeasurementPanel: React.FC = () => {
           styles={{ root: { display: 'inline-block' } }}
           content={(item as any).tooltip}
         >
-          <Label
-            key={index}
-            styles={labelStyle}
-            className={false ? 'selected' : ''}
-          >
+          <Label styles={labelStyle} className={false ? 'selected' : ''}>
             <PrimaryButton
               disabled={item.isDisabled}
               styles={btnMenuStyle}

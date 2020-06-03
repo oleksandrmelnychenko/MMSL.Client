@@ -178,6 +178,10 @@ main.collapse {
             background: url('../../assets/images/measurements/back_in_circle_hover.svg') no-repeat;
         }
     }
+
+    &__btn-disabled {
+        opacity: 0.4;
+    }
 }
 
 .list__header {

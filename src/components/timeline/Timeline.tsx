@@ -138,7 +138,8 @@ export const Timeline: React.FC = () => {
                     component: TimelineForm,
                   })
                 );
-              }}></ActionButton>
+              }}
+            ></ActionButton>
             <ActionButton
               styles={columnIconButtonStyle}
               iconProps={{ iconName: 'Delete' }}
@@ -160,7 +161,8 @@ export const Timeline: React.FC = () => {
                     )
                   )
                 );
-              }}></ActionButton>
+              }}
+            ></ActionButton>
           </>
         );
       },
@@ -224,7 +226,8 @@ export const Timeline: React.FC = () => {
               <Stack
                 horizontal
                 verticalAlign="center"
-                tokens={horizontalGapStackTokens}>
+                tokens={horizontalGapStackTokens}
+              >
                 <Text variant="xLarge" nowrap block styles={mainTitleContent}>
                   Delivery timeline
                 </Text>
@@ -241,7 +244,8 @@ export const Timeline: React.FC = () => {
                       })
                     );
                   }}
-                  iconProps={{ iconName: 'Add' }}>
+                  iconProps={{ iconName: 'Add' }}
+                >
                   New timeline
                 </ActionButton>
               </Stack>

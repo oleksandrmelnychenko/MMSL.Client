@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { ProductCategory } from '../../../interfaces';
 import ProductMeasurementPanel from './ProductMeasurementPanel';
+import ProductTimelinesPanel from './ProductTimelinesPanel';
 
 export interface IProductMenuItem {
   title: string;
@@ -76,7 +77,21 @@ const ProductManagementPanel: React.FC = () => {
       isDisabled: choseCategory ? false : true,
       onClickFunc: () => {
         dispatch(controlActions.closeInfoPanelWithComponent());
-        history.push('/en/app/product/delivery-timeline');
+        dispatch(
+          controlActions.openInfoPanelWithComponent({
+            component: ProductTimelinesPanel,
+            onDismisPendingAction: () => {
+              history.push('/en/app/product/product-categories');
+            },
+          })
+        );
+
+        if (choseCategory) {
+          history.push(`/en/app/product/delivery-timeline/${choseCategory.id}`);
+        } else {
+          dispatch(controlActions.closeInfoPanelWithComponent());
+          history.push(`/en/app/product`);
+        }
       },
     },
   ];

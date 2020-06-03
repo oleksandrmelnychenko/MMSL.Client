@@ -11,6 +11,15 @@ import { List } from 'linq-typescript';
 import { productActions } from '../../redux/slices/product.slice';
 import { controlActions } from '../../redux/slices/control.slice';
 import ProductMeasurementPanel from './options/ProductMeasurementPanel';
+import ProductTimelinesPanel from './options/ProductTimelinesPanel';
+
+const _extractCategoryIdFromPath = (history: any) => {
+  const lastSegment: any = new List(
+    history.location.pathname.split('/')
+  ).lastOrDefault();
+
+  return parseInt(lastSegment ? lastSegment : '');
+};
 
 const ProductCategoryView: React.FC = () => {
   const dispatch = useDispatch();
@@ -26,10 +35,8 @@ const ProductCategoryView: React.FC = () => {
       history.location.pathname.includes('app/product/measurements/')
     ) {
       if (!targetCategory) {
-        const lastSegment = new List(
-          history.location.pathname.split('/')
-        ).lastOrDefault();
-        const categoryId: number = parseInt(lastSegment ? lastSegment : '');
+        const categoryId: number = _extractCategoryIdFromPath(history);
+
         if (categoryId && !isNaN(categoryId)) {
           dispatch(
             assignPendingActions(
@@ -51,8 +58,35 @@ const ProductCategoryView: React.FC = () => {
           );
         }
       }
+    } else if (
+      history.location &&
+      history.location.pathname.includes('app/product/delivery-timeline/')
+    ) {
+      const categoryId: number = _extractCategoryIdFromPath(history);
+
+      if (categoryId && !isNaN(categoryId)) {
+        dispatch(
+          assignPendingActions(
+            productActions.apiGetProductCategoryById(categoryId),
+            [],
+            [],
+            (args: any) => {
+              dispatch(productActions.chooseProductCategory(args));
+              dispatch(
+                controlActions.openInfoPanelWithComponent({
+                  component: ProductTimelinesPanel,
+                  onDismisPendingAction: () => {
+                    history.push('/en/app/product/product-categories');
+                  },
+                })
+              );
+            }
+          )
+        );
+      }
     }
-  }, [targetCategory, history, dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
@@ -66,7 +100,7 @@ const ProductCategoryView: React.FC = () => {
           component={ProductCategories}
         />
         <Route
-          path={`/en/app/product/delivery-timeline`}
+          path={`/en/app/product/delivery-timeline/:productId`}
           component={ProductDeliverTimeline}
         />
       </Switch>

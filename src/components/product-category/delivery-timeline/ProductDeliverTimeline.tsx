@@ -174,7 +174,8 @@ export const ProductDeliverTimeline: React.FC = () => {
                     component: ProductDeliverTimelineForm,
                   })
                 );
-              }}></ActionButton>
+              }}
+            ></ActionButton>
             <ActionButton
               styles={columnIconButtonStyle}
               iconProps={{ iconName: 'Delete' }}
@@ -192,7 +193,8 @@ export const ProductDeliverTimeline: React.FC = () => {
                     )
                   )
                 );
-              }}></ActionButton>
+              }}
+            ></ActionButton>
           </>
         );
       },
@@ -257,7 +259,7 @@ export const ProductDeliverTimeline: React.FC = () => {
     );
   };
 
-  const hintContentHideableStyle = !category?.deliveryTimelineProductMaps
+  const hintContentHideableStyle = category?.deliveryTimelineProductMaps
     ? { height: '100%' }
     : { display: 'none' };
 
@@ -268,28 +270,32 @@ export const ProductDeliverTimeline: React.FC = () => {
       <Stack verticalAlign="space-around">
         <Stack.Item align="stretch">
           <div className="content__header">
-            <div className="content__header__top">
+            {/* Old pattern */}
+            {/* <div className="content__header__top">
               <ActionButton
                 onClick={() => history.goBack()}
                 iconProps={{ iconName: 'Back' }}>
                 Back to products
               </ActionButton>
-            </div>
+            </div> */}
             {category?.deliveryTimelineProductMaps &&
             category.deliveryTimelineProductMaps.length > 0 ? (
               <div className="content__header__top">
                 <Stack
                   horizontal
                   verticalAlign="center"
-                  tokens={horizontalGapStackTokens}>
+                  tokens={horizontalGapStackTokens}
+                >
                   <Text variant="xLarge" nowrap block styles={mainTitleContent}>
                     Delivery timeline
                   </Text>
-                  <ActionButton
+                  {/* Old pattern */}
+                  {/* <ActionButton
                     onClick={createNewTimeline}
-                    iconProps={{ iconName: 'Add' }}>
+                    iconProps={{ iconName: 'Add' }}
+                  >
                     New timeline
-                  </ActionButton>
+                  </ActionButton> */}
                 </Stack>
               </div>
             ) : null}
@@ -299,7 +305,8 @@ export const ProductDeliverTimeline: React.FC = () => {
         category.deliveryTimelineProductMaps.length > 0 ? (
           <Stack.Item>
             <ScrollablePane
-              styles={scrollablePaneStyleForDetailListWithDoubleHeader}>
+              styles={scrollablePaneStyleForDetailListWithDoubleHeader}
+            >
               <ShimmeredDetailsList
                 onRenderDetailsHeader={onRenderDetailsHeader}
                 enableShimmer={shimmer}
@@ -318,7 +325,8 @@ export const ProductDeliverTimeline: React.FC = () => {
                 justifyContent: 'center',
                 alignItems: 'center',
                 height: '70vh',
-              }}>
+              }}
+            >
               <Stack>
                 <Image {...imageProps} src={NoMeasurementImg} />
                 <Label
@@ -327,7 +335,8 @@ export const ProductDeliverTimeline: React.FC = () => {
                       color: '#484848',
                       fontSize: '18px',
                     },
-                  }}>
+                  }}
+                >
                   Create your first timeline for the product
                 </Label>
                 <Stack.Item align={'center'}>
