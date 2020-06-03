@@ -107,12 +107,12 @@ const Menu: React.FC = () => {
       className: 'settings',
       link: `/${languageCode}/app/styles`,
       children: [
-        {
-          title: 'Styles',
-          className: 'styles',
-          link: `/${languageCode}/app/styles`,
-        },
         // Old pages, are not neccessary now
+        // {
+        //   title: 'Styles',
+        //   className: 'styles',
+        //   link: `/${languageCode}/app/styles`,
+        // },
         // {
         //   title: 'Measurements',
         //   className: 'measurements',

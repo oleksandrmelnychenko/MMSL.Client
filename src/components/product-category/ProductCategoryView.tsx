@@ -12,6 +12,14 @@ import { productActions } from '../../redux/slices/product.slice';
 import { controlActions } from '../../redux/slices/control.slice';
 import ProductMeasurementPanel from './options/ProductMeasurementPanel';
 import ProductTimelinesPanel from './options/ProductTimelinesPanel';
+import ProductSettings from '../productSettings/ProductSettings';
+import {
+  PRODUCT_MEASUREMENTS_PATH,
+  PRODUCT_CATEGORIES_DASHBOARD_PATH,
+  PRODUCT_TIMELINES_PATH,
+  PRODUCT_STYLES_PATH,
+} from './options/ProductManagementPanel';
+import ProductStylesPanel from './options/ProductStylesPanel';
 
 const _extractCategoryIdFromPath = (history: any) => {
   const lastSegment: any = new List(
@@ -30,38 +38,18 @@ const ProductCategoryView: React.FC = () => {
   );
 
   useEffect(() => {
-    if (
-      history.location &&
-      history.location.pathname.includes('app/product/measurements/')
-    ) {
-      if (!targetCategory) {
-        const categoryId: number = _extractCategoryIdFromPath(history);
+    if (history?.location?.pathname?.includes(PRODUCT_MEASUREMENTS_PATH)) {
+      resolveTargetProductFlow(ProductMeasurementPanel);
+    } else if (history?.location?.pathname?.includes(PRODUCT_TIMELINES_PATH)) {
+      resolveTargetProductFlow(ProductTimelinesPanel);
+    } else if (history?.location?.pathname?.includes(PRODUCT_STYLES_PATH)) {
+      resolveTargetProductFlow(ProductStylesPanel);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-        if (categoryId && !isNaN(categoryId)) {
-          dispatch(
-            assignPendingActions(
-              productActions.apiGetProductCategoryById(categoryId),
-              [],
-              [],
-              (args: any) => {
-                dispatch(productActions.chooseProductCategory(args));
-                dispatch(
-                  controlActions.openInfoPanelWithComponent({
-                    component: ProductMeasurementPanel,
-                    onDismisPendingAction: () => {
-                      history.push('/en/app/product/product-categories');
-                    },
-                  })
-                );
-              }
-            )
-          );
-        }
-      }
-    } else if (
-      history.location &&
-      history.location.pathname.includes('app/product/delivery-timeline/')
-    ) {
+  const resolveTargetProductFlow = (optionsLeftPanelComponent: any) => {
+    if (!targetCategory) {
       const categoryId: number = _extractCategoryIdFromPath(history);
 
       if (categoryId && !isNaN(categoryId)) {
@@ -74,9 +62,9 @@ const ProductCategoryView: React.FC = () => {
               dispatch(productActions.chooseProductCategory(args));
               dispatch(
                 controlActions.openInfoPanelWithComponent({
-                  component: ProductTimelinesPanel,
+                  component: optionsLeftPanelComponent,
                   onDismisPendingAction: () => {
-                    history.push('/en/app/product/product-categories');
+                    history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
                   },
                 })
               );
@@ -85,8 +73,7 @@ const ProductCategoryView: React.FC = () => {
         );
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  };
 
   return (
     <div>
@@ -96,12 +83,16 @@ const ProductCategoryView: React.FC = () => {
           component={Measurements}
         />
         <Route
-          path={`/en/app/product/product-categories`}
-          component={ProductCategories}
-        />
-        <Route
           path={`/en/app/product/delivery-timeline/:productId`}
           component={ProductDeliverTimeline}
+        />
+        <Route
+          path={`/en/app/product/styles/:productId`}
+          component={ProductSettings}
+        />
+        <Route
+          path={`/en/app/product/product-categories`}
+          component={ProductCategories}
         />
       </Switch>
     </div>

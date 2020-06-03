@@ -179,6 +179,14 @@ main.collapse {
         }
     }
 
+    &__btn-new_style {
+        background: url('../../assets/images/measurements/new_size.svg') no-repeat;
+
+        &:hover {
+            background: url('../../assets/images/measurements/new_size_hover.svg') no-repeat;
+        }
+    }
+
     &__btn-disabled {
         opacity: 0.4;
     }

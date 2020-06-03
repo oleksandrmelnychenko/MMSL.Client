@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Label, PrimaryButton } from 'office-ui-fabric-react';
-import { productActions } from '../../../redux/slices/product.slice';
 import { controlActions } from '../../../redux/slices/control.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
@@ -10,6 +9,15 @@ import { IApplicationState } from '../../../redux/reducers/index';
 import { ProductCategory } from '../../../interfaces';
 import ProductMeasurementPanel from './ProductMeasurementPanel';
 import ProductTimelinesPanel from './ProductTimelinesPanel';
+import ProductStylesPanel from './ProductStylesPanel';
+
+export const PRODUCT_CATEGORIES_DASHBOARD_PATH: string =
+  '/en/app/product/product-categories';
+export const PRODUCT_STYLES_PATH: string = '/en/app/product/styles/';
+export const PRODUCT_MEASUREMENTS_PATH: string =
+  '/en/app/product/measurements/';
+export const PRODUCT_TIMELINES_PATH: string =
+  '/en/app/product/delivery-timeline/';
 
 export interface IProductMenuItem {
   title: string;
@@ -32,17 +40,42 @@ const ProductManagementPanel: React.FC = () => {
   }, []);
 
   const menuItem: IProductMenuItem[] = [
+    // Old pattern
+    // {
+    //   title: 'Details',
+    //   className: 'management__btn-detail',
+    //   componentType: ProductManagingPanelComponent.ProductCategoryDetails,
+    //   isDisabled: choseCategory ? false : true,
+    //   onClickFunc: () => {
+    //     dispatch(
+    //       productActions.changeManagingPanelContent(
+    //         ProductManagingPanelComponent.ProductCategoryDetails
+    //       )
+    //     );
+    //   },
+    // },
     {
-      title: 'Details',
+      title: 'Styles',
       className: 'management__btn-detail',
       componentType: ProductManagingPanelComponent.ProductCategoryDetails,
       isDisabled: choseCategory ? false : true,
       onClickFunc: () => {
+        dispatch(controlActions.closeInfoPanelWithComponent());
         dispatch(
-          productActions.changeManagingPanelContent(
-            ProductManagingPanelComponent.ProductCategoryDetails
-          )
+          controlActions.openInfoPanelWithComponent({
+            component: ProductStylesPanel,
+            onDismisPendingAction: () => {
+              history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+            },
+          })
         );
+
+        if (choseCategory) {
+          history.push(`${PRODUCT_STYLES_PATH}${choseCategory.id}`);
+        } else {
+          dispatch(controlActions.closeInfoPanelWithComponent());
+          history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+        }
       },
     },
     {
@@ -57,16 +90,16 @@ const ProductManagementPanel: React.FC = () => {
           controlActions.openInfoPanelWithComponent({
             component: ProductMeasurementPanel,
             onDismisPendingAction: () => {
-              history.push('/en/app/product/product-categories');
+              history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
             },
           })
         );
 
         if (choseCategory) {
-          history.push(`/en/app/product/measurements/${choseCategory.id}`);
+          history.push(`${PRODUCT_MEASUREMENTS_PATH}${choseCategory.id}`);
         } else {
           dispatch(controlActions.closeInfoPanelWithComponent());
-          history.push(`/en/app/product`);
+          history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
         }
       },
     },
@@ -81,16 +114,16 @@ const ProductManagementPanel: React.FC = () => {
           controlActions.openInfoPanelWithComponent({
             component: ProductTimelinesPanel,
             onDismisPendingAction: () => {
-              history.push('/en/app/product/product-categories');
+              history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
             },
           })
         );
 
         if (choseCategory) {
-          history.push(`/en/app/product/delivery-timeline/${choseCategory.id}`);
+          history.push(`${PRODUCT_TIMELINES_PATH}${choseCategory.id}`);
         } else {
           dispatch(controlActions.closeInfoPanelWithComponent());
-          history.push(`/en/app/product`);
+          history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
         }
       },
     },

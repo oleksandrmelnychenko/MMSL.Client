@@ -44,7 +44,8 @@ const Dashboard: React.FC = () => {
             <Route path={`/en/app/product`} component={ProductCategoryView} />
             {/* Old pages not neccessary now */}
             {/* <Route path={`/en/app/timeline`} component={Timeline} /> */}
-            <Route path={`/en/app/styles`} component={ProductSettings} />
+            {/* Old pages not neccessary now */}
+            {/* <Route path={`/en/app/styles`} component={ProductSettings} /> */}
             <Route path={`/en/app/reports`} component={Reports} />
           </Switch>
         </div>
