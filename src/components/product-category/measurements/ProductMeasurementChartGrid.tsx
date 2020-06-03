@@ -17,6 +17,8 @@ import {
   ConstrainMode,
   SelectionMode,
   getId,
+  CommandButton,
+  CommandBarButton,
 } from 'office-ui-fabric-react';
 import { IApplicationState } from '../../../redux/reducers';
 import {
@@ -354,6 +356,22 @@ const ProductMeasurementChartGrid: React.FC = () => {
     }
   };
 
+  const addNewSize = () => {
+    if (targetProductMeasurementChart) {
+      dispatch(
+        controlActions.openRightPanel({
+          title: 'Add size',
+          description: targetProductMeasurementChart.name,
+          width: '400px',
+          closeFunctions: () => {
+            dispatch(controlActions.closeRightPanel());
+          },
+          component: SizesForm,
+        })
+      );
+    }
+  };
+
   const items =
     targetProduct &&
     targetProductMeasurementChart &&
@@ -455,6 +473,32 @@ const ProductMeasurementChartGrid: React.FC = () => {
           },
         ]}
       />
+
+      {items && items.length < 1 ? (
+        <CommandBarButton
+          disabled={targetProductMeasurementChart ? false : true}
+          onClick={() => addNewSize()}
+          height={20}
+          styles={{
+            root: {
+              marginTop: '72px',
+              marginLeft: '32px',
+              height: '35px',
+              background: '#f0f0f0',
+              borderRadius: '2px',
+              padding: '0 12px',
+            },
+            label: {
+              fontWeight: '400',
+            },
+            rootHovered: {
+              background: '#e5e5e5',
+            },
+          }}
+          iconProps={{ iconName: 'Add' }}
+          text="Add first size"
+        />
+      ) : null}
     </div>
   );
 };
