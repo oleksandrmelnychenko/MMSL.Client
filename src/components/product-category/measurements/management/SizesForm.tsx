@@ -290,6 +290,10 @@ export const SizesForm: React.FC = () => {
 
   useEffect(() => {
     setValueItems(_initValueItemsDefaults(measurement, sizeForEdit));
+
+    return () => {
+      dispatch(productActions.changeProductMeasurementSizeForEdit(null));
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
