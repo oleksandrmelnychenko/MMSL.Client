@@ -336,7 +336,9 @@ export const MeasurementForm: React.FC = () => {
           if (formik)
             setFormikDirty(
               formik.dirty ||
-                new List(charts).any((item) => _isChartItemDirty(item))
+                new List(charts)
+                  .concat(deletedCharts)
+                  .any((item) => _isChartItemDirty(item))
             );
         }}
         validateOnBlur={false}

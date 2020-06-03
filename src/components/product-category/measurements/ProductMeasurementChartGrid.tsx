@@ -307,7 +307,8 @@ const ProductMeasurementChartGrid: React.FC = () => {
             isResizable: true,
             isCollapsible: false,
             data: 'string',
-            isPadded: true,
+            // defaultCellStyle:{{root:""}},
+            isPadded: false,
             rawSourceContext: definitionMapItem,
             onRender: onRenderDynamicSizeValueCell,
           };

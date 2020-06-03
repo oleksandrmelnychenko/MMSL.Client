@@ -14,6 +14,7 @@ import {
 import { List } from 'linq-typescript';
 import { measurementActions } from '../../../redux/slices/measurement.slice';
 import { assignPendingActions } from '../../../helpers/action.helper';
+import './productChartGridCell.scss';
 
 export interface IProductChartGridCellProps {
   mapSize: MeasurementMapSize | null | undefined;
