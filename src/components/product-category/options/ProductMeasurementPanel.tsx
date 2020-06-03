@@ -27,6 +27,13 @@ import { measurementActions } from '../../../redux/slices/measurement.slice';
 import { List } from 'linq-typescript';
 import SizesForm from '../measurements/management/SizesForm';
 
+export const measurementsPanelDismisActions = () => {
+  return [
+    productActions.changeSelectedProductMeasurement(null),
+    productActions.updateProductMeasurementsList([]),
+  ];
+};
+
 const ProductMeasurementPanel: React.FC = () => {
   const dispatch = useDispatch();
   let history = useHistory();
@@ -64,6 +71,10 @@ const ProductMeasurementPanel: React.FC = () => {
             onDismisPendingAction: () => {},
           })
         );
+
+        measurementsPanelDismisActions().forEach((action) => {
+          dispatch(action);
+        });
       },
     } as IProductMenuItem,
     {

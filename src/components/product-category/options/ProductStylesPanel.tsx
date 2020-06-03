@@ -21,6 +21,10 @@ import {
   ManagingPanelComponent,
 } from '../../../redux/slices/productSettings.slice';
 
+export const stylesPanelDismisActions = () => {
+  return [productSettingsActions.updateSearchWordOptionGroup('')];
+};
+
 const ProductStylesPanel: React.FC = () => {
   const dispatch = useDispatch();
   let history = useHistory();
@@ -42,12 +46,18 @@ const ProductStylesPanel: React.FC = () => {
       tooltip: 'Go back to products',
       onClickFunc: () => {
         history.push('/en/app/product/product-categories');
+
+        /// Open product managing (common) panel
         dispatch(
           controlActions.openInfoPanelWithComponent({
             component: ProductManagementPanel,
             onDismisPendingAction: () => {},
           })
         );
+
+        stylesPanelDismisActions().forEach((action) => {
+          dispatch(action);
+        });
       },
     } as IProductMenuItem,
     {
@@ -60,18 +70,6 @@ const ProductStylesPanel: React.FC = () => {
       tooltip: 'Create new product style',
       onClickFunc: () => {
         if (choseCategory) {
-          /// TODO:
-          //   dispatch(productActions.selectedTimeline(null));
-          //   dispatch(
-          //     controlActions.openRightPanel({
-          //       title: 'New timeline',
-          //       width: '400px',
-          //       closeFunctions: () => {
-          //         dispatch(controlActions.closeRightPanel());
-          //       },
-          //       component: ProductDeliverTimelineForm,
-          //     })
-          //   );
           dispatch(
             productSettingsActions.managingPanelContent(
               ManagingPanelComponent.ManageGroups

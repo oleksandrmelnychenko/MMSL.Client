@@ -1,16 +1,9 @@
 import './productSettings.scss';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Stack,
-  ActionButton,
-  Text,
-  SearchBox,
-  ScrollablePane,
-} from 'office-ui-fabric-react';
+import { Stack, Text, SearchBox, ScrollablePane } from 'office-ui-fabric-react';
 import ProductSettingsManagementPanel from './productSettingManagement/ProductSettingsManagementPanel';
 import { productSettingsActions } from '../../redux/slices/productSettings.slice';
-import { ManagingPanelComponent } from '../../redux/slices/productSettings.slice';
 import { IApplicationState } from '../../redux/reducers';
 import {
   mainTitleContent,

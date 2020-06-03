@@ -7,11 +7,7 @@ import {
   DirectionalHint,
 } from 'office-ui-fabric-react';
 import { productActions } from '../../../redux/slices/product.slice';
-import {
-  controlActions,
-  DialogArgs,
-  CommonDialogType,
-} from '../../../redux/slices/control.slice';
+import { controlActions } from '../../../redux/slices/control.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { ProductManagingPanelComponent } from '../../../redux/slices/product.slice';

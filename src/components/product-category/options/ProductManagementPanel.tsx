@@ -7,9 +7,13 @@ import { ProductManagingPanelComponent } from '../../../redux/slices/product.sli
 import { useHistory } from 'react-router-dom';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { ProductCategory } from '../../../interfaces';
-import ProductMeasurementPanel from './ProductMeasurementPanel';
+import ProductMeasurementPanel, {
+  measurementsPanelDismisActions,
+} from './ProductMeasurementPanel';
 import ProductTimelinesPanel from './ProductTimelinesPanel';
-import ProductStylesPanel from './ProductStylesPanel';
+import ProductStylesPanel, {
+  stylesPanelDismisActions,
+} from './ProductStylesPanel';
 
 export const PRODUCT_CATEGORIES_DASHBOARD_PATH: string =
   '/en/app/product/product-categories';
@@ -66,6 +70,10 @@ const ProductManagementPanel: React.FC = () => {
             component: ProductStylesPanel,
             onDismisPendingAction: () => {
               history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+
+              stylesPanelDismisActions().forEach((action) => {
+                dispatch(action);
+              });
             },
           })
         );
@@ -91,6 +99,10 @@ const ProductManagementPanel: React.FC = () => {
             component: ProductMeasurementPanel,
             onDismisPendingAction: () => {
               history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+
+              measurementsPanelDismisActions().forEach((action) => {
+                dispatch(action);
+              });
             },
           })
         );
