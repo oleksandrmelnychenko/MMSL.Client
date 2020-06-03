@@ -80,10 +80,10 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
             styles={fabricStyles.marginImageCenter}
           ></Image>
         </Card.Section>
-        {/* Old flow */}
-        {/* <Card.Section>
+        <Card.Section>
           <Stack horizontal>
-            <Icon
+            {/* Old flow */}
+            {/* <Icon
               iconName={props.optionUnit.isMandatory ? 'Unlock' : 'Lock'}
               className={fabricStyles.cardIcon}
               styles={{
@@ -91,7 +91,7 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
                   color: allowColor,
                 },
               }}
-            />
+            /> */}
             <Text
               block
               nowrap
@@ -101,7 +101,7 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
               {props.optionUnit.value}
             </Text>
           </Stack>
-        </Card.Section> */}
+        </Card.Section>
         <Card.Section
           className="card_actions"
           horizontal
