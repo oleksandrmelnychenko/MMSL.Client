@@ -33,17 +33,11 @@ import MeasurementForm from './management/MeasurementForm';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { List } from 'linq-typescript';
 import SizesForm from './management/SizesForm';
-import { useHistory } from 'react-router-dom';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
 const Measurements: React.FC = () => {
   const dispatch = useDispatch();
-  // const history = useHistory();
-
-  // const targetCategory = useSelector<IApplicationState, ProductCategory | null>(
-  //   (state) => state.product.choose.category
-  // );
 
   const targetProduct = useSelector<IApplicationState, ProductCategory | null>(
     (state) => state.product.choose.category
@@ -68,40 +62,11 @@ const Measurements: React.FC = () => {
     Measurement | null | undefined
   >((state) => state.product.productMeasurementsState.targetMeasurement);
 
-  const measurements: Measurement[] = useSelector<
-    IApplicationState,
-    Measurement[]
-  >((state) => state.product.productMeasurementsState.measurementList);
-
-  // if (
-  //   history.location &&
-  //   history.location.pathname.includes('app/product/measurements/')
-  // ) {
-  //   if (!targetProduct) {
-  //     const lastSegment: any = new List(
-  //       history.location.pathname.split('/')
-  //     ).lastOrDefault();
-  //     const categoryId: number = parseInt(lastSegment ? lastSegment : '');
-  //     if (categoryId && !isNaN(categoryId)) {
-  //       dispatch(
-  //         assignPendingActions(
-  //           productActions.apiGetProductCategoryById(categoryId),
-  //           [],
-  //           [],
-  //           (args: any) => {
-  //             // dispatch(productActions.chooseProductCategory(args));
-  //             debugger;
-  //             // dispatch(
-  //             //   controlActions.openInfoPanelWithComponent(
-  //             //     ProductManagementPanel
-  //             //   )
-  //             // );
-  //           }
-  //         )
-  //       );
-  //     }
-  //   }
-  // }
+  /* Old pattern need to be removed */
+  // const measurements: Measurement[] = useSelector<
+  //   IApplicationState,
+  //   Measurement[]
+  // >((state) => state.product.productMeasurementsState.measurementList);
 
   useEffect(() => {}, [dispatch]);
 
@@ -127,68 +92,69 @@ const Measurements: React.FC = () => {
       ? {}
       : { display: 'none' };
 
-  const deleteMeasurement = () => {
-    if (targetProductMeasurement) {
-      dispatch(
-        controlActions.toggleCommonDialogVisibility(
-          new DialogArgs(
-            CommonDialogType.Delete,
-            'Delete measurement',
-            `Are you sure you want to delete ${targetProductMeasurement.name}?`,
-            () => {
-              dispatch(
-                /// Delete measurement
-                assignPendingActions(
-                  measurementActions.apiDeleteMeasurementById(
-                    targetProductMeasurement.id
-                  ),
-                  [],
-                  [],
-                  (args: any) => {
-                    dispatch(
-                      /// Clear target delete measurement
-                      productActions.changeSelectedProductMeasurement(null)
-                    );
-                    const updatedMeasurements = new List(measurements)
-                      .where((item) => item.id !== args.body)
-                      .toArray();
+  /* Old pattern need to be removed */
+  // const deleteMeasurement = () => {
+  //   if (targetProductMeasurement) {
+  //     dispatch(
+  //       controlActions.toggleCommonDialogVisibility(
+  //         new DialogArgs(
+  //           CommonDialogType.Delete,
+  //           'Delete measurement',
+  //           `Are you sure you want to delete ${targetProductMeasurement.name}?`,
+  //           () => {
+  //             dispatch(
+  //               /// Delete measurement
+  //               assignPendingActions(
+  //                 measurementActions.apiDeleteMeasurementById(
+  //                   targetProductMeasurement.id
+  //                 ),
+  //                 [],
+  //                 [],
+  //                 (args: any) => {
+  //                   dispatch(
+  //                     /// Clear target delete measurement
+  //                     productActions.changeSelectedProductMeasurement(null)
+  //                   );
+  //                   const updatedMeasurements = new List(measurements)
+  //                     .where((item) => item.id !== args.body)
+  //                     .toArray();
 
-                    dispatch(
-                      productActions.updateProductMeasurementsList(
-                        updatedMeasurements
-                      )
-                    );
+  //                   dispatch(
+  //                     productActions.updateProductMeasurementsList(
+  //                       updatedMeasurements
+  //                     )
+  //                   );
 
-                    if (updatedMeasurements.length > 0) {
-                      dispatch(
-                        /// Select first measurement
-                        assignPendingActions(
-                          measurementActions.apiGetMeasurementById(
-                            updatedMeasurements[0].id
-                          ),
-                          [],
-                          [],
-                          (args: any) => {
-                            dispatch(
-                              productActions.changeSelectedProductMeasurement(
-                                args
-                              )
-                            );
-                          },
-                          (args: any) => {}
-                        )
-                      );
-                    }
-                  }
-                )
-              );
-            },
-            () => {}
-          )
-        )
-      );
-    }
-  };
+  //                   if (updatedMeasurements.length > 0) {
+  //                     dispatch(
+  //                       /// Select first measurement
+  //                       assignPendingActions(
+  //                         measurementActions.apiGetMeasurementById(
+  //                           updatedMeasurements[0].id
+  //                         ),
+  //                         [],
+  //                         [],
+  //                         (args: any) => {
+  //                           dispatch(
+  //                             productActions.changeSelectedProductMeasurement(
+  //                               args
+  //                             )
+  //                           );
+  //                         },
+  //                         (args: any) => {}
+  //                       )
+  //                     );
+  //                   }
+  //                 }
+  //               )
+  //             );
+  //           },
+  //           () => {}
+  //         )
+  //       )
+  //     );
+  //   }
+  // };
 
   const addMeasurement = () => {
     dispatch(
@@ -203,42 +169,44 @@ const Measurements: React.FC = () => {
     );
   };
 
-  const editMeasurement = () => {
-    if (targetProductMeasurement) {
-      dispatch(
-        productActions.changeProductMeasurementForEdit(targetProductMeasurement)
-      );
+  /* Old pattern need to be removed */
+  // const editMeasurement = () => {
+  //   if (targetProductMeasurement) {
+  //     dispatch(
+  //       productActions.changeProductMeasurementForEdit(targetProductMeasurement)
+  //     );
 
-      dispatch(
-        controlActions.openRightPanel({
-          title: 'Edit Measurement',
-          description: targetProductMeasurement.name,
-          width: '400px',
-          closeFunctions: () => {
-            dispatch(controlActions.closeRightPanel());
-            dispatch(productActions.changeProductMeasurementForEdit(null));
-          },
-          component: MeasurementForm,
-        })
-      );
-    }
-  };
+  //     dispatch(
+  //       controlActions.openRightPanel({
+  //         title: 'Edit Measurement',
+  //         description: targetProductMeasurement.name,
+  //         width: '400px',
+  //         closeFunctions: () => {
+  //           dispatch(controlActions.closeRightPanel());
+  //           dispatch(productActions.changeProductMeasurementForEdit(null));
+  //         },
+  //         component: MeasurementForm,
+  //       })
+  //     );
+  //   }
+  // };
 
-  const addNewSize = () => {
-    if (targetProductMeasurement) {
-      dispatch(
-        controlActions.openRightPanel({
-          title: 'Add size',
-          description: targetProductMeasurement.name,
-          width: '400px',
-          closeFunctions: () => {
-            dispatch(controlActions.closeRightPanel());
-          },
-          component: SizesForm,
-        })
-      );
-    }
-  };
+  // Old pattern need to be removed
+  // const addNewSize = () => {
+  //   if (targetProductMeasurement) {
+  //     dispatch(
+  //       controlActions.openRightPanel({
+  //         title: 'Add size',
+  //         description: targetProductMeasurement.name,
+  //         width: '400px',
+  //         closeFunctions: () => {
+  //           dispatch(controlActions.closeRightPanel());
+  //         },
+  //         component: SizesForm,
+  //       })
+  //     );
+  //   }
+  // };
 
   return (
     <div className="content__root">
@@ -254,8 +222,8 @@ const Measurements: React.FC = () => {
                   <Text variant="xLarge" nowrap block styles={mainTitleContent}>
                     Measurements
                   </Text>
-
-                  <CommandBarButton
+                  {/* Old pattern need to be removed  */}
+                  {/* <CommandBarButton
                     text="New measurement"
                     styles={{
                       root: {
@@ -265,7 +233,7 @@ const Measurements: React.FC = () => {
                     }}
                     onClick={() => addMeasurement()}
                     iconProps={{ iconName: 'Add' }}
-                  />
+                  /> */}
                 </Stack>
 
                 <Stack
@@ -278,7 +246,8 @@ const Measurements: React.FC = () => {
                 >
                   <ProductMeasurementSelector />
 
-                  <CommandBarButton
+                  {/* Old pattern need to be removed */}
+                  {/* <CommandBarButton
                     disabled={targetProductMeasurement ? false : true}
                     text="New size"
                     styles={{
@@ -292,13 +261,14 @@ const Measurements: React.FC = () => {
                     }}
                     onClick={() => addNewSize()}
                     iconProps={{ iconName: 'InsertRowsBelow' }}
-                  />
+                  /> */}
 
                   <Separator vertical />
 
                   <Stack horizontal tokens={{ childrenGap: '0px' }}>
                     <Stack horizontal>
-                      <CommandBarButton
+                      {/* Old pattern need to be removed */}
+                      {/* <CommandBarButton
                         text="Edit"
                         disabled={targetProductMeasurement ? false : true}
                         styles={{
@@ -312,9 +282,10 @@ const Measurements: React.FC = () => {
                         }}
                         onClick={() => editMeasurement()}
                         iconProps={{ iconName: 'Edit' }}
-                      />
+                      /> */}
 
-                      <CommandBarButton
+                      {/* Old pattern need to be removed */}
+                      {/* <CommandBarButton
                         text="Delete"
                         disabled={targetProductMeasurement ? false : true}
                         styles={{
@@ -337,7 +308,7 @@ const Measurements: React.FC = () => {
                             },
                           },
                         }}
-                      />
+                      /> */}
                     </Stack>
                   </Stack>
                 </Stack>

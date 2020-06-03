@@ -138,6 +138,38 @@ main.collapse {
             background: url('../../assets/images/dealers/stopwatch_hover.svg') no-repeat;
         }
     }
+
+    &__btn-new_measurement {
+        background: url('../../assets/images/measurements/new_measurement.svg') no-repeat;
+
+        &:hover {
+            background: url('../../assets/images/measurements/new_measurement_hover.svg') no-repeat;
+        }
+    }
+
+    &__btn-edit_measurement {
+        background: url('../../assets/images/measurements/edit.svg') no-repeat;
+
+        &:hover {
+            background: url('../../assets/images/measurements/edit_hover.svg') no-repeat;
+        }
+    }
+
+    &__btn-new_size_measurement {
+        background: url('../../assets/images/measurements/new_size.svg') no-repeat;
+
+        &:hover {
+            background: url('../../assets/images/measurements/new_size_hover.svg') no-repeat;
+        }
+    }
+
+    &__btn-delete_measurement {
+        background: url('../../assets/images/measurements/delete.svg') no-repeat;
+
+        &:hover {
+            background: url('../../assets/images/measurements/delete_hover.svg') no-repeat;
+        }
+    }
 }
 
 .list__header {

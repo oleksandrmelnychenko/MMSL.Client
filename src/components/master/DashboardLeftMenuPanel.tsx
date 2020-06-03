@@ -12,7 +12,7 @@ const DashboardLeftMenuPanel: React.FC = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const panelInfo = useSelector<IApplicationState, IPanelInfo>(
+  const panelInfo: IPanelInfo = useSelector<IApplicationState, IPanelInfo>(
     (state) => state.control.panelInfo
   );
 
@@ -29,6 +29,7 @@ const DashboardLeftMenuPanel: React.FC = () => {
       <Panel
         type={PanelType.smallFixedNear}
         isBlocking={false}
+        hasCloseButton={panelInfo.hasCloseButton}
         styles={stylesPanelInfo}
         isOpen={panelInfo.isOpenPanelInfo}
         onDismiss={dismissPanelInfo}

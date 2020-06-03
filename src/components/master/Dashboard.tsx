@@ -7,15 +7,11 @@ import { Switch, useLocation, Route } from 'react-router-dom';
 import Dealers from '../dealers/Dealers';
 import Customers from '../customers/Customers';
 import CommonDialog from './CommonDialog';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers/index';
 import { Panel, PanelType } from 'office-ui-fabric-react';
-import {
-  controlActions,
-  RightPanelProps,
-} from '../../redux/slices/control.slice';
-import { stylesPanelInfo, panelStyle } from '../../common/fabric-styles/styles';
-import { IPanelInfo } from '../../interfaces/index';
+import { RightPanelProps } from '../../redux/slices/control.slice';
+import { panelStyle } from '../../common/fabric-styles/styles';
 import Reports from '../reports/Reports';
 import ProductCategoryView from '../product-category/ProductCategoryView';
 import { RightPanel } from './panel/RightPanel';
@@ -23,12 +19,11 @@ import ProductSettings from '../productSettings/ProductSettings';
 import DashboardLeftMenuPanel from './DashboardLeftMenuPanel';
 
 const Dashboard: React.FC = () => {
-  const dispatch = useDispatch();
+  const location = useLocation();
+
   const isCollapseMenu = useSelector<IApplicationState, boolean>(
     (state) => state.control.isCollapseMenu
   );
-
-  const location = useLocation();
 
   const rightPanel = useSelector<IApplicationState, RightPanelProps>(
     (state) => state.control.rightPanel

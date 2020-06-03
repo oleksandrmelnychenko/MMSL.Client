@@ -36,13 +36,16 @@ export class IPanelInfo {
   constructor() {
     this.isOpenPanelInfo = false;
     this.hasCloseButton = false;
+    this.isHasCloseButton = true;
 
     this.onDismisPendingAction = () => {};
   }
 
   isOpenPanelInfo: boolean;
-  componentInPanelInfo: any;
   hasCloseButton: boolean;
+  componentInPanelInfo: any;
+  isHasCloseButton: boolean;
+
   onDismisPendingAction: () => void;
 }
 
