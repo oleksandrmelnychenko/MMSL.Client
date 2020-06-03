@@ -10,6 +10,8 @@ import {
   Label,
   PrimaryButton,
   IImageProps,
+  Separator,
+  FontWeights,
 } from 'office-ui-fabric-react';
 import ProductSettingsManagementPanel from './productSettingManagement/ProductSettingsManagementPanel';
 import {
@@ -21,6 +23,7 @@ import {
   mainTitleContent,
   horizontalGapStackTokens,
   searchBoxStyles,
+  mainTitleHintContent,
 } from '../../common/fabric-styles/styles';
 import StylesList from './StylesList';
 import * as fabricStyles from '../../common/fabric-styles/styles';
@@ -97,9 +100,18 @@ export const ProductSettings: React.FC = (props: any) => {
                 verticalAlign="center"
                 tokens={horizontalGapStackTokens}
               >
-                <Text variant="xLarge" block styles={mainTitleContent}>
-                  Styles
-                </Text>
+                <Stack horizontal tokens={{ childrenGap: '10px' }}>
+                  <Text variant="xLarge" block styles={mainTitleContent}>
+                    Styles
+                  </Text>
+
+                  <Separator vertical />
+
+                  <Text variant="xLarge" styles={mainTitleHintContent}>
+                    {targetProduct ? targetProduct.name : ''}
+                  </Text>
+                </Stack>
+
                 <SearchBox
                   className="productSettingsSearch"
                   value={searchWord}

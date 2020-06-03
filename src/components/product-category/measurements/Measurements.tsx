@@ -10,11 +10,14 @@ import {
   Label,
   PrimaryButton,
   IImageProps,
+  Separator,
+  FontWeights,
 } from 'office-ui-fabric-react';
 import {
   horizontalGapStackTokens,
   mainTitleContent,
   scrollablePaneStyleForDetailList,
+  mainTitleHintContent,
 } from '../../../common/fabric-styles/styles';
 import NoMeasurementImg from '../../../assets/images/no-objects/noneMeasurement.svg';
 import ProductMeasurementSelector from './ProductMeasurementSelector';
@@ -98,9 +101,22 @@ const Measurements: React.FC = () => {
             >
               <Stack tokens={{ childrenGap: 14 }}>
                 <Stack horizontal tokens={horizontalGapStackTokens}>
-                  <Text variant="xLarge" nowrap block styles={mainTitleContent}>
-                    Measurements
-                  </Text>
+                  <Stack horizontal tokens={{ childrenGap: '10px' }}>
+                    <Text
+                      variant="xLarge"
+                      nowrap
+                      block
+                      styles={mainTitleContent}
+                    >
+                      Measurements
+                    </Text>
+
+                    <Separator vertical />
+
+                    <Text variant="xLarge" styles={mainTitleHintContent}>
+                      {targetProduct ? targetProduct.name : ''}
+                    </Text>
+                  </Stack>
                 </Stack>
 
                 <Stack

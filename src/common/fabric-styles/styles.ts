@@ -298,8 +298,15 @@ export const mainTitleContent = {
   },
 };
 
+export const mainTitleHintContent = {
+  root: {
+    color: '#b6b6b6',
+    fontWeight: FontWeights.light,
+  },
+};
+
 export const horizontalGapStackTokens: IStackTokens = {
-  childrenGap: 20,
+  childrenGap: 30,
   padding: '5px 10px 5px 6px',
 };
 

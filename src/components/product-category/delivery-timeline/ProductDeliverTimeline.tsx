@@ -15,6 +15,8 @@ import {
   Image,
   Label,
   PrimaryButton,
+  Separator,
+  FontWeights,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -31,6 +33,7 @@ import {
   mainTitleContent,
   scrollablePaneStyleForDetailListWithDoubleHeader,
   imageProps,
+  mainTitleHintContent,
 } from '../../../common/fabric-styles/styles';
 import {
   ProductDeliveryTimeline,
@@ -270,14 +273,6 @@ export const ProductDeliverTimeline: React.FC = () => {
       <Stack verticalAlign="space-around">
         <Stack.Item align="stretch">
           <div className="content__header">
-            {/* Old pattern */}
-            {/* <div className="content__header__top">
-              <ActionButton
-                onClick={() => history.goBack()}
-                iconProps={{ iconName: 'Back' }}>
-                Back to products
-              </ActionButton>
-            </div> */}
             {category?.deliveryTimelineProductMaps &&
             category.deliveryTimelineProductMaps.length > 0 ? (
               <div className="content__header__top">
@@ -286,16 +281,22 @@ export const ProductDeliverTimeline: React.FC = () => {
                   verticalAlign="center"
                   tokens={horizontalGapStackTokens}
                 >
-                  <Text variant="xLarge" nowrap block styles={mainTitleContent}>
-                    Delivery timeline
-                  </Text>
-                  {/* Old pattern */}
-                  {/* <ActionButton
-                    onClick={createNewTimeline}
-                    iconProps={{ iconName: 'Add' }}
-                  >
-                    New timeline
-                  </ActionButton> */}
+                  <Stack horizontal tokens={{ childrenGap: '10px' }}>
+                    <Text
+                      variant="xLarge"
+                      nowrap
+                      block
+                      styles={mainTitleContent}
+                    >
+                      Delivery timeline
+                    </Text>
+
+                    <Separator vertical />
+
+                    <Text variant="xLarge" styles={mainTitleHintContent}>
+                      {category ? category.name : ''}
+                    </Text>
+                  </Stack>
                 </Stack>
               </div>
             ) : null}

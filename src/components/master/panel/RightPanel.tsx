@@ -38,7 +38,8 @@ export const RightPanel: React.FC<RightPanelProps> = () => {
         <Stack
           tokens={{ childrenGap: 20 }}
           horizontal
-          className="panelTitle__panelHeader">
+          className="panelTitle__panelHeader"
+        >
           <Text className="panelTitle__title">{rightPanel.title}</Text>
           <Text className="panelTitle__description">
             {rightPanel.description}
@@ -55,7 +56,8 @@ export const RightPanel: React.FC<RightPanelProps> = () => {
       <Stack
         horizontal
         horizontalAlign="space-between"
-        tokens={{ childrenGap: 20 }}>
+        tokens={{ childrenGap: 20 }}
+      >
         <Stack grow={1}>
           <rightPanel.component />
         </Stack>
