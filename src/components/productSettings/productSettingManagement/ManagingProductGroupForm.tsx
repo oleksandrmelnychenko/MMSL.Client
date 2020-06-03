@@ -16,26 +16,32 @@ export class ManagingOptionGroupFormInitValues {
   isMandatory: boolean;
 }
 
-const buildOptionGroup = (
+const _buildNewGroupPayload = (
   values: ManagingOptionGroupFormInitValues,
-  sourceEntity?: OptionGroup
+  productId: number
 ) => {
-  let newGroup: OptionGroup;
+  let payload = {
+    productId: productId,
+    name: values.name,
+    isMandatory: values.isMandatory,
+  };
 
-  if (sourceEntity) {
-    newGroup = { ...sourceEntity };
-  } else {
-    newGroup = new OptionGroup();
-    newGroup.optionUnits = [];
-  }
-
-  newGroup.name = values.name;
-  newGroup.isMandatory = values.isMandatory;
-
-  return newGroup;
+  return payload;
 };
 
-const initDefaultValues = (sourceEntity?: OptionGroup | null) => {
+const _buildUpdatedGroupPayload = (
+  values: ManagingOptionGroupFormInitValues,
+  productId: number,
+  sourceEntity: OptionGroup
+) => {
+  let payload = { ...sourceEntity };
+  payload.name = values.name;
+  payload.isMandatory = values.isMandatory;
+
+  return payload;
+};
+
+const _initDefaultValues = (sourceEntity?: OptionGroup | null) => {
   const initValues = new ManagingOptionGroupFormInitValues();
 
   if (sourceEntity) {
@@ -49,11 +55,13 @@ const initDefaultValues = (sourceEntity?: OptionGroup | null) => {
 class ManagingvOptionGroupFormProps {
   constructor() {
     this.formikReference = new FormicReference();
+    this.productId = 0;
     this.OptionGroupToEdit = null;
     this.submitAction = (args: any) => {};
   }
 
   formikReference: FormicReference;
+  productId: number;
   OptionGroupToEdit?: OptionGroup | null;
   submitAction: (args: any) => void;
 }
@@ -61,8 +69,6 @@ class ManagingvOptionGroupFormProps {
 export const ManagingvOptionGroupForm: React.FC<ManagingvOptionGroupFormProps> = (
   props: ManagingvOptionGroupFormProps
 ) => {
-  const initValues = initDefaultValues(props.OptionGroupToEdit);
-
   return (
     <div>
       <Formik
@@ -72,11 +78,17 @@ export const ManagingvOptionGroupForm: React.FC<ManagingvOptionGroupFormProps> =
             .required(() => 'Name is required'),
           isMandatory: Yup.boolean(),
         })}
-        initialValues={initValues}
+        initialValues={_initDefaultValues(props.OptionGroupToEdit)}
         onSubmit={(values: any) => {
-          props.submitAction(
-            buildOptionGroup(values, props.OptionGroupToEdit as OptionGroup)
-          );
+          const payload = props.OptionGroupToEdit
+            ? _buildUpdatedGroupPayload(
+                values,
+                props.productId,
+                props.OptionGroupToEdit
+              )
+            : _buildNewGroupPayload(values, props.productId);
+
+          props.submitAction(payload);
         }}
         innerRef={(formik: any) => {
           props.formikReference.formik = formik;

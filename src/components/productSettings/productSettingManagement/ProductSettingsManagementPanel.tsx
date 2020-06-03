@@ -114,6 +114,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
     content = (
       <ManagingProductGroupForm
         formikReference={formikReference}
+        productId={targetProduct ? targetProduct.id : 0}
         submitAction={(args: any) => {
           let createAction = assignPendingActions(
             productSettingsActions.saveNewOptionGroup(args),
@@ -192,6 +193,7 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
     content = (
       <ManagingProductGroupForm
         formikReference={formikReference}
+        productId={targetProduct ? targetProduct.id : 0}
         OptionGroupToEdit={sectedSingleOptionGroup}
         submitAction={(args: any) => {
           let createAction = assignPendingActions(
