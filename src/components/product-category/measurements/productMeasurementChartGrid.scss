@@ -4,11 +4,10 @@
     }
 
     .HOVER {
-        opacity: 1;
+        display: block;
     }
 
     .NOT_HOVER {
-        opacity: 0;
+        display: none;
     }
-
 }

@@ -73,14 +73,46 @@ const ProductMeasurementChartGrid: React.FC = () => {
     ProductCategory | null | undefined
   >((state) => state.product.choose.category);
 
+  const sizeNameColumn = {
+    key: 'sizeName',
+    name: 'Size',
+    minWidth: FROZEN_COLUMN_WIDTH,
+    maxWidth: FROZEN_COLUMN_WIDTH,
+    isResizable: false,
+    isCollapsible: false,
+    isPadded: false,
+    data: 'string',
+
+    onRender: (item?: any, index?: number, column?: IColumn) => {
+      let cellValue = '-';
+
+      if (item && item.measurementSize) {
+        cellValue = item.measurementSize.name;
+      }
+
+      return (
+        <Stack
+          styles={{ root: { position: 'relative' } }}
+          horizontal
+          horizontalAlign="space-between"
+        >
+          <Text nowrap block style={defaultCellStyle}>{`${cellValue}`}</Text>
+          {item.content}
+        </Stack>
+      );
+    },
+  };
+
   const onRenderFrezeOptions = (item: any) => {
     const refference: any = React.createRef();
     item.customRef = refference;
     return (
       <div
         className="NOT_HOVER"
+        // className="HOVER"
         style={{
-          position: 'absolute',
+          position: 'relative',
+          // position: 'absolute',
           right: '0',
           top: '0',
         }}
@@ -319,37 +351,7 @@ const ProductMeasurementChartGrid: React.FC = () => {
 
       const result = new List(dynamicChartSizeColumns);
 
-      result.insert(0, {
-        key: 'sizeName',
-        name: 'Size',
-        minWidth: FROZEN_COLUMN_WIDTH,
-        maxWidth: FROZEN_COLUMN_WIDTH,
-        isResizable: false,
-        isCollapsible: false,
-        isPadded: false,
-        data: 'string',
-
-        onRender: (item?: any, index?: number, column?: IColumn) => {
-          let cellValue = '-';
-
-          if (item && item.measurementSize) {
-            cellValue = item.measurementSize.name;
-          }
-
-          return (
-            <Stack
-              styles={{ root: { position: 'relative' } }}
-              horizontal
-              horizontalAlign="space-between"
-            >
-              <Stack.Item>
-                <Text style={defaultCellStyle}>{`${cellValue}`}</Text>
-              </Stack.Item>
-              {item.content}
-            </Stack>
-          );
-        },
-      });
+      result.insert(0, sizeNameColumn);
       result.insert(0, onRenderPaddingStubColumn());
 
       return result.toArray();
@@ -418,6 +420,14 @@ const ProductMeasurementChartGrid: React.FC = () => {
         columns={columns}
       />
 
+      {/* root: {
+            position: 'absolute',
+            top: '16px',
+            zIndex: 0,
+            left: '0',
+            overflowX: 'auto',
+            width: '171px',
+          }, */}
       {/* Grid for "frozen size name" column */}
       <DetailsList
         onRenderRow={onRenderRow}
@@ -425,7 +435,7 @@ const ProductMeasurementChartGrid: React.FC = () => {
         styles={{
           root: {
             position: 'absolute',
-            top: '16px',
+            top: '260px',
             zIndex: 0,
             left: '0',
             overflowX: 'auto',
@@ -439,39 +449,7 @@ const ProductMeasurementChartGrid: React.FC = () => {
         items={items}
         selectionMode={SelectionMode.single}
         checkboxVisibility={CheckboxVisibility.hidden}
-        columns={[
-          onRenderPaddingStubColumn(),
-          {
-            key: 'sizeName',
-            name: 'Size',
-            minWidth: FROZEN_COLUMN_WIDTH,
-            maxWidth: FROZEN_COLUMN_WIDTH,
-            isResizable: false,
-            isCollapsible: false,
-            isPadded: false,
-            data: 'string',
-            onRender: (item?: any, index?: number, column?: IColumn) => {
-              let cellValue = '-';
-
-              if (item && item.measurementSize) {
-                cellValue = item.measurementSize.name;
-              }
-
-              return (
-                <Stack
-                  styles={{ root: { position: 'relative' } }}
-                  horizontal
-                  horizontalAlign="space-between"
-                >
-                  <Stack.Item>
-                    <Text style={defaultCellStyle}>{`${cellValue}`}</Text>
-                  </Stack.Item>
-                  {item.content}
-                </Stack>
-              );
-            },
-          },
-        ]}
+        columns={[onRenderPaddingStubColumn(), sizeNameColumn]}
       />
 
       {items && items.length < 1 ? (
