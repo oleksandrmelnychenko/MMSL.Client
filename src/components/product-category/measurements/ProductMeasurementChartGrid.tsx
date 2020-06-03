@@ -29,10 +29,6 @@ import { DATA_SELECTION_DISABLED_CLASS } from '../../dealers/DealerList';
 import './productMeasurementChartGrid.scss';
 import { List } from 'linq-typescript';
 import {
-  measurementActions,
-  ManagingMeasurementPanelComponent,
-} from '../../../redux/slices/measurement.slice';
-import {
   controlActions,
   DialogArgs,
   CommonDialogType,
@@ -41,6 +37,8 @@ import { productActions } from '../../../redux/slices/product.slice';
 import { defaultCellStyle } from '../../../common/fabric-styles/styles';
 import ProductChartGridCell from './ProductChartGridCell';
 import SizesForm from './management/SizesForm';
+import { assignPendingActions } from '../../../helpers/action.helper';
+import { measurementActions } from '../../../redux/slices/measurement.slice';
 
 const _columnIconButtonStyle = {
   root: {
@@ -144,41 +142,38 @@ const ProductMeasurementChartGrid: React.FC = () => {
                           targetProductMeasurementChart &&
                           targetProduct
                         ) {
-                          /// TODO:
-                          //   dispatch(
-                          //     controlActions.closeInfoPanelWithComponent()
-                          //   );
-                          //   let action = assignPendingActions(
-                          //     measurementActions.apiDeleteMeasurementSizeById({
-                          //       measurementId: targetProductMeasurementChart.id,
-                          //       sizeId: item.measurementSize.id,
-                          //     }),
-                          //     [],
-                          //     [],
-                          //     (args: any) => {
-                          //       let getNewMeasurementByIdAction = assignPendingActions(
-                          //         measurementActions.apiGetMeasurementById(
-                          //           targetMeasurementChart
-                          //             ? targetMeasurementChart.id
-                          //             : 0
-                          //         ),
-                          //         [],
-                          //         [],
-                          //         (args: any) => {
-                          //           dispatch(
-                          //             measurementActions.changeSelectedMeasurement(
-                          //               args
-                          //             )
-                          //           );
-                          //         },
-                          //         (args: any) => {}
-                          //       );
-                          //       dispatch(getNewMeasurementByIdAction);
-                          //     },
-                          //     (args: any) => {}
-                          //   );
-                          //   dispatch(action);
-                          // }
+                          dispatch(
+                            assignPendingActions(
+                              measurementActions.apiDeleteMeasurementSizeById({
+                                measurementId: targetProductMeasurementChart.id,
+                                sizeId: item.measurementSize.id,
+                              }),
+                              [],
+                              [],
+                              (args: any) => {
+                                dispatch(
+                                  assignPendingActions(
+                                    measurementActions.apiGetMeasurementById(
+                                      targetProductMeasurementChart
+                                        ? targetProductMeasurementChart.id
+                                        : 0
+                                    ),
+                                    [],
+                                    [],
+                                    (args: any) => {
+                                      dispatch(
+                                        productActions.changeSelectedProductMeasurement(
+                                          args
+                                        )
+                                      );
+                                    },
+                                    (args: any) => {}
+                                  )
+                                );
+                              },
+                              (args: any) => {}
+                            )
+                          );
                         }
                       },
                       () => {}
