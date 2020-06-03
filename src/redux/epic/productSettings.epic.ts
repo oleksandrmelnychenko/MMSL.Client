@@ -171,7 +171,10 @@ export const apiGetAllOptionGroupsByProductIdListEpic = (
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
-            [controlActions.disabledStatusBar()],
+            [
+              controlActions.disabledStatusBar(),
+              productSettingsActions.updateIsStylesWasRequested(true),
+            ],
             action
           );
         }),
@@ -181,6 +184,7 @@ export const apiGetAllOptionGroupsByProductIdListEpic = (
               errorResponse,
               [
                 controlActions.disabledStatusBar(),
+                productSettingsActions.updateIsStylesWasRequested(true),
                 controlActions.showInfoMessage(
                   `Error occurred while getting option groups list. ${errorResponse}`
                 ),

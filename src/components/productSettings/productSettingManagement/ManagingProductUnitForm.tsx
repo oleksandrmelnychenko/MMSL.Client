@@ -212,7 +212,8 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                       )}
                     </Field>
 
-                    <Field name="isMandatory">
+                    {/* Old flow */}
+                    {/* <Field name="isMandatory">
                       {() => {
                         return (
                           <div className="form__group">
@@ -227,7 +228,7 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                           </div>
                         );
                       }}
-                    </Field>
+                    </Field> */}
 
                     <Field name="imageFile">
                       {() => {

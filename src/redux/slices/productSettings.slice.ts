@@ -7,6 +7,7 @@ export class ProductSettingsState {
   constructor() {
     this.managingPanelContent = null;
     this.optionGroupsList = [];
+    this.isStylesWasRequested = false;
     this.searchWordOptionGroup = '';
     this.managingOptionUnitsState = new ManagingOptionUnitsState();
     this.manageSingleOptionUnitState = new ManageSingleOptionUnitState();
@@ -16,6 +17,7 @@ export class ProductSettingsState {
 
   managingPanelContent: ManagingPanelComponent | null;
   optionGroupsList: OptionGroup[];
+  isStylesWasRequested: boolean;
   searchWordOptionGroup: string;
   managingOptionUnitsState: ManagingOptionUnitsState;
   manageSingleOptionUnitState: ManageSingleOptionUnitState;
@@ -95,6 +97,12 @@ const productSettings = createSlice({
   name: 'productSettings',
   initialState: new ProductSettingsState(),
   reducers: {
+    updateIsStylesWasRequested(
+      state,
+      action: { type: string; payload: boolean }
+    ) {
+      state.isStylesWasRequested = action.payload;
+    },
     managingPanelContent(state, action) {
       state.managingPanelContent = action.payload;
       return state;

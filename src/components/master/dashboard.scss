@@ -180,10 +180,18 @@ main.collapse {
     }
 
     &__btn-new_style {
-        background: url('../../assets/images/measurements/new_size.svg') no-repeat;
+        background: url('../../assets/images/styles/gear_plus.svg') no-repeat;
 
         &:hover {
-            background: url('../../assets/images/measurements/new_size_hover.svg') no-repeat;
+            background: url('../../assets/images/styles/gear_plus_hover.svg') no-repeat;
+        }
+    }
+
+    &__btn-styles {
+        background: url('../../assets/images/styles/gear.svg') no-repeat;
+
+        &:hover {
+            background: url('../../assets/images/styles/gear_hover.svg') no-repeat;
         }
     }
 

@@ -5,9 +5,6 @@ import { ProductCategory, Measurement } from '../../../interfaces';
 import {
   Stack,
   Text,
-  CommandBarButton,
-  FontWeights,
-  Separator,
   Image,
   ScrollablePane,
   Label,
@@ -19,20 +16,11 @@ import {
   mainTitleContent,
   scrollablePaneStyleForDetailList,
 } from '../../../common/fabric-styles/styles';
-import { measurementActions } from '../../../redux/slices/measurement.slice';
-import { productActions } from '../../../redux/slices/product.slice';
 import NoMeasurementImg from '../../../assets/images/no-objects/noneMeasurement.svg';
 import ProductMeasurementSelector from './ProductMeasurementSelector';
 import ProductMeasurementChartGrid from './ProductMeasurementChartGrid';
-import {
-  controlActions,
-  DialogArgs,
-  CommonDialogType,
-} from '../../../redux/slices/control.slice';
+import { controlActions } from '../../../redux/slices/control.slice';
 import MeasurementForm from './management/MeasurementForm';
-import { assignPendingActions } from '../../../helpers/action.helper';
-import { List } from 'linq-typescript';
-import SizesForm from './management/SizesForm';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
@@ -62,12 +50,6 @@ const Measurements: React.FC = () => {
     Measurement | null | undefined
   >((state) => state.product.productMeasurementsState.targetMeasurement);
 
-  /* Old pattern need to be removed */
-  // const measurements: Measurement[] = useSelector<
-  //   IApplicationState,
-  //   Measurement[]
-  // >((state) => state.product.productMeasurementsState.measurementList);
-
   useEffect(() => {}, [dispatch]);
 
   useEffect(() => {
@@ -92,70 +74,6 @@ const Measurements: React.FC = () => {
       ? {}
       : { display: 'none' };
 
-  /* Old pattern need to be removed */
-  // const deleteMeasurement = () => {
-  //   if (targetProductMeasurement) {
-  //     dispatch(
-  //       controlActions.toggleCommonDialogVisibility(
-  //         new DialogArgs(
-  //           CommonDialogType.Delete,
-  //           'Delete measurement',
-  //           `Are you sure you want to delete ${targetProductMeasurement.name}?`,
-  //           () => {
-  //             dispatch(
-  //               /// Delete measurement
-  //               assignPendingActions(
-  //                 measurementActions.apiDeleteMeasurementById(
-  //                   targetProductMeasurement.id
-  //                 ),
-  //                 [],
-  //                 [],
-  //                 (args: any) => {
-  //                   dispatch(
-  //                     /// Clear target delete measurement
-  //                     productActions.changeSelectedProductMeasurement(null)
-  //                   );
-  //                   const updatedMeasurements = new List(measurements)
-  //                     .where((item) => item.id !== args.body)
-  //                     .toArray();
-
-  //                   dispatch(
-  //                     productActions.updateProductMeasurementsList(
-  //                       updatedMeasurements
-  //                     )
-  //                   );
-
-  //                   if (updatedMeasurements.length > 0) {
-  //                     dispatch(
-  //                       /// Select first measurement
-  //                       assignPendingActions(
-  //                         measurementActions.apiGetMeasurementById(
-  //                           updatedMeasurements[0].id
-  //                         ),
-  //                         [],
-  //                         [],
-  //                         (args: any) => {
-  //                           dispatch(
-  //                             productActions.changeSelectedProductMeasurement(
-  //                               args
-  //                             )
-  //                           );
-  //                         },
-  //                         (args: any) => {}
-  //                       )
-  //                     );
-  //                   }
-  //                 }
-  //               )
-  //             );
-  //           },
-  //           () => {}
-  //         )
-  //       )
-  //     );
-  //   }
-  // };
-
   const addMeasurement = () => {
     dispatch(
       controlActions.openRightPanel({
@@ -168,45 +86,6 @@ const Measurements: React.FC = () => {
       })
     );
   };
-
-  /* Old pattern need to be removed */
-  // const editMeasurement = () => {
-  //   if (targetProductMeasurement) {
-  //     dispatch(
-  //       productActions.changeProductMeasurementForEdit(targetProductMeasurement)
-  //     );
-
-  //     dispatch(
-  //       controlActions.openRightPanel({
-  //         title: 'Edit Measurement',
-  //         description: targetProductMeasurement.name,
-  //         width: '400px',
-  //         closeFunctions: () => {
-  //           dispatch(controlActions.closeRightPanel());
-  //           dispatch(productActions.changeProductMeasurementForEdit(null));
-  //         },
-  //         component: MeasurementForm,
-  //       })
-  //     );
-  //   }
-  // };
-
-  // Old pattern need to be removed
-  // const addNewSize = () => {
-  //   if (targetProductMeasurement) {
-  //     dispatch(
-  //       controlActions.openRightPanel({
-  //         title: 'Add size',
-  //         description: targetProductMeasurement.name,
-  //         width: '400px',
-  //         closeFunctions: () => {
-  //           dispatch(controlActions.closeRightPanel());
-  //         },
-  //         component: SizesForm,
-  //       })
-  //     );
-  //   }
-  // };
 
   return (
     <div className="content__root">
@@ -222,18 +101,6 @@ const Measurements: React.FC = () => {
                   <Text variant="xLarge" nowrap block styles={mainTitleContent}>
                     Measurements
                   </Text>
-                  {/* Old pattern need to be removed  */}
-                  {/* <CommandBarButton
-                    text="New measurement"
-                    styles={{
-                      root: {
-                        height: '30px',
-                        padding: '16px',
-                      },
-                    }}
-                    onClick={() => addMeasurement()}
-                    iconProps={{ iconName: 'Add' }}
-                  /> */}
                 </Stack>
 
                 <Stack
@@ -245,73 +112,6 @@ const Measurements: React.FC = () => {
                   }}
                 >
                   <ProductMeasurementSelector />
-
-                  {/* Old pattern need to be removed */}
-                  {/* <CommandBarButton
-                    disabled={targetProductMeasurement ? false : true}
-                    text="New size"
-                    styles={{
-                      root: {
-                        height: '30px',
-                        padding: '16px',
-                      },
-                      label: {
-                        fontWeight: FontWeights.regular,
-                      },
-                    }}
-                    onClick={() => addNewSize()}
-                    iconProps={{ iconName: 'InsertRowsBelow' }}
-                  /> */}
-
-                  {/* Old pattern need to be removed */}
-                  {/* <Separator vertical /> */}
-
-                  <Stack horizontal tokens={{ childrenGap: '0px' }}>
-                    <Stack horizontal>
-                      {/* Old pattern need to be removed */}
-                      {/* <CommandBarButton
-                        text="Edit"
-                        disabled={targetProductMeasurement ? false : true}
-                        styles={{
-                          root: {
-                            height: '30px',
-                            padding: '16px',
-                          },
-                          label: {
-                            fontWeight: FontWeights.regular,
-                          },
-                        }}
-                        onClick={() => editMeasurement()}
-                        iconProps={{ iconName: 'Edit' }}
-                      /> */}
-
-                      {/* Old pattern need to be removed */}
-                      {/* <CommandBarButton
-                        text="Delete"
-                        disabled={targetProductMeasurement ? false : true}
-                        styles={{
-                          root: {
-                            height: '30px',
-                            padding: '16px',
-                          },
-                          label: {
-                            fontWeight: FontWeights.light,
-                          },
-                        }}
-                        onClick={() => deleteMeasurement()}
-                        iconProps={{
-                          iconName: 'Cancel',
-                          styles: {
-                            root: {
-                              fontSize: '14px',
-                              fontWeight: 600,
-                              color: '#a4373a',
-                            },
-                          },
-                        }}
-                      /> */}
-                    </Stack>
-                  </Stack>
                 </Stack>
               </Stack>
             </div>

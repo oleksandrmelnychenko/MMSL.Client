@@ -44,23 +44,9 @@ const ProductManagementPanel: React.FC = () => {
   }, []);
 
   const menuItem: IProductMenuItem[] = [
-    // Old pattern
-    // {
-    //   title: 'Details',
-    //   className: 'management__btn-detail',
-    //   componentType: ProductManagingPanelComponent.ProductCategoryDetails,
-    //   isDisabled: choseCategory ? false : true,
-    //   onClickFunc: () => {
-    //     dispatch(
-    //       productActions.changeManagingPanelContent(
-    //         ProductManagingPanelComponent.ProductCategoryDetails
-    //       )
-    //     );
-    //   },
-    // },
     {
       title: 'Styles',
-      className: 'management__btn-detail',
+      className: 'management__btn-styles',
       componentType: ProductManagingPanelComponent.ProductCategoryDetails,
       isDisabled: choseCategory ? false : true,
       onClickFunc: () => {

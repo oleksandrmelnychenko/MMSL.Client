@@ -63,11 +63,13 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
         <Stack.Item>
           <Text
             variant={'mediumPlus' as ITextProps['variant']}
-            styles={{ root: { color: '#484848', fontWeight: 400 } }}>
+            styles={{ root: { color: '#484848', fontWeight: 400 } }}
+          >
             {props.optionUnit.value}
           </Text>
         </Stack.Item>
-        <Stack.Item>
+        {/* Old flow */}
+        {/* <Stack.Item>
           <Stack horizontal tokens={{ childrenGap: 10 }}>
             <TooltipHost
               id={allowTooltipId}
@@ -88,7 +90,7 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
               />
             </TooltipHost>
           </Stack>
-        </Stack.Item>
+        </Stack.Item> */}
       </Stack>
     </Stack>
   );

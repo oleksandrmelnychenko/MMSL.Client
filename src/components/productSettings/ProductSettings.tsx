@@ -1,9 +1,21 @@
 import './productSettings.scss';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Stack, Text, SearchBox, ScrollablePane } from 'office-ui-fabric-react';
+import {
+  Stack,
+  Text,
+  SearchBox,
+  Image,
+  ScrollablePane,
+  Label,
+  PrimaryButton,
+  IImageProps,
+} from 'office-ui-fabric-react';
 import ProductSettingsManagementPanel from './productSettingManagement/ProductSettingsManagementPanel';
-import { productSettingsActions } from '../../redux/slices/productSettings.slice';
+import {
+  productSettingsActions,
+  ManagingPanelComponent,
+} from '../../redux/slices/productSettings.slice';
 import { IApplicationState } from '../../redux/reducers';
 import {
   mainTitleContent,
@@ -13,9 +25,18 @@ import {
 import StylesList from './StylesList';
 import * as fabricStyles from '../../common/fabric-styles/styles';
 import { ProductCategory } from '../../interfaces';
+import NoMeasurementImg from '../../assets/images/no-objects/noneMeasurement.svg';
 
 export const ProductSettings: React.FC = (props: any) => {
   const dispatch = useDispatch();
+
+  const isStylesWasRequested: boolean = useSelector<IApplicationState, boolean>(
+    (state) => state.productSettings.isStylesWasRequested
+  );
+
+  const isAnyStyles: boolean = useSelector<IApplicationState, boolean>(
+    (state) => state.productSettings.optionGroupsList.length > 0
+  );
 
   const targetProduct: ProductCategory | null = useSelector<
     IApplicationState,
@@ -36,12 +57,41 @@ export const ProductSettings: React.FC = (props: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchWord, dispatch]);
 
+  const hintContentHideableStyle =
+    isStylesWasRequested && !isAnyStyles
+      ? { height: '100%' }
+      : { display: 'none' };
+
+  const imageProps: Partial<IImageProps> = {
+    styles: {
+      root: {
+        margin: '0 auto',
+      },
+    },
+  };
+
+  const mainContentHideableStyle =
+    isStylesWasRequested && isAnyStyles ? {} : { display: 'none' };
+
+  const addNewStyle = () => {
+    if (targetProduct) {
+      dispatch(
+        productSettingsActions.managingPanelContent(
+          ManagingPanelComponent.ManageGroups
+        )
+      );
+    }
+  };
+
   return (
     <div className="content__root">
       <Stack verticalAlign="space-around">
         <Stack.Item align="stretch">
           <div className="content__header">
-            <div className="content__header__top">
+            <div
+              className="content__header__top"
+              style={mainContentHideableStyle}
+            >
               <Stack
                 horizontal
                 verticalAlign="center"
@@ -50,21 +100,6 @@ export const ProductSettings: React.FC = (props: any) => {
                 <Text variant="xLarge" block styles={mainTitleContent}>
                   Styles
                 </Text>
-                {/* Old pattern */}
-                {/* <ActionButton
-                  className="productSettingsAdd"
-                  onClick={() => {
-                    /// TODO: use new pattern
-                    dispatch(
-                      productSettingsActions.managingPanelContent(
-                        ManagingPanelComponent.ManageGroups
-                      )
-                    );
-                  }}
-                  iconProps={{ iconName: 'Add' }}
-                >
-                  New style
-                </ActionButton> */}
                 <SearchBox
                   className="productSettingsSearch"
                   value={searchWord}
@@ -86,7 +121,41 @@ export const ProductSettings: React.FC = (props: any) => {
           <ScrollablePane
             styles={fabricStyles.scrollablePaneStyleForStylesList}
           >
-            <StylesList />
+            <div style={mainContentHideableStyle}>
+              {targetProduct ? <StylesList /> : null}
+            </div>
+            <div style={hintContentHideableStyle}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: 'inherit',
+                }}
+              >
+                <Stack
+                  styles={{ root: { position: 'relative', top: '-99px' } }}
+                >
+                  <Image {...imageProps} src={NoMeasurementImg} />
+                  <Label
+                    styles={{
+                      root: {
+                        color: '#484848',
+                        fontSize: '18px',
+                      },
+                    }}
+                  >
+                    Create your first style
+                  </Label>
+                  <Stack.Item align={'center'}>
+                    <PrimaryButton
+                      text={'Create style'}
+                      onClick={() => addNewStyle()}
+                    />
+                  </Stack.Item>
+                </Stack>
+              </div>
+            </div>
           </ScrollablePane>
         </Stack.Item>
       </Stack>

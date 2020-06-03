@@ -80,7 +80,8 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
             styles={fabricStyles.marginImageCenter}
           ></Image>
         </Card.Section>
-        <Card.Section>
+        {/* Old flow */}
+        {/* <Card.Section>
           <Stack horizontal>
             <Icon
               iconName={props.optionUnit.isMandatory ? 'Unlock' : 'Lock'}
@@ -100,7 +101,7 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
               {props.optionUnit.value}
             </Text>
           </Stack>
-        </Card.Section>
+        </Card.Section> */}
         <Card.Section
           className="card_actions"
           horizontal
