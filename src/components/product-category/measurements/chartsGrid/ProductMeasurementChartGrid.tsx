@@ -84,21 +84,6 @@ const ProductMeasurementChartGrid: React.FC = () => {
     data: 'string',
 
     onRender: (item?: any, index?: number, column?: IColumn) => {
-      // let cellValue = '-';
-
-      // if (item && item.measurementSize) {
-      //   cellValue = item.measurementSize.name;
-      // }
-
-      // return (
-      //   <Stack
-      //     styles={{ root: { position: 'relative' } }}
-      //     horizontal
-      //     horizontalAlign="space-between"
-      //   >
-      //     <Text nowrap block style={defaultCellStyle}>{`${cellValue}`}</Text>
-      //   </Stack>
-      // );
       return (
         <ProductChartNameGridCell
           mapSize={item}
@@ -474,8 +459,9 @@ const ProductMeasurementChartGrid: React.FC = () => {
             left: '0',
             overflowX: 'auto',
             width: '71px',
-            borderRight:
-              items && items.length < 1 ? '' : '1px solid rgb(223, 223, 223)',
+            // borderRight:
+            //   items && items.length < 1 ? '' : '1px solid rgb(223, 223, 223)',
+            borderRight: items && items.length < 1 ? '' : '1px solid #0078d415',
           },
         }}
         selection={selection}
