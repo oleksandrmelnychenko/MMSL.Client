@@ -17,30 +17,30 @@ import {
   ConstrainMode,
   SelectionMode,
   getId,
-  CommandButton,
   CommandBarButton,
 } from 'office-ui-fabric-react';
-import { IApplicationState } from '../../../redux/reducers';
+import { IApplicationState } from '../../../../redux/reducers';
 import {
   Measurement,
   MeasurementMapDefinition,
   MeasurementMapSize,
   ProductCategory,
-} from '../../../interfaces';
-import { DATA_SELECTION_DISABLED_CLASS } from '../../dealers/DealerList';
+} from '../../../../interfaces';
+import { DATA_SELECTION_DISABLED_CLASS } from '../../../dealers/DealerList';
 import './productMeasurementChartGrid.scss';
 import { List } from 'linq-typescript';
 import {
   controlActions,
   DialogArgs,
   CommonDialogType,
-} from '../../../redux/slices/control.slice';
-import { productActions } from '../../../redux/slices/product.slice';
-import { defaultCellStyle } from '../../../common/fabric-styles/styles';
+} from '../../../../redux/slices/control.slice';
+import { productActions } from '../../../../redux/slices/product.slice';
+import { defaultCellStyle } from '../../../../common/fabric-styles/styles';
 import ProductChartGridCell from './ProductChartGridCell';
-import SizesForm from './management/SizesForm';
-import { assignPendingActions } from '../../../helpers/action.helper';
-import { measurementActions } from '../../../redux/slices/measurement.slice';
+import ProductChartNameGridCell from './ProductChartNameGridCell';
+import SizesForm from '../management/SizesForm';
+import { assignPendingActions } from '../../../../helpers/action.helper';
+import { measurementActions } from '../../../../redux/slices/measurement.slice';
 
 const _columnIconButtonStyle = {
   root: {
@@ -84,20 +84,27 @@ const ProductMeasurementChartGrid: React.FC = () => {
     data: 'string',
 
     onRender: (item?: any, index?: number, column?: IColumn) => {
-      let cellValue = '-';
+      // let cellValue = '-';
 
-      if (item && item.measurementSize) {
-        cellValue = item.measurementSize.name;
-      }
+      // if (item && item.measurementSize) {
+      //   cellValue = item.measurementSize.name;
+      // }
 
+      // return (
+      //   <Stack
+      //     styles={{ root: { position: 'relative' } }}
+      //     horizontal
+      //     horizontalAlign="space-between"
+      //   >
+      //     <Text nowrap block style={defaultCellStyle}>{`${cellValue}`}</Text>
+      //   </Stack>
+      // );
       return (
-        <Stack
-          styles={{ root: { position: 'relative' } }}
-          horizontal
-          horizontalAlign="space-between"
-        >
-          <Text nowrap block style={defaultCellStyle}>{`${cellValue}`}</Text>
-        </Stack>
+        <ProductChartNameGridCell
+          mapSize={item}
+          measurementChart={targetProductMeasurementChart}
+          productCategory={targetProduct}
+        />
       );
     },
   };

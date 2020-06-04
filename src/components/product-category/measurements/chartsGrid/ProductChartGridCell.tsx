@@ -3,17 +3,17 @@ import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
 import { TextField, Text } from 'office-ui-fabric-react';
-import { defaultCellStyle } from '../../../common/fabric-styles/styles';
+import { defaultCellStyle } from '../../../../common/fabric-styles/styles';
 import {
   Measurement,
   MeasurementMapDefinition,
   MeasurementMapSize,
   MeasurementMapValue,
   ProductCategory,
-} from '../../../interfaces';
+} from '../../../../interfaces';
 import { List } from 'linq-typescript';
-import { measurementActions } from '../../../redux/slices/measurement.slice';
-import { assignPendingActions } from '../../../helpers/action.helper';
+import { measurementActions } from '../../../../redux/slices/measurement.slice';
+import { assignPendingActions } from '../../../../helpers/action.helper';
 import './productChartGridCell.scss';
 
 export interface IProductChartGridCellProps {

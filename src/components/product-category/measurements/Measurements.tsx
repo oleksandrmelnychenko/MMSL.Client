@@ -21,7 +21,7 @@ import {
 } from '../../../common/fabric-styles/styles';
 import NoMeasurementImg from '../../../assets/images/no-objects/noneMeasurement.svg';
 import ProductMeasurementSelector from './ProductMeasurementSelector';
-import ProductMeasurementChartGrid from './ProductMeasurementChartGrid';
+import ProductMeasurementChartGrid from './chartsGrid/ProductMeasurementChartGrid';
 import { controlActions } from '../../../redux/slices/control.slice';
 import MeasurementForm from './management/MeasurementForm';
 
