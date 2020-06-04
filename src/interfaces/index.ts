@@ -392,10 +392,12 @@ export class MeasurementMapDefinition extends EntityBaseNamed {
     this.measurementDefinition = new MeasurementDefinition();
     this.measurementDefinitionId = 0;
     this.measurementId = 0;
+    this.orderIndex = 0;
   }
   measurementDefinition: MeasurementDefinition;
   measurementDefinitionId: number;
   measurementId: number;
+  orderIndex: number;
 }
 
 export class MeasurementDefinition extends EntityBaseNamed {

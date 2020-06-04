@@ -27,6 +27,16 @@ import EditChartItem, {
 import { measurementActions } from '../../../../redux/slices/measurement.slice';
 import { productActions } from '../../../../redux/slices/product.slice';
 import { assignPendingActions } from '../../../../helpers/action.helper';
+import {
+  DragDropContext,
+  DropResult,
+  ResponderProvided,
+  Droppable,
+  Draggable,
+  DraggableProvided,
+  DraggableStateSnapshot,
+  DraggableRubric,
+} from 'react-beautiful-dnd';
 
 class MeasurementFormInitValues {
   constructor() {
@@ -51,10 +61,10 @@ const _buildNewMeasurementPayload = (
   };
 
   payload.measurementDefinitions = new List(charts)
-    .select((item) => {
+    .select((item: ChartItemInitPayload) => {
       return {
         name: item.name,
-        orderIndex: 0,
+        orderIndex: item.orderIndex,
         id: 0,
       };
     })
@@ -76,10 +86,10 @@ const _buildEditedMeasurementPayload = (
   };
 
   payload.measurementDefinitions = new List(charts)
-    .select((item) => {
+    .select((item: ChartItemInitPayload) => {
       return {
         id: item.rawSource.measurementDefinition.id,
-        orderIndex: 0,
+        orderIndex: item.orderIndex,
         name: item.name,
         isDeleted: item.isDeleted,
         mapId: item.rawSource.id,
@@ -112,10 +122,12 @@ const _initDefaultCharts = (sourceEntity?: Measurement | null) => {
         const resultItem = new ChartItemInitPayload();
         resultItem.isDeleted = itemMap.measurementDefinition.isDeleted;
         resultItem.name = itemMap.measurementDefinition.name;
+        resultItem.orderIndex = itemMap.orderIndex;
         resultItem.rawSource = itemMap;
 
         return resultItem;
       })
+      .orderBy((item: ChartItemInitPayload) => item.orderIndex)
       .toArray();
   }
 
@@ -128,9 +140,10 @@ const _isChartItemDirty: (item: ChartItemInitPayload) => boolean = (
   let isDirty = false;
 
   if (
+    item.rawSource.id === 0 ||
     item.rawSource.measurementDefinition.name !== item.name ||
     item.rawSource.measurementDefinition.isDeleted !== item.isDeleted ||
-    item.rawSource.id === 0
+    item.rawSource.orderIndex !== item.orderIndex
   )
     isDirty = true;
 
@@ -313,6 +326,92 @@ export const MeasurementForm: React.FC = () => {
     }
   };
 
+  const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
+    debugger;
+    if (!result.destination) {
+      return;
+    }
+
+    if (
+      result.destination.droppableId === result.source.droppableId &&
+      result.destination.index === result.source.index
+    ) {
+      return;
+    }
+
+    const changetOrder = Array.from(charts);
+    const item = changetOrder[result.source.index];
+    changetOrder.splice(result.source.index, 1);
+    changetOrder.splice(result.destination.index, 0, item);
+    changetOrder.forEach((item, index) => {
+      item.orderIndex = index;
+    });
+
+    setCharts(changetOrder);
+  };
+
+  const onRenderDroppableClone = (
+    provided: DraggableProvided,
+    snapshot: DraggableStateSnapshot,
+    rubric: DraggableRubric
+  ) => {
+    const overriddenProps = {
+      ...provided.draggableProps,
+      style: {
+        ...provided.draggableProps.style,
+        zIndex: 1000001,
+      },
+    };
+    return (
+      <div
+        {...overriddenProps}
+        {...provided.dragHandleProps}
+        ref={provided.innerRef}
+      >
+        <EditChartItem
+          payload={charts[rubric.source.index]}
+          isDirtyCheck={() => true}
+          onEditCompleted={(inputState: IChartItemInputState) => {}}
+        />
+      </div>
+    );
+  };
+
+  const onRenderDraggable = (
+    item: ChartItemInitPayload,
+    index: number,
+    provided: DraggableProvided,
+    snapshot: DraggableStateSnapshot,
+    rubric: DraggableRubric
+  ) => {
+    return (
+      <div
+        {...provided.draggableProps}
+        {...provided.dragHandleProps}
+        ref={provided.innerRef}
+      >
+        <EditChartItem
+          payload={item}
+          isDirtyCheck={() => _isChartItemDirty(item)}
+          onEditCompleted={(inputState: IChartItemInputState) => {
+            item.name = inputState.name;
+            item.isDeleted = inputState.isRemoved;
+
+            tryDeleteItem(item, inputState);
+
+            const isAnyDirtyChart =
+              new List(charts).any((_) => _isChartItemDirty(_)) ||
+              isFormikDirty;
+
+            if (isAnyDirtyChart !== isFormikDirty) {
+              setFormikDirty(isAnyDirtyChart);
+            }
+          }}
+        />
+      </div>
+    );
+  };
+
   return (
     <div className="measurementsForm">
       <Formik
@@ -384,34 +483,49 @@ export const MeasurementForm: React.FC = () => {
                     />
 
                     <Stack tokens={{ childrenGap: '12px' }}>
-                      <Stack tokens={{ childrenGap: '6px' }}>
-                        {charts.map((item, index) => {
-                          return (
-                            <EditChartItem
-                              key={index}
-                              payload={item}
-                              isDirtyCheck={() => _isChartItemDirty(item)}
-                              onEditCompleted={(
-                                inputState: IChartItemInputState
-                              ) => {
-                                item.name = inputState.name;
-                                item.isDeleted = inputState.isRemoved;
-
-                                tryDeleteItem(item, inputState);
-
-                                const isAnyDirtyChart =
-                                  new List(charts).any((_) =>
-                                    _isChartItemDirty(_)
-                                  ) || isFormikDirty;
-
-                                if (isAnyDirtyChart !== isFormikDirty) {
-                                  setFormikDirty(isAnyDirtyChart);
-                                }
-                              }}
-                            />
-                          );
-                        })}
-                      </Stack>
+                      <DragDropContext onDragEnd={onDragEnd}>
+                        <Droppable
+                          droppableId={'0'}
+                          renderClone={onRenderDroppableClone}
+                        >
+                          {(droppableProvided) => {
+                            return (
+                              <div
+                                {...droppableProvided.droppableProps}
+                                ref={droppableProvided.innerRef}
+                              >
+                                <Stack tokens={{ childrenGap: '6px' }}>
+                                  {charts.map((item, index) => {
+                                    return (
+                                      <div key={index}>
+                                        <Draggable
+                                          draggableId={`${index}`}
+                                          index={index}
+                                        >
+                                          {(
+                                            provided: DraggableProvided,
+                                            snapshot: DraggableStateSnapshot,
+                                            rubric: DraggableRubric
+                                          ) => {
+                                            return onRenderDraggable(
+                                              item,
+                                              index,
+                                              provided,
+                                              snapshot,
+                                              rubric
+                                            );
+                                          }}
+                                        </Draggable>
+                                      </div>
+                                    );
+                                  })}
+                                  {droppableProvided.placeholder}
+                                </Stack>
+                              </div>
+                            );
+                          }}
+                        </Droppable>
+                      </DragDropContext>
                     </Stack>
                   </Stack>
                 </Stack>

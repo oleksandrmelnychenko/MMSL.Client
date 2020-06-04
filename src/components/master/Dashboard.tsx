@@ -57,7 +57,7 @@ const Dashboard: React.FC = () => {
           type={PanelType.custom}
           customWidth={rightPanel.width}
           isBlocking={true}
-          styles={panelStyle}
+          styles={{ ...panelStyle, root: { zIndex: 10 } }}
           isOpen={!!rightPanel.title}
           onDismiss={() => {
             rightPanel.closeFunctions();

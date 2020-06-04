@@ -6,11 +6,13 @@ export class ChartItemInitPayload {
   constructor() {
     this.name = '';
     this.isDeleted = false;
+    this.orderIndex = 0;
     this.rawSource = null;
   }
 
   name: string;
   isDeleted: boolean;
+  orderIndex: number;
   rawSource: any;
 }
 
@@ -26,6 +28,7 @@ export class EditChartItemProps {
     this.onEditCompleted = (inputState: IChartItemInputState) => {};
   }
 
+  innerRef?: any;
   payload: ChartItemInitPayload;
   isDirtyCheck: () => boolean;
   onEditCompleted: (inputState: IChartItemInputState) => void;
@@ -42,7 +45,7 @@ export const EditChartItem: React.FC<EditChartItemProps> = (
   useEffect(() => {}, []);
 
   return (
-    <div className="editChartItem">
+    <div ref={props.innerRef} className="editChartItem">
       <div
         className={
           props.isDirtyCheck()
