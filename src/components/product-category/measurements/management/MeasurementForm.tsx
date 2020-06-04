@@ -327,17 +327,13 @@ export const MeasurementForm: React.FC = () => {
   };
 
   const onDragEnd = (result: DropResult, provided: ResponderProvided) => {
-    debugger;
-    if (!result.destination) {
-      return;
-    }
+    if (!result.destination) return;
 
     if (
       result.destination.droppableId === result.source.droppableId &&
       result.destination.index === result.source.index
-    ) {
+    )
       return;
-    }
 
     const changetOrder = Array.from(charts);
     const item = changetOrder[result.source.index];
