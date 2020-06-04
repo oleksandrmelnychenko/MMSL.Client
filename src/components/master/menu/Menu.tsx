@@ -38,7 +38,6 @@ const Menu: React.FC = () => {
 
   const onMenuClick = (item: IMenuItem) => {
     setIsOpenSubMenu(false);
-    debugger;
     dispatch(dealerActions.setSelectedDealer(null));
     dispatch(controlActions.closeInfoPanelWithComponent());
     dispatch(productSettingsActions.updateSearchWordOptionGroup(''));

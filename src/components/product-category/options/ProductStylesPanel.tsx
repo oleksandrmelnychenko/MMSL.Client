@@ -22,7 +22,11 @@ import {
 } from '../../../redux/slices/productSettings.slice';
 
 export const stylesPanelDismisActions = () => {
-  return [productSettingsActions.updateSearchWordOptionGroup('')];
+  return [
+    productSettingsActions.updateSearchWordOptionGroup(''),
+    productSettingsActions.updateIsStylesWasRequested(false),
+    productSettingsActions.updateOptionGroupList([]),
+  ];
 };
 
 const ProductStylesPanel: React.FC = () => {

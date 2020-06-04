@@ -76,9 +76,9 @@ const ProductMeasurementChartGrid: React.FC = () => {
   const sizeNameColumn = {
     key: 'sizeName',
     name: 'Size',
-    minWidth: FROZEN_COLUMN_WIDTH,
+    minWidth: 50,
     maxWidth: FROZEN_COLUMN_WIDTH,
-    isResizable: false,
+    isResizable: true,
     isCollapsible: false,
     isPadded: false,
     data: 'string',
@@ -97,7 +97,6 @@ const ProductMeasurementChartGrid: React.FC = () => {
           horizontalAlign="space-between"
         >
           <Text nowrap block style={defaultCellStyle}>{`${cellValue}`}</Text>
-          {item.content}
         </Stack>
       );
     },
@@ -109,16 +108,18 @@ const ProductMeasurementChartGrid: React.FC = () => {
     return (
       <div
         className="NOT_HOVER"
-        // className="HOVER"
         style={{
           position: 'relative',
-          // position: 'absolute',
           right: '0',
           top: '0',
         }}
         ref={refference}
       >
-        <Stack horizontal disableShrink>
+        <Stack
+          styles={{ root: { marginLeft: '-12px' } }}
+          horizontal
+          disableShrink
+        >
           <IconButton
             data-selection-disabled={true}
             className={DATA_SELECTION_DISABLED_CLASS}
@@ -128,24 +129,51 @@ const ProductMeasurementChartGrid: React.FC = () => {
             title="Edit"
             ariaLabel="Edit"
             onClick={() => {
-              dispatch(
-                productActions.changeProductMeasurementSizeForEdit(item)
-              );
+              if (targetProductMeasurementChart) {
+                dispatch(
+                  assignPendingActions(
+                    measurementActions.apiGetMeasurementById(
+                      targetProductMeasurementChart.id
+                    ),
+                    [],
+                    [],
+                    (args: any) => {
+                      /// Extract `fresh` size for edit
+                      const sizeForEdit: any = new List(
+                        args.measurementMapSizes
+                      ).firstOrDefault(
+                        (sizeItem: any) => sizeItem.id === item.id
+                      );
 
-              dispatch(
-                controlActions.openRightPanel({
-                  title: 'Edit size',
-                  description: item.name,
-                  width: '400px',
-                  closeFunctions: () => {
-                    dispatch(
-                      productActions.changeProductMeasurementSizeForEdit(null)
-                    );
-                    dispatch(controlActions.closeRightPanel());
-                  },
-                  component: SizesForm,
-                })
-              );
+                      if (sizeForEdit) {
+                        dispatch(
+                          productActions.changeProductMeasurementSizeForEdit(
+                            sizeForEdit
+                          )
+                        );
+
+                        dispatch(
+                          controlActions.openRightPanel({
+                            title: 'Edit size',
+                            description: item.name,
+                            width: '400px',
+                            closeFunctions: () => {
+                              dispatch(
+                                productActions.changeProductMeasurementSizeForEdit(
+                                  null
+                                )
+                              );
+                              dispatch(controlActions.closeRightPanel());
+                            },
+                            component: SizesForm,
+                          })
+                        );
+                      }
+                    },
+                    (args: any) => {}
+                  )
+                );
+              }
             }}
           />
           <IconButton
@@ -292,8 +320,8 @@ const ProductMeasurementChartGrid: React.FC = () => {
     return {
       key: getId('stubPadding'),
       name: '',
-      maxWidth: 1,
-      minWidth: 1,
+      maxWidth: 50,
+      minWidth: 50,
       isResizable: false,
       isCollapsable: false,
       data: 'string',
@@ -302,7 +330,14 @@ const ProductMeasurementChartGrid: React.FC = () => {
         index?: number,
         column?: IColumn
       ) => {
-        return null;
+        return (
+          <Stack horizontal>
+            <Text block styles={{ root: { color: '#ffffff00' } }}>
+              .
+            </Text>
+            {(item as any)?.content}
+          </Stack>
+        );
       },
       isPadded: false,
     };
@@ -420,14 +455,6 @@ const ProductMeasurementChartGrid: React.FC = () => {
         columns={columns}
       />
 
-      {/* root: {
-            position: 'absolute',
-            top: '16px',
-            zIndex: 0,
-            left: '0',
-            overflowX: 'auto',
-            width: '171px',
-          }, */}
       {/* Grid for "frozen size name" column */}
       <DetailsList
         onRenderRow={onRenderRow}
@@ -435,11 +462,13 @@ const ProductMeasurementChartGrid: React.FC = () => {
         styles={{
           root: {
             position: 'absolute',
-            top: '260px',
+            top: '16px',
             zIndex: 0,
             left: '0',
             overflowX: 'auto',
-            width: '171px',
+            width: '71px',
+            borderRight:
+              items && items.length < 1 ? '' : '1px solid rgb(223, 223, 223)',
           },
         }}
         selection={selection}
@@ -449,7 +478,7 @@ const ProductMeasurementChartGrid: React.FC = () => {
         items={items}
         selectionMode={SelectionMode.single}
         checkboxVisibility={CheckboxVisibility.hidden}
-        columns={[onRenderPaddingStubColumn(), sizeNameColumn]}
+        columns={[onRenderPaddingStubColumn()]}
       />
 
       {items && items.length < 1 ? (
