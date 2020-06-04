@@ -173,7 +173,10 @@ export const apiGetAllOptionGroupsByProductIdListEpic = (
             successResponse,
             [
               controlActions.disabledStatusBar(),
-              productSettingsActions.updateIsStylesWasRequested(true),
+              // productSettingsActions.updateIsStylesWasRequested(true),
+              productSettingsActions.updateShowHint(
+                successResponse.length === 0
+              ),
             ],
             action
           );
@@ -184,7 +187,8 @@ export const apiGetAllOptionGroupsByProductIdListEpic = (
               errorResponse,
               [
                 controlActions.disabledStatusBar(),
-                productSettingsActions.updateIsStylesWasRequested(true),
+                // productSettingsActions.updateIsStylesWasRequested(true),
+                productSettingsActions.updateShowHint(false),
                 controlActions.showInfoMessage(
                   `Error occurred while getting option groups list. ${errorResponse}`
                 ),

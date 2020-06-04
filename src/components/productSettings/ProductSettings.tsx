@@ -37,6 +37,10 @@ export const ProductSettings: React.FC = (props: any) => {
     (state) => state.productSettings.isStylesWasRequested
   );
 
+  const showHint: boolean = useSelector<IApplicationState, boolean>(
+    (state) => state.productSettings.showHint
+  );
+
   const isAnyStyles: boolean = useSelector<IApplicationState, boolean>(
     (state) => state.productSettings.optionGroupsList.length > 0
   );
@@ -60,10 +64,14 @@ export const ProductSettings: React.FC = (props: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchWord, dispatch]);
 
-  const hintContentHideableStyle =
-    isStylesWasRequested && !isAnyStyles
-      ? { height: '100%' }
-      : { display: 'none' };
+  // const hintContentHideableStyle =
+  //   isStylesWasRequested && !isAnyStyles
+  //     ? { height: '100%' }
+  //     : { display: 'none' };
+
+  const hintContentHideableStyle = showHint
+    ? { height: '100%' }
+    : { display: 'none' };
 
   const imageProps: Partial<IImageProps> = {
     styles: {
@@ -73,8 +81,9 @@ export const ProductSettings: React.FC = (props: any) => {
     },
   };
 
-  const mainContentHideableStyle =
-    isStylesWasRequested && isAnyStyles ? {} : { display: 'none' };
+  // const mainContentHideableStyle =
+  //   isStylesWasRequested && isAnyStyles ? {} : { display: 'none' };
+  const mainContentHideableStyle = !showHint ? {} : { display: 'none' };
 
   const addNewStyle = () => {
     if (targetProduct) {

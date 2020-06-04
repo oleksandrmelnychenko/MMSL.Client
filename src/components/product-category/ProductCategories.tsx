@@ -140,7 +140,13 @@ const ProductCategories: React.FC = () => {
                                 dispatch(
                                   controlActions.openInfoPanelWithComponent({
                                     component: ProductManagementPanel,
-                                    onDismisPendingAction: () => {},
+                                    onDismisPendingAction: () => {
+                                      dispatch(
+                                        productActions.chooseProductCategory(
+                                          null
+                                        )
+                                      );
+                                    },
                                   })
                                 );
                               }

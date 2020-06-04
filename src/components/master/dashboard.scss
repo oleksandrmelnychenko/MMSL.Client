@@ -1,241 +1,247 @@
 .content {
-    position: relative;
-    max-width: calc(100% - 234px);
-    width: 100%;
-    margin-top: 0px;
-    background-color: #ffffff;
-    box-shadow: 0px 0 11px 1px rgba(0, 0, 0, 0.09);
-    border-radius: 6px;
-    margin: 12px;
-    transition: all 0.3s linear;
-    height: calc(100vh - 100px);
+  position: relative;
+  max-width: calc(100% - 234px);
+  width: 100%;
+  margin-top: 0px;
+  background-color: #ffffff;
+  box-shadow: 0px 0 11px 1px rgba(0, 0, 0, 0.09);
+  border-radius: 6px;
+  margin: 12px;
+  transition: all 0.3s linear;
+  height: calc(100vh - 100px);
 
-    &__header {
+  &__header {
+    padding: 12px;
 
-        padding: 12px;
+    &__top {
+      position: relative;
 
-        &__top {
-            position: relative;
+      &__title {
+        color: #484848;
+        font-size: 22px;
+        font-weight: 600;
+      }
 
-            &__title {
-                color: #484848;
-                font-size: 22px;
-                font-weight: 600;
-
-            }
-
-            &__controls {
-
-                .dealersDate {
-                    margin-right: 12px;
-                }
-
-                .dealerSearch {
-                    margin-right: 12px;
-                }
-
-                .dealerAdd {
-                    margin-top: -3px;
-                }
-            }
+      &__controls {
+        .dealersDate {
+          margin-right: 12px;
         }
 
-        input {
-            height: 30px;
+        .dealerSearch {
+          margin-right: 12px;
         }
+
+        .dealerAdd {
+          margin-top: -3px;
+        }
+      }
     }
 
+    input {
+      height: 30px;
+    }
+  }
 }
 
 main.collapse {
-    .menu {
-        width: 46px;
-    }
+  .menu {
+    width: 46px;
+  }
 
-    .content {
-        max-width: calc(100% - 210px);
-    }
+  .content {
+    max-width: calc(100% - 210px);
+  }
 }
 
 .management {
-    padding-top: 40px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+  padding-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 
-    & .selected {
-        position: relative;
-        border: 1px solid #358bd5;
-        border-radius: 3px;
-        background-color: rgba(53, 139, 213, 0.1);
+  & .selected {
+    position: relative;
+    border: 1px solid #358bd5;
+    border-radius: 3px;
+    background-color: rgba(53, 139, 213, 0.1);
 
-        &:before {
-            content: '';
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            top: 10px;
-            right: 10px;
-            background-image: url('../../assets/images/ok_icon.svg');
-            background-repeat: no-repeat;
-            background-size: contain;
-        }
+    &:before {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 10px;
+      right: 10px;
+      background-image: url('../../assets/images/ok_icon.svg');
+      background-repeat: no-repeat;
+      background-size: contain;
     }
+  }
 
-    button {
-        transition: all 0.3s ease;
-        background-size: cover;
+  button {
+    transition: all 0.3s ease;
+    background-size: cover;
 
-        &:hover {
-            border: none;
-        }
+    &:hover {
+      border: none;
     }
+  }
 
-    &__btn-add {
-        background: url('../../assets/images/dealers/Stores.svg') no-repeat;
+  &__btn-add {
+    background: url('../../assets/images/dealers/Stores.svg') no-repeat;
 
-        &:hover {
-            background: url('../../assets/images/dealers/Stores.svg') no-repeat;
-        }
+    &:hover {
+      background: url('../../assets/images/dealers/Stores.svg') no-repeat;
     }
+  }
 
-    &__btn-detail {
-        background: url('../../assets/images/dealers/Details.svg') no-repeat;
+  &__btn-detail {
+    background: url('../../assets/images/dealers/Details.svg') no-repeat;
 
-        &:hover {
-            background: url('../../assets/images/dealers/Details.svg') no-repeat;
-        }
+    &:hover {
+      background: url('../../assets/images/dealers/Details.svg') no-repeat;
     }
+  }
 
-    &__btn-address {
-        background: url('../../assets/images/dealers/Address.svg') no-repeat;
+  &__btn-address {
+    background: url('../../assets/images/dealers/Address.svg') no-repeat;
 
-        &:hover {
-            background: url('../../assets/images/dealers/Address.svg') no-repeat;
-        }
+    &:hover {
+      background: url('../../assets/images/dealers/Address.svg') no-repeat;
     }
+  }
 
-    &__btn-customer {
-        background: url('../../assets/images/dealers/Customer.svg') no-repeat;
+  &__btn-customer {
+    background: url('../../assets/images/dealers/Customer.svg') no-repeat;
 
-        &:hover {
-            background: url('../../assets/images/dealers/Customer.svg') no-repeat;
-        }
+    &:hover {
+      background: url('../../assets/images/dealers/Customer.svg') no-repeat;
     }
+  }
 
-    &__btn-measurements {
-        background: url('../../assets/images/menu-icons/ruler.svg') no-repeat;
+  &__btn-measurements {
+    background: url('../../assets/images/menu-icons/ruler.svg') no-repeat;
 
-        &:hover {
-            background: url('../../assets/images/menu-icons/ruler_hover.svg') no-repeat;
-        }
+    &:hover {
+      background: url('../../assets/images/menu-icons/ruler_hover.svg')
+        no-repeat;
     }
+  }
 
-    &__btn-timeline {
-        background: url('../../assets/images/dealers/stopwatch.svg') no-repeat;
+  &__btn-timeline {
+    background: url('../../assets/images/dealers/stopwatch.svg') no-repeat;
 
-        &:hover {
-            background: url('../../assets/images/dealers/stopwatch_hover.svg') no-repeat;
-        }
+    &:hover {
+      background: url('../../assets/images/dealers/stopwatch_hover.svg')
+        no-repeat;
     }
+  }
 
-    &__btn-new_measurement {
-        background: url('../../assets/images/measurements/new_measurement.svg') no-repeat;
+  &__btn-new_measurement {
+    background: url('../../assets/images/measurements/new_measurement.svg')
+      no-repeat;
 
-        &:hover {
-            background: url('../../assets/images/measurements/new_measurement_hover.svg') no-repeat;
-        }
+    &:hover {
+      background: url('../../assets/images/measurements/new_measurement_hover.svg')
+        no-repeat;
     }
+  }
 
-    &__btn-edit_measurement {
-        background: url('../../assets/images/measurements/edit.svg') no-repeat;
+  &__btn-edit_measurement {
+    background: url('../../assets/images/measurements/edit.svg') no-repeat;
 
-        &:hover {
-            background: url('../../assets/images/measurements/edit_hover.svg') no-repeat;
-        }
+    &:hover {
+      background: url('../../assets/images/measurements/edit_hover.svg')
+        no-repeat;
     }
+  }
 
-    &__btn-new_size_measurement {
-        background: url('../../assets/images/measurements/new_size.svg') no-repeat;
+  &__btn-new_size_measurement {
+    background: url('../../assets/images/measurements/new_size.svg') no-repeat;
 
-        &:hover {
-            background: url('../../assets/images/measurements/new_size_hover.svg') no-repeat;
-        }
+    &:hover {
+      background: url('../../assets/images/measurements/new_size_hover.svg')
+        no-repeat;
     }
+  }
 
-    &__btn-delete_measurement {
-        background: url('../../assets/images/measurements/delete.svg') no-repeat;
+  &__btn-delete_measurement {
+    background: url('../../assets/images/measurements/delete.svg') no-repeat;
 
-        &:hover {
-            background: url('../../assets/images/measurements/delete_hover.svg') no-repeat;
-        }
+    &:hover {
+      background: url('../../assets/images/measurements/delete_hover.svg')
+        no-repeat;
     }
+  }
 
-    &__btn-back_measurement {
-        background: url('../../assets/images/measurements/back_in_circle.svg') no-repeat;
+  &__btn-back_measurement {
+    background: url('../../assets/images/measurements/back_in_circle.svg')
+      no-repeat;
 
-        &:hover {
-            background: url('../../assets/images/measurements/back_in_circle_hover.svg') no-repeat;
-        }
+    &:hover {
+      background: url('../../assets/images/measurements/back_in_circle_hover.svg')
+        no-repeat;
     }
+  }
 
-    &__btn-new_style {
-        background: url('../../assets/images/styles/gear_plus.svg') no-repeat;
+  &__btn-new_style {
+    background: url('../../assets/images/styles/gear_plus.svg') no-repeat;
 
-        &:hover {
-            background: url('../../assets/images/styles/gear_plus_hover.svg') no-repeat;
-        }
+    &:hover {
+      background: url('../../assets/images/styles/gear_plus_hover.svg')
+        no-repeat;
     }
+  }
 
-    &__btn-styles {
-        background: url('../../assets/images/styles/gear.svg') no-repeat;
+  &__btn-styles {
+    background: url('../../assets/images/styles/gear.svg') no-repeat;
 
-        &:hover {
-            background: url('../../assets/images/styles/gear_hover.svg') no-repeat;
-        }
+    &:hover {
+      background: url('../../assets/images/styles/gear_hover.svg') no-repeat;
     }
+  }
 
-    &__btn-disabled {
-        opacity: 0.4;
-    }
+  &__btn-disabled {
+    opacity: 0.4;
+  }
 }
 
 .list__header {
-    span>span {
-        font-weight: 400;
-        color: #323130;
-        font-size: 14px;
-    }
+  span > span {
+    font-weight: 400;
+    color: #323130;
+    font-size: 14px;
+  }
 }
 
 .card {
-    &:hover {
-        .card_actions {
-            display: flex;
-            opacity: 1;
-        }
-    }
-
+  &:hover {
     .card_actions {
-        position: absolute;
-        top: 0;
-        left: 0;
-        margin: 0;
-        display: none;
-        justify-content: flex-end;
-        align-items: flex-end;
-        padding-bottom: 15px;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(18, 95, 160, 0.4);
-        border-radius: 6px;
-        z-index: 1;
-        opacity: 0;
-        transition: opacity ease 0.3s;
+      display: flex;
+      opacity: 1;
     }
+  }
+
+  .card_actions {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    display: none;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding-bottom: 15px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(18, 95, 160, 0.4);
+    border-radius: 6px;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity ease 0.3s;
+  }
 }
 
 .wrapper-list {
-    padding: 15px;
-    overflow: hidden;
+  padding: 15px;
+  overflow: hidden;
 }

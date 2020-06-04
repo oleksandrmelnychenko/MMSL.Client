@@ -50,7 +50,9 @@ const ProductCategoryView: React.FC = () => {
         dispatch(
           controlActions.openInfoPanelWithComponent({
             component: ProductManagementPanel,
-            onDismisPendingAction: () => {},
+            onDismisPendingAction: () => {
+              dispatch(productActions.chooseProductCategory(null));
+            },
           })
         );
       } else {

@@ -8,6 +8,7 @@ export class ProductSettingsState {
     this.managingPanelContent = null;
     this.optionGroupsList = [];
     this.isStylesWasRequested = false;
+    this.showHint = false;
     this.searchWordOptionGroup = '';
     this.managingOptionUnitsState = new ManagingOptionUnitsState();
     this.manageSingleOptionUnitState = new ManageSingleOptionUnitState();
@@ -18,6 +19,7 @@ export class ProductSettingsState {
   managingPanelContent: ManagingPanelComponent | null;
   optionGroupsList: OptionGroup[];
   isStylesWasRequested: boolean;
+  showHint: boolean;
   searchWordOptionGroup: string;
   managingOptionUnitsState: ManagingOptionUnitsState;
   manageSingleOptionUnitState: ManageSingleOptionUnitState;
@@ -97,6 +99,9 @@ const productSettings = createSlice({
   name: 'productSettings',
   initialState: new ProductSettingsState(),
   reducers: {
+    updateShowHint(state, action: { type: string; payload: boolean }) {
+      state.showHint = action.payload;
+    },
     updateIsStylesWasRequested(
       state,
       action: { type: string; payload: boolean }
