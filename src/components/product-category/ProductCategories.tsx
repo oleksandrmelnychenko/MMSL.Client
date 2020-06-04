@@ -26,10 +26,6 @@ export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 const ProductCategories: React.FC = () => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(productActions.apiGetAllProductCategory());
-  }, [dispatch]);
-
   const categories = useSelector<IApplicationState, ProductCategory[]>(
     (state) => state.product.productCategory
   );
@@ -37,6 +33,10 @@ const ProductCategories: React.FC = () => {
   const chooseCategory = useSelector<IApplicationState, ProductCategory | null>(
     (state) => state.product.choose.category
   );
+
+  useEffect(() => {
+    dispatch(productActions.apiGetAllProductCategory());
+  }, [dispatch]);
 
   const deleteProductCategory = (
     event: SyntheticEvent,
@@ -125,26 +125,28 @@ const ProductCategories: React.FC = () => {
                       const className: any = args?.target?.className;
 
                       if (!className.includes(DATA_SELECTION_DISABLED_CLASS)) {
-                        dispatch(
-                          assignPendingActions(
-                            productActions.apiGetProductCategoryById(
-                              category.id
-                            ),
-                            [],
-                            [],
-                            (args: any) => {
-                              dispatch(
-                                productActions.chooseProductCategory(args)
-                              );
-                              dispatch(
-                                controlActions.openInfoPanelWithComponent({
-                                  component: ProductManagementPanel,
-                                  onDismisPendingAction: () => {},
-                                })
-                              );
-                            }
-                          )
-                        );
+                        if (category.id !== chooseCategory?.id) {
+                          dispatch(
+                            assignPendingActions(
+                              productActions.apiGetProductCategoryById(
+                                category.id
+                              ),
+                              [],
+                              [],
+                              (args: any) => {
+                                dispatch(
+                                  productActions.chooseProductCategory(args)
+                                );
+                                dispatch(
+                                  controlActions.openInfoPanelWithComponent({
+                                    component: ProductManagementPanel,
+                                    onDismisPendingAction: () => {},
+                                  })
+                                );
+                              }
+                            )
+                          );
+                        }
                       }
                     }}
                     tokens={fabricStyles.cardTokens}

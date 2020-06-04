@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
+import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 import Measurements from './measurements/Measurements';
 import ProductCategories from './ProductCategories';
 import ProductDeliverTimeline from './delivery-timeline/ProductDeliverTimeline';
@@ -13,7 +13,7 @@ import { controlActions } from '../../redux/slices/control.slice';
 import ProductMeasurementPanel from './options/ProductMeasurementPanel';
 import ProductTimelinesPanel from './options/ProductTimelinesPanel';
 import ProductSettings from '../productSettings/ProductSettings';
-import {
+import ProductManagementPanel, {
   PRODUCT_MEASUREMENTS_PATH,
   PRODUCT_CATEGORIES_DASHBOARD_PATH,
   PRODUCT_TIMELINES_PATH,
@@ -32,6 +32,7 @@ const _extractCategoryIdFromPath = (history: any) => {
 const ProductCategoryView: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation();
 
   const targetCategory = useSelector<IApplicationState, ProductCategory | null>(
     (state) => state.product.choose.category
@@ -44,9 +45,20 @@ const ProductCategoryView: React.FC = () => {
       resolveTargetProductFlow(ProductTimelinesPanel);
     } else if (history?.location?.pathname?.includes(PRODUCT_STYLES_PATH)) {
       resolveTargetProductFlow(ProductStylesPanel);
+    } else {
+      if (targetCategory) {
+        dispatch(
+          controlActions.openInfoPanelWithComponent({
+            component: ProductManagementPanel,
+            onDismisPendingAction: () => {},
+          })
+        );
+      } else {
+        dispatch(controlActions.closeInfoPanelWithComponent());
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [location]);
 
   const resolveTargetProductFlow = (optionsLeftPanelComponent: any) => {
     if (!targetCategory) {
@@ -72,6 +84,15 @@ const ProductCategoryView: React.FC = () => {
           )
         );
       }
+    } else {
+      dispatch(
+        controlActions.openInfoPanelWithComponent({
+          component: optionsLeftPanelComponent,
+          onDismisPendingAction: () => {
+            history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+          },
+        })
+      );
     }
   };
 

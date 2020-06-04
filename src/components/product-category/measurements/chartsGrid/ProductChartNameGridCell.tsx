@@ -11,7 +11,7 @@ import {
 } from '../../../../interfaces';
 import { measurementActions } from '../../../../redux/slices/measurement.slice';
 import { assignPendingActions } from '../../../../helpers/action.helper';
-import './productChartGridCell.scss';
+import './chartGridCell.scss';
 
 export interface IProductChartNameGridCellProps {
   mapSize: MeasurementMapSize | null | undefined;

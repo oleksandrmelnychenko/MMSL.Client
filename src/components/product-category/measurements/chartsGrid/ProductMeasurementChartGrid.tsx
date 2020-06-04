@@ -35,7 +35,6 @@ import {
   CommonDialogType,
 } from '../../../../redux/slices/control.slice';
 import { productActions } from '../../../../redux/slices/product.slice';
-import { defaultCellStyle } from '../../../../common/fabric-styles/styles';
 import ProductChartGridCell from './ProductChartGridCell';
 import ProductChartNameGridCell from './ProductChartNameGridCell';
 import SizesForm from '../management/SizesForm';
