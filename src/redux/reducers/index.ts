@@ -1,8 +1,11 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import { localizeReducer, LocalizeState } from 'react-localize-redux';
 import { routerReducer, RouterState } from 'react-router-redux';
-import { IAuthState, IControlState } from '../../interfaces';
-import { default as controlReducer } from '../slices/control.slice';
+import { IAuthState } from '../../interfaces';
+import {
+  default as controlReducer,
+  IControlState,
+} from '../slices/control.slice';
 import {
   default as productSettingsReducer,
   ProductSettingsState,

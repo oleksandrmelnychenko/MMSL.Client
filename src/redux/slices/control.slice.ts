@@ -1,7 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ICommandBarItemProps } from 'office-ui-fabric-react';
-import { IControlState, IPanelInfo } from '../../interfaces';
-import { RightPanel } from '../../components/master/panel/RightPanel';
+import { IPanelInfo } from '../../interfaces';
+
+export interface IControlState {
+  isGlobalShimmerActive: boolean;
+  isCollapseMenu: boolean;
+  panelInfo: IPanelInfo;
+  rightPanel: RightPanelProps;
+  commonDialog: CommonDialogState;
+  infoMessage: string;
+  isActivateStatusBar: boolean;
+  isMasterBusy: boolean;
+  dashboardHintStub: DashboardHintStubProps;
+}
 
 export class CommonDialogState {
   constructor() {
@@ -53,14 +63,18 @@ export class RightPanelProps {
   component: any;
 }
 
-// export class PanelInfo {
-//   constructor() {
-//     this.isOpenPanelInfo = false;
-//     this.componentInPanelInfo = null;
-//   }
-//   isOpenPanelInfo: boolean;
-//   componentInPanelInfo: React.FC | null;
-// }
+export class DashboardHintStubProps {
+  constructor() {
+    this.isVisible = false;
+    this.title = '';
+    this.buttonLabel = '';
+    this.buttonAction = () => {};
+  }
+  isVisible: boolean;
+  title: string;
+  buttonLabel: string;
+  buttonAction: () => void;
+}
 
 export const defaultControlState = {
   isGlobalShimmerActive: false,
@@ -71,6 +85,7 @@ export const defaultControlState = {
   infoMessage: '',
   isActivateStatusBar: false,
   isMasterBusy: false,
+  dashboardHintStub: new DashboardHintStubProps(),
 };
 
 const controls = createSlice({
@@ -155,6 +170,27 @@ const controls = createSlice({
     },
     closeRightPanel(state) {
       state.rightPanel = new RightPanelProps();
+      return state;
+    },
+    showDashboardHintStub(
+      state,
+      action: {
+        type: string;
+        payload: DashboardHintStubProps;
+      }
+    ) {
+      state.dashboardHintStub = {
+        ...state.dashboardHintStub,
+        isVisible: action.payload.isVisible,
+        title: action.payload.title,
+        buttonLabel: action.payload.buttonLabel,
+        buttonAction: action.payload.buttonAction,
+      };
+      return state;
+    },
+    closeDashboardHintStub(state) {
+      state.dashboardHintStub = new DashboardHintStubProps();
+
       return state;
     },
   },

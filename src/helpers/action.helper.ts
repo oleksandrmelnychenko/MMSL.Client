@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux';
 import { from, of } from 'rxjs';
+import { List } from 'linq-typescript';
 
 /// Puts success/error pending actions in to the action
 export const assignPendingActions = (
@@ -74,6 +75,9 @@ export const successCommonEpicFlow = (
     ...flowActions,
     ...extractSuccessPendingActions(rootAction),
   ];
+  actionsStack = new List(actionsStack)
+    .where((item) => item !== null && item !== undefined)
+    .toArray();
 
   let pendingDelegate = extractSuccessPendingDelegate(rootAction);
   if (pendingDelegate) pendingDelegate(successResponseArgs);
@@ -101,6 +105,9 @@ export const errorCommonEpicFlow = (
     ...flowActions,
     ...extractErrorPendingActions(rootAction),
   ];
+  actionsStack = new List(actionsStack)
+    .where((item) => item !== null && item !== undefined)
+    .toArray();
 
   let pendingDelegate = extractErrorPendingDelegate(rootAction);
   if (pendingDelegate) pendingDelegate(errorResponseArgs);

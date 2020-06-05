@@ -63,14 +63,12 @@ export class ProductCategoryDetailsManagingState {
 
 export class ProductMeasurementsState {
   constructor() {
-    this.isMeasurementsWasRequested = false;
     this.measurementList = [];
     this.targetMeasurement = null;
     this.measurementForEdit = null;
     this.sizeForEdit = null;
   }
 
-  isMeasurementsWasRequested: boolean;
   measurementList: Measurement[];
   targetMeasurement: Measurement | null | undefined;
   measurementForEdit: Measurement | null | undefined;
@@ -93,13 +91,6 @@ const product = createSlice({
       state,
       action: { type: string; payload: number }
     ) {},
-    updateIsProductMeasurementsWasRequested(
-      state,
-      action: { type: string; payload: boolean }
-    ) {
-      state.productMeasurementsState.isMeasurementsWasRequested =
-        action.payload;
-    },
     updateProductMeasurementsList(
       state,
       action: { type: string; payload: Measurement[] }

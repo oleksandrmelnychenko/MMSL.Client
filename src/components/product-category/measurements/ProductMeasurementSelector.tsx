@@ -2,12 +2,40 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ComboBox, IComboBox, IComboBoxOption } from 'office-ui-fabric-react';
 import { productActions } from '../../../redux/slices/product.slice';
+import { controlActions } from '../../../redux/slices/control.slice';
 import { measurementActions } from '../../../redux/slices/measurement.slice';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { IApplicationState } from '../../../redux/reducers';
 import { Measurement, ProductCategory } from '../../../interfaces';
 import { List } from 'linq-typescript';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
+import {
+  CREATE_YOUR_FIRST_MEASUREMENT,
+  CREATE_MEASUREMENT,
+} from './Measurements';
+import MeasurementForm from './management/MeasurementForm';
+
+// if (args.length === 0) {
+//   dispatch(
+//     controlActions.showDashboardHintStub({
+//       isVisible: true,
+//       title: CREATE_YOUR_FIRST_MEASUREMENT,
+//       buttonLabel: CREATE_MEASUREMENT,
+//       buttonAction: () => {
+//         dispatch(
+//           controlActions.openRightPanel({
+//             title: 'New Measurement',
+//             width: '400px',
+//             closeFunctions: () => {
+//               dispatch(controlActions.closeRightPanel());
+//             },
+//             component: MeasurementForm,
+//           })
+//         );
+//       },
+//     })
+//   );
+// }
 
 const ProductMeasurementSelector: React.FC = () => {
   const dispatch = useDispatch();
@@ -21,51 +49,51 @@ const ProductMeasurementSelector: React.FC = () => {
     Measurement | null | undefined
   >((state) => state.product.productMeasurementsState.targetMeasurement);
 
-  const targetProductCategory = useSelector<
-    IApplicationState,
-    ProductCategory | null | undefined
-  >((state) => state.product.choose.category);
+  // const targetProductCategory = useSelector<
+  //   IApplicationState,
+  //   ProductCategory | null | undefined
+  // >((state) => state.product.choose.category);
 
-  useEffect(() => {
-    if (targetProductCategory) {
-      dispatch(
-        assignPendingActions(
-          productActions.apiGetAllProductMeasurementsByProductId(
-            targetProductCategory.id
-          ),
-          [],
-          [],
-          (args: any) => {
-            dispatch(productActions.updateProductMeasurementsList(args));
+  // useEffect(() => {
+  //   if (targetProductCategory) {
+  //     dispatch(
+  //       assignPendingActions(
+  //         productActions.apiGetAllProductMeasurementsByProductId(
+  //           targetProductCategory.id
+  //         ),
+  //         [],
+  //         [],
+  //         (args: any) => {
+  //           dispatch(productActions.updateProductMeasurementsList(args));
 
-            const measurementId = new List<Measurement>(args).firstOrDefault()
-              ?.id;
+  //           const measurementId = new List<Measurement>(args).firstOrDefault()
+  //             ?.id;
 
-            if (measurementId) {
-              dispatch(
-                assignPendingActions(
-                  measurementActions.apiGetMeasurementById(measurementId),
-                  [],
-                  [],
-                  (args: any) => {
-                    dispatch(
-                      productActions.changeSelectedProductMeasurement(args)
-                    );
-                  },
-                  (args: any) => {}
-                )
-              );
-            }
-          },
-          (args: any) => {}
-        )
-      );
-    } else {
-      dispatch(productActions.updateProductMeasurementsList([]));
-    }
+  //           if (measurementId) {
+  //             dispatch(
+  //               assignPendingActions(
+  //                 measurementActions.apiGetMeasurementById(measurementId),
+  //                 [],
+  //                 [],
+  //                 (args: any) => {
+  //                   dispatch(
+  //                     productActions.changeSelectedProductMeasurement(args)
+  //                   );
+  //                 },
+  //                 (args: any) => {}
+  //               )
+  //             );
+  //           }
+  //         },
+  //         (args: any) => {}
+  //       )
+  //     );
+  //   } else {
+  //     dispatch(productActions.updateProductMeasurementsList([]));
+  //   }
 
-    return () => {};
-  }, [dispatch, targetProductCategory]);
+  //   return () => {};
+  // }, [dispatch, targetProductCategory]);
 
   const itemOptions = new List(productMeasurements)
     .select((measurementItem) => {

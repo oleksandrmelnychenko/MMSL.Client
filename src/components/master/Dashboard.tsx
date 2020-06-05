@@ -10,13 +10,16 @@ import CommonDialog from './CommonDialog';
 import { useSelector } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers/index';
 import { Panel, PanelType } from 'office-ui-fabric-react';
-import { RightPanelProps } from '../../redux/slices/control.slice';
+import {
+  RightPanelProps,
+  DashboardHintStubProps,
+} from '../../redux/slices/control.slice';
 import { panelStyle } from '../../common/fabric-styles/styles';
 import Reports from '../reports/Reports';
 import ProductCategoryView from '../product-category/ProductCategoryView';
 import { RightPanel } from './panel/RightPanel';
-import ProductSettings from '../productSettings/ProductSettings';
 import DashboardLeftMenuPanel from './DashboardLeftMenuPanel';
+import HintStub from './dashboardHint/HintStub';
 
 const Dashboard: React.FC = () => {
   const location = useLocation();
@@ -29,6 +32,11 @@ const Dashboard: React.FC = () => {
     (state) => state.control.rightPanel
   );
 
+  const dashboardStubHint = useSelector<
+    IApplicationState,
+    DashboardHintStubProps
+  >((state) => state.control.dashboardHintStub);
+
   return (
     <>
       <Header />
@@ -38,16 +46,48 @@ const Dashboard: React.FC = () => {
         <DashboardLeftMenuPanel />
 
         <div className="content">
-          <Switch>
-            <Route path={`/en/app/dealers`} component={Dealers} />
-            <Route path={`/en/app/customer`} component={Customers} />
-            <Route path={`/en/app/product`} component={ProductCategoryView} />
-            {/* Old pages not neccessary now */}
-            {/* <Route path={`/en/app/timeline`} component={Timeline} /> */}
-            {/* Old pages not neccessary now */}
-            {/* <Route path={`/en/app/styles`} component={ProductSettings} /> */}
-            <Route path={`/en/app/reports`} component={Reports} />
-          </Switch>
+          <div
+            style={
+              dashboardStubHint?.isVisible
+                ? {
+                    position: 'absolute',
+                    top: '-1000000000px',
+                    left: '-1000000000px',
+                    zIndex: 0,
+                  }
+                : {}
+            }
+          >
+            <Switch>
+              <Route path={`/en/app/dealers`} component={Dealers} />
+              <Route path={`/en/app/customer`} component={Customers} />
+              <Route path={`/en/app/product`} component={ProductCategoryView} />
+              {/* Old pages not neccessary now */}
+              {/* <Route path={`/en/app/timeline`} component={Timeline} /> */}
+              {/* Old pages not neccessary now */}
+              {/* <Route path={`/en/app/styles`} component={ProductSettings} /> */}
+              <Route path={`/en/app/reports`} component={Reports} />
+            </Switch>
+          </div>
+
+          <div
+            style={
+              dashboardStubHint?.isVisible
+                ? {}
+                : {
+                    position: 'absolute',
+                    top: '-1000000000px',
+                    left: '-1000000000px',
+                    zIndex: 0,
+                  }
+            }
+          >
+            <HintStub />
+          </div>
+          {/* { ? (
+          ) : (
+            
+          )} */}
         </div>
       </main>
 

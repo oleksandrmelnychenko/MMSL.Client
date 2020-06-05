@@ -488,10 +488,7 @@ export const apiGetAllProductMeasurementsByProductIdEpic = (
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
-            [
-              productActions.updateIsProductMeasurementsWasRequested(true),
-              controlActions.disabledStatusBar(),
-            ],
+            [controlActions.disabledStatusBar()],
             action
           );
         }),
@@ -501,7 +498,6 @@ export const apiGetAllProductMeasurementsByProductIdEpic = (
               errorResponse,
               [
                 { type: 'ERROR_GET_MEASUREMENTS_BY_PRODUCT' },
-                productActions.updateIsProductMeasurementsWasRequested(true),
                 controlActions.showInfoMessage(
                   `Error occurred while getting measurements by product. ${errorResponse}`
                 ),

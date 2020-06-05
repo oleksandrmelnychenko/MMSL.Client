@@ -49,17 +49,6 @@ export class IPanelInfo {
   onDismisPendingAction: () => void;
 }
 
-export interface IControlState {
-  isGlobalShimmerActive: boolean;
-  isCollapseMenu: boolean;
-  panelInfo: IPanelInfo;
-  rightPanel: RightPanelProps;
-  commonDialog: CommonDialogState;
-  infoMessage: string;
-  isActivateStatusBar: boolean;
-  isMasterBusy: boolean;
-}
-
 export class EntityBase {
   constructor() {
     this.id = 0;
