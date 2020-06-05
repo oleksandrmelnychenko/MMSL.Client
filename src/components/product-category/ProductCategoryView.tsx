@@ -18,8 +18,10 @@ import ProductManagementPanel, {
   PRODUCT_CATEGORIES_DASHBOARD_PATH,
   PRODUCT_TIMELINES_PATH,
   PRODUCT_STYLES_PATH,
+  PRODUCT_STYLE_PERMISSIONS_PATH,
 } from './options/ProductManagementPanel';
 import ProductStylesPanel from './options/ProductStylesPanel';
+import ProductPermissions from './productPermissions/ProductPermissions';
 
 const _extractCategoryIdFromPath = (history: any) => {
   const lastSegment: any = new List(
@@ -44,6 +46,10 @@ const ProductCategoryView: React.FC = () => {
     } else if (history?.location?.pathname?.includes(PRODUCT_TIMELINES_PATH)) {
       resolveTargetProductFlow(ProductTimelinesPanel);
     } else if (history?.location?.pathname?.includes(PRODUCT_STYLES_PATH)) {
+      resolveTargetProductFlow(ProductStylesPanel);
+    } else if (
+      history?.location?.pathname?.includes(PRODUCT_STYLE_PERMISSIONS_PATH)
+    ) {
       resolveTargetProductFlow(ProductStylesPanel);
     } else {
       if (targetCategory) {
@@ -102,19 +108,23 @@ const ProductCategoryView: React.FC = () => {
     <div>
       <Switch>
         <Route
-          path={`/en/app/product/measurements/:productId`}
+          path={`${PRODUCT_MEASUREMENTS_PATH}:productId`}
           component={Measurements}
         />
         <Route
-          path={`/en/app/product/delivery-timeline/:productId`}
+          path={`${PRODUCT_TIMELINES_PATH}:productId`}
           component={ProductDeliverTimeline}
         />
         <Route
-          path={`/en/app/product/styles/:productId`}
+          path={`${PRODUCT_STYLES_PATH}:productId`}
           component={ProductSettings}
         />
         <Route
-          path={`/en/app/product/product-categories`}
+          path={`${PRODUCT_STYLE_PERMISSIONS_PATH}:productId`}
+          component={ProductPermissions}
+        />
+        <Route
+          path={PRODUCT_CATEGORIES_DASHBOARD_PATH}
           component={ProductCategories}
         />
       </Switch>

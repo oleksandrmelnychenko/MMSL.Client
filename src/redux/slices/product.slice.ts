@@ -33,6 +33,7 @@ export enum ProductManagingPanelComponent {
   ProductTimeLine,
   EditSingleProduct,
   MeasurementPanel,
+  StylePermissions,
 }
 
 export class ProductManagementPanelState {

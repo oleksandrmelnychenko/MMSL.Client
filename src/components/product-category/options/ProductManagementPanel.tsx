@@ -14,6 +14,9 @@ import ProductTimelinesPanel from './ProductTimelinesPanel';
 import ProductStylesPanel, {
   stylesPanelDismisActions,
 } from './ProductStylesPanel';
+import ProductPermissionsPanel, {
+  permissionsPanelDismisActions,
+} from './ProductPermissionsPanel';
 
 export const PRODUCT_CATEGORIES_DASHBOARD_PATH: string =
   '/en/app/product/product-categories';
@@ -22,6 +25,8 @@ export const PRODUCT_MEASUREMENTS_PATH: string =
   '/en/app/product/measurements/';
 export const PRODUCT_TIMELINES_PATH: string =
   '/en/app/product/delivery-timeline/';
+export const PRODUCT_STYLE_PERMISSIONS_PATH: string =
+  '/en/app/product/style-permissions/';
 
 export interface IProductMenuItem {
   title: string;
@@ -119,6 +124,35 @@ const ProductManagementPanel: React.FC = () => {
 
         if (choseCategory) {
           history.push(`${PRODUCT_TIMELINES_PATH}${choseCategory.id}`);
+        } else {
+          dispatch(controlActions.closeInfoPanelWithComponent());
+          history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+        }
+      },
+    },
+    {
+      title: 'Style Permissions',
+      className: 'management__btn-styles',
+      componentType: ProductManagingPanelComponent.StylePermissions,
+      isDisabled: choseCategory ? false : true,
+      onClickFunc: () => {
+        debugger;
+        dispatch(controlActions.closeInfoPanelWithComponent());
+        dispatch(
+          controlActions.openInfoPanelWithComponent({
+            component: ProductPermissionsPanel,
+            onDismisPendingAction: () => {
+              history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+
+              permissionsPanelDismisActions().forEach((action) => {
+                dispatch(action);
+              });
+            },
+          })
+        );
+
+        if (choseCategory) {
+          history.push(`${PRODUCT_STYLE_PERMISSIONS_PATH}${choseCategory.id}`);
         } else {
           dispatch(controlActions.closeInfoPanelWithComponent());
           history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
