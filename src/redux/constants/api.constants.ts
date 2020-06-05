@@ -69,3 +69,4 @@ export const GET_ALL_PERMISSION_SETTINGS_BY_PRODUCT_ID =
   '/product/permissions/get/by/product';
 export const CREATE_NEW_PERMISSION = '/product/permissions/add';
 export const UPDATE_PERMISSION = '/product/permissions/update';
+export const DELETE_PERMISSION = '/product/permissions/delete';

@@ -1,4 +1,8 @@
-import { ajaxPostResponse, ajaxPutResponse } from './../../helpers/epic.helper';
+import {
+  ajaxPostResponse,
+  ajaxPutResponse,
+  ajaxDeleteResponse,
+} from './../../helpers/epic.helper';
 import { checkUnauthorized } from './../../helpers/error.helpers';
 import {
   successCommonEpicFlow,
@@ -107,12 +111,50 @@ export const apiUpdatePermissionEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      debugger;
       return ajaxPutResponse(
         api.UPDATE_PERMISSION,
         action.payload,
         state$.value
       ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_EDITING_PRODUCT_STYLE_PERMISSION' },
+                controlActions.showInfoMessage(
+                  `Error occurred while editing product style permission. ${errorResponse}`
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiDeletePermissionEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(productStylePermissionsActions.apiDeletePermission.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+      return ajaxDeleteResponse(api.DELETE_PERMISSION, state$.value, [
+        {
+          key: 'productPermissionSettingId',
+          value: `${action.payload}`,
+        },
+      ]).pipe(
         mergeMap((successResponse: any) => {
           debugger;
           return successCommonEpicFlow(
@@ -122,14 +164,13 @@ export const apiUpdatePermissionEpic = (action$: AnyAction, state$: any) => {
           );
         }),
         catchError((errorResponse: any) => {
-          debugger;
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             return errorCommonEpicFlow(
               errorResponse,
               [
-                { type: 'ERROR_EDITING_PRODUCT_STYLE_PERMISSION' },
+                { type: 'ERROR_DELETEING_PRODUCT_STYLE_PERMISSION' },
                 controlActions.showInfoMessage(
-                  `Error occurred while editing product style permission. ${errorResponse}`
+                  `Error occurred while deleting product style permission. ${errorResponse}`
                 ),
                 controlActions.disabledStatusBar(),
               ],
