@@ -67,3 +67,4 @@ export const DELETE_MEASUREMENT_SIZE = '/measurements/sizes/delete';
 
 export const GET_ALL_PERMISSION_SETTINGS_BY_PRODUCT_ID =
   '/product/permissions/get/by/product';
+export const CREATE_NEW_PERMISSION = '/product/permissions/add';

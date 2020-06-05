@@ -6,6 +6,7 @@ import { controlActions } from '../../../redux/slices/control.slice';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { productStylePermissionsActions } from '../../../redux/slices/productStylePermissions.slice';
 import ProductPermissionForm from './managing/ProductPermissionForm';
+import PermissionsList from './PermissionsList';
 
 export const CREATE_YOUR_FIRST_STYLE_SETTINGS_PERMISSION: string =
   'Create your first style permission';
@@ -99,7 +100,11 @@ const ProductPermissions: React.FC = () => {
     }
   }, [isWasInited, isAnyPermissions]);
 
-  return <div className="productPermissions">Product permissions</div>;
+  return (
+    <div className="productPermissions">
+      <PermissionsList />
+    </div>
+  );
 };
 
 export default ProductPermissions;

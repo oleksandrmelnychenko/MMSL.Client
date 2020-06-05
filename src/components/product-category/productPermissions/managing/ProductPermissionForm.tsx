@@ -17,6 +17,8 @@ import {
   ChangeItemsDisabledState,
 } from '../../../../helpers/commandBar.helper';
 import { IApplicationState } from '../../../../redux/reducers';
+import { assignPendingActions } from '../../../../helpers/action.helper';
+import { productStylePermissionsActions } from '../../../../redux/slices/productStylePermissions.slice';
 
 class InitValues {
   constructor() {
@@ -32,7 +34,13 @@ const _buildNewPayload = (
   values: InitValues,
   productCategory: ProductCategory
 ) => {
-  let payload: any = {};
+  let payload: any = {
+    name: values.name,
+    description: values.description,
+    productCategoryId: productCategory.id,
+    permissionSettings: [],
+    id: 0,
+  };
 
   return payload;
 };
@@ -83,6 +91,11 @@ export const ProductPermissionForm: React.FC = () => {
     ProductPermissionSettings | null | undefined
   >((state) => state.productStylePermissions.editingPermissionSetting);
 
+  const permissionSettings: ProductPermissionSettings[] = useSelector<
+    IApplicationState,
+    ProductPermissionSettings[]
+  >((state) => state.productStylePermissions.permissionSettings);
+
   useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -120,7 +133,6 @@ export const ProductPermissionForm: React.FC = () => {
   const editSetting = (values: InitValues) => {
     if (productCategory && editingSetting) {
       const payload = _buildEditedPayload(values, editingSetting);
-      debugger;
       /// TODO: use appropriate api and build flow
     }
   };
@@ -128,8 +140,27 @@ export const ProductPermissionForm: React.FC = () => {
   const createNewSetting = (values: InitValues) => {
     if (productCategory) {
       const payload = _buildNewPayload(values, productCategory);
-      debugger;
-      /// TODO: use appropriate api and build flow
+      dispatch(
+        assignPendingActions(
+          productStylePermissionsActions.apiCreateNewPermission(payload),
+          [],
+          [],
+          (args: any) => {
+            dispatch(
+              productStylePermissionsActions.updatePermissionSettingsList(
+                new List(permissionSettings).concat([args.body]).toArray()
+              )
+            );
+            dispatch(controlActions.closeRightPanel());
+            dispatch(
+              productStylePermissionsActions.changeEditingPermissionSetting(
+                null
+              )
+            );
+          },
+          (args: any) => {}
+        )
+      );
     }
   };
 

@@ -20,6 +20,7 @@ const productStylePermissions = createSlice({
       state,
       action: { type: string; payload: number }
     ) {},
+    apiCreateNewPermission(state, action: any) {},
     updatePermissionSettingsList(
       state,
       action: { type: string; payload: ProductPermissionSettings[] }
@@ -28,7 +29,7 @@ const productStylePermissions = createSlice({
 
       return state;
     },
-    updateEditingPermissionSetting(
+    changeEditingPermissionSetting(
       state,
       action: {
         type: string;

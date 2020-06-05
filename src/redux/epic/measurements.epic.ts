@@ -161,7 +161,7 @@ export const apiDeleteMeasurementByIdEpic = (
             successResponse,
             [
               controlActions.showInfoMessage(
-                `New measurement successfully deleted.`
+                `Measurement successfully deleted.`
               ),
               controlActions.disabledStatusBar(),
             ],
