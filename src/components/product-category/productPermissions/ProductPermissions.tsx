@@ -5,6 +5,7 @@ import { IApplicationState } from '../../../redux/reducers';
 import { controlActions } from '../../../redux/slices/control.slice';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { productStylePermissionsActions } from '../../../redux/slices/productStylePermissions.slice';
+import ProductPermissionForm from './managing/ProductPermissionForm';
 
 export const CREATE_YOUR_FIRST_STYLE_SETTINGS_PERMISSION: string =
   'Create your first style permission';
@@ -79,16 +80,18 @@ const ProductPermissions: React.FC = () => {
             title: CREATE_YOUR_FIRST_STYLE_SETTINGS_PERMISSION,
             buttonLabel: CREATE_STYLE_PERMISSION,
             buttonAction: () => {
-              //   dispatch(
-              //     controlActions.openRightPanel({
-              //       title: 'New style permission',
-              //       width: '400px',
-              //       closeFunctions: () => {
-              //         dispatch(controlActions.closeRightPanel());
-              //       },
-              //       component: MeasurementForm,
-              //     })
-              //   );
+              if (localProduct) {
+                dispatch(
+                  controlActions.openRightPanel({
+                    title: 'New style permission',
+                    width: '400px',
+                    closeFunctions: () => {
+                      dispatch(controlActions.closeRightPanel());
+                    },
+                    component: ProductPermissionForm,
+                  })
+                );
+              }
             },
           })
         );

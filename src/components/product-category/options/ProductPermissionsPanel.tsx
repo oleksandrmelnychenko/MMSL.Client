@@ -17,6 +17,7 @@ import ProductManagementPanel, {
   IProductMenuItem,
   PRODUCT_CATEGORIES_DASHBOARD_PATH,
 } from './ProductManagementPanel';
+import ProductPermissionForm from '../productPermissions/managing/ProductPermissionForm';
 
 export const permissionsPanelDismisActions = () => {
   return [];
@@ -67,7 +68,16 @@ const ProductPermissionsPanel: React.FC = () => {
       tooltip: 'Create new product style permission',
       onClickFunc: () => {
         if (choseCategory) {
-          /// TODO: open panel where you will create new `Style permission`
+          dispatch(
+            controlActions.openRightPanel({
+              title: 'New style permission',
+              width: '400px',
+              closeFunctions: () => {
+                dispatch(controlActions.closeRightPanel());
+              },
+              component: ProductPermissionForm,
+            })
+          );
         }
       },
     } as IProductMenuItem,
