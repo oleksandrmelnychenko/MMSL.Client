@@ -43,6 +43,7 @@ const Measurements: React.FC = () => {
     return () => {
       setLocalProduct(null);
       setIsWasInited(false);
+      dispatch(controlActions.closeDashboardHintStub());
     };
   }, []);
 
