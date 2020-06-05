@@ -1,3 +1,7 @@
+import {
+  default as productStylePermissionsReducer,
+  ProductStylePermissionsState,
+} from './../slices/productStylePermissions.slice';
 import { combineReducers } from '@reduxjs/toolkit';
 import { localizeReducer, LocalizeState } from 'react-localize-redux';
 import { routerReducer, RouterState } from 'react-router-redux';
@@ -37,6 +41,7 @@ export interface IApplicationState {
   product: ProductState;
   productSettings: ProductSettingsState;
   measurements: MeasurementsState;
+  productStylePermissions: ProductStylePermissionsState;
 }
 
 export const reducer = combineReducers({
@@ -50,4 +55,5 @@ export const reducer = combineReducers({
   product: productReducer,
   productSettings: productSettingsReducer,
   measurements: measurementsStateReducer,
+  productStylePermissions: productStylePermissionsReducer,
 });
