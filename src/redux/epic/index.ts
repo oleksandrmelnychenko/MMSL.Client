@@ -7,6 +7,7 @@ import * as customerEpic from './customer.epic';
 import * as productSettings from './productSettings.epic';
 import * as productCategory from './productCategory.epic';
 import * as measurements from './measurements.epic';
+import * as productStylePermissions from './productStylePermissions.epic';
 
 const arrayEpic = [
   ...Object.values(authEpic),
@@ -17,6 +18,7 @@ const arrayEpic = [
   ...Object.values(productSettings),
   ...Object.values(productCategory),
   ...Object.values(measurements),
+  ...Object.values(productStylePermissions),
 ];
 
 export const rootEpic = combineEpics(...arrayEpic);

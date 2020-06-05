@@ -22,6 +22,7 @@ import ProductManagementPanel, {
 } from './options/ProductManagementPanel';
 import ProductStylesPanel from './options/ProductStylesPanel';
 import ProductPermissions from './productPermissions/ProductPermissions';
+import ProductPermissionsPanel from './options/ProductPermissionsPanel';
 
 const _extractCategoryIdFromPath = (history: any) => {
   const lastSegment: any = new List(
@@ -50,7 +51,7 @@ const ProductCategoryView: React.FC = () => {
     } else if (
       history?.location?.pathname?.includes(PRODUCT_STYLE_PERMISSIONS_PATH)
     ) {
-      resolveTargetProductFlow(ProductStylesPanel);
+      resolveTargetProductFlow(ProductPermissionsPanel);
     } else {
       if (targetCategory) {
         dispatch(

@@ -136,7 +136,6 @@ const ProductManagementPanel: React.FC = () => {
       componentType: ProductManagingPanelComponent.StylePermissions,
       isDisabled: choseCategory ? false : true,
       onClickFunc: () => {
-        debugger;
         dispatch(controlActions.closeInfoPanelWithComponent());
         dispatch(
           controlActions.openInfoPanelWithComponent({

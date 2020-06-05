@@ -10,7 +10,6 @@ import { getActiveLanguage } from 'react-localize-redux';
 import { ajaxGetWebResponse } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import { controlActions } from '../slices/control.slice';
-import { measurementActions } from '../../redux/slices/measurement.slice';
 import StoreHelper from '../../helpers/store.helper';
 import { productStylePermissionsActions } from '../slices/productStylePermissions.slice';
 
@@ -25,7 +24,16 @@ export const apiGetAllStylePermissionsByProductIdEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(api.GET_ALL_MEASUREMENTS, state$.value).pipe(
+      return ajaxGetWebResponse(
+        api.GET_ALL_PERMISSION_SETTINGS_BY_PRODUCT_ID,
+        state$.value,
+        [
+          {
+            key: 'productCategoryId',
+            value: `${action.payload}`,
+          },
+        ]
+      ).pipe(
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
@@ -40,7 +48,7 @@ export const apiGetAllStylePermissionsByProductIdEpic = (
               [
                 { type: 'ERROR_GET_ALL_STYLE_PERMISSIONS_BY_PRODUCT_ID' },
                 controlActions.showInfoMessage(
-                  `Error occurred while getting measurements list. ${errorResponse}`
+                  `Error occurred while getting permission settings by product id. ${errorResponse}`
                 ),
                 controlActions.disabledStatusBar(),
               ],

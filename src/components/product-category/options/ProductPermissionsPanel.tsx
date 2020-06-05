@@ -68,7 +68,6 @@ const ProductPermissionsPanel: React.FC = () => {
       onClickFunc: () => {
         if (choseCategory) {
           /// TODO: open panel where you will create new `Style permission`
-          debugger;
         }
       },
     } as IProductMenuItem,

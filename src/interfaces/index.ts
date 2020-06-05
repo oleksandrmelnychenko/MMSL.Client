@@ -1,8 +1,4 @@
 import { GroupItemVisualState } from './viewModels/index';
-import {
-  CommonDialogState,
-  RightPanelProps,
-} from '../redux/slices/control.slice';
 import { DealerDetilsComponents } from '../redux/slices/dealer.slice';
 
 export interface IUserInfo {
@@ -497,4 +493,45 @@ export class ProductDeliveryTimelineSelected extends EntityBase {
   deliveryTimeline: DeliveryTimeline;
   deliveryTimelineId: number;
   productCategoryId: number;
+}
+
+export class PermissionSettings extends EntityBase {
+  constructor() {
+    super();
+
+    this.isAllow = false;
+
+    this.productPermissionSettingsId = 0;
+    this.productPermissionSettings = null;
+
+    this.optionGroupId = 0;
+    this.optionGroup = null;
+
+    this.uptionUnitId = null;
+    this.optionUnit = null;
+  }
+
+  isAllow: boolean;
+  productPermissionSettingsId: number;
+  productPermissionSettings: ProductPermissionSettings | null | undefined;
+
+  optionGroupId: number;
+  optionGroup: OptionGroup | null | undefined;
+
+  uptionUnitId: number | null | undefined;
+  optionUnit: OptionUnit | null | undefined;
+}
+
+export class ProductPermissionSettings extends EntityBaseNamed {
+  constructor() {
+    super();
+
+    this.productCategoryId = 0;
+    this.productCategory = null;
+    this.permissionSettings = [];
+  }
+
+  productCategoryId: number;
+  productCategory: ProductCategory | null | undefined;
+  permissionSettings: PermissionSettings[];
 }

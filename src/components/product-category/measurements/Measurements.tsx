@@ -39,6 +39,7 @@ const Measurements: React.FC = () => {
     (state) => state.product.productMeasurementsState.measurementList.length > 0
   );
 
+  /// Dispose own state
   useEffect(() => {
     return () => {
       setLocalProduct(null);
@@ -47,18 +48,20 @@ const Measurements: React.FC = () => {
     };
   }, []);
 
+  /// Listen to `global` product changes and update own local state
   useEffect(() => {
     if (targetProduct && targetProduct.id !== localProduct?.id) {
       setLocalProduct(targetProduct);
     }
   }, [targetProduct]);
 
+  /// Get measurements
   useEffect(() => {
-    if (targetProduct) {
+    if (localProduct) {
       dispatch(
         assignPendingActions(
           productActions.apiGetAllProductMeasurementsByProductId(
-            targetProduct.id
+            localProduct.id
           ),
           [],
           [],
@@ -95,6 +98,7 @@ const Measurements: React.FC = () => {
     return () => {};
   }, [localProduct]);
 
+  /// Resolve dashboard hint visibility
   useEffect(() => {
     if (isWasInited) {
       if (isAnyMeasurements) {

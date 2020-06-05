@@ -64,3 +64,6 @@ export const UPDATE_MEASUREMENT = '/measurements/update/measurement';
 export const CREATE_MEASUREMENT_SIZE = '/measurements/sizes/add';
 export const UPDATE_MEASUREMENT_SIZE = '/measurements/sizes/update';
 export const DELETE_MEASUREMENT_SIZE = '/measurements/sizes/delete';
+
+export const GET_ALL_PERMISSION_SETTINGS_BY_PRODUCT_ID =
+  '/product/permissions/get/by/product';
