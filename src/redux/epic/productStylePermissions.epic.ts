@@ -1,4 +1,4 @@
-import { ajaxPostResponse } from './../../helpers/epic.helper';
+import { ajaxPostResponse, ajaxPutResponse } from './../../helpers/epic.helper';
 import { checkUnauthorized } from './../../helpers/error.helpers';
 import {
   successCommonEpicFlow,
@@ -89,6 +89,47 @@ export const apiCreateNewPermissionEpic = (action$: AnyAction, state$: any) => {
                 { type: 'ERROR_CREATE_NEW_PRODUCT_STYLE_PERMISSION' },
                 controlActions.showInfoMessage(
                   `Error occurred while creating new product style permission. ${errorResponse}`
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiUpdatePermissionEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(productStylePermissionsActions.apiUpdatePermission.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+      debugger;
+      return ajaxPutResponse(
+        api.UPDATE_PERMISSION,
+        action.payload,
+        state$.value
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          debugger;
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          debugger;
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_EDITING_PRODUCT_STYLE_PERMISSION' },
+                controlActions.showInfoMessage(
+                  `Error occurred while editing product style permission. ${errorResponse}`
                 ),
                 controlActions.disabledStatusBar(),
               ],

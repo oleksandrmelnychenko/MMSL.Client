@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { ProductPermissionSettings } from '../../../interfaces';
+import {
+  ProductPermissionSettings,
+  ProductCategory,
+} from '../../../interfaces';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
 import {
   DetailsList,
   Stack,
   IconButton,
+  DefaultButton,
   IColumn,
   CheckboxVisibility,
   Selection,
@@ -20,7 +24,12 @@ import {
   SelectionMode,
   getId,
   CommandBarButton,
+  ContextualMenu,
+  IContextualMenuProps,
 } from 'office-ui-fabric-react';
+import { controlActions } from '../../../redux/slices/control.slice';
+import ProductPermissionForm from './managing/ProductPermissionForm';
+import { productStylePermissionsActions } from '../../../redux/slices/productStylePermissions.slice';
 
 const PermissionsList: React.FC = () => {
   const dispatch = useDispatch();
@@ -29,6 +38,10 @@ const PermissionsList: React.FC = () => {
     new Selection({
       onSelectionChanged: () => {},
     })
+  );
+
+  const targetProduct = useSelector<IApplicationState, ProductCategory | null>(
+    (state) => state.product.choose.category
   );
 
   const permissions: ProductPermissionSettings[] = useSelector<
@@ -42,6 +55,60 @@ const PermissionsList: React.FC = () => {
   }, []);
 
   const onRenderRow = (args: any) => {
+    args.onRenderDetailsCheckbox = (props?: any, defaultRender?: any) => {
+      return (
+        <IconButton
+          menuProps={{
+            onDismiss: (ev) => {},
+            items: [
+              {
+                key: 'edit',
+                text: 'Edit',
+                label: 'Edit',
+                iconProps: { iconName: 'Edit' },
+                onClick: () => {
+                  if (args?.item && targetProduct) {
+                    dispatch(
+                      productStylePermissionsActions.changeEditingPermissionSetting(
+                        args.item
+                      )
+                    );
+
+                    dispatch(
+                      controlActions.openRightPanel({
+                        title: 'Edit style permission',
+                        description: args.item.description,
+                        width: '400px',
+                        closeFunctions: () => {
+                          dispatch(controlActions.closeRightPanel());
+                        },
+                        component: ProductPermissionForm,
+                      })
+                    );
+                  }
+                },
+              },
+              {
+                key: 'delete',
+                text: 'Delete',
+                label: 'Delete',
+                iconProps: { iconName: 'Delete' },
+                onClick: (args: any) => {
+                  debugger;
+                },
+              },
+            ],
+            styles: {
+              root: { width: '84px' },
+              container: { width: '84px' },
+            },
+          }}
+          onRenderMenuIcon={(props?: any, defaultRender?: any) => null}
+          iconProps={{ iconName: 'More' }}
+          onMenuClick={(ev?: any) => {}}
+        />
+      );
+    };
     return <DetailsRow {...args} />;
   };
 
@@ -144,6 +211,43 @@ const PermissionsList: React.FC = () => {
         selectionMode={SelectionMode.single}
         checkboxVisibility={CheckboxVisibility.onHover}
         columns={buildColumns()}
+        // onRenderCheckbox={(props?: any, defaultRender?: any) => {
+        //   return (
+        //     <IconButton
+        //       menuProps={{
+        //         onDismiss: (ev) => {},
+        //         items: [
+        //           {
+        //             key: 'edit',
+        //             text: 'Edit',
+        //             label: 'Edit',
+        //             iconProps: { iconName: 'Edit' },
+        //             onClick: (args: any) => {
+        //               let foo = props;
+        //               debugger;
+        //             },
+        //           },
+        //           {
+        //             key: 'delete',
+        //             text: 'Delete',
+        //             label: 'Delete',
+        //             iconProps: { iconName: 'Delete' },
+        //             onClick: (args: any) => {
+        //               debugger;
+        //             },
+        //           },
+        //         ],
+        //         styles: {
+        //           root: { width: '84px' },
+        //           container: { width: '84px' },
+        //         },
+        //       }}
+        //       onRenderMenuIcon={(props?: any, defaultRender?: any) => null}
+        //       iconProps={{ iconName: 'More' }}
+        //       onMenuClick={(ev?: any) => {}}
+        //     />
+        //   );
+        // }}
       />
     </div>
   );

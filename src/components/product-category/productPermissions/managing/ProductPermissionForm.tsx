@@ -49,7 +49,12 @@ const _buildEditedPayload = (
   values: InitValues,
   sourceEntity: ProductPermissionSettings
 ) => {
-  let payload: any = {};
+  let payload: any = {
+    name: values.name,
+    description: values.description,
+    permissionSettings: [],
+    id: sourceEntity.id,
+  };
 
   return payload;
 };
@@ -96,7 +101,14 @@ export const ProductPermissionForm: React.FC = () => {
     ProductPermissionSettings[]
   >((state) => state.productStylePermissions.permissionSettings);
 
+  /// Disposing form
   useEffect(() => {
+    return () => {
+      if (editingSetting)
+        dispatch(
+          productStylePermissionsActions.changeEditingPermissionSetting(null)
+        );
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -133,7 +145,37 @@ export const ProductPermissionForm: React.FC = () => {
   const editSetting = (values: InitValues) => {
     if (productCategory && editingSetting) {
       const payload = _buildEditedPayload(values, editingSetting);
-      /// TODO: use appropriate api and build flow
+      dispatch(
+        assignPendingActions(
+          productStylePermissionsActions.apiUpdatePermission(payload),
+          [],
+          [],
+          (args: any) => {
+            dispatch(
+              productStylePermissionsActions.updatePermissionSettingsList(
+                new List(permissionSettings)
+                  .select((item) => {
+                    let result = item;
+
+                    if (item.id === args.body.id) {
+                      result = args.body;
+                    }
+
+                    return result;
+                  })
+                  .toArray()
+              )
+            );
+            dispatch(controlActions.closeRightPanel());
+            dispatch(
+              productStylePermissionsActions.changeEditingPermissionSetting(
+                null
+              )
+            );
+          },
+          (args: any) => {}
+        )
+      );
     }
   };
 
