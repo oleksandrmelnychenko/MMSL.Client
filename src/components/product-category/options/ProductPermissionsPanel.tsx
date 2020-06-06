@@ -61,8 +61,8 @@ const ProductPermissionsPanel: React.FC = () => {
     {
       title: 'New',
       className: choseCategory
-        ? 'management__btn-new_style'
-        : 'management__btn-new_style management__btn-disabled',
+        ? 'management__btn-style_add_permissions'
+        : 'management__btn-style_add_permissions management__btn-disabled',
       componentType: ProductManagingPanelComponent.ProductCategoryDetails,
       isDisabled: choseCategory ? false : true,
       tooltip: 'Create new product style permission',

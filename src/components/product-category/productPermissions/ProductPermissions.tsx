@@ -7,6 +7,13 @@ import { assignPendingActions } from '../../../helpers/action.helper';
 import { productStylePermissionsActions } from '../../../redux/slices/productStylePermissions.slice';
 import ProductPermissionForm from './managing/ProductPermissionForm';
 import PermissionsList from './PermissionsList';
+import { Stack, Text, Separator, ScrollablePane } from 'office-ui-fabric-react';
+import {
+  horizontalGapStackTokens,
+  mainTitleContent,
+  mainTitleHintContent,
+  scrollablePaneStyleForDetailList,
+} from '../../../common/fabric-styles/styles';
 
 export const CREATE_YOUR_FIRST_STYLE_SETTINGS_PERMISSION: string =
   'Create your first style permission';
@@ -102,7 +109,39 @@ const ProductPermissions: React.FC = () => {
 
   return (
     <div className="productPermissions">
-      <PermissionsList />
+      <div className="content__root">
+        <Stack verticalAlign="space-around">
+          <Stack.Item align="stretch">
+            <div className="content__header">
+              <div className="content__header__top">
+                <Stack horizontal tokens={horizontalGapStackTokens}>
+                  <Stack horizontal tokens={{ childrenGap: '10px' }}>
+                    <Text
+                      variant="xLarge"
+                      nowrap
+                      block
+                      styles={mainTitleContent}
+                    >
+                      Style Permissions
+                    </Text>
+
+                    <Separator vertical />
+
+                    <Text variant="xLarge" styles={mainTitleHintContent}>
+                      {targetProduct ? targetProduct.name : ''}
+                    </Text>
+                  </Stack>
+                </Stack>
+              </div>
+            </div>
+          </Stack.Item>
+          <Stack.Item>
+            <ScrollablePane styles={scrollablePaneStyleForDetailList}>
+              <PermissionsList />
+            </ScrollablePane>
+          </Stack.Item>
+        </Stack>
+      </div>
     </div>
   );
 };

@@ -132,7 +132,7 @@ const ProductManagementPanel: React.FC = () => {
     },
     {
       title: 'Style Permissions',
-      className: 'management__btn-styles',
+      className: 'management__btn-style_permissions',
       componentType: ProductManagingPanelComponent.StylePermissions,
       isDisabled: choseCategory ? false : true,
       onClickFunc: () => {

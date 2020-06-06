@@ -123,8 +123,7 @@ main.collapse {
     background: url('../../assets/images/menu-icons/ruler.svg') no-repeat;
 
     &:hover {
-      background: url('../../assets/images/menu-icons/ruler_hover.svg')
-        no-repeat;
+      background: url('../../assets/images/menu-icons/ruler_hover.svg') no-repeat;
     }
   }
 
@@ -132,18 +131,15 @@ main.collapse {
     background: url('../../assets/images/dealers/stopwatch.svg') no-repeat;
 
     &:hover {
-      background: url('../../assets/images/dealers/stopwatch_hover.svg')
-        no-repeat;
+      background: url('../../assets/images/dealers/stopwatch_hover.svg') no-repeat;
     }
   }
 
   &__btn-new_measurement {
-    background: url('../../assets/images/measurements/new_measurement.svg')
-      no-repeat;
+    background: url('../../assets/images/measurements/new_measurement.svg') no-repeat;
 
     &:hover {
-      background: url('../../assets/images/measurements/new_measurement_hover.svg')
-        no-repeat;
+      background: url('../../assets/images/measurements/new_measurement_hover.svg') no-repeat;
     }
   }
 
@@ -151,8 +147,7 @@ main.collapse {
     background: url('../../assets/images/measurements/edit.svg') no-repeat;
 
     &:hover {
-      background: url('../../assets/images/measurements/edit_hover.svg')
-        no-repeat;
+      background: url('../../assets/images/measurements/edit_hover.svg') no-repeat;
     }
   }
 
@@ -160,8 +155,7 @@ main.collapse {
     background: url('../../assets/images/measurements/new_size.svg') no-repeat;
 
     &:hover {
-      background: url('../../assets/images/measurements/new_size_hover.svg')
-        no-repeat;
+      background: url('../../assets/images/measurements/new_size_hover.svg') no-repeat;
     }
   }
 
@@ -169,18 +163,15 @@ main.collapse {
     background: url('../../assets/images/measurements/delete.svg') no-repeat;
 
     &:hover {
-      background: url('../../assets/images/measurements/delete_hover.svg')
-        no-repeat;
+      background: url('../../assets/images/measurements/delete_hover.svg') no-repeat;
     }
   }
 
   &__btn-back_measurement {
-    background: url('../../assets/images/measurements/back_in_circle.svg')
-      no-repeat;
+    background: url('../../assets/images/measurements/back_in_circle.svg') no-repeat;
 
     &:hover {
-      background: url('../../assets/images/measurements/back_in_circle_hover.svg')
-        no-repeat;
+      background: url('../../assets/images/measurements/back_in_circle_hover.svg') no-repeat;
     }
   }
 
@@ -188,8 +179,7 @@ main.collapse {
     background: url('../../assets/images/styles/gear_plus.svg') no-repeat;
 
     &:hover {
-      background: url('../../assets/images/styles/gear_plus_hover.svg')
-        no-repeat;
+      background: url('../../assets/images/styles/gear_plus_hover.svg') no-repeat;
     }
   }
 
@@ -201,13 +191,29 @@ main.collapse {
     }
   }
 
+  &__btn-style_permissions {
+    background: url('../../assets/images/styles/gear_lock.svg') no-repeat;
+
+    &:hover {
+      background: url('../../assets/images/styles/gear_lock_hover.svg') no-repeat;
+    }
+  }
+
+  &__btn-style_add_permissions {
+    background: url('../../assets/images/styles/gear_lock_plus.svg') no-repeat;
+
+    &:hover {
+      background: url('../../assets/images/styles/gear_lock_plus_hover.svg') no-repeat;
+    }
+  }
+
   &__btn-disabled {
     opacity: 0.4;
   }
 }
 
 .list__header {
-  span > span {
+  span>span {
     font-weight: 400;
     color: #323130;
     font-size: 14px;

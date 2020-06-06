@@ -30,6 +30,7 @@ import ProductPermissionForm from './managing/ProductPermissionForm';
 import { productStylePermissionsActions } from '../../../redux/slices/productStylePermissions.slice';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { List } from 'linq-typescript';
+import { defaultCellStyle } from '../../../common/fabric-styles/styles';
 
 const PermissionsList: React.FC = () => {
   const dispatch = useDispatch();
@@ -59,6 +60,66 @@ const PermissionsList: React.FC = () => {
     return () => {};
   }, []);
 
+  const onEditPermission = (permission: ProductPermissionSettings) => {
+    if (permission && targetProduct) {
+      dispatch(
+        productStylePermissionsActions.changeEditingPermissionSetting(
+          permission
+        )
+      );
+
+      dispatch(
+        controlActions.openRightPanel({
+          title: 'Edit style permission',
+          description: permission.description,
+          width: '400px',
+          closeFunctions: () => {
+            dispatch(controlActions.closeRightPanel());
+          },
+          component: ProductPermissionForm,
+        })
+      );
+    }
+  };
+
+  const onDeletePermission = (permission: ProductPermissionSettings) => {
+    if (permission && targetProduct) {
+      dispatch(
+        controlActions.toggleCommonDialogVisibility(
+          new DialogArgs(
+            CommonDialogType.Delete,
+            'Delete style permission',
+            `Are you sure you want to delete ${permission.name}?`,
+            () => {
+              if (permission && targetProduct) {
+                dispatch(
+                  assignPendingActions(
+                    productStylePermissionsActions.apiDeletePermission(
+                      permission.id
+                    ),
+                    [],
+                    [],
+                    (args: any) => {
+                      dispatch(
+                        productStylePermissionsActions.updatePermissionSettingsList(
+                          new List(permissionSettings)
+                            .where((item) => item.id !== permission.id)
+                            .toArray()
+                        )
+                      );
+                    },
+                    (args: any) => {}
+                  )
+                );
+              }
+            },
+            () => {}
+          )
+        )
+      );
+    }
+  };
+
   const onRenderRow = (renderArgs: any) => {
     renderArgs.onRenderDetailsCheckbox = (props?: any, defaultRender?: any) => {
       return (
@@ -71,27 +132,7 @@ const PermissionsList: React.FC = () => {
                 text: 'Edit',
                 label: 'Edit',
                 iconProps: { iconName: 'Edit' },
-                onClick: () => {
-                  if (renderArgs?.item && targetProduct) {
-                    dispatch(
-                      productStylePermissionsActions.changeEditingPermissionSetting(
-                        renderArgs.item
-                      )
-                    );
-
-                    dispatch(
-                      controlActions.openRightPanel({
-                        title: 'Edit style permission',
-                        description: renderArgs.item.description,
-                        width: '400px',
-                        closeFunctions: () => {
-                          dispatch(controlActions.closeRightPanel());
-                        },
-                        component: ProductPermissionForm,
-                      })
-                    );
-                  }
-                },
+                onClick: () => onEditPermission(renderArgs.item),
               },
               {
                 key: 'delete',
@@ -99,45 +140,7 @@ const PermissionsList: React.FC = () => {
                 label: 'Delete',
                 iconProps: { iconName: 'Delete' },
                 onClick: () => {
-                  if (renderArgs?.item && targetProduct) {
-                    dispatch(
-                      controlActions.toggleCommonDialogVisibility(
-                        new DialogArgs(
-                          CommonDialogType.Delete,
-                          'Delete style permission',
-                          `Are you sure you want to delete ${renderArgs.item.name}?`,
-                          () => {
-                            if (renderArgs?.item && targetProduct) {
-                              dispatch(
-                                assignPendingActions(
-                                  productStylePermissionsActions.apiDeletePermission(
-                                    renderArgs.item.id
-                                  ),
-                                  [],
-                                  [],
-                                  (args: any) => {
-                                    debugger;
-                                    dispatch(
-                                      productStylePermissionsActions.updatePermissionSettingsList(
-                                        new List(permissionSettings)
-                                          .where(
-                                            (item) =>
-                                              item.id !== renderArgs?.item?.id
-                                          )
-                                          .toArray()
-                                      )
-                                    );
-                                  },
-                                  (args: any) => {}
-                                )
-                              );
-                            }
-                          },
-                          () => {}
-                        )
-                      )
-                    );
-                  }
+                  onDeletePermission(renderArgs.item);
                 },
               },
             ],
@@ -197,6 +200,20 @@ const PermissionsList: React.FC = () => {
   const buildColumns = () => {
     return [
       {
+        key: 'index',
+        name: '',
+        minWidth: 16,
+        maxWidth: 24,
+        onColumnClick: () => {},
+        onRender: (item: any, index?: number) => {
+          return (
+            <Text style={defaultCellStyle}>
+              {index !== null && index !== undefined ? index + 1 : -1}
+            </Text>
+          );
+        },
+      },
+      {
         key: 'name',
         name: 'Name',
         minWidth: 50,
@@ -211,7 +228,7 @@ const PermissionsList: React.FC = () => {
           column?: IColumn
         ) => {
           return (
-            <Text block nowrap>
+            <Text block nowrap style={defaultCellStyle}>
               {item?.name}
             </Text>
           );
@@ -232,7 +249,7 @@ const PermissionsList: React.FC = () => {
           column?: IColumn
         ) => {
           return (
-            <Text block nowrap>
+            <Text block nowrap style={defaultCellStyle}>
               {item?.description}
             </Text>
           );
