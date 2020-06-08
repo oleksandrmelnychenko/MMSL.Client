@@ -31,6 +31,7 @@ import { productStylePermissionsActions } from '../../../redux/slices/productSty
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { List } from 'linq-typescript';
 import { defaultCellStyle } from '../../../common/fabric-styles/styles';
+import PermissionStylesConfigForm from './managing/stylesConfig/PermissionStylesConfigForm';
 
 const PermissionsList: React.FC = () => {
   const dispatch = useDispatch();
@@ -60,24 +61,65 @@ const PermissionsList: React.FC = () => {
     return () => {};
   }, []);
 
-  const onEditPermission = (permission: ProductPermissionSettings) => {
-    if (permission && targetProduct) {
+  const onExploreDetails = (permissionId: number | null | undefined) => {
+    if (permissionId && targetProduct) {
       dispatch(
-        productStylePermissionsActions.changeEditingPermissionSetting(
-          permission
+        assignPendingActions(
+          productStylePermissionsActions.apiGetPermissionById(permissionId),
+          [],
+          [],
+          (args: any) => {
+            dispatch(
+              productStylePermissionsActions.changeEditingPermissionSetting(
+                args
+              )
+            );
+            dispatch(
+              controlActions.openRightPanel({
+                title: 'Details',
+                description: args.name,
+                width: '400px',
+                closeFunctions: () => {
+                  dispatch(controlActions.closeRightPanel());
+                },
+                component: PermissionStylesConfigForm,
+              })
+            );
+          },
+          (args: any) => {}
         )
       );
+    }
+  };
 
+  const onEditPermission = (permissionId: number | null | undefined) => {
+    if (permissionId && targetProduct) {
       dispatch(
-        controlActions.openRightPanel({
-          title: 'Edit style permission',
-          description: permission.description,
-          width: '400px',
-          closeFunctions: () => {
-            dispatch(controlActions.closeRightPanel());
+        assignPendingActions(
+          productStylePermissionsActions.apiGetPermissionById(permissionId),
+          [],
+          [],
+          (args: any) => {
+            dispatch(
+              productStylePermissionsActions.changeEditingPermissionSetting(
+                args
+              )
+            );
+
+            dispatch(
+              controlActions.openRightPanel({
+                title: 'Edit style permission',
+                description: args.name,
+                width: '400px',
+                closeFunctions: () => {
+                  dispatch(controlActions.closeRightPanel());
+                },
+                component: ProductPermissionForm,
+              })
+            );
           },
-          component: ProductPermissionForm,
-        })
+          (args: any) => {}
+        )
       );
     }
   };
@@ -128,20 +170,27 @@ const PermissionsList: React.FC = () => {
             onDismiss: (ev) => {},
             items: [
               {
+                key: 'details',
+                text: 'Details',
+                label: 'Details',
+                iconProps: {
+                  iconName: 'Settings',
+                },
+                onClick: () => onExploreDetails(renderArgs?.item?.id),
+              },
+              {
                 key: 'edit',
                 text: 'Edit',
                 label: 'Edit',
                 iconProps: { iconName: 'Edit' },
-                onClick: () => onEditPermission(renderArgs.item),
+                onClick: () => onEditPermission(renderArgs?.item?.id),
               },
               {
                 key: 'delete',
                 text: 'Delete',
                 label: 'Delete',
                 iconProps: { iconName: 'Delete' },
-                onClick: () => {
-                  onDeletePermission(renderArgs.item);
-                },
+                onClick: () => onDeletePermission(renderArgs.item),
               },
             ],
             styles: {
@@ -229,7 +278,7 @@ const PermissionsList: React.FC = () => {
         ) => {
           return (
             <Text block nowrap style={defaultCellStyle}>
-              {item?.name}
+              {`${item?.name} ${item?.id}`}
             </Text>
           );
         },

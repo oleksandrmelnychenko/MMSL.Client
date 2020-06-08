@@ -70,3 +70,6 @@ export const GET_ALL_PERMISSION_SETTINGS_BY_PRODUCT_ID =
 export const CREATE_NEW_PERMISSION = '/product/permissions/add';
 export const UPDATE_PERMISSION = '/product/permissions/update';
 export const DELETE_PERMISSION = '/product/permissions/delete';
+export const GET_PERMISSION_BY_ID = '/product/permissions/get/by/id';
+export const GET_OPTION_GROUPS_FROM_PERMISSION_PERSPECTIVE =
+  '/product/permissions/get/options';

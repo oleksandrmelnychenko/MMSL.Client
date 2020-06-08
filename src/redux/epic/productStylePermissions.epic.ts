@@ -181,3 +181,94 @@ export const apiDeletePermissionEpic = (action$: AnyAction, state$: any) => {
     })
   );
 };
+
+export const apiGetOptionGroupsFromPermissionPerspectiveByIdEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(
+      productStylePermissionsActions
+        .apiGetOptionGroupsFromPermissionPerspectiveById.type
+    ),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+      return ajaxGetWebResponse(
+        api.GET_OPTION_GROUPS_FROM_PERMISSION_PERSPECTIVE,
+        state$.value,
+        [
+          {
+            key: 'productId',
+            value: `${action.payload.productId}`,
+          },
+          {
+            key: 'productPermissionSettingId',
+            value: `${action.payload.productPermissionSettingId}`,
+          },
+        ]
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_GET_OPTION_GROUPS_FROM_PERMISSION_PERSPECTIVE' },
+                controlActions.showInfoMessage(
+                  `Error occurred while getting permissioned options. ${errorResponse}`
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+export const apiGetPermissionByIdEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(productStylePermissionsActions.apiGetPermissionById.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+      return ajaxGetWebResponse(api.GET_PERMISSION_BY_ID, state$.value, [
+        {
+          key: 'productPermissionSettingId',
+          value: `${action.payload}`,
+        },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_GET_PERMISSION_BY_ID' },
+                controlActions.showInfoMessage(
+                  `Error occurred while getting permission setting by id. ${errorResponse}`
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};

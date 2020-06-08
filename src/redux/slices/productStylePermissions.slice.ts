@@ -23,6 +23,14 @@ const productStylePermissions = createSlice({
     apiCreateNewPermission(state, action: any) {},
     apiUpdatePermission(state, action: any) {},
     apiDeletePermission(state, action: { type: string; payload: number }) {},
+    apiGetPermissionById(state, action: { type: string; payload: number }) {},
+    apiGetOptionGroupsFromPermissionPerspectiveById(
+      state,
+      action: {
+        type: string;
+        payload: { productId: number; productPermissionSettingId: number };
+      }
+    ) {},
     updatePermissionSettingsList(
       state,
       action: { type: string; payload: ProductPermissionSettings[] }

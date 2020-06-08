@@ -99,6 +99,7 @@ const productSettings = createSlice({
   name: 'productSettings',
   initialState: new ProductSettingsState(),
   reducers: {
+    /// TODO: remove vadymk (use common dashboard stub hint)
     updateShowHint(state, action: { type: string; payload: boolean }) {
       state.showHint = action.payload;
     },

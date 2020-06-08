@@ -160,10 +160,6 @@ export const apiGetAllOptionGroupsByProductIdListEpic = (
 
       return ajaxGetWebResponse(api.GET_ALL_OPTION_GROUPS, state$.value, [
         {
-          key: 'search',
-          value: `${state$.value.productSettings.searchWordOptionGroup}`,
-        },
-        {
           key: 'productCategoryId',
           value: `${action.payload}`,
         },
@@ -173,7 +169,6 @@ export const apiGetAllOptionGroupsByProductIdListEpic = (
             successResponse,
             [
               controlActions.disabledStatusBar(),
-              // productSettingsActions.updateIsStylesWasRequested(true),
               productSettingsActions.updateShowHint(
                 successResponse.length === 0
               ),
@@ -187,7 +182,6 @@ export const apiGetAllOptionGroupsByProductIdListEpic = (
               errorResponse,
               [
                 controlActions.disabledStatusBar(),
-                // productSettingsActions.updateIsStylesWasRequested(true),
                 productSettingsActions.updateShowHint(false),
                 controlActions.showInfoMessage(
                   `Error occurred while getting option groups list. ${errorResponse}`
