@@ -84,10 +84,6 @@ const Dashboard: React.FC = () => {
           >
             <HintStub />
           </div>
-          {/* { ? (
-          ) : (
-            
-          )} */}
         </div>
       </main>
 

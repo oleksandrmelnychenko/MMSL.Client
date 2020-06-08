@@ -1,0 +1,23 @@
+.styleUnitAssigningItem {
+    position: relative;
+    padding: 9px 12px;
+    border: 1px solid;
+    border-color: rgb(243, 242, 241);
+    border-radius: 3px;
+    box-shadow: rgba(0, 0, 0, 0.133) 0px 1.6px 3.6px 0px, rgba(0, 0, 0, 0.11) 0px 0.3px 0.9px 0px;
+    cursor: pointer;
+
+
+    &.checked {
+        border-color: #0078d460;
+        box-shadow: rgba(0, 120, 212, 0.3) 0px 1.6px 3.6px 0px,
+            rgba(0, 120, 212, .4) 0px 0.3px 0.9px 0px;
+    }
+
+    &__actionIconHint {
+        // background: #f3f2f1;
+        position: absolute;
+        bottom: 6px;
+        right: 6px;
+    }
+}

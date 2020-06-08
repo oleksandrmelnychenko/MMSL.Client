@@ -78,7 +78,7 @@ const PermissionsList: React.FC = () => {
               controlActions.openRightPanel({
                 title: 'Details',
                 description: args.name,
-                width: '400px',
+                width: '700px',
                 closeFunctions: () => {
                   dispatch(controlActions.closeRightPanel());
                 },

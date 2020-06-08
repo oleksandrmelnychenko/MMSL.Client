@@ -10,7 +10,13 @@ import {
   Separator,
   IFontStyles,
   ITextProps,
+  TooltipHost,
+  TooltipDelay,
+  DirectionalHint,
+  FontIcon,
+  mergeStyles,
 } from 'office-ui-fabric-react';
+import './styleUnitAssigningItem.scss';
 
 export class UnitAssigningContext {
   private _rawSource: OptionUnit;
@@ -54,7 +60,7 @@ export class StyleUnitAssigningItemProps {
 }
 
 const ALLOW_HINT_COLOR: string = '#217346f0';
-const DISALLOW_HINT_COLOR: string = '#a4373af0';
+const DISMIS_HINT_COLOR: string = '#a4373af0';
 
 export const StyleUnitAssigningItem: React.FC<StyleUnitAssigningItemProps> = (
   props: StyleUnitAssigningItemProps
@@ -64,50 +70,63 @@ export const StyleUnitAssigningItem: React.FC<StyleUnitAssigningItemProps> = (
   if (checked !== props.context.checked) setChecked(props.context.checked);
 
   return (
-    <div className="styleUnitAssigningItem">
-      <Stack horizontal tokens={{ childrenGap: 6 }}>
-        <Checkbox
-          styles={
-            {
-              // root: { width: '16px', height: '16px' },
-              // checkbox: { borderColor: '#797775' },
-              // checkmark: { fontSize: '10px' },
-            }
-          }
-          onChange={(ev?: any, checked?: boolean) => {
-            props.context.checked =
-              checked !== null && checked !== undefined ? checked : false;
-            props.context.isDirty();
-            setChecked(props.context.checked);
+    <div
+      className={
+        checked ? 'styleUnitAssigningItem checked' : 'styleUnitAssigningItem'
+      }
+      onClick={() => {
+        props.context.checked = !checked;
+        props.context.isDirty();
+        setChecked(props.context.checked);
 
-            props.changedCallback();
-          }}
-          checked={checked}
-          label={props.context.value}
-        />
+        props.changedCallback();
+      }}
+    >
+      <Stack>
+        <Image
+          src={props.context.imageSourceUrl}
+          imageFit={0}
+          styles={{ root: { height: '60px', width: '60px' } }}
+        ></Image>
+        <TooltipHost
+          id={`unitValue_${props.context.getSourceUnitId()}`}
+          calloutProps={{ gapSpace: 0 }}
+          delay={TooltipDelay.zero}
+          directionalHint={DirectionalHint.bottomCenter}
+          styles={{ root: { display: 'inline-block' } }}
+          content={props.context.value}
+        >
+          <Text style={{ cursor: 'default', maxWidth: '60px' }} block nowrap>
+            {props.context.value}
+          </Text>
+        </TooltipHost>
+      </Stack>
 
-        {props.context.isDirty() ? (
-          <Separator
-            styles={{ content: { padding: '6px 0 6px 0' } }}
-            vertical
-          />
-        ) : null}
-
-        {props.context.isDirty() ? (
-          <Text
-            variant={'smallPlus' as ITextProps['variant']}
-            styles={{
-              root: {
+      {props.context.isDirty() ? (
+        <div className="styleUnitAssigningItem__actionIconHint">
+          <TooltipHost
+            id={`actionIconHintTooltip_${props.context.getSourceUnitId()}`}
+            calloutProps={{ gapSpace: 0 }}
+            delay={TooltipDelay.zero}
+            directionalHint={DirectionalHint.bottomCenter}
+            styles={{ root: { display: 'inline-block' } }}
+            content={props.context.checked ? 'Allow' : 'Dismis'}
+          >
+            <FontIcon
+              style={{ cursor: 'default', lineHeight: 1, background: 'white' }}
+              iconName={
+                props.context.checked ? 'PlugConnected' : 'PlugDisconnected'
+              }
+              className={mergeStyles({
+                fontSize: 16,
                 color: props.context.checked
                   ? ALLOW_HINT_COLOR
-                  : DISALLOW_HINT_COLOR,
-              },
-            }}
-          >
-            {props.context.checked ? 'Allow' : 'Disallow'}
-          </Text>
-        ) : null}
-      </Stack>
+                  : DISMIS_HINT_COLOR,
+              })}
+            />
+          </TooltipHost>
+        </div>
+      ) : null}
     </div>
   );
 };

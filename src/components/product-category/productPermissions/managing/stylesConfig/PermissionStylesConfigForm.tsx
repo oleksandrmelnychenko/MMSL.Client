@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Stack, Separator, Label } from 'office-ui-fabric-react';
+import { Stack, Label, Separator } from 'office-ui-fabric-react';
 import {
   FormicReference,
   ProductCategory,
@@ -20,18 +20,8 @@ import StyleGroupAssigningItem, {
   GroupAssigningContext,
 } from './StyleGroupAssigningItem';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
-import { productSettingsActions } from '../../../../../redux/slices/productSettings.slice';
 import { UnitAssigningContext } from './StyleUnitAssigningItem';
-
-class InitValues {
-  constructor() {
-    this.name = '';
-    this.description = '';
-  }
-
-  name: string;
-  description: string;
-}
+import AllowedList from './AllowedList';
 
 const _columnStyle = { root: { maxWidth: '100%', minWidth: '100%' } };
 
@@ -62,17 +52,6 @@ const _buildEditedPayload = (
   };
 
   return payload;
-};
-
-const _initDefaultValues = (
-  sourceEntity?: ProductPermissionSettings | null
-) => {
-  const initValues: InitValues = new InitValues();
-
-  if (sourceEntity) {
-  }
-
-  return initValues;
 };
 
 /// Build single hint lable
@@ -145,11 +124,8 @@ export const PermissionStylesConfigForm: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    RENAME_ME_FOO_FOO_FOO_FORMIK();
-  }, [formikReference, dispatch]);
-
-  useEffect(() => {
     if (new List(commandBarItems).any()) {
+      updatePanelButtons();
       dispatch(
         controlActions.setPanelButtons(
           ChangeItemsDisabledState(
@@ -167,6 +143,7 @@ export const PermissionStylesConfigForm: React.FC = () => {
   /// Resolve local product category due to global category
   useEffect(() => {
     if (localProductCategory?.id !== productCategory?.id) {
+      updatePanelButtons();
       setLocalProductCategory(productCategory);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -176,6 +153,7 @@ export const PermissionStylesConfigForm: React.FC = () => {
   /// local product category
   useEffect(() => {
     if (localProductCategory && editingSetting) {
+      updatePanelButtons();
       dispatch(
         assignPendingActions(
           productStylePermissionsActions.apiGetOptionGroupsFromPermissionPerspectiveById(
@@ -201,33 +179,27 @@ export const PermissionStylesConfigForm: React.FC = () => {
   useEffect(() => {
     buildGroupContexts();
 
-    // /// TODO: So so solution
-    RENAME_ME_FOO_FOO_FOO_FORMIK();
+    updatePanelButtons();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [optionGroupDefaults]);
 
   useEffect(() => {
-    // /// TODO: So so solution
-    RENAME_ME_FOO_FOO_FOO_FORMIK();
+    updatePanelButtons();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [optionGroupContexts]);
 
-  const RENAME_ME_FOO_FOO_FOO_FORMIK = () => {
-    if (formikReference) {
-      dispatch(
-        controlActions.setPanelButtons([
-          GetCommandBarItemProps(CommandBarItem.Save, () => {
-            editSetting();
-          }),
-          GetCommandBarItemProps(CommandBarItem.Reset, () => {
-            buildGroupContexts();
-            setFormikDirty(
-              new List(optionGroupContexts).any((item) => item.isDirty())
-            );
-          }),
-        ])
-      );
-    }
+  const updatePanelButtons = () => {
+    dispatch(
+      controlActions.setPanelButtons([
+        GetCommandBarItemProps(CommandBarItem.Save, () => {
+          editSetting();
+        }),
+        GetCommandBarItemProps(CommandBarItem.Reset, () => {
+          buildGroupContexts();
+          setFormikDirty(false);
+        }),
+      ])
+    );
   };
 
   const buildGroupContexts = () => {
@@ -286,14 +258,16 @@ export const PermissionStylesConfigForm: React.FC = () => {
         horizontalAlign="space-between"
         tokens={{ childrenGap: 20 }}
       >
+        {/* <Stack.Item grow={1} styles={_columnStyle}>
+          <Stack tokens={{ childrenGap: 6 }}>
+            <Separator alignContent="start">Allowed styles</Separator>
+            <AllowedList optionGroups={optionGroupDefaults} />
+          </Stack>
+        </Stack.Item> */}
+
         <Stack.Item grow={1} styles={_columnStyle}>
-          <div data-is-scrollable={true}>
-            {/* <Separator
-              styles={{ root: { marginBottom: '12px' } }}
-              alignContent="start"
-            >
-              Allowed styles
-            </Separator> */}
+          <Stack tokens={{ childrenGap: 6 }}>
+            <Separator alignContent="start">Styles</Separator>
             <Stack tokens={{ childrenGap: 9 }}>
               {optionGroupContexts.length > 0
                 ? optionGroupContexts.map(
@@ -315,7 +289,7 @@ export const PermissionStylesConfigForm: React.FC = () => {
                     'There are no defined styles for this product.'
                   )}
             </Stack>
-          </div>
+          </Stack>
         </Stack.Item>
       </Stack>
     </div>

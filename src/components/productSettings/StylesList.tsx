@@ -28,6 +28,28 @@ import {
 } from '../../redux/slices/control.slice';
 import * as fabricStyles from '../../common/fabric-styles/styles';
 
+export const buildGroupMandatoryHint = (group: OptionGroup) => {
+  return (
+    <TooltipHost
+      id={`mandatoryTooltip_${group.id}`}
+      calloutProps={{ gapSpace: 0 }}
+      delay={TooltipDelay.zero}
+      directionalHint={DirectionalHint.bottomCenter}
+      styles={{ root: { display: 'inline-block' } }}
+      content={group.isMandatory ? 'Mandatory' : 'Not mandatory'}
+    >
+      <FontIcon
+        style={{ cursor: 'default' }}
+        iconName="Warning"
+        className={mergeStyles({
+          fontSize: 16,
+          color: group.isMandatory ? '#2b579a' : '#2b579a60',
+        })}
+      />
+    </TooltipHost>
+  );
+};
+
 export const StylesList: React.FC = () => {
   const dispatch = useDispatch();
 
@@ -79,22 +101,7 @@ export const StylesList: React.FC = () => {
         >
           <Stack horizontal tokens={{ childrenGap: 10 }}>
             <Text styles={fabricStyles.textStackStyle}>{item.name}</Text>
-            <TooltipHost
-              id={`mandatoryTooltip_${item.id}`}
-              calloutProps={{ gapSpace: 0 }}
-              delay={TooltipDelay.zero}
-              directionalHint={DirectionalHint.bottomCenter}
-              styles={{ root: { display: 'inline-block' } }}
-              content={item.isMandatory ? 'Mandatory' : 'Not mandatory'}
-            >
-              <FontIcon
-                iconName="Warning"
-                className={mergeStyles({
-                  fontSize: 16,
-                  color: item.isMandatory ? '#2b579a' : '#2b579a60',
-                })}
-              />
-            </TooltipHost>
+            {buildGroupMandatoryHint(item)}
           </Stack>
 
           <Stack horizontal tokens={{ childrenGap: 10 }}>
@@ -198,6 +205,7 @@ export const StylesList: React.FC = () => {
             />
           </Stack>
         </Stack>
+
         <Stack
           wrap={true}
           className="stack_option"

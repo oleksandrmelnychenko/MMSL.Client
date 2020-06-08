@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { OptionUnit, OptionGroup } from '../../../../../interfaces';
-import { Stack, Checkbox, Text, Separator } from 'office-ui-fabric-react';
+import { Stack, Checkbox, Separator } from 'office-ui-fabric-react';
 import StyleUnitAssigningItem, {
   UnitAssigningContext,
 } from './StyleUnitAssigningItem';
@@ -101,11 +101,15 @@ export const StyleGroupAssigningItem: React.FC<StyleGroupAssigningItemProps> = (
       setIndeterminate(props.context.indeterminate);
   };
 
-  resolveOwnState();
+  // resolveOwnState();
+
+  useEffect(() => {
+    resolveOwnState();
+  });
 
   return (
     <div className="styleGroupAssigningItem">
-      <Stack tokens={{ childrenGap: '6px' }}>
+      <Stack tokens={{ childrenGap: 9 }}>
         <Stack.Item align="start">
           <Checkbox
             disabled={props.context.styleUnits.length === 0}
@@ -126,10 +130,7 @@ export const StyleGroupAssigningItem: React.FC<StyleGroupAssigningItemProps> = (
 
         {props.context.styleUnits && props.context.styleUnits.length > 0 ? (
           <Stack.Item align="start">
-            <Stack
-              styles={{ root: { marginLeft: '28px' } }}
-              tokens={{ childrenGap: 6 }}
-            >
+            <Stack wrap={true} horizontal tokens={{ childrenGap: 20 }}>
               {props.context.styleUnits.map(
                 (item: UnitAssigningContext, index: number) => (
                   <StyleUnitAssigningItem
@@ -148,7 +149,7 @@ export const StyleGroupAssigningItem: React.FC<StyleGroupAssigningItemProps> = (
           </Stack.Item>
         ) : null}
 
-        <Separator styles={{ root: { marginLeft: '28px' } }} />
+        <Separator />
       </Stack>
     </div>
   );
