@@ -7,6 +7,9 @@ import {
   Image,
   IImageProps,
   ImageFit,
+  Separator,
+  IFontStyles,
+  ITextProps,
 } from 'office-ui-fabric-react';
 
 export class UnitAssigningContext {
@@ -32,6 +35,12 @@ export class UnitAssigningContext {
 
     return result;
   };
+
+  getSourceUnitId: () => number = () =>
+    this._rawSource ? this._rawSource.id : 0;
+
+  getSourceGroupId: () => number = () =>
+    this._rawSource?.optionGroupId ? this._rawSource.optionGroupId : 0;
 }
 
 export class StyleUnitAssigningItemProps {
@@ -44,6 +53,9 @@ export class StyleUnitAssigningItemProps {
   changedCallback: () => void;
 }
 
+const ALLOW_HINT_COLOR: string = '#217346f0';
+const DISALLOW_HINT_COLOR: string = '#a4373af0';
+
 export const StyleUnitAssigningItem: React.FC<StyleUnitAssigningItemProps> = (
   props: StyleUnitAssigningItemProps
 ) => {
@@ -51,17 +63,17 @@ export const StyleUnitAssigningItem: React.FC<StyleUnitAssigningItemProps> = (
 
   if (checked !== props.context.checked) setChecked(props.context.checked);
 
-  // const imageProps: IImageProps = {
-  //   src: props.context.imageSourceUrl,
-  //   imageFit: ImageFit.center,
-  //   width: 67,
-  //   height: 53,
-  // };
-
   return (
     <div className="styleUnitAssigningItem">
       <Stack horizontal tokens={{ childrenGap: 6 }}>
         <Checkbox
+          styles={
+            {
+              // root: { width: '16px', height: '16px' },
+              // checkbox: { borderColor: '#797775' },
+              // checkmark: { fontSize: '10px' },
+            }
+          }
           onChange={(ev?: any, checked?: boolean) => {
             props.context.checked =
               checked !== null && checked !== undefined ? checked : false;
@@ -71,16 +83,30 @@ export const StyleUnitAssigningItem: React.FC<StyleUnitAssigningItemProps> = (
             props.changedCallback();
           }}
           checked={checked}
+          label={props.context.value}
         />
-        <Stack tokens={{ childrenGap: 6 }}>
-          <Text>{props.context.value}</Text>
-          {/* {props.context.imageSourceUrl &&
-          props.context.imageSourceUrl.length > 0 ? (
-            <Stack.Item>
-              <Image {...imageProps} alt={`${props.context.value}`} />
-            </Stack.Item>
-          ) : null} */}
-        </Stack>
+
+        {props.context.isDirty() ? (
+          <Separator
+            styles={{ content: { padding: '6px 0 6px 0' } }}
+            vertical
+          />
+        ) : null}
+
+        {props.context.isDirty() ? (
+          <Text
+            variant={'smallPlus' as ITextProps['variant']}
+            styles={{
+              root: {
+                color: props.context.checked
+                  ? ALLOW_HINT_COLOR
+                  : DISALLOW_HINT_COLOR,
+              },
+            }}
+          >
+            {props.context.checked ? 'Allow' : 'Disallow'}
+          </Text>
+        ) : null}
       </Stack>
     </div>
   );

@@ -105,50 +105,50 @@ export const StyleGroupAssigningItem: React.FC<StyleGroupAssigningItemProps> = (
 
   return (
     <div className="styleGroupAssigningItem">
-      <Stack>
-        <Stack disableShrink={false} horizontal tokens={{ childrenGap: 6 }}>
+      <Stack tokens={{ childrenGap: '6px' }}>
+        <Stack.Item align="start">
+          <Checkbox
+            disabled={props.context.styleUnits.length === 0}
+            onChange={(ev?: any, checked?: boolean) => {
+              props.context.setChecked(
+                checked !== null && checked !== undefined ? checked : false
+              );
+
+              resolveOwnState();
+
+              props.changedCallback();
+            }}
+            label={props.context.name}
+            checked={checked}
+            indeterminate={indeterminate}
+          ></Checkbox>
+        </Stack.Item>
+
+        {props.context.styleUnits && props.context.styleUnits.length > 0 ? (
           <Stack.Item align="start">
-            <Checkbox
-              disabled={props.context.styleUnits.length === 0}
-              onChange={(ev?: any, checked?: boolean) => {
-                props.context.setChecked(
-                  checked !== null && checked !== undefined ? checked : false
-                );
+            <Stack
+              styles={{ root: { marginLeft: '28px' } }}
+              tokens={{ childrenGap: 6 }}
+            >
+              {props.context.styleUnits.map(
+                (item: UnitAssigningContext, index: number) => (
+                  <StyleUnitAssigningItem
+                    key={index}
+                    context={item}
+                    changedCallback={() => {
+                      resolveOwnState();
+                      props.context.isDirty();
 
-                resolveOwnState();
-
-                props.changedCallback();
-              }}
-              checked={checked}
-              indeterminate={indeterminate}
-            />
-          </Stack.Item>
-          <Stack.Item align="start">
-            <Stack>
-              <Text styles={{ root: { marginBottom: '6px' } }}>
-                {props.context.name}
-              </Text>
-              <Stack tokens={{ childrenGap: 6 }}>
-                {props.context.styleUnits.map(
-                  (item: UnitAssigningContext, index: number) => (
-                    <StyleUnitAssigningItem
-                      key={index}
-                      context={item}
-                      changedCallback={() => {
-                        resolveOwnState();
-                        props.context.isDirty();
-
-                        props.changedCallback();
-                      }}
-                    />
-                  )
-                )}
-              </Stack>
+                      props.changedCallback();
+                    }}
+                  />
+                )
+              )}
             </Stack>
           </Stack.Item>
-        </Stack>
+        ) : null}
 
-        <Separator />
+        <Separator styles={{ root: { marginLeft: '28px' } }} />
       </Stack>
     </div>
   );

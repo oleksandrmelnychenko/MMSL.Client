@@ -21,6 +21,7 @@ import StyleGroupAssigningItem, {
 } from './StyleGroupAssigningItem';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
 import { productSettingsActions } from '../../../../../redux/slices/productSettings.slice';
+import { UnitAssigningContext } from './StyleUnitAssigningItem';
 
 class InitValues {
   constructor() {
@@ -35,14 +36,29 @@ class InitValues {
 const _columnStyle = { root: { maxWidth: '100%', minWidth: '100%' } };
 
 const _buildEditedPayload = (
-  values: InitValues,
+  assignments: GroupAssigningContext[],
   sourceEntity: ProductPermissionSettings
 ) => {
   let payload: any = {
-    name: values.name,
-    description: values.description,
-    permissionSettings: [],
     id: sourceEntity.id,
+    name: sourceEntity.name,
+    description: sourceEntity.description,
+    permissionSettings: new List(assignments)
+      .selectMany(
+        (groupContext: GroupAssigningContext) => groupContext.styleUnits
+      )
+      .where((unitContext) => unitContext.isDirty())
+      .select((unitContext: UnitAssigningContext) => {
+        const itemPayload = {
+          id: unitContext.getSourceUnitId(),
+          isAllow: unitContext.checked,
+          optionUnitId: unitContext.getSourceUnitId(),
+          optionGroupId: unitContext.getSourceGroupId(),
+        };
+
+        return itemPayload;
+      })
+      .toArray(),
   };
 
   return payload;
@@ -104,6 +120,11 @@ export const PermissionStylesConfigForm: React.FC = () => {
     ProductCategory | null
   >((state) => state.product.choose.category);
 
+  const permissionSettings: ProductPermissionSettings[] = useSelector<
+    IApplicationState,
+    ProductPermissionSettings[]
+  >((state) => state.productStylePermissions.permissionSettings);
+
   const editingSetting = useSelector<
     IApplicationState,
     ProductPermissionSettings | null | undefined
@@ -116,7 +137,7 @@ export const PermissionStylesConfigForm: React.FC = () => {
         dispatch(
           productStylePermissionsActions.changeEditingPermissionSetting(null)
         );
-      // setOptionGroupDefaults([]);
+      setOptionGroupDefaults([]);
       setOptionGroupContexts([]);
       setLocalProductCategory(null);
     };
@@ -124,22 +145,7 @@ export const PermissionStylesConfigForm: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (formikReference) {
-      dispatch(
-        controlActions.setPanelButtons([
-          GetCommandBarItemProps(CommandBarItem.Save, () => {
-            /// TODO: submit
-            debugger;
-          }),
-          GetCommandBarItemProps(CommandBarItem.Reset, () => {
-            buildGroupContexts();
-            setFormikDirty(
-              new List(optionGroupContexts).any((item) => item.isDirty())
-            );
-          }),
-        ])
-      );
-    }
+    RENAME_ME_FOO_FOO_FOO_FORMIK();
   }, [formikReference, dispatch]);
 
   useEffect(() => {
@@ -154,6 +160,7 @@ export const PermissionStylesConfigForm: React.FC = () => {
         )
       );
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFormikDirty, dispatch]);
 
@@ -194,13 +201,23 @@ export const PermissionStylesConfigForm: React.FC = () => {
   useEffect(() => {
     buildGroupContexts();
 
-    /// TODO: So so solution
+    // /// TODO: So so solution
+    RENAME_ME_FOO_FOO_FOO_FORMIK();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [optionGroupDefaults]);
+
+  useEffect(() => {
+    // /// TODO: So so solution
+    RENAME_ME_FOO_FOO_FOO_FORMIK();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [optionGroupContexts]);
+
+  const RENAME_ME_FOO_FOO_FOO_FORMIK = () => {
     if (formikReference) {
       dispatch(
         controlActions.setPanelButtons([
           GetCommandBarItemProps(CommandBarItem.Save, () => {
-            /// TODO: submit
-            debugger;
+            editSetting();
           }),
           GetCommandBarItemProps(CommandBarItem.Reset, () => {
             buildGroupContexts();
@@ -211,8 +228,7 @@ export const PermissionStylesConfigForm: React.FC = () => {
         ])
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [optionGroupDefaults]);
+  };
 
   const buildGroupContexts = () => {
     const groups = new List(optionGroupDefaults)
@@ -225,10 +241,41 @@ export const PermissionStylesConfigForm: React.FC = () => {
     setOptionGroupContexts(groups);
   };
 
-  const editSetting = (values: InitValues) => {
+  const editSetting = () => {
     if (productCategory && editingSetting) {
-      const payload = _buildEditedPayload(values, editingSetting);
-      /// TODO:
+      const payload = _buildEditedPayload(optionGroupContexts, editingSetting);
+
+      dispatch(
+        assignPendingActions(
+          productStylePermissionsActions.apiUpdatePermission(payload),
+          [],
+          [],
+          (args: any) => {
+            dispatch(
+              productStylePermissionsActions.updatePermissionSettingsList(
+                new List(permissionSettings)
+                  .select((item) => {
+                    let result = item;
+
+                    if (item.id === args.body.id) {
+                      result = args.body;
+                    }
+
+                    return result;
+                  })
+                  .toArray()
+              )
+            );
+            dispatch(controlActions.closeRightPanel());
+            dispatch(
+              productStylePermissionsActions.changeEditingPermissionSetting(
+                null
+              )
+            );
+          },
+          (args: any) => {}
+        )
+      );
     }
   };
 
@@ -241,12 +288,12 @@ export const PermissionStylesConfigForm: React.FC = () => {
       >
         <Stack.Item grow={1} styles={_columnStyle}>
           <div data-is-scrollable={true}>
-            <Separator
+            {/* <Separator
               styles={{ root: { marginBottom: '12px' } }}
               alignContent="start"
             >
               Allowed styles
-            </Separator>
+            </Separator> */}
             <Stack tokens={{ childrenGap: 9 }}>
               {optionGroupContexts.length > 0
                 ? optionGroupContexts.map(
@@ -270,12 +317,6 @@ export const PermissionStylesConfigForm: React.FC = () => {
             </Stack>
           </div>
         </Stack.Item>
-
-        {/* <Stack.Item grow={1} styles={_columnStyle}>
-          <div data-is-scrollable={true}>
-            <Separator alignContent="start">Product styles</Separator>
-          </div>
-        </Stack.Item> */}
       </Stack>
     </div>
   );

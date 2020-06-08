@@ -278,7 +278,7 @@ const PermissionsList: React.FC = () => {
         ) => {
           return (
             <Text block nowrap style={defaultCellStyle}>
-              {`${item?.name} ${item?.id}`}
+              {`${item?.name}`}
             </Text>
           );
         },
