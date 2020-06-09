@@ -46,6 +46,7 @@ const Measurements: React.FC = () => {
       setIsWasInited(false);
       dispatch(controlActions.closeDashboardHintStub());
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /// Listen to `global` product changes and update own local state
@@ -53,6 +54,7 @@ const Measurements: React.FC = () => {
     if (targetProduct && targetProduct.id !== localProduct?.id) {
       setLocalProduct(targetProduct);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [targetProduct]);
 
   /// Get measurements
@@ -96,6 +98,7 @@ const Measurements: React.FC = () => {
     }
 
     return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localProduct]);
 
   /// Resolve dashboard hint visibility
@@ -125,6 +128,7 @@ const Measurements: React.FC = () => {
         );
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isWasInited, isAnyMeasurements]);
 
   return (

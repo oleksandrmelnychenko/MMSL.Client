@@ -10,6 +10,9 @@ import {
   Text,
   CommandBar,
   ICommandBarItemProps,
+  ScrollablePane,
+  Sticky,
+  StickyPositionType,
 } from 'office-ui-fabric-react';
 import { commandBarStyles } from '../../../common/fabric-styles/styles';
 
@@ -34,34 +37,41 @@ export const RightPanel: React.FC<RightPanelProps> = () => {
 
   return (
     <div>
-      <div className="panelTitle">
-        <Stack
-          tokens={{ childrenGap: 20 }}
-          horizontal
-          className="panelTitle__panelHeader"
-        >
-          <Text className="panelTitle__title">{rightPanel.title}</Text>
-          <Text className="panelTitle__description">
-            {rightPanel.description}
-          </Text>
-        </Stack>
-      </div>
-      <div>
-        <CommandBar
-          styles={commandBarStyles}
-          items={rightPanel.commandBarItems as ICommandBarItemProps[]}
-          className={rightPanel.commandBarClassName}
-        />
-      </div>
-      <Stack
+      <Sticky stickyPosition={StickyPositionType.Header}>
+        <div className="panelTitle">
+          <Stack
+            tokens={{ childrenGap: 20 }}
+            horizontal
+            className="panelTitle__panelHeader"
+          >
+            <Text className="panelTitle__title">{rightPanel.title}</Text>
+            <Text className="panelTitle__description">
+              {rightPanel.description}
+            </Text>
+          </Stack>
+        </div>
+        <div>
+          <CommandBar
+            styles={commandBarStyles}
+            items={rightPanel.commandBarItems as ICommandBarItemProps[]}
+            className={rightPanel.commandBarClassName}
+          />
+        </div>
+      </Sticky>
+
+      {/* <Stack
         horizontal
         horizontalAlign="space-between"
         tokens={{ childrenGap: 20 }}
-      >
-        <Stack grow={1}>
+      > */}
+      {/* <Stack grow={1}> */}
+      <ScrollablePane styles={{ root: { top: '188px', marginBottom: '28px' } }}>
+        <div style={{ padding: '28px 28px 0px 28px' }}>
           <rightPanel.component />
-        </Stack>
-      </Stack>
+        </div>
+        {/* </Stack> */}
+        {/* </Stack> */}
+      </ScrollablePane>
     </div>
   );
 };

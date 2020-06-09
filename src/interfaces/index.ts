@@ -531,9 +531,11 @@ export class ProductPermissionSettings extends EntityBaseNamed {
     this.productCategoryId = 0;
     this.productCategory = null;
     this.permissionSettings = [];
+    this.dealersAppliedCount = 0;
   }
 
   productCategoryId: number;
   productCategory: ProductCategory | null | undefined;
   permissionSettings: PermissionSettings[];
+  dealersAppliedCount: number;
 }

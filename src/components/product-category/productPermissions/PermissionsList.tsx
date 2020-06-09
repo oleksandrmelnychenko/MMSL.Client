@@ -33,6 +33,10 @@ import { List } from 'linq-typescript';
 import { defaultCellStyle } from '../../../common/fabric-styles/styles';
 import PermissionStylesConfigForm from './managing/stylesConfig/PermissionStylesConfigForm';
 
+const NOT_APPLIED_STUB: string = 'Not applied';
+const APPLIED_COLOR_HEX: string = '#000';
+const NOT_APPLIED_COLOR_HEX: string = '#a4373a80';
+
 const PermissionsList: React.FC = () => {
   const dispatch = useDispatch();
 
@@ -279,6 +283,40 @@ const PermissionsList: React.FC = () => {
           return (
             <Text block nowrap style={defaultCellStyle}>
               {`${item?.name}`}
+            </Text>
+          );
+        },
+      },
+      {
+        key: 'appliedDealersCount',
+        name: 'Applied dealers',
+        minWidth: 16,
+        maxWidth: 150,
+        isResizable: true,
+        isCollapsible: false,
+        onColumnClick: () => {},
+        onRender: (item?: ProductPermissionSettings, index?: number) => {
+          let cellContent = item
+            ? item.dealersAppliedCount > 0
+              ? item.dealersAppliedCount
+              : NOT_APPLIED_STUB
+            : '';
+
+          let color: string = '#000';
+
+          if (item) {
+            if (item.dealersAppliedCount > 0) {
+              cellContent = item.dealersAppliedCount;
+              color = APPLIED_COLOR_HEX;
+            } else {
+              cellContent = NOT_APPLIED_STUB;
+              color = NOT_APPLIED_COLOR_HEX;
+            }
+          }
+
+          return (
+            <Text style={{ ...defaultCellStyle, color: color }} block nowrap>
+              {cellContent}
             </Text>
           );
         },

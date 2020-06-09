@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Stack, Label, Separator } from 'office-ui-fabric-react';
+import {
+  Stack,
+  Label,
+  Separator,
+  ScrollablePane,
+} from 'office-ui-fabric-react';
 import {
   FormicReference,
   ProductCategory,
