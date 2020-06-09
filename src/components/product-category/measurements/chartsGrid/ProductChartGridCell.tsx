@@ -174,7 +174,6 @@ const ProductChartGridCell: React.FC<IProductChartGridCellProps> = (
                             (args: any) => {
                               setOutputValue(formik.values.sizeValue);
                               setIsInEditMode(false);
-                              formik.resetForm();
                             },
                             (args: any) => {}
                           );
@@ -182,7 +181,6 @@ const ProductChartGridCell: React.FC<IProductChartGridCellProps> = (
                           dispatch(action);
                         } else {
                           setIsInEditMode(false);
-                          formik.resetForm();
                         }
                       }}
                     />
