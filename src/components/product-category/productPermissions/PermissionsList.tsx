@@ -32,6 +32,7 @@ import { assignPendingActions } from '../../../helpers/action.helper';
 import { List } from 'linq-typescript';
 import { defaultCellStyle } from '../../../common/fabric-styles/styles';
 import PermissionStylesConfigForm from './managing/stylesConfig/PermissionStylesConfigForm';
+import PermissionsToDealersForm from './managing/dealersConfig/PermissionsToDealersForm';
 
 const NOT_APPLIED_STUB: string = 'Not applied';
 const APPLIED_COLOR_HEX: string = '#000';
@@ -87,6 +88,37 @@ const PermissionsList: React.FC = () => {
                   dispatch(controlActions.closeRightPanel());
                 },
                 component: PermissionStylesConfigForm,
+              })
+            );
+          },
+          (args: any) => {}
+        )
+      );
+    }
+  };
+
+  const onManageDealers = (permissionId: number | null | undefined) => {
+    if (permissionId && targetProduct) {
+      dispatch(
+        assignPendingActions(
+          productStylePermissionsActions.apiGetPermissionById(permissionId),
+          [],
+          [],
+          (args: any) => {
+            dispatch(
+              productStylePermissionsActions.changeEditingPermissionSetting(
+                args
+              )
+            );
+            dispatch(
+              controlActions.openRightPanel({
+                title: 'Assign Dealers',
+                description: args.name,
+                width: '700px',
+                closeFunctions: () => {
+                  dispatch(controlActions.closeRightPanel());
+                },
+                component: PermissionsToDealersForm,
               })
             );
           },
@@ -183,6 +215,15 @@ const PermissionsList: React.FC = () => {
                 onClick: () => onExploreDetails(renderArgs?.item?.id),
               },
               {
+                key: 'assignDealers',
+                text: 'Assign Dealers',
+                label: 'Assign Dealers',
+                iconProps: {
+                  iconName: 'RecruitmentManagement',
+                },
+                onClick: () => onManageDealers(renderArgs?.item?.id),
+              },
+              {
                 key: 'edit',
                 text: 'Edit',
                 label: 'Edit',
@@ -198,8 +239,8 @@ const PermissionsList: React.FC = () => {
               },
             ],
             styles: {
-              root: { width: '84px' },
-              container: { width: '84px' },
+              root: { width: '137px' },
+              container: { width: '137px' },
             },
           }}
           onRenderMenuIcon={(props?: any, defaultRender?: any) => null}

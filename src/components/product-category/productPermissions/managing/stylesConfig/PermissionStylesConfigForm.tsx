@@ -81,9 +81,6 @@ const _renderHintLable = (textMessage: string): JSX.Element => {
 export const PermissionStylesConfigForm: React.FC = () => {
   const dispatch = useDispatch();
 
-  const [formikReference] = useState<FormicReference>(
-    new FormicReference(() => {})
-  );
   const [isFormikDirty, setFormikDirty] = useState<boolean>(false);
   const [localProductCategory, setLocalProductCategory] = useState<
     ProductCategory | null | undefined

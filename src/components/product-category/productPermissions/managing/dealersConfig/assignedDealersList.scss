@@ -1,0 +1,31 @@
+.assignedDealersList {
+    &__dealer {
+        position: relative;
+        // min-height: 54px;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-left: 10px;
+        box-sizing: border-box;
+        border-bottom: 1px solid #edebe9;
+        border-left: 3px solid transparent;
+        cursor: pointer;
+        transition: all .2s ease;
+
+        &.selected {
+            border-left: 3px solid #0078d4;
+            color: #0078d4;
+            background-color: #f0f0f0;
+        }
+
+        &__title {
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        &__subTitle {
+            font-size: 12px;
+            color: #a19f9d;
+            margin-bottom: 10px;
+        }
+    }
+}

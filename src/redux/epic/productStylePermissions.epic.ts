@@ -234,6 +234,7 @@ export const apiGetOptionGroupsFromPermissionPerspectiveByIdEpic = (
     })
   );
 };
+
 export const apiGetPermissionByIdEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
     ofType(productStylePermissionsActions.apiGetPermissionById.type),
@@ -261,6 +262,52 @@ export const apiGetPermissionByIdEpic = (action$: AnyAction, state$: any) => {
                 { type: 'ERROR_GET_PERMISSION_BY_ID' },
                 controlActions.showInfoMessage(
                   `Error occurred while getting permission setting by id. ${errorResponse}`
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiGetDealersByPermissionIdEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(productStylePermissionsActions.apiGetDealersByPermissionId.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+      return ajaxGetWebResponse(
+        api.GET_DEALERS_BY_PERMISSION_ID,
+        state$.value,
+        [
+          {
+            key: 'productPermissionId',
+            value: `${action.payload}`,
+          },
+        ]
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_GET_DEALERS_BY_PERMISSION_ID' },
+                controlActions.showInfoMessage(
+                  `Error occurred while getting dealers by permission id. ${errorResponse}`
                 ),
                 controlActions.disabledStatusBar(),
               ],
