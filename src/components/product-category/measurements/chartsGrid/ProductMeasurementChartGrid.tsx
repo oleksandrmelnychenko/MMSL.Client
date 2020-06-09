@@ -103,140 +103,147 @@ const ProductMeasurementChartGrid: React.FC = () => {
           position: 'relative',
           right: '0',
           top: '0',
+          height: '20px',
         }}
         ref={refference}
       >
-        <Stack
-          styles={{ root: { marginLeft: '-12px' } }}
-          horizontal
-          disableShrink
-        >
-          <IconButton
-            data-selection-disabled={true}
-            className={DATA_SELECTION_DISABLED_CLASS}
-            styles={_columnIconButtonStyle}
-            height={20}
-            iconProps={{ iconName: 'Edit' }}
-            title="Edit"
-            ariaLabel="Edit"
-            onClick={() => {
-              if (targetProductMeasurementChart) {
-                dispatch(
-                  assignPendingActions(
-                    measurementActions.apiGetMeasurementById(
-                      targetProductMeasurementChart.id
-                    ),
-                    [],
-                    [],
-                    (args: any) => {
-                      /// Extract `fresh` size for edit
-                      const sizeForEdit: any = new List(
-                        args.measurementMapSizes
-                      ).firstOrDefault(
-                        (sizeItem: any) => sizeItem.id === item.id
-                      );
+        <IconButton
+          styles={{ root: { position: 'absolute', top: '-6px', left: '-9px' } }}
+          menuProps={{
+            onDismiss: (ev) => {},
+            items: [
+              {
+                key: 'edit',
+                text: 'Edit',
+                label: 'Edit',
+                iconProps: { iconName: 'Edit' },
+                onClick: () => {
+                  if (targetProductMeasurementChart) {
+                    dispatch(
+                      assignPendingActions(
+                        measurementActions.apiGetMeasurementById(
+                          targetProductMeasurementChart.id
+                        ),
+                        [],
+                        [],
+                        (args: any) => {
+                          /// Extract `fresh` size for edit
+                          const sizeForEdit: any = new List(
+                            args.measurementMapSizes
+                          ).firstOrDefault(
+                            (sizeItem: any) => sizeItem.id === item.id
+                          );
 
-                      if (sizeForEdit) {
-                        dispatch(
-                          productActions.changeProductMeasurementSizeForEdit(
-                            sizeForEdit
-                          )
-                        );
+                          if (sizeForEdit) {
+                            dispatch(
+                              productActions.changeProductMeasurementSizeForEdit(
+                                sizeForEdit
+                              )
+                            );
 
-                        dispatch(
-                          controlActions.openRightPanel({
-                            title: 'Edit size',
-                            description: item.name,
-                            width: '400px',
-                            closeFunctions: () => {
+                            dispatch(
+                              controlActions.openRightPanel({
+                                title: 'Edit size',
+                                description: item.name,
+                                width: '400px',
+                                closeFunctions: () => {
+                                  dispatch(
+                                    productActions.changeProductMeasurementSizeForEdit(
+                                      null
+                                    )
+                                  );
+                                  dispatch(controlActions.closeRightPanel());
+                                },
+                                component: SizesForm,
+                              })
+                            );
+                          }
+                        },
+                        (args: any) => {}
+                      )
+                    );
+                  }
+                },
+              },
+              {
+                key: 'delete',
+                text: 'Delete',
+                label: 'Delete',
+                iconProps: { iconName: 'Delete' },
+                onClick: () => {
+                  if (
+                    item &&
+                    item.measurementSize &&
+                    targetProductMeasurementChart &&
+                    targetProduct
+                  ) {
+                    dispatch(
+                      controlActions.toggleCommonDialogVisibility(
+                        new DialogArgs(
+                          CommonDialogType.Delete,
+                          'Delete size',
+                          `Are you sure you want to delete ${item.measurementSize.name}?`,
+                          () => {
+                            if (
+                              item &&
+                              item.measurementSize &&
+                              targetProductMeasurementChart &&
+                              targetProduct
+                            ) {
                               dispatch(
-                                productActions.changeProductMeasurementSizeForEdit(
-                                  null
+                                assignPendingActions(
+                                  measurementActions.apiDeleteMeasurementSizeById(
+                                    {
+                                      measurementId:
+                                        targetProductMeasurementChart.id,
+                                      sizeId: item.measurementSize.id,
+                                    }
+                                  ),
+                                  [],
+                                  [],
+                                  (args: any) => {
+                                    dispatch(
+                                      assignPendingActions(
+                                        measurementActions.apiGetMeasurementById(
+                                          targetProductMeasurementChart
+                                            ? targetProductMeasurementChart.id
+                                            : 0
+                                        ),
+                                        [],
+                                        [],
+                                        (args: any) => {
+                                          dispatch(
+                                            productActions.changeSelectedProductMeasurement(
+                                              args
+                                            )
+                                          );
+                                        },
+                                        (args: any) => {}
+                                      )
+                                    );
+                                  },
+                                  (args: any) => {}
                                 )
                               );
-                              dispatch(controlActions.closeRightPanel());
-                            },
-                            component: SizesForm,
-                          })
-                        );
-                      }
-                    },
-                    (args: any) => {}
-                  )
-                );
-              }
-            }}
-          />
-          <IconButton
-            data-selection-disabled={true}
-            className={DATA_SELECTION_DISABLED_CLASS}
-            styles={_columnIconButtonStyle}
-            height={20}
-            iconProps={{ iconName: 'Delete' }}
-            title="Delete"
-            ariaLabel="Delete"
-            onClick={(args: any) => {
-              if (
-                item &&
-                item.measurementSize &&
-                targetProductMeasurementChart &&
-                targetProduct
-              ) {
-                dispatch(
-                  controlActions.toggleCommonDialogVisibility(
-                    new DialogArgs(
-                      CommonDialogType.Delete,
-                      'Delete size',
-                      `Are you sure you want to delete ${item.measurementSize.name}?`,
-                      () => {
-                        if (
-                          item &&
-                          item.measurementSize &&
-                          targetProductMeasurementChart &&
-                          targetProduct
-                        ) {
-                          dispatch(
-                            assignPendingActions(
-                              measurementActions.apiDeleteMeasurementSizeById({
-                                measurementId: targetProductMeasurementChart.id,
-                                sizeId: item.measurementSize.id,
-                              }),
-                              [],
-                              [],
-                              (args: any) => {
-                                dispatch(
-                                  assignPendingActions(
-                                    measurementActions.apiGetMeasurementById(
-                                      targetProductMeasurementChart
-                                        ? targetProductMeasurementChart.id
-                                        : 0
-                                    ),
-                                    [],
-                                    [],
-                                    (args: any) => {
-                                      dispatch(
-                                        productActions.changeSelectedProductMeasurement(
-                                          args
-                                        )
-                                      );
-                                    },
-                                    (args: any) => {}
-                                  )
-                                );
-                              },
-                              (args: any) => {}
-                            )
-                          );
-                        }
-                      },
-                      () => {}
-                    )
-                  )
-                );
-              }
-            }}
-          />
-        </Stack>
+                            }
+                          },
+                          () => {}
+                        )
+                      )
+                    );
+                  }
+                },
+              },
+            ],
+            styles: {
+              root: { width: '84px' },
+              container: { width: '84px' },
+            },
+          }}
+          onRenderMenuIcon={(props?: any, defaultRender?: any) => null}
+          iconProps={{ iconName: 'More' }}
+          onMenuClick={(ev?: any) => {}}
+        />
       </div>
     );
   };
@@ -311,8 +318,8 @@ const ProductMeasurementChartGrid: React.FC = () => {
     return {
       key: getId('stubPadding'),
       name: '',
-      maxWidth: 50,
-      minWidth: 50,
+      maxWidth: 26,
+      minWidth: 26,
       isResizable: false,
       isCollapsable: false,
       data: 'string',
@@ -457,9 +464,7 @@ const ProductMeasurementChartGrid: React.FC = () => {
             zIndex: 0,
             left: '0',
             overflowX: 'auto',
-            width: '71px',
-            // borderRight:
-            //   items && items.length < 1 ? '' : '1px solid rgb(223, 223, 223)',
+            width: '47px',
             borderRight: items && items.length < 1 ? '' : '1px solid #0078d415',
           },
         }}

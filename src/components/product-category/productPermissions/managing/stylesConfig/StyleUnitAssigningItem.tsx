@@ -2,14 +2,8 @@ import React, { useState } from 'react';
 import { OptionUnit } from '../../../../../interfaces';
 import {
   Stack,
-  Checkbox,
   Text,
   Image,
-  IImageProps,
-  ImageFit,
-  Separator,
-  IFontStyles,
-  ITextProps,
   TooltipHost,
   TooltipDelay,
   DirectionalHint,
