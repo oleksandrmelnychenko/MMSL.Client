@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Formik, Form, Field } from 'formik';
 import { Stack, TextField, Separator, Label } from 'office-ui-fabric-react';
-import * as Yup from 'yup';
 import {
   FormicReference,
   ProductCategory,
   ProductPermissionSettings,
   DealerAccount,
 } from '../../../../../interfaces';
-import * as fabricStyles from '../../../../../common/fabric-styles/styles';
 import { List } from 'linq-typescript';
 import { useDispatch, useSelector } from 'react-redux';
-import { controlActions } from '../../../../../redux/slices/control.slice';
+import {
+  controlActions,
+  DialogArgs,
+  CommonDialogType,
+} from '../../../../../redux/slices/control.slice';
 import {
   CommandBarItem,
   GetCommandBarItemProps,
@@ -21,6 +22,9 @@ import { IApplicationState } from '../../../../../redux/reducers';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
 import { productStylePermissionsActions } from '../../../../../redux/slices/productStylePermissions.slice';
 import AssignedDealersList from './AssignedDealersList';
+import DealerDetails, { DealerDetailsState } from './DealerDetails';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 const _columnStyle = { root: { maxWidth: '49%', minWidth: '49%' } };
 
@@ -43,20 +47,16 @@ const _renderHintLable = (textMessage: string): JSX.Element => {
   return result;
 };
 
-const _initDefaultValues = (
-  sourceEntity?: ProductPermissionSettings | null
-) => {
-  const initValues: any = {};
-
-  if (sourceEntity) {
-    initValues.name = sourceEntity.name;
-    initValues.description = sourceEntity.description
-      ? sourceEntity.description
-      : '';
-  }
+const _initDefaultValues = () => {
+  const initValues: any = {
+    dismissDealer: null,
+    assignDealer: null,
+  };
 
   return initValues;
 };
+
+export const DealersListContext = React.createContext({});
 
 export const PermissionsToDealersForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -64,7 +64,7 @@ export const PermissionsToDealersForm: React.FC = () => {
   const [formikReference] = useState<FormicReference>(
     new FormicReference(() => {})
   );
-  const [isFormikDirty, setFormikDirty] = useState<boolean>(false);
+  const [isDismissDirty, setIsDismissDirty] = useState<boolean>(false);
   const [assignedDealers, setAssignedDealers] = useState<DealerAccount[]>([]);
 
   const commandBarItems = useSelector<IApplicationState, any>(
@@ -97,20 +97,23 @@ export const PermissionsToDealersForm: React.FC = () => {
       dispatch(
         controlActions.setPanelButtons([
           GetCommandBarItemProps(CommandBarItem.New, () => {
-            debugger;
-          }),
-          GetCommandBarItemProps(CommandBarItem.Save, () => {
-            formikReference.formik.submitForm();
-          }),
-          GetCommandBarItemProps(CommandBarItem.Reset, () => {
             formikReference.formik.resetForm();
           }),
-          GetCommandBarItemProps(CommandBarItem.Delete, () => {
+          GetCommandBarItemProps(CommandBarItem.Save, () => {
+            // formikReference.formik.submitForm();
             debugger;
+          }),
+          GetCommandBarItemProps(CommandBarItem.Reset, () => {
+            // formikReference.formik.resetForm();
+            debugger;
+          }),
+          GetCommandBarItemProps(CommandBarItem.Delete, () => {
+            formikReference.formik.submitForm();
           }),
         ])
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formikReference, dispatch]);
 
   useEffect(() => {
@@ -119,14 +122,14 @@ export const PermissionsToDealersForm: React.FC = () => {
         controlActions.setPanelButtons(
           ChangeItemsDisabledState(
             commandBarItems,
-            [CommandBarItem.Reset, CommandBarItem.Save],
-            !isFormikDirty
+            [CommandBarItem.Delete],
+            !isDismissDirty
           )
         )
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFormikDirty, dispatch]);
+  }, [isDismissDirty]);
 
   useEffect(() => {
     if (editingPermission) {
@@ -157,43 +160,93 @@ export const PermissionsToDealersForm: React.FC = () => {
     }
   };
 
+  const onDismissDealer = (dealerToDismiss: DealerAccount) => {
+    dispatch(
+      controlActions.toggleCommonDialogVisibility(
+        new DialogArgs(
+          CommonDialogType.Delete,
+          'Dismiss dealer',
+          `Are you sure you want to dismiss ${dealerToDismiss.companyName} dealer from current style permission?`,
+          () => {
+            if (dealerToDismiss) {
+              console.log('TODO: dismiss dealer');
+            } else {
+              console.log(
+                'TODO: cant resolve dealer to dismiss (after accept)'
+              );
+            }
+          },
+          () => {}
+        )
+      )
+    );
+  };
+
   return (
     <div className="permissionsToDealersForm">
       <Formik
         validationSchema={Yup.object().shape({
-          name: Yup.string()
-            .min(3)
-            .required(() => 'Name is required'),
-          description: Yup.string(),
+          dismissDealer: Yup.object().nullable(),
+          assignDealer: Yup.object().nullable(),
         })}
-        initialValues={_initDefaultValues(editingPermission)}
+        initialValues={_initDefaultValues()}
         onSubmit={(values: any) => {
-          if (editingPermission) editSetting();
+          if (values) {
+            if (values.dismissDealer) {
+            } else {
+              console.log('TODO: unsuported case');
+            }
+          }
         }}
         onReset={(values: any, formikHelpers: any) => {}}
         innerRef={(formik: any) => {
           formikReference.formik = formik;
-          if (formik) setFormikDirty(formik.dirty);
+
+          if (formik) {
+            setIsDismissDirty(formik.values.dismissDealer ? true : false);
+            /// TODO: dont forget about other `dirty` state
+          }
         }}
         validateOnBlur={false}
         enableReinitialize={true}
       >
         {(formik) => {
           return (
-            <Form>
-              <Stack
-                horizontal
-                horizontalAlign="space-between"
-                tokens={{ childrenGap: 20 }}
-              >
-                <Stack.Item grow={1} styles={_columnStyle}>
-                  <Stack tokens={{ childrenGap: 6 }}>
-                    <Separator alignContent="start">Assigned Dealers</Separator>
-                    <AssignedDealersList dealers={assignedDealers} />
-                  </Stack>
-                </Stack.Item>
-              </Stack>
-            </Form>
+            <Stack
+              horizontal
+              horizontalAlign="space-between"
+              tokens={{ childrenGap: 20 }}
+            >
+              <Stack.Item grow={1} styles={_columnStyle}>
+                <Stack tokens={{ childrenGap: 6 }}>
+                  <Separator alignContent="start">Assigned Dealers</Separator>
+                  <AssignedDealersList
+                    dealers={assignedDealers}
+                    selectedDealer={formik.values.dismissDealer}
+                    onSelectDealerCallback={(
+                      dealer: DealerAccount | null | undefined
+                    ) => {
+                      formik.setFieldValue('dismissDealer', dealer);
+                      formik.setFieldTouched('dismissDealer');
+
+                      formik.setFieldValue('assignDealer', null);
+                      formik.setFieldTouched('assignDealer');
+                    }}
+                  />
+                </Stack>
+              </Stack.Item>
+
+              <Stack.Item grow={1} styles={_columnStyle}>
+                <Stack tokens={{ childrenGap: 6 }}>
+                  <Separator alignContent="start">Dealer</Separator>
+                  <DealerDetails
+                    formikReference={formikReference}
+                    state={DealerDetailsState.Explore}
+                    dealer={null}
+                  />
+                </Stack>
+              </Stack.Item>
+            </Stack>
           );
         }}
       </Formik>

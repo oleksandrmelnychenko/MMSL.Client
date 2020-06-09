@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Stack, Text, Label } from 'office-ui-fabric-react';
 import { DealerAccount } from '../../../../../interfaces';
 import './assignedDealersList.scss';
@@ -24,31 +24,34 @@ const _renderHintLable = (textMessage: string): JSX.Element => {
 
 export class AssignedDealersListProps {
   constructor() {
+    this.selectedDealer = null;
     this.dealers = [];
+
+    this.onSelectDealerCallback = (
+      dealer: DealerAccount | null | undefined
+    ) => {};
   }
 
+  selectedDealer: DealerAccount | null | undefined;
   dealers: DealerAccount[];
+  onSelectDealerCallback: (dealer: DealerAccount | null | undefined) => void;
 }
 
 export const AssignedDealersList: React.FC<AssignedDealersListProps> = (
   props: AssignedDealersListProps
 ) => {
-  const [selectedDealer, setSelectedDealer] = useState<
-    DealerAccount | null | undefined
-  >(null);
-
   const renderDealer = (dealer: DealerAccount, dealerIndex: number) => {
     return (
       <div
         className={
-          dealer.id === selectedDealer?.id
+          dealer.id === props.selectedDealer?.id
             ? 'assignedDealersList__dealer selected'
             : 'assignedDealersList__dealer'
         }
         key={dealerIndex}
         onClick={() => {
-          if (selectedDealer !== dealer) {
-            setSelectedDealer(dealer);
+          if (props.selectedDealer !== dealer) {
+            props.onSelectDealerCallback(dealer);
           }
         }}
       >

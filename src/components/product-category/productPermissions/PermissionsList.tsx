@@ -116,7 +116,9 @@ const PermissionsList: React.FC = () => {
                 description: args.name,
                 width: '700px',
                 closeFunctions: () => {
-                  dispatch(controlActions.closeRightPanel());
+                  /// TODO: delete dialog will invoke this method
+                  // dispatch(controlActions.closeRightPanel());
+                  console.log('TODO: delete dialog will invoke this method');
                 },
                 component: PermissionsToDealersForm,
               })
