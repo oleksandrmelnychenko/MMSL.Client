@@ -1,8 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
-import * as Yup from 'yup';
-import { Stack, Text, Label, TextField } from 'office-ui-fabric-react';
-import { Formik, Form, Field } from 'formik';
-import { DealerAccount, FormicReference } from '../../../../../interfaces';
+import React from 'react';
+import {
+  Stack,
+  Label,
+  ComboBox,
+  IComboBox,
+  IComboBoxOption,
+} from 'office-ui-fabric-react';
+import { DealerAccount } from '../../../../../interfaces';
 import * as fabricStyles from '../../../../../common/fabric-styles/styles';
 import './assignedDealersList.scss';
 
@@ -25,26 +29,18 @@ const _renderHintLable = (textMessage: string): JSX.Element => {
   return result;
 };
 
-const _initDefaultValues = () => {
-  const initValues: any = { companyName: '' };
-
-  return initValues;
-};
-
 export enum DealerDetailsState {
   NotTouched,
-  Explore,
-  Edit,
+  Exploring,
+  Assigning,
 }
 
 export class DealerDetailsProps {
   constructor() {
-    this.formikReference = new FormicReference();
     this.dealer = null;
     this.state = DealerDetailsState.NotTouched;
   }
 
-  formikReference: FormicReference;
   dealer: DealerAccount | null | undefined;
   state: DealerDetailsState;
 }
@@ -52,63 +48,49 @@ export class DealerDetailsProps {
 export const DealerDetails: React.FC<DealerDetailsProps> = (
   props: DealerDetailsProps
 ) => {
+  let comboOptions: IComboBoxOption[] = [];
+  let selectedOptionKey: string | number | null | undefined;
+
+  if (DealerDetailsState.Exploring === props.state) {
+    if (props.dealer) {
+      comboOptions = [
+        {
+          key: `${props.dealer.id}`,
+          text: props.dealer.companyName,
+          dealer: props.dealer,
+        } as IComboBoxOption,
+      ];
+      selectedOptionKey = comboOptions[0].key;
+    }
+  } else if (DealerDetailsState.Assigning === props.state) {
+  } else if (DealerDetailsState.NotTouched === props.state) {
+  }
+
   return (
     <div className="dealerDetails">
       {props.state !== DealerDetailsState.NotTouched ? (
-        <Formik
-          validationSchema={Yup.object().shape({
-            companyName: Yup.string(),
-          })}
-          initialValues={_initDefaultValues()}
-          onSubmit={(values: any) => {
-            debugger;
-          }}
-          onReset={(values: any, formikHelpers: any) => {}}
-          innerRef={(formik: any) => {
-            props.formikReference.formik = formik;
-            // if (formik) setFormikDirty(formik.dirty);
-          }}
-          validateOnBlur={false}
-          enableReinitialize={true}
-        >
-          {(formik) => {
-            return (
-              <Form className="form">
-                <Stack>
-                  <Field name="name">
-                    {() => (
-                      <div className="form__group">
-                        <TextField
-                          value={formik.values.name}
-                          styles={fabricStyles.textFildLabelStyles}
-                          className="form__group__field"
-                          label="Name"
-                          required
-                          onChange={(args: any) => {
-                            formik.setFieldValue('name', args.target.value);
-                            formik.setFieldTouched('name');
-                          }}
-                          errorMessage={
-                            formik.errors.name && formik.touched.name ? (
-                              <span className="form__group__error">
-                                {formik.errors.name}
-                              </span>
-                            ) : (
-                              ''
-                            )
-                          }
-                        />
-                      </div>
-                    )}
-                  </Field>
-                </Stack>
-              </Form>
-            );
-          }}
-        </Formik>
+        <Stack>
+          <ComboBox
+            selectedKey={selectedOptionKey}
+            allowFreeform={true}
+            label="Dealer Company Name"
+            autoComplete={true ? 'on' : 'off'}
+            options={comboOptions}
+            useComboBoxAsMenuWidth={true}
+            styles={{
+              ...fabricStyles.comboBoxStyles,
+            }}
+            onChange={(
+              event: React.FormEvent<IComboBox>,
+              option?: IComboBoxOption,
+              index?: number,
+              value?: string
+            ) => {}}
+          />
+        </Stack>
       ) : (
         _renderHintLable(
-          'Select and explore or assign new dealer for current style permission.'
+          'Select and explore or find and assign new dealer for current style permission.'
         )
       )}
     </div>

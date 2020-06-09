@@ -49,7 +49,7 @@ const _renderHintLable = (textMessage: string): JSX.Element => {
 
 const _initDefaultValues = () => {
   const initValues: any = {
-    dismissDealer: null,
+    exploringDealer: null,
     assignDealer: null,
   };
 
@@ -66,6 +66,9 @@ export const PermissionsToDealersForm: React.FC = () => {
   );
   const [isDismissDirty, setIsDismissDirty] = useState<boolean>(false);
   const [assignedDealers, setAssignedDealers] = useState<DealerAccount[]>([]);
+  const [detailsState, setDetailsState] = useState<DealerDetailsState>(
+    DealerDetailsState.NotTouched
+  );
 
   const commandBarItems = useSelector<IApplicationState, any>(
     (state) => state.control.rightPanel.commandBarItems
@@ -85,6 +88,7 @@ export const PermissionsToDealersForm: React.FC = () => {
   useEffect(() => {
     return () => {
       setAssignedDealers([]);
+      setDetailsState(DealerDetailsState.NotTouched);
       dispatch(
         productStylePermissionsActions.changeEditingPermissionSetting(null)
       );
@@ -98,17 +102,19 @@ export const PermissionsToDealersForm: React.FC = () => {
         controlActions.setPanelButtons([
           GetCommandBarItemProps(CommandBarItem.New, () => {
             formikReference.formik.resetForm();
+            setDetailsState(DealerDetailsState.Assigning);
           }),
           GetCommandBarItemProps(CommandBarItem.Save, () => {
             // formikReference.formik.submitForm();
             debugger;
           }),
           GetCommandBarItemProps(CommandBarItem.Reset, () => {
-            // formikReference.formik.resetForm();
-            debugger;
+            formikReference.formik.resetForm();
+            setDetailsState(DealerDetailsState.NotTouched);
           }),
           GetCommandBarItemProps(CommandBarItem.Delete, () => {
             formikReference.formik.submitForm();
+            setDetailsState(DealerDetailsState.Exploring);
           }),
         ])
       );
@@ -186,13 +192,13 @@ export const PermissionsToDealersForm: React.FC = () => {
     <div className="permissionsToDealersForm">
       <Formik
         validationSchema={Yup.object().shape({
-          dismissDealer: Yup.object().nullable(),
+          exploringDealer: Yup.object().nullable(),
           assignDealer: Yup.object().nullable(),
         })}
         initialValues={_initDefaultValues()}
         onSubmit={(values: any) => {
           if (values) {
-            if (values.dismissDealer) {
+            if (values.exploringDealer) {
             } else {
               console.log('TODO: unsuported case');
             }
@@ -203,7 +209,7 @@ export const PermissionsToDealersForm: React.FC = () => {
           formikReference.formik = formik;
 
           if (formik) {
-            setIsDismissDirty(formik.values.dismissDealer ? true : false);
+            setIsDismissDirty(formik.values.exploringDealer ? true : false);
             /// TODO: dont forget about other `dirty` state
           }
         }}
@@ -222,15 +228,18 @@ export const PermissionsToDealersForm: React.FC = () => {
                   <Separator alignContent="start">Assigned Dealers</Separator>
                   <AssignedDealersList
                     dealers={assignedDealers}
-                    selectedDealer={formik.values.dismissDealer}
+                    selectedDealer={formik.values.exploringDealer}
                     onSelectDealerCallback={(
                       dealer: DealerAccount | null | undefined
                     ) => {
-                      formik.setFieldValue('dismissDealer', dealer);
-                      formik.setFieldTouched('dismissDealer');
+                      formik.setFieldValue('exploringDealer', dealer);
+                      formik.setFieldTouched('exploringDealer');
 
                       formik.setFieldValue('assignDealer', null);
                       formik.setFieldTouched('assignDealer');
+
+                      if (dealer) setDetailsState(DealerDetailsState.Exploring);
+                      else setDetailsState(DealerDetailsState.NotTouched);
                     }}
                   />
                 </Stack>
@@ -240,9 +249,8 @@ export const PermissionsToDealersForm: React.FC = () => {
                 <Stack tokens={{ childrenGap: 6 }}>
                   <Separator alignContent="start">Dealer</Separator>
                   <DealerDetails
-                    formikReference={formikReference}
-                    state={DealerDetailsState.Explore}
-                    dealer={null}
+                    state={detailsState}
+                    dealer={formik.values.exploringDealer}
                   />
                 </Stack>
               </Stack.Item>
