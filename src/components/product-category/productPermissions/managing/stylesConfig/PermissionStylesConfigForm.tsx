@@ -185,6 +185,7 @@ export const PermissionStylesConfigForm: React.FC = () => {
 
   useEffect(() => {
     updatePanelButtons();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [optionGroupContexts]);
 
@@ -238,12 +239,13 @@ export const PermissionStylesConfigForm: React.FC = () => {
                   .toArray()
               )
             );
-            dispatch(controlActions.closeRightPanel());
             dispatch(
               productStylePermissionsActions.changeEditingPermissionSetting(
-                null
+                args.body
               )
             );
+            setFormikDirty(false);
+            // dispatch(controlActions.closeRightPanel());
           },
           (args: any) => {}
         )
