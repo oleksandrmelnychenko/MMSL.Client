@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stack, Text, Label } from 'office-ui-fabric-react';
-import { DealerAccount } from '../../../../../interfaces';
+import { DealerAccount } from '../../../../../interfaces/dealer';
 import './assignedDealersList.scss';
 
 /// Build single hint lable

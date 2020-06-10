@@ -1,6 +1,16 @@
 import { EntityBase } from './base';
 import { DealerDetilsComponents } from '../redux/slices/dealer.slice';
 
+export class FormicReference {
+  constructor(isDirtyFunc?: (isDirty: boolean) => void) {
+    this.formik = null;
+    this.isDirtyFunc = isDirtyFunc;
+  }
+
+  formik: any;
+  isDirtyFunc?: (isDirty: boolean) => void;
+}
+
 export interface IUserInfo {
   userIdentityId: number;
   companyInfoId: number;
@@ -83,46 +93,6 @@ export interface IAddress {
   zipCode: string;
 }
 
-export class DealerAccount extends EntityBase {
-  constructor() {
-    super();
-
-    this.name = '';
-    this.companyName = '';
-    this.email = '';
-    this.alternateEmail = '';
-    this.phoneNumber = '';
-    this.taxNumber = '';
-    this.isVatApplicable = false;
-    this.currencyTypeId = 0;
-    this.paymentTypeId = 0;
-    this.isCreditAllowed = false;
-    this.billingAddressId = null;
-    this.billingAddress = null;
-    this.useBillingAsShipping = false;
-    this.shippingAddressId = null;
-    this.shippingAddress = null;
-    this.stores = [];
-  }
-
-  name: string;
-  companyName: string;
-  email: string;
-  alternateEmail: string;
-  phoneNumber: string;
-  taxNumber: string;
-  isVatApplicable: boolean;
-  currencyTypeId: number;
-  paymentTypeId: number;
-  isCreditAllowed: boolean;
-  billingAddressId: number | null;
-  billingAddress: Address | null;
-  useBillingAsShipping: boolean;
-  shippingAddressId: number | null;
-  shippingAddress: Address | null;
-  stores: any[];
-}
-
 export class Address extends EntityBase {
   constructor() {
     super();
@@ -197,14 +167,4 @@ export class StoreCustomer extends EntityBase {
   deliveryAddress: Address | null;
   storeId?: number | null;
   store: IStore | null;
-}
-
-export class FormicReference {
-  constructor(isDirtyFunc?: (isDirty: boolean) => void) {
-    this.formik = null;
-    this.isDirtyFunc = isDirtyFunc;
-  }
-
-  formik: any;
-  isDirtyFunc?: (isDirty: boolean) => void;
 }

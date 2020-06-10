@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Stack, Separator } from 'office-ui-fabric-react';
-import { FormicReference, DealerAccount } from '../../../../../interfaces';
+import { FormicReference } from '../../../../../interfaces';
+import { DealerAccount } from '../../../../../interfaces/dealer';
 import { ProductCategory } from '../../../../../interfaces/products';
 import { ProductPermissionSettings } from '../../../../../interfaces/products';
 import { List } from 'linq-typescript';

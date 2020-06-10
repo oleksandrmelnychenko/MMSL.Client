@@ -1,10 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-  Pagination,
-  StoreCustomer,
-  IStore,
-  DealerAccount,
-} from '../../interfaces';
+import { Pagination, StoreCustomer, IStore } from '../../interfaces';
+import { DealerAccount } from '../../interfaces/dealer';
 
 export class DealerState {
   constructor() {

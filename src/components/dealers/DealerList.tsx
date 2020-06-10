@@ -17,7 +17,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import { dealerActions } from '../../redux/slices/dealer.slice';
-import { DealerAccount } from '../../interfaces';
+import { DealerAccount } from '../../interfaces/dealer';
 import { assignPendingActions } from '../../helpers/action.helper';
 import { controlActions } from '../../redux/slices/control.slice';
 import { ToggleDealerPanelWithDetails } from '../../redux/slices/dealer.slice';

@@ -9,7 +9,8 @@ import {
   Stack,
 } from 'office-ui-fabric-react';
 import { IApplicationState } from '../../../redux/reducers/index';
-import { DealerAccount, FormicReference } from '../../../interfaces';
+import { FormicReference } from '../../../interfaces';
+import { DealerAccount } from '../../../interfaces/dealer';
 import { dealerActions } from '../../../redux/slices/dealer.slice';
 import { IStore } from '../../../interfaces/index';
 import FormStore from './FormStore';
@@ -80,7 +81,8 @@ export const DealerStores: React.FC = () => {
 
           setSelectedStore(selectedStore);
           setIsOpenForm(true);
-        }}>
+        }}
+      >
         <div className="dealer__store__name">Name: {item.name}</div>
         <div className="dealer__store__address">
           Address:{' '}

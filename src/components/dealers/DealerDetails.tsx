@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import ManageDealerForm from './dealerManaging/ManageDealerForm';
 import { useSelector } from 'react-redux';
-import { DealerAccount, FormicReference } from '../../interfaces';
+import { FormicReference } from '../../interfaces';
+import { DealerAccount } from '../../interfaces/dealer';
 import { IApplicationState } from '../../redux/reducers';
 import PanelTitle from './panel/PanelTitle';
 import './dealerDetails.scss';

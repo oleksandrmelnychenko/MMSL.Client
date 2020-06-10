@@ -7,7 +7,7 @@ import {
   IComboBoxOption,
   Text,
 } from 'office-ui-fabric-react';
-import { DealerAccount } from '../../../../../interfaces';
+import { DealerAccount } from '../../../../../interfaces/dealer';
 import { ProductCategory } from '../../../../../interfaces/products';
 import * as fabricStyles from '../../../../../common/fabric-styles/styles';
 import './assignedDealersList.scss';

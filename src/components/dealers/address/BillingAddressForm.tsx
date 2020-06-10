@@ -3,7 +3,8 @@ import { Formik, Form, Field } from 'formik';
 import { Checkbox, Stack, TextField } from 'office-ui-fabric-react';
 import '../dealerManaging/manageDealerForm.scss';
 import * as Yup from 'yup';
-import { DealerAccount, Address, FormicReference } from '../../../interfaces';
+import { Address, FormicReference } from '../../../interfaces';
+import { DealerAccount } from '../../../interfaces/dealer';
 import { textFildLabelStyles } from '../../../common/fabric-styles/styles';
 
 class ManageDealerFormProps {
