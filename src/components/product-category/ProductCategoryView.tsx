@@ -4,7 +4,7 @@ import Measurements from './measurements/Measurements';
 import ProductCategories from './ProductCategories';
 import ProductDeliverTimeline from './delivery-timeline/ProductDeliverTimeline';
 import { useSelector, useDispatch } from 'react-redux';
-import { ProductCategory } from '../../interfaces';
+import { ProductCategory } from '../../interfaces/products';
 import { IApplicationState } from '../../redux/reducers';
 import { assignPendingActions } from '../../helpers/action.helper';
 import { List } from 'linq-typescript';

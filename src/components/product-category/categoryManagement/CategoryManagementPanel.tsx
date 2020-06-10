@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Panel, PanelType } from 'office-ui-fabric-react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FormicReference, ProductCategory } from '../../../interfaces';
+import { FormicReference } from '../../../interfaces';
+import { ProductCategory } from '../../../interfaces/products';
 import { panelStyle } from '../../../common/fabric-styles/styles';
 import PanelTitle from '../../dealers/panel/PanelTitle';
 import CommonManagementActionBar, {

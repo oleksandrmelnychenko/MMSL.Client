@@ -14,13 +14,11 @@ import {
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
+import { OptionGroup, FormicReference, OptionUnit } from '../../../interfaces';
 import {
   ProductCategory,
-  OptionGroup,
   ProductCategoryMapOptionGroup,
-  FormicReference,
-  OptionUnit,
-} from '../../../interfaces';
+} from '../../../interfaces/products';
 import { List } from 'linq-typescript';
 import { productSettingsActions } from '../../../redux/slices/productSettings.slice';
 import { productActions } from '../../../redux/slices/product.slice';

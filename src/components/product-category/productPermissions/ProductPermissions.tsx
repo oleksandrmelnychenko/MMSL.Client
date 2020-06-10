@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ProductCategory } from '../../../interfaces';
+import { ProductCategory } from '../../../interfaces/products';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
 import { controlActions } from '../../../redux/slices/control.slice';

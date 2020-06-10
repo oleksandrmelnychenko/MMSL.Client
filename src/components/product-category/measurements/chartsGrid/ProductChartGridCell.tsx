@@ -9,8 +9,8 @@ import {
   MeasurementMapDefinition,
   MeasurementMapSize,
   MeasurementMapValue,
-  ProductCategory,
 } from '../../../../interfaces';
+import { ProductCategory } from '../../../../interfaces/products';
 import { List } from 'linq-typescript';
 import { measurementActions } from '../../../../redux/slices/measurement.slice';
 import { assignPendingActions } from '../../../../helpers/action.helper';

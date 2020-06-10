@@ -2,12 +2,8 @@ import React, { useState } from 'react';
 import { Panel, PanelType } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
-import {
-  FormicReference,
-  OptionGroup,
-  OptionUnit,
-  ProductCategory,
-} from '../../../interfaces';
+import { FormicReference, OptionGroup, OptionUnit } from '../../../interfaces';
+import { ProductCategory } from '../../../interfaces/products';
 import { panelStyle } from '../../../common/fabric-styles/styles';
 import PanelTitle from '../../dealers/panel/PanelTitle';
 import ManagingProductGroupForm from './ManagingProductGroupForm';

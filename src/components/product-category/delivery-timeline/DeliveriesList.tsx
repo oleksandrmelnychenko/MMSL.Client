@@ -22,10 +22,8 @@ import {
   columnIconButtonStyle,
   cellStyle,
 } from '../../../common/fabric-styles/styles';
-import {
-  ProductDeliveryTimeline,
-  ProductCategory,
-} from '../../../interfaces/index';
+import { ProductDeliveryTimeline } from '../../../interfaces/index';
+import { ProductCategory } from '../../../interfaces/products';
 import { ActionButton } from 'office-ui-fabric-react';
 import { IApplicationState } from '../../../redux/reducers/index';
 import ProductDeliverTimelineForm from './ProductDeliverTimelineForm';

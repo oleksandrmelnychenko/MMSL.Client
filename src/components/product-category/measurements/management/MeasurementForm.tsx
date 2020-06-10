@@ -6,8 +6,8 @@ import {
   FormicReference,
   Measurement,
   MeasurementMapDefinition,
-  ProductCategory,
 } from '../../../../interfaces';
+import { ProductCategory } from '../../../../interfaces/products';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
 import './measurementForm.scss';
 import { List } from 'linq-typescript';

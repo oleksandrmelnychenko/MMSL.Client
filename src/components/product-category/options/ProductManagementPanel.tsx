@@ -6,7 +6,7 @@ import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { ProductManagingPanelComponent } from '../../../redux/slices/product.slice';
 import { useHistory } from 'react-router-dom';
 import { IApplicationState } from '../../../redux/reducers/index';
-import { ProductCategory } from '../../../interfaces';
+import { ProductCategory } from '../../../interfaces/products';
 import ProductMeasurementPanel, {
   measurementsPanelDismisActions,
 } from './ProductMeasurementPanel';

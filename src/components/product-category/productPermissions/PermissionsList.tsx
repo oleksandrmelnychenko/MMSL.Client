@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {
-  ProductPermissionSettings,
-  ProductCategory,
-} from '../../../interfaces';
+import { ProductCategory } from '../../../interfaces/products';
+import { ProductPermissionSettings } from '../../../interfaces/products';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
 import {

@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Stack, Label, Separator } from 'office-ui-fabric-react';
-import {
-  ProductCategory,
-  ProductPermissionSettings,
-  OptionGroup,
-} from '../../../../../interfaces';
+import { OptionGroup } from '../../../../../interfaces';
+import { ProductCategory } from '../../../../../interfaces/products';
+import { ProductPermissionSettings } from '../../../../../interfaces/products';
 import { List } from 'linq-typescript';
 import { useDispatch, useSelector } from 'react-redux';
 import { controlActions } from '../../../../../redux/slices/control.slice';

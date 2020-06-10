@@ -15,11 +15,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { productSettingsActions } from '../../../redux/slices/productSettings.slice';
-import {
-  ModifiedOptionUnitOrder,
-  OptionUnit,
-  ProductCategory,
-} from '../../../interfaces';
+import { ModifiedOptionUnitOrder, OptionUnit } from '../../../interfaces';
+import { ProductCategory } from '../../../interfaces/products';
 import { List } from 'linq-typescript';
 import { DATA_SELECTION_DISABLED_CLASS } from '../../dealers/DealerList';
 

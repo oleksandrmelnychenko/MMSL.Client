@@ -26,7 +26,7 @@ import {
 } from '../../common/fabric-styles/styles';
 import StylesList from './StylesList';
 import * as fabricStyles from '../../common/fabric-styles/styles';
-import { ProductCategory } from '../../interfaces';
+import { ProductCategory } from '../../interfaces/products';
 import NoMeasurementImg from '../../assets/images/no-objects/noneMeasurement.svg';
 
 export const ProductSettings: React.FC = (props: any) => {

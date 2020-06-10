@@ -13,7 +13,7 @@ import { Text } from 'office-ui-fabric-react/lib/Text';
 import './product-category.scss';
 import { controlActions } from '../../redux/slices/control.slice';
 import { IApplicationState } from '../../redux/reducers/index';
-import { ProductCategory } from '../../interfaces';
+import { ProductCategory } from '../../interfaces/products';
 import * as fabricStyles from '../../common/fabric-styles/styles';
 import { DialogArgs, CommonDialogType } from '../../redux/slices/control.slice';
 import CategoryManagementPanel from './categoryManagement/CategoryManagementPanel';

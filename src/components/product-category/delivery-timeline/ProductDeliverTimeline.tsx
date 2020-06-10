@@ -8,7 +8,7 @@ import {
   scrollablePaneStyleForDetailListWithDoubleHeader,
   mainTitleHintContent,
 } from '../../../common/fabric-styles/styles';
-import { ProductCategory } from '../../../interfaces/index';
+import { ProductCategory } from '../../../interfaces/products';
 import { IApplicationState } from '../../../redux/reducers/index';
 import ProductDeliverTimelineForm from './ProductDeliverTimelineForm';
 import DeliveriesList from './DeliveriesList';

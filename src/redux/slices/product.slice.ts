@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
-  ProductCategory,
   OptionGroup,
   ChooseOptions,
   Measurement,
   MeasurementMapSize,
 } from '../../interfaces';
+import { ProductCategory } from '../../interfaces/products';
 
 export class ProductState {
   constructor() {

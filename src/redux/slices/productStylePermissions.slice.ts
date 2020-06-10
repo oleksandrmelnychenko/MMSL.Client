@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ProductPermissionSettings } from '../../interfaces';
+import { ProductPermissionSettings } from '../../interfaces/products';
 
 export class ProductStylePermissionsState {
   constructor() {

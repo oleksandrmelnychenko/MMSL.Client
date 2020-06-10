@@ -4,11 +4,8 @@ import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
 import { TextField, Text } from 'office-ui-fabric-react';
 import { defaultCellStyle } from '../../../../common/fabric-styles/styles';
-import {
-  Measurement,
-  MeasurementMapSize,
-  ProductCategory,
-} from '../../../../interfaces';
+import { Measurement, MeasurementMapSize } from '../../../../interfaces';
+import { ProductCategory } from '../../../../interfaces/products';
 import { measurementActions } from '../../../../redux/slices/measurement.slice';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import './chartGridCell.scss';

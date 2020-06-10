@@ -24,8 +24,8 @@ import {
   Measurement,
   MeasurementMapDefinition,
   MeasurementMapSize,
-  ProductCategory,
 } from '../../../../interfaces';
+import { ProductCategory } from '../../../../interfaces/products';
 import './productMeasurementChartGrid.scss';
 import { List } from 'linq-typescript';
 import {

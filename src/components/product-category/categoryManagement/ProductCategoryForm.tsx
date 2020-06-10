@@ -8,7 +8,8 @@ import {
   DefaultButton,
 } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
-import { FormicReference, ProductCategory } from '../../../interfaces';
+import { FormicReference } from '../../../interfaces';
+import { ProductCategory } from '../../../interfaces/products';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 
 export class ProductCategoryFormInitValues {
@@ -120,7 +121,8 @@ export const ProductCategoryForm: React.FC<ProductCategoryFormProps> = (
           }
         }}
         validateOnBlur={false}
-        enableReinitialize={true}>
+        enableReinitialize={true}
+      >
         {(formik) => {
           let thumbUrl: string = '';
           if (formik.values.isRemovingImage) {
@@ -144,7 +146,8 @@ export const ProductCategoryForm: React.FC<ProductCategoryFormProps> = (
                 border: '1px solid #efefef',
                 padding: '6px',
                 borderRadius: '6px',
-              }}>
+              }}
+            >
               <FontIcon
                 style={{
                   position: 'absolute',
@@ -246,7 +249,8 @@ export const ProductCategoryForm: React.FC<ProductCategoryFormProps> = (
                                 style={{
                                   marginTop: '20px',
                                   position: 'relative',
-                                }}>
+                                }}
+                              >
                                 <input
                                   accept="image/*"
                                   ref={fileInputRef}

@@ -7,7 +7,8 @@ import {
   IComboBoxOption,
   Text,
 } from 'office-ui-fabric-react';
-import { DealerAccount, ProductCategory } from '../../../../../interfaces';
+import { DealerAccount } from '../../../../../interfaces';
+import { ProductCategory } from '../../../../../interfaces/products';
 import * as fabricStyles from '../../../../../common/fabric-styles/styles';
 import './assignedDealersList.scss';
 import { useDispatch } from 'react-redux';
@@ -38,7 +39,7 @@ const _buidComboOption: (dealer: DealerAccount) => IComboBoxOption = (
   dealer: DealerAccount
 ) => {
   return {
-    key: `${dealer.id}`,
+    key: dealer.id,
     text: dealer.companyName,
     dealer: dealer,
   } as IComboBoxOption;

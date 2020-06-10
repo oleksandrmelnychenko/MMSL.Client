@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
-import { OptionGroup, OptionUnit, ProductCategory } from '../../interfaces';
+import { OptionGroup, OptionUnit } from '../../interfaces';
+import { ProductCategory } from '../../interfaces/products';
 import { assignPendingActions } from '../../helpers/action.helper';
 import {
   productSettingsActions,
