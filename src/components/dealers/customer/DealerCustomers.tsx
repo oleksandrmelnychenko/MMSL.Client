@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { FormicReference } from '../../../interfaces';
 import { dealerActions } from '../../../redux/slices/dealer.slice';
-import { IStore } from '../../../interfaces/index';
+import { IStore } from '../../../interfaces/store';
 import { Stack } from 'office-ui-fabric-react';
 import PanelTitle from '../panel/PanelTitle';
 import DealerCustomersList from './DealerCustomersList';

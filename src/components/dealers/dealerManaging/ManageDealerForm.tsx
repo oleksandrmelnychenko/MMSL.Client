@@ -10,7 +10,8 @@ import {
 } from 'office-ui-fabric-react';
 import './manageDealerForm.scss';
 import * as Yup from 'yup';
-import { Address, FormicReference } from '../../../interfaces';
+import { FormicReference } from '../../../interfaces';
+import { Address } from '../../../interfaces/addresses';
 import { DealerAccount } from '../../../interfaces/dealer';
 import { PaymentType } from '../../../interfaces/paymentTypes';
 import { Currency } from '../../../interfaces/currencyTypes';

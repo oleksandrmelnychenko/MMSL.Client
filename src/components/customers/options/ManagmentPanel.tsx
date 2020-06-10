@@ -9,7 +9,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { IApplicationState } from '../../../redux/reducers/index';
-import { ImenuItem, StoreCustomer } from '../../../interfaces';
+import { ImenuItem } from '../../../interfaces';
+import { StoreCustomer } from '../../../interfaces/storeCustomer';
 import { controlActions } from '../../../redux/slices/control.slice';
 import ManageCustomerForm from '../../customers/customerManaging/ManageCustomerForm';
 
@@ -42,7 +43,8 @@ const ManagementPanel: React.FC = () => {
           styles={labelStyle}
           className={`${
             item.isSelected && isOpenPanelWithDealerDetails ? 'selected' : ''
-          }`}>
+          }`}
+        >
           <PrimaryButton
             styles={btnMenuStyle}
             className={item.className}

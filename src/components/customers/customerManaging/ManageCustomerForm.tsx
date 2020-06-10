@@ -10,12 +10,10 @@ import {
   IComboBoxOption,
 } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
-import {
-  FormicReference,
-  StoreCustomer,
-  IStore,
-  Address,
-} from '../../../interfaces';
+import { FormicReference } from '../../../interfaces';
+import { Address } from '../../../interfaces/addresses';
+import { IStore } from '../../../interfaces/store';
+import { StoreCustomer } from '../../../interfaces/storeCustomer';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 import * as fabricControlSettings from '../../../common/fabric-control-settings/fabricControlSettings';
 import { useDispatch, useSelector } from 'react-redux';

@@ -8,12 +8,10 @@ import {
   DayOfWeek,
 } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
-import {
-  FormicReference,
-  StoreCustomer,
-  IStore,
-  Address,
-} from '../../../interfaces';
+import { FormicReference } from '../../../interfaces';
+import { Address } from '../../../interfaces/addresses';
+import { StoreCustomer } from '../../../interfaces/storeCustomer';
+import { IStore } from '../../../interfaces/store';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 import * as fabricControlSettings from '../../../common/fabric-control-settings/fabricControlSettings';
 import { useSelector } from 'react-redux';

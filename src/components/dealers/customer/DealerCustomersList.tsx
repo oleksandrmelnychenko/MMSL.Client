@@ -6,7 +6,7 @@ import {
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers/index';
-import { StoreCustomer } from '../../../interfaces';
+import { StoreCustomer } from '../../../interfaces/storeCustomer';
 import { List } from 'linq-typescript';
 import { dealerActions } from '../../../redux/slices/dealer.slice';
 

@@ -1,4 +1,4 @@
-import { Address } from './index';
+import { Address } from './addresses';
 import { EntityBase } from './base';
 
 export class DealerAccount extends EntityBase {
