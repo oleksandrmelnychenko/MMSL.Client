@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { OptionUnit } from '../../../../../interfaces';
+import { OptionUnit } from '../../../../../interfaces/options';
 import {
   Stack,
   Text,

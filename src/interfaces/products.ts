@@ -1,5 +1,5 @@
 import { EntityBase, EntityBaseNamed } from './base';
-import { OptionGroup, OptionUnit } from './index';
+import { OptionGroup, OptionUnit } from './options';
 import { ProductDeliveryTimeline } from './deliveryTimelines';
 
 export class ProductCategory extends EntityBaseNamed {

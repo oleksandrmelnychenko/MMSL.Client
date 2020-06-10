@@ -1,5 +1,5 @@
 import React from 'react';
-import { OptionUnit, OptionGroup } from '../../../../../interfaces';
+import { OptionUnit, OptionGroup } from '../../../../../interfaces/options';
 import { Stack, Text, Separator, Label, Image } from 'office-ui-fabric-react';
 import { List } from 'linq-typescript';
 import { buildGroupMandatoryHint } from '../../../../productSettings/StylesList';

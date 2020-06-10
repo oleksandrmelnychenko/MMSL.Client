@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { OptionGroup, ChooseOptions } from '../../interfaces';
+import { OptionGroup, ChooseOptions } from '../../interfaces/options';
 import { Measurement, MeasurementMapSize } from '../../interfaces/measurements';
 import { ProductCategory } from '../../interfaces/products';
 

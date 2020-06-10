@@ -7,7 +7,7 @@ import {
   IImageProps,
   ImageFit,
 } from 'office-ui-fabric-react';
-import { OptionUnit } from '../../interfaces';
+import { OptionUnit } from '../../interfaces/options';
 
 export class UnitRowItemProps {
   constructor() {

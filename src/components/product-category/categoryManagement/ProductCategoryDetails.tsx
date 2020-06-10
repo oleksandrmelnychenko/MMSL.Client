@@ -14,7 +14,8 @@ import {
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
-import { OptionGroup, FormicReference, OptionUnit } from '../../../interfaces';
+import { FormicReference } from '../../../interfaces';
+import { OptionGroup, OptionUnit } from '../../../interfaces/options';
 import {
   ProductCategory,
   ProductCategoryMapOptionGroup,

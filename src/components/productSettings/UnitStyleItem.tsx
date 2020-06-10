@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Text, Image, Icon, Stack } from 'office-ui-fabric-react';
-import { OptionUnit } from '../../interfaces';
+import { OptionUnit } from '../../interfaces/options';
 import { ProductCategory } from '../../interfaces/products';
 import { useDispatch, useSelector } from 'react-redux';
 import {

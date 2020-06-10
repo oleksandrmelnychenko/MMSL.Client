@@ -12,7 +12,7 @@ import {
   Separator,
   ICommandBarItemProps,
 } from 'office-ui-fabric-react';
-import { OptionUnit } from '../../../interfaces';
+import { OptionUnit } from '../../../interfaces/options';
 import { ProductCategory } from '../../../interfaces/products';
 import { IApplicationState } from '../../../redux/reducers';
 import { assignPendingActions } from '../../../helpers/action.helper';

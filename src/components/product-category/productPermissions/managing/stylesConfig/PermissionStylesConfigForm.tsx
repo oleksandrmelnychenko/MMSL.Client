@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Stack, Label, Separator } from 'office-ui-fabric-react';
-import { OptionGroup } from '../../../../../interfaces';
+import { OptionGroup } from '../../../../../interfaces/options';
 import { ProductCategory } from '../../../../../interfaces/products';
 import { ProductPermissionSettings } from '../../../../../interfaces/products';
 import { List } from 'linq-typescript';

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { OptionUnit, OptionGroup } from '../../../../../interfaces';
+import { OptionUnit, OptionGroup } from '../../../../../interfaces/options';
 import { Stack, Checkbox, Separator } from 'office-ui-fabric-react';
 import StyleUnitAssigningItem, {
   UnitAssigningContext,
