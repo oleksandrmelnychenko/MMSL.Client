@@ -154,7 +154,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
   return (
     <div className="dealerDetails">
       {props.state !== DealerDetailsState.NotTouched ? (
-        <Stack tokens={{ childrenGap: 18 }}>
+        <Stack tokens={{ childrenGap: 21 }}>
           <ComboBox
             selectedKey={selectedOptionKey}
             allowFreeform={true}

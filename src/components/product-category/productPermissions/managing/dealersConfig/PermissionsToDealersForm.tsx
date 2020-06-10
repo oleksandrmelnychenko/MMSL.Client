@@ -63,6 +63,8 @@ export const PermissionsToDealersForm: React.FC = () => {
   const [formikReference] = useState<FormicReference>(
     new FormicReference(() => {})
   );
+  const [assignDirtyRules, setAssignDirtyRules] = useState<boolean>(false);
+  const [dismissDirtyRules, setDismissDirtyRules] = useState<boolean>(false);
   const [assignedDealers, setAssignedDealers] = useState<DealerAccount[]>([]);
   const [detailsState, setDetailsState] = useState<DealerDetailsState>(
     DealerDetailsState.NotTouched
@@ -127,43 +129,19 @@ export const PermissionsToDealersForm: React.FC = () => {
 
   useEffect(() => {
     if (new List(commandBarItems).any()) {
-      if (detailsState === DealerDetailsState.Assigning) {
-        dispatch(
-          controlActions.setPanelButtons(
-            ChangeItemsDisabledStatePartialy(commandBarItems, [
-              { command: CommandBarItem.New, isDisabled: false },
-              { command: CommandBarItem.Reset, isDisabled: false },
-              { command: CommandBarItem.Save, isDisabled: false },
-              { command: CommandBarItem.Delete, isDisabled: true },
-            ])
-          )
-        );
-      } else if (detailsState === DealerDetailsState.Exploring) {
-        dispatch(
-          controlActions.setPanelButtons(
-            ChangeItemsDisabledStatePartialy(commandBarItems, [
-              { command: CommandBarItem.New, isDisabled: false },
-              { command: CommandBarItem.Reset, isDisabled: true },
-              { command: CommandBarItem.Save, isDisabled: true },
-              { command: CommandBarItem.Delete, isDisabled: false },
-            ])
-          )
-        );
-      } else if (detailsState === DealerDetailsState.NotTouched) {
-        dispatch(
-          controlActions.setPanelButtons(
-            ChangeItemsDisabledStatePartialy(commandBarItems, [
-              { command: CommandBarItem.New, isDisabled: false },
-              { command: CommandBarItem.Reset, isDisabled: true },
-              { command: CommandBarItem.Save, isDisabled: true },
-              { command: CommandBarItem.Delete, isDisabled: true },
-            ])
-          )
-        );
-      }
+      dispatch(
+        controlActions.setPanelButtons(
+          ChangeItemsDisabledStatePartialy(commandBarItems, [
+            { command: CommandBarItem.New, isDisabled: false },
+            { command: CommandBarItem.Reset, isDisabled: !assignDirtyRules },
+            { command: CommandBarItem.Save, isDisabled: !assignDirtyRules },
+            { command: CommandBarItem.Delete, isDisabled: !dismissDirtyRules },
+          ])
+        )
+      );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [detailsState]);
+  }, [assignDirtyRules, dismissDirtyRules]);
 
   useEffect(() => {
     if (formikReference.formik) {
@@ -281,6 +259,23 @@ export const PermissionsToDealersForm: React.FC = () => {
         }}
         innerRef={(formik: any) => {
           formikReference.formik = formik;
+
+          if (formik) {
+            if (detailsState === DealerDetailsState.Assigning) {
+              setAssignDirtyRules(
+                formikReference.formik.values.assignDealer ? true : false
+              );
+              setDismissDirtyRules(false);
+            } else if (detailsState === DealerDetailsState.Exploring) {
+              setAssignDirtyRules(false);
+              setDismissDirtyRules(
+                formikReference.formik.values.exploringDealer ? true : false
+              );
+            } else if (detailsState === DealerDetailsState.NotTouched) {
+              setAssignDirtyRules(false);
+              setDismissDirtyRules(false);
+            }
+          }
         }}
         validateOnBlur={false}
         enableReinitialize={true}
@@ -293,7 +288,7 @@ export const PermissionsToDealersForm: React.FC = () => {
               tokens={{ childrenGap: 20 }}
             >
               <Stack.Item grow={1} styles={_columnStyle}>
-                <Stack tokens={{ childrenGap: 6 }}>
+                <Stack tokens={{ childrenGap: 9 }}>
                   <Separator alignContent="start">Assigned Dealers</Separator>
                   <AssignedDealersList
                     dealers={assignedDealers}
@@ -315,7 +310,7 @@ export const PermissionsToDealersForm: React.FC = () => {
               </Stack.Item>
 
               <Stack.Item grow={1} styles={_columnStyle}>
-                <Stack tokens={{ childrenGap: 6 }}>
+                <Stack tokens={{ childrenGap: 9 }}>
                   <Separator alignContent="start">Dealer</Separator>
                   <DealerDetails
                     product={productCategory}
