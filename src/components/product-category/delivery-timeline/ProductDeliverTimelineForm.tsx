@@ -2,17 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Stack, TextField } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
-import {
-  FormicReference,
-  ProductDeliveryTimelineSelected,
-} from '../../../interfaces';
+import { FormicReference } from '../../../interfaces';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
-
 import { useDispatch, useSelector } from 'react-redux';
 import {
   DeliveryTimeline,
   ProductDeliveryTimeline,
-} from '../../../interfaces/index';
+  ProductDeliveryTimelineSelected,
+} from '../../../interfaces/deliveryTimelines';
 import { IApplicationState } from '../../../redux/reducers';
 import { controlActions } from '../../../redux/slices/control.slice';
 import {

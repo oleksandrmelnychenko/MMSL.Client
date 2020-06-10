@@ -30,8 +30,8 @@ import {
   horizontalGapStackTokens,
   mainTitleContent,
 } from '../../common/fabric-styles/styles';
-import { DeliveryTimeline } from '../../interfaces/index';
 import TimelineForm from './TimelineForm';
+import { DeliveryTimeline } from '../../interfaces/deliveryTimelines';
 
 export const Timeline: React.FC = () => {
   const dispatch = useDispatch();

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { OptionGroup, OptionUnit, DeliveryTimeline } from '../../interfaces';
+import { OptionGroup, OptionUnit } from '../../interfaces';
+import { DeliveryTimeline } from '../../interfaces/deliveryTimelines';
 import { GroupItemVisualState } from '../../interfaces/viewModels';
 import { List } from 'linq-typescript';
 

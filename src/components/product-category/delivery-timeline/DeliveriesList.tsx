@@ -22,13 +22,15 @@ import {
   columnIconButtonStyle,
   cellStyle,
 } from '../../../common/fabric-styles/styles';
-import { ProductDeliveryTimeline } from '../../../interfaces/index';
+import {
+  ProductDeliveryTimeline,
+  ProductDeliveryTimelineSelected,
+} from '../../../interfaces/deliveryTimelines';
 import { ProductCategory } from '../../../interfaces/products';
 import { ActionButton } from 'office-ui-fabric-react';
 import { IApplicationState } from '../../../redux/reducers/index';
 import ProductDeliverTimelineForm from './ProductDeliverTimelineForm';
 import { productActions } from '../../../redux/slices/product.slice';
-import { ProductDeliveryTimelineSelected } from '../../../interfaces/index';
 import { assignPendingActions } from '../../../helpers/action.helper';
 
 export const DeliveriesList: React.FC = () => {

@@ -1,5 +1,6 @@
 import { EntityBase, EntityBaseNamed } from './base';
-import { OptionGroup, OptionUnit, ProductDeliveryTimeline } from './index';
+import { OptionGroup, OptionUnit } from './index';
+import { ProductDeliveryTimeline } from './deliveryTimelines';
 
 export class ProductCategory extends EntityBaseNamed {
   constructor() {

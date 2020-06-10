@@ -6,7 +6,7 @@ import { FormicReference } from '../../interfaces';
 import * as fabricStyles from '../../common/fabric-styles/styles';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { DeliveryTimeline } from '../../interfaces/index';
+import { DeliveryTimeline } from '../../interfaces/deliveryTimelines';
 import { productSettingsActions } from '../../redux/slices/productSettings.slice';
 import { IApplicationState } from '../../redux/reducers';
 import { controlActions } from '../../redux/slices/control.slice';
@@ -77,6 +77,7 @@ export const TimelineForm: React.FC = () => {
     return () => {
       dispatch(productSettingsActions.clearSelectedDeliveryTimeLine());
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -92,6 +93,7 @@ export const TimelineForm: React.FC = () => {
         ])
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formikReference]);
 
   useEffect(() => {
@@ -106,6 +108,7 @@ export const TimelineForm: React.FC = () => {
         )
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFormikDirty]);
 
   return (
@@ -144,7 +147,8 @@ export const TimelineForm: React.FC = () => {
           }
         }}
         validateOnBlur={false}
-        enableReinitialize={true}>
+        enableReinitialize={true}
+      >
         {(formik) => {
           return (
             <Form className="form">
