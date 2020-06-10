@@ -59,18 +59,10 @@ export const RightPanel: React.FC<RightPanelProps> = () => {
         </div>
       </Sticky>
 
-      {/* <Stack
-        horizontal
-        horizontalAlign="space-between"
-        tokens={{ childrenGap: 20 }}
-      > */}
-      {/* <Stack grow={1}> */}
       <ScrollablePane styles={{ root: { top: '188px', marginBottom: '28px' } }}>
         <div style={{ padding: '28px 28px 0px 28px' }}>
           <rightPanel.component />
         </div>
-        {/* </Stack> */}
-        {/* </Stack> */}
       </ScrollablePane>
     </div>
   );

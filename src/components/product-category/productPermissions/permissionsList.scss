@@ -1,0 +1,10 @@
+.permissionsList {
+    &__notAppliedStub {
+        color: #a4373a80;
+
+        &:hover {
+            cursor: pointer;
+            color: #a4373ab0;
+        }
+    }
+}

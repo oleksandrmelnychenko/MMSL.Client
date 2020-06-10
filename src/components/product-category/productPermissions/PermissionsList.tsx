@@ -20,6 +20,9 @@ import {
   DetailsRow,
   ConstrainMode,
   SelectionMode,
+  Stack,
+  FontIcon,
+  mergeStyles,
 } from 'office-ui-fabric-react';
 import {
   controlActions,
@@ -33,6 +36,7 @@ import { List } from 'linq-typescript';
 import { defaultCellStyle } from '../../../common/fabric-styles/styles';
 import PermissionStylesConfigForm from './managing/stylesConfig/PermissionStylesConfigForm';
 import PermissionsToDealersForm from './managing/dealersConfig/PermissionsToDealersForm';
+import './permissionsList.scss';
 
 const NOT_APPLIED_STUB: string = 'Not applied';
 const APPLIED_COLOR_HEX: string = '#000';
@@ -116,9 +120,7 @@ const PermissionsList: React.FC = () => {
                 description: args.name,
                 width: '700px',
                 closeFunctions: () => {
-                  /// TODO: delete dialog will invoke this method
                   dispatch(controlActions.closeRightPanel());
-                  // console.log('TODO: delete dialog will invoke this method');
                 },
                 component: PermissionsToDealersForm,
               })
@@ -293,6 +295,14 @@ const PermissionsList: React.FC = () => {
     );
   };
 
+  // const _onRenderAppliedDealersCellContent = (
+  //   item?: ProductPermissionSettings
+  // ) => {
+  //   let cellContent: any = null;
+
+  //   return cellContent;
+  // };
+
   const buildColumns = () => {
     return [
       {
@@ -339,29 +349,44 @@ const PermissionsList: React.FC = () => {
         isCollapsible: false,
         onColumnClick: () => {},
         onRender: (item?: ProductPermissionSettings, index?: number) => {
-          let cellContent = item
-            ? item.dealersAppliedCount > 0
-              ? item.dealersAppliedCount
-              : NOT_APPLIED_STUB
-            : '';
+          let cellContent = item ? (
+            item.dealersAppliedCount > 0 ? (
+              <Text style={{ ...defaultCellStyle }} block nowrap>
+                {item.dealersAppliedCount}
+              </Text>
+            ) : (
+              <Stack horizontal>
+                <FontIcon
+                  style={{
+                    cursor: 'default',
+                    lineHeight: 1,
+                    marginTop: '2px',
+                    marginLeft: '-4px',
+                  }}
+                  iconName="RadioBullet"
+                  className={mergeStyles({
+                    fontSize: 16,
+                    color: NOT_APPLIED_COLOR_HEX,
+                  })}
+                />
 
-          let color: string = '#000';
-
-          if (item) {
-            if (item.dealersAppliedCount > 0) {
-              cellContent = item.dealersAppliedCount;
-              color = APPLIED_COLOR_HEX;
-            } else {
-              cellContent = NOT_APPLIED_STUB;
-              color = NOT_APPLIED_COLOR_HEX;
-            }
-          }
-
-          return (
-            <Text style={{ ...defaultCellStyle, color: color }} block nowrap>
-              {cellContent}
-            </Text>
+                <Text
+                  className="permissionsList__notAppliedStub"
+                  block
+                  nowrap
+                  onClick={() => {
+                    onManageDealers(item?.id);
+                  }}
+                >
+                  {NOT_APPLIED_STUB}
+                </Text>
+              </Stack>
+            )
+          ) : (
+            ''
           );
+
+          return cellContent;
         },
       },
       {

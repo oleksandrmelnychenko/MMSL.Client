@@ -101,8 +101,6 @@ export const StyleGroupAssigningItem: React.FC<StyleGroupAssigningItemProps> = (
       setIndeterminate(props.context.indeterminate);
   };
 
-  // resolveOwnState();
-
   useEffect(() => {
     resolveOwnState();
   });
