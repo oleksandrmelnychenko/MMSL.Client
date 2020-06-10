@@ -26,7 +26,6 @@ import {
   MeasurementMapSize,
   ProductCategory,
 } from '../../../../interfaces';
-import { DATA_SELECTION_DISABLED_CLASS } from '../../../dealers/DealerList';
 import './productMeasurementChartGrid.scss';
 import { List } from 'linq-typescript';
 import {
@@ -40,13 +39,6 @@ import ProductChartNameGridCell from './ProductChartNameGridCell';
 import SizesForm from '../management/SizesForm';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import { measurementActions } from '../../../../redux/slices/measurement.slice';
-
-const _columnIconButtonStyle = {
-  root: {
-    height: '20px',
-    marginTop: '0px',
-  },
-};
 
 const FROZEN_COLUMN_WIDTH = 130;
 

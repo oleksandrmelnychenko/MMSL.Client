@@ -35,6 +35,14 @@ const productStylePermissions = createSlice({
       state,
       action: { type: string; payload: number }
     ) {},
+    apiSearchDealersByPermissionProductId(
+      state,
+      action: {
+        type: string;
+        payload: { searchWord: string; productId: number };
+      }
+    ) {},
+    apiBindDealersToPermission(state, action: any) {},
     updatePermissionSettingsList(
       state,
       action: { type: string; payload: ProductPermissionSettings[] }

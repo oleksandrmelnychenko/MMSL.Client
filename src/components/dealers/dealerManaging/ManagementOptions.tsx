@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Label, PrimaryButton } from 'office-ui-fabric-react';
-
 import { dealerActions } from '../../../redux/slices/dealer.slice';
 import {
   ToggleDealerPanelWithDetails,
@@ -85,6 +84,7 @@ const ManagementOptions: React.FC = () => {
 
   useEffect(() => {
     changeSelectedMenuItem(isOpenPanelWithDealerDetails.componentType);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpenPanelWithDealerDetails]);
 
   return (
@@ -95,7 +95,8 @@ const ManagementOptions: React.FC = () => {
           styles={labelStyle}
           className={`${
             item.isSelected && isOpenPanelWithDealerDetails ? 'selected' : ''
-          }`}>
+          }`}
+        >
           <PrimaryButton
             styles={btnMenuStyle}
             className={item.className}

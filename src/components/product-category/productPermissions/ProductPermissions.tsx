@@ -7,13 +7,7 @@ import { assignPendingActions } from '../../../helpers/action.helper';
 import { productStylePermissionsActions } from '../../../redux/slices/productStylePermissions.slice';
 import ProductPermissionForm from './managing/ProductPermissionForm';
 import PermissionsList from './PermissionsList';
-import {
-  Stack,
-  Text,
-  Separator,
-  ScrollablePane,
-  Checkbox,
-} from 'office-ui-fabric-react';
+import { Stack, Text, Separator, ScrollablePane } from 'office-ui-fabric-react';
 import {
   horizontalGapStackTokens,
   mainTitleContent,
@@ -48,12 +42,14 @@ const ProductPermissions: React.FC = () => {
       setIsWasInited(false);
       dispatch(controlActions.closeDashboardHintStub());
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /// Listen to `global` product changes and update own local state
   useEffect(() => {
     if (targetProduct && targetProduct.id !== localProduct?.id)
       setLocalProduct(targetProduct);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [targetProduct]);
 
   /// Get style permissions
@@ -80,6 +76,7 @@ const ProductPermissions: React.FC = () => {
     }
 
     return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localProduct]);
 
   /// Resolve dashboard hint visibility
@@ -111,6 +108,7 @@ const ProductPermissions: React.FC = () => {
         );
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isWasInited, isAnyPermissions]);
 
   return (

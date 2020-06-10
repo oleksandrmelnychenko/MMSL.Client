@@ -59,6 +59,7 @@ const Menu: React.FC = () => {
     if (pathNamesSubMenu.includes(history.pathname)) {
       setIsOpenSubMenu(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history]);
 
   const menu: IMenuItem[] = [

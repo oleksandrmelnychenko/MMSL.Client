@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Stack, TextField, Separator, Label } from 'office-ui-fabric-react';
+import { Stack, Separator } from 'office-ui-fabric-react';
 import {
   FormicReference,
   ProductCategory,
@@ -16,7 +16,7 @@ import {
 import {
   CommandBarItem,
   GetCommandBarItemProps,
-  ChangeItemsDisabledState,
+  ChangeItemsDisabledStatePartialy,
 } from '../../../../../helpers/commandBar.helper';
 import { IApplicationState } from '../../../../../redux/reducers';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
@@ -28,25 +28,6 @@ import * as Yup from 'yup';
 
 const _columnStyle = { root: { maxWidth: '49%', minWidth: '49%' } };
 
-/// Build single hint lable
-const _renderHintLable = (textMessage: string): JSX.Element => {
-  const result = (
-    <Label
-      styles={{
-        root: {
-          fontWeight: 400,
-          fontSize: '12px',
-          color: '#a19f9d',
-        },
-      }}
-    >
-      {textMessage}
-    </Label>
-  );
-
-  return result;
-};
-
 const _initDefaultValues = () => {
   const initValues: any = {
     exploringDealer: null,
@@ -54,6 +35,24 @@ const _initDefaultValues = () => {
   };
 
   return initValues;
+};
+
+const _buildPayload = (
+  permission: ProductPermissionSettings,
+  dealer: DealerAccount,
+  isDismiss: boolean
+) => {
+  let payload: any = {
+    productPermissionSettingId: permission.id,
+    dealers: [
+      {
+        dealerAccountId: dealer.id,
+        isDeleted: isDismiss,
+      },
+    ],
+  };
+
+  return payload;
 };
 
 export const DealersListContext = React.createContext({});
@@ -64,7 +63,6 @@ export const PermissionsToDealersForm: React.FC = () => {
   const [formikReference] = useState<FormicReference>(
     new FormicReference(() => {})
   );
-  const [isDismissDirty, setIsDismissDirty] = useState<boolean>(false);
   const [assignedDealers, setAssignedDealers] = useState<DealerAccount[]>([]);
   const [detailsState, setDetailsState] = useState<DealerDetailsState>(
     DealerDetailsState.NotTouched
@@ -84,11 +82,17 @@ export const PermissionsToDealersForm: React.FC = () => {
     ProductPermissionSettings | null | undefined
   >((state) => state.productStylePermissions.editingPermissionSetting);
 
+  const permissionSettings = useSelector<
+    IApplicationState,
+    ProductPermissionSettings[]
+  >((state) => state.productStylePermissions.permissionSettings);
+
   /// Disposing form
   useEffect(() => {
     return () => {
       setAssignedDealers([]);
       setDetailsState(DealerDetailsState.NotTouched);
+
       dispatch(
         productStylePermissionsActions.changeEditingPermissionSetting(null)
       );
@@ -105,8 +109,7 @@ export const PermissionsToDealersForm: React.FC = () => {
             setDetailsState(DealerDetailsState.Assigning);
           }),
           GetCommandBarItemProps(CommandBarItem.Save, () => {
-            // formikReference.formik.submitForm();
-            debugger;
+            formikReference.formik.submitForm();
           }),
           GetCommandBarItemProps(CommandBarItem.Reset, () => {
             formikReference.formik.resetForm();
@@ -124,20 +127,49 @@ export const PermissionsToDealersForm: React.FC = () => {
 
   useEffect(() => {
     if (new List(commandBarItems).any()) {
-      dispatch(
-        controlActions.setPanelButtons(
-          ChangeItemsDisabledState(
-            commandBarItems,
-            [CommandBarItem.Delete],
-            !isDismissDirty
+      if (detailsState === DealerDetailsState.Assigning) {
+        dispatch(
+          controlActions.setPanelButtons(
+            ChangeItemsDisabledStatePartialy(commandBarItems, [
+              { command: CommandBarItem.New, isDisabled: false },
+              { command: CommandBarItem.Reset, isDisabled: false },
+              { command: CommandBarItem.Save, isDisabled: false },
+              { command: CommandBarItem.Delete, isDisabled: true },
+            ])
           )
-        )
-      );
+        );
+      } else if (detailsState === DealerDetailsState.Exploring) {
+        dispatch(
+          controlActions.setPanelButtons(
+            ChangeItemsDisabledStatePartialy(commandBarItems, [
+              { command: CommandBarItem.New, isDisabled: false },
+              { command: CommandBarItem.Reset, isDisabled: true },
+              { command: CommandBarItem.Save, isDisabled: true },
+              { command: CommandBarItem.Delete, isDisabled: false },
+            ])
+          )
+        );
+      } else if (detailsState === DealerDetailsState.NotTouched) {
+        dispatch(
+          controlActions.setPanelButtons(
+            ChangeItemsDisabledStatePartialy(commandBarItems, [
+              { command: CommandBarItem.New, isDisabled: false },
+              { command: CommandBarItem.Reset, isDisabled: true },
+              { command: CommandBarItem.Save, isDisabled: true },
+              { command: CommandBarItem.Delete, isDisabled: true },
+            ])
+          )
+        );
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDismissDirty]);
+  }, [detailsState]);
 
   useEffect(() => {
+    if (formikReference.formik) {
+      formikReference.formik.resetForm();
+    }
+
     if (editingPermission) {
       dispatch(
         assignPendingActions(
@@ -160,32 +192,71 @@ export const PermissionsToDealersForm: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editingPermission]);
 
-  const editSetting = () => {
+  const onUpdate = (payload: any) => {
+    dispatch(
+      assignPendingActions(
+        productStylePermissionsActions.apiBindDealersToPermission(payload),
+        [],
+        [],
+        (args: any) => {
+          dispatch(
+            productStylePermissionsActions.updatePermissionSettingsList(
+              new List(permissionSettings)
+                .select((item) => {
+                  let result = item;
+                  if (item.id === args.body.id) {
+                    result = args.body;
+                  }
+                  return result;
+                })
+                .toArray()
+            )
+          );
+          dispatch(
+            productStylePermissionsActions.changeEditingPermissionSetting(
+              args.body
+            )
+          );
+          // dispatch(controlActions.closeRightPanel());
+        },
+        (args: any) => {
+          console.log('Failed');
+          console.log(args);
+        }
+      )
+    );
+  };
+
+  const assignSetting = (dealerToAssign: DealerAccount) => {
     if (productCategory && editingPermission) {
-      //   const payload = _buildEditedPayload(values, editingSetting);
+      const payload = _buildPayload(editingPermission, dealerToAssign, false);
+      onUpdate(payload);
     }
   };
 
   const onDismissDealer = (dealerToDismiss: DealerAccount) => {
-    dispatch(
-      controlActions.toggleCommonDialogVisibility(
-        new DialogArgs(
-          CommonDialogType.Delete,
-          'Dismiss dealer',
-          `Are you sure you want to dismiss ${dealerToDismiss.companyName} dealer from current style permission?`,
-          () => {
-            if (dealerToDismiss) {
-              console.log('TODO: dismiss dealer');
-            } else {
-              console.log(
-                'TODO: cant resolve dealer to dismiss (after accept)'
-              );
-            }
-          },
-          () => {}
+    if (productCategory && editingPermission) {
+      dispatch(
+        controlActions.toggleCommonDialogVisibility(
+          new DialogArgs(
+            CommonDialogType.Delete,
+            'Dismiss dealer',
+            `Are you sure you want to dismiss ${dealerToDismiss.companyName} dealer from current style permission?`,
+            () => {
+              if (productCategory && editingPermission) {
+                const payload = _buildPayload(
+                  editingPermission,
+                  dealerToDismiss,
+                  true
+                );
+                onUpdate(payload);
+              }
+            },
+            () => {}
+          )
         )
-      )
-    );
+      );
+    }
   };
 
   return (
@@ -199,19 +270,17 @@ export const PermissionsToDealersForm: React.FC = () => {
         onSubmit={(values: any) => {
           if (values) {
             if (values.exploringDealer) {
-            } else {
-              console.log('TODO: unsuported case');
+              onDismissDealer(values.exploringDealer);
+            } else if (values.assignDealer) {
+              assignSetting(values.assignDealer);
             }
           }
         }}
-        onReset={(values: any, formikHelpers: any) => {}}
+        onReset={(values: any, formikHelpers: any) => {
+          setDetailsState(DealerDetailsState.NotTouched);
+        }}
         innerRef={(formik: any) => {
           formikReference.formik = formik;
-
-          if (formik) {
-            setIsDismissDirty(formik.values.exploringDealer ? true : false);
-            /// TODO: dont forget about other `dirty` state
-          }
         }}
         validateOnBlur={false}
         enableReinitialize={true}
@@ -249,8 +318,47 @@ export const PermissionsToDealersForm: React.FC = () => {
                 <Stack tokens={{ childrenGap: 6 }}>
                   <Separator alignContent="start">Dealer</Separator>
                   <DealerDetails
+                    product={productCategory}
                     state={detailsState}
                     dealer={formik.values.exploringDealer}
+                    onBeginSearchCallback={() => {
+                      if (formik.values.exploringDealer) {
+                        formik.setFieldValue('exploringDealer', null);
+                        formik.setFieldTouched('exploringDealer');
+                      }
+                      if (detailsState !== DealerDetailsState.Assigning) {
+                        setDetailsState(DealerDetailsState.Assigning);
+                      }
+                    }}
+                    onChooseSuggestionDealerCallback={(
+                      dealer: DealerAccount | null | undefined
+                    ) => {
+                      if (dealer) {
+                        const alreadyAssignedDealer = new List(
+                          assignedDealers
+                        ).firstOrDefault(
+                          (dealerItem) => dealerItem.id === dealer.id
+                        );
+
+                        if (alreadyAssignedDealer) {
+                          setDetailsState(DealerDetailsState.Exploring);
+
+                          formik.setFieldValue('exploringDealer', dealer);
+                          formik.setFieldTouched('exploringDealer');
+
+                          formik.setFieldValue('assignDealer', null);
+                          formik.setFieldTouched('assignDealer');
+                        } else {
+                          formik.setFieldValue('exploringDealer', null);
+                          formik.setFieldTouched('exploringDealer');
+
+                          formik.setFieldValue('assignDealer', dealer);
+                          formik.setFieldTouched('assignDealer');
+                        }
+                      } else {
+                        setDetailsState(DealerDetailsState.NotTouched);
+                      }
+                    }}
                   />
                 </Stack>
               </Stack.Item>

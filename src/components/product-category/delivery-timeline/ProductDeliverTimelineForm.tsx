@@ -97,6 +97,7 @@ export const ProductDeliverTimelineForm: React.FC = () => {
         ])
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formikReference]);
 
   useEffect(() => {
@@ -111,6 +112,7 @@ export const ProductDeliverTimelineForm: React.FC = () => {
         )
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFormikDirty]);
 
   return (
@@ -184,7 +186,8 @@ export const ProductDeliverTimelineForm: React.FC = () => {
           }
         }}
         validateOnBlur={false}
-        enableReinitialize={true}>
+        enableReinitialize={true}
+      >
         {(formik) => {
           return (
             <Form className="form">

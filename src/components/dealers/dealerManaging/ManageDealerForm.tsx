@@ -131,6 +131,7 @@ export const ManageDealerForm: React.FC = () => {
         ])
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formikReference]);
 
   useEffect(() => {
@@ -145,6 +146,7 @@ export const ManageDealerForm: React.FC = () => {
         )
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFormikDirty]);
 
   const currencyOptions = [
@@ -218,7 +220,8 @@ export const ManageDealerForm: React.FC = () => {
           }
         }}
         validateOnBlur={false}
-        enableReinitialize={true}>
+        enableReinitialize={true}
+      >
         {(formik) => {
           return (
             <Form className="form">

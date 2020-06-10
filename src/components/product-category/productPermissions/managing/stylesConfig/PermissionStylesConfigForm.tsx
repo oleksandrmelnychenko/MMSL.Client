@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Stack, Label, Separator } from 'office-ui-fabric-react';
 import {
-  Stack,
-  Label,
-  Separator,
-  ScrollablePane,
-} from 'office-ui-fabric-react';
-import {
-  FormicReference,
   ProductCategory,
   ProductPermissionSettings,
   OptionGroup,
@@ -26,7 +20,6 @@ import StyleGroupAssigningItem, {
 } from './StyleGroupAssigningItem';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
 import { UnitAssigningContext } from './StyleUnitAssigningItem';
-import AllowedList from './AllowedList';
 
 const _columnStyle = { root: { maxWidth: '100%', minWidth: '100%' } };
 

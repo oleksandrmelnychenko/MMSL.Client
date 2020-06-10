@@ -5,10 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import CustomerList from './CustomerList';
 import { customerActions } from '../../redux/slices/customer.slice';
-import {
-  controlActions,
-  RightPanelProps,
-} from '../../redux/slices/control.slice';
+import { controlActions } from '../../redux/slices/control.slice';
 import {
   horizontalGapStackTokens,
   mainTitleContent,

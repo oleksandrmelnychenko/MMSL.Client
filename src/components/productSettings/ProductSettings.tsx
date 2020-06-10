@@ -11,7 +11,6 @@ import {
   PrimaryButton,
   IImageProps,
   Separator,
-  FontWeights,
 } from 'office-ui-fabric-react';
 import ProductSettingsManagementPanel from './productSettingManagement/ProductSettingsManagementPanel';
 import {
@@ -33,16 +32,8 @@ import NoMeasurementImg from '../../assets/images/no-objects/noneMeasurement.svg
 export const ProductSettings: React.FC = (props: any) => {
   const dispatch = useDispatch();
 
-  const isStylesWasRequested: boolean = useSelector<IApplicationState, boolean>(
-    (state) => state.productSettings.isStylesWasRequested
-  );
-
   const showHint: boolean = useSelector<IApplicationState, boolean>(
     (state) => state.productSettings.showHint
-  );
-
-  const isAnyStyles: boolean = useSelector<IApplicationState, boolean>(
-    (state) => state.productSettings.optionGroupsList.length > 0
   );
 
   const targetProduct: ProductCategory | null = useSelector<
@@ -64,11 +55,6 @@ export const ProductSettings: React.FC = (props: any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchWord, dispatch]);
 
-  // const hintContentHideableStyle =
-  //   isStylesWasRequested && !isAnyStyles
-  //     ? { height: '100%' }
-  //     : { display: 'none' };
-
   const hintContentHideableStyle = showHint
     ? { height: '100%' }
     : { display: 'none' };
@@ -81,8 +67,6 @@ export const ProductSettings: React.FC = (props: any) => {
     },
   };
 
-  // const mainContentHideableStyle =
-  //   isStylesWasRequested && isAnyStyles ? {} : { display: 'none' };
   const mainContentHideableStyle = !showHint ? {} : { display: 'none' };
 
   const addNewStyle = () => {

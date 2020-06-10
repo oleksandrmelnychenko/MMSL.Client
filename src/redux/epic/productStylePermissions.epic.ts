@@ -8,7 +8,7 @@ import {
   successCommonEpicFlow,
   errorCommonEpicFlow,
 } from './../../helpers/action.helper';
-import { switchMap, mergeMap, catchError } from 'rxjs/operators';
+import { switchMap, mergeMap, catchError, debounceTime } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import { getActiveLanguage } from 'react-localize-redux';
@@ -308,6 +308,101 @@ export const apiGetDealersByPermissionIdEpic = (
                 { type: 'ERROR_GET_DEALERS_BY_PERMISSION_ID' },
                 controlActions.showInfoMessage(
                   `Error occurred while getting dealers by permission id. ${errorResponse}`
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiSearchDealersByPermissionProductIdEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(
+      productStylePermissionsActions.apiSearchDealersByPermissionProductId.type
+    ),
+    debounceTime(500),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+      return ajaxGetWebResponse(
+        api.SEARCH_DEALERS_BY_PERMISSION_PRODUCT_ID,
+        state$.value,
+        [
+          {
+            key: 'searchPhrase',
+            value: `${action.payload.searchWord}`,
+          },
+          {
+            key: 'productId',
+            value: `${action.payload.productId}`,
+          },
+        ]
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_SEARCH_DEALERS_BY_PERMISSION_PRODUCT_ID' },
+                controlActions.showInfoMessage(
+                  `Error occurred while search dealers by permission product id. ${errorResponse}`
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiBindDealersToPermissionEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(productStylePermissionsActions.apiBindDealersToPermission.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+      return ajaxPostResponse(
+        api.BIND_DEALERS_TO_PERMISSION,
+        action.payload,
+        state$.value,
+        true
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_BIND_DEALERS_TO_PERMISSION' },
+                controlActions.showInfoMessage(
+                  `Error occurred while binding dealers to product style permission. ${errorResponse}`
                 ),
                 controlActions.disabledStatusBar(),
               ],

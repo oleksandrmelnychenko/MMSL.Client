@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
   Stack,
@@ -16,14 +16,8 @@ import {
 } from '../../../interfaces';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 import * as fabricControlSettings from '../../../common/fabric-control-settings/fabricControlSettings';
-import { useSelector, useDispatch } from 'react-redux';
-
+import { useSelector } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
-import {
-  GetCommandBarItemProps,
-  CommandBarItem,
-} from '../../../helpers/commandBar.helper';
-import { controlActions } from '../../../redux/slices/control.slice';
 
 export class CreateStoreCustomerFormInitValues {
   constructor() {
@@ -106,32 +100,6 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
   const storesAutocomplete = useSelector<IApplicationState, IStore[]>(
     (state) => state.customer.manageCustomerForm.storesAutocomplete
   );
-
-  // const [formikReference] = useState<FormicReference>(
-  //   new FormicReference(() => {})
-  // );
-
-  // const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   if (formikReference.formik) {
-  //     let buttons = [];
-
-  //     buttons.push(
-  //       GetCommandBarItemProps(CommandBarItem.Save, () => {
-  //         formikReference.formik.submitForm();
-  //       })
-  //     );
-
-  //     buttons.push(
-  //       GetCommandBarItemProps(CommandBarItem.Delete, () => {
-  //         // dispatch(userManagementActions.api_removeUser(selectedUser.NetUid));
-  //       })
-  //     );
-
-  //     dispatch(controlActions.setPanelButtons(buttons));
-  //   }
-  // }, [formikReference]);
 
   let autocompleteOptions: any[] = [];
 

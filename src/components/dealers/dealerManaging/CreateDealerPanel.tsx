@@ -10,7 +10,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
 import { dealerActions } from '../../../redux/slices/dealer.slice';
 import ManageDealerForm from './ManageDealerForm';
-import { assignPendingActions } from '../../../helpers/action.helper';
 import PanelTitle from '../panel/PanelTitle';
 import {
   panelStyle,
@@ -71,7 +70,8 @@ export const CreateDealerPanel: React.FC = (props: any) => {
         onDismiss={() => {
           dispatch(dealerActions.toggleNewDealerForm(false));
         }}
-        closeButtonAriaLabel="Close">
+        closeButtonAriaLabel="Close"
+      >
         <PanelTitle title={'New Dealer'} />
         <CommandBar
           styles={commandBarStyles}

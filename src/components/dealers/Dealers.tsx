@@ -42,6 +42,7 @@ export const Dealers: React.FC = (props: any) => {
     return () => {
       dispatch(dealerActions.clearDealersList());
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const datePickerWidth = { root: { width: '150px' } };

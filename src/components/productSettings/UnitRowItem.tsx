@@ -6,14 +6,8 @@ import {
   ITextProps,
   IImageProps,
   ImageFit,
-  FontIcon,
-  mergeStyles,
-  TooltipHost,
-  TooltipDelay,
-  DirectionalHint,
 } from 'office-ui-fabric-react';
 import { OptionUnit } from '../../interfaces';
-import { useId } from '@uifabric/react-hooks';
 
 export class UnitRowItemProps {
   constructor() {
@@ -34,10 +28,6 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
     width: 67,
     height: 53,
   };
-
-  const allowTooltipId = useId(`allowTooltip_${props.optionUnit.id}`);
-
-  let allowColor = props.optionUnit.isMandatory ? '#2b579a' : '#2b579a60';
 
   let infoStyle: any = {};
 

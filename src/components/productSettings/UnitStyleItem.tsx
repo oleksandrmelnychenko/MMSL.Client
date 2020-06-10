@@ -49,9 +49,8 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
     if (singleOptionForEdit) {
       dispatch(productSettingsActions.managingPanelContent(panelContentType));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [singleOptionForEdit]);
-
-  let allowColor = props.optionUnit.isMandatory ? '#2b579a' : '#2b579a60';
 
   const getProductStyles: (productId: number) => void = (productId: number) => {
     dispatch(

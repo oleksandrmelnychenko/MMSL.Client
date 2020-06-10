@@ -3,7 +3,6 @@ import { Formik, Form, Field } from 'formik';
 import {
   Stack,
   TextField,
-  Checkbox,
   FontIcon,
   mergeStyles,
   DefaultButton,
@@ -211,24 +210,6 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                         </div>
                       )}
                     </Field>
-
-                    {/* Old flow */}
-                    {/* <Field name="isMandatory">
-                      {() => {
-                        return (
-                          <div className="form__group">
-                            <Checkbox
-                              checked={formik.values.isMandatory}
-                              label="Allow"
-                              onChange={(checked: any, isChecked: any) => {
-                                formik.setFieldValue('isMandatory', isChecked);
-                                formik.setFieldTouched('isMandatory');
-                              }}
-                            />
-                          </div>
-                        );
-                      }}
-                    </Field> */}
 
                     <Field name="imageFile">
                       {() => {

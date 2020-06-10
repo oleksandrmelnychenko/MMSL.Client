@@ -11,6 +11,8 @@ export const DELETE_DEALER_BY_ID = '/dealer/accounts/delete';
 export const GET_DEALER_BY_ID = '/dealer/accounts/get';
 export const GET_DEALERS_BY_PERMISSION_ID =
   '/dealer/accounts/get/by/permission';
+export const SEARCH_DEALERS_BY_PERMISSION_PRODUCT_ID =
+  '/dealer/accounts/search';
 
 export const GET_STORES_BY_DEALER = '/stores/get/all/dealer';
 export const GET_ALL_STORES = '/stores/get/all';
@@ -75,3 +77,4 @@ export const DELETE_PERMISSION = '/product/permissions/delete';
 export const GET_PERMISSION_BY_ID = '/product/permissions/get/by/id';
 export const GET_OPTION_GROUPS_FROM_PERMISSION_PERSPECTIVE =
   '/product/permissions/get/options';
+export const BIND_DEALERS_TO_PERMISSION = '/product/permissions/bind/dealers';

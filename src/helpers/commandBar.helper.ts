@@ -1,11 +1,17 @@
 import { ICommandBarItemProps } from 'office-ui-fabric-react';
 import { commandBarButtonStyles } from '../common/fabric-styles/styles';
+import { List } from 'linq-typescript';
 
 export enum CommandBarItem {
   New,
   Save,
   Reset,
   Delete,
+}
+
+export interface IButtonAvailability {
+  command: CommandBarItem;
+  isDisabled: boolean;
 }
 
 export class CommandBarItemCreatorProps {
@@ -15,6 +21,7 @@ export class CommandBarItemCreatorProps {
   disabled?: boolean;
   onClick?: () => {};
   buttonStyles?: any;
+  commandType!: CommandBarItem;
 }
 
 function CommandBarItemCreator(
@@ -29,6 +36,7 @@ function CommandBarItemCreator(
     buttonStyles: props.buttonStyles
       ? props.buttonStyles
       : commandBarButtonStyles,
+    commandType: props.commandType,
   };
 }
 
@@ -55,6 +63,26 @@ export const ChangeItemsDisabledState = (
     })
   );
 
+export const ChangeItemsDisabledStatePartialy = (
+  commandBarItems: any[],
+  availabilityPairs: IButtonAvailability[]
+) =>
+  commandBarItems.map((commandItem: any) => {
+    let result = Object.assign({}, commandItem);
+
+    const availabilityPair: IButtonAvailability | null | undefined = new List(
+      availabilityPairs
+    ).firstOrDefault(
+      (pairItem) => pairItem.command === commandItem.commandType
+    );
+
+    if (availabilityPair) {
+      result.disabled = availabilityPair.isDisabled;
+    }
+
+    return result;
+  });
+
 export const GetCommandBarItemProps = (
   item: CommandBarItem,
   clickFunc: any
@@ -66,6 +94,7 @@ export const GetCommandBarItemProps = (
         text: 'New',
         iconName: 'Add',
         onClick: clickFunc,
+        commandType: item,
       } as CommandBarItemCreatorProps);
     case CommandBarItem.Save:
       return CommandBarItemCreator({
@@ -74,6 +103,7 @@ export const GetCommandBarItemProps = (
         iconName: 'Save',
         disabled: true,
         onClick: clickFunc,
+        commandType: item,
       } as CommandBarItemCreatorProps);
     case CommandBarItem.Reset:
       return CommandBarItemCreator({
@@ -82,6 +112,7 @@ export const GetCommandBarItemProps = (
         iconName: 'Refresh',
         disabled: true,
         onClick: clickFunc,
+        commandType: item,
       } as CommandBarItemCreatorProps);
     case CommandBarItem.Delete:
       return CommandBarItemCreator({
@@ -90,6 +121,7 @@ export const GetCommandBarItemProps = (
         disabled: true,
         iconName: 'Delete',
         onClick: clickFunc,
+        commandType: item,
       } as CommandBarItemCreatorProps);
   }
 };

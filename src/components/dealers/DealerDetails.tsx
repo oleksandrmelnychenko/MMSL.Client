@@ -1,19 +1,11 @@
 import React, { useState } from 'react';
 import ManageDealerForm from './dealerManaging/ManageDealerForm';
-import { dealerActions } from '../../redux/slices/dealer.slice';
-import { controlActions } from '../../redux/slices/control.slice';
-import { useDispatch, useSelector } from 'react-redux';
-import { assignPendingActions } from '../../helpers/action.helper';
+import { useSelector } from 'react-redux';
 import { DealerAccount, FormicReference } from '../../interfaces';
 import { IApplicationState } from '../../redux/reducers';
-import { ToggleDealerPanelWithDetails } from '../../redux/slices/dealer.slice';
 import PanelTitle from './panel/PanelTitle';
 import './dealerDetails.scss';
-import {
-  ICommandBarItemProps,
-  CommandBar,
-  Separator,
-} from 'office-ui-fabric-react';
+import { ICommandBarItemProps, CommandBar } from 'office-ui-fabric-react';
 import {
   commandBarButtonStyles,
   commandBarStyles,
@@ -33,7 +25,6 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
   );
   const [isDirtyForm, setIsDirtyForm] = useState(false);
 
-  const dispatch = useDispatch();
   const selectedDealer = useSelector<IApplicationState, DealerAccount>(
     (state) => state.dealer.selectedDealer!
   );
