@@ -95,8 +95,10 @@ const Dashboard: React.FC = () => {
           isBlocking={true}
           styles={{ ...panelStyle, root: { zIndex: 10 } }}
           isOpen={!!rightPanel.title}
-          onDismiss={() => {
-            rightPanel.closeFunctions();
+          onDismiss={(args: any) => {
+            if (args) {
+              rightPanel.closeFunctions();
+            }
           }}
         >
           <Route path={location.pathname} component={RightPanel} />
