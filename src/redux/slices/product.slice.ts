@@ -1,10 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {
-  OptionGroup,
-  ChooseOptions,
-  Measurement,
-  MeasurementMapSize,
-} from '../../interfaces';
+import { OptionGroup, ChooseOptions } from '../../interfaces';
+import { Measurement, MeasurementMapSize } from '../../interfaces/measurements';
 import { ProductCategory } from '../../interfaces/products';
 
 export class ProductState {

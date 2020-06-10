@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers/index';
-import { Measurement } from '../../../interfaces';
+import { Measurement } from '../../../interfaces/measurements';
 import { ProductCategory } from '../../../interfaces/products';
 import { Stack, Text, ScrollablePane, Separator } from 'office-ui-fabric-react';
 import {

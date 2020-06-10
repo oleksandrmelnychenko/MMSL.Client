@@ -1,4 +1,7 @@
-import { Measurement, MeasurementMapSize } from './../../interfaces/index';
+import {
+  Measurement,
+  MeasurementMapSize,
+} from './../../interfaces/measurements';
 import { createSlice } from '@reduxjs/toolkit';
 
 export class MeasurementsState {

@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Stack, TextField, Separator, Text } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
+import { FormicReference } from '../../../../interfaces';
 import {
-  FormicReference,
   Measurement,
   MeasurementMapDefinition,
   MeasurementMapSize,
   MeasurementMapValue,
-} from '../../../../interfaces';
+} from '../../../../interfaces/measurements';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
 import './sizeForm.scss';
 import { List } from 'linq-typescript';

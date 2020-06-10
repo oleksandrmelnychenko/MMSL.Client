@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Stack, TextField } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
+import { FormicReference } from '../../../../interfaces';
 import {
-  FormicReference,
   Measurement,
   MeasurementMapDefinition,
-} from '../../../../interfaces';
+} from '../../../../interfaces/measurements';
 import { ProductCategory } from '../../../../interfaces/products';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
 import './measurementForm.scss';

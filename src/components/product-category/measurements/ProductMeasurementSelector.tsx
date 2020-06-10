@@ -5,7 +5,7 @@ import { productActions } from '../../../redux/slices/product.slice';
 import { measurementActions } from '../../../redux/slices/measurement.slice';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { IApplicationState } from '../../../redux/reducers';
-import { Measurement } from '../../../interfaces';
+import { Measurement } from '../../../interfaces/measurements';
 import { List } from 'linq-typescript';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 
