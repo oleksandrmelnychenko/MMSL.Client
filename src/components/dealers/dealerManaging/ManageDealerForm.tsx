@@ -10,13 +10,9 @@ import {
 } from 'office-ui-fabric-react';
 import './manageDealerForm.scss';
 import * as Yup from 'yup';
-import {
-  DealerAccount,
-  Address,
-  PaymentType,
-  Currency,
-  FormicReference,
-} from '../../../interfaces';
+import { DealerAccount, Address, FormicReference } from '../../../interfaces';
+import { PaymentType } from '../../../interfaces/paymentTypes';
+import { Currency } from '../../../interfaces/currencyTypes';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 import { List } from 'linq-typescript';
 import { useSelector, useDispatch } from 'react-redux';

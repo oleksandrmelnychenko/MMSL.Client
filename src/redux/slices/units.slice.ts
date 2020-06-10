@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { CurrencyF, PaymentTypeF } from '../../interfaces';
+import { PaymentTypeF } from '../../interfaces/paymentTypes';
+import { CurrencyF } from '../../interfaces/currencyTypes';
 
 export class UnitsState {
   constructor() {

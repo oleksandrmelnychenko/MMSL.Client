@@ -87,40 +87,6 @@ export interface IAddress {
   zipCode: string;
 }
 
-export enum Currency {
-  USD = 2,
-  EUR = 1,
-}
-
-export enum PaymentType {
-  BankTransfer = 2,
-  Cash = 1,
-}
-
-export class CurrencyF extends EntityBase {
-  constructor() {
-    super();
-
-    this.name = '';
-    this.description = '';
-  }
-
-  name: string;
-  description: string;
-}
-
-export class PaymentTypeF extends EntityBase {
-  constructor() {
-    super();
-
-    this.name = '';
-    this.description = '';
-  }
-
-  name: string;
-  description: string;
-}
-
 export class DealerAccount extends EntityBase {
   constructor() {
     super();
