@@ -38,8 +38,7 @@ import PermissionStylesConfigForm from './managing/stylesConfig/PermissionStyles
 import PermissionsToDealersForm from './managing/dealersConfig/PermissionsToDealersForm';
 import './permissionsList.scss';
 
-const NOT_APPLIED_STUB: string = 'Not applied';
-const APPLIED_COLOR_HEX: string = '#000';
+const NOT_APPLIED_STUB: string = 'No assignments';
 const NOT_APPLIED_COLOR_HEX: string = '#a4373a80';
 
 const PermissionsList: React.FC = () => {
@@ -295,14 +294,6 @@ const PermissionsList: React.FC = () => {
     );
   };
 
-  // const _onRenderAppliedDealersCellContent = (
-  //   item?: ProductPermissionSettings
-  // ) => {
-  //   let cellContent: any = null;
-
-  //   return cellContent;
-  // };
-
   const buildColumns = () => {
     return [
       {
@@ -342,7 +333,7 @@ const PermissionsList: React.FC = () => {
       },
       {
         key: 'appliedDealersCount',
-        name: 'Applied dealers',
+        name: 'Assigned dealers',
         minWidth: 16,
         maxWidth: 150,
         isResizable: true,

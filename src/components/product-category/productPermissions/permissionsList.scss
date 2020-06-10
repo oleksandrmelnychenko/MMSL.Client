@@ -1,6 +1,7 @@
 .permissionsList {
     &__notAppliedStub {
         color: #a4373a80;
+        transition: all .2s ease;
 
         &:hover {
             cursor: pointer;
