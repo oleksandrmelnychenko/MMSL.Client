@@ -28,13 +28,22 @@ import StylesList from './StylesList';
 import * as fabricStyles from '../../common/fabric-styles/styles';
 import { ProductCategory } from '../../interfaces/products';
 import NoMeasurementImg from '../../assets/images/no-objects/noneMeasurement.svg';
+import { OptionGroup } from '../../interfaces/options';
+import { assignPendingActions } from '../../helpers/action.helper';
 
 export const ProductSettings: React.FC = (props: any) => {
   const dispatch = useDispatch();
 
-  const showHint: boolean = useSelector<IApplicationState, boolean>(
-    (state) => state.productSettings.showHint
-  );
+  // const showHint: boolean = useSelector<IApplicationState, boolean>(
+  //   (state) => state.productSettings.showHint
+  // );
+
+  const outionGroups: OptionGroup[] = useSelector<
+    IApplicationState,
+    OptionGroup[]
+  >((state) => state.productSettings.optionGroupsList);
+
+  const showHint = outionGroups.length === 0;
 
   const targetProduct: ProductCategory | null = useSelector<
     IApplicationState,
@@ -54,6 +63,25 @@ export const ProductSettings: React.FC = (props: any) => {
       );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchWord, dispatch]);
+
+  useEffect(() => {
+    if (targetProduct?.id) {
+      dispatch(
+        assignPendingActions(
+          productSettingsActions.apiGetAllOptionGroupsByProductIdList(
+            targetProduct.id
+          ),
+          [],
+          [],
+          (args: any) => {
+            dispatch(productSettingsActions.updateOptionGroupList(args));
+          },
+          (args: any) => {}
+        )
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [targetProduct]);
 
   const hintContentHideableStyle = showHint
     ? { height: '100%' }

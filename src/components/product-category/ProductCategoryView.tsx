@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
-import Measurements from './measurements/Measurements';
+import MeasurementsBootstraper from './measurements/MeasurementsBootstraper';
 import ProductCategories from './ProductCategories';
 import ProductDeliverTimeline from './delivery-timeline/ProductDeliverTimeline';
 import { useSelector, useDispatch } from 'react-redux';
@@ -110,7 +110,7 @@ const ProductCategoryView: React.FC = () => {
       <Switch>
         <Route
           path={`${PRODUCT_MEASUREMENTS_PATH}:productId`}
-          component={Measurements}
+          component={MeasurementsBootstraper}
         />
         <Route
           path={`${PRODUCT_TIMELINES_PATH}:productId`}
