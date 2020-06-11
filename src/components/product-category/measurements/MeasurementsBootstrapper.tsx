@@ -16,12 +16,12 @@ export const CREATE_YOUR_FIRST_MEASUREMENT: string =
 export const CREATE_MEASUREMENT: string = 'Create measurement';
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
-const MeasurementsBootstraper: React.FC = () => {
+const MeasurementsBootstrapper: React.FC = () => {
   const dispatch = useDispatch();
 
   const [isWasIntended, setIsWasIntended] = useState<boolean>(false);
 
-  const isNoMeasurements: boolean = useSelector<IApplicationState, boolean>(
+  const isEmpty: boolean = useSelector<IApplicationState, boolean>(
     (state) =>
       state.product.productMeasurementsState.measurementList.length === 0
   );
@@ -73,7 +73,9 @@ const MeasurementsBootstraper: React.FC = () => {
               );
             }
           },
-          (args: any) => {}
+          (args: any) => {
+            setIsWasIntended(true);
+          }
         )
       );
     } else {
@@ -86,7 +88,7 @@ const MeasurementsBootstraper: React.FC = () => {
   /// Resolve dashboard hint visibility
   useEffect(() => {
     if (isWasIntended) {
-      if (isNoMeasurements) {
+      if (isEmpty) {
         dispatch(
           controlActions.showDashboardHintStub({
             isVisible: true,
@@ -111,9 +113,9 @@ const MeasurementsBootstraper: React.FC = () => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isWasIntended, isNoMeasurements]);
+  }, [isWasIntended, isEmpty]);
 
   return <>{isWasIntended ? <Measurements /> : null}</>;
 };
 
-export default MeasurementsBootstraper;
+export default MeasurementsBootstrapper;

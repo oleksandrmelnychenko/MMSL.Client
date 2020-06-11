@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
-import MeasurementsBootstraper from './measurements/MeasurementsBootstraper';
+import MeasurementsBootstrapper from './measurements/MeasurementsBootstrapper';
 import ProductCategories from './ProductCategories';
 import ProductDeliverTimeline from './delivery-timeline/ProductDeliverTimeline';
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,7 +12,7 @@ import { productActions } from '../../redux/slices/product.slice';
 import { controlActions } from '../../redux/slices/control.slice';
 import ProductMeasurementPanel from './options/ProductMeasurementPanel';
 import ProductTimelinesPanel from './options/ProductTimelinesPanel';
-import ProductSettings from './productSettings/ProductSettings';
+import ProductSettingsBootstrapper from './productSettings/ProductSettingsBootstrapper';
 import ProductManagementPanel, {
   PRODUCT_MEASUREMENTS_PATH,
   PRODUCT_CATEGORIES_DASHBOARD_PATH,
@@ -110,7 +110,7 @@ const ProductCategoryView: React.FC = () => {
       <Switch>
         <Route
           path={`${PRODUCT_MEASUREMENTS_PATH}:productId`}
-          component={MeasurementsBootstraper}
+          component={MeasurementsBootstrapper}
         />
         <Route
           path={`${PRODUCT_TIMELINES_PATH}:productId`}
@@ -118,7 +118,7 @@ const ProductCategoryView: React.FC = () => {
         />
         <Route
           path={`${PRODUCT_STYLES_PATH}:productId`}
-          component={ProductSettings}
+          component={ProductSettingsBootstrapper}
         />
         <Route
           path={`${PRODUCT_STYLE_PERMISSIONS_PATH}:productId`}
