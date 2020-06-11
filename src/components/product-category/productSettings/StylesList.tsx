@@ -68,11 +68,6 @@ export const StylesList: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (targetProduct?.id) getProductStyles(targetProduct.id);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [targetProduct]);
-
   const getProductStyles: (productId: number) => void = (productId: number) => {
     dispatch(
       assignPendingActions(
