@@ -23,7 +23,7 @@ export interface IProductChartGridCellProps {
   productCategory: ProductCategory | null | undefined;
 }
 
-const CELL_VALUE_STUB = '-';
+const CELL_VALUE_STUB = '';
 
 const _findColumnSizeValue = (
   mapSize: MeasurementMapSize | null | undefined,
@@ -101,6 +101,45 @@ const ProductChartGridCell: React.FC<IProductChartGridCellProps> = (
     }
   }, [isInEditMode, inputEditRef, outputValue]);
 
+  const onCompleteEditing = (input: string) => {
+    if (
+      input !== outputValue &&
+      props.mapSize &&
+      props.mapSize.measurementSize &&
+      props.measurementChart &&
+      props.chartColumn
+    ) {
+      const sizePayload: any = {
+        id: props.mapSize.measurementSizeId,
+        name: props.mapSize.measurementSize.name,
+        description: props.mapSize.measurementSize.description,
+        measurementId: props.measurementChart.id,
+        valueDataContracts: [
+          {
+            id: relativeMapValue ? relativeMapValue.id : 0,
+            value: _normalizeInputValue(input),
+            measurementDefinitionId: props.chartColumn.measurementDefinitionId,
+          },
+        ],
+      };
+
+      dispatch(
+        assignPendingActions(
+          measurementActions.apiUpdateMeasurementSize(sizePayload),
+          [],
+          [],
+          (args: any) => {
+            setOutputValue(input);
+            setIsInEditMode(false);
+          },
+          (args: any) => {}
+        )
+      );
+    } else {
+      setIsInEditMode(false);
+    }
+  };
+
   let init = {
     sizeValue: outputValue,
   };
@@ -130,58 +169,28 @@ const ProductChartGridCell: React.FC<IProductChartGridCellProps> = (
                       autoFocus
                       componentRef={inputEditRef}
                       value={formik.values.sizeValue}
+                      onKeyPress={(args: any) => {
+                        if (args) {
+                          if (args.charCode === 13) {
+                            onCompleteEditing(
+                              formik.values.sizeValue
+                                ? formik.values.sizeValue
+                                : ''
+                            );
+                          }
+                        }
+                      }}
                       onChange={(args: any) => {
                         let value = args.target.value;
 
                         formik.setFieldValue('sizeValue', value);
                         formik.setFieldTouched('sizeValue');
                       }}
-                      onBlur={(args: any) => {
-                        let normalizedOutputValue =
-                          outputValue !== CELL_VALUE_STUB ? outputValue : '';
-                        if (
-                          normalizedOutputValue !== formik.values.sizeValue &&
-                          props.mapSize &&
-                          props.mapSize.measurementSize &&
-                          props.measurementChart &&
-                          props.chartColumn
-                        ) {
-                          const sizePayload: any = {
-                            id: props.mapSize.measurementSizeId,
-                            name: props.mapSize.measurementSize.name,
-                            description:
-                              props.mapSize.measurementSize.description,
-                            measurementId: props.measurementChart.id,
-                            valueDataContracts: [
-                              {
-                                id: relativeMapValue ? relativeMapValue.id : 0,
-                                value: _normalizeInputValue(
-                                  formik.values.sizeValue
-                                ),
-                                measurementDefinitionId:
-                                  props.chartColumn.measurementDefinitionId,
-                              },
-                            ],
-                          };
-
-                          dispatch(
-                            assignPendingActions(
-                              measurementActions.apiUpdateMeasurementSize(
-                                sizePayload
-                              ),
-                              [],
-                              [],
-                              (args: any) => {
-                                setOutputValue(formik.values.sizeValue);
-                                setIsInEditMode(false);
-                              },
-                              (args: any) => {}
-                            )
-                          );
-                        } else {
-                          setIsInEditMode(false);
-                        }
-                      }}
+                      onBlur={(args: any) =>
+                        onCompleteEditing(
+                          formik.values.sizeValue ? formik.values.sizeValue : ''
+                        )
+                      }
                     />
                   )}
                 </Field>
@@ -190,13 +199,14 @@ const ProductChartGridCell: React.FC<IProductChartGridCellProps> = (
           }}
         </Formik>
       ) : (
-        <Text
-          block
+        <div
+          className="chartGridCell__readonlyContainer"
           onDoubleClick={() => setIsInEditMode(true)}
-          style={defaultCellStyle}
         >
-          {outputValue}
-        </Text>
+          <Text block style={defaultCellStyle}>
+            {outputValue}
+          </Text>
+        </div>
       )}
     </div>
   );
