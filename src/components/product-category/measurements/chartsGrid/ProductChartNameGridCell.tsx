@@ -67,7 +67,7 @@ const ProductChartNameGridCell: React.FC<IProductChartNameGridCellProps> = (
       {isInEditMode ? (
         <Formik
           validationSchema={Yup.object().shape({
-            sizeName: Yup.string().nullable(),
+            sizeName: Yup.string().required(() => 'Size name is required'),
           })}
           initialValues={init}
           onSubmit={(values: any) => {}}
@@ -89,10 +89,9 @@ const ProductChartNameGridCell: React.FC<IProductChartNameGridCellProps> = (
                         formik.setFieldTouched('sizeName');
                       }}
                       onBlur={(args: any) => {
-                        let normalizedOutputValue =
-                          outputValue !== CELL_VALUE_STUB ? outputValue : '';
                         if (
-                          normalizedOutputValue !== formik.values.sizeName &&
+                          formik.values.sizeName &&
+                          formik.values.sizeName.length > 0 &&
                           props.mapSize &&
                           props.mapSize.measurementSize &&
                           props.measurementChart
