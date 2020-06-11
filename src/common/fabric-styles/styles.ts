@@ -85,6 +85,8 @@ export const btnMenuStyle = {
       'root:hover': { background: '#faf9f8' },
     },
   },
+  rootHovered: { backgroundColor: 'transparent' },
+  rootPressed: { backgroundColor: 'transparent' },
 };
 
 export const btnUploadStyle = {
