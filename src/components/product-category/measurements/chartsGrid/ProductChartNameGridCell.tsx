@@ -106,20 +106,27 @@ const ProductChartNameGridCell: React.FC<IProductChartNameGridCellProps> = (
                             valueDataContracts: [],
                           };
 
-                          let action = assignPendingActions(
-                            measurementActions.apiUpdateMeasurementSize(
-                              sizePayload
-                            ),
-                            [],
-                            [],
-                            (args: any) => {
-                              setOutputValue(formik.values.sizeName);
-                              setIsInEditMode(false);
-                            },
-                            (args: any) => {}
-                          );
+                          dispatch(
+                            assignPendingActions(
+                              measurementActions.apiUpdateMeasurementSize(
+                                sizePayload
+                              ),
+                              [],
+                              [],
+                              (args: any) => {
+                                if (props?.mapSize?.measurementSize) {
+                                  props.mapSize.measurementSize.name = formik
+                                    .values.sizeName
+                                    ? formik.values.sizeName
+                                    : '';
+                                }
 
-                          dispatch(action);
+                                setOutputValue(formik.values.sizeName);
+                                setIsInEditMode(false);
+                              },
+                              (args: any) => {}
+                            )
+                          );
                         } else {
                           setIsInEditMode(false);
                         }

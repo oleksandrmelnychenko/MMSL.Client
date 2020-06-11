@@ -49,7 +49,6 @@ const _findColumnSizeValue = (
   return truthValue;
 };
 
-/// TODO: vadymk this method is not used
 const _normalizeInputValue = (rawInput: any) => {
   let normalizedValueResult: any = parseFloat(rawInput ? rawInput : '');
 
@@ -165,20 +164,20 @@ const ProductChartGridCell: React.FC<IProductChartGridCellProps> = (
                             ],
                           };
 
-                          let action = assignPendingActions(
-                            measurementActions.apiUpdateMeasurementSize(
-                              sizePayload
-                            ),
-                            [],
-                            [],
-                            (args: any) => {
-                              setOutputValue(formik.values.sizeValue);
-                              setIsInEditMode(false);
-                            },
-                            (args: any) => {}
+                          dispatch(
+                            assignPendingActions(
+                              measurementActions.apiUpdateMeasurementSize(
+                                sizePayload
+                              ),
+                              [],
+                              [],
+                              (args: any) => {
+                                setOutputValue(formik.values.sizeValue);
+                                setIsInEditMode(false);
+                              },
+                              (args: any) => {}
+                            )
                           );
-
-                          dispatch(action);
                         } else {
                           setIsInEditMode(false);
                         }
