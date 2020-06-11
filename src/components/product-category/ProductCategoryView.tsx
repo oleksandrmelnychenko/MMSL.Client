@@ -12,7 +12,7 @@ import { productActions } from '../../redux/slices/product.slice';
 import { controlActions } from '../../redux/slices/control.slice';
 import ProductMeasurementPanel from './options/ProductMeasurementPanel';
 import ProductTimelinesPanel from './options/ProductTimelinesPanel';
-import ProductSettings from '../productSettings/ProductSettings';
+import ProductSettings from './productSettings/ProductSettings';
 import ProductManagementPanel, {
   PRODUCT_MEASUREMENTS_PATH,
   PRODUCT_CATEGORIES_DASHBOARD_PATH,

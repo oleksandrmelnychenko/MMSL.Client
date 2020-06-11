@@ -12,16 +12,16 @@ import {
   FontIcon,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
-import { IApplicationState } from '../../../redux/reducers';
-import { assignPendingActions } from '../../../helpers/action.helper';
-import { productSettingsActions } from '../../../redux/slices/productSettings.slice';
+import { IApplicationState } from '../../../../redux/reducers';
+import { assignPendingActions } from '../../../../helpers/action.helper';
+import { productSettingsActions } from '../../../../redux/slices/productSettings.slice';
 import {
   ModifiedOptionUnitOrder,
   OptionUnit,
-} from '../../../interfaces/options';
-import { ProductCategory } from '../../../interfaces/products';
+} from '../../../../interfaces/options';
+import { ProductCategory } from '../../../../interfaces/products';
 import { List } from 'linq-typescript';
-import { DATA_SELECTION_DISABLED_CLASS } from '../../dealers/DealerList';
+import { DATA_SELECTION_DISABLED_CLASS } from '../../../dealers/DealerList';
 
 export const OptionItemsOrderingList: React.FC = () => {
   const dispatch = useDispatch();

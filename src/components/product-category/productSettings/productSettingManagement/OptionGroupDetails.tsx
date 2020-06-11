@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { productSettingsActions } from '../../../redux/slices/productSettings.slice';
+import { productSettingsActions } from '../../../../redux/slices/productSettings.slice';
 import OptionItemsOrderingList from './OptionItemsOrderingList';
 import ManagingProductUnitForm, {
   ManagingProductUnitFormProps,
@@ -12,15 +12,15 @@ import {
   Separator,
   ICommandBarItemProps,
 } from 'office-ui-fabric-react';
-import { OptionUnit } from '../../../interfaces/options';
-import { ProductCategory } from '../../../interfaces/products';
-import { IApplicationState } from '../../../redux/reducers';
-import { assignPendingActions } from '../../../helpers/action.helper';
-import { controlActions } from '../../../redux/slices/control.slice';
+import { OptionUnit } from '../../../../interfaces/options';
+import { ProductCategory } from '../../../../interfaces/products';
+import { IApplicationState } from '../../../../redux/reducers';
+import { assignPendingActions } from '../../../../helpers/action.helper';
+import { controlActions } from '../../../../redux/slices/control.slice';
 import {
   DialogArgs,
   CommonDialogType,
-} from '../../../redux/slices/control.slice';
+} from '../../../../redux/slices/control.slice';
 
 class OptionGroupDetailsProps extends ManagingProductUnitFormProps {
   constructor() {

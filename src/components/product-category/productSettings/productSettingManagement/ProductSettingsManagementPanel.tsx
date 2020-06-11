@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { Panel, PanelType } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
-import { IApplicationState } from '../../../redux/reducers';
-import { FormicReference } from '../../../interfaces';
-import { OptionGroup, OptionUnit } from '../../../interfaces/options';
-import { ProductCategory } from '../../../interfaces/products';
-import { panelStyle } from '../../../common/fabric-styles/styles';
-import PanelTitle from '../../dealers/panel/PanelTitle';
+import { IApplicationState } from '../../../../redux/reducers';
+import { FormicReference } from '../../../../interfaces';
+import { OptionGroup, OptionUnit } from '../../../../interfaces/options';
+import { ProductCategory } from '../../../../interfaces/products';
+import { panelStyle } from '../../../../common/fabric-styles/styles';
+import PanelTitle from '../../../dealers/panel/PanelTitle';
 import ManagingProductGroupForm from './ManagingProductGroupForm';
-import { productSettingsActions } from '../../../redux/slices/productSettings.slice';
-import { ManagingPanelComponent } from '../../../redux/slices/productSettings.slice';
-import { assignPendingActions } from '../../../helpers/action.helper';
+import { productSettingsActions } from '../../../../redux/slices/productSettings.slice';
+import { ManagingPanelComponent } from '../../../../redux/slices/productSettings.slice';
+import { assignPendingActions } from '../../../../helpers/action.helper';
 import { List } from 'linq-typescript';
 import { OptionGroupDetails } from './OptionGroupDetails';
 import ManagingProductUnitForm from './ManagingProductUnitForm';
@@ -21,7 +21,7 @@ import CommonManagementActionBar, {
   hideAddEditPanelActions,
   NEW_PANEL_ITEM_NAME,
   DELETE_PANEL_ITEM_NAME,
-} from '../../dealers/panel/CommonManagementActionBar';
+} from '../../../dealers/panel/CommonManagementActionBar';
 
 export const ProductSettingsManagementPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();

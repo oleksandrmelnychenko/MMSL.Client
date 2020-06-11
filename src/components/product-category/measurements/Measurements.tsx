@@ -23,62 +23,60 @@ const Measurements: React.FC = () => {
   );
 
   return (
-    <>
-      <div className="content__root">
-        <Stack verticalAlign="space-around">
-          <Stack.Item align="stretch">
-            <div className="content__header">
-              <div className="content__header__top">
-                <Stack tokens={{ childrenGap: 14 }}>
-                  <Stack horizontal tokens={horizontalGapStackTokens}>
-                    <Stack horizontal tokens={{ childrenGap: '10px' }}>
-                      <Text
-                        variant="xLarge"
-                        nowrap
-                        block
-                        styles={mainTitleContent}
-                      >
-                        Measurements
-                      </Text>
+    <div className="content__root">
+      <Stack verticalAlign="space-around">
+        <Stack.Item align="stretch">
+          <div className="content__header">
+            <div className="content__header__top">
+              <Stack tokens={{ childrenGap: 14 }}>
+                <Stack horizontal tokens={horizontalGapStackTokens}>
+                  <Stack horizontal tokens={{ childrenGap: '10px' }}>
+                    <Text
+                      variant="xLarge"
+                      nowrap
+                      block
+                      styles={mainTitleContent}
+                    >
+                      Measurements
+                    </Text>
 
-                      <Separator vertical />
+                    <Separator vertical />
 
-                      <Text variant="xLarge" styles={mainTitleHintContent}>
-                        {targetProduct ? targetProduct.name : ''}
-                      </Text>
-                    </Stack>
-                  </Stack>
-
-                  <Stack
-                    horizontal
-                    tokens={{
-                      ...horizontalGapStackTokens,
-                      childrenGap: 6,
-                      padding: '18px 5px 10px 8px',
-                    }}
-                  >
-                    <ProductMeasurementSelector />
+                    <Text variant="xLarge" styles={mainTitleHintContent}>
+                      {targetProduct ? targetProduct.name : ''}
+                    </Text>
                   </Stack>
                 </Stack>
-              </div>
+
+                <Stack
+                  horizontal
+                  tokens={{
+                    ...horizontalGapStackTokens,
+                    childrenGap: 6,
+                    padding: '18px 5px 10px 8px',
+                  }}
+                >
+                  <ProductMeasurementSelector />
+                </Stack>
+              </Stack>
             </div>
-          </Stack.Item>
-          <Stack.Item>
-            <ScrollablePane
-              styles={{
-                ...scrollablePaneStyleForDetailList,
-                root: {
-                  ...scrollablePaneStyleForDetailList.root,
-                  top: '140px',
-                },
-              }}
-            >
-              <ProductMeasurementChartGrid />
-            </ScrollablePane>
-          </Stack.Item>
-        </Stack>
-      </div>
-    </>
+          </div>
+        </Stack.Item>
+        <Stack.Item>
+          <ScrollablePane
+            styles={{
+              ...scrollablePaneStyleForDetailList,
+              root: {
+                ...scrollablePaneStyleForDetailList.root,
+                top: '140px',
+              },
+            }}
+          >
+            <ProductMeasurementChartGrid />
+          </ScrollablePane>
+        </Stack.Item>
+      </Stack>
+    </div>
   );
 };
 

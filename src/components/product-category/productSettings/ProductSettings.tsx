@@ -16,20 +16,20 @@ import ProductSettingsManagementPanel from './productSettingManagement/ProductSe
 import {
   productSettingsActions,
   ManagingPanelComponent,
-} from '../../redux/slices/productSettings.slice';
-import { IApplicationState } from '../../redux/reducers';
+} from '../../../redux/slices/productSettings.slice';
+import { IApplicationState } from '../../../redux/reducers';
 import {
   mainTitleContent,
   horizontalGapStackTokens,
   searchBoxStyles,
   mainTitleHintContent,
-} from '../../common/fabric-styles/styles';
+} from '../../../common/fabric-styles/styles';
 import StylesList from './StylesList';
-import * as fabricStyles from '../../common/fabric-styles/styles';
-import { ProductCategory } from '../../interfaces/products';
-import NoMeasurementImg from '../../assets/images/no-objects/noneMeasurement.svg';
-import { OptionGroup } from '../../interfaces/options';
-import { assignPendingActions } from '../../helpers/action.helper';
+import * as fabricStyles from '../../../common/fabric-styles/styles';
+import { ProductCategory } from '../../../interfaces/products';
+import NoMeasurementImg from '../../../assets/images/no-objects/noneMeasurement.svg';
+import { OptionGroup } from '../../../interfaces/options';
+import { assignPendingActions } from '../../../helpers/action.helper';
 
 export const ProductSettings: React.FC = (props: any) => {
   const dispatch = useDispatch();

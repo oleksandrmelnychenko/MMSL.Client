@@ -8,9 +8,9 @@ import {
   DefaultButton,
 } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
-import { FormicReference } from '../../../interfaces';
-import { OptionUnit } from '../../../interfaces/options';
-import * as fabricStyles from '../../../common/fabric-styles/styles';
+import { FormicReference } from '../../../../interfaces';
+import { OptionUnit } from '../../../../interfaces/options';
+import * as fabricStyles from '../../../../common/fabric-styles/styles';
 
 export class ManagingProductUnitFormInitValues {
   constructor() {

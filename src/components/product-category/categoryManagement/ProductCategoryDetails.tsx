@@ -25,7 +25,7 @@ import { productSettingsActions } from '../../../redux/slices/productSettings.sl
 import { productActions } from '../../../redux/slices/product.slice';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import './productCategoryDetails.scss';
-import UnitRowItem from '../../productSettings/UnitRowItem';
+import UnitRowItem from '../productSettings/UnitRowItem';
 
 const resolveIsWasAddedBefore = (
   groupId: number,

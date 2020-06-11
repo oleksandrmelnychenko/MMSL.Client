@@ -2,7 +2,7 @@ import React from 'react';
 import { OptionUnit, OptionGroup } from '../../../../../interfaces/options';
 import { Stack, Text, Separator, Label, Image } from 'office-ui-fabric-react';
 import { List } from 'linq-typescript';
-import { buildGroupMandatoryHint } from '../../../../productSettings/StylesList';
+import { buildGroupMandatoryHint } from '../../../productSettings/StylesList';
 import * as fabricStyles from '../../../../../common/fabric-styles/styles';
 import './allowedList.scss';
 
