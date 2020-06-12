@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
-import {
-  Stack,
-  TextField,
-  FontIcon,
-  mergeStyles,
-  Label,
-  DefaultButton,
-} from 'office-ui-fabric-react';
+import { Stack, TextField, Label } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import { FormicReference } from '../../../../interfaces';
 import { OptionUnit } from '../../../../interfaces/options';
