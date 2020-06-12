@@ -10,6 +10,7 @@ import {
   CheckboxVisibility,
   DetailsRow,
   FontIcon,
+  Label,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../../redux/reducers';
@@ -22,6 +23,25 @@ import {
 import { ProductCategory } from '../../../../interfaces/products';
 import { List } from 'linq-typescript';
 import { DATA_SELECTION_DISABLED_CLASS } from '../../../dealers/DealerList';
+
+/// Build single hint lable
+const _renderHintLable = (textMessage: string): JSX.Element => {
+  const result = (
+    <Label
+      styles={{
+        root: {
+          fontWeight: 400,
+          fontSize: '12px',
+          color: '#a19f9d',
+        },
+      }}
+    >
+      {textMessage}
+    </Label>
+  );
+
+  return result;
+};
 
 export const OptionItemsOrderingList: React.FC = () => {
   const dispatch = useDispatch();
@@ -98,124 +118,128 @@ export const OptionItemsOrderingList: React.FC = () => {
   };
 
   return (
-    <div>
-      {/* <MarqueeSelection selection={selection}> */}
-      <DetailsList
-        styles={{
-          root: {
-            color: 'red',
-          },
-        }}
-        className="options"
-        selectionMode={SelectionMode.single}
-        columns={customerColumns}
-        items={optionUnits}
-        isHeaderVisible={false}
-        checkboxVisibility={CheckboxVisibility.hidden}
-        dragDropEvents={{
-          canDrop: (
-            dropContext?: IDragDropContext,
-            dragContext?: IDragDropContext
-          ) => {
-            return true;
-          },
-          canDrag: (item?: any) => {
-            return true;
-          },
-          onDragEnter: (item?: any, event?: DragEvent) => {
-            // return string is the css classes that will be added to the entering element.
-            return dragEnterClass;
-          },
-          onDragLeave: (item?: any, event?: DragEvent) => {
-            return;
-          },
-          onDrop: (item?: any, event?: DragEvent) => {
-            if (draggedItem) {
-              const draggedItems = selection.isIndexSelected(draggedIndex)
-                ? (selection.getSelection() as any[])
-                : [draggedItem!];
+    <>
+      {optionUnits.length > 0 ? (
+        <DetailsList
+          styles={{
+            root: {
+              color: 'red',
+            },
+          }}
+          className="options"
+          selectionMode={SelectionMode.single}
+          columns={customerColumns}
+          items={optionUnits}
+          isHeaderVisible={false}
+          checkboxVisibility={CheckboxVisibility.hidden}
+          dragDropEvents={{
+            canDrop: (
+              dropContext?: IDragDropContext,
+              dragContext?: IDragDropContext
+            ) => {
+              return true;
+            },
+            canDrag: (item?: any) => {
+              return true;
+            },
+            onDragEnter: (item?: any, event?: DragEvent) => {
+              // return string is the css classes that will be added to the entering element.
+              return dragEnterClass;
+            },
+            onDragLeave: (item?: any, event?: DragEvent) => {
+              return;
+            },
+            onDrop: (item?: any, event?: DragEvent) => {
+              if (draggedItem) {
+                const draggedItems = selection.isIndexSelected(draggedIndex)
+                  ? (selection.getSelection() as any[])
+                  : [draggedItem!];
 
-              const insertIndex = optionUnits.indexOf(item);
-              const items = optionUnits.filter(
-                (itm) => draggedItems.indexOf(itm) === -1
-              );
+                const insertIndex = optionUnits.indexOf(item);
+                const items = optionUnits.filter(
+                  (itm) => draggedItems.indexOf(itm) === -1
+                );
 
-              items.splice(insertIndex, 0, ...draggedItems);
+                items.splice(insertIndex, 0, ...draggedItems);
 
-              items.forEach((item: OptionUnit, index: number) => {
-                item.orderIndex = index;
-              });
+                items.forEach((item: OptionUnit, index: number) => {
+                  item.orderIndex = index;
+                });
 
-              let action = assignPendingActions(
-                productSettingsActions.apiModifyOptionUnitsOrder(
-                  new List<OptionUnit>(items)
-                    .select<ModifiedOptionUnitOrder>((item: OptionUnit) => {
-                      let result = new ModifiedOptionUnitOrder();
-                      result.optionUnitId = item.id;
-                      result.orderIndex = item.orderIndex;
+                let action = assignPendingActions(
+                  productSettingsActions.apiModifyOptionUnitsOrder(
+                    new List<OptionUnit>(items)
+                      .select<ModifiedOptionUnitOrder>((item: OptionUnit) => {
+                        let result = new ModifiedOptionUnitOrder();
+                        result.optionUnitId = item.id;
+                        result.orderIndex = item.orderIndex;
 
-                      return result;
-                    })
-                    .toArray()
-                ),
-                [],
-                [],
-                (args: any) => {
-                  if (targetProduct?.id) getProductStyles(targetProduct.id);
-                }
-              );
-              dispatch(action);
-            }
-          },
-          onDragStart: (
-            item?: any,
-            itemIndex?: number,
-            selectedItems?: any[],
-            event?: MouseEvent
-          ) => {
-            setDraggedItem(item);
-            setDraggedIndex(itemIndex!);
-          },
-          onDragEnd: (item?: any, event?: DragEvent) => {
-            setDraggedItem(undefined);
-            setDraggedIndex(-1);
-          },
-        }}
-        onRenderRow={(args: any) => {
-          return (
-            <div
-              onClick={(clickArgs: any) => {
-                const offsetParent: any =
-                  clickArgs?.target?.offsetParent?.className;
+                        return result;
+                      })
+                      .toArray()
+                  ),
+                  [],
+                  [],
+                  (args: any) => {
+                    if (targetProduct?.id) getProductStyles(targetProduct.id);
+                  }
+                );
+                dispatch(action);
+              }
+            },
+            onDragStart: (
+              item?: any,
+              itemIndex?: number,
+              selectedItems?: any[],
+              event?: MouseEvent
+            ) => {
+              setDraggedItem(item);
+              setDraggedIndex(itemIndex!);
+            },
+            onDragEnd: (item?: any, event?: DragEvent) => {
+              setDraggedItem(undefined);
+              setDraggedIndex(-1);
+            },
+          }}
+          onRenderRow={(args: any) => {
+            return (
+              <div
+                onClick={(clickArgs: any) => {
+                  const offsetParent: any =
+                    clickArgs?.target?.offsetParent?.className;
 
-                if (!offsetParent.includes(DATA_SELECTION_DISABLED_CLASS)) {
-                  dispatch(
-                    productSettingsActions.changeTargetOptionUnit(args.item)
-                  );
-                  dispatch(
+                  if (!offsetParent.includes(DATA_SELECTION_DISABLED_CLASS)) {
                     dispatch(
-                      productSettingsActions.toggleOptionUnitFormVisibility(
-                        true
+                      productSettingsActions.changeTargetOptionUnit(args.item)
+                    );
+                    dispatch(
+                      dispatch(
+                        productSettingsActions.toggleOptionUnitFormVisibility(
+                          true
+                        )
                       )
-                    )
-                  );
-                }
-              }}
-            >
-              <DetailsRow
-                styles={{
-                  cell: {
-                    padding: 0,
-                  },
+                    );
+                  }
                 }}
-                {...args}
-              />
-            </div>
-          );
-        }}
-      />
-      {/* </MarqueeSelection> */}
-    </div>
+              >
+                <DetailsRow
+                  styles={{
+                    cell: {
+                      padding: 0,
+                    },
+                  }}
+                  {...args}
+                />
+              </div>
+            );
+          }}
+        />
+      ) : (
+        _renderHintLable(
+          'Current style does not have any option units. Add new one for this style.'
+        )
+      )}
+    </>
   );
 };
 

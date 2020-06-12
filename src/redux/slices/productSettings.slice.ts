@@ -11,7 +11,6 @@ export class ProductSettingsState {
     this.optionGroupsList = [];
     this.searchWordOptionGroup = '';
     this.managingOptionUnitsState = new ManagingOptionUnitsState();
-    // this.manageTimelineState = new ManageTimelineState();
   }
 
   optionGroupsList: OptionGroup[];
@@ -19,7 +18,6 @@ export class ProductSettingsState {
 
   searchWordOptionGroup: string;
   managingOptionUnitsState: ManagingOptionUnitsState;
-  // manageTimelineState: ManageTimelineState;
 
   setOptionGroupsList: (source: OptionGroup[]) => void = (
     source: OptionGroup[]
