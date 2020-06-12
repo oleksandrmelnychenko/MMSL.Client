@@ -1,16 +1,13 @@
 import './productSettings.scss';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import ProductSettingsManagementPanel from './productSettingManagement/ProductSettingsManagementPanel';
-import {
-  productSettingsActions,
-  ManagingPanelComponent,
-} from '../../../redux/slices/productSettings.slice';
+import { productSettingsActions } from '../../../redux/slices/productSettings.slice';
 import { IApplicationState } from '../../../redux/reducers';
 import { ProductCategory } from '../../../interfaces/products';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { controlActions } from '../../../redux/slices/control.slice';
 import ProductSettings from './ProductSettings';
+import ManagingvOptionGroupForm from './productSettingManagement/ManagingProductGroupForm';
 
 export const CREATE_YOUR_FIRST_STYLE: string = 'Create your first style';
 export const CREATE_STYLE: string = 'Create style';
@@ -54,12 +51,16 @@ export const ProductSettingsBootstrapper: React.FC = (props: any) => {
             title: CREATE_YOUR_FIRST_STYLE,
             buttonLabel: CREATE_STYLE,
             buttonAction: () => {
-              /// TODO: use new pattern
               if (targetProduct) {
                 dispatch(
-                  productSettingsActions.managingPanelContent(
-                    ManagingPanelComponent.ManageGroups
-                  )
+                  controlActions.openRightPanel({
+                    title: 'New style',
+                    width: '400px',
+                    closeFunctions: () => {
+                      dispatch(controlActions.closeRightPanel());
+                    },
+                    component: ManagingvOptionGroupForm,
+                  })
                 );
               }
             },
@@ -112,7 +113,7 @@ export const ProductSettingsBootstrapper: React.FC = (props: any) => {
         <>
           <ProductSettings />
           {/* TODO: use new pattern */}
-          <ProductSettingsManagementPanel />
+          {/* <ProductSettingsManagementPanel /> */}
         </>
       ) : null}
     </>

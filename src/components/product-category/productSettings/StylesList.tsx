@@ -26,6 +26,8 @@ import {
   CommonDialogType,
 } from '../../../redux/slices/control.slice';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
+import { ManagingvOptionGroupForm } from './productSettingManagement/ManagingProductGroupForm';
+import { OptionGroupDetails } from './productSettingManagement/OptionGroupDetails';
 
 export const buildGroupMandatoryHint = (group: OptionGroup) => {
   return (
@@ -108,14 +110,30 @@ export const StylesList: React.FC = () => {
               ariaLabel="Settings"
               onClick={() => {
                 let action = assignPendingActions(
-                  productSettingsActions.apiGetAndSelectOptionGroupById(
+                  productSettingsActions.apiGetOptionGroupById(
                     parseInt(item.id)
                   ),
-                  [
-                    productSettingsActions.managingPanelContent(
-                      ManagingPanelComponent.ManageUnits
-                    ),
-                  ]
+                  [],
+                  [],
+                  (args: any) => {
+                    dispatch(
+                      productSettingsActions.changeTargetOptionGroupForUnitsEdit(
+                        args
+                      )
+                    );
+                    dispatch(
+                      controlActions.openRightPanel({
+                        title: 'Manage Style',
+                        description: item.name,
+                        width: '700px',
+                        closeFunctions: () => {
+                          dispatch(controlActions.closeRightPanel());
+                        },
+                        component: OptionGroupDetails,
+                      })
+                    );
+                  },
+                  (args: any) => {}
                 );
                 dispatch(action);
               }}
@@ -129,26 +147,20 @@ export const StylesList: React.FC = () => {
               title="Edit"
               ariaLabel="Edit"
               onClick={() => {
-                let action = assignPendingActions(
-                  productSettingsActions.getAndSelectOptionGroupForSingleEditById(
-                    item.id
-                  ),
-                  [],
-                  [],
-                  (args: any) => {
-                    dispatch(
-                      productSettingsActions.updateTargetSingleEditOptionGroup(
-                        args
-                      )
-                    );
-                    dispatch(
-                      productSettingsActions.managingPanelContent(
-                        ManagingPanelComponent.ManageSingleOptionGroup
-                      )
-                    );
-                  }
-                );
-                dispatch(action);
+                if (targetProduct && item) {
+                  dispatch(productSettingsActions.changeEditingGroup(item));
+                  dispatch(
+                    controlActions.openRightPanel({
+                      title: 'Details',
+                      description: item.name,
+                      width: '400px',
+                      closeFunctions: () => {
+                        dispatch(controlActions.closeRightPanel());
+                      },
+                      component: ManagingvOptionGroupForm,
+                    })
+                  );
+                }
               }}
             />
 
@@ -174,19 +186,6 @@ export const StylesList: React.FC = () => {
                           (args: any) => {
                             if (targetProduct?.id)
                               getProductStyles(targetProduct.id);
-                            // let action = assignPendingActions(
-                            //   productSettingsActions.getAllOptionGroupsList(),
-                            //   [],
-                            //   [],
-                            //   (args: any) => {
-                            //     dispatch(
-                            //       productSettingsActions.updateOptionGroupList(
-                            //         args
-                            //       )
-                            //     );
-                            //   }
-                            // );
-                            // dispatch(action);
                           }
                         );
                         dispatch(action);

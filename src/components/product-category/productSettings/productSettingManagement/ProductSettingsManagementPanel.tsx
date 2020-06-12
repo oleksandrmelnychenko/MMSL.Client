@@ -7,7 +7,6 @@ import { OptionGroup, OptionUnit } from '../../../../interfaces/options';
 import { ProductCategory } from '../../../../interfaces/products';
 import { panelStyle } from '../../../../common/fabric-styles/styles';
 import PanelTitle from '../../../dealers/panel/PanelTitle';
-import ManagingProductGroupForm from './ManagingProductGroupForm';
 import { productSettingsActions } from '../../../../redux/slices/productSettings.slice';
 import { ManagingPanelComponent } from '../../../../redux/slices/productSettings.slice';
 import { assignPendingActions } from '../../../../helpers/action.helper';
@@ -56,10 +55,10 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
     OptionUnit | null | undefined
   >((state) => state.productSettings.manageSingleOptionUnitState.optionUnit);
 
-  const sectedSingleOptionGroup: OptionGroup | null | undefined = useSelector<
-    IApplicationState,
-    OptionGroup | null | undefined
-  >((state) => state.productSettings.manageSingleOptionGroupState.optionGroup);
+  // const sectedSingleOptionGroup: OptionGroup | null | undefined = useSelector<
+  //   IApplicationState,
+  //   OptionGroup | null | undefined
+  // >((state) => state.productSettings.manageSingleOptionGroupState.optionGroup);
 
   const actionItems = buildCommonActionItems();
   actionItems.forEach((item) => {
@@ -103,50 +102,26 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
     );
   };
 
-  if (panelContent === ManagingPanelComponent.ManageGroups) {
-    hideAddEditPanelActions(actionItems);
-    panelWidth = 420;
-    panelTitleText = 'New Style';
-
-    content = (
-      <ManagingProductGroupForm
-        formikReference={formikReference}
-        productId={targetProduct ? targetProduct.id : 0}
-        submitAction={(args: any) => {
-          let createAction = assignPendingActions(
-            productSettingsActions.saveNewOptionGroup(args),
-            [productSettingsActions.managingPanelContent(null)],
-            [],
-            (args: any) => {
-              if (targetProduct?.id) getProductStyles(targetProduct.id);
-            }
-          );
-          dispatch(createAction);
-
-          formikReference.formik.resetForm();
-        }}
-      />
-    );
-  } else if (panelContent === ManagingPanelComponent.ManageUnits) {
+  if (panelContent === ManagingPanelComponent.ManageUnits) {
     panelTitleText = 'Manage Style';
     panelWidth = 700;
     if (sectedOptionGroup) {
       panelDescription = [sectedOptionGroup.name];
     }
 
-    content = (
-      <OptionGroupDetails
-        panelNewButton={new List(actionItems).firstOrDefault(
-          (item) => item.key === NEW_PANEL_ITEM_NAME
-        )}
-        panelDeleteButton={new List(actionItems).firstOrDefault(
-          (item) => item.key === DELETE_PANEL_ITEM_NAME
-        )}
-        relativeOptionGroupId={0}
-        formikReference={formikReference}
-        submitAction={(args: any) => {}}
-      />
-    );
+    // content = (
+    //   <OptionGroupDetails
+    //     panelNewButton={new List(actionItems).firstOrDefault(
+    //       (item) => item.key === NEW_PANEL_ITEM_NAME
+    //     )}
+    //     panelDeleteButton={new List(actionItems).firstOrDefault(
+    //       (item) => item.key === DELETE_PANEL_ITEM_NAME
+    //     )}
+    //     relativeOptionGroupId={0}
+    //     formikReference={formikReference}
+    //     submitAction={(args: any) => {}}
+    //   />
+    // );
   } else if (panelContent === ManagingPanelComponent.ManageSingleOptionUnit) {
     panelWidth = 420;
     panelTitleText = 'Details';
@@ -155,62 +130,30 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
     }
     hideAddEditPanelActions(actionItems);
 
-    content = (
-      <ManagingProductUnitForm
-        formikReference={formikReference}
-        optionUnit={sectedSingleOptionUnit}
-        relativeOptionGroupId={sectedOptionGroup?.id}
-        submitAction={(args: any) => {
-          let action = assignPendingActions(
-            productSettingsActions.updateOptionUnit(args),
-            [
-              productSettingsActions.changeTargetOptionGroupForUnitsEdit(null),
-              productSettingsActions.managingPanelContent(null),
-            ],
-            [],
-            (args: any) => {
-              dispatch(productSettingsActions.updateSingleEditOptionUnit(null));
+    // content = (
+    // <ManagingProductUnitForm
+    //   formikReference={formikReference}
+    //   optionUnit={sectedSingleOptionUnit}
+    //   relativeOptionGroupId={sectedOptionGroup?.id}
+    //   submitAction={(args: any) => {
+    //     let action = assignPendingActions(
+    //       productSettingsActions.updateOptionUnit(args),
+    //       [
+    //         productSettingsActions.changeTargetOptionGroupForUnitsEdit(null),
+    //         productSettingsActions.managingPanelContent(null),
+    //       ],
+    //       [],
+    //       (args: any) => {
+    //         dispatch(productSettingsActions.updateSingleEditOptionUnit(null));
 
-              if (targetProduct?.id) getProductStyles(targetProduct.id);
-            }
-          );
+    //         if (targetProduct?.id) getProductStyles(targetProduct.id);
+    //       }
+    //     );
 
-          dispatch(action);
-        }}
-      />
-    );
-  } else if (panelContent === ManagingPanelComponent.ManageSingleOptionGroup) {
-    hideAddEditPanelActions(actionItems);
-    panelWidth = 420;
-    panelTitleText = 'Details';
-    if (sectedSingleOptionGroup) {
-      panelDescription = [sectedSingleOptionGroup.name];
-    }
-
-    content = (
-      <ManagingProductGroupForm
-        formikReference={formikReference}
-        productId={targetProduct ? targetProduct.id : 0}
-        OptionGroupToEdit={sectedSingleOptionGroup}
-        submitAction={(args: any) => {
-          let createAction = assignPendingActions(
-            productSettingsActions.saveEditOptionGroup(args),
-            [],
-            [],
-            () => {
-              formikReference.formik.resetForm();
-              dispatch(productSettingsActions.managingPanelContent(null));
-              dispatch(
-                productSettingsActions.updateTargetSingleEditOptionGroup(null)
-              );
-
-              if (targetProduct?.id) getProductStyles(targetProduct.id);
-            }
-          );
-          dispatch(createAction);
-        }}
-      />
-    );
+    //     dispatch(action);
+    //   }}
+    // />
+    // );
   } else {
     panelWidth = 0;
   }
@@ -229,9 +172,9 @@ export const ProductSettingsManagementPanel: React.FC = (props: any) => {
             productSettingsActions.changeTargetOptionGroupForUnitsEdit(null)
           );
           dispatch(productSettingsActions.updateSingleEditOptionUnit(null));
-          dispatch(
-            productSettingsActions.updateTargetSingleEditOptionGroup(null)
-          );
+          // dispatch(
+          //   productSettingsActions.updateTargetSingleEditOptionGroup(null)
+          // );
         }}
         closeButtonAriaLabel="Close"
       >

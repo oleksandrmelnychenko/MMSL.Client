@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Stack, TextField, Checkbox } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
@@ -6,23 +6,27 @@ import '../../../dealers/dealerManaging/manageDealerForm.scss';
 import { FormicReference } from '../../../../interfaces';
 import { OptionGroup } from '../../../../interfaces/options';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { controlActions } from '../../../../redux/slices/control.slice';
+import {
+  GetCommandBarItemProps,
+  CommandBarItem,
+  ChangeItemsDisabledState,
+} from '../../../../helpers/commandBar.helper';
+import { List } from 'linq-typescript';
+import { IApplicationState } from '../../../../redux/reducers';
+import { ProductCategory } from '../../../../interfaces/products';
+import { assignPendingActions } from '../../../../helpers/action.helper';
+import { productSettingsActions } from '../../../../redux/slices/productSettings.slice';
 
-export class ManagingOptionGroupFormInitValues {
-  constructor() {
-    this.name = '';
-    this.isMandatory = false;
-  }
-
+interface IInitValues {
   name: string;
   isMandatory: boolean;
 }
 
-const _buildNewGroupPayload = (
-  values: ManagingOptionGroupFormInitValues,
-  productId: number
-) => {
+const _buildNewPayload = (values: IInitValues, product: ProductCategory) => {
   let payload = {
-    productId: productId,
+    productId: product.id,
     name: values.name,
     isMandatory: values.isMandatory,
   };
@@ -30,9 +34,8 @@ const _buildNewGroupPayload = (
   return payload;
 };
 
-const _buildUpdatedGroupPayload = (
-  values: ManagingOptionGroupFormInitValues,
-  productId: number,
+const _buildUpdatedPayload = (
+  values: IInitValues,
   sourceEntity: OptionGroup
 ) => {
   let payload = { ...sourceEntity };
@@ -43,7 +46,7 @@ const _buildUpdatedGroupPayload = (
 };
 
 const _initDefaultValues = (sourceEntity?: OptionGroup | null) => {
-  const initValues = new ManagingOptionGroupFormInitValues();
+  const initValues: IInitValues = { name: '', isMandatory: false };
 
   if (sourceEntity) {
     initValues.name = sourceEntity.name;
@@ -53,23 +56,128 @@ const _initDefaultValues = (sourceEntity?: OptionGroup | null) => {
   return initValues;
 };
 
-class ManagingvOptionGroupFormProps {
-  constructor() {
-    this.formikReference = new FormicReference();
-    this.productId = 0;
-    this.OptionGroupToEdit = null;
-    this.submitAction = (args: any) => {};
-  }
+export const ManagingvOptionGroupForm: React.FC = () => {
+  const dispatch = useDispatch();
 
-  formikReference: FormicReference;
-  productId: number;
-  OptionGroupToEdit?: OptionGroup | null;
-  submitAction: (args: any) => void;
-}
+  const [formikReference] = useState<FormicReference>(
+    new FormicReference(() => {})
+  );
+  const [isFormikDirty, setFormikDirty] = useState<boolean>(false);
 
-export const ManagingvOptionGroupForm: React.FC<ManagingvOptionGroupFormProps> = (
-  props: ManagingvOptionGroupFormProps
-) => {
+  const commandBarItems = useSelector<IApplicationState, any>(
+    (state) => state.control.rightPanel.commandBarItems
+  );
+
+  const targetProduct: ProductCategory | null | undefined = useSelector<
+    IApplicationState,
+    ProductCategory | null | undefined
+  >((state) => state.product.choose.category);
+
+  const editingGroup: OptionGroup | null | undefined = useSelector<
+    IApplicationState,
+    OptionGroup | null | undefined
+  >((state) => state.productSettings.editingOptionGroup);
+
+  /// Disposing form
+  useEffect(() => {
+    return () => {
+      dispatch(productSettingsActions.changeEditingGroup(null));
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (formikReference.formik) {
+      dispatch(
+        controlActions.setPanelButtons([
+          GetCommandBarItemProps(CommandBarItem.Save, () => {
+            formikReference.formik.submitForm();
+          }),
+          GetCommandBarItemProps(CommandBarItem.Reset, () => {
+            formikReference.formik.resetForm();
+          }),
+        ])
+      );
+    }
+  }, [formikReference, dispatch]);
+
+  useEffect(() => {
+    if (new List(commandBarItems).any()) {
+      dispatch(
+        controlActions.setPanelButtons(
+          ChangeItemsDisabledState(
+            commandBarItems,
+            [CommandBarItem.Reset, CommandBarItem.Save],
+            !isFormikDirty
+          )
+        )
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFormikDirty, dispatch]);
+
+  const editGroup = (values: IInitValues) => {
+    if (targetProduct && editingGroup) {
+      const payload = _buildUpdatedPayload(values, editingGroup);
+      dispatch(
+        assignPendingActions(
+          productSettingsActions.apiSaveEditOptionGroup(payload),
+          [],
+          [],
+          () => {
+            dispatch(
+              assignPendingActions(
+                productSettingsActions.apiGetAllOptionGroupsByProductIdList(
+                  targetProduct.id
+                ),
+                [],
+                [],
+                (args: any) => {
+                  dispatch(productSettingsActions.updateOptionGroupList(args));
+                  dispatch(controlActions.closeRightPanel());
+                  dispatch(productSettingsActions.changeEditingGroup(null));
+                },
+                (args: any) => {}
+              )
+            );
+          },
+          (args: any) => {}
+        )
+      );
+    }
+  };
+
+  const createNewGroup = (values: IInitValues) => {
+    if (targetProduct) {
+      const payload = _buildNewPayload(values, targetProduct);
+      dispatch(
+        assignPendingActions(
+          productSettingsActions.apiSaveNewOptionGroup(payload),
+          [],
+          [],
+          (args: any) => {
+            dispatch(
+              assignPendingActions(
+                productSettingsActions.apiGetAllOptionGroupsByProductIdList(
+                  targetProduct.id
+                ),
+                [],
+                [],
+                (args: any) => {
+                  dispatch(productSettingsActions.updateOptionGroupList(args));
+                  dispatch(controlActions.closeRightPanel());
+                  dispatch(productSettingsActions.changeEditingGroup(null));
+                },
+                (args: any) => {}
+              )
+            );
+          },
+          (args: any) => {}
+        )
+      );
+    }
+  };
+
   return (
     <div>
       <Formik
@@ -79,24 +187,14 @@ export const ManagingvOptionGroupForm: React.FC<ManagingvOptionGroupFormProps> =
             .required(() => 'Name is required'),
           isMandatory: Yup.boolean(),
         })}
-        initialValues={_initDefaultValues(props.OptionGroupToEdit)}
+        initialValues={_initDefaultValues(editingGroup)}
         onSubmit={(values: any) => {
-          const payload = props.OptionGroupToEdit
-            ? _buildUpdatedGroupPayload(
-                values,
-                props.productId,
-                props.OptionGroupToEdit
-              )
-            : _buildNewGroupPayload(values, props.productId);
-
-          props.submitAction(payload);
+          if (editingGroup) editGroup(values);
+          else createNewGroup(values);
         }}
         innerRef={(formik: any) => {
-          props.formikReference.formik = formik;
-          if (formik) {
-            if (props.formikReference.isDirtyFunc)
-              props.formikReference.isDirtyFunc(formik.dirty);
-          }
+          formikReference.formik = formik;
+          if (formik) setFormikDirty(formik.dirty);
         }}
         validateOnBlur={false}
         enableReinitialize={true}

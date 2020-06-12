@@ -1,46 +1,67 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import {
   Stack,
   TextField,
   FontIcon,
   mergeStyles,
+  Label,
   DefaultButton,
 } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import { FormicReference } from '../../../../interfaces';
 import { OptionUnit } from '../../../../interfaces/options';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
+import { IApplicationState } from '../../../../redux/reducers';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  controlActions,
+  DialogArgs,
+  CommonDialogType,
+} from '../../../../redux/slices/control.slice';
+import {
+  GetCommandBarItemProps,
+  CommandBarItem,
+  ChangeItemsDisabledStatePartialy,
+} from '../../../../helpers/commandBar.helper';
+import { productSettingsActions } from '../../../../redux/slices/productSettings.slice';
+import { List } from 'linq-typescript';
+import { assignPendingActions } from '../../../../helpers/action.helper';
+import { ProductCategory } from '../../../../interfaces/products';
 
-export class ManagingProductUnitFormInitValues {
-  constructor() {
-    this.value = '';
-    this.isMandatory = false;
-    this.imageFile = null;
-    this.isRemovingImage = false;
-    this.imageUrl = '';
-  }
-
+export interface IInitValues {
   value: string;
   imageUrl: string;
   isMandatory: boolean;
   imageFile: any | null;
   isRemovingImage: boolean;
+  unitToDelete: any;
 }
 
-const buildOptionUnit = (
-  values: ManagingProductUnitFormInitValues,
-  relativeOptionGroupId: number | null | undefined,
-  sourceEntity?: OptionUnit
+const _buildNewUnitPayload = (
+  values: IInitValues,
+  relativeOptionGroupId: number
 ) => {
-  let newUnit: OptionUnit;
+  let newUnit: OptionUnit = new OptionUnit();
+  newUnit.optionGroupId = relativeOptionGroupId;
+  newUnit.value = values.value;
+  newUnit.isMandatory = values.isMandatory;
 
-  if (sourceEntity) {
-    newUnit = { ...sourceEntity };
+  if (!values.isRemovingImage) {
+    newUnit.imageBlob = null;
+    newUnit.imageUrl = '';
   } else {
-    newUnit = new OptionUnit();
-    newUnit.optionGroupId = relativeOptionGroupId;
+    newUnit.imageBlob = values.imageFile;
   }
+
+  return newUnit;
+};
+
+const _buildUpdatedUnitPayload = (
+  values: IInitValues,
+  sourceEntity: OptionUnit
+) => {
+  let newUnit: OptionUnit = { ...sourceEntity };
 
   newUnit.value = values.value;
   newUnit.isMandatory = values.isMandatory;
@@ -55,8 +76,34 @@ const buildOptionUnit = (
   return newUnit;
 };
 
-const initDefaultValues = (sourceEntity?: OptionUnit | null) => {
-  const initValues = new ManagingProductUnitFormInitValues();
+/// Build single hint lable
+const _renderHintLable = (textMessage: string): JSX.Element => {
+  const result = (
+    <Label
+      styles={{
+        root: {
+          fontWeight: 400,
+          fontSize: '12px',
+          color: '#a19f9d',
+        },
+      }}
+    >
+      {textMessage}
+    </Label>
+  );
+
+  return result;
+};
+
+const _initDefaultValues = (sourceEntity?: OptionUnit | null) => {
+  const initValues = {
+    value: '',
+    imageUrl: '',
+    isMandatory: false,
+    imageFile: null,
+    isRemovingImage: false,
+    unitToDelete: sourceEntity,
+  };
 
   if (sourceEntity) {
     initValues.value = sourceEntity.value;
@@ -73,24 +120,226 @@ const initDefaultValues = (sourceEntity?: OptionUnit | null) => {
   return initValues;
 };
 
-export class ManagingProductUnitFormProps {
-  constructor() {
-    this.formikReference = new FormicReference();
-    this.optionUnit = null;
-    this.relativeOptionGroupId = null;
-    this.submitAction = (args: any) => {};
+const _isFormikDirty = (initValues: IInitValues, values: IInitValues) => {
+  let isDirty = false;
+
+  if (initValues && values) {
+    isDirty =
+      initValues.value !== values.value ||
+      initValues.imageUrl !== values.imageUrl ||
+      initValues.isMandatory !== values.isMandatory ||
+      initValues.imageFile !== values.imageFile ||
+      initValues.isRemovingImage !== values.isRemovingImage;
   }
 
-  formikReference: FormicReference;
-  optionUnit?: OptionUnit | null;
-  relativeOptionGroupId: number | null | undefined;
-  submitAction: (args: any) => void;
-}
+  return isDirty;
+};
 
-export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
-  props: ManagingProductUnitFormProps
-) => {
-  const initValues = initDefaultValues(props.optionUnit);
+export const ManagingProductUnitForm: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const [formikReference] = useState<FormicReference>(
+    new FormicReference(() => {})
+  );
+  const [formikIsDirty, setFormikIsDirty] = useState<boolean>(false);
+  const [dismissIsDirty, setDismissIsDirty] = useState<boolean>(false);
+
+  const commandBarItems = useSelector<IApplicationState, any>(
+    (state) => state.control.rightPanel.commandBarItems
+  );
+
+  const targetProduct: ProductCategory | null = useSelector<
+    IApplicationState,
+    ProductCategory | null
+  >((state) => state.product.choose.category);
+
+  const sectedOptionUnit: OptionUnit | null = useSelector<
+    IApplicationState,
+    OptionUnit | null
+  >(
+    (state) => state.productSettings.managingOptionUnitsState.selectedOptionUnit
+  );
+
+  const sectedOptionGroupId: number | null | undefined = useSelector<
+    IApplicationState,
+    number | null | undefined
+  >(
+    (state) =>
+      state.productSettings.managingOptionUnitsState.targetOptionGroup?.id
+  );
+
+  const isUnitFormVisible: boolean = useSelector<IApplicationState, boolean>(
+    (state) =>
+      state.productSettings.managingOptionUnitsState.isOptionUnitFormVisible
+  );
+
+  useEffect(() => {
+    if (formikReference.formik) {
+      dispatch(
+        controlActions.setPanelButtons([
+          GetCommandBarItemProps(CommandBarItem.New, () => {
+            formikReference.formik.resetForm();
+            dispatch(
+              productSettingsActions.toggleOptionUnitFormVisibility(true)
+            );
+            dispatch(productSettingsActions.changeTargetOptionunit(null));
+          }),
+          GetCommandBarItemProps(CommandBarItem.Save, () => {
+            formikReference.formik.submitForm();
+          }),
+          GetCommandBarItemProps(CommandBarItem.Reset, () => {
+            console.log('-1->');
+            console.log(formikReference.formik.values);
+            formikReference.formik.resetForm();
+          }),
+          GetCommandBarItemProps(CommandBarItem.Delete, () => {
+            // formikReference.formik.submitForm();
+            if (formikReference.formik.values.unitToDelete) {
+              console.log('---> Delete unit');
+              console.log(formikReference.formik.values.unitToDelete);
+              dispatch(
+                controlActions.toggleCommonDialogVisibility(
+                  new DialogArgs(
+                    CommonDialogType.Delete,
+                    'Delete option unit',
+                    `Are you sure you want to delete ${formikReference.formik.values.unitToDelete.value}?`,
+                    () => {
+                      dispatch(
+                        assignPendingActions(
+                          productSettingsActions.deleteOptionUnitById(
+                            formikReference.formik.values.unitToDelete.id
+                          ),
+                          [
+                            productSettingsActions.changeTargetOptionunit(null),
+                            productSettingsActions.toggleOptionUnitFormVisibility(
+                              false
+                            ),
+                          ],
+                          [],
+                          (args: any) => {
+                            if (targetProduct?.id) {
+                              dispatch(
+                                assignPendingActions(
+                                  productSettingsActions.apiGetAllOptionGroupsByProductIdList(
+                                    targetProduct.id
+                                  ),
+                                  [],
+                                  [],
+                                  (args: any) => {
+                                    dispatch(
+                                      productSettingsActions.updateOptionGroupList(
+                                        args
+                                      )
+                                    );
+                                  },
+                                  (args: any) => {}
+                                )
+                              );
+                            }
+                          }
+                        )
+                      );
+                    },
+                    () => {}
+                  )
+                )
+              );
+            }
+          }),
+        ])
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formikReference]);
+
+  useEffect(() => {
+    if (formikReference.formik) {
+      formikReference.formik.setFieldValue('unitToDelete', sectedOptionUnit);
+      formikReference.formik.setFieldTouched('unitToDelete');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formikReference, sectedOptionUnit]);
+
+  useEffect(() => {
+    if (new List(commandBarItems).any()) {
+      dispatch(
+        controlActions.setPanelButtons(
+          ChangeItemsDisabledStatePartialy(commandBarItems, [
+            { command: CommandBarItem.New, isDisabled: false },
+            { command: CommandBarItem.Reset, isDisabled: !formikIsDirty },
+            { command: CommandBarItem.Save, isDisabled: !formikIsDirty },
+            { command: CommandBarItem.Delete, isDisabled: !dismissIsDirty },
+          ])
+        )
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formikIsDirty, dismissIsDirty]);
+
+  const onUpdate = (values: IInitValues) => {
+    if (targetProduct && sectedOptionGroupId) {
+      const payload = _buildUpdatedUnitPayload(values, values.unitToDelete);
+
+      dispatch(
+        assignPendingActions(
+          productSettingsActions.apiUpdateOptionUnit(payload),
+          [
+            productSettingsActions.changeTargetOptionunit(null),
+            productSettingsActions.toggleOptionUnitFormVisibility(false),
+          ],
+          [],
+          (successResponseArgs: any) => {
+            dispatch(
+              assignPendingActions(
+                productSettingsActions.apiGetAllOptionGroupsByProductIdList(
+                  targetProduct.id
+                ),
+                [],
+                [],
+                (args: any) => {
+                  dispatch(productSettingsActions.updateOptionGroupList(args));
+                },
+                (args: any) => {}
+              )
+            );
+          }
+        )
+      );
+    }
+  };
+
+  const createNew = (values: IInitValues) => {
+    if (targetProduct && sectedOptionGroupId) {
+      const payload = _buildNewUnitPayload(values, sectedOptionGroupId);
+
+      dispatch(
+        assignPendingActions(
+          productSettingsActions.apiCreateNewOptionUnit(payload),
+          [
+            productSettingsActions.changeTargetOptionunit(null),
+            productSettingsActions.toggleOptionUnitFormVisibility(false),
+          ],
+          [],
+          (successResponseArgs: any) => {
+            dispatch(
+              assignPendingActions(
+                productSettingsActions.apiGetAllOptionGroupsByProductIdList(
+                  targetProduct.id
+                ),
+                [],
+                [],
+                (args: any) => {
+                  dispatch(productSettingsActions.updateOptionGroupList(args));
+                },
+                (args: any) => {}
+              )
+            );
+          }
+        )
+      );
+    }
+  };
+
   const fileInputRef: any = React.createRef();
 
   return (
@@ -103,22 +352,27 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
           isMandatory: Yup.boolean(),
           imageFile: Yup.object().nullable(),
           isRemovingImage: Yup.boolean(),
+          unitToDelete: Yup.object().nullable(),
         })}
-        initialValues={initValues}
+        initialValues={_initDefaultValues(sectedOptionUnit)}
         onSubmit={(values: any) => {
-          props.submitAction(
-            buildOptionUnit(
-              values,
-              props.relativeOptionGroupId,
-              props.optionUnit as OptionUnit
-            )
-          );
+          if (values.unitToDelete) onUpdate(values);
+          else createNew(values);
         }}
         innerRef={(formik: any) => {
-          props.formikReference.formik = formik;
+          formikReference.formik = formik;
+
           if (formik) {
-            if (props.formikReference.isDirtyFunc)
-              props.formikReference.isDirtyFunc(formik.dirty);
+            let isDirty: boolean = _isFormikDirty(
+              formik.initialValues,
+              formik.values
+            );
+
+            setFormikIsDirty(isDirty);
+
+            console.log('-2->');
+            console.log(formikReference.formik.values);
+            setDismissIsDirty(formik.values.unitToDelete ? true : false);
           }
         }}
         validateOnBlur={false}
@@ -127,11 +381,11 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
         {(formik) => {
           let thumbUrl: string = '';
           if (formik.values.isRemovingImage) {
-            if (props.optionUnit) {
+            if (sectedOptionUnit) {
               if (formik.values.imageFile) {
                 thumbUrl = URL.createObjectURL(formik.values.imageFile);
               } else {
-                thumbUrl = props.optionUnit.imageUrl;
+                thumbUrl = sectedOptionUnit.imageUrl;
               }
             } else {
               if (formik.values.imageFile) {
@@ -178,7 +432,7 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
             </div>
           );
 
-          return (
+          const renderResult = isUnitFormVisible ? (
             <Form className="form">
               <div className="dealerFormManage">
                 <Stack horizontal tokens={{ childrenGap: 20 }}>
@@ -319,7 +573,11 @@ export const ManagingProductUnitForm: React.FC<ManagingProductUnitFormProps> = (
                 </Stack>
               </div>
             </Form>
+          ) : (
+            _renderHintLable('Select and explore or define new style unit.')
           );
+
+          return renderResult;
         }}
       </Formik>
     </div>

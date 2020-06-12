@@ -65,7 +65,7 @@ export const getOptionGroupByIdEpic = (action$: AnyAction, state$: any) => {
 
 export const saveEditOptionGroupEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productSettingsActions.saveEditOptionGroup.type),
+    ofType(productSettingsActions.apiSaveEditOptionGroup.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
 
@@ -109,7 +109,7 @@ export const saveEditOptionGroupEpic = (action$: AnyAction, state$: any) => {
 
 export const saveNewOptionGroupEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productSettingsActions.saveNewOptionGroup.type),
+    ofType(productSettingsActions.apiSaveNewOptionGroup.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -276,9 +276,9 @@ export const modifyOptionUnitsOrderEpic = (action$: AnyAction, state$: any) => {
   );
 };
 
-export const updateOptionUnitEpic = (action$: AnyAction, state$: any) => {
+export const apiUpdateOptionUnitEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productSettingsActions.updateOptionUnit.type),
+    ofType(productSettingsActions.apiUpdateOptionUnit.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -341,9 +341,9 @@ export const updateOptionUnitEpic = (action$: AnyAction, state$: any) => {
   );
 };
 
-export const saveNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
+export const apiCreateNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productSettingsActions.saveNewOptionUnit.type),
+    ofType(productSettingsActions.apiCreateNewOptionUnit.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -448,13 +448,9 @@ export const deleteOptionUnitByIdEpic = (action$: AnyAction, state$: any) => {
   );
 };
 
-/// TODO: need to re-check
-export const getAndSelectOptionGroupByIdEpic = (
-  action$: AnyAction,
-  state$: any
-) => {
+export const apiGetOptionGroupByIdEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productSettingsActions.apiGetAndSelectOptionGroupById.type),
+    ofType(productSettingsActions.apiGetOptionGroupById.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -464,12 +460,7 @@ export const getAndSelectOptionGroupByIdEpic = (
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
-            [
-              controlActions.disabledStatusBar(),
-              productSettingsActions.changeTargetOptionGroupForUnitsEdit(
-                successResponse
-              ),
-            ],
+            [controlActions.disabledStatusBar()],
             action
           );
         }),
@@ -492,12 +483,9 @@ export const getAndSelectOptionGroupByIdEpic = (
   );
 };
 
-export const getAndSelectOptionUnitForSingleEditByIdEpic = (
-  action$: AnyAction,
-  state$: any
-) => {
+export const apiGetOptionUnitByIdEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(productSettingsActions.getAndSelectOptionUnitForSingleEditById.type),
+    ofType(productSettingsActions.apiGetOptionUnitById.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
 

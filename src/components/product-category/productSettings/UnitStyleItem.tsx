@@ -115,9 +115,7 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
             title="Edit"
             onClick={() => {
               dispatch(
-                productSettingsActions.getAndSelectOptionUnitForSingleEditById(
-                  props.optionUnit.id
-                )
+                productSettingsActions.apiGetOptionUnitById(props.optionUnit.id)
               );
             }}
           />

@@ -16,15 +16,12 @@ import { ProductCategory } from '../../../interfaces/products';
 import ProductManagementPanel, {
   IProductMenuItem,
 } from './ProductManagementPanel';
-import {
-  productSettingsActions,
-  ManagingPanelComponent,
-} from '../../../redux/slices/productSettings.slice';
+import { productSettingsActions } from '../../../redux/slices/productSettings.slice';
+import ManagingvOptionGroupForm from '../productSettings/productSettingManagement/ManagingProductGroupForm';
 
 export const stylesPanelDismisActions = () => {
   return [
     productSettingsActions.updateSearchWordOptionGroup(''),
-    productSettingsActions.updateIsStylesWasRequested(false),
     productSettingsActions.updateOptionGroupList([]),
   ];
 };
@@ -75,9 +72,14 @@ const ProductStylesPanel: React.FC = () => {
       onClickFunc: () => {
         if (choseCategory) {
           dispatch(
-            productSettingsActions.managingPanelContent(
-              ManagingPanelComponent.ManageGroups
-            )
+            controlActions.openRightPanel({
+              title: 'New style',
+              width: '400px',
+              closeFunctions: () => {
+                dispatch(controlActions.closeRightPanel());
+              },
+              component: ManagingvOptionGroupForm,
+            })
           );
         }
       },

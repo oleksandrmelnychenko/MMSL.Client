@@ -11,21 +11,20 @@ export class ProductSettingsState {
   constructor() {
     this.managingPanelContent = null;
     this.optionGroupsList = [];
-    this.isStylesWasRequested = false;
     this.searchWordOptionGroup = '';
     this.managingOptionUnitsState = new ManagingOptionUnitsState();
     this.manageSingleOptionUnitState = new ManageSingleOptionUnitState();
-    this.manageSingleOptionGroupState = new ManageSingleOptionGroupState();
     this.manageTimelineState = new ManageTimelineState();
   }
 
   managingPanelContent: ManagingPanelComponent | null;
+
   optionGroupsList: OptionGroup[];
-  isStylesWasRequested: boolean;
+  editingOptionGroup: OptionGroup | null | undefined;
+
   searchWordOptionGroup: string;
   managingOptionUnitsState: ManagingOptionUnitsState;
   manageSingleOptionUnitState: ManageSingleOptionUnitState;
-  manageSingleOptionGroupState: ManageSingleOptionGroupState;
   manageTimelineState: ManageTimelineState;
 
   setOptionGroupsList: (source: OptionGroup[]) => void = (
@@ -89,24 +88,10 @@ export class ManageSingleOptionUnitState {
   optionUnit: OptionUnit | null | undefined;
 }
 
-export class ManageSingleOptionGroupState {
-  constructor() {
-    this.optionGroup = null;
-  }
-
-  optionGroup: OptionGroup | null | undefined;
-}
-
 const productSettings = createSlice({
   name: 'productSettings',
   initialState: new ProductSettingsState(),
   reducers: {
-    updateIsStylesWasRequested(
-      state,
-      action: { type: string; payload: boolean }
-    ) {
-      state.isStylesWasRequested = action.payload;
-    },
     managingPanelContent(state, action) {
       state.managingPanelContent = action.payload;
       return state;
@@ -227,7 +212,7 @@ const productSettings = createSlice({
       state.managingOptionUnitsState.selectedOptionUnit = action.payload;
       return state;
     },
-    saveNewOptionGroup(state, action) {
+    apiSaveNewOptionGroup(state, action) {
       return state;
     },
     apiGetAllOptionGroupsByProductIdList(
@@ -241,20 +226,19 @@ const productSettings = createSlice({
     modifyOptionUnitsOrder(state, action) {
       return state;
     },
-    updateOptionUnit(state, action) {
+    apiUpdateOptionUnit(state, action) {
       return state;
     },
-    saveNewOptionUnit(state, action) {
+    apiCreateNewOptionUnit(state, action) {
       return state;
     },
     deleteOptionUnitById(state, action) {
       return state;
     },
-    apiGetAndSelectOptionGroupById(state, action) {
+    apiGetOptionGroupById(state, action) {
       return state;
     },
-
-    getAndSelectOptionUnitForSingleEditById(state, action) {
+    apiGetOptionUnitById(state, action) {
       return state;
     },
     deleteOptionGroupById(state, action) {
@@ -263,7 +247,7 @@ const productSettings = createSlice({
     getAndSelectOptionGroupForSingleEditById(state, action) {
       return state;
     },
-    saveEditOptionGroup(state, action) {
+    apiSaveEditOptionGroup(state, action) {
       return state;
     },
     toggleOptionUnitFormVisibility(state, action) {
@@ -278,8 +262,11 @@ const productSettings = createSlice({
       state.manageSingleOptionUnitState.optionUnit = action.payload;
       return state;
     },
-    updateTargetSingleEditOptionGroup(state, action) {
-      state.manageSingleOptionGroupState.optionGroup = action.payload;
+    changeEditingGroup(
+      state,
+      action: { type: string; payload: OptionGroup | null | undefined }
+    ) {
+      state.editingOptionGroup = action.payload;
       return state;
     },
   },
