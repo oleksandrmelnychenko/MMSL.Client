@@ -9,22 +9,17 @@ import { List } from 'linq-typescript';
 
 export class ProductSettingsState {
   constructor() {
-    this.managingPanelContent = null;
     this.optionGroupsList = [];
     this.searchWordOptionGroup = '';
     this.managingOptionUnitsState = new ManagingOptionUnitsState();
-    this.manageSingleOptionUnitState = new ManageSingleOptionUnitState();
     this.manageTimelineState = new ManageTimelineState();
   }
-
-  managingPanelContent: ManagingPanelComponent | null;
 
   optionGroupsList: OptionGroup[];
   editingOptionGroup: OptionGroup | null | undefined;
 
   searchWordOptionGroup: string;
   managingOptionUnitsState: ManagingOptionUnitsState;
-  manageSingleOptionUnitState: ManageSingleOptionUnitState;
   manageTimelineState: ManageTimelineState;
 
   setOptionGroupsList: (source: OptionGroup[]) => void = (
@@ -49,14 +44,6 @@ export class ProductSettingsState {
   };
 }
 
-export enum ManagingPanelComponent {
-  Unknown,
-  ManageGroups,
-  ManageUnits,
-  ManageSingleOptionUnit,
-  ManageSingleOptionGroup,
-}
-
 export class ManageTimelineState {
   constructor() {
     this.deliveryTimelines = [];
@@ -72,30 +59,22 @@ export class ManagingOptionUnitsState {
     this.optionUnits = [];
     this.selectedOptionUnit = null;
     this.isOptionUnitFormVisible = false;
+    this.isEditingSingleUnit = false;
   }
 
   targetOptionGroup: OptionGroup | null;
   optionUnits: OptionUnit[];
   selectedOptionUnit: OptionUnit | null;
   isOptionUnitFormVisible: boolean;
-}
-
-export class ManageSingleOptionUnitState {
-  constructor() {
-    this.optionUnit = null;
-  }
-
-  optionUnit: OptionUnit | null | undefined;
+  /// Only when editing concrete single `option unit`
+  /// TODO: probably simlify this flow and define another `form component`
+  isEditingSingleUnit: boolean;
 }
 
 const productSettings = createSlice({
   name: 'productSettings',
   initialState: new ProductSettingsState(),
   reducers: {
-    managingPanelContent(state, action) {
-      state.managingPanelContent = action.payload;
-      return state;
-    },
     updateOptionGroupList(state, action) {
       state.setOptionGroupsList(action.payload);
 
@@ -135,6 +114,33 @@ const productSettings = createSlice({
           }
         }
       } else {
+      }
+      return state;
+    },
+    changeTargetOptionGroupForUnitsEdit(state, action) {
+      state.managingOptionUnitsState.targetOptionGroup = action.payload;
+      state.managingOptionUnitsState.isEditingSingleUnit = false;
+
+      let optionUnits =
+        state.managingOptionUnitsState.targetOptionGroup?.optionUnits;
+
+      if (optionUnits === null || optionUnits === undefined) {
+        state.managingOptionUnitsState.optionUnits = [];
+        state.managingOptionUnitsState.selectedOptionUnit = null;
+      } else {
+        optionUnits = new List<OptionUnit>(optionUnits)
+          .orderBy<number>((item) => item.orderIndex)
+          .toArray();
+
+        if (
+          state.managingOptionUnitsState.selectedOptionUnit &&
+          !new List<OptionUnit>(optionUnits).firstOrDefault(
+            (unit) =>
+              unit.id === state.managingOptionUnitsState.selectedOptionUnit?.id
+          )
+        ) {
+          state.managingOptionUnitsState.selectedOptionUnit = null;
+        }
       }
       return state;
     },
@@ -182,30 +188,11 @@ const productSettings = createSlice({
     ) {
       return state;
     },
-    changeTargetOptionGroupForUnitsEdit(state, action) {
-      state.managingOptionUnitsState.targetOptionGroup = action.payload;
-
-      let optionUnits =
-        state.managingOptionUnitsState.targetOptionGroup?.optionUnits;
-
-      if (optionUnits === null || optionUnits === undefined) {
-        state.managingOptionUnitsState.optionUnits = [];
-        state.managingOptionUnitsState.selectedOptionUnit = null;
-      } else {
-        optionUnits = new List<OptionUnit>(optionUnits)
-          .orderBy<number>((item) => item.orderIndex)
-          .toArray();
-
-        if (
-          state.managingOptionUnitsState.selectedOptionUnit &&
-          !new List<OptionUnit>(optionUnits).firstOrDefault(
-            (unit) =>
-              unit.id === state.managingOptionUnitsState.selectedOptionUnit?.id
-          )
-        ) {
-          state.managingOptionUnitsState.selectedOptionUnit = null;
-        }
-      }
+    changeManagingOptionUnitsState(
+      state,
+      action: { type: string; payload: ManagingOptionUnitsState }
+    ) {
+      state.managingOptionUnitsState = { ...action.payload };
       return state;
     },
     changeTargetOptionunit(state, action) {
@@ -256,10 +243,6 @@ const productSettings = createSlice({
     },
     updateSearchWordOptionGroup(state, action) {
       state.searchWordOptionGroup = action.payload;
-      return state;
-    },
-    updateSingleEditOptionUnit(state, action) {
-      state.manageSingleOptionUnitState.optionUnit = action.payload;
       return state;
     },
     changeEditingGroup(

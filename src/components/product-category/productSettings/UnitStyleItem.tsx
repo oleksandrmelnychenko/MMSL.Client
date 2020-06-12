@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Text, Image, Icon, Stack } from 'office-ui-fabric-react';
 import { OptionUnit } from '../../../interfaces/options';
 import { ProductCategory } from '../../../interfaces/products';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   productSettingsActions,
-  ManagingPanelComponent,
+  ManagingOptionUnitsState,
 } from '../../../redux/slices/productSettings.slice';
 import {
   controlActions,
@@ -16,6 +16,7 @@ import { Card } from '@uifabric/react-cards';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { IApplicationState } from '../../../redux/reducers';
+import ManagingProductUnitForm from './productSettingManagement/ManagingProductUnitForm';
 
 export class UnitRowItemProps {
   constructor() {
@@ -37,21 +38,21 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
     ProductCategory | null
   >((state) => state.product.choose.category);
 
-  const singleOptionForEdit: OptionUnit | null | undefined = useSelector<
-    IApplicationState,
-    OptionUnit | null | undefined
-  >((state) => state.productSettings.manageSingleOptionUnitState.optionUnit);
+  // const singleOptionForEdit: OptionUnit | null | undefined = useSelector<
+  //   IApplicationState,
+  //   OptionUnit | null | undefined
+  // >((state) => state.productSettings.manageSingleOptionUnitState.optionUnit);
 
-  useEffect(() => {
-    const panelContentType = singleOptionForEdit
-      ? ManagingPanelComponent.ManageSingleOptionUnit
-      : null;
+  // useEffect(() => {
+  //   const panelContentType = singleOptionForEdit
+  //     ? ManagingPanelComponent.ManageSingleOptionUnit
+  //     : null;
 
-    if (singleOptionForEdit) {
-      dispatch(productSettingsActions.managingPanelContent(panelContentType));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [singleOptionForEdit]);
+  //   if (singleOptionForEdit) {
+  //     dispatch(productSettingsActions.managingPanelContent(panelContentType));
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [singleOptionForEdit]);
 
   const getProductStyles: (productId: number) => void = (productId: number) => {
     dispatch(
@@ -115,7 +116,40 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
             title="Edit"
             onClick={() => {
               dispatch(
-                productSettingsActions.apiGetOptionUnitById(props.optionUnit.id)
+                assignPendingActions(
+                  productSettingsActions.apiGetOptionUnitById(
+                    props.optionUnit.id
+                  ),
+                  [],
+                  [],
+                  (args: any) => {
+                    const payload: ManagingOptionUnitsState = new ManagingOptionUnitsState();
+                    payload.isOptionUnitFormVisible = true;
+                    payload.optionUnits = [args];
+                    payload.selectedOptionUnit = args;
+                    payload.targetOptionGroup = null;
+                    payload.isEditingSingleUnit = true;
+
+                    dispatch(
+                      productSettingsActions.changeManagingOptionUnitsState(
+                        payload
+                      )
+                    );
+
+                    dispatch(
+                      controlActions.openRightPanel({
+                        title: 'Details',
+                        description: args.value,
+                        width: '400px',
+                        closeFunctions: () => {
+                          dispatch(controlActions.closeRightPanel());
+                        },
+                        component: ManagingProductUnitForm,
+                      })
+                    );
+                  },
+                  (args: any) => {}
+                )
               );
             }}
           />

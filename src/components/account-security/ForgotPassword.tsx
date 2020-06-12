@@ -67,8 +67,8 @@ export const ForgotPassword: React.FC = () => {
           validationSchema={SignInSchema}
           onSubmit={(values) => {
             setIsActiveForm(true);
-            console.log(values);
-          }}>
+          }}
+        >
           {({ errors, touched }) => (
             <Form>
               <div className="form-group">
@@ -89,7 +89,8 @@ export const ForgotPassword: React.FC = () => {
               <button
                 type="submit"
                 className="btn btn-submit"
-                disabled={isActiveForm}>
+                disabled={isActiveForm}
+              >
                 <Translate id="SendEmail" />
               </button>
             </Form>
@@ -99,7 +100,8 @@ export const ForgotPassword: React.FC = () => {
         <Link
           to={`/${languageCode}/account-security/sign-in`}
           className="btn btn-link"
-          onClick={handleClearErrorMessages}>
+          onClick={handleClearErrorMessages}
+        >
           <Translate id="signIn" />
         </Link>
       </div>

@@ -24,7 +24,10 @@ import {
   CommandBarItem,
   ChangeItemsDisabledStatePartialy,
 } from '../../../../helpers/commandBar.helper';
-import { productSettingsActions } from '../../../../redux/slices/productSettings.slice';
+import {
+  productSettingsActions,
+  ManagingOptionUnitsState,
+} from '../../../../redux/slices/productSettings.slice';
 import { List } from 'linq-typescript';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import { ProductCategory } from '../../../../interfaces/products';
@@ -173,81 +176,108 @@ export const ManagingProductUnitForm: React.FC = () => {
       state.productSettings.managingOptionUnitsState.isOptionUnitFormVisible
   );
 
+  const isEditingSingleUnit: boolean = useSelector<IApplicationState, boolean>(
+    (state) =>
+      state.productSettings.managingOptionUnitsState.isEditingSingleUnit
+  );
+
+  useEffect(() => {
+    return () => {
+      dispatch(
+        productSettingsActions.changeManagingOptionUnitsState(
+          new ManagingOptionUnitsState()
+        )
+      );
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if (formikReference.formik) {
-      dispatch(
-        controlActions.setPanelButtons([
-          GetCommandBarItemProps(CommandBarItem.New, () => {
-            formikReference.formik.resetForm();
-            dispatch(
-              productSettingsActions.toggleOptionUnitFormVisibility(true)
-            );
-            dispatch(productSettingsActions.changeTargetOptionunit(null));
-          }),
-          GetCommandBarItemProps(CommandBarItem.Save, () => {
-            formikReference.formik.submitForm();
-          }),
-          GetCommandBarItemProps(CommandBarItem.Reset, () => {
-            console.log('-1->');
-            console.log(formikReference.formik.values);
-            formikReference.formik.resetForm();
-          }),
-          GetCommandBarItemProps(CommandBarItem.Delete, () => {
-            // formikReference.formik.submitForm();
-            if (formikReference.formik.values.unitToDelete) {
-              console.log('---> Delete unit');
-              console.log(formikReference.formik.values.unitToDelete);
+      if (isEditingSingleUnit) {
+        dispatch(
+          controlActions.setPanelButtons([
+            GetCommandBarItemProps(CommandBarItem.Save, () => {
+              formikReference.formik.submitForm();
+            }),
+            GetCommandBarItemProps(CommandBarItem.Reset, () => {
+              formikReference.formik.resetForm();
+            }),
+          ])
+        );
+      } else {
+        dispatch(
+          controlActions.setPanelButtons([
+            GetCommandBarItemProps(CommandBarItem.New, () => {
+              formikReference.formik.resetForm();
               dispatch(
-                controlActions.toggleCommonDialogVisibility(
-                  new DialogArgs(
-                    CommonDialogType.Delete,
-                    'Delete option unit',
-                    `Are you sure you want to delete ${formikReference.formik.values.unitToDelete.value}?`,
-                    () => {
-                      dispatch(
-                        assignPendingActions(
-                          productSettingsActions.deleteOptionUnitById(
-                            formikReference.formik.values.unitToDelete.id
-                          ),
-                          [
-                            productSettingsActions.changeTargetOptionunit(null),
-                            productSettingsActions.toggleOptionUnitFormVisibility(
-                              false
-                            ),
-                          ],
-                          [],
-                          (args: any) => {
-                            if (targetProduct?.id) {
-                              dispatch(
-                                assignPendingActions(
-                                  productSettingsActions.apiGetAllOptionGroupsByProductIdList(
-                                    targetProduct.id
-                                  ),
-                                  [],
-                                  [],
-                                  (args: any) => {
-                                    dispatch(
-                                      productSettingsActions.updateOptionGroupList(
-                                        args
-                                      )
-                                    );
-                                  },
-                                  (args: any) => {}
-                                )
-                              );
-                            }
-                          }
-                        )
-                      );
-                    },
-                    () => {}
-                  )
-                )
+                productSettingsActions.toggleOptionUnitFormVisibility(true)
               );
-            }
-          }),
-        ])
-      );
+              dispatch(productSettingsActions.changeTargetOptionunit(null));
+            }),
+            GetCommandBarItemProps(CommandBarItem.Save, () => {
+              formikReference.formik.submitForm();
+            }),
+            GetCommandBarItemProps(CommandBarItem.Reset, () => {
+              formikReference.formik.resetForm();
+            }),
+            GetCommandBarItemProps(CommandBarItem.Delete, () => {
+              // formikReference.formik.submitForm();
+              if (formikReference.formik.values.unitToDelete) {
+                dispatch(
+                  controlActions.toggleCommonDialogVisibility(
+                    new DialogArgs(
+                      CommonDialogType.Delete,
+                      'Delete option unit',
+                      `Are you sure you want to delete ${formikReference.formik.values.unitToDelete.value}?`,
+                      () => {
+                        dispatch(
+                          assignPendingActions(
+                            productSettingsActions.deleteOptionUnitById(
+                              formikReference.formik.values.unitToDelete.id
+                            ),
+                            [
+                              productSettingsActions.changeTargetOptionunit(
+                                null
+                              ),
+                              productSettingsActions.toggleOptionUnitFormVisibility(
+                                false
+                              ),
+                            ],
+                            [],
+                            (args: any) => {
+                              if (targetProduct?.id) {
+                                dispatch(
+                                  assignPendingActions(
+                                    productSettingsActions.apiGetAllOptionGroupsByProductIdList(
+                                      targetProduct.id
+                                    ),
+                                    [],
+                                    [],
+                                    (args: any) => {
+                                      dispatch(
+                                        productSettingsActions.updateOptionGroupList(
+                                          args
+                                        )
+                                      );
+                                    },
+                                    (args: any) => {}
+                                  )
+                                );
+                              }
+                            }
+                          )
+                        );
+                      },
+                      () => {}
+                    )
+                  )
+                );
+              }
+            }),
+          ])
+        );
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formikReference]);
@@ -277,18 +307,29 @@ export const ManagingProductUnitForm: React.FC = () => {
   }, [formikIsDirty, dismissIsDirty]);
 
   const onUpdate = (values: IInitValues) => {
-    if (targetProduct && sectedOptionGroupId) {
+    if (targetProduct && values.unitToDelete) {
       const payload = _buildUpdatedUnitPayload(values, values.unitToDelete);
 
       dispatch(
         assignPendingActions(
           productSettingsActions.apiUpdateOptionUnit(payload),
-          [
-            productSettingsActions.changeTargetOptionunit(null),
-            productSettingsActions.toggleOptionUnitFormVisibility(false),
-          ],
+          [],
           [],
           (successResponseArgs: any) => {
+            if (isEditingSingleUnit) {
+              dispatch(controlActions.closeRightPanel());
+              dispatch(
+                productSettingsActions.changeManagingOptionUnitsState(
+                  new ManagingOptionUnitsState()
+                )
+              );
+            } else {
+              dispatch(productSettingsActions.changeTargetOptionunit(null));
+              dispatch(
+                productSettingsActions.toggleOptionUnitFormVisibility(false)
+              );
+            }
+
             dispatch(
               assignPendingActions(
                 productSettingsActions.apiGetAllOptionGroupsByProductIdList(
@@ -370,8 +411,6 @@ export const ManagingProductUnitForm: React.FC = () => {
 
             setFormikIsDirty(isDirty);
 
-            console.log('-2->');
-            console.log(formikReference.formik.values);
             setDismissIsDirty(formik.values.unitToDelete ? true : false);
           }
         }}

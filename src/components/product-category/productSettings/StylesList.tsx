@@ -4,10 +4,7 @@ import { IApplicationState } from '../../../redux/reducers';
 import { OptionGroup, OptionUnit } from '../../../interfaces/options';
 import { ProductCategory } from '../../../interfaces/products';
 import { assignPendingActions } from '../../../helpers/action.helper';
-import {
-  productSettingsActions,
-  ManagingPanelComponent,
-} from '../../../redux/slices/productSettings.slice';
+import { productSettingsActions } from '../../../redux/slices/productSettings.slice';
 import { List } from 'office-ui-fabric-react/lib/List';
 import UnitRowItem from './UnitStyleItem';
 import {

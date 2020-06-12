@@ -495,12 +495,7 @@ export const apiGetOptionUnitByIdEpic = (action$: AnyAction, state$: any) => {
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
-            [
-              controlActions.showInfoMessage(successResponse.message),
-              productSettingsActions.updateSingleEditOptionUnit(
-                successResponse
-              ),
-            ],
+            [controlActions.showInfoMessage(successResponse.message)],
             action
           );
         }),

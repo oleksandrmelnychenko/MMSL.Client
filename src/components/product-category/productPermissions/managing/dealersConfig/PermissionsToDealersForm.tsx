@@ -193,12 +193,8 @@ export const PermissionsToDealersForm: React.FC = () => {
               args.body
             )
           );
-          // dispatch(controlActions.closeRightPanel());
         },
-        (args: any) => {
-          console.log('Failed');
-          console.log(args);
-        }
+        (args: any) => {}
       )
     );
   };

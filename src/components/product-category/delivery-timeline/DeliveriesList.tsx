@@ -194,7 +194,6 @@ export const DeliveriesList: React.FC = () => {
               styles={columnIconButtonStyle}
               iconProps={{ iconName: 'Edit' }}
               onClick={() => {
-                console.log(item);
                 dispatch(productActions.selectedTimeline(item));
                 dispatch(
                   controlActions.openRightPanel({
