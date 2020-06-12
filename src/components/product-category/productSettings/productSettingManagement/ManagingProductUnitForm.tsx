@@ -31,6 +31,7 @@ import {
 import { List } from 'linq-typescript';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import { ProductCategory } from '../../../../interfaces/products';
+import AttachField from './AttachField';
 
 export interface IInitValues {
   value: string;
@@ -381,245 +382,80 @@ export const ManagingProductUnitForm: React.FC = () => {
     }
   };
 
-  const fileInputRef: any = React.createRef();
-
   return (
-    <div>
-      <Formik
-        validationSchema={Yup.object().shape({
-          value: Yup.string()
-            .min(3)
-            .required(() => 'Value is required'),
-          isMandatory: Yup.boolean(),
-          imageFile: Yup.object().nullable(),
-          isRemovingImage: Yup.boolean(),
-          unitToDelete: Yup.object().nullable(),
-        })}
-        initialValues={_initDefaultValues(sectedOptionUnit)}
-        onSubmit={(values: any) => {
-          if (values.unitToDelete) onUpdate(values);
-          else createNew(values);
-        }}
-        innerRef={(formik: any) => {
-          formikReference.formik = formik;
+    <Formik
+      validationSchema={Yup.object().shape({
+        value: Yup.string()
+          .min(3)
+          .required(() => 'Value is required'),
+        isMandatory: Yup.boolean(),
+        imageFile: Yup.object().nullable(),
+        isRemovingImage: Yup.boolean(),
+        unitToDelete: Yup.object().nullable(),
+      })}
+      initialValues={_initDefaultValues(sectedOptionUnit)}
+      onSubmit={(values: any) => {
+        if (values.unitToDelete) onUpdate(values);
+        else createNew(values);
+      }}
+      innerRef={(formik: any) => {
+        formikReference.formik = formik;
 
-          if (formik) {
-            let isDirty: boolean = _isFormikDirty(
-              formik.initialValues,
-              formik.values
-            );
-
-            setFormikIsDirty(isDirty);
-
-            setDismissIsDirty(formik.values.unitToDelete ? true : false);
-          }
-        }}
-        validateOnBlur={false}
-        enableReinitialize={true}
-      >
-        {(formik) => {
-          let thumbUrl: string = '';
-          if (formik.values.isRemovingImage) {
-            if (sectedOptionUnit) {
-              if (formik.values.imageFile) {
-                thumbUrl = URL.createObjectURL(formik.values.imageFile);
-              } else {
-                thumbUrl = sectedOptionUnit.imageUrl;
-              }
-            } else {
-              if (formik.values.imageFile) {
-                thumbUrl = URL.createObjectURL(formik.values.imageFile);
-              }
-            }
-          }
-
-          const thumb: any = (
-            <div
-              style={{
-                position: 'relative',
-                border: '1px solid #efefef',
-                padding: '6px',
-                borderRadius: '6px',
-              }}
-            >
-              <FontIcon
-                style={{
-                  position: 'absolute',
-                  top: 'calc(50% - 18px)',
-                  left: 'calc(50% - 12px)',
-                  zIndex: 0,
-                }}
-                iconName="FileImage"
-                className={mergeStyles({
-                  fontSize: 24,
-                  width: 24,
-                  color: '#cfcfcf',
-                })}
-              />
-              <img
-                style={{
-                  display: 'block',
-                  position: 'relative',
-                  zIndex: 1,
-                  margin: '0 auto',
-                }}
-                width="300px"
-                height="300px"
-                alt=""
-                src={thumbUrl}
-              />
-            </div>
+        if (formik) {
+          let isDirty: boolean = _isFormikDirty(
+            formik.initialValues,
+            formik.values
           );
 
-          const renderResult = isUnitFormVisible ? (
-            <Form className="form">
-              <div className="dealerFormManage">
-                <Stack horizontal tokens={{ childrenGap: 20 }}>
-                  <Stack grow={1} tokens={{ childrenGap: 20 }}>
-                    <Field name="value">
-                      {() => (
-                        <div className="form__group">
-                          <TextField
-                            value={formik.values.value}
-                            styles={fabricStyles.textFildLabelStyles}
-                            className="form__group__field"
-                            label="Value"
-                            required
-                            onChange={(args: any) => {
-                              let value = args.target.value;
+          setFormikIsDirty(isDirty);
 
-                              formik.setFieldValue('value', value);
-                              formik.setFieldTouched('value');
-                            }}
-                            errorMessage={
-                              formik.errors.value && formik.touched.value ? (
-                                <span className="form__group__error">
-                                  {formik.errors.value}
-                                </span>
-                              ) : (
-                                ''
-                              )
-                            }
-                          />
-                        </div>
-                      )}
-                    </Field>
+          setDismissIsDirty(formik.values.unitToDelete ? true : false);
+        }
+      }}
+      validateOnBlur={false}
+      enableReinitialize={true}
+    >
+      {(formik) => {
+        return isUnitFormVisible ? (
+          <Form>
+            <Stack grow={1} tokens={{ childrenGap: 20 }}>
+              <Field name="value">
+                {() => (
+                  <div className="form__group">
+                    <TextField
+                      value={formik.values.value}
+                      styles={fabricStyles.textFildLabelStyles}
+                      className="form__group__field"
+                      label="Value"
+                      required
+                      onChange={(args: any) => {
+                        let value = args.target.value;
 
-                    <Field name="imageFile">
-                      {() => {
-                        return (
-                          <div className="form__group">
-                            <Stack tokens={{ childrenGap: 10 }}>
-                              <div style={{ position: 'relative' }}>
-                                <input
-                                  accept="image/*"
-                                  ref={fileInputRef}
-                                  style={{
-                                    height: '1px',
-                                    width: '1px',
-                                    position: 'absolute',
-                                  }}
-                                  type="file"
-                                  onChange={(args: any) => {
-                                    let file = args.currentTarget.files;
-                                    if (
-                                      file &&
-                                      file.length &&
-                                      file.length > 0
-                                    ) {
-                                      formik.setFieldValue(
-                                        'imageFile',
-                                        file[0]
-                                      );
-                                      formik.setFieldValue(
-                                        'isRemovingImage',
-                                        true
-                                      );
-
-                                      args.currentTarget.value = '';
-                                    }
-                                  }}
-                                />
-                                <DefaultButton
-                                  iconProps={{ iconName: 'Attach' }}
-                                  styles={fabricStyles.btnUploadStyle}
-                                  text={
-                                    formik.values.isRemovingImage
-                                      ? 'Delete attach'
-                                      : 'Attach'
-                                  }
-                                  onClick={() => {
-                                    const clearInputFileFlow = () => {
-                                      if (
-                                        fileInputRef &&
-                                        fileInputRef.current
-                                      ) {
-                                        if (fileInputRef.current) {
-                                          fileInputRef.current.value = '';
-                                          formik.setFieldValue(
-                                            'imageFile',
-                                            null
-                                          );
-                                          formik.setFieldValue(
-                                            'isRemovingImage',
-                                            false
-                                          );
-                                        }
-                                      }
-                                    };
-
-                                    const addInputFileFlow = () => {
-                                      if (
-                                        fileInputRef &&
-                                        fileInputRef.current
-                                      ) {
-                                        if (
-                                          fileInputRef.current &&
-                                          document.createEvent
-                                        ) {
-                                          let evt = document.createEvent(
-                                            'MouseEvents'
-                                          );
-                                          evt.initEvent('click', true, false);
-                                          fileInputRef.current.dispatchEvent(
-                                            evt
-                                          );
-                                        }
-                                      }
-                                    };
-
-                                    if (formik.values.isRemovingImage) {
-                                      clearInputFileFlow();
-                                    } else {
-                                      if (formik.values.imageFile) {
-                                        clearInputFileFlow();
-                                      } else {
-                                        addInputFileFlow();
-                                      }
-                                    }
-                                  }}
-                                  allowDisabledFocus
-                                />
-                              </div>
-
-                              {formik.values.isRemovingImage ? thumb : null}
-                            </Stack>
-                          </div>
-                        );
+                        formik.setFieldValue('value', value);
+                        formik.setFieldTouched('value');
                       }}
-                    </Field>
-                  </Stack>
-                </Stack>
-              </div>
-            </Form>
-          ) : (
-            _renderHintLable('Select and explore or define new style unit.')
-          );
+                      errorMessage={
+                        formik.errors.value && formik.touched.value ? (
+                          <span className="form__group__error">
+                            {formik.errors.value}
+                          </span>
+                        ) : (
+                          ''
+                        )
+                      }
+                    />
+                  </div>
+                )}
+              </Field>
 
-          return renderResult;
-        }}
-      </Formik>
-    </div>
+              <AttachField formik={formik} />
+            </Stack>
+          </Form>
+        ) : (
+          _renderHintLable('Select and explore or define new style unit.')
+        );
+      }}
+    </Formik>
   );
 };
 
