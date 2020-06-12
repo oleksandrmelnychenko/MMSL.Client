@@ -38,22 +38,6 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
     ProductCategory | null
   >((state) => state.product.choose.category);
 
-  // const singleOptionForEdit: OptionUnit | null | undefined = useSelector<
-  //   IApplicationState,
-  //   OptionUnit | null | undefined
-  // >((state) => state.productSettings.manageSingleOptionUnitState.optionUnit);
-
-  // useEffect(() => {
-  //   const panelContentType = singleOptionForEdit
-  //     ? ManagingPanelComponent.ManageSingleOptionUnit
-  //     : null;
-
-  //   if (singleOptionForEdit) {
-  //     dispatch(productSettingsActions.managingPanelContent(panelContentType));
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [singleOptionForEdit]);
-
   const getProductStyles: (productId: number) => void = (productId: number) => {
     dispatch(
       assignPendingActions(
@@ -167,7 +151,7 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
                     `Are you sure you want to delete ${props.optionUnit.value}?`,
                     () => {
                       let action = assignPendingActions(
-                        productSettingsActions.deleteOptionUnitById(
+                        productSettingsActions.apiDeleteOptionUnitById(
                           props.optionUnit.id
                         ),
                         [],

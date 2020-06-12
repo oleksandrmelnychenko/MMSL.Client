@@ -147,7 +147,7 @@ export const OptionItemsOrderingList: React.FC = () => {
               });
 
               let action = assignPendingActions(
-                productSettingsActions.modifyOptionUnitsOrder(
+                productSettingsActions.apiModifyOptionUnitsOrder(
                   new List<OptionUnit>(items)
                     .select<ModifiedOptionUnitOrder>((item: OptionUnit) => {
                       let result = new ModifiedOptionUnitOrder();
@@ -190,7 +190,7 @@ export const OptionItemsOrderingList: React.FC = () => {
 
                 if (!offsetParent.includes(DATA_SELECTION_DISABLED_CLASS)) {
                   dispatch(
-                    productSettingsActions.changeTargetOptionunit(args.item)
+                    productSettingsActions.changeTargetOptionUnit(args.item)
                   );
                   dispatch(
                     dispatch(

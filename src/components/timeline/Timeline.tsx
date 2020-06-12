@@ -21,7 +21,7 @@ import {
   DialogArgs,
   CommonDialogType,
 } from '../../redux/slices/control.slice';
-import { productSettingsActions } from '../../redux/slices/productSettings.slice';
+import { deliveryTimelinesActions } from '../../redux/slices/deliveryTimeline.slice';
 import {
   scrollablePaneStyleForDetailList,
   detailsListStyle,
@@ -39,10 +39,7 @@ export const Timeline: React.FC = () => {
   const selectedDeliveryTimeline = useSelector<
     IApplicationState,
     DeliveryTimeline | null
-  >(
-    (state) =>
-      state.productSettings.manageTimelineState.selectedDeliveryTimeline
-  );
+  >((state) => state.deliveryTimelines.selectedDeliveryTimeline);
 
   const _customerColumns: IColumn[] = [
     {
@@ -123,7 +120,7 @@ export const Timeline: React.FC = () => {
               iconProps={{ iconName: 'Edit' }}
               onClick={() => {
                 dispatch(
-                  productSettingsActions.selectedDeliveryTimeLine(item.id)
+                  deliveryTimelinesActions.selectedDeliveryTimeLine(item.id)
                 );
                 dispatch(
                   controlActions.openRightPanel({
@@ -152,7 +149,7 @@ export const Timeline: React.FC = () => {
                       `Are you sure you want to delete ${item.name}?`,
                       () => {
                         dispatch(
-                          productSettingsActions.apiDeleteDeliveryTimeline(
+                          deliveryTimelinesActions.apiDeleteDeliveryTimeline(
                             item.id
                           )
                         );
@@ -175,14 +172,14 @@ export const Timeline: React.FC = () => {
   );
 
   const deliveryTimelines = useSelector<IApplicationState, DeliveryTimeline[]>(
-    (state) => state.productSettings.manageTimelineState.deliveryTimelines
+    (state) => state.deliveryTimelines.deliveryTimelines
   );
 
   useEffect(() => {
     dispatch(controlActions.showGlobalShimmer());
-    dispatch(productSettingsActions.apiGetAllDeliveryTimeline());
+    dispatch(deliveryTimelinesActions.apiGetAllDeliveryTimeline());
     return () => {
-      dispatch(productSettingsActions.clearAllDeliveryTimelines());
+      dispatch(deliveryTimelinesActions.clearAllDeliveryTimelines());
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

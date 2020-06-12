@@ -7,7 +7,7 @@ import * as fabricStyles from '../../common/fabric-styles/styles';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { DeliveryTimeline } from '../../interfaces/deliveryTimelines';
-import { productSettingsActions } from '../../redux/slices/productSettings.slice';
+import { deliveryTimelinesActions } from '../../redux/slices/deliveryTimeline.slice';
 import { IApplicationState } from '../../redux/reducers';
 import { controlActions } from '../../redux/slices/control.slice';
 import {
@@ -54,10 +54,7 @@ export const TimelineForm: React.FC = () => {
   const selectedDeliveryTimeline = useSelector<
     IApplicationState,
     DeliveryTimeline | null
-  >(
-    (state) =>
-      state.productSettings.manageTimelineState.selectedDeliveryTimeline
-  );
+  >((state) => state.deliveryTimelines.selectedDeliveryTimeline);
 
   const initValues = initDefaultValuesForTimelineForm(
     selectedDeliveryTimeline!
@@ -75,7 +72,7 @@ export const TimelineForm: React.FC = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(productSettingsActions.clearSelectedDeliveryTimeLine());
+      dispatch(deliveryTimelinesActions.clearSelectedDeliveryTimeLine());
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -127,13 +124,13 @@ export const TimelineForm: React.FC = () => {
         onSubmit={(values: any) => {
           if (selectedDeliveryTimeline) {
             dispatch(
-              productSettingsActions.apiUpdateDeliveryTimeline(
+              deliveryTimelinesActions.apiUpdateDeliveryTimeline(
                 buildDeliveryTimeline(values, selectedDeliveryTimeline)
               )
             );
           } else {
             dispatch(
-              productSettingsActions.apiCreateNewDeliveryTimeline(
+              deliveryTimelinesActions.apiCreateNewDeliveryTimeline(
                 buildDeliveryTimeline(values)
               )
             );

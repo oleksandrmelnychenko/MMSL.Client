@@ -121,7 +121,7 @@ export const ManagingvOptionGroupForm: React.FC = () => {
       const payload = _buildUpdatedPayload(values, editingGroup);
       dispatch(
         assignPendingActions(
-          productSettingsActions.apiSaveEditOptionGroup(payload),
+          productSettingsActions.apiUpdateOptionGroup(payload),
           [],
           [],
           () => {
@@ -152,7 +152,7 @@ export const ManagingvOptionGroupForm: React.FC = () => {
       const payload = _buildNewPayload(values, targetProduct);
       dispatch(
         assignPendingActions(
-          productSettingsActions.apiSaveNewOptionGroup(payload),
+          productSettingsActions.apiCreateOptionGroup(payload),
           [],
           [],
           (args: any) => {

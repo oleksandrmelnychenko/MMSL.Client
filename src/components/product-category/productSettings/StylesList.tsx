@@ -177,7 +177,9 @@ export const StylesList: React.FC = () => {
                       `Are you sure you want to delete ${item.name}?`,
                       () => {
                         let action = assignPendingActions(
-                          productSettingsActions.deleteOptionGroupById(item.id),
+                          productSettingsActions.apiDeleteOptionGroupById(
+                            item.id
+                          ),
                           [],
                           [],
                           (args: any) => {

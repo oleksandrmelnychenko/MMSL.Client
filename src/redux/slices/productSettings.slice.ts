@@ -4,7 +4,6 @@ import {
   OptionUnit,
   GroupItemVisualState,
 } from '../../interfaces/options';
-import { DeliveryTimeline } from '../../interfaces/deliveryTimelines';
 import { List } from 'linq-typescript';
 
 export class ProductSettingsState {
@@ -12,7 +11,7 @@ export class ProductSettingsState {
     this.optionGroupsList = [];
     this.searchWordOptionGroup = '';
     this.managingOptionUnitsState = new ManagingOptionUnitsState();
-    this.manageTimelineState = new ManageTimelineState();
+    // this.manageTimelineState = new ManageTimelineState();
   }
 
   optionGroupsList: OptionGroup[];
@@ -20,7 +19,7 @@ export class ProductSettingsState {
 
   searchWordOptionGroup: string;
   managingOptionUnitsState: ManagingOptionUnitsState;
-  manageTimelineState: ManageTimelineState;
+  // manageTimelineState: ManageTimelineState;
 
   setOptionGroupsList: (source: OptionGroup[]) => void = (
     source: OptionGroup[]
@@ -42,15 +41,6 @@ export class ProductSettingsState {
       })
       .toArray();
   };
-}
-
-export class ManageTimelineState {
-  constructor() {
-    this.deliveryTimelines = [];
-    this.selectedDeliveryTimeline = null;
-  }
-  deliveryTimelines: DeliveryTimeline[];
-  selectedDeliveryTimeline: DeliveryTimeline | null;
 }
 
 export class ManagingOptionUnitsState {
@@ -75,6 +65,67 @@ const productSettings = createSlice({
   name: 'productSettings',
   initialState: new ProductSettingsState(),
   reducers: {
+    apiGetAllOptionGroupsByProductIdList(
+      state,
+      action: { type: string; payload: number }
+    ) {},
+    apiSearchOptionGroupsByProductIdList(
+      state,
+      action: { type: string; payload: number }
+    ) {},
+    apiModifyOptionUnitsOrder(state, action) {
+      return state;
+    },
+    apiUpdateOptionUnit(state, action) {
+      return state;
+    },
+    apiCreateNewOptionUnit(state, action) {
+      return state;
+    },
+    apiDeleteOptionUnitById(state, action) {
+      return state;
+    },
+    apiGetOptionUnitById(state, action) {
+      return state;
+    },
+    apiGetOptionGroupById(state, action) {
+      return state;
+    },
+    apiDeleteOptionGroupById(state, action) {
+      return state;
+    },
+    apiUpdateOptionGroup(state, action) {
+      return state;
+    },
+    apiCreateOptionGroup(state, action) {
+      return state;
+    },
+    changeManagingOptionUnitsState(
+      state,
+      action: { type: string; payload: ManagingOptionUnitsState }
+    ) {
+      state.managingOptionUnitsState = { ...action.payload };
+      return state;
+    },
+    changeTargetOptionUnit(state, action) {
+      state.managingOptionUnitsState.selectedOptionUnit = action.payload;
+      return state;
+    },
+    toggleOptionUnitFormVisibility(state, action) {
+      state.managingOptionUnitsState.isOptionUnitFormVisible = action.payload;
+      return state;
+    },
+    updateSearchWordOptionGroup(state, action) {
+      state.searchWordOptionGroup = action.payload;
+      return state;
+    },
+    changeEditingGroup(
+      state,
+      action: { type: string; payload: OptionGroup | null | undefined }
+    ) {
+      state.editingOptionGroup = action.payload;
+      return state;
+    },
     updateOptionGroupList(state, action) {
       state.setOptionGroupsList(action.payload);
 
@@ -142,114 +193,6 @@ const productSettings = createSlice({
           state.managingOptionUnitsState.selectedOptionUnit = null;
         }
       }
-      return state;
-    },
-    apiGetAllDeliveryTimeline(state) {
-      return state;
-    },
-    successGetAllDeliveryTimelines(
-      state,
-      action: { type: string; payload: DeliveryTimeline[] }
-    ) {
-      state.manageTimelineState.deliveryTimelines = action.payload;
-      return state;
-    },
-    clearAllDeliveryTimelines(state) {
-      state.manageTimelineState.deliveryTimelines = [];
-      return state;
-    },
-    apiCreateNewDeliveryTimeline(
-      state,
-      action: { type: string; payload: DeliveryTimeline }
-    ) {
-      return state;
-    },
-    selectedDeliveryTimeLine(state, action: { type: string; payload: number }) {
-      state.manageTimelineState.selectedDeliveryTimeline = new List<
-        DeliveryTimeline
-      >(state.manageTimelineState.deliveryTimelines).first(
-        (timeline) => timeline.id === action.payload
-      );
-      return state;
-    },
-    clearSelectedDeliveryTimeLine(state) {
-      state.manageTimelineState.selectedDeliveryTimeline = null;
-      return state;
-    },
-    apiUpdateDeliveryTimeline(
-      state,
-      action: { type: string; payload: DeliveryTimeline }
-    ) {
-      return state;
-    },
-    apiDeleteDeliveryTimeline(
-      state,
-      action: { type: string; payload: number }
-    ) {
-      return state;
-    },
-    changeManagingOptionUnitsState(
-      state,
-      action: { type: string; payload: ManagingOptionUnitsState }
-    ) {
-      state.managingOptionUnitsState = { ...action.payload };
-      return state;
-    },
-    changeTargetOptionunit(state, action) {
-      state.managingOptionUnitsState.selectedOptionUnit = action.payload;
-      return state;
-    },
-    apiSaveNewOptionGroup(state, action) {
-      return state;
-    },
-    apiGetAllOptionGroupsByProductIdList(
-      state,
-      action: { type: string; payload: number }
-    ) {},
-    apiSearchOptionGroupsByProductIdList(
-      state,
-      action: { type: string; payload: number }
-    ) {},
-    modifyOptionUnitsOrder(state, action) {
-      return state;
-    },
-    apiUpdateOptionUnit(state, action) {
-      return state;
-    },
-    apiCreateNewOptionUnit(state, action) {
-      return state;
-    },
-    deleteOptionUnitById(state, action) {
-      return state;
-    },
-    apiGetOptionGroupById(state, action) {
-      return state;
-    },
-    apiGetOptionUnitById(state, action) {
-      return state;
-    },
-    deleteOptionGroupById(state, action) {
-      return state;
-    },
-    getAndSelectOptionGroupForSingleEditById(state, action) {
-      return state;
-    },
-    apiSaveEditOptionGroup(state, action) {
-      return state;
-    },
-    toggleOptionUnitFormVisibility(state, action) {
-      state.managingOptionUnitsState.isOptionUnitFormVisible = action.payload;
-      return state;
-    },
-    updateSearchWordOptionGroup(state, action) {
-      state.searchWordOptionGroup = action.payload;
-      return state;
-    },
-    changeEditingGroup(
-      state,
-      action: { type: string; payload: OptionGroup | null | undefined }
-    ) {
-      state.editingOptionGroup = action.payload;
       return state;
     },
   },

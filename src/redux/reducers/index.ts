@@ -1,4 +1,8 @@
 import {
+  default as deliveryTimelinesReducer,
+  DeliveryTimelinesState,
+} from './../slices/deliveryTimeline.slice';
+import {
   default as productStylePermissionsReducer,
   ProductStylePermissionsState,
 } from './../slices/productStylePermissions.slice';
@@ -42,6 +46,7 @@ export interface IApplicationState {
   productSettings: ProductSettingsState;
   measurements: MeasurementsState;
   productStylePermissions: ProductStylePermissionsState;
+  deliveryTimelines: DeliveryTimelinesState;
 }
 
 export const reducer = combineReducers({
@@ -56,4 +61,5 @@ export const reducer = combineReducers({
   productSettings: productSettingsReducer,
   measurements: measurementsStateReducer,
   productStylePermissions: productStylePermissionsReducer,
+  deliveryTimelines: deliveryTimelinesReducer,
 });

@@ -213,7 +213,7 @@ export const ManagingProductUnitForm: React.FC = () => {
               dispatch(
                 productSettingsActions.toggleOptionUnitFormVisibility(true)
               );
-              dispatch(productSettingsActions.changeTargetOptionunit(null));
+              dispatch(productSettingsActions.changeTargetOptionUnit(null));
             }),
             GetCommandBarItemProps(CommandBarItem.Save, () => {
               formikReference.formik.submitForm();
@@ -233,11 +233,11 @@ export const ManagingProductUnitForm: React.FC = () => {
                       () => {
                         dispatch(
                           assignPendingActions(
-                            productSettingsActions.deleteOptionUnitById(
+                            productSettingsActions.apiDeleteOptionUnitById(
                               formikReference.formik.values.unitToDelete.id
                             ),
                             [
-                              productSettingsActions.changeTargetOptionunit(
+                              productSettingsActions.changeTargetOptionUnit(
                                 null
                               ),
                               productSettingsActions.toggleOptionUnitFormVisibility(
@@ -324,7 +324,7 @@ export const ManagingProductUnitForm: React.FC = () => {
                 )
               );
             } else {
-              dispatch(productSettingsActions.changeTargetOptionunit(null));
+              dispatch(productSettingsActions.changeTargetOptionUnit(null));
               dispatch(
                 productSettingsActions.toggleOptionUnitFormVisibility(false)
               );
@@ -357,7 +357,7 @@ export const ManagingProductUnitForm: React.FC = () => {
         assignPendingActions(
           productSettingsActions.apiCreateNewOptionUnit(payload),
           [
-            productSettingsActions.changeTargetOptionunit(null),
+            productSettingsActions.changeTargetOptionUnit(null),
             productSettingsActions.toggleOptionUnitFormVisibility(false),
           ],
           [],
