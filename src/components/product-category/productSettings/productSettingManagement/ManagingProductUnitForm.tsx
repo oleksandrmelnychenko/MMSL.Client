@@ -191,12 +191,12 @@ export const ManagingProductUnitForm: React.FC = () => {
       if (isEditingSingleUnit) {
         dispatch(
           controlActions.setPanelButtons([
-            GetCommandBarItemProps(CommandBarItem.Save, () => {
-              formikReference.formik.submitForm();
-            }),
-            GetCommandBarItemProps(CommandBarItem.Reset, () => {
-              formikReference.formik.resetForm();
-            }),
+            GetCommandBarItemProps(CommandBarItem.Save, () =>
+              formikReference.formik.submitForm()
+            ),
+            GetCommandBarItemProps(CommandBarItem.Reset, () =>
+              formikReference.formik.resetForm()
+            ),
           ])
         );
       } else {
@@ -204,71 +204,19 @@ export const ManagingProductUnitForm: React.FC = () => {
           controlActions.setPanelButtons([
             GetCommandBarItemProps(CommandBarItem.New, () => {
               formikReference.formik.resetForm();
+
               dispatch(
                 productSettingsActions.toggleOptionUnitFormVisibility(true)
               );
               dispatch(productSettingsActions.changeTargetOptionUnit(null));
             }),
-            GetCommandBarItemProps(CommandBarItem.Save, () => {
-              formikReference.formik.submitForm();
-            }),
-            GetCommandBarItemProps(CommandBarItem.Reset, () => {
-              formikReference.formik.resetForm();
-            }),
-            GetCommandBarItemProps(CommandBarItem.Delete, () => {
-              // formikReference.formik.submitForm();
-              if (formikReference.formik.values.unitToDelete) {
-                dispatch(
-                  controlActions.toggleCommonDialogVisibility(
-                    new DialogArgs(
-                      CommonDialogType.Delete,
-                      'Delete option unit',
-                      `Are you sure you want to delete ${formikReference.formik.values.unitToDelete.value}?`,
-                      () => {
-                        dispatch(
-                          assignPendingActions(
-                            productSettingsActions.apiDeleteOptionUnitById(
-                              formikReference.formik.values.unitToDelete.id
-                            ),
-                            [
-                              productSettingsActions.changeTargetOptionUnit(
-                                null
-                              ),
-                              productSettingsActions.toggleOptionUnitFormVisibility(
-                                false
-                              ),
-                            ],
-                            [],
-                            (args: any) => {
-                              if (targetProduct?.id) {
-                                dispatch(
-                                  assignPendingActions(
-                                    productSettingsActions.apiGetAllOptionGroupsByProductIdList(
-                                      targetProduct.id
-                                    ),
-                                    [],
-                                    [],
-                                    (args: any) => {
-                                      dispatch(
-                                        productSettingsActions.updateOptionGroupList(
-                                          args
-                                        )
-                                      );
-                                    },
-                                    (args: any) => {}
-                                  )
-                                );
-                              }
-                            }
-                          )
-                        );
-                      },
-                      () => {}
-                    )
-                  )
-                );
-              }
-            }),
+            GetCommandBarItemProps(CommandBarItem.Save, () =>
+              formikReference.formik.submitForm()
+            ),
+            GetCommandBarItemProps(CommandBarItem.Reset, () =>
+              formikReference.formik.resetForm()
+            ),
+            GetCommandBarItemProps(CommandBarItem.Delete, () => onDeleteUnit()),
           ])
         );
       }
@@ -300,7 +248,7 @@ export const ManagingProductUnitForm: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formikIsDirty, dismissIsDirty]);
 
-  const onUpdate = (values: IInitValues) => {
+  const onUpdateUnit = (values: IInitValues) => {
     if (targetProduct && values.unitToDelete) {
       const payload = _buildUpdatedUnitPayload(values, values.unitToDelete);
 
@@ -324,26 +272,14 @@ export const ManagingProductUnitForm: React.FC = () => {
               );
             }
 
-            dispatch(
-              assignPendingActions(
-                productSettingsActions.apiGetAllOptionGroupsByProductIdList(
-                  targetProduct.id
-                ),
-                [],
-                [],
-                (args: any) => {
-                  dispatch(productSettingsActions.updateOptionGroupList(args));
-                },
-                (args: any) => {}
-              )
-            );
+            refreshTargetProductState();
           }
         )
       );
     }
   };
 
-  const createNew = (values: IInitValues) => {
+  const onCreateNewUnit = (values: IInitValues) => {
     if (targetProduct && sectedOptionGroupId) {
       const payload = _buildNewUnitPayload(values, sectedOptionGroupId);
 
@@ -356,20 +292,62 @@ export const ManagingProductUnitForm: React.FC = () => {
           ],
           [],
           (successResponseArgs: any) => {
-            dispatch(
-              assignPendingActions(
-                productSettingsActions.apiGetAllOptionGroupsByProductIdList(
-                  targetProduct.id
-                ),
-                [],
-                [],
-                (args: any) => {
-                  dispatch(productSettingsActions.updateOptionGroupList(args));
-                },
-                (args: any) => {}
-              )
-            );
+            formikReference.formik.resetForm();
+
+            refreshTargetProductState();
           }
+        )
+      );
+    }
+  };
+
+  const onDeleteUnit = () => {
+    if (formikReference.formik.values.unitToDelete) {
+      dispatch(
+        controlActions.toggleCommonDialogVisibility(
+          new DialogArgs(
+            CommonDialogType.Delete,
+            'Delete option unit',
+            `Are you sure you want to delete ${formikReference.formik.values.unitToDelete.value}?`,
+            () => {
+              dispatch(
+                assignPendingActions(
+                  productSettingsActions.apiDeleteOptionUnitById(
+                    formikReference.formik.values.unitToDelete.id
+                  ),
+                  [
+                    productSettingsActions.changeTargetOptionUnit(null),
+                    productSettingsActions.toggleOptionUnitFormVisibility(
+                      false
+                    ),
+                  ],
+                  [],
+                  (args: any) => {
+                    refreshTargetProductState();
+                  }
+                )
+              );
+            },
+            () => {}
+          )
+        )
+      );
+    }
+  };
+
+  const refreshTargetProductState = () => {
+    if (targetProduct?.id) {
+      dispatch(
+        assignPendingActions(
+          productSettingsActions.apiGetAllOptionGroupsByProductIdList(
+            targetProduct.id
+          ),
+          [],
+          [],
+          (args: any) => {
+            dispatch(productSettingsActions.updateOptionGroupList(args));
+          },
+          (args: any) => {}
         )
       );
     }
@@ -388,8 +366,8 @@ export const ManagingProductUnitForm: React.FC = () => {
       })}
       initialValues={_initDefaultValues(sectedOptionUnit)}
       onSubmit={(values: any) => {
-        if (values.unitToDelete) onUpdate(values);
-        else createNew(values);
+        if (values.unitToDelete) onUpdateUnit(values);
+        else onCreateNewUnit(values);
       }}
       innerRef={(formik: any) => {
         formikReference.formik = formik;
