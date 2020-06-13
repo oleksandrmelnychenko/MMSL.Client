@@ -35,7 +35,7 @@ export const Dealers: React.FC = (props: any) => {
   >((state) => state.dealer.dealerState.toDate);
 
   useEffect(() => {
-    dispatch(dealerActions.getDealersListPaginated());
+    dispatch(dealerActions.apiGetDealersListPaginated());
   }, [fromDate, toDate, dispatch]);
 
   useEffect(() => {
@@ -120,10 +120,10 @@ export const Dealers: React.FC = (props: any) => {
                     if (args) {
                       let value = args.target.value;
                       dispatch(dealerActions.searchDealer(value));
-                      dispatch(dealerActions.getDealersListPaginated());
+                      dispatch(dealerActions.apiGetDealersListPaginated());
                     } else {
                       dispatch(dealerActions.searchDealer(''));
-                      dispatch(dealerActions.getDealersListPaginated());
+                      dispatch(dealerActions.apiGetDealersListPaginated());
                     }
                   }}
                 />

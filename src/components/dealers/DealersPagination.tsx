@@ -84,7 +84,9 @@ export const DealersPagination: React.FC = () => {
                 );
 
                 dispatch(
-                  assignPendingActions(dealerActions.getDealersListPaginated())
+                  assignPendingActions(
+                    dealerActions.apiGetDealersListPaginated()
+                  )
                 );
               }}
             />
@@ -107,7 +109,9 @@ export const DealersPagination: React.FC = () => {
                 );
 
                 dispatch(
-                  assignPendingActions(dealerActions.getDealersListPaginated())
+                  assignPendingActions(
+                    dealerActions.apiGetDealersListPaginated()
+                  )
                 );
               }}
             />

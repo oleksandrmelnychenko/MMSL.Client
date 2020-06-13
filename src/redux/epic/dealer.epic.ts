@@ -23,12 +23,84 @@ import {
 } from '../slices/dealer.slice';
 import StoreHelper from '../../helpers/store.helper';
 
-export const getDealersListPaginatedEpic = (
+export const apiGetInfinitDealersPaginatedEpic = (
   action$: AnyAction,
   state$: any
 ) => {
   return action$.pipe(
-    ofType(dealerActions.getDealersListPaginated.type),
+    ofType(dealerActions.apiGetInfinitDealersPaginated.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
+      // const pagination: Pagination = state$.value.dealer.dealerState.pagination;
+      const fromDate: Date | null | undefined = action.payload.fromDate;
+      const toDate: Date | null | undefined = action.payload.toDate;
+
+      return ajaxGetWebResponse(api.GET_DEALERS_ALL, state$.value, [
+        { key: 'limit', value: `${action.payload.paginationLimit}` },
+        {
+          key: 'pageNumber',
+          value: `${action.payload.paginationPageNumber}`,
+        },
+        {
+          key: 'searchPhrase',
+          value: `${action.payload.searchPhrase}`,
+        },
+        {
+          key: 'from',
+          value: `${
+            fromDate
+              ? `${fromDate.getFullYear()}-${
+                  fromDate.getMonth() + 1
+                }-${fromDate.getDate()}`
+              : ''
+          }`,
+        },
+        {
+          key: 'to',
+          value: `${
+            toDate
+              ? `${toDate.getFullYear()}-${
+                  toDate.getMonth() + 1
+                }-${toDate.getDate()}`
+              : ''
+          }`,
+        },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_GET_DEALERS_PAGINATED' },
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while get dealers paginated. ${errorResponse}`
+                ),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiGetDealersListPaginatedEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(dealerActions.apiGetDealersListPaginated.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       const pagination: Pagination = state$.value.dealer.dealerState.pagination;

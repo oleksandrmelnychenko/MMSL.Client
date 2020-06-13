@@ -90,7 +90,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
               dealerActions.isOpenPanelWithDealerDetails(
                 new ToggleDealerPanelWithDetails()
               ),
-              dealerActions.getDealersListPaginated(),
+              dealerActions.apiGetDealersListPaginated(),
             ]
           );
           dispatch(createAction);

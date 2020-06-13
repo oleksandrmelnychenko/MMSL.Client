@@ -206,7 +206,7 @@ export const ManageDealerForm: React.FC = () => {
           } else {
             createAction = assignPendingActions(
               dealerActions.saveNewDealer(buildDealerAccount(values)),
-              [dealerActions.getDealersListPaginated()]
+              [dealerActions.apiGetDealersListPaginated()]
             );
           }
           dispatch(createAction);

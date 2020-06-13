@@ -58,7 +58,7 @@ export const DealerList: React.FC = () => {
   }, [selectedDealerId, selection]);
 
   useEffect(() => {
-    dispatch(dealerActions.getDealersListPaginated());
+    dispatch(dealerActions.apiGetDealersListPaginated());
     dispatch(controlActions.showGlobalShimmer());
     return () => {
       dispatch(dealerActions.getAndSelectDealerById(null));
@@ -153,7 +153,7 @@ export const DealerList: React.FC = () => {
                       `Are you sure you want to delete ${item.name}?`,
                       () => {
                         const actionsQueue: any[] = [
-                          dealerActions.getDealersListPaginated(),
+                          dealerActions.apiGetDealersListPaginated(),
                         ];
                         /// TODO:
                         if (item.id) {
@@ -209,7 +209,6 @@ export const DealerList: React.FC = () => {
   };
 
   return (
-    // <div className="dealerList">
     <ScrollablePane styles={scrollablePaneStyleForDetailList}>
       <ShimmeredDetailsList
         onRenderDetailsHeader={onRenderDetailsHeader}
@@ -264,7 +263,6 @@ export const DealerList: React.FC = () => {
         }}
       />
     </ScrollablePane>
-    // </div>
   );
 };
 
