@@ -18,14 +18,6 @@ export class UnitRowItemProps {
   optionUnit: OptionUnit;
   takeMarginWhenNoImage?: boolean;
 }
-// styles={{
-//   ...fabricStyles.cardText,
-//   root: {
-//     ...fabricStyles.cardText.root,
-//     zIndex: 2,
-//     cursor: 'auto',
-//   },
-// }}
 
 export const UnitRowItem: React.FC<UnitRowItemProps> = (
   props: UnitRowItemProps
