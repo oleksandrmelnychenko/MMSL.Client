@@ -1,4 +1,8 @@
 import {
+  default as dealerAccountReducer,
+  IDalerAccountState,
+} from './../slices/dealerAccount.slice';
+import {
   default as deliveryTimelinesReducer,
   DeliveryTimelinesState,
 } from './../slices/deliveryTimeline.slice';
@@ -47,6 +51,7 @@ export interface IApplicationState {
   measurements: MeasurementsState;
   productStylePermissions: ProductStylePermissionsState;
   deliveryTimelines: DeliveryTimelinesState;
+  dealerAccount: IDalerAccountState;
 }
 
 export const reducer = combineReducers({
@@ -62,4 +67,5 @@ export const reducer = combineReducers({
   measurements: measurementsStateReducer,
   productStylePermissions: productStylePermissionsReducer,
   deliveryTimelines: deliveryTimelinesReducer,
+  dealerAccount: dealerAccountReducer,
 });

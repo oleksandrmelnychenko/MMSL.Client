@@ -1,6 +1,4 @@
-import { PaginationInfo } from './../../interfaces/index';
 import { createSlice } from '@reduxjs/toolkit';
-import { Pagination } from '../../interfaces';
 import { StoreCustomer } from '../../interfaces/storeCustomer';
 import { IStore } from '../../interfaces/store';
 import { DealerAccount } from '../../interfaces/dealer';
@@ -36,20 +34,20 @@ export class DealerCustomerState {
 /// Dealer list state (contains list of dealers and pagination)
 export class DealersListState {
   constructor() {
-    this.dealersList = [];
+    // this.dealersList = [];
     this.infinitDealersList = [];
-    this.pagination = new Pagination();
-    this.search = '';
-    this.fromDate = undefined;
-    this.toDate = undefined;
+    // this.pagination = new IPagination();
+    // this.search = '';
+    // this.fromDate = undefined;
+    // this.toDate = undefined;
   }
 
-  dealersList: DealerAccount[];
+  // dealersList: DealerAccount[];
   infinitDealersList: DealerAccount[];
-  pagination: Pagination;
-  search: string;
-  fromDate: Date | undefined;
-  toDate: Date | undefined;
+  // pagination: IPagination;
+  // search: string;
+  // fromDate: Date | undefined;
+  // toDate: Date | undefined;
 }
 
 /// Dealer `managing form` dependent state
@@ -84,59 +82,59 @@ const dealer = createSlice({
   name: 'dealer',
   initialState: new DealerState(),
   reducers: {
-    updateDealersList(state, action) {
-      state.dealerState.dealersList = action.payload;
-      return state;
-    },
-    clearDealersList(state) {
-      state.dealerState.dealersList = [];
-      return state;
-    },
-    updateDealerListPagination(state, action) {
-      state.dealerState.pagination = action.payload;
-      return state;
-    },
-    updateDealerListPaginationInfo(state, action) {
-      let newPagination = { ...state.dealerState.pagination };
-      newPagination.paginationInfo = action.payload;
+    // updateDealersList(state, action) {
+    //   state.dealerState.dealersList = action.payload;
+    //   return state;
+    // },
+    // clearDealersList(state) {
+    //   state.dealerState.dealersList = [];
+    //   return state;
+    // },
+    // updateDealerListPagination(state, action) {
+    //   state.dealerState.pagination = action.payload;
+    //   return state;
+    // },
+    // updateDealerListPaginationInfo(state, action) {
+    //   let newPagination = { ...state.dealerState.pagination };
+    //   newPagination.paginationInfo = action.payload;
 
-      state.dealerState.pagination = newPagination;
-      return state;
-    },
-    searchDealer(state, action) {
-      state.dealerState.search = action.payload;
-      return state;
-    },
-    dealeFromDate(state, action) {
-      state.dealerState.fromDate = action.payload;
-      return state;
-    },
-    dealeToDate(state, action) {
-      state.dealerState.toDate = action.payload;
-      return state;
-    },
+    //   state.dealerState.pagination = newPagination;
+    //   return state;
+    // },
+    // searchDealer(state, action) {
+    //   state.dealerState.search = action.payload;
+    //   return state;
+    // },
+    // dealeFromDate(state, action) {
+    //   state.dealerState.fromDate = action.payload;
+    //   return state;
+    // },
+    // dealeToDate(state, action) {
+    //   state.dealerState.toDate = action.payload;
+    //   return state;
+    // },
     /// Dealer state
-    apiGetInfinitDealersPaginated(
-      state,
-      action: {
-        type: string;
-        payload: {
-          paginationLimit: number;
-          paginationPageNumber: number;
-          searchPhrase: string;
-          fromDate: Date | null | undefined;
-          toDate: Date | null | undefined;
-        };
-      }
-    ) {
-      return state;
-    },
-    apiGetDealersListPaginated(state) {
-      return state;
-    },
-    deleteDealerById(state, action) {
-      return state;
-    },
+    // apiGetInfinitDealersPaginated(
+    //   state,
+    //   action: {
+    //     type: string;
+    //     payload: {
+    //       paginationLimit: number;
+    //       paginationPageNumber: number;
+    //       searchPhrase: string;
+    //       fromDate: Date | null | undefined;
+    //       toDate: Date | null | undefined;
+    //     };
+    //   }
+    // ) {
+    //   return state;
+    // },
+    // apiGetDealersListPaginated(state) {
+    //   return state;
+    // },
+    // deleteDealerById(state, action) {
+    //   return state;
+    // },
     getAndSelectDealerById(state, action) {
       return state;
     },

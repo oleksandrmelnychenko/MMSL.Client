@@ -14,6 +14,7 @@ import {
   commandBarStyles,
 } from '../../../common/fabric-styles/styles';
 import BillingAddressForm from './BillingAddressForm';
+import { dealerAccountActions } from '../../../redux/slices/dealerAccount.slice';
 
 class DealerDetailsProps {}
 
@@ -90,7 +91,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
               dealerActions.isOpenPanelWithDealerDetails(
                 new ToggleDealerPanelWithDetails()
               ),
-              dealerActions.apiGetDealersListPaginated(),
+              dealerAccountActions.apiGetDealersPaginated(),
             ]
           );
           dispatch(createAction);

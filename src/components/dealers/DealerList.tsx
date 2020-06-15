@@ -8,11 +8,12 @@ import {
   IconButton,
   DetailsRow,
   ScrollablePane,
-  ShimmeredDetailsList,
   IRenderFunction,
   IDetailsHeaderProps,
   IDetailsColumnRenderTooltipProps,
   TooltipHost,
+  DetailsList,
+  IDetailsRowProps,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -30,26 +31,44 @@ import {
   scrollablePaneStyleForDetailList,
 } from '../../common/fabric-styles/styles';
 import { Sticky, StickyPositionType } from 'office-ui-fabric-react/lib/Sticky';
+import { PaginationInfo } from '../../interfaces';
+import { List } from 'linq-typescript';
+import { dealerAccountActions } from '../../redux/slices/dealerAccount.slice';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
+const PAGINATION_LIMIT: number = 100;
 
 export const DealerList: React.FC = () => {
   const dispatch = useDispatch();
-  const dealers: DealerAccount[] = useSelector<
-    IApplicationState,
-    DealerAccount[]
-  >((state) => state.dealer.dealerState.dealersList);
 
   const [selection] = useState(new Selection({}));
+  const [dealers, setDealers] = useState<DealerAccount[]>([]);
+  const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>(
+    new PaginationInfo()
+  );
+  const [handlingNull, setHandlingNull] = useState<boolean>(false);
 
   const selectedDealerId: number | null | undefined = useSelector<
     IApplicationState,
     number | null | undefined
   >((state) => state.dealer.selectedDealer?.id);
 
-  const shimmer = useSelector<IApplicationState, boolean>(
-    (state) => state.control.isGlobalShimmerActive
-  );
+  useEffect(() => {
+    return () => {
+      dispatch(dealerActions.getAndSelectDealerById(null));
+      dispatch(controlActions.closeInfoPanelWithComponent());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    requestInfinitDealers();
+    return () => {
+      setDealers([]);
+      setHandlingNull(false);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!selectedDealerId) {
@@ -57,22 +76,161 @@ export const DealerList: React.FC = () => {
     }
   }, [selectedDealerId, selection]);
 
-  useEffect(() => {
-    dispatch(dealerActions.apiGetDealersListPaginated());
-    dispatch(controlActions.showGlobalShimmer());
-    return () => {
-      dispatch(dealerActions.getAndSelectDealerById(null));
-      dispatch(controlActions.closeInfoPanelWithComponent());
-    };
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (dealers.length > 0 && shimmer) {
-      dispatch(controlActions.hideGlobalShimmer());
+  const onRenderDetailsHeader: IRenderFunction<IDetailsHeaderProps> = (
+    props,
+    defaultRender
+  ) => {
+    if (!props) {
+      return null;
     }
-  }, [dealers, dispatch, shimmer]);
+    const onRenderColumnHeaderTooltip: IRenderFunction<IDetailsColumnRenderTooltipProps> = (
+      tooltipHostProps
+    ) => (
+      <div className="list__header">
+        <TooltipHost {...tooltipHostProps} />
+      </div>
+    );
+    return (
+      <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced>
+        {defaultRender!({
+          ...props,
+          onRenderColumnHeaderTooltip,
+        })}
+      </Sticky>
+    );
+  };
 
-  const _dealerColumns: IColumn[] = [
+  const onRenderRow = (args: any) => {
+    return (
+      <div
+        onClick={(clickArgs: any) => {
+          const offsetParent: any = clickArgs?.target?.offsetParent?.className;
+
+          if (!offsetParent.includes(DATA_SELECTION_DISABLED_CLASS)) {
+            const selectFlow = () => {
+              let createAction = assignPendingActions(
+                dealerActions.getAndSelectDealerById(args.item.id),
+                []
+              );
+              dispatch(createAction);
+              dispatch(
+                controlActions.openInfoPanelWithComponent({
+                  component: ManagementOptions,
+                  onDismisPendingAction: () => {},
+                })
+              );
+            };
+
+            const unSelectFlow = () => {
+              dispatch(dealerActions.setSelectedDealer(null));
+              dispatch(controlActions.closeInfoPanelWithComponent());
+            };
+
+            if (selectedDealerId) {
+              if (selectedDealerId === args.item.id) {
+                unSelectFlow();
+              } else {
+                selectFlow();
+              }
+            } else {
+              selectFlow();
+            }
+          }
+        }}
+      >
+        <DetailsRow on {...args} />
+      </div>
+    );
+  };
+
+  const requestInfinitDealers = () => {
+    if (!handlingNull) {
+      setHandlingNull(true);
+
+      dispatch(
+        assignPendingActions(
+          dealerAccountActions.apiGetDealersPaginatedPage({
+            paginationLimit: PAGINATION_LIMIT,
+            paginationPageNumber: paginationInfo.pageNumber + 1,
+            searchPhrase: '',
+            fromDate: undefined,
+            toDate: undefined,
+          }),
+          [],
+          [],
+          (args: any) => {
+            const incomeEntities: any[] = args.entities;
+            const incomePaginationInfo: PaginationInfo = args.paginationInfo;
+
+            let dealersList: any = new List(dealers)
+              .where((dealer) => dealer !== null)
+              .concat(incomeEntities);
+
+            if (
+              incomePaginationInfo.pageNumber < incomePaginationInfo.pagesCount
+            )
+              dealersList = dealersList.concat([null]);
+
+            setDealers(dealersList.toArray());
+            setPaginationInfo(incomePaginationInfo);
+            setHandlingNull(false);
+          },
+          (args: any) => {
+            debugger;
+          }
+        )
+      );
+    }
+  };
+
+  const onDeleteDealer = (dealerToDelete: DealerAccount) => {
+    if (dealerToDelete) {
+      dispatch(
+        controlActions.toggleCommonDialogVisibility(
+          new DialogArgs(
+            CommonDialogType.Delete,
+            'Delete dealer',
+            `Are you sure you want to delete ${dealerToDelete.name}?`,
+            () => {
+              dispatch(
+                assignPendingActions(
+                  dealerAccountActions.apiDeleteDealerById(dealerToDelete.id),
+                  [],
+                  [],
+                  (args: any) => {
+                    const dealersList = new List(dealers);
+                    const deletedDealer = dealersList.firstOrDefault(
+                      (dealer) =>
+                        dealer !== null && dealer.id === dealerToDelete.id
+                    );
+
+                    if (deletedDealer) {
+                      dealersList.remove(deletedDealer);
+                      setDealers(dealersList.toArray());
+                    }
+
+                    if (dealerToDelete.id) {
+                      dispatch(dealerActions.setSelectedDealer(null));
+                      dispatch(controlActions.closeInfoPanelWithComponent());
+                      dispatch(
+                        dealerActions.isOpenPanelWithDealerDetails(
+                          new ToggleDealerPanelWithDetails()
+                        )
+                      );
+                    }
+                  },
+                  (args: any) => {}
+                )
+              );
+            },
+            () => {}
+          )
+        )
+      );
+    }
+  };
+
+  const dealerColumns: IColumn[] = [
     {
       key: 'index',
       name: '',
@@ -144,38 +302,7 @@ export const DealerList: React.FC = () => {
               iconProps={{ iconName: 'Delete' }}
               title="Delete"
               ariaLabel="Delete"
-              onClick={(args: any) => {
-                dispatch(
-                  controlActions.toggleCommonDialogVisibility(
-                    new DialogArgs(
-                      CommonDialogType.Delete,
-                      'Delete dealer',
-                      `Are you sure you want to delete ${item.name}?`,
-                      () => {
-                        const actionsQueue: any[] = [
-                          dealerActions.apiGetDealersListPaginated(),
-                        ];
-                        /// TODO:
-                        if (item.id) {
-                          actionsQueue.push(
-                            dealerActions.setSelectedDealer(null),
-                            controlActions.closeInfoPanelWithComponent(),
-                            dealerActions.isOpenPanelWithDealerDetails(
-                              new ToggleDealerPanelWithDetails()
-                            )
-                          );
-                        }
-                        let action = assignPendingActions(
-                          dealerActions.deleteDealerById(item.id),
-                          actionsQueue
-                        );
-                        dispatch(action);
-                      },
-                      () => {}
-                    )
-                  )
-                );
-              }}
+              onClick={(args: any) => onDeleteDealer(item)}
             />
           </Stack>
         );
@@ -184,82 +311,22 @@ export const DealerList: React.FC = () => {
     },
   ];
 
-  const onRenderDetailsHeader: IRenderFunction<IDetailsHeaderProps> = (
-    props,
-    defaultRender
-  ) => {
-    if (!props) {
-      return null;
-    }
-    const onRenderColumnHeaderTooltip: IRenderFunction<IDetailsColumnRenderTooltipProps> = (
-      tooltipHostProps
-    ) => (
-      <div className="list__header">
-        <TooltipHost {...tooltipHostProps} />
-      </div>
-    );
-    return (
-      <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced>
-        {defaultRender!({
-          ...props,
-          onRenderColumnHeaderTooltip,
-        })}
-      </Sticky>
-    );
-  };
-
   return (
     <ScrollablePane styles={scrollablePaneStyleForDetailList}>
-      <ShimmeredDetailsList
+      <DetailsList
         onRenderDetailsHeader={onRenderDetailsHeader}
-        enableShimmer={shimmer}
         styles={detailsListStyle}
         items={dealers}
         selection={selection}
         selectionMode={SelectionMode.single}
-        columns={_dealerColumns}
-        onRenderRow={(args: any) => {
-          return (
-            <div
-              onClick={(clickArgs: any) => {
-                const offsetParent: any =
-                  clickArgs?.target?.offsetParent?.className;
+        columns={dealerColumns}
+        onRenderRow={onRenderRow}
+        onRenderMissingItem={(index?: number, rowProps?: IDetailsRowProps) => {
+          setTimeout(function () {
+            requestInfinitDealers();
+          }, 500);
 
-                if (!offsetParent.includes(DATA_SELECTION_DISABLED_CLASS)) {
-                  const selectFlow = () => {
-                    let createAction = assignPendingActions(
-                      dealerActions.getAndSelectDealerById(args.item.id),
-                      []
-                    );
-                    dispatch(createAction);
-                    dispatch(
-                      controlActions.openInfoPanelWithComponent({
-                        component: ManagementOptions,
-                        onDismisPendingAction: () => {},
-                      })
-                    );
-                  };
-
-                  const unSelectFlow = () => {
-                    dispatch(dealerActions.setSelectedDealer(null));
-                    dispatch(controlActions.closeInfoPanelWithComponent());
-                  };
-
-                  if (selectedDealerId) {
-                    if (selectedDealerId === args.item.id) {
-                      unSelectFlow();
-                    } else {
-                      selectFlow();
-                    }
-                  } else {
-                    selectFlow();
-                  }
-                }
-              }}
-            >
-              <DetailsRow {...args} />
-            </div>
-          );
+          return 'Wait a lo';
         }}
       />
     </ScrollablePane>

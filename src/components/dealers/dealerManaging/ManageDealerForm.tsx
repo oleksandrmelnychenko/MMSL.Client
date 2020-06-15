@@ -27,6 +27,7 @@ import {
 } from '../../../helpers/commandBar.helper';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { dealerActions } from '../../../redux/slices/dealer.slice';
+import { dealerAccountActions } from '../../../redux/slices/dealerAccount.slice';
 
 const resolveDefaultDropDownValue = (
   limitOptions: any[],
@@ -206,7 +207,7 @@ export const ManageDealerForm: React.FC = () => {
           } else {
             createAction = assignPendingActions(
               dealerActions.saveNewDealer(buildDealerAccount(values)),
-              [dealerActions.apiGetDealersListPaginated()]
+              [dealerAccountActions.apiGetDealersPaginated()]
             );
           }
           dispatch(createAction);

@@ -14,7 +14,6 @@ import {
   ajaxPutResponse,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
-import { Pagination } from '../../interfaces';
 import { controlActions } from '../slices/control.slice';
 import { dealerActions } from '../../redux/slices/dealer.slice';
 import StoreHelper from '../../helpers/store.helper';
@@ -27,11 +26,11 @@ export const getCustomersListPaginatedEpic = (
     ofType(customerActions.getCustomersListPaginated.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
-      const pagination: Pagination = state$.value.dealer.dealerState.pagination;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+      /// TODO: support pagination for customers
       return ajaxGetWebResponse(api.GET_CUSTOMERS_ALL, state$.value, [
-        { key: 'pageNumber', value: `${pagination.paginationInfo.pageNumber}` },
-        { key: 'limit', value: `${pagination.limit}` },
+        { key: 'pageNumber', value: `1` },
+        { key: 'limit', value: `9999` },
         {
           key: 'searchPhrase',
           value: `${state$.value.customer.customerState.search}`,
