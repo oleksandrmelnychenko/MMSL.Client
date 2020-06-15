@@ -1,4 +1,3 @@
-import { PaginationInfo } from './../../interfaces/index';
 import { createSlice } from '@reduxjs/toolkit';
 import { Pagination } from '../../interfaces';
 import { StoreCustomer } from '../../interfaces/storeCustomer';

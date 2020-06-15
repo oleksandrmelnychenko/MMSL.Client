@@ -16,6 +16,7 @@ import * as fabricStyles from '../../../common/fabric-styles/styles';
 import * as fabricControlSettings from '../../../common/fabric-control-settings/fabricControlSettings';
 import { useSelector } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
+import { dateToString } from '../../../helpers/date.helper';
 
 export class CreateStoreCustomerFormInitValues {
   constructor() {
@@ -23,7 +24,8 @@ export class CreateStoreCustomerFormInitValues {
     this.customerName = '';
     this.email = '';
     this.phoneNumber = '';
-    this.birthDate = '1989-05-11T21:00:00.000Z';
+    // this.birthDate = '1989-05-11T21:00:00.000Z';
+    this.birthDate = '';
     this.store = null;
   }
 
@@ -72,7 +74,7 @@ const initDefaultValuesForNewStoreCustomerForm = (
     initValues.customerName = sourceEntity.customerName;
     initValues.email = sourceEntity.email;
     initValues.phoneNumber = sourceEntity.phoneNumber;
-    initValues.birthDate = sourceEntity.birthDate;
+    initValues.birthDate = sourceEntity.birthDate ? sourceEntity.birthDate : '';
     initValues.store = sourceEntity.store;
   }
 
@@ -259,11 +261,10 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                             value={new Date(formik.values.birthDate)}
                             label="Birth Date"
                             onSelectDate={(date: Date | null | undefined) => {
-                              let value = '';
-
-                              if (date) value = date.toJSON();
-
-                              formik.setFieldValue('birthDate', value);
+                              formik.setFieldValue(
+                                'birthDate',
+                                dateToString(date)
+                              );
                               formik.setFieldTouched('birthDate');
                             }}
                           />

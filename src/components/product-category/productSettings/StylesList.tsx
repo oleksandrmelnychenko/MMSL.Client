@@ -173,7 +173,7 @@ export const StylesList: React.FC = () => {
                   controlActions.toggleCommonDialogVisibility(
                     new DialogArgs(
                       CommonDialogType.Delete,
-                      'Delete option group',
+                      'Delete style',
                       `Are you sure you want to delete ${item.name}?`,
                       () => {
                         let action = assignPendingActions(

@@ -147,7 +147,7 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
                 controlActions.toggleCommonDialogVisibility(
                   new DialogArgs(
                     CommonDialogType.Delete,
-                    'Delete option unit',
+                    'Delete style option',
                     `Are you sure you want to delete ${props.optionUnit.value}?`,
                     () => {
                       let action = assignPendingActions(

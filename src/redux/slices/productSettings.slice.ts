@@ -54,7 +54,7 @@ export class ManagingOptionUnitsState {
   optionUnits: OptionUnit[];
   selectedOptionUnit: OptionUnit | null;
   isOptionUnitFormVisible: boolean;
-  /// Only when editing concrete single `option unit`
+  /// Only when editing concrete single `style option`
   /// TODO: probably simlify this flow and define another `form component`
   isEditingSingleUnit: boolean;
 }

@@ -47,7 +47,7 @@ const ProductCategories: React.FC = () => {
       controlActions.toggleCommonDialogVisibility(
         new DialogArgs(
           CommonDialogType.Delete,
-          'Delete category',
+          'Delete product',
           `Are you sure you want to delete ${category.name}?`,
           () => {
             dispatch(productActions.chooseProductCategory(null));

@@ -1,5 +1,4 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import {
   Stack,
   FocusZoneDirection,
@@ -13,8 +12,6 @@ class ProductManagementDetailsProps extends ProductCategoryFormProps {}
 export const ProductManagementDetails: React.FC<ProductManagementDetailsProps> = (
   props: ProductManagementDetailsProps
 ) => {
-  const dispatch = useDispatch();
-
   return (
     <div>
       <Stack
@@ -25,7 +22,7 @@ export const ProductManagementDetails: React.FC<ProductManagementDetailsProps> =
         <Stack.Item grow={1} styles={{ root: { maxWidth: '49%' } }}>
           <FocusZone direction={FocusZoneDirection.vertical}>
             <div className={'dealer__stores'} data-is-scrollable={true}>
-              <Separator alignContent="start">Option units</Separator>
+              <Separator alignContent="start">Options</Separator>
             </div>
           </FocusZone>
         </Stack.Item>

@@ -105,7 +105,7 @@ export const apiAddNewProductCategoryEpic = (
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while creating new product category. ${errorResponse}`
+                  `Error occurred while creating new product. ${errorResponse}`
                 ),
               ],
               action
@@ -170,7 +170,7 @@ export const apiUpdateProductCategoryEpic = (
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while updating product category. ${errorResponse}`
+                  `Error occurred while updating product. ${errorResponse}`
                 ),
               ],
               action
@@ -329,7 +329,7 @@ export const apiGetProductCategoryByIdEpic = (
                 { type: 'ERROR_API_GET_PRODUCT_CATEGORY_BY_ID' },
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while getting product category. ${errorResponse}`
+                  `Error occurred while getting product. ${errorResponse}`
                 ),
               ],
               action

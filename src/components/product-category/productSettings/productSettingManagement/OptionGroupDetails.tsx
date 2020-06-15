@@ -54,7 +54,7 @@ export const OptionGroupDetails: React.FC = () => {
       >
         <Stack.Item grow={1} styles={_columnStyle}>
           <div className={'dealer__stores'} data-is-scrollable={true}>
-            <Separator alignContent="start">Option units</Separator>
+            <Separator alignContent="start">Options</Separator>
             <OptionItemsOrderingList />
           </div>
         </Stack.Item>
