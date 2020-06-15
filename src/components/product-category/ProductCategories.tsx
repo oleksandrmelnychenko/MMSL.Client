@@ -7,6 +7,9 @@ import {
   Icon,
   Image,
   ScrollablePane,
+  TooltipHost,
+  TooltipDelay,
+  DirectionalHint,
 } from 'office-ui-fabric-react';
 import { Card } from '@uifabric/react-cards';
 import { Text } from 'office-ui-fabric-react/lib/Text';
@@ -68,6 +71,51 @@ const ProductCategories: React.FC = () => {
         )
       )
     );
+  };
+
+  const onRendedStyleOptionLabel = (category: any) => {
+    let renderResult = null;
+
+    const text = (
+      <Text
+        className="category_name"
+        variant="large"
+        block
+        nowrap
+        styles={{
+          root: {
+            color: '#505050',
+            fontWeight: 400,
+            zIndex: 2,
+            cursor: 'auto',
+            width: '120px',
+          },
+        }}
+      >
+        {category.name}
+      </Text>
+    );
+
+    renderResult = text;
+
+    if (category.name.length > 15) {
+      renderResult = (
+        <TooltipHost
+          id={`styleOption_${category.id}`}
+          calloutProps={{ gapSpace: 0 }}
+          delay={TooltipDelay.zero}
+          directionalHint={DirectionalHint.bottomCenter}
+          styles={{
+            root: { display: 'inline-block', zIndex: 2, cursor: 'auto' },
+          }}
+          content={category.name}
+        >
+          {text}
+        </TooltipHost>
+      );
+    }
+
+    return renderResult;
   };
 
   return (
@@ -164,13 +212,14 @@ const ProductCategories: React.FC = () => {
                       ></Image>
                     </Card.Section>
                     <Card.Section>
-                      <Text
+                      {/* <Text
                         className="category_name"
                         variant="large"
                         styles={fabricStyles.textStyles}
                       >
                         {category.name}
-                      </Text>
+                      </Text> */}
+                      {onRendedStyleOptionLabel(category)}
                     </Card.Section>
                     <Card.Section
                       className="card_actions"

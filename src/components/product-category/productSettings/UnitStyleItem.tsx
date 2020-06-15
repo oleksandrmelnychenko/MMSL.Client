@@ -86,7 +86,7 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
     if (props.optionUnit.value.length > 15) {
       renderResult = (
         <TooltipHost
-          id={`unitValue_${props.optionUnit.id}`}
+          id={`styleOption_${props.optionUnit.id}`}
           calloutProps={{ gapSpace: 0 }}
           delay={TooltipDelay.zero}
           directionalHint={DirectionalHint.bottomCenter}
