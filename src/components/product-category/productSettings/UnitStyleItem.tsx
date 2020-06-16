@@ -1,5 +1,13 @@
 import React from 'react';
-import { Text, Image, Icon, Stack } from 'office-ui-fabric-react';
+import {
+  Text,
+  Image,
+  TooltipHost,
+  Icon,
+  Stack,
+  TooltipDelay,
+  DirectionalHint,
+} from 'office-ui-fabric-react';
 import { OptionUnit } from '../../../interfaces/options';
 import { ProductCategory } from '../../../interfaces/products';
 import { useDispatch, useSelector } from 'react-redux';
@@ -52,6 +60,49 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
     );
   };
 
+  const onRendedStyleOptionLabel = () => {
+    let renderResult = null;
+
+    const text = (
+      <Text
+        block
+        nowrap
+        variant="mediumPlus"
+        styles={{
+          ...fabricStyles.cardText,
+          root: {
+            ...fabricStyles.cardText.root,
+            zIndex: 2,
+            cursor: 'auto',
+          },
+        }}
+      >
+        {props.optionUnit.value}
+      </Text>
+    );
+
+    renderResult = text;
+
+    if (props.optionUnit.value.length > 15) {
+      renderResult = (
+        <TooltipHost
+          id={`styleOption_${props.optionUnit.id}`}
+          calloutProps={{ gapSpace: 0 }}
+          delay={TooltipDelay.zero}
+          directionalHint={DirectionalHint.bottomCenter}
+          styles={{
+            root: { display: 'inline-block', zIndex: 2, cursor: 'auto' },
+          }}
+          content={props.optionUnit.value}
+        >
+          {text}
+        </TooltipHost>
+      );
+    }
+
+    return renderResult;
+  };
+
   return (
     <div className="card" style={{ position: 'relative' }}>
       <Card
@@ -67,24 +118,22 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
         </Card.Section>
         <Card.Section>
           <Stack horizontal>
-            {/* Old flow */}
-            {/* <Icon
-              iconName={props.optionUnit.isMandatory ? 'Unlock' : 'Lock'}
-              className={fabricStyles.cardIcon}
-              styles={{
-                root: {
-                  color: allowColor,
-                },
-              }}
-            /> */}
-            <Text
+            {/* <Text
               block
               nowrap
               variant="mediumPlus"
-              styles={fabricStyles.cardText}
+              styles={{
+                ...fabricStyles.cardText,
+                root: {
+                  ...fabricStyles.cardText.root,
+                  zIndex: 2,
+                  cursor: 'auto',
+                },
+              }}
             >
               {props.optionUnit.value}
-            </Text>
+            </Text> */}
+            {onRendedStyleOptionLabel()}
           </Stack>
         </Card.Section>
         <Card.Section
@@ -147,7 +196,7 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
                 controlActions.toggleCommonDialogVisibility(
                   new DialogArgs(
                     CommonDialogType.Delete,
-                    'Delete option unit',
+                    'Delete style option',
                     `Are you sure you want to delete ${props.optionUnit.value}?`,
                     () => {
                       let action = assignPendingActions(

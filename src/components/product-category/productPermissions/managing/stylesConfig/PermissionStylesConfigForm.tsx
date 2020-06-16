@@ -133,7 +133,7 @@ export const PermissionStylesConfigForm: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFormikDirty, dispatch]);
 
-  /// Resolve local product category due to global category
+  /// Resolve local product due to global category
   useEffect(() => {
     if (localProductCategory?.id !== productCategory?.id) {
       updatePanelButtons();
@@ -143,7 +143,7 @@ export const PermissionStylesConfigForm: React.FC = () => {
   }, [productCategory]);
 
   /// Resolve available product styles (groups) due to
-  /// local product category
+  /// local product
   useEffect(() => {
     if (localProductCategory && editingSetting) {
       updatePanelButtons();

@@ -307,7 +307,7 @@ export const ManagingProductUnitForm: React.FC = () => {
         controlActions.toggleCommonDialogVisibility(
           new DialogArgs(
             CommonDialogType.Delete,
-            'Delete option unit',
+            'Delete style option',
             `Are you sure you want to delete ${formikReference.formik.values.unitToDelete.value}?`,
             () => {
               dispatch(
@@ -423,7 +423,7 @@ export const ManagingProductUnitForm: React.FC = () => {
             </Stack>
           </Form>
         ) : (
-          _renderHintLable('Select and explore or define new style unit.')
+          _renderHintLable('Select and explore or define new style option.')
         );
       }}
     </Formik>

@@ -236,7 +236,7 @@ export const OptionItemsOrderingList: React.FC = () => {
         />
       ) : (
         _renderHintLable(
-          'Current style does not have any option units. Add new one for this style.'
+          'Current style does not have any options. Add new one for this style.'
         )
       )}
     </>

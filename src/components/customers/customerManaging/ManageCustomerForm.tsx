@@ -27,6 +27,7 @@ import { controlActions } from '../../../redux/slices/control.slice';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { List } from 'linq-typescript';
+import { dateToString } from '../../../helpers/date.helper';
 
 export class CreateStoreCustomerFormInitValues {
   constructor() {
@@ -34,7 +35,8 @@ export class CreateStoreCustomerFormInitValues {
     this.customerName = '';
     this.email = '';
     this.phoneNumber = '';
-    this.birthDate = '1989-05-11T21:00:00.000Z';
+    // this.birthDate = '1989-05-11T21:00:00.000Z';
+    this.birthDate = '';
     this.store = null;
   }
 
@@ -66,7 +68,8 @@ const buildCustomerAccountData = (
   newAccount.customerName = values.customerName;
   newAccount.email = values.email;
   newAccount.phoneNumber = values.phoneNumber;
-  newAccount.birthDate = values.birthDate;
+  // newAccount.birthDate = values.birthDate ? values.birthDate : null;
+  newAccount.birthDate = values.birthDate ? values.birthDate : null;
   newAccount.store = values.store;
   newAccount.storeId = newAccount.store?.id;
 
@@ -83,7 +86,7 @@ const initDefaultValuesForNewStoreCustomerForm = (
     initValues.customerName = sourceEntity.customerName;
     initValues.email = sourceEntity.email;
     initValues.phoneNumber = sourceEntity.phoneNumber;
-    initValues.birthDate = sourceEntity.birthDate;
+    initValues.birthDate = sourceEntity.birthDate ? sourceEntity.birthDate : '';
     initValues.store = sourceEntity.store;
   }
 
@@ -397,15 +400,20 @@ export const ManageCustomerForm: React.FC = () => {
                             firstDayOfWeek={DayOfWeek.Monday}
                             strings={fabricControlSettings.dayPickerStrings}
                             textField={fabricStyles.datePickerStyles}
-                            value={new Date(formik.values.birthDate)}
+                            // value={new Date(formik.values.birthDate)}
+                            value={
+                              formik.values.birthDate
+                                ? new Date(formik.values.birthDate)
+                                : undefined
+                            }
                             label="Birth Date"
+                            allowTextInput={true}
                             showGoToToday={false}
                             onSelectDate={(date: Date | null | undefined) => {
-                              let value = '';
-
-                              if (date) value = date.toJSON();
-
-                              formik.setFieldValue('birthDate', value);
+                              formik.setFieldValue(
+                                'birthDate',
+                                dateToString(date)
+                              );
                               formik.setFieldTouched('birthDate');
                             }}
                           />

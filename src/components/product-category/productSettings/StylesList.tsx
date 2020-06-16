@@ -98,103 +98,121 @@ export const StylesList: React.FC = () => {
           </Stack>
 
           <Stack horizontal tokens={{ childrenGap: 10 }}>
-            <ActionButton
-              styles={fabricStyles.columnIconButtonStyle}
-              iconProps={{
-                iconName: 'Settings',
-              }}
-              title="Settings"
-              ariaLabel="Settings"
-              onClick={() => {
-                let action = assignPendingActions(
-                  productSettingsActions.apiGetOptionGroupById(
-                    parseInt(item.id)
-                  ),
-                  [],
-                  [],
-                  (args: any) => {
-                    dispatch(
-                      productSettingsActions.changeTargetOptionGroupForUnitsEdit(
-                        args
-                      )
-                    );
+            <TooltipHost
+              content="Settings"
+              directionalHint={DirectionalHint.bottomRightEdge}
+              id="StyleSettings"
+              calloutProps={{ gapSpace: 0 }}
+              styles={{ root: { display: 'inline-block' } }}
+            >
+              <ActionButton
+                styles={fabricStyles.columnIconButtonStyle}
+                iconProps={{
+                  iconName: 'Settings',
+                }}
+                onClick={() => {
+                  let action = assignPendingActions(
+                    productSettingsActions.apiGetOptionGroupById(
+                      parseInt(item.id)
+                    ),
+                    [],
+                    [],
+                    (args: any) => {
+                      dispatch(
+                        productSettingsActions.changeTargetOptionGroupForUnitsEdit(
+                          args
+                        )
+                      );
+                      dispatch(
+                        controlActions.openRightPanel({
+                          title: 'Manage Style',
+                          description: item.name,
+                          width: '700px',
+                          closeFunctions: () => {
+                            dispatch(controlActions.closeRightPanel());
+                          },
+                          component: OptionGroupDetails,
+                        })
+                      );
+                    },
+                    (args: any) => {}
+                  );
+                  dispatch(action);
+                }}
+              />
+            </TooltipHost>
+
+            <TooltipHost
+              content="Edit"
+              directionalHint={DirectionalHint.bottomRightEdge}
+              id="EditStyle"
+              calloutProps={{ gapSpace: 0 }}
+              styles={{ root: { display: 'inline-block' } }}
+            >
+              <ActionButton
+                styles={fabricStyles.columnIconButtonStyle}
+                iconProps={{
+                  iconName: 'Edit',
+                }}
+                onClick={() => {
+                  if (targetProduct && item) {
+                    dispatch(productSettingsActions.changeEditingGroup(item));
                     dispatch(
                       controlActions.openRightPanel({
-                        title: 'Manage Style',
+                        title: 'Details',
                         description: item.name,
-                        width: '700px',
+                        width: '400px',
                         closeFunctions: () => {
                           dispatch(controlActions.closeRightPanel());
                         },
-                        component: OptionGroupDetails,
+                        component: ManagingvOptionGroupForm,
                       })
                     );
-                  },
-                  (args: any) => {}
-                );
-                dispatch(action);
-              }}
-            />
+                  }
+                }}
+              />
+            </TooltipHost>
 
-            <ActionButton
-              styles={fabricStyles.columnIconButtonStyle}
-              iconProps={{
-                iconName: 'Edit',
-              }}
-              title="Edit"
-              ariaLabel="Edit"
-              onClick={() => {
-                if (targetProduct && item) {
-                  dispatch(productSettingsActions.changeEditingGroup(item));
+            <TooltipHost
+              content="Delete"
+              directionalHint={DirectionalHint.bottomRightEdge}
+              id="deleteStyle"
+              calloutProps={{ gapSpace: 0 }}
+              styles={{ root: { display: 'inline-block' } }}
+            >
+              <ActionButton
+                styles={fabricStyles.columnIconButtonStyle}
+                iconProps={{
+                  iconName: 'Delete',
+                }}
+                onClick={() => {
                   dispatch(
-                    controlActions.openRightPanel({
-                      title: 'Details',
-                      description: item.name,
-                      width: '400px',
-                      closeFunctions: () => {
-                        dispatch(controlActions.closeRightPanel());
-                      },
-                      component: ManagingvOptionGroupForm,
-                    })
-                  );
-                }
-              }}
-            />
-
-            <ActionButton
-              styles={fabricStyles.columnIconButtonStyle}
-              iconProps={{
-                iconName: 'Delete',
-              }}
-              title="Delete"
-              ariaLabel="Delete"
-              onClick={() => {
-                dispatch(
-                  controlActions.toggleCommonDialogVisibility(
-                    new DialogArgs(
-                      CommonDialogType.Delete,
-                      'Delete option group',
-                      `Are you sure you want to delete ${item.name}?`,
-                      () => {
-                        let action = assignPendingActions(
-                          productSettingsActions.apiDeleteOptionGroupById(
-                            item.id
-                          ),
-                          [],
-                          [],
-                          (args: any) => {
-                            if (targetProduct?.id)
-                              getProductStyles(targetProduct.id);
-                          }
-                        );
-                        dispatch(action);
-                      },
-                      () => {}
+                    controlActions.toggleCommonDialogVisibility(
+                      new DialogArgs(
+                        CommonDialogType.Delete,
+                        'Delete style',
+                        `Are you sure you want to delete ${item.name}?`,
+                        () => {
+                          let action = assignPendingActions(
+                            productSettingsActions.apiDeleteOptionGroupById(
+                              item.id
+                            ),
+                            [],
+                            [],
+                            (args: any) => {
+                              if (targetProduct?.id)
+                                getProductStyles(targetProduct.id);
+                            }
+                          );
+                          dispatch(action);
+                        },
+                        () => {}
+                      )
                     )
-                  )
-                );
-              }}
-            />
+                  );
+                }}
+              />
+            </TooltipHost>
           </Stack>
         </Stack>
 

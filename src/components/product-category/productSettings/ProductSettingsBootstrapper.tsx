@@ -44,7 +44,7 @@ export const ProductSettingsBootstrapper: React.FC = (props: any) => {
   /// Resolve dashboard hint visibility
   useEffect(() => {
     if (isWasIntended) {
-      if (isEmpty) {
+      if (isEmpty && searchWord.length === 0) {
         dispatch(
           controlActions.showDashboardHintStub({
             isVisible: true,
@@ -112,8 +112,6 @@ export const ProductSettingsBootstrapper: React.FC = (props: any) => {
       {isWasIntended ? (
         <>
           <ProductSettings />
-          {/* TODO: use new pattern */}
-          {/* <ProductSettingsManagementPanel /> */}
         </>
       ) : null}
     </>

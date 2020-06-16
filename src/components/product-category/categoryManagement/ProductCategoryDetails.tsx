@@ -221,7 +221,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
     return result;
   };
 
-  /// Render common `option group inner block`
+  /// Render common `style inner block`
   const renderOptionGroupCommons = (
     item: OptionGroup | null | undefined,
     key: number | null | undefined
@@ -301,7 +301,7 @@ export const ProductCategoryDetails: React.FC<ProductCategoryDetailsProps> = (
     item: OptionGroup | null | undefined,
     key: number | null | undefined
   ): JSX.Element => {
-    let result: JSX.Element = <div>{'Undefined option group'}</div>;
+    let result: JSX.Element = <div>{'Undefined style'}</div>;
 
     if (item && key && targetProductCategory) {
       let isWasAttachedBefore: boolean = false;

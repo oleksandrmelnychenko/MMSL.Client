@@ -121,6 +121,7 @@ export const saveNewCustomerEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
       return ajaxPostResponse(
         api.CREATE_NEW_STORE_CUSTOMER,
         action.payload,
@@ -160,6 +161,7 @@ export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
       return ajaxPutResponse(
         api.UPDATE_STORE_CUSTOMER,
         action.payload,

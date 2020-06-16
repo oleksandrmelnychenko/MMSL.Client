@@ -41,9 +41,7 @@ export const apiUpdateOptionGroupEpic = (action$: AnyAction, state$: any) => {
           return successCommonEpicFlow(
             successResponse,
             [
-              controlActions.showInfoMessage(
-                'Option group updated successfully'
-              ),
+              controlActions.showInfoMessage('Style updated successfully'),
               controlActions.disabledStatusBar(),
             ],
             action
@@ -56,7 +54,7 @@ export const apiUpdateOptionGroupEpic = (action$: AnyAction, state$: any) => {
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while updating option group. ${errorResponse}`
+                  `Error occurred while updating style. ${errorResponse}`
                 ),
               ],
               action
@@ -139,7 +137,7 @@ export const apiGetAllOptionGroupsByProductIdListEpic = (
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while getting option groups list. ${errorResponse}`
+                  `Error occurred while getting style list. ${errorResponse}`
                 ),
               ],
               action
@@ -188,7 +186,7 @@ export const apiSearchOptionGroupsByProductIdListEpic = (
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while searching option groups. ${errorResponse}`
+                  `Error occurred while searching styles. ${errorResponse}`
                 ),
               ],
               action
@@ -228,7 +226,7 @@ export const apiModifyOptionUnitsOrderEpic = (
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while updating option units order. ${errorResponse}`
+                  `Error occurred while updating style options order. ${errorResponse}`
                 ),
               ],
               action
@@ -293,7 +291,7 @@ export const apiUpdateOptionUnitEpic = (action$: AnyAction, state$: any) => {
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while updating option unit. ${errorResponse}`
+                  `Error occurred while updating style option. ${errorResponse}`
                 ),
               ],
               action
@@ -362,7 +360,7 @@ export const apiCreateNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while creating new option unit. ${errorResponse}`
+                  `Error occurred while creating new style option. ${errorResponse}`
                 ),
               ],
               action
@@ -403,7 +401,7 @@ export const apiDeleteOptionUnitByIdEpic = (
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while deleteing option unit. ${errorResponse}`
+                  `Error occurred while deleteing style option. ${errorResponse}`
                 ),
               ],
               action
@@ -438,7 +436,7 @@ export const apiGetOptionGroupByIdEpic = (action$: AnyAction, state$: any) => {
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while getting option group. ${errorResponse}`
+                  `Error occurred while getting style. ${errorResponse}`
                 ),
               ],
               action
@@ -472,7 +470,7 @@ export const apiGetOptionUnitByIdEpic = (action$: AnyAction, state$: any) => {
               errorResponse,
               [
                 controlActions.showInfoMessage(
-                  `Error occurred while getting option unit for select. ${errorResponse}`
+                  `Error occurred while getting style option for select. ${errorResponse}`
                 ),
               ],
               action
@@ -515,7 +513,7 @@ export const apiDeleteOptionGroupByIdEpic = (
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while deleteing option group. ${errorResponse}`
+                  `Error occurred while deleteing style. ${errorResponse}`
                 ),
               ],
               action

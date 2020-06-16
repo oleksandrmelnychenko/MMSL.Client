@@ -23,7 +23,7 @@ export class StoreCustomer extends EntityBase {
   customerName: string;
   email: string;
   phoneNumber: string;
-  birthDate: string;
+  birthDate: string | null;
   useBillingAsDeliveryAddress: boolean;
   billingAddressId: number | null;
   billingAddress: Address | null;

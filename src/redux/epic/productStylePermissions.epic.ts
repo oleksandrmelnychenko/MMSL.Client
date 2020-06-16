@@ -81,7 +81,12 @@ export const apiCreateNewPermissionEpic = (action$: AnyAction, state$: any) => {
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
-            [controlActions.disabledStatusBar()],
+            [
+              controlActions.showInfoMessage(
+                `New style permission successfully created.`
+              ),
+              controlActions.disabledStatusBar(),
+            ],
             action
           );
         }),
@@ -119,7 +124,12 @@ export const apiUpdatePermissionEpic = (action$: AnyAction, state$: any) => {
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
-            [controlActions.disabledStatusBar()],
+            [
+              controlActions.showInfoMessage(
+                `Style permission successfully updated.`
+              ),
+              controlActions.disabledStatusBar(),
+            ],
             action
           );
         }),
@@ -158,7 +168,12 @@ export const apiDeletePermissionEpic = (action$: AnyAction, state$: any) => {
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
-            [controlActions.disabledStatusBar()],
+            [
+              controlActions.showInfoMessage(
+                `Style permission successfully deleted.`
+              ),
+              controlActions.disabledStatusBar(),
+            ],
             action
           );
         }),
@@ -391,7 +406,10 @@ export const apiBindDealersToPermissionEpic = (
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
-            [controlActions.disabledStatusBar()],
+            [
+              controlActions.showInfoMessage(`Successfully completed.`),
+              controlActions.disabledStatusBar(),
+            ],
             action
           );
         }),
