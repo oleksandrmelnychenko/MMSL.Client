@@ -29,21 +29,6 @@ const dealerAccount = createSlice({
     apiGetDealersPaginatedFlow(state) {
       return state;
     },
-    // apiGetDealersPaginatedPage(
-    //   state,
-    //   action: {
-    //     type: string;
-    //     payload: {
-    //       paginationLimit: number;
-    //       paginationPageNumber: number;
-    //       searchPhrase: string;
-    //       fromDate: Date | undefined;
-    //       toDate: Date | undefined;
-    //     };
-    //   }
-    // ) {
-    //   return state;
-    // },
     apiCreateDealer(state, action) {
       return state;
     },
@@ -51,15 +36,6 @@ const dealerAccount = createSlice({
       return state;
     },
     apiDeleteDealerById(state, action: { type: string; payload: number }) {
-      return state;
-    },
-    resetFilter(state) {
-      state.filter = {
-        fromDate: undefined,
-        toDate: undefined,
-        searchWord: '',
-      };
-
       return state;
     },
     changeFilterFromDate(

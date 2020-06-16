@@ -37,6 +37,20 @@ import { dealerAccountActions } from '../../redux/slices/dealerAccount.slice';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
+const _resolveDealers = (dealers: DealerAccount[], pagination: Pagination) => {
+  let result: DealerAccount[] = [];
+
+  if (
+    pagination.paginationInfo.pageNumber < pagination.paginationInfo.pagesCount
+  ) {
+    result = new List(dealers as any[]).concat([null]).toArray();
+  } else {
+    result = dealers;
+  }
+
+  return result;
+};
+
 export const DealerList: React.FC = () => {
   const dispatch = useDispatch();
 
@@ -70,7 +84,6 @@ export const DealerList: React.FC = () => {
 
       dispatch(dealerAccountActions.changePagination(new Pagination()));
       dispatch(dealerAccountActions.changDealersList([]));
-      dispatch(dealerAccountActions.resetFilter());
 
       setHandlingNull(false);
     };
@@ -150,10 +163,68 @@ export const DealerList: React.FC = () => {
     );
   };
 
+  // const requestInfinitDealers = () => {
+  //   if (!handlingNull) {
+  //     setHandlingNull(true);
+
+  //     dispatch(
+  //       dealerAccountActions.changePagination({
+  //         ...pagination,
+  //         paginationInfo: {
+  //           ...pagination.paginationInfo,
+  //           pageNumber: pagination.paginationInfo.pageNumber + 1,
+  //         },
+  //       })
+  //     );
+
+  //     dispatch(
+  //       assignPendingActions(
+  //         // dealerAccountActions.apiGetDealersPaginatedPage({
+  //         //   paginationLimit: PAGINATION_LIMIT,
+  //         //   paginationPageNumber: paginationInfo.pageNumber + 1,
+  //         //   searchPhrase: '',
+  //         //   fromDate: undefined,
+  //         //   toDate: undefined,
+  //         // }),
+  //         dealerAccountActions.apiGetDealersPaginatedFlow(),
+  //         [],
+  //         [],
+  //         (args: any) => {
+  //           const incomeEntities: any[] = args.entities;
+  //           const responsePaginationInfo: PaginationInfo = args.paginationInfo;
+
+  //           let dealersList: any = new List(dealers)
+  //             .where((dealer) => dealer !== null)
+  //             .concat(incomeEntities);
+
+  //           if (
+  //             responsePaginationInfo.pageNumber <
+  //             responsePaginationInfo.pagesCount
+  //           )
+  //             dealersList = dealersList.concat([null]);
+
+  //           dispatch(
+  //             dealerAccountActions.changDealersList(dealersList.toArray())
+  //           );
+  //           dispatch(
+  //             dealerAccountActions.changePaginationInfo(responsePaginationInfo)
+  //           );
+
+  //           // setDealers(dealersList.toArray());
+  //           // setPaginationInfo(incomePaginationInfo);
+  //           setHandlingNull(false);
+  //         },
+  //         (args: any) => {
+  //           debugger;
+  //         }
+  //       )
+  //     );
+  //   }
+  // };
+
   const requestInfinitDealers = () => {
     if (!handlingNull) {
       setHandlingNull(true);
-
       dispatch(
         dealerAccountActions.changePagination({
           ...pagination,
@@ -163,34 +234,17 @@ export const DealerList: React.FC = () => {
           },
         })
       );
-
-      // dispatch()
-
       dispatch(
         assignPendingActions(
-          // dealerAccountActions.apiGetDealersPaginatedPage({
-          //   paginationLimit: PAGINATION_LIMIT,
-          //   paginationPageNumber: paginationInfo.pageNumber + 1,
-          //   searchPhrase: '',
-          //   fromDate: undefined,
-          //   toDate: undefined,
-          // }),
           dealerAccountActions.apiGetDealersPaginatedFlow(),
           [],
           [],
           (args: any) => {
             const incomeEntities: any[] = args.entities;
             const responsePaginationInfo: PaginationInfo = args.paginationInfo;
-
             let dealersList: any = new List(dealers)
               .where((dealer) => dealer !== null)
               .concat(incomeEntities);
-
-            if (
-              responsePaginationInfo.pageNumber <
-              responsePaginationInfo.pagesCount
-            )
-              dealersList = dealersList.concat([null]);
 
             dispatch(
               dealerAccountActions.changDealersList(dealersList.toArray())
@@ -198,9 +252,6 @@ export const DealerList: React.FC = () => {
             dispatch(
               dealerAccountActions.changePaginationInfo(responsePaginationInfo)
             );
-
-            // setDealers(dealersList.toArray());
-            // setPaginationInfo(incomePaginationInfo);
             setHandlingNull(false);
           },
           (args: any) => {
@@ -239,7 +290,6 @@ export const DealerList: React.FC = () => {
                           dealersList.toArray()
                         )
                       );
-                      // setDealers(dealersList.toArray());
                     }
 
                     if (dealerToDelete.id) {
@@ -349,7 +399,7 @@ export const DealerList: React.FC = () => {
       <DetailsList
         onRenderDetailsHeader={onRenderDetailsHeader}
         styles={detailsListStyle}
-        items={dealers}
+        items={_resolveDealers(dealers, pagination)}
         selection={selection}
         selectionMode={SelectionMode.single}
         columns={dealerColumns}

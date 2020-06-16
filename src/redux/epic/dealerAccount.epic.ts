@@ -1,4 +1,3 @@
-import { dealerAccountActions } from './../slices/dealerAccount.slice';
 import { checkUnauthorized } from './../../helpers/error.helpers';
 import {
   successCommonEpicFlow,
@@ -17,6 +16,7 @@ import {
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import StoreHelper from '../../helpers/store.helper';
+import { dealerAccountActions } from '../slices/dealerAccount.slice';
 
 const _parseDateToString = (date: Date | null | undefined) => {
   let result = '';
@@ -65,15 +65,7 @@ export const apiGetDealersPaginatedEpic = (action$: AnyAction, state$: any) => {
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
-            [
-              // dealerAccountActions.changDealersList(
-              //   successResponse.entities ? successResponse.entities : []
-              // ),
-              // dealerAccountActions.changePaginationInfo(
-              //   successResponse.paginationInfo
-              // ),
-              controlActions.disabledStatusBar(),
-            ],
+            [controlActions.disabledStatusBar()],
             action
           );
         }),
@@ -90,68 +82,6 @@ export const apiGetDealersPaginatedEpic = (action$: AnyAction, state$: any) => {
     })
   );
 };
-
-// export const apiGetDealersPaginatedPageEpic = (
-//   action$: AnyAction,
-//   state$: any
-// ) => {
-//   return action$.pipe(
-//     ofType(dealerAccountActions.apiGetDealersPaginatedPage.type),
-//     switchMap((action: AnyAction) => {
-//       const languageCode = getActiveLanguage(state$.value.localize).code;
-//       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-
-//       const paginationLimit = action.payload.paginationLimit;
-//       const pageNumber = action.payload.paginationPageNumber;
-//       const searchPhrase = action.payload.searchPhrase;
-//       const fromDate: Date | null | undefined = action.payload.fromDate;
-//       const toDate: Date | null | undefined = action.payload.toDate;
-
-//       return ajaxGetWebResponse(api.GET_DEALERS_ALL, state$.value, [
-//         { key: 'limit', value: `${paginationLimit}` },
-//         {
-//           key: 'pageNumber',
-//           value: `${pageNumber}`,
-//         },
-//         {
-//           key: 'searchPhrase',
-//           value: `${searchPhrase}`,
-//         },
-//         {
-//           key: 'from',
-//           value: _parseDateToString(fromDate),
-//         },
-//         {
-//           key: 'to',
-//           value: _parseDateToString(toDate),
-//         },
-//       ]).pipe(
-//         mergeMap((successResponse: any) => {
-//           return successCommonEpicFlow(
-//             successResponse,
-//             [controlActions.disabledStatusBar()],
-//             action
-//           );
-//         }),
-//         catchError((errorResponse: any) => {
-//           return checkUnauthorized(errorResponse.status, languageCode, () => {
-//             return errorCommonEpicFlow(
-//               errorResponse,
-//               [
-//                 { type: 'ERROR_GET_DEALERS_PAGINATED' },
-//                 controlActions.disabledStatusBar(),
-//                 controlActions.showInfoMessage(
-//                   `Error occurred while get dealers paginated. ${errorResponse}`
-//                 ),
-//               ],
-//               action
-//             );
-//           });
-//         })
-//       );
-//     })
-//   );
-// };
 
 export const apiCreateDealerEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
