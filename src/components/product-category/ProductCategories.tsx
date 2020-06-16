@@ -106,7 +106,12 @@ const ProductCategories: React.FC = () => {
           delay={TooltipDelay.zero}
           directionalHint={DirectionalHint.bottomCenter}
           styles={{
-            root: { display: 'inline-block', zIndex: 2, cursor: 'auto' },
+            root: {
+              display: 'inline-block',
+              zIndex: 2,
+              cursor: 'auto',
+              width: '120px',
+            },
           }}
           content={category.name}
         >
@@ -212,19 +217,14 @@ const ProductCategories: React.FC = () => {
                       ></Image>
                     </Card.Section>
                     <Card.Section>
-                      {/* <Text
-                        className="category_name"
-                        variant="large"
-                        styles={fabricStyles.textStyles}
-                      >
-                        {category.name}
-                      </Text> */}
                       {onRendedStyleOptionLabel(category)}
                     </Card.Section>
                     <Card.Section
                       className="card_actions"
                       horizontal
-                      styles={fabricStyles.footerCardSectionStyles}
+                      styles={{
+                        ...fabricStyles.footerCardSectionStyles,
+                      }}
                       tokens={fabricStyles.footerCardSectionTokens}
                     >
                       <Icon
