@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './dealers.scss';
 import { SearchBox, ActionButton, Stack, Text } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -19,8 +19,10 @@ const _datePickerWidth = { root: { width: '150px' } };
 export const DealersHeader: React.FC = (props: any) => {
   const dispatch = useDispatch();
 
-  const searchWord: string = useSelector<IApplicationState, string>(
-    (state) => state.dealerAccount.filter.searchWord
+  // const [inputSearchWord, setInputSearchWord] = useState<string>('');
+
+  const inputSearchWord: string = useSelector<IApplicationState, string>(
+    (state) => state.dealerAccount.filter.inputSearchWord
   );
 
   const fromDate: Date | undefined = useSelector<
@@ -37,10 +39,25 @@ export const DealersHeader: React.FC = (props: any) => {
     return () => {
       dispatch(dealerAccountActions.changeFilterFromDate(undefined));
       dispatch(dealerAccountActions.changeFilterToDate(undefined));
-      dispatch(dealerAccountActions.changeFilterSearchWord(''));
+      dispatch(dealerAccountActions.debounceFilterSearchWord(''));
+      // setInputSearchWord('');
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  /// Listen to `global search word` changes and update
+  /// local input value
+  // useEffect(() => {
+  //   if (searchWord !== inputSearchWord) {
+  //     setInputSearchWord(searchWord);
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [searchWord]);
+
+  // useEffect(() => {
+  //   dispatch(dealerAccountActions.debounceFilterSearchWord(inputSearchWord));
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [inputSearchWord, dispatch]);
 
   return (
     <div>
@@ -104,13 +121,16 @@ export const DealersHeader: React.FC = (props: any) => {
         />
         <SearchBox
           className="dealerSearch"
-          value={searchWord}
+          value={inputSearchWord}
           placeholder="Find dealer"
           styles={{ root: { width: 200 } }}
           onChange={(args: any) => {
-            let searchValue = args?.target ? args.target.value : '';
+            const searchValue = args?.target ? args.target.value : '';
 
-            dispatch(dealerAccountActions.changeFilterSearchWord(searchValue));
+            // setInputSearchWord(searchValue);
+            dispatch(
+              dealerAccountActions.debounceFilterSearchWord(searchValue)
+            );
           }}
         />
       </Stack>

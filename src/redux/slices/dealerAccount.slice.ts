@@ -7,6 +7,7 @@ const DEALER_ACCOUNT_INIT_STATE: IDalerAccountState = {
     fromDate: undefined,
     toDate: undefined,
     searchWord: '',
+    inputSearchWord: '',
   },
   dealers: [],
   pagination: new Pagination(),
@@ -17,6 +18,7 @@ export interface IDalerAccountState {
     fromDate: Date | undefined;
     toDate: Date | undefined;
     searchWord: string;
+    inputSearchWord: string;
   };
   pagination: Pagination;
   dealers: DealerAccount[];
@@ -50,6 +52,11 @@ const dealerAccount = createSlice({
       action: { type: string; payload: Date | undefined }
     ) {
       state.filter = { ...state.filter, toDate: action.payload };
+      return state;
+    },
+    debounceFilterSearchWord(state, action: { type: string; payload: string }) {
+      state.filter.inputSearchWord = action.payload;
+
       return state;
     },
     changeFilterSearchWord(state, action: { type: string; payload: string }) {
