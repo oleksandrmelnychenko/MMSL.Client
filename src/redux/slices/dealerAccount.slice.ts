@@ -1,6 +1,6 @@
 import { DealerAccount } from './../../interfaces/dealer';
 import { createSlice } from '@reduxjs/toolkit';
-import { Pagination } from '../../interfaces';
+import { Pagination, PaginationInfo } from '../../interfaces';
 
 const DEALER_ACCOUNT_INIT_STATE: IDalerAccountState = {
   filter: {
@@ -26,25 +26,40 @@ const dealerAccount = createSlice({
   name: 'dealerAccount',
   initialState: DEALER_ACCOUNT_INIT_STATE,
   reducers: {
-    apiGetDealersPaginated(state) {
+    apiGetDealersPaginatedFlow(state) {
       return state;
     },
-    apiGetDealersPaginatedPage(
-      state,
-      action: {
-        type: string;
-        payload: {
-          paginationLimit: number;
-          paginationPageNumber: number;
-          searchPhrase: string;
-          fromDate: Date | undefined;
-          toDate: Date | undefined;
-        };
-      }
-    ) {
+    // apiGetDealersPaginatedPage(
+    //   state,
+    //   action: {
+    //     type: string;
+    //     payload: {
+    //       paginationLimit: number;
+    //       paginationPageNumber: number;
+    //       searchPhrase: string;
+    //       fromDate: Date | undefined;
+    //       toDate: Date | undefined;
+    //     };
+    //   }
+    // ) {
+    //   return state;
+    // },
+    apiCreateDealer(state, action) {
+      return state;
+    },
+    apiUpdateDealer(state, action) {
       return state;
     },
     apiDeleteDealerById(state, action: { type: string; payload: number }) {
+      return state;
+    },
+    resetFilter(state) {
+      state.filter = {
+        fromDate: undefined,
+        toDate: undefined,
+        searchWord: '',
+      };
+
       return state;
     },
     changeFilterFromDate(
@@ -65,21 +80,29 @@ const dealerAccount = createSlice({
       state.filter = { ...state.filter, searchWord: action.payload };
       return state;
     },
+    changDealersList(
+      state,
+      action: { type: string; payload: DealerAccount[] }
+    ) {
+      state.dealers = action.payload;
+      return state;
+    },
     changePagination(state, action: { type: string; payload: Pagination }) {
       state.pagination = { ...action.payload };
       return state;
     },
-    // updateDealerListPaginationInfo(state, action) {
-    //   let newPagination = { ...state.dealerState.pagination };
-    //   newPagination.paginationInfo = action.payload;
+    changePaginationInfo(
+      state,
+      action: { type: string; payload: PaginationInfo }
+    ) {
+      const newPagination = {
+        ...state.pagination,
+        paginationInfo: action.payload,
+      };
 
-    //   state.dealerState.pagination = newPagination;
-    //   return state;
-    // },
-    // updateDealersList(state, action) {
-    //   state.dealerState.dealersList = action.payload;
-    //   return state;
-    // },
+      state.pagination = newPagination;
+      return state;
+    },
   },
 });
 

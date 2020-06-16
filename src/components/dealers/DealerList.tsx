@@ -31,21 +31,16 @@ import {
   scrollablePaneStyleForDetailList,
 } from '../../common/fabric-styles/styles';
 import { Sticky, StickyPositionType } from 'office-ui-fabric-react/lib/Sticky';
-import { PaginationInfo } from '../../interfaces';
+import { PaginationInfo, Pagination } from '../../interfaces';
 import { List } from 'linq-typescript';
 import { dealerAccountActions } from '../../redux/slices/dealerAccount.slice';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
-const PAGINATION_LIMIT: number = 100;
 
 export const DealerList: React.FC = () => {
   const dispatch = useDispatch();
 
   const [selection] = useState(new Selection({}));
-  const [dealers, setDealers] = useState<DealerAccount[]>([]);
-  const [paginationInfo, setPaginationInfo] = useState<PaginationInfo>(
-    new PaginationInfo()
-  );
   const [handlingNull, setHandlingNull] = useState<boolean>(false);
 
   const selectedDealerId: number | null | undefined = useSelector<
@@ -53,18 +48,30 @@ export const DealerList: React.FC = () => {
     number | null | undefined
   >((state) => state.dealer.selectedDealer?.id);
 
+  const dealers: DealerAccount[] = useSelector<
+    IApplicationState,
+    DealerAccount[]
+  >((state) => state.dealerAccount.dealers);
+
+  const pagination: Pagination = useSelector<IApplicationState, Pagination>(
+    (state) => state.dealerAccount.pagination
+  );
+
+  useEffect(() => {
+    requestInfinitDealers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /// Dispose component
   useEffect(() => {
     return () => {
       dispatch(dealerActions.getAndSelectDealerById(null));
       dispatch(controlActions.closeInfoPanelWithComponent());
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  useEffect(() => {
-    requestInfinitDealers();
-    return () => {
-      setDealers([]);
+      dispatch(dealerAccountActions.changePagination(new Pagination()));
+      dispatch(dealerAccountActions.changDealersList([]));
+      dispatch(dealerAccountActions.resetFilter());
+
       setHandlingNull(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -148,31 +155,52 @@ export const DealerList: React.FC = () => {
       setHandlingNull(true);
 
       dispatch(
+        dealerAccountActions.changePagination({
+          ...pagination,
+          paginationInfo: {
+            ...pagination.paginationInfo,
+            pageNumber: pagination.paginationInfo.pageNumber + 1,
+          },
+        })
+      );
+
+      // dispatch()
+
+      dispatch(
         assignPendingActions(
-          dealerAccountActions.apiGetDealersPaginatedPage({
-            paginationLimit: PAGINATION_LIMIT,
-            paginationPageNumber: paginationInfo.pageNumber + 1,
-            searchPhrase: '',
-            fromDate: undefined,
-            toDate: undefined,
-          }),
+          // dealerAccountActions.apiGetDealersPaginatedPage({
+          //   paginationLimit: PAGINATION_LIMIT,
+          //   paginationPageNumber: paginationInfo.pageNumber + 1,
+          //   searchPhrase: '',
+          //   fromDate: undefined,
+          //   toDate: undefined,
+          // }),
+          dealerAccountActions.apiGetDealersPaginatedFlow(),
           [],
           [],
           (args: any) => {
             const incomeEntities: any[] = args.entities;
-            const incomePaginationInfo: PaginationInfo = args.paginationInfo;
+            const responsePaginationInfo: PaginationInfo = args.paginationInfo;
 
             let dealersList: any = new List(dealers)
               .where((dealer) => dealer !== null)
               .concat(incomeEntities);
 
             if (
-              incomePaginationInfo.pageNumber < incomePaginationInfo.pagesCount
+              responsePaginationInfo.pageNumber <
+              responsePaginationInfo.pagesCount
             )
               dealersList = dealersList.concat([null]);
 
-            setDealers(dealersList.toArray());
-            setPaginationInfo(incomePaginationInfo);
+            dispatch(
+              dealerAccountActions.changDealersList(dealersList.toArray())
+            );
+            dispatch(
+              dealerAccountActions.changePaginationInfo(responsePaginationInfo)
+            );
+
+            // setDealers(dealersList.toArray());
+            // setPaginationInfo(incomePaginationInfo);
             setHandlingNull(false);
           },
           (args: any) => {
@@ -206,7 +234,12 @@ export const DealerList: React.FC = () => {
 
                     if (deletedDealer) {
                       dealersList.remove(deletedDealer);
-                      setDealers(dealersList.toArray());
+                      dispatch(
+                        dealerAccountActions.changDealersList(
+                          dealersList.toArray()
+                        )
+                      );
+                      // setDealers(dealersList.toArray());
                     }
 
                     if (dealerToDelete.id) {

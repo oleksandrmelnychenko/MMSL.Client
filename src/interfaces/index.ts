@@ -64,9 +64,9 @@ export interface ImenuItem {
 
 export class Pagination {
   constructor() {
-    this.limit = 9999;
+    this.limit = 100;
     this.paginationInfo = new PaginationInfo();
-    this.paginationInfo.pageNumber = 1;
+    // this.paginationInfo.pageNumber = 1;
   }
 
   limit: number;

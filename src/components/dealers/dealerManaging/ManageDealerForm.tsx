@@ -200,14 +200,20 @@ export const ManageDealerForm: React.FC = () => {
           let createAction;
           if (dealerAccount) {
             createAction = assignPendingActions(
-              dealerActions.updateDealer(
+              dealerAccountActions.apiUpdateDealer(
                 buildDealerAccount(values, dealerAccount)
               )
             );
           } else {
             createAction = assignPendingActions(
-              dealerActions.saveNewDealer(buildDealerAccount(values)),
-              [dealerAccountActions.apiGetDealersPaginated()]
+              dealerAccountActions.apiCreateDealer(buildDealerAccount(values)),
+              [],
+              [],
+              (args: any) => {
+                /// TODO: remove this additional request
+                dispatch(dealerAccountActions.apiGetDealersPaginatedFlow());
+              },
+              (args: any) => {}
             );
           }
           dispatch(createAction);

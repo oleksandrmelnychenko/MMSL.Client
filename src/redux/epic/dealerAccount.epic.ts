@@ -12,10 +12,11 @@ import { getActiveLanguage } from 'react-localize-redux';
 import {
   ajaxGetWebResponse,
   ajaxDeleteResponse,
+  ajaxPostResponse,
+  ajaxPutResponse,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import StoreHelper from '../../helpers/store.helper';
-import { Pagination } from '../../interfaces';
 
 const _parseDateToString = (date: Date | null | undefined) => {
   let result = '';
@@ -29,7 +30,7 @@ const _parseDateToString = (date: Date | null | undefined) => {
 
 export const apiGetDealersPaginatedEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(dealerAccountActions.apiGetDealersPaginated.type),
+    ofType(dealerAccountActions.apiGetDealersPaginatedFlow.type),
     switchMap((action: AnyAction) => {
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
@@ -39,8 +40,7 @@ export const apiGetDealersPaginatedEpic = (action$: AnyAction, state$: any) => {
         state$.value.dealerAccount.pagination.limit;
       const pageNumber: number =
         state$.value.dealerAccount.pagination.paginationInfo.pageNumber;
-      const searchPhrase: string =
-        state$.value.dealerAccount.filter.fromDsearchWordate;
+      const searchPhrase: string = state$.value.dealerAccount.filter.searchWord;
       const fromDate: Date | null | undefined =
         state$.value.dealerAccount.filter.fromDate;
       const toDate: Date | null | undefined =
@@ -66,12 +66,12 @@ export const apiGetDealersPaginatedEpic = (action$: AnyAction, state$: any) => {
           return successCommonEpicFlow(
             successResponse,
             [
-              dealerActions.updateDealersList(
-                successResponse.entities ? successResponse.entities : null
-              ),
-              dealerActions.updateDealerListPaginationInfo(
-                successResponse.paginationInfo
-              ),
+              // dealerAccountActions.changDealersList(
+              //   successResponse.entities ? successResponse.entities : []
+              // ),
+              // dealerAccountActions.changePaginationInfo(
+              //   successResponse.paginationInfo
+              // ),
               controlActions.disabledStatusBar(),
             ],
             action
@@ -91,45 +91,88 @@ export const apiGetDealersPaginatedEpic = (action$: AnyAction, state$: any) => {
   );
 };
 
-export const apiGetDealersPaginatedPageEpic = (
-  action$: AnyAction,
-  state$: any
-) => {
+// export const apiGetDealersPaginatedPageEpic = (
+//   action$: AnyAction,
+//   state$: any
+// ) => {
+//   return action$.pipe(
+//     ofType(dealerAccountActions.apiGetDealersPaginatedPage.type),
+//     switchMap((action: AnyAction) => {
+//       const languageCode = getActiveLanguage(state$.value.localize).code;
+//       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
+//       const paginationLimit = action.payload.paginationLimit;
+//       const pageNumber = action.payload.paginationPageNumber;
+//       const searchPhrase = action.payload.searchPhrase;
+//       const fromDate: Date | null | undefined = action.payload.fromDate;
+//       const toDate: Date | null | undefined = action.payload.toDate;
+
+//       return ajaxGetWebResponse(api.GET_DEALERS_ALL, state$.value, [
+//         { key: 'limit', value: `${paginationLimit}` },
+//         {
+//           key: 'pageNumber',
+//           value: `${pageNumber}`,
+//         },
+//         {
+//           key: 'searchPhrase',
+//           value: `${searchPhrase}`,
+//         },
+//         {
+//           key: 'from',
+//           value: _parseDateToString(fromDate),
+//         },
+//         {
+//           key: 'to',
+//           value: _parseDateToString(toDate),
+//         },
+//       ]).pipe(
+//         mergeMap((successResponse: any) => {
+//           return successCommonEpicFlow(
+//             successResponse,
+//             [controlActions.disabledStatusBar()],
+//             action
+//           );
+//         }),
+//         catchError((errorResponse: any) => {
+//           return checkUnauthorized(errorResponse.status, languageCode, () => {
+//             return errorCommonEpicFlow(
+//               errorResponse,
+//               [
+//                 { type: 'ERROR_GET_DEALERS_PAGINATED' },
+//                 controlActions.disabledStatusBar(),
+//                 controlActions.showInfoMessage(
+//                   `Error occurred while get dealers paginated. ${errorResponse}`
+//                 ),
+//               ],
+//               action
+//             );
+//           });
+//         })
+//       );
+//     })
+//   );
+// };
+
+export const apiCreateDealerEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(dealerAccountActions.apiGetDealersPaginatedPage.type),
+    ofType(dealerAccountActions.apiCreateDealer.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-
-      const paginationLimit = action.payload.paginationLimit;
-      const pageNumber = action.payload.paginationPageNumber;
-      const searchPhrase = action.payload.searchPhrase;
-      const fromDate: Date | null | undefined = action.payload.fromDate;
-      const toDate: Date | null | undefined = action.payload.toDate;
-
-      return ajaxGetWebResponse(api.GET_DEALERS_ALL, state$.value, [
-        { key: 'limit', value: `${paginationLimit}` },
-        {
-          key: 'pageNumber',
-          value: `${pageNumber}`,
-        },
-        {
-          key: 'searchPhrase',
-          value: `${searchPhrase}`,
-        },
-        {
-          key: 'from',
-          value: _parseDateToString(fromDate),
-        },
-        {
-          key: 'to',
-          value: _parseDateToString(toDate),
-        },
-      ]).pipe(
+      return ajaxPostResponse(
+        api.CREATE_NEW_DEALER,
+        action.payload,
+        state$.value,
+        true
+      ).pipe(
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
-            [controlActions.disabledStatusBar()],
+            [
+              controlActions.closeRightPanel(),
+              controlActions.showInfoMessage(successResponse.message),
+              controlActions.disabledStatusBar(),
+            ],
             action
           );
         }),
@@ -138,10 +181,52 @@ export const apiGetDealersPaginatedPageEpic = (
             return errorCommonEpicFlow(
               errorResponse,
               [
-                { type: 'ERROR_GET_DEALERS_PAGINATED' },
+                controlActions.closeRightPanel(),
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while get dealers paginated. ${errorResponse}`
+                  `Error occurred while creating new dealer account. ${errorResponse}`
+                ),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiUpdateDealerEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(dealerAccountActions.apiUpdateDealer.type),
+    switchMap((action: AnyAction) => {
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      return ajaxPutResponse(
+        api.UPDATE_DEALER,
+        action.payload,
+        state$.value
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.closeRightPanel(),
+              controlActions.showInfoMessage(successResponse.message),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                controlActions.closeRightPanel(),
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  `Error occurred while updating dealer account. ${errorResponse}`
                 ),
               ],
               action

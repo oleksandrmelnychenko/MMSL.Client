@@ -84,15 +84,21 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
         dealerAccount={selectedDealer}
         submitAction={(args: any) => {
           let createAction = assignPendingActions(
-            dealerActions.updateDealer(args),
-            [
-              dealerActions.setSelectedDealer(null),
-              controlActions.closeInfoPanelWithComponent(),
-              dealerActions.isOpenPanelWithDealerDetails(
-                new ToggleDealerPanelWithDetails()
-              ),
-              dealerAccountActions.apiGetDealersPaginated(),
-            ]
+            dealerAccountActions.apiUpdateDealer(args),
+            [],
+            [],
+            (args: any) => {
+              dispatch(dealerActions.setSelectedDealer(null));
+              dispatch(controlActions.closeInfoPanelWithComponent());
+              dispatch(
+                dealerActions.isOpenPanelWithDealerDetails(
+                  new ToggleDealerPanelWithDetails()
+                )
+              );
+              /// TODO: rewrite without this additional api call
+              dispatch(dealerAccountActions.apiGetDealersPaginatedFlow());
+            },
+            (args: any) => {}
           );
           dispatch(createAction);
         }}
