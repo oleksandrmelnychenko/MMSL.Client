@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   DetailsList,
+  Text,
   IColumn,
   Selection,
   IDragDropContext,
@@ -89,7 +90,21 @@ export const OptionItemsOrderingList: React.FC = () => {
             }`}
           >
             <div className="list__description">
-              <div className="list__description__name">{item.value}</div>
+              {/* <div className="list__description__name">{item.value}</div> */}
+              <Text
+                block
+                nowrap
+                styles={{
+                  root: {
+                    fontSize: '16px',
+                    color: '#000',
+                    fontWeight: 400,
+                  },
+                }}
+              >
+                {item.value}
+              </Text>
+
               <div className="list__description__image">
                 {item.imageUrl ? <FontIcon iconName="FileImage" /> : null}
               </div>
