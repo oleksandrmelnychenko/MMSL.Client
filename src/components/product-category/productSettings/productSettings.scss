@@ -96,14 +96,12 @@
     }
 }
 
-.options {}
-
 .list {
     &__item {
         padding-left: 12px;
         padding-right: 35px;
-        padding-top: 11px;
-        padding-bottom: 11px;
+        padding-top: 12px;
+        padding-bottom: 12px;
         cursor: grab;
         border-left: 3px solid transparent;
 
@@ -131,13 +129,11 @@
             font-weight: 400;
         }
 
-        &__mandatory {}
-
         &__image {
             position: absolute;
             width: 19px;
             height: 40px;
-            top: 17px;
+            top: 10px;
             right: 14px;
             font-size: 18px;
         }
