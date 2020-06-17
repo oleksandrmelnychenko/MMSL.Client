@@ -8,23 +8,23 @@ import {
   TooltipDelay,
   DirectionalHint,
 } from 'office-ui-fabric-react';
-import { OptionUnit } from '../../../interfaces/options';
-import { ProductCategory } from '../../../interfaces/products';
+import { OptionUnit } from '../../../../interfaces/options';
+import { ProductCategory } from '../../../../interfaces/products';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   productSettingsActions,
   ManagingOptionUnitsState,
-} from '../../../redux/slices/productSettings.slice';
+} from '../../../../redux/slices/productSettings.slice';
 import {
   controlActions,
   CommonDialogType,
   DialogArgs,
-} from '../../../redux/slices/control.slice';
+} from '../../../../redux/slices/control.slice';
 import { Card } from '@uifabric/react-cards';
-import * as fabricStyles from '../../../common/fabric-styles/styles';
-import { assignPendingActions } from '../../../helpers/action.helper';
-import { IApplicationState } from '../../../redux/reducers';
-import ManagingProductUnitForm from './productSettingManagement/ManagingProductUnitForm';
+import * as fabricStyles from '../../../../common/fabric-styles/styles';
+import { assignPendingActions } from '../../../../helpers/action.helper';
+import { IApplicationState } from '../../../../redux/reducers';
+import ManagingProductUnitForm from './../productSettingManagement/ManagingProductUnitForm';
 
 export class UnitRowItemProps {
   constructor() {

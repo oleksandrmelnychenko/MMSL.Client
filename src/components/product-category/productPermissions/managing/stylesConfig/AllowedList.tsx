@@ -2,8 +2,7 @@ import React from 'react';
 import { OptionUnit, OptionGroup } from '../../../../../interfaces/options';
 import { Stack, Text, Separator, Label, Image } from 'office-ui-fabric-react';
 import { List } from 'linq-typescript';
-import { buildGroupMandatoryHint } from '../../../productSettings/StylesList';
-import * as fabricStyles from '../../../../../common/fabric-styles/styles';
+import { buildGroupMandatoryHint } from '../../../productSettings/stylesList/StyleGroupItem';
 import './allowedList.scss';
 
 /// Build single hint lable
@@ -25,6 +24,12 @@ const _renderHintLable = (textMessage: string): JSX.Element => {
   return result;
 };
 
+const _textStackStyle = {
+  root: {
+    fontSize: '16px',
+  },
+};
+
 export class AllowedListProps {
   constructor() {
     this.optionGroups = [];
@@ -40,7 +45,7 @@ export const AllowedList: React.FC<AllowedListProps> = (
     return (
       <Stack key={groupIndex} tokens={{ childrenGap: 6 }}>
         <Stack horizontal tokens={{ childrenGap: 10 }}>
-          <Text styles={fabricStyles.textStackStyle}>{group.name}</Text>
+          <Text styles={_textStackStyle}>{group.name}</Text>
           <Stack.Item styles={{ root: { marginTop: '-2px' } }}>
             {buildGroupMandatoryHint(group)}
           </Stack.Item>
