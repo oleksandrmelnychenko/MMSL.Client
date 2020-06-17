@@ -3,11 +3,10 @@ import {
   successCommonEpicFlow,
   errorCommonEpicFlow,
 } from './../../helpers/action.helper';
-import { switchMap, mergeMap, catchError, debounceTime } from 'rxjs/operators';
+import { switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import { controlActions } from '../slices/control.slice';
-import { of } from 'rxjs';
 import { getActiveLanguage } from 'react-localize-redux';
 import {
   ajaxGetWebResponse,
@@ -18,16 +17,7 @@ import {
 import * as api from '../constants/api.constants';
 import StoreHelper from '../../helpers/store.helper';
 import { dealerAccountActions } from '../slices/dealerAccount.slice';
-
-const _parseDateToString = (date: Date | null | undefined) => {
-  let result = '';
-
-  if (date) {
-    result = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-  }
-
-  return result;
-};
+import { parseDateToString } from '../../helpers/date.helper';
 
 export const apiGetDealersPaginatedEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
@@ -56,11 +46,11 @@ export const apiGetDealersPaginatedEpic = (action$: AnyAction, state$: any) => {
         },
         {
           key: 'from',
-          value: _parseDateToString(fromDate),
+          value: parseDateToString(fromDate),
         },
         {
           key: 'to',
-          value: _parseDateToString(toDate),
+          value: parseDateToString(toDate),
         },
       ]).pipe(
         mergeMap((successResponse: any) => {
@@ -205,20 +195,6 @@ export const apiDeleteDealerByIdEpic = (action$: AnyAction, state$: any) => {
           });
         })
       );
-    })
-  );
-};
-
-export const debounceFilterSearchWordEpic = (
-  action$: AnyAction,
-  state$: any
-) => {
-  return action$.pipe(
-    ofType(dealerAccountActions.debounceFilterSearchWord.type),
-    debounceTime(1500),
-    switchMap((action: AnyAction) => {
-      console.log('Debounce');
-      return of(dealerAccountActions.changeFilterSearchWord(action.payload));
     })
   );
 };

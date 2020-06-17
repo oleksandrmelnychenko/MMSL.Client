@@ -62,22 +62,17 @@ export const DealerList: React.FC = () => {
     number | null | undefined
   >((state) => state.dealer.selectedDealer?.id);
 
-  const dealers: DealerAccount[] = useSelector<
-    IApplicationState,
-    DealerAccount[]
-  >((state) => state.dealerAccount.dealers);
+  const { dealers, pagination }: any = useSelector<IApplicationState, any>(
+    (state) => state.dealerAccount
+  );
 
-  const pagination: Pagination = useSelector<IApplicationState, Pagination>(
-    (state) => state.dealerAccount.pagination
+  const { searchWord }: any = useSelector<IApplicationState, any>(
+    (state) => state.dealerAccount.filter
   );
 
   useEffect(() => {
     requestInfinitDealers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  /// Dispose component
-  useEffect(() => {
     return () => {
       dispatch(dealerActions.getAndSelectDealerById(null));
       dispatch(controlActions.closeInfoPanelWithComponent());
@@ -91,7 +86,13 @@ export const DealerList: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    requestInfinitDealers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchWord]);
+
+  useEffect(() => {
     if (!selectedDealerId) {
+      console.log('Deselect');
       selection.setAllSelected(false);
     }
   }, [selectedDealerId, selection]);
@@ -163,75 +164,17 @@ export const DealerList: React.FC = () => {
     );
   };
 
-  // const requestInfinitDealers = () => {
-  //   if (!handlingNull) {
-  //     setHandlingNull(true);
-
-  //     dispatch(
-  //       dealerAccountActions.changePagination({
-  //         ...pagination,
-  //         paginationInfo: {
-  //           ...pagination.paginationInfo,
-  //           pageNumber: pagination.paginationInfo.pageNumber + 1,
-  //         },
-  //       })
-  //     );
-
-  //     dispatch(
-  //       assignPendingActions(
-  //         // dealerAccountActions.apiGetDealersPaginatedPage({
-  //         //   paginationLimit: PAGINATION_LIMIT,
-  //         //   paginationPageNumber: paginationInfo.pageNumber + 1,
-  //         //   searchPhrase: '',
-  //         //   fromDate: undefined,
-  //         //   toDate: undefined,
-  //         // }),
-  //         dealerAccountActions.apiGetDealersPaginatedFlow(),
-  //         [],
-  //         [],
-  //         (args: any) => {
-  //           const incomeEntities: any[] = args.entities;
-  //           const responsePaginationInfo: PaginationInfo = args.paginationInfo;
-
-  //           let dealersList: any = new List(dealers)
-  //             .where((dealer) => dealer !== null)
-  //             .concat(incomeEntities);
-
-  //           if (
-  //             responsePaginationInfo.pageNumber <
-  //             responsePaginationInfo.pagesCount
-  //           )
-  //             dealersList = dealersList.concat([null]);
-
-  //           dispatch(
-  //             dealerAccountActions.changDealersList(dealersList.toArray())
-  //           );
-  //           dispatch(
-  //             dealerAccountActions.changePaginationInfo(responsePaginationInfo)
-  //           );
-
-  //           // setDealers(dealersList.toArray());
-  //           // setPaginationInfo(incomePaginationInfo);
-  //           setHandlingNull(false);
-  //         },
-  //         (args: any) => {
-  //           debugger;
-  //         }
-  //       )
-  //     );
-  //   }
-  // };
-
   const requestInfinitDealers = () => {
     if (!handlingNull) {
       setHandlingNull(true);
+      console.log(
+        `${searchWord} p:${pagination.paginationInfo.pageNumber + 1}`
+      );
+
       dispatch(
-        dealerAccountActions.changePagination({
-          ...pagination,
-          paginationInfo: {
-            ...pagination.paginationInfo,
-            pageNumber: pagination.paginationInfo.pageNumber + 1,
-          },
+        dealerAccountActions.changePaginationInfo({
+          ...pagination.paginationInfo,
+          pageNumber: pagination.paginationInfo.pageNumber + 1,
         })
       );
       dispatch(
@@ -277,7 +220,7 @@ export const DealerList: React.FC = () => {
                   [],
                   [],
                   (args: any) => {
-                    const dealersList = new List(dealers);
+                    const dealersList = new List<DealerAccount>(dealers);
                     const deletedDealer = dealersList.firstOrDefault(
                       (dealer) =>
                         dealer !== null && dealer.id === dealerToDelete.id

@@ -13,51 +13,32 @@ import {
 import { controlActions } from '../../redux/slices/control.slice';
 import ManageDealerForm from './dealerManaging/ManageDealerForm';
 import { dealerAccountActions } from '../../redux/slices/dealerAccount.slice';
+import { debounceTime } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 const _datePickerWidth = { root: { width: '150px' } };
 
 export const DealersHeader: React.FC = (props: any) => {
   const dispatch = useDispatch();
 
-  // const [inputSearchWord, setInputSearchWord] = useState<string>('');
+  const [searchBoxSubject] = useState<Subject<any>>(new Subject());
 
-  const inputSearchWord: string = useSelector<IApplicationState, string>(
-    (state) => state.dealerAccount.filter.inputSearchWord
+  const { toDate, fromDate }: any = useSelector<IApplicationState, any>(
+    (state) => state.dealerAccount.filter
   );
 
-  const fromDate: Date | undefined = useSelector<
-    IApplicationState,
-    Date | undefined
-  >((state) => state.dealerAccount.filter.fromDate);
-
-  const toDate: Date | undefined = useSelector<
-    IApplicationState,
-    Date | undefined
-  >((state) => state.dealerAccount.filter.toDate);
-
   useEffect(() => {
+    searchBoxSubject.pipe(debounceTime(1500)).subscribe((value: any) => {
+      dispatch(dealerAccountActions.changeFilterSearchWord(value));
+    });
+
     return () => {
       dispatch(dealerAccountActions.changeFilterFromDate(undefined));
       dispatch(dealerAccountActions.changeFilterToDate(undefined));
-      dispatch(dealerAccountActions.debounceFilterSearchWord(''));
-      // setInputSearchWord('');
+      dispatch(dealerAccountActions.changeFilterSearchWord(''));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  /// Listen to `global search word` changes and update
-  /// local input value
-  // useEffect(() => {
-  //   if (searchWord !== inputSearchWord) {
-  //     setInputSearchWord(searchWord);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [searchWord]);
-
-  // useEffect(() => {
-  //   dispatch(dealerAccountActions.debounceFilterSearchWord(inputSearchWord));
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [inputSearchWord, dispatch]);
 
   return (
     <div>
@@ -97,11 +78,11 @@ export const DealersHeader: React.FC = (props: any) => {
           strings={fabricControlSettings.dayPickerStrings}
           placeholder="From date"
           ariaLabel="Select a date"
-          onSelectDate={(date: Date | null | undefined) =>
+          onSelectDate={(date: Date | null | undefined) => {
             dispatch(
               dealerAccountActions.changeFilterFromDate(date ? date : undefined)
-            )
-          }
+            );
+          }}
         />
         <DatePicker
           formatDate={fabricControlSettings.onFormatDate}
@@ -113,24 +94,18 @@ export const DealersHeader: React.FC = (props: any) => {
           strings={fabricControlSettings.dayPickerStrings}
           placeholder="To date"
           ariaLabel="Select a date"
-          onSelectDate={(date: Date | null | undefined) =>
+          onSelectDate={(date: Date | null | undefined) => {
             dispatch(
               dealerAccountActions.changeFilterToDate(date ? date : undefined)
-            )
-          }
+            );
+          }}
         />
         <SearchBox
           className="dealerSearch"
-          value={inputSearchWord}
           placeholder="Find dealer"
           styles={{ root: { width: 200 } }}
           onChange={(args: any) => {
-            const searchValue = args?.target ? args.target.value : '';
-
-            // setInputSearchWord(searchValue);
-            dispatch(
-              dealerAccountActions.debounceFilterSearchWord(searchValue)
-            );
+            searchBoxSubject.next(args?.target ? args.target.value : '');
           }}
         />
       </Stack>

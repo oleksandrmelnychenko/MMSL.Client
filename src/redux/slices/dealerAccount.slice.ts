@@ -1,13 +1,13 @@
 import { DealerAccount } from './../../interfaces/dealer';
 import { createSlice } from '@reduxjs/toolkit';
 import { Pagination, PaginationInfo } from '../../interfaces';
+import { parseDateToString } from '../../helpers/date.helper';
 
 const DEALER_ACCOUNT_INIT_STATE: IDalerAccountState = {
   filter: {
     fromDate: undefined,
     toDate: undefined,
     searchWord: '',
-    inputSearchWord: '',
   },
   dealers: [],
   pagination: new Pagination(),
@@ -18,7 +18,6 @@ export interface IDalerAccountState {
     fromDate: Date | undefined;
     toDate: Date | undefined;
     searchWord: string;
-    inputSearchWord: string;
   };
   pagination: Pagination;
   dealers: DealerAccount[];
@@ -44,23 +43,42 @@ const dealerAccount = createSlice({
       state,
       action: { type: string; payload: Date | undefined }
     ) {
+      if (
+        parseDateToString(action.payload) !==
+        parseDateToString(state.filter.fromDate)
+      ) {
+        state.pagination.paginationInfo = new PaginationInfo();
+        state.dealers = [];
+      }
+
       state.filter = { ...state.filter, fromDate: action.payload };
+
       return state;
     },
     changeFilterToDate(
       state,
       action: { type: string; payload: Date | undefined }
     ) {
+      if (
+        parseDateToString(action.payload) !==
+        parseDateToString(state.filter.toDate)
+      ) {
+        state.pagination.paginationInfo = new PaginationInfo();
+        state.dealers = [];
+      }
+
       state.filter = { ...state.filter, toDate: action.payload };
-      return state;
-    },
-    debounceFilterSearchWord(state, action: { type: string; payload: string }) {
-      state.filter.inputSearchWord = action.payload;
 
       return state;
     },
     changeFilterSearchWord(state, action: { type: string; payload: string }) {
+      if (action.payload !== state.filter.searchWord) {
+        state.pagination.paginationInfo = new PaginationInfo();
+        state.dealers = [];
+      }
+
       state.filter = { ...state.filter, searchWord: action.payload };
+
       return state;
     },
     changDealersList(

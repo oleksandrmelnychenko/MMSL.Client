@@ -10,3 +10,13 @@ export const dateToString = (date: Date | null | undefined): string => {
     return '';
   }
 };
+
+export const parseDateToString = (date: Date | null | undefined) => {
+  let result = '';
+
+  if (date) {
+    result = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  }
+
+  return result;
+};
