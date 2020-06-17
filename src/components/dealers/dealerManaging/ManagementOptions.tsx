@@ -11,6 +11,7 @@ import { IApplicationState } from '../../../redux/reducers/index';
 import { ImenuItem } from '../../../interfaces';
 import { controlActions } from '../../../redux/slices/control.slice';
 import ManageDealerForm from './ManageDealerForm';
+import { dealerAccountActions } from '../../../redux/slices/dealerAccount.slice';
 
 const ManagementOptions: React.FC = () => {
   const dispatch = useDispatch();
@@ -77,7 +78,7 @@ const ManagementOptions: React.FC = () => {
 
   useEffect(() => {
     return () => {
-      dispatch(dealerActions.setSelectedDealer(null));
+      dispatch(dealerAccountActions.changeTargetDealer(null));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

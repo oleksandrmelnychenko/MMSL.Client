@@ -15,15 +15,15 @@ interface IFormStoreProps {
 }
 
 const FormStore: React.FC<IFormStoreProps> = (props) => {
-  const selectedDealerId = useSelector<IApplicationState, number | undefined>(
-    (state) => state.dealer.selectedDealer?.id
+  const targetDealerId = useSelector<IApplicationState, number | undefined>(
+    (state) => state.dealerAccount.targetDealer?.id
   );
 
   const selectedStore = props.store ? props.store[0] : null;
 
   const builderAddStore = (value: any) => {
     let storeData: INewStore;
-    if (selectedDealerId) {
+    if (targetDealerId) {
       storeData = {
         address: {
           addressLine1: value.addressLine1,
@@ -33,7 +33,7 @@ const FormStore: React.FC<IFormStoreProps> = (props) => {
           country: value.country,
           zipCode: value.zip,
         },
-        dealerAccountId: selectedDealerId,
+        dealerAccountId: targetDealerId,
         contactEmail: value.contactEmail,
         billingEmail: value.billingEmail,
         name: value.nameStore,

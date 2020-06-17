@@ -21,6 +21,8 @@ class DealerDetailsProps {}
 export const DealerDetails: React.FC<DealerDetailsProps> = (
   props: DealerDetailsProps
 ) => {
+  const dispatch = useDispatch();
+
   const [formikReference] = useState<FormicReference>(
     new FormicReference(() => {
       formikReference.isDirtyFunc = (isDirty: boolean) => {
@@ -30,9 +32,8 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
   );
   const [isDirtyForm, setIsDirtyForm] = useState(false);
 
-  const dispatch = useDispatch();
-  const selectedDealer = useSelector<IApplicationState, DealerAccount>(
-    (state) => state.dealer.selectedDealer!
+  const targetDealer = useSelector<IApplicationState, DealerAccount | null>(
+    (state) => state.dealerAccount.targetDealer
   );
 
   const _items: ICommandBarItemProps[] = [
@@ -67,9 +68,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
       <PanelTitle
         title={'Address'}
         description={
-          selectedDealer
-            ? [selectedDealer.companyName, selectedDealer.email]
-            : null
+          targetDealer ? [targetDealer.companyName, targetDealer.email] : null
         }
       />
       <div>
@@ -81,14 +80,14 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
       </div>
       <BillingAddressForm
         formikReference={formikReference}
-        dealerAccount={selectedDealer}
+        dealerAccount={targetDealer}
         submitAction={(args: any) => {
           let createAction = assignPendingActions(
             dealerAccountActions.apiUpdateDealer(args),
             [],
             [],
             (args: any) => {
-              dispatch(dealerActions.setSelectedDealer(null));
+              dispatch(dealerAccountActions.changeTargetDealer(null));
               dispatch(controlActions.closeInfoPanelWithComponent());
               dispatch(
                 dealerActions.isOpenPanelWithDealerDetails(

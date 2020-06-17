@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { StoreCustomer } from '../../interfaces/storeCustomer';
 import { IStore } from '../../interfaces/store';
-import { DealerAccount } from '../../interfaces/dealer';
+// import { DealerAccount } from '../../interfaces/dealer';
 
 export class DealerState {
   constructor() {
-    this.selectedDealer = null;
+    // this.selectedDealer = null;
     this.manageDealerForm = new ManageDealerFormState();
     this.isOpenPanelWithDealerDetails = new ToggleDealerPanelWithDetails();
     this.dealerStores = [];
@@ -13,7 +13,7 @@ export class DealerState {
   }
 
   manageDealerForm: ManageDealerFormState;
-  selectedDealer: DealerAccount | null;
+  // selectedDealer: DealerAccount | null;
   isOpenPanelWithDealerDetails: ToggleDealerPanelWithDetails;
   dealerStores: IStore[];
   dealerCustomerState: DealerCustomerState;
@@ -61,9 +61,13 @@ const dealer = createSlice({
   name: 'dealer',
   initialState: new DealerState(),
   reducers: {
-    getAndSelectDealerById(state, action) {
-      return state;
-    },
+    // getAndSelectDealerById(state, action) {
+    //   return state;
+    // },
+    // setSelectedDealer(state, action) {
+    //   state.selectedDealer = action.payload;
+    //   return state;
+    // },
     getStoresByDealer(state, action) {
       return state;
     },
@@ -87,10 +91,6 @@ const dealer = createSlice({
     },
     toggleNewDealerForm(state, action) {
       state.manageDealerForm.isFormVisible = action.payload;
-      return state;
-    },
-    setSelectedDealer(state, action) {
-      state.selectedDealer = action.payload;
       return state;
     },
     isOpenPanelWithDealerDetails(state, action) {

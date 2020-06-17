@@ -57,14 +57,15 @@ export const DealerList: React.FC = () => {
   const [selection] = useState(new Selection({}));
   const [handlingNull, setHandlingNull] = useState<boolean>(false);
 
-  const selectedDealerId: number | null | undefined = useSelector<
-    IApplicationState,
-    number | null | undefined
-  >((state) => state.dealer.selectedDealer?.id);
+  // const selectedDealerId: number | null | undefined = useSelector<
+  //   IApplicationState,
+  //   number | null | undefined
+  // >((state) => state.dealer.selectedDealer?.id);
 
-  const { dealers, pagination }: any = useSelector<IApplicationState, any>(
-    (state) => state.dealerAccount
-  );
+  const { dealers, pagination, targetDealer }: any = useSelector<
+    IApplicationState,
+    any
+  >((state) => state.dealerAccount);
 
   const { searchWord }: any = useSelector<IApplicationState, any>(
     (state) => state.dealerAccount.filter
@@ -74,7 +75,7 @@ export const DealerList: React.FC = () => {
     requestInfinitDealers();
 
     return () => {
-      dispatch(dealerActions.getAndSelectDealerById(null));
+      dispatch(dealerAccountActions.changeTargetDealer(null));
       dispatch(controlActions.closeInfoPanelWithComponent());
 
       dispatch(dealerAccountActions.changePagination(new Pagination()));
@@ -91,11 +92,11 @@ export const DealerList: React.FC = () => {
   }, [searchWord]);
 
   useEffect(() => {
-    if (!selectedDealerId) {
-      console.log('Deselect');
+    if (!targetDealer?.id) {
       selection.setAllSelected(false);
     }
-  }, [selectedDealerId, selection]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [targetDealer, selection]);
 
   const onRenderDetailsHeader: IRenderFunction<IDetailsHeaderProps> = (
     props,
@@ -130,7 +131,7 @@ export const DealerList: React.FC = () => {
           if (!offsetParent.includes(DATA_SELECTION_DISABLED_CLASS)) {
             const selectFlow = () => {
               let createAction = assignPendingActions(
-                dealerActions.getAndSelectDealerById(args.item.id),
+                dealerAccountActions.changeTargetDealer(args.item),
                 []
               );
               dispatch(createAction);
@@ -143,12 +144,12 @@ export const DealerList: React.FC = () => {
             };
 
             const unSelectFlow = () => {
-              dispatch(dealerActions.setSelectedDealer(null));
+              dispatch(dealerAccountActions.changeTargetDealer(args.item));
               dispatch(controlActions.closeInfoPanelWithComponent());
             };
 
-            if (selectedDealerId) {
-              if (selectedDealerId === args.item.id) {
+            if (targetDealer) {
+              if (targetDealer.id === args.item.id) {
                 unSelectFlow();
               } else {
                 selectFlow();
@@ -236,7 +237,7 @@ export const DealerList: React.FC = () => {
                     }
 
                     if (dealerToDelete.id) {
-                      dispatch(dealerActions.setSelectedDealer(null));
+                      dispatch(dealerAccountActions.changeTargetDealer(null));
                       dispatch(controlActions.closeInfoPanelWithComponent());
                       dispatch(
                         dealerActions.isOpenPanelWithDealerDetails(

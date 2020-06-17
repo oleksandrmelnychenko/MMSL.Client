@@ -22,47 +22,47 @@ import {
 } from '../slices/dealer.slice';
 import StoreHelper from '../../helpers/store.helper';
 
-export const getAndSelectDealersByIdEpic = (
-  action$: AnyAction,
-  state$: any
-) => {
-  return action$.pipe(
-    ofType(dealerActions.getAndSelectDealerById.type),
-    switchMap((action: AnyAction) => {
-      const languageCode = getActiveLanguage(state$.value.localize).code;
-      // const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
-      // StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      // openDetailsArgs.isOpen = true;
-      // openDetailsArgs.componentType = DealerDetilsComponents.DealerDetails;
-      return ajaxGetWebResponse(api.GET_DEALER_BY_ID, state$.value, [
-        { key: 'dealerAccountId', value: `${action.payload}` },
-      ]).pipe(
-        mergeMap((successResponse: any) => {
-          return successCommonEpicFlow(
-            successResponse,
-            [
-              dealerActions.setSelectedDealer(successResponse),
-              controlActions.disabledStatusBar(),
-            ],
-            action
-          );
-        }),
-        catchError((errorResponse: any) => {
-          return checkUnauthorized(errorResponse.status, languageCode, () => {
-            return errorCommonEpicFlow(
-              errorResponse,
-              [
-                { type: 'ERROR_GET_AND_SELECT_DEALER_BY_ID' },
-                controlActions.disabledStatusBar(),
-              ],
-              action
-            );
-          });
-        })
-      );
-    })
-  );
-};
+// export const getAndSelectDealersByIdEpic = (
+//   action$: AnyAction,
+//   state$: any
+// ) => {
+//   return action$.pipe(
+//     ofType(dealerActions.getAndSelectDealerById.type),
+//     switchMap((action: AnyAction) => {
+//       const languageCode = getActiveLanguage(state$.value.localize).code;
+//       // const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
+//       // StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+//       // openDetailsArgs.isOpen = true;
+//       // openDetailsArgs.componentType = DealerDetilsComponents.DealerDetails;
+//       return ajaxGetWebResponse(api.GET_DEALER_BY_ID, state$.value, [
+//         { key: 'dealerAccountId', value: `${action.payload}` },
+//       ]).pipe(
+//         mergeMap((successResponse: any) => {
+//           return successCommonEpicFlow(
+//             successResponse,
+//             [
+//               dealerActions.setSelectedDealer(successResponse),
+//               controlActions.disabledStatusBar(),
+//             ],
+//             action
+//           );
+//         }),
+//         catchError((errorResponse: any) => {
+//           return checkUnauthorized(errorResponse.status, languageCode, () => {
+//             return errorCommonEpicFlow(
+//               errorResponse,
+//               [
+//                 { type: 'ERROR_GET_AND_SELECT_DEALER_BY_ID' },
+//                 controlActions.disabledStatusBar(),
+//               ],
+//               action
+//             );
+//           });
+//         })
+//       );
+//     })
+//   );
+// };
 
 export const getStoresByDealerEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(

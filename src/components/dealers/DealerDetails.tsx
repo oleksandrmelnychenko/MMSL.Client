@@ -26,9 +26,10 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
   );
   const [isDirtyForm, setIsDirtyForm] = useState(false);
 
-  const selectedDealer = useSelector<IApplicationState, DealerAccount>(
-    (state) => state.dealer.selectedDealer!
+  const targetDealer = useSelector<IApplicationState, DealerAccount | null>(
+    (state) => state.dealerAccount.targetDealer
   );
+
   const _items: ICommandBarItemProps[] = [
     {
       key: 'Save',
@@ -61,9 +62,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
       <PanelTitle
         title={'Details'}
         description={
-          selectedDealer
-            ? [selectedDealer.companyName, selectedDealer.email]
-            : null
+          targetDealer ? [targetDealer.companyName, targetDealer.email] : null
         }
       />
       <CommandBar
@@ -71,24 +70,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
         items={_items}
         className="dealers__store__controls"
       />
-      <ManageDealerForm
-      // formikReference={formikReference}
-      // dealerAccount={selectedDealer}
-      // submitAction={(args: any) => {
-      //   let createAction = assignPendingActions(
-      //     dealerActions.updateDealer(args),
-      //     [
-      //       dealerActions.setSelectedDealer(null),
-      //       controlActions.closeInfoPanelWithComponent(),
-      //       dealerActions.isOpenPanelWithDealerDetails(
-      //         new ToggleDealerPanelWithDetails()
-      //       ),
-      //       dealerActions.getDealersListPaginated(),
-      //     ]
-      //   );
-      //   dispatch(createAction);
-      // }}
-      />
+      <ManageDealerForm />
     </div>
   );
 };

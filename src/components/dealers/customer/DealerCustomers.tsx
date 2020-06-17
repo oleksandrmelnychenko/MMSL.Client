@@ -44,16 +44,20 @@ export const DealerCustomers: React.FC = () => {
     })
   );
 
-  const { selectedDealer, dealerStores, dealerCustomerState } = useSelector<
+  const { dealerStores, dealerCustomerState } = useSelector<
     IApplicationState,
     DealerState
   >((state) => state.dealer);
 
+  const { targetDealer } = useSelector<IApplicationState, any>(
+    (state) => state.dealerAccount
+  );
+
   useEffect(() => {
-    if (selectedDealer) {
-      dispatch(dealerActions.getStoresByDealer(selectedDealer.id));
+    if (targetDealer) {
+      dispatch(dealerActions.getStoresByDealer(targetDealer.id));
     }
-  }, [selectedDealer, dispatch]);
+  }, [targetDealer, dispatch]);
 
   useEffect(() => {
     return () => {
@@ -176,7 +180,7 @@ export const DealerCustomers: React.FC = () => {
                   dispatch(
                     dealerActions.setSelectedCustomerInCurrentStore(null)
                   );
-                  dispatch(dealerActions.getStoresByDealer(selectedDealer!.id));
+                  dispatch(dealerActions.getStoresByDealer(targetDealer!.id));
 
                   setIsOpenForm(false);
                 },
@@ -194,9 +198,7 @@ export const DealerCustomers: React.FC = () => {
       <PanelTitle
         title={'Customers'}
         description={
-          selectedDealer
-            ? [selectedDealer.companyName, selectedDealer.email]
-            : null
+          targetDealer ? [targetDealer.companyName, targetDealer.email] : null
         }
       />
       <div>
@@ -248,9 +250,7 @@ export const DealerCustomers: React.FC = () => {
                         selectedLocalStore.id!
                       )
                     );
-                    dispatch(
-                      dealerActions.getStoresByDealer(selectedDealer!.id)
-                    );
+                    dispatch(dealerActions.getStoresByDealer(targetDealer!.id));
                   }
                   formikReference.formik?.resetForm();
                 }}

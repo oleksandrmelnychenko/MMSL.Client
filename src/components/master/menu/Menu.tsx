@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink, useLocation } from 'react-router-dom';
-import { dealerActions } from '../../../redux/slices/dealer.slice';
 import { controlActions } from '../../../redux/slices/control.slice';
 import { productActions } from '../../../redux/slices/product.slice';
 import './menu.scss';
 import { IApplicationState } from '../../../redux/reducers';
 import { LocalizeState, getActiveLanguage } from 'react-localize-redux';
 import { productSettingsActions } from '../../../redux/slices/productSettings.slice';
+import { dealerAccountActions } from '../../../redux/slices/dealerAccount.slice';
 
 interface IMenuItem {
   title: string;
@@ -38,7 +38,7 @@ const Menu: React.FC = () => {
 
   const onMenuClick = (item: IMenuItem) => {
     setIsOpenSubMenu(false);
-    dispatch(dealerActions.setSelectedDealer(null));
+    dispatch(dealerAccountActions.changeTargetDealer(null));
     dispatch(controlActions.closeInfoPanelWithComponent());
     dispatch(productSettingsActions.updateSearchWordOptionGroup(''));
 

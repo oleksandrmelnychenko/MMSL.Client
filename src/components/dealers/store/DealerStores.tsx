@@ -42,17 +42,17 @@ export const DealerStores: React.FC = () => {
     })
   );
 
-  const selectedDealer = useSelector<IApplicationState, DealerAccount>(
-    (state) => state.dealer.selectedDealer!
+  const targetDealer = useSelector<IApplicationState, DealerAccount | null>(
+    (state) => state.dealerAccount.targetDealer
   );
   const dealerStores = useSelector<IApplicationState, IStore[]>(
     (state) => state.dealer.dealerStores
   );
   useEffect(() => {
-    if (selectedDealer) {
-      dispatch(dealerActions.getStoresByDealer(selectedDealer.id));
+    if (targetDealer) {
+      dispatch(dealerActions.getStoresByDealer(targetDealer.id));
     }
-  }, [selectedDealer, dispatch]);
+  }, [targetDealer, dispatch]);
 
   useEffect(() => {
     if (dealerStores) {
@@ -163,9 +163,7 @@ export const DealerStores: React.FC = () => {
       <PanelTitle
         title="Stores"
         description={
-          selectedDealer
-            ? [selectedDealer.companyName, selectedDealer.email]
-            : null
+          targetDealer ? [targetDealer.companyName, targetDealer.email] : null
         }
       />
       <div>

@@ -11,6 +11,7 @@ const DEALER_ACCOUNT_INIT_STATE: IDalerAccountState = {
   },
   dealers: [],
   pagination: new Pagination(),
+  targetDealer: null,
 };
 
 export interface IDalerAccountState {
@@ -21,6 +22,7 @@ export interface IDalerAccountState {
   };
   pagination: Pagination;
   dealers: DealerAccount[];
+  targetDealer: DealerAccount | null;
 }
 
 const dealerAccount = createSlice({
@@ -30,6 +32,9 @@ const dealerAccount = createSlice({
     apiGetDealersPaginatedFlow(state) {
       return state;
     },
+    apiGetDealerById(state, action: { type: string; payload: number }) {
+      return state;
+    },
     apiCreateDealer(state, action) {
       return state;
     },
@@ -37,6 +42,20 @@ const dealerAccount = createSlice({
       return state;
     },
     apiDeleteDealerById(state, action: { type: string; payload: number }) {
+      return state;
+    },
+    changDealersList(
+      state,
+      action: { type: string; payload: DealerAccount[] }
+    ) {
+      state.dealers = action.payload;
+      return state;
+    },
+    changeTargetDealer(
+      state,
+      action: { type: string; payload: DealerAccount | null }
+    ) {
+      state.targetDealer = action.payload;
       return state;
     },
     changeFilterFromDate(
@@ -79,13 +98,6 @@ const dealerAccount = createSlice({
 
       state.filter = { ...state.filter, searchWord: action.payload };
 
-      return state;
-    },
-    changDealersList(
-      state,
-      action: { type: string; payload: DealerAccount[] }
-    ) {
-      state.dealers = action.payload;
       return state;
     },
     changePagination(state, action: { type: string; payload: Pagination }) {

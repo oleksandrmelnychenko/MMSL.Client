@@ -26,7 +26,6 @@ import {
   ChangeItemsDisabledState,
 } from '../../../helpers/commandBar.helper';
 import { assignPendingActions } from '../../../helpers/action.helper';
-import { dealerActions } from '../../../redux/slices/dealer.slice';
 import { dealerAccountActions } from '../../../redux/slices/dealerAccount.slice';
 
 const resolveDefaultDropDownValue = (
@@ -105,8 +104,8 @@ export const ManageDealerForm: React.FC = () => {
     (state) => state.control.rightPanel.commandBarItems
   );
 
-  const dealerAccount = useSelector<IApplicationState, DealerAccount | null>(
-    (state) => state.dealer.selectedDealer
+  const targetDealer = useSelector<IApplicationState, DealerAccount | null>(
+    (state) => state.dealerAccount.targetDealer
   );
 
   const [formikReference] = useState<FormicReference>(
@@ -174,7 +173,7 @@ export const ManageDealerForm: React.FC = () => {
     } as IDropdownOption,
   ];
 
-  const formikInitValues = initDefaultValues(dealerAccount);
+  const formikInitValues = initDefaultValues(targetDealer);
 
   return (
     <div>
@@ -198,10 +197,10 @@ export const ManageDealerForm: React.FC = () => {
         initialValues={formikInitValues}
         onSubmit={(values: any) => {
           let createAction;
-          if (dealerAccount) {
+          if (targetDealer) {
             createAction = assignPendingActions(
               dealerAccountActions.apiUpdateDealer(
-                buildDealerAccount(values, dealerAccount)
+                buildDealerAccount(values, targetDealer)
               )
             );
           } else {
