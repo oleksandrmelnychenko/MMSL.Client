@@ -30,10 +30,10 @@ export const getAndSelectDealersByIdEpic = (
     ofType(dealerActions.getAndSelectDealerById.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
-      const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
-      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      openDetailsArgs.isOpen = true;
-      openDetailsArgs.componentType = DealerDetilsComponents.DealerDetails;
+      // const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
+      // StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+      // openDetailsArgs.isOpen = true;
+      // openDetailsArgs.componentType = DealerDetilsComponents.DealerDetails;
       return ajaxGetWebResponse(api.GET_DEALER_BY_ID, state$.value, [
         { key: 'dealerAccountId', value: `${action.payload}` },
       ]).pipe(
