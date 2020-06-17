@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { IApplicationState } from '../../../redux/reducers';
-import { OptionGroup, OptionUnit } from '../../../interfaces/options';
-import { ProductCategory } from '../../../interfaces/products';
-import { assignPendingActions } from '../../../helpers/action.helper';
-import { productSettingsActions } from '../../../redux/slices/productSettings.slice';
-import { List } from 'office-ui-fabric-react/lib/List';
+import { IApplicationState } from '../../../../redux/reducers';
+import { OptionGroup, OptionUnit } from '../../../../interfaces/options';
+import { ProductCategory } from '../../../../interfaces/products';
+import { assignPendingActions } from '../../../../helpers/action.helper';
+import { productSettingsActions } from '../../../../redux/slices/productSettings.slice';
 import UnitRowItem from './UnitStyleItem';
 import {
   Stack,
@@ -15,16 +14,19 @@ import {
   FontIcon,
   Text,
   mergeStyles,
-  ActionButton,
+  Separator,
+  IconButton,
+  FontWeights,
 } from 'office-ui-fabric-react';
 import {
   controlActions,
   DialogArgs,
   CommonDialogType,
-} from '../../../redux/slices/control.slice';
-import * as fabricStyles from '../../../common/fabric-styles/styles';
-import { ManagingvOptionGroupForm } from './productSettingManagement/ManagingProductGroupForm';
-import { OptionGroupDetails } from './productSettingManagement/OptionGroupDetails';
+} from '../../../../redux/slices/control.slice';
+import './styleGroupItem.scss';
+import { ManagingvOptionGroupForm } from './../productSettingManagement/ManagingProductGroupForm';
+import { OptionGroupDetails } from './../productSettingManagement/OptionGroupDetails';
+import { renderHintLable } from '../../../../helpers/uiComponent.helper';
 
 export const buildGroupMandatoryHint = (group: OptionGroup) => {
   return (
@@ -41,6 +43,8 @@ export const buildGroupMandatoryHint = (group: OptionGroup) => {
         iconName="Warning"
         className={mergeStyles({
           fontSize: 16,
+          position: 'relative',
+          top: '2px',
           color: group.isMandatory ? '#2b579a' : '#2b579a60',
         })}
       />
@@ -48,24 +52,40 @@ export const buildGroupMandatoryHint = (group: OptionGroup) => {
   );
 };
 
-export const StylesList: React.FC = () => {
+export interface IStyleGroupItemProps {
+  styleGroup: OptionGroup;
+}
+
+const _groupContainerStyle = {
+  root: {
+    height: '40px',
+    borderBottom: '1px solid rgb(243, 242, 241)',
+    borderTop: '1px solid rgb(243, 242, 241)',
+    // borderBottom: '1px solid #dfdfdf',
+    // borderTop: '1px solid #dfdfdf',
+    // paddingTop: '5px',
+    // paddingBottom: '5px',
+    marginBottom: '15px',
+    marginTop: '15px',
+  },
+};
+
+const _textStackStyle = {
+  root: {
+    fontSize: '15px',
+    fontWeight: FontWeights.semibold,
+  },
+};
+
+export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
+  props: IStyleGroupItemProps
+) => {
   const dispatch = useDispatch();
 
   const targetProduct: ProductCategory | null = useSelector<
     IApplicationState,
     ProductCategory | null
   >((state) => state.product.choose.category);
-
-  const outionGroups: OptionGroup[] = useSelector<
-    IApplicationState,
-    OptionGroup[]
-  >((state) => state.productSettings.optionGroupsList);
-
-  useEffect(() => {
-    if (targetProduct?.id) getProductStyles(targetProduct.id);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
 
   const getProductStyles: (productId: number) => void = (productId: number) => {
     dispatch(
@@ -81,23 +101,28 @@ export const StylesList: React.FC = () => {
     );
   };
 
-  const onRenderCell = (item: any, index: number | undefined): JSX.Element => {
-    return (
-      <div>
+  return (
+    <div className="styleGroupItem">
+      <Stack tokens={{ childrenGap: 12 }}>
         <Stack
-          className="option-group__header"
           horizontal
           verticalAlign="center"
-          horizontalAlign="space-between"
-          tokens={{ childrenGap: 0 }}
-          styles={fabricStyles.stackStyleList}
+          // horizontalAlign="space-between"
+          tokens={{ childrenGap: 12 }}
+          styles={_groupContainerStyle}
         >
           <Stack horizontal tokens={{ childrenGap: 10 }}>
-            <Text styles={fabricStyles.textStackStyle}>{item.name}</Text>
-            {buildGroupMandatoryHint(item)}
+            <Stack.Item align="end">
+              <Text styles={_textStackStyle}>{props.styleGroup.name}</Text>
+            </Stack.Item>
+            <Stack.Item align="end">
+              {buildGroupMandatoryHint(props.styleGroup)}
+            </Stack.Item>
           </Stack>
 
-          <Stack horizontal tokens={{ childrenGap: 10 }}>
+          <Separator vertical styles={{ root: { height: '26px' } }} />
+
+          <Stack horizontal tokens={{ childrenGap: 0 }}>
             <TooltipHost
               content="Settings"
               directionalHint={DirectionalHint.bottomRightEdge}
@@ -105,15 +130,14 @@ export const StylesList: React.FC = () => {
               calloutProps={{ gapSpace: 0 }}
               styles={{ root: { display: 'inline-block' } }}
             >
-              <ActionButton
-                styles={fabricStyles.columnIconButtonStyle}
+              <IconButton
                 iconProps={{
                   iconName: 'Settings',
                 }}
                 onClick={() => {
                   let action = assignPendingActions(
                     productSettingsActions.apiGetOptionGroupById(
-                      parseInt(item.id)
+                      props.styleGroup.id
                     ),
                     [],
                     [],
@@ -126,7 +150,7 @@ export const StylesList: React.FC = () => {
                       dispatch(
                         controlActions.openRightPanel({
                           title: 'Manage Style',
-                          description: item.name,
+                          description: props.styleGroup.name,
                           width: '700px',
                           closeFunctions: () => {
                             dispatch(controlActions.closeRightPanel());
@@ -149,18 +173,21 @@ export const StylesList: React.FC = () => {
               calloutProps={{ gapSpace: 0 }}
               styles={{ root: { display: 'inline-block' } }}
             >
-              <ActionButton
-                styles={fabricStyles.columnIconButtonStyle}
+              <IconButton
                 iconProps={{
                   iconName: 'Edit',
                 }}
                 onClick={() => {
-                  if (targetProduct && item) {
-                    dispatch(productSettingsActions.changeEditingGroup(item));
+                  if (targetProduct && props.styleGroup) {
+                    dispatch(
+                      productSettingsActions.changeEditingGroup(
+                        props.styleGroup
+                      )
+                    );
                     dispatch(
                       controlActions.openRightPanel({
                         title: 'Details',
-                        description: item.name,
+                        description: props.styleGroup.name,
                         width: '400px',
                         closeFunctions: () => {
                           dispatch(controlActions.closeRightPanel());
@@ -180,8 +207,7 @@ export const StylesList: React.FC = () => {
               calloutProps={{ gapSpace: 0 }}
               styles={{ root: { display: 'inline-block' } }}
             >
-              <ActionButton
-                styles={fabricStyles.columnIconButtonStyle}
+              <IconButton
                 iconProps={{
                   iconName: 'Delete',
                 }}
@@ -191,11 +217,11 @@ export const StylesList: React.FC = () => {
                       new DialogArgs(
                         CommonDialogType.Delete,
                         'Delete style',
-                        `Are you sure you want to delete ${item.name}?`,
+                        `Are you sure you want to delete ${props.styleGroup.name}?`,
                         () => {
                           let action = assignPendingActions(
                             productSettingsActions.apiDeleteOptionGroupById(
-                              item.id
+                              props.styleGroup.id
                             ),
                             [],
                             [],
@@ -222,23 +248,22 @@ export const StylesList: React.FC = () => {
           horizontal
           tokens={{ childrenGap: 20 }}
         >
-          {item.optionUnits
-            ? item.optionUnits.map((item: OptionUnit) => (
-                <React.Fragment key={item.id}>
-                  <UnitRowItem optionUnit={item} />
-                </React.Fragment>
-              ))
-            : null}
+          {props.styleGroup.optionUnits &&
+          props.styleGroup.optionUnits.length > 0 ? (
+            props.styleGroup.optionUnits.map((item: OptionUnit) => (
+              <React.Fragment key={item.id}>
+                <UnitRowItem optionUnit={item} />
+              </React.Fragment>
+            ))
+          ) : (
+            <div style={{ marginLeft: '9px' }}>
+              {renderHintLable(`Current style does not have any options. `)}
+            </div>
+          )}
         </Stack>
-      </div>
-    );
-  };
-
-  return (
-    <div className="wrapper-list">
-      <List items={outionGroups} onRenderCell={onRenderCell} />
+      </Stack>
     </div>
   );
 };
 
-export default StylesList;
+export default StyleGroupItem;

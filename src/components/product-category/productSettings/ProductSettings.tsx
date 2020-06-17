@@ -17,7 +17,7 @@ import {
   mainTitleHintContent,
   scrollablePaneStyleForStylesList,
 } from '../../../common/fabric-styles/styles';
-import StylesList from './StylesList';
+import StylesList from './stylesList/StylesList';
 import { ProductCategory } from '../../../interfaces/products';
 
 export const CREATE_YOUR_FIRST_STYLE: string = 'Create your first style';
