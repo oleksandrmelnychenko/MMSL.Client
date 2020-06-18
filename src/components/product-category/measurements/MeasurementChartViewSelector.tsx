@@ -64,7 +64,6 @@ const MeasurementChartViewSelector: React.FC = () => {
           option?: IDropdownOption,
           index?: number
         ) => {
-          console.log(option);
           if (option) {
             dispatch(
               measurementViewControlsActions.changeChartDisplay(

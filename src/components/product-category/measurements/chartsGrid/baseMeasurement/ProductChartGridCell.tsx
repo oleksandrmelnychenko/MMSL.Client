@@ -3,49 +3,92 @@ import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
 import { TextField, Text } from 'office-ui-fabric-react';
-import { defaultCellStyle } from '../../../../common/fabric-styles/styles';
+import { defaultCellStyle } from '../../../../../common/fabric-styles/styles';
 import {
   Measurement,
+  MeasurementMapDefinition,
   MeasurementMapSize,
-} from '../../../../interfaces/measurements';
-import { ProductCategory } from '../../../../interfaces/products';
-import { measurementActions } from '../../../../redux/slices/measurements/measurement.slice';
-import { assignPendingActions } from '../../../../helpers/action.helper';
+  MeasurementMapValue,
+} from '../../../../../interfaces/measurements';
+import { ProductCategory } from '../../../../../interfaces/products';
+import { List } from 'linq-typescript';
+import { measurementActions } from '../../../../../redux/slices/measurements/measurement.slice';
+import { assignPendingActions } from '../../../../../helpers/action.helper';
 import './chartGridCell.scss';
 
-export interface IProductChartNameGridCellProps {
+export interface IProductChartGridCellProps {
   mapSize: MeasurementMapSize | null | undefined;
+  chartColumn: MeasurementMapDefinition | null | undefined;
   measurementChart: Measurement | null | undefined;
   productCategory: ProductCategory | null | undefined;
 }
 
-const CELL_VALUE_STUB = '-';
+const CELL_VALUE_STUB = '';
 
-const ProductChartNameGridCell: React.FC<IProductChartNameGridCellProps> = (
-  props: IProductChartNameGridCellProps
+const _findColumnSizeValue = (
+  mapSize: MeasurementMapSize | null | undefined,
+  chartColumn: MeasurementMapDefinition | null | undefined
+) => {
+  let truthValue: MeasurementMapValue | null | undefined;
+
+  if (
+    mapSize &&
+    mapSize.measurementSize &&
+    mapSize.measurementSize.measurementMapValues &&
+    chartColumn
+  ) {
+    truthValue = new List<any>(
+      mapSize.measurementSize.measurementMapValues
+    ).firstOrDefault(
+      (mapValueItem: any) =>
+        mapValueItem.measurementDefinitionId ===
+        chartColumn.measurementDefinitionId
+    );
+  }
+
+  return truthValue;
+};
+
+const _normalizeInputValue = (rawInput: any) => {
+  let normalizedValueResult: any = parseFloat(rawInput ? rawInput : '');
+
+  if (isNaN(normalizedValueResult)) normalizedValueResult = null;
+
+  return normalizedValueResult;
+};
+
+const ProductChartGridCell: React.FC<IProductChartGridCellProps> = (
+  props: IProductChartGridCellProps
 ) => {
   const dispatch = useDispatch();
 
   const [inputEditRef] = useState<any>(React.createRef());
   const [isInEditMode, setIsInEditMode] = useState<boolean>(false);
-  const [sizeName, setSizeName] = useState<string | null | undefined>(null);
+  const [relativeMapValue, setRelativeMapValue] = useState<
+    MeasurementMapValue | null | undefined
+  >(null);
   const [outputValue, setOutputValue] = useState<string | undefined>();
 
-  if (sizeName !== props?.mapSize?.measurementSize?.name) {
-    setSizeName(props?.mapSize?.measurementSize?.name);
+  const possibleSizeValue = _findColumnSizeValue(
+    props.mapSize,
+    props.chartColumn
+  );
+
+  if (possibleSizeValue !== relativeMapValue) {
+    setRelativeMapValue(_findColumnSizeValue(props.mapSize, props.chartColumn));
   }
 
   useEffect(() => {
-    if (sizeName) {
-      if (sizeName !== '') {
-        setOutputValue(sizeName);
+    if (relativeMapValue) {
+      if (relativeMapValue.value) {
+        setOutputValue(`${relativeMapValue.value}`);
       } else {
         setOutputValue(CELL_VALUE_STUB);
       }
     } else {
       setOutputValue(CELL_VALUE_STUB);
     }
-  }, [sizeName]);
+  }, [relativeMapValue]);
 
   useEffect(() => {
     if (
@@ -61,18 +104,23 @@ const ProductChartNameGridCell: React.FC<IProductChartNameGridCellProps> = (
   const onCompleteEditing = (input: string) => {
     if (
       input !== outputValue &&
-      input &&
-      input.length > 0 &&
       props.mapSize &&
       props.mapSize.measurementSize &&
-      props.measurementChart
+      props.measurementChart &&
+      props.chartColumn
     ) {
       const sizePayload: any = {
         id: props.mapSize.measurementSizeId,
-        name: input,
+        name: props.mapSize.measurementSize.name,
         description: props.mapSize.measurementSize.description,
         measurementId: props.measurementChart.id,
-        valueDataContracts: [],
+        valueDataContracts: [
+          {
+            id: relativeMapValue ? relativeMapValue.id : 0,
+            value: _normalizeInputValue(input),
+            measurementDefinitionId: props.chartColumn.measurementDefinitionId,
+          },
+        ],
       };
 
       dispatch(
@@ -81,10 +129,6 @@ const ProductChartNameGridCell: React.FC<IProductChartNameGridCellProps> = (
           [],
           [],
           (args: any) => {
-            if (props?.mapSize?.measurementSize) {
-              props.mapSize.measurementSize.name = input ? input : '';
-            }
-
             setOutputValue(input);
             setIsInEditMode(false);
           },
@@ -96,16 +140,20 @@ const ProductChartNameGridCell: React.FC<IProductChartNameGridCellProps> = (
     }
   };
 
-  const init = {
-    sizeName: outputValue,
+  let init = {
+    sizeValue: outputValue,
   };
+
+  if (isNaN(parseFloat(init.sizeValue ? init.sizeValue : ''))) {
+    (init as any).sizeValue = '';
+  }
 
   return (
     <div className="chartGridCell">
       {isInEditMode ? (
         <Formik
           validationSchema={Yup.object().shape({
-            sizeName: Yup.string().required(() => 'Size name is required'),
+            sizeValue: Yup.string().nullable(),
           })}
           initialValues={init}
           onSubmit={(values: any) => {}}
@@ -113,19 +161,20 @@ const ProductChartNameGridCell: React.FC<IProductChartNameGridCellProps> = (
           {(formik) => {
             return (
               <Form>
-                <Field name="sizeName">
+                <Field name="sizeValue">
                   {() => (
                     <TextField
+                      type="number"
                       styles={{ root: { position: 'absolute', top: '6px' } }}
                       autoFocus
                       componentRef={inputEditRef}
-                      value={formik.values.sizeName}
+                      value={formik.values.sizeValue}
                       onKeyPress={(args: any) => {
                         if (args) {
                           if (args.charCode === 13) {
                             onCompleteEditing(
-                              formik.values.sizeName
-                                ? formik.values.sizeName
+                              formik.values.sizeValue
+                                ? formik.values.sizeValue
                                 : ''
                             );
                           }
@@ -134,12 +183,12 @@ const ProductChartNameGridCell: React.FC<IProductChartNameGridCellProps> = (
                       onChange={(args: any) => {
                         let value = args.target.value;
 
-                        formik.setFieldValue('sizeName', value);
-                        formik.setFieldTouched('sizeName');
+                        formik.setFieldValue('sizeValue', value);
+                        formik.setFieldTouched('sizeValue');
                       }}
                       onBlur={(args: any) =>
                         onCompleteEditing(
-                          formik.values.sizeName ? formik.values.sizeName : ''
+                          formik.values.sizeValue ? formik.values.sizeValue : ''
                         )
                       }
                     />
@@ -163,4 +212,4 @@ const ProductChartNameGridCell: React.FC<IProductChartNameGridCellProps> = (
   );
 };
 
-export default ProductChartNameGridCell;
+export default ProductChartGridCell;

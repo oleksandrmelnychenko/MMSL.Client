@@ -19,26 +19,26 @@ import {
   getId,
   CommandBarButton,
 } from 'office-ui-fabric-react';
-import { IApplicationState } from '../../../../redux/reducers';
+import { IApplicationState } from '../../../../../redux/reducers';
 import {
   Measurement,
   MeasurementMapDefinition,
   MeasurementMapSize,
-} from '../../../../interfaces/measurements';
-import { ProductCategory } from '../../../../interfaces/products';
+} from '../../../../../interfaces/measurements';
+import { ProductCategory } from '../../../../../interfaces/products';
 import './productMeasurementChartGrid.scss';
 import { List } from 'linq-typescript';
 import {
   controlActions,
   DialogArgs,
   CommonDialogType,
-} from '../../../../redux/slices/control.slice';
-import { productActions } from '../../../../redux/slices/product.slice';
+} from '../../../../../redux/slices/control.slice';
+import { productActions } from '../../../../../redux/slices/product.slice';
 import ProductChartGridCell from './ProductChartGridCell';
 import ProductChartNameGridCell from './ProductChartNameGridCell';
-import SizesForm from '../management/SizesForm';
-import { assignPendingActions } from '../../../../helpers/action.helper';
-import { measurementActions } from '../../../../redux/slices/measurements/measurement.slice';
+import SizesForm from '../../management/SizesForm';
+import { assignPendingActions } from '../../../../../helpers/action.helper';
+import { measurementActions } from '../../../../../redux/slices/measurements/measurement.slice';
 
 const FROZEN_COLUMN_WIDTH = 130;
 

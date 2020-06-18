@@ -11,13 +11,27 @@ import {
 } from '../../../common/fabric-styles/styles';
 import ProductMeasurementSelector from './ProductMeasurementSelector';
 import MeasurementChartViewSelector from './MeasurementChartViewSelector';
-import ProductMeasurementChartGrid from './chartsGrid/ProductMeasurementChartGrid';
+import ProductMeasurementChartGrid from './chartsGrid/baseMeasurement/ProductMeasurementChartGrid';
+import FittingTypes from './chartsGrid/bodyMeasurement/FittingTypes';
 import { ChartDisplayToMeasurementType } from '../../../redux/slices/measurements/measurementViewControls.slice';
 
 export const CREATE_YOUR_FIRST_MEASUREMENT: string =
   'Create your first measurement';
 export const CREATE_MEASUREMENT: string = 'Create measurement';
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
+
+const _renderMeasurementsContent = (
+  chartDisplayType: ChartDisplayToMeasurementType
+) => {
+  let contentResult = null;
+
+  if (chartDisplayType === ChartDisplayToMeasurementType.Base)
+    contentResult = <ProductMeasurementChartGrid />;
+  else if (chartDisplayType === ChartDisplayToMeasurementType.Body)
+    contentResult = <FittingTypes />;
+
+  return contentResult;
+};
 
 const Measurements: React.FC = () => {
   const targetProduct = useSelector<IApplicationState, ProductCategory | null>(
@@ -89,7 +103,7 @@ const Measurements: React.FC = () => {
               },
             }}
           >
-            <ProductMeasurementChartGrid />
+            {_renderMeasurementsContent(chartDisplayType)}
           </ScrollablePane>
         </Stack.Item>
       </Stack>
