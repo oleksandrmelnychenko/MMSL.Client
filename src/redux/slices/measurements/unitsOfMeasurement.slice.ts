@@ -1,13 +1,8 @@
-import { MeasurementUnit } from './../../../interfaces/fittingTypes';
 import { createSlice } from '@reduxjs/toolkit';
 
-const INIT_STATE: IUnitsOfMeasurementState = {
-  uintsOfMeasurement: [],
-};
+const INIT_STATE: IUnitsOfMeasurementState = {};
 
-export interface IUnitsOfMeasurementState {
-  uintsOfMeasurement: MeasurementUnit[];
-}
+export interface IUnitsOfMeasurementState {}
 
 const unitsOfMeasurement = createSlice({
   name: 'unitsOfMeasurement',
@@ -15,14 +10,6 @@ const unitsOfMeasurement = createSlice({
 
   reducers: {
     apiGetAllUnitsOfMeasurement(state) {
-      return state;
-    },
-    changeUnitsOfMeasurement(
-      state,
-      action: { type: string; payload: MeasurementUnit[] }
-    ) {
-      state.uintsOfMeasurement = action.payload;
-
       return state;
     },
   },

@@ -3,10 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const INIT_STATE: IFittingTypesState = {
   fittingTypes: [],
+  fittingTypeForEdit: null,
 };
 
 export interface IFittingTypesState {
   fittingTypes: FittingType[];
+  fittingTypeForEdit: FittingType | null | undefined;
 }
 
 const fittingTypes = createSlice({
@@ -23,7 +25,7 @@ const fittingTypes = createSlice({
     apiGetFittingTypeById(state, action: { type: string; payload: number }) {
       return state;
     },
-    apiCreateFittingType(state) {
+    apiCreateFittingType(state, action: any) {
       return state;
     },
     apiUpdateFittingType(state) {
@@ -37,6 +39,13 @@ const fittingTypes = createSlice({
       action: { type: string; payload: FittingType[] }
     ) {
       state.fittingTypes = action.payload;
+      return state;
+    },
+    changeFittingTypeForEdit(
+      state,
+      action: { type: string; payload: FittingType | null | undefined }
+    ) {
+      state.fittingTypeForEdit = action.payload;
       return state;
     },
   },

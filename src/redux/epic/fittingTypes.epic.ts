@@ -103,7 +103,8 @@ export const apiCreateFittingTypeEpic = (action$: AnyAction, state$: any) => {
       return postWebRequest(
         api.CREATE_FITTING_TYPE,
         action.payload,
-        state$.value
+        state$.value,
+        true
       ).pipe(
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
@@ -134,7 +135,7 @@ export const apiCreateFittingTypeEpic = (action$: AnyAction, state$: any) => {
 
 export const apiUpdateFittingTypeEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(fittingTypesActions.apiCreateFittingType.type),
+    ofType(fittingTypesActions.apiUpdateFittingType.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
 

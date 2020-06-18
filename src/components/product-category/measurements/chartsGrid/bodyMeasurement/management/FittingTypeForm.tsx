@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
-import { Stack, TextField, Separator, Text } from 'office-ui-fabric-react';
+import {
+  Stack,
+  TextField,
+  Dropdown,
+  Text,
+  IDropdownOption,
+  Separator,
+} from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import { FormicReference } from '../../../../../../interfaces';
 import {
@@ -10,11 +17,9 @@ import {
   MeasurementMapValue,
 } from '../../../../../../interfaces/measurements';
 import * as fabricStyles from '../../../../../../common/fabric-styles/styles';
-import './sizeForm.scss';
+import './fittingTypeForm.scss';
 import { List } from 'linq-typescript';
 import { controlActions } from '../../../../../../redux/slices/control.slice';
-import { measurementActions } from '../../../../../../redux/slices/measurements/measurement.slice';
-import { productActions } from '../../../../../../redux/slices/product.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   GetCommandBarItemProps,
@@ -22,26 +27,29 @@ import {
   ChangeItemsDisabledState,
 } from '../../../../../../helpers/commandBar.helper';
 import { IApplicationState } from '../../../../../../redux/reducers';
+import {
+  FittingType,
+  MeasurementUnit,
+} from '../../../../../../interfaces/fittingTypes';
+import { fittingTypesActions } from '../../../../../../redux/slices/measurements/fittingTypes.slice';
 import { assignPendingActions } from '../../../../../../helpers/action.helper';
+import { unitsOfMeasurementActions } from '../../../../../../redux/slices/measurements/unitsOfMeasurement.slice';
 
-export class SizeInitValues {
-  constructor() {
-    this.name = '';
-    this.description = '';
-  }
-
-  name: string;
-  description: string;
+export interface IFittingTypeInitValues {
+  type: string;
+  unitOfMeasurement: MeasurementUnit | null | undefined;
 }
 
 const _buildNewSizePayload = (
-  values: SizeInitValues,
+  values: IFittingTypeInitValues,
   measurement: Measurement,
   valueItems: DefinitionValueItem[]
 ) => {
-  const sizePayload: any = {
-    name: values.name,
-    description: values.description,
+  const fittingTypePayload: any = {
+    type: values.type,
+    measurementUnitId: values.unitOfMeasurement
+      ? values.unitOfMeasurement.id
+      : 0,
     measurementId: measurement.id,
     valueDataContracts: [],
   };
@@ -50,7 +58,7 @@ const _buildNewSizePayload = (
     valueItems
   ).where((item) => item.resolveIsDirty());
 
-  sizePayload.valueDataContracts = dirtyValueItemsList
+  fittingTypePayload.valueDataContracts = dirtyValueItemsList
     .select((valueItem) => {
       return {
         measurementDefinitionId:
@@ -61,55 +69,34 @@ const _buildNewSizePayload = (
     .where((itemContract) => !isNaN(itemContract.value))
     .toArray();
 
-  return sizePayload;
+  return fittingTypePayload;
 };
 
 const _buildEditedSizePayload = (
-  values: SizeInitValues,
+  values: IFittingTypeInitValues,
   measurement: Measurement,
   valueItems: DefinitionValueItem[],
   sourceEntity: MeasurementMapSize
 ) => {
-  const sizePayload: any = {
-    id: sourceEntity.measurementSizeId,
-    name: values.name,
-    description: values.description,
-    measurementId: measurement.id,
-    valueDataContracts: [],
-  };
-
-  const dirtyValueItemsList = new List<DefinitionValueItem>(
-    valueItems
-  ).where((item) => item.resolveIsDirty());
-
-  sizePayload.valueDataContracts = dirtyValueItemsList
-    .select((valueItem) => {
-      const valueDataContract: any = {};
-      valueDataContract.id = valueItem.getMapValueId();
-      valueDataContract.value = parseFloat(valueItem.value);
-      valueDataContract.measurementDefinitionId =
-        valueItem.sourceMapDefinition.measurementDefinitionId;
-
-      if (isNaN(valueDataContract.value)) valueDataContract.value = null;
-
-      return valueDataContract;
-    })
-    // .where(
-    //   (itemContract) => itemContract.value !== null && itemContract.id !== 0
-    // )
-    .toArray();
+  const sizePayload: any = {};
 
   return sizePayload;
 };
 
 const _initDefaultValues = (
-  sourceEntity?: MeasurementMapSize | null | undefined
+  unitsOfMeasurement: IDropdownOption[],
+  sourceEntity?: FittingType | null | undefined
 ) => {
-  const initValues: SizeInitValues = new SizeInitValues();
+  const initValues: IFittingTypeInitValues = {
+    type: '',
+    unitOfMeasurement:
+      unitsOfMeasurement.length > 1
+        ? (unitsOfMeasurement[0] as any).unitOfMeasurement
+        : null,
+  };
 
-  if (sourceEntity?.measurementSize) {
-    initValues.name = sourceEntity.measurementSize.name;
-    initValues.description = sourceEntity.measurementSize.description;
+  if (sourceEntity) {
+    initValues.type = sourceEntity.type;
   }
 
   return initValues;
@@ -117,7 +104,7 @@ const _initDefaultValues = (
 
 const _initValueItemsDefaults = (
   measurement: Measurement | null | undefined,
-  sourceEntity?: MeasurementMapSize | null | undefined
+  sourceEntity?: FittingType | null | undefined
 ) => {
   let result: DefinitionValueItem[] = [];
 
@@ -133,12 +120,12 @@ const _initValueItemsDefaults = (
 
           const targetDefinitionId = mapDefinition.measurementDefinitionId;
 
-          if (sourceEntity?.measurementSize?.measurementMapValues) {
+          if (sourceEntity?.measurementMapValues) {
             const targetMapValue:
               | MeasurementMapValue
               | null
               | undefined = new List<MeasurementMapValue>(
-              sourceEntity.measurementSize.measurementMapValues
+              sourceEntity.measurementMapValues
             ).firstOrDefault(
               (mapValueItem) =>
                 mapValueItem.measurementDefinitionId === targetDefinitionId
@@ -158,7 +145,7 @@ const _initValueItemsDefaults = (
   return result;
 };
 
-export class DefinitionValueItem {
+class DefinitionValueItem {
   private _mapValue: MeasurementMapValue | null | undefined;
 
   constructor(mapDefinition: MeasurementMapDefinition) {
@@ -235,13 +222,16 @@ export class DefinitionValueItem {
   };
 }
 
-export const SizesForm: React.FC = () => {
+export const FittingTypeForm: React.FC = () => {
   const dispatch = useDispatch();
 
   const [formikReference] = useState<FormicReference>(
     new FormicReference(() => {})
   );
   const [isFormikDirty, setFormikDirty] = useState<boolean>(false);
+  const [unitsOfMeasurement, setUnitsOfMeasurement] = useState<
+    IDropdownOption[]
+  >([]);
   const [valueItems, setValueItems] = useState<DefinitionValueItem[]>([]);
 
   const measurement = useSelector<
@@ -249,10 +239,10 @@ export const SizesForm: React.FC = () => {
     Measurement | null | undefined
   >((state) => state.product.productMeasurementsState.targetMeasurement);
 
-  const sizeForEdit = useSelector<
+  const fittingTypeForEdit = useSelector<
     IApplicationState,
-    MeasurementMapSize | null | undefined
-  >((state) => state.product.productMeasurementsState.sizeForEdit);
+    FittingType | null | undefined
+  >((state) => state.fittingTypes.fittingTypeForEdit);
 
   const commandBarItems = useSelector<IApplicationState, any>(
     (state) => state.control.rightPanel.commandBarItems
@@ -266,12 +256,13 @@ export const SizesForm: React.FC = () => {
             formikReference.formik.submitForm();
           }),
           GetCommandBarItemProps(CommandBarItem.Reset, () => {
+            setUnitsOfMeasurement([...unitsOfMeasurement]);
             formikReference.formik.resetForm();
           }),
         ])
       );
     }
-  }, [formikReference, dispatch]);
+  }, [formikReference, unitsOfMeasurement, dispatch]);
 
   useEffect(() => {
     if (new List(commandBarItems).any()) {
@@ -289,38 +280,61 @@ export const SizesForm: React.FC = () => {
   }, [isFormikDirty, dispatch]);
 
   useEffect(() => {
-    setValueItems(_initValueItemsDefaults(measurement, sizeForEdit));
+    setValueItems(_initValueItemsDefaults(measurement, fittingTypeForEdit));
+
+    dispatch(
+      assignPendingActions(
+        unitsOfMeasurementActions.apiGetAllUnitsOfMeasurement(),
+        [],
+        [],
+        (args: any) => {
+          setUnitsOfMeasurement(
+            args.map((unit: MeasurementUnit, index: number) => {
+              return {
+                key: `${unit.id}`,
+                text: unit.name,
+                // isSelected: index === 0,
+                unitOfMeasurement: unit,
+              } as IDropdownOption;
+            })
+          );
+        },
+        (args: any) => {}
+      )
+    );
 
     return () => {
-      dispatch(productActions.changeProductMeasurementSizeForEdit(null));
+      dispatch(fittingTypesActions.changeFittingTypeForEdit(null));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const createNewSize = (values: SizeInitValues) => {
+  const createNewFittingType = (values: IFittingTypeInitValues) => {
     if (measurement) {
       const payload = _buildNewSizePayload(values, measurement, valueItems);
 
       dispatch(
         assignPendingActions(
-          measurementActions.apiCreateNewMeasurementSize(payload),
+          fittingTypesActions.apiCreateFittingType(payload),
           [],
           [],
           (args: any) => {
-            dispatch(
-              assignPendingActions(
-                measurementActions.apiGetMeasurementById(measurement.id),
-                [],
-                [],
-                (args: any) => {
-                  dispatch(
-                    productActions.changeSelectedProductMeasurement(args)
-                  );
-                  dispatch(controlActions.closeRightPanel());
-                },
-                (args: any) => {}
-              )
-            );
+            /// TODO:
+            debugger;
+            // dispatch(
+            //   assignPendingActions(
+            //     fittingTypesActions.apiGetMeasurementById(measurement.id),
+            //     [],
+            //     [],
+            //     (args: any) => {
+            //       dispatch(
+            //         productActions.changeSelectedProductMeasurement(args)
+            //       );
+            //       dispatch(controlActions.closeRightPanel());
+            //     },
+            //     (args: any) => {}
+            //   )
+            // );
           },
           (args: any) => {}
         )
@@ -329,70 +343,44 @@ export const SizesForm: React.FC = () => {
   };
 
   const createEditedSize = (
-    values: SizeInitValues,
-    sourceEntity: MeasurementMapSize
+    values: IFittingTypeInitValues,
+    sourceEntity: FittingType
   ) => {
-    if (measurement && sizeForEdit) {
-      const payload = _buildEditedSizePayload(
-        values,
-        measurement,
-        valueItems,
-        sizeForEdit
-      );
-
-      dispatch(
-        assignPendingActions(
-          measurementActions.apiUpdateMeasurementSize(payload),
-          [],
-          [],
-          (args: any) => {
-            dispatch(
-              assignPendingActions(
-                measurementActions.apiGetMeasurementById(measurement.id),
-                [],
-                [],
-                (args: any) => {
-                  dispatch(
-                    productActions.changeSelectedProductMeasurement(args)
-                  );
-                  dispatch(controlActions.closeRightPanel());
-                },
-                (args: any) => {}
-              )
-            );
-          },
-          (args: any) => {}
-        )
-      );
+    if (measurement && fittingTypeForEdit) {
     }
   };
 
-  const initValues = _initDefaultValues(sizeForEdit);
+  const initValues = _initDefaultValues(unitsOfMeasurement, fittingTypeForEdit);
 
   return (
-    <div className="sizeForm">
+    <div className="fittingTypeForm">
       <Formik
         validationSchema={Yup.object().shape({
-          name: Yup.string().required(() => 'Size name is required'),
-          description: Yup.string(),
+          type: Yup.string().required(() => 'Type is required'),
+          unitOfMeasurement: Yup.object()
+            .nullable()
+            .required('Unit of measurement is required'),
         })}
         initialValues={initValues}
         onSubmit={(values: any) => {
-          if (sizeForEdit) createEditedSize(values, sizeForEdit);
-          else createNewSize(values);
+          if (fittingTypeForEdit) createEditedSize(values, fittingTypeForEdit);
+          else createNewFittingType(values);
         }}
         onReset={(values: any, formikHelpers: any) => {
-          setValueItems(_initValueItemsDefaults(measurement, sizeForEdit));
+          setValueItems(
+            _initValueItemsDefaults(measurement, fittingTypeForEdit)
+          );
         }}
         innerRef={(formik: any) => {
           formikReference.formik = formik;
-          if (formik)
+          if (formik) {
             setFormikDirty(
               formik.dirty ||
                 new List(valueItems).any((valueItem) =>
                   valueItem.resolveIsDirty()
                 )
             );
+          }
         }}
         validateOnBlur={false}
         enableReinitialize={true}
@@ -403,30 +391,61 @@ export const SizesForm: React.FC = () => {
               <div className="dealerFormManage">
                 <Stack tokens={{ childrenGap: '20px' }}>
                   <Stack>
-                    <Field name="name">
+                    <Field name="type">
                       {() => (
                         <div className="form__group">
                           <TextField
-                            value={formik.values.name}
+                            value={formik.values.type}
                             styles={fabricStyles.textFildLabelStyles}
                             className="form__group__field"
-                            label="Name"
+                            label="Type"
                             required
                             onChange={(args: any) => {
                               let value = args.target.value;
 
-                              formik.setFieldValue('name', value);
-                              formik.setFieldTouched('name');
+                              formik.setFieldValue('type', value);
+                              formik.setFieldTouched('type');
                             }}
                             errorMessage={
-                              formik.errors.name && formik.touched.name ? (
+                              formik.errors.type && formik.touched.type ? (
                                 <span className="form__group__error">
-                                  {formik.errors.name}
+                                  {formik.errors.type}
                                 </span>
                               ) : (
                                 ''
                               )
                             }
+                          />
+                        </div>
+                      )}
+                    </Field>
+
+                    <Field name="unitOfMeasurement">
+                      {() => (
+                        <div className="form__group">
+                          <Dropdown
+                            defaultSelectedKey={
+                              unitsOfMeasurement.length > 0
+                                ? `${unitsOfMeasurement[0].key}`
+                                : ''
+                            }
+                            placeholder="Coose chart view"
+                            label="Chart View"
+                            options={unitsOfMeasurement}
+                            styles={fabricStyles.comboBoxStyles}
+                            onChange={(
+                              event: React.FormEvent<HTMLDivElement>,
+                              option?: IDropdownOption,
+                              index?: number
+                            ) => {
+                              if (option) {
+                                formik.setFieldValue(
+                                  'unitOfMeasurement',
+                                  (option as any).unitOfMeasurement
+                                );
+                                formik.setFieldTouched('unitOfMeasurement');
+                              }
+                            }}
                           />
                         </div>
                       )}
@@ -438,6 +457,7 @@ export const SizesForm: React.FC = () => {
                     {valueItems.map(
                       (valueItem: DefinitionValueItem, index: number) => {
                         return (
+                          // sizeForm__definitionItem
                           <div
                             className={
                               valueItem.isDirty
@@ -499,4 +519,4 @@ export const SizesForm: React.FC = () => {
   );
 };
 
-export default SizesForm;
+export default FittingTypeForm;
