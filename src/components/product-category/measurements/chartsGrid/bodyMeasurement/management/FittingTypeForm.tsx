@@ -244,6 +244,10 @@ export const FittingTypeForm: React.FC = () => {
     FittingType | null | undefined
   >((state) => state.fittingTypes.fittingTypeForEdit);
 
+  const fittingTypes = useSelector<IApplicationState, FittingType[]>(
+    (state) => state.fittingTypes.fittingTypes
+  );
+
   const commandBarItems = useSelector<IApplicationState, any>(
     (state) => state.control.rightPanel.commandBarItems
   );
@@ -292,7 +296,7 @@ export const FittingTypeForm: React.FC = () => {
             args.map((unit: MeasurementUnit, index: number) => {
               return {
                 key: `${unit.id}`,
-                text: unit.name,
+                text: unit.description,
                 // isSelected: index === 0,
                 unitOfMeasurement: unit,
               } as IDropdownOption;
@@ -319,22 +323,17 @@ export const FittingTypeForm: React.FC = () => {
           [],
           [],
           (args: any) => {
-            /// TODO:
-            debugger;
-            // dispatch(
-            //   assignPendingActions(
-            //     fittingTypesActions.apiGetMeasurementById(measurement.id),
-            //     [],
-            //     [],
-            //     (args: any) => {
-            //       dispatch(
-            //         productActions.changeSelectedProductMeasurement(args)
-            //       );
-            //       dispatch(controlActions.closeRightPanel());
-            //     },
-            //     (args: any) => {}
-            //   )
-            // );
+            if (measurement) {
+              dispatch(
+                fittingTypesActions.changeFittingTypes(
+                  new List(fittingTypes).concat([args.body]).toArray()
+                )
+              );
+            } else {
+              dispatch(fittingTypesActions.changeFittingTypes([]));
+            }
+
+            dispatch(controlActions.closeRightPanel());
           },
           (args: any) => {}
         )

@@ -54,7 +54,7 @@ const FittingTypes: React.FC = () => {
           [],
           [],
           (args: any) => {
-            dispatch(fittingTypesActions.changeFittingTypes([]));
+            dispatch(fittingTypesActions.changeFittingTypes(args));
           },
           (args: any) => {}
         )
@@ -66,8 +66,6 @@ const FittingTypes: React.FC = () => {
   }, [targetMeasurement]);
 
   const addNewFittingType = () => {
-    /// TODO:
-
     if (targetMeasurement) {
       dispatch(
         controlActions.openRightPanel({

@@ -111,6 +111,7 @@ const FittinTypeGrid: React.FC = () => {
 
   const onRenderFrezeOptions = (item: any) => {
     const refference: any = React.createRef();
+
     item.customRef = refference;
     return (
       <div
@@ -161,8 +162,10 @@ const FittinTypeGrid: React.FC = () => {
   };
 
   const gridItems = fittingTypes.map((item: any) => {
-    item.content = onRenderFrezeOptions(item);
-    return item;
+    let result = { ...item };
+    result.content = onRenderFrezeOptions(result);
+
+    return result;
   });
 
   const columns = [
@@ -192,7 +195,7 @@ const FittinTypeGrid: React.FC = () => {
       onRender: (item: any) => {
         return (
           <Text style={defaultCellStyle}>
-            {item?.measurementUnit ? item.measurementUnit.name : ''}
+            {item?.measurementUnit ? item.measurementUnit.description : ''}
           </Text>
         );
       },

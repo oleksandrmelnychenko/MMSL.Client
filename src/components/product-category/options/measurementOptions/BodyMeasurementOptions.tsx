@@ -7,7 +7,7 @@ import {
   DirectionalHint,
 } from 'office-ui-fabric-react';
 import { controlActions } from '../../../../redux/slices/control.slice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   labelStyle,
   btnMenuStyle,
@@ -22,6 +22,10 @@ import {
   measurementViewControlsActions,
   ChartDisplayToMeasurementType,
 } from '../../../../redux/slices/measurements/measurementViewControls.slice';
+import { ProductCategory } from '../../../../interfaces/products';
+import FittingTypeForm from '../../measurements/chartsGrid/bodyMeasurement/management/FittingTypeForm';
+import { IApplicationState } from '../../../../redux/reducers';
+import { Measurement } from '../../../../interfaces/measurements';
 
 export const bodyMeasurementOptionsPanelDismisActions = () => {
   return [
@@ -36,15 +40,20 @@ const BodyMeasurementOptions: React.FC = () => {
   const dispatch = useDispatch();
   let history = useHistory();
 
-  useEffect(() => {
-    return () => {};
-  }, []);
+  const category = useSelector<IApplicationState, ProductCategory | null>(
+    (state) => state.product.choose.category
+  );
+
+  const targetProductMeasurement: Measurement | null | undefined = useSelector<
+    IApplicationState,
+    Measurement | null | undefined
+  >((state) => state.product.productMeasurementsState.targetMeasurement);
 
   const menuItem: IProductMenuItem[] = [
     {
       title: 'Back',
       className: 'management__btn-back_measurement',
-      componentType: ProductManagingPanelComponent.ProductCategoryDetails,
+      componentType: ProductManagingPanelComponent.Unknown,
       isDisabled: false,
       tooltip: 'Go back to products',
       onClickFunc: () => {
@@ -59,6 +68,30 @@ const BodyMeasurementOptions: React.FC = () => {
         bodyMeasurementOptionsPanelDismisActions().forEach((action) => {
           dispatch(action);
         });
+      },
+    } as IProductMenuItem,
+    {
+      title: 'New',
+      className:
+        category && targetProductMeasurement
+          ? 'management__btn-new_measurement'
+          : 'management__btn-new_measurement management__btn-disabled',
+      componentType: ProductManagingPanelComponent.Unknown,
+      isDisabled: category && targetProductMeasurement ? false : true,
+      tooltip: 'Add fitting type',
+      onClickFunc: () => {
+        if (category && targetProductMeasurement) {
+          dispatch(
+            controlActions.openRightPanel({
+              title: 'Add fitting type',
+              width: '400px',
+              closeFunctions: () => {
+                dispatch(controlActions.closeRightPanel());
+              },
+              component: FittingTypeForm,
+            })
+          );
+        }
       },
     } as IProductMenuItem,
   ];
