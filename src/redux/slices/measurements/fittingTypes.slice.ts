@@ -9,7 +9,22 @@ const fittingTypes = createSlice({
   initialState: INIT_STATE,
 
   reducers: {
-    apiGetFittingTypesByMeasurementId(state) {
+    apiGetFittingTypesByMeasurementId(
+      state,
+      action: { type: string; payload: number }
+    ) {
+      return state;
+    },
+    apiGetFittingTypeById(state, action: { type: string; payload: number }) {
+      return state;
+    },
+    apiCreateFittingType(state) {
+      return state;
+    },
+    apiUpdateFittingType(state) {
+      return state;
+    },
+    apiDeleteFittingTypeById(state, action: { type: string; payload: number }) {
       return state;
     },
   },

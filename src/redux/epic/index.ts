@@ -8,7 +8,7 @@ import * as productSettings from './productSettings.epic';
 import * as productCategory from './productCategory.epic';
 import * as measurements from './measurements.epic';
 import * as productStylePermissions from './productStylePermissions.epic';
-// import * as fittingTypes from './fittingTypes.epic';
+import * as fittingTypes from './fittingTypes.epic';
 
 const arrayEpic = [
   ...Object.values(authEpic),
@@ -20,6 +20,7 @@ const arrayEpic = [
   ...Object.values(productCategory),
   ...Object.values(measurements),
   ...Object.values(productStylePermissions),
+  ...Object.values(fittingTypes),
 ];
 
 export const rootEpic = combineEpics(...arrayEpic);
