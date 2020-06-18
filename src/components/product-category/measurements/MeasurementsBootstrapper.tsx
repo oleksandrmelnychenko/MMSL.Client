@@ -7,9 +7,10 @@ import { controlActions } from '../../../redux/slices/control.slice';
 import MeasurementForm from './management/MeasurementForm';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { productActions } from '../../../redux/slices/product.slice';
-import { measurementActions } from '../../../redux/slices/measurement.slice';
+import { measurementActions } from '../../../redux/slices/measurements/measurement.slice';
 import Measurements from './Measurements';
 import { List } from 'linq-typescript';
+import { ChartDisplayToMeasurementType } from '../../../redux/slices/measurements/measurementViewControls.slice';
 
 export const CREATE_YOUR_FIRST_MEASUREMENT: string =
   'Create your first measurement';
@@ -40,7 +41,7 @@ const MeasurementsBootstrapper: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /// Get measurements
+  /// Get measurements (charts)
   useEffect(() => {
     if (targetProduct) {
       dispatch(

@@ -38,7 +38,7 @@ import ProductChartGridCell from './ProductChartGridCell';
 import ProductChartNameGridCell from './ProductChartNameGridCell';
 import SizesForm from '../management/SizesForm';
 import { assignPendingActions } from '../../../../helpers/action.helper';
-import { measurementActions } from '../../../../redux/slices/measurement.slice';
+import { measurementActions } from '../../../../redux/slices/measurements/measurement.slice';
 
 const FROZEN_COLUMN_WIDTH = 130;
 

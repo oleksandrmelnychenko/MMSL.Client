@@ -24,7 +24,7 @@ import EditChartItem, {
   IChartItemInputState,
   ChartItemInitPayload,
 } from './EditChartItem';
-import { measurementActions } from '../../../../redux/slices/measurement.slice';
+import { measurementActions } from '../../../../redux/slices/measurements/measurement.slice';
 import { productActions } from '../../../../redux/slices/product.slice';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import {

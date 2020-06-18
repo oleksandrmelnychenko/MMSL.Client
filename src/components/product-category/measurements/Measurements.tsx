@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { ProductCategory } from '../../../interfaces/products';
@@ -12,6 +12,7 @@ import {
 import ProductMeasurementSelector from './ProductMeasurementSelector';
 import MeasurementChartViewSelector from './MeasurementChartViewSelector';
 import ProductMeasurementChartGrid from './chartsGrid/ProductMeasurementChartGrid';
+import { ChartDisplayToMeasurementType } from '../../../redux/slices/measurements/measurementViewControls.slice';
 
 export const CREATE_YOUR_FIRST_MEASUREMENT: string =
   'Create your first measurement';
@@ -22,6 +23,15 @@ const Measurements: React.FC = () => {
   const targetProduct = useSelector<IApplicationState, ProductCategory | null>(
     (state) => state.product.choose.category
   );
+
+  const chartDisplayType: ChartDisplayToMeasurementType = useSelector<
+    IApplicationState,
+    ChartDisplayToMeasurementType
+  >((state) => state.measurementViewControls.chartDisplay);
+
+  useEffect(() => {
+    console.log(chartDisplayType);
+  }, [chartDisplayType]);
 
   return (
     <div className="content__root">

@@ -6,16 +6,30 @@ import {
   FontWeights,
 } from 'office-ui-fabric-react';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
+import {
+  ChartDisplayToMeasurementType,
+  measurementViewControlsActions,
+} from '../../../redux/slices/measurements/measurementViewControls.slice';
 import './measurementChartViewSelector.scss';
+import { useSelector, useDispatch } from 'react-redux';
+import { IApplicationState } from '../../../redux/reducers';
 
-const _chartViewOptions: IDropdownOption[] = [
-  {
-    isSelected: true,
-    key: 'baseShirtMeasurement',
-    text: 'Base Shirt Measurement',
-  },
-  { key: 'bodyMeasurement', text: 'Body Measurement' },
-];
+const _buildChartViewOptions = (displayType: ChartDisplayToMeasurementType) => {
+  return [
+    {
+      key: 'baseMeasurement',
+      text: 'Base Measurement',
+      isSelected: displayType === ChartDisplayToMeasurementType.Base,
+      displayType: ChartDisplayToMeasurementType.Base,
+    } as IDropdownOption,
+    {
+      key: 'bodyMeasurement',
+      text: 'Body Measurement',
+      isSelected: displayType === ChartDisplayToMeasurementType.Body,
+      displayType: ChartDisplayToMeasurementType.Body,
+    } as IDropdownOption,
+  ];
+};
 
 const _dropdownStyles: Partial<IDropdownStyles> = {
   ...fabricStyles.comboBoxStyles,
@@ -31,13 +45,34 @@ const _dropdownStyles: Partial<IDropdownStyles> = {
 };
 
 const MeasurementChartViewSelector: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const chartDisplayType: ChartDisplayToMeasurementType = useSelector<
+    IApplicationState,
+    ChartDisplayToMeasurementType
+  >((state) => state.measurementViewControls.chartDisplay);
+
   return (
     <>
       <Dropdown
         placeholder="Coose chart view"
         label="Chart View"
-        options={_chartViewOptions}
+        options={_buildChartViewOptions(chartDisplayType)}
         styles={_dropdownStyles}
+        onChange={(
+          event: React.FormEvent<HTMLDivElement>,
+          option?: IDropdownOption,
+          index?: number
+        ) => {
+          console.log(option);
+          if (option) {
+            dispatch(
+              measurementViewControlsActions.changeChartDisplay(
+                (option as any).displayType
+              )
+            );
+          }
+        }}
       />
     </>
   );

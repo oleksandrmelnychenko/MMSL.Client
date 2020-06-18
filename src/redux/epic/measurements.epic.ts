@@ -15,7 +15,7 @@ import {
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import { controlActions } from '../slices/control.slice';
-import { measurementActions } from '../../redux/slices/measurement.slice';
+import { measurementActions } from '../../redux/slices/measurements/measurement.slice';
 import StoreHelper from '../../helpers/store.helper';
 
 export const apiGetAllMeasurementsEpic = (action$: AnyAction, state$: any) => {

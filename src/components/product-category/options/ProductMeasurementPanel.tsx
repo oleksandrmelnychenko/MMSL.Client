@@ -24,7 +24,7 @@ import ProductManagementPanel, {
 } from './ProductManagementPanel';
 import MeasurementForm from '../measurements/management/MeasurementForm';
 import { assignPendingActions } from '../../../helpers/action.helper';
-import { measurementActions } from '../../../redux/slices/measurement.slice';
+import { measurementActions } from '../../../redux/slices/measurements/measurement.slice';
 import { List } from 'linq-typescript';
 import SizesForm from '../measurements/management/SizesForm';
 

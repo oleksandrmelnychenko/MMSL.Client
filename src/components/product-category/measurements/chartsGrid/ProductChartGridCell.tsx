@@ -12,7 +12,7 @@ import {
 } from '../../../../interfaces/measurements';
 import { ProductCategory } from '../../../../interfaces/products';
 import { List } from 'linq-typescript';
-import { measurementActions } from '../../../../redux/slices/measurement.slice';
+import { measurementActions } from '../../../../redux/slices/measurements/measurement.slice';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import './chartGridCell.scss';
 

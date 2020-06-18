@@ -13,7 +13,7 @@ import * as fabricStyles from '../../../../common/fabric-styles/styles';
 import './sizeForm.scss';
 import { List } from 'linq-typescript';
 import { controlActions } from '../../../../redux/slices/control.slice';
-import { measurementActions } from '../../../../redux/slices/measurement.slice';
+import { measurementActions } from '../../../../redux/slices/measurements/measurement.slice';
 import { productActions } from '../../../../redux/slices/product.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
