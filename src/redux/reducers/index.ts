@@ -37,6 +37,10 @@ import {
   default as measurementViewControlsReducer,
   IMeasurementViewControlsState,
 } from '../slices/measurements/measurementViewControls.slice';
+import {
+  default as fittingTypesReducer,
+  IFittingTypesState,
+} from '../slices/measurements/fittingTypes.slice';
 
 export interface IApplicationState {
   auth: IAuthState;
@@ -52,6 +56,7 @@ export interface IApplicationState {
   productStylePermissions: ProductStylePermissionsState;
   deliveryTimelines: DeliveryTimelinesState;
   measurementViewControls: IMeasurementViewControlsState;
+  fittingTypes: IFittingTypesState;
 }
 
 export const reducer = combineReducers({
@@ -68,4 +73,5 @@ export const reducer = combineReducers({
   productStylePermissions: productStylePermissionsReducer,
   deliveryTimelines: deliveryTimelinesReducer,
   measurementViewControls: measurementViewControlsReducer,
+  fittingTypes: fittingTypesReducer,
 });

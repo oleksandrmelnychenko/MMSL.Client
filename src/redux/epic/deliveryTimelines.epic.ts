@@ -1,7 +1,4 @@
-import {
-  ajaxPutResponse,
-  ajaxDeleteResponse,
-} from './../../helpers/epic.helper';
+import { putWebRequest, deleteWebRequest } from './../../helpers/epic.helper';
 import { checkUnauthorized } from './../../helpers/error.helpers';
 import {
   successCommonEpicFlow,
@@ -11,10 +8,7 @@ import { switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import { getActiveLanguage } from 'react-localize-redux';
-import {
-  ajaxPostResponse,
-  ajaxGetWebResponse,
-} from '../../helpers/epic.helper';
+import { postWebRequest, getWebRequest } from '../../helpers/epic.helper';
 import StoreHelper from '../../helpers/store.helper';
 import * as api from '../constants/api.constants';
 import { controlActions } from '../slices/control.slice';
@@ -31,10 +25,7 @@ export const apiGetAllDeliveryTimelineEpic = (
 
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
-      return ajaxGetWebResponse(
-        api.GET_ALL_DELIVERY_TIMELINES,
-        state$.value
-      ).pipe(
+      return getWebRequest(api.GET_ALL_DELIVERY_TIMELINES, state$.value).pipe(
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
@@ -76,7 +67,7 @@ export const apiCreateNewDeliveryTimelineEpic = (
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
-      return ajaxPostResponse(
+      return postWebRequest(
         api.ADD_DELIVERY_TIMELINE,
         action.payload,
         state$.value,
@@ -123,7 +114,7 @@ export const apiUpdateDeliveryTimelineEpic = (
 
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
-      return ajaxPutResponse(
+      return putWebRequest(
         api.UPDATE_DELIVERY_TIMELINE,
         action.payload,
         state$.value
@@ -169,7 +160,7 @@ export const apiDeleteDeliveryTimelineEpic = (
 
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
-      return ajaxDeleteResponse(
+      return deleteWebRequest(
         api.DELETE_DELIVERY_TIMELINE_BY_ID,
         state$.value,
         [{ key: 'deliveryTimelineId', value: `${action.payload}` }]

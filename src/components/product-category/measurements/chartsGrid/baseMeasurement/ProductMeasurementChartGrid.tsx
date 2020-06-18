@@ -45,11 +45,7 @@ const FROZEN_COLUMN_WIDTH = 130;
 const ProductMeasurementChartGrid: React.FC = () => {
   const dispatch = useDispatch();
 
-  const [selection] = useState(
-    new Selection({
-      onSelectionChanged: () => {},
-    })
-  );
+  const [selection] = useState(new Selection({}));
 
   const targetProductMeasurementChart:
     | Measurement

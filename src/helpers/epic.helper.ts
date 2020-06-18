@@ -40,7 +40,7 @@ const buildQueryParamsString = (queryParams?: QueryParam[]) => {
   return queryString;
 };
 
-export const ajaxGetWebResponse = (
+export const getWebRequest = (
   urlPath: string,
   state: IApplicationState,
   queryParams?: QueryParam[]
@@ -58,7 +58,7 @@ export const ajaxGetWebResponse = (
     .pipe(map((response) => response.body));
 };
 
-export const ajaxPostResponse = (
+export const postWebRequest = (
   urlPath: string,
   body: any,
   state: IApplicationState,
@@ -80,45 +80,7 @@ export const ajaxPostResponse = (
     .pipe(map((response) => response.response));
 };
 
-export const ajaxPutResponse = (
-  urlPath: string,
-  body: any,
-  state: IApplicationState
-) => {
-  const currentLanguage = getActiveLanguage(state.localize).code;
-  let header = {
-    Authorization: `Bearer ${TokenHelper.getAccessToken()}`,
-    'Content-Type': 'application/json',
-  };
-  return ajax
-    .put(`${API.SERVER_URL}/${currentLanguage}${urlPath}`, body, header)
-    .pipe(map((response) => response.response));
-};
-
-export const ajaxPutFormDataResponse = (
-  urlPath: string,
-  body: FormData,
-  state: IApplicationState,
-  queryParams?: QueryParam[]
-) => {
-  const currentLanguage = getActiveLanguage(state.localize).code;
-  let header = {
-    Authorization: `Bearer ${TokenHelper.getAccessToken()}`,
-    // 'Content-Type': 'application/json',
-  };
-
-  return ajax
-    .put(
-      `${API.SERVER_URL}/${currentLanguage}${urlPath}${buildQueryParamsString(
-        queryParams
-      )}`,
-      body,
-      header
-    )
-    .pipe(map((response) => response.response));
-};
-
-export const ajaxPostFormDataResponse = (
+export const postFormDataWebRequest = (
   urlPath: string,
   body: any,
   state: IApplicationState,
@@ -141,7 +103,45 @@ export const ajaxPostFormDataResponse = (
     .pipe(map((response) => response.response));
 };
 
-export const ajaxDeleteResponse = (
+export const putWebRequest = (
+  urlPath: string,
+  body: any,
+  state: IApplicationState
+) => {
+  const currentLanguage = getActiveLanguage(state.localize).code;
+  let header = {
+    Authorization: `Bearer ${TokenHelper.getAccessToken()}`,
+    'Content-Type': 'application/json',
+  };
+  return ajax
+    .put(`${API.SERVER_URL}/${currentLanguage}${urlPath}`, body, header)
+    .pipe(map((response) => response.response));
+};
+
+export const putFormDataWebRequest = (
+  urlPath: string,
+  body: FormData,
+  state: IApplicationState,
+  queryParams?: QueryParam[]
+) => {
+  const currentLanguage = getActiveLanguage(state.localize).code;
+  let header = {
+    Authorization: `Bearer ${TokenHelper.getAccessToken()}`,
+    // 'Content-Type': 'application/json',
+  };
+
+  return ajax
+    .put(
+      `${API.SERVER_URL}/${currentLanguage}${urlPath}${buildQueryParamsString(
+        queryParams
+      )}`,
+      body,
+      header
+    )
+    .pipe(map((response) => response.response));
+};
+
+export const deleteWebRequest = (
   urlPath: string,
   state: IApplicationState,
   queryParams?: QueryParam[]

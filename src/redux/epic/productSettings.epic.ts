@@ -1,8 +1,8 @@
 import {
-  ajaxPutResponse,
-  ajaxPutFormDataResponse,
-  ajaxPostFormDataResponse,
-  ajaxDeleteResponse,
+  putWebRequest,
+  putFormDataWebRequest,
+  postFormDataWebRequest,
+  deleteWebRequest,
 } from './../../helpers/epic.helper';
 import { checkUnauthorized } from './../../helpers/error.helpers';
 import {
@@ -13,10 +13,7 @@ import { switchMap, mergeMap, catchError, debounceTime } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import { getActiveLanguage } from 'react-localize-redux';
-import {
-  ajaxPostResponse,
-  ajaxGetWebResponse,
-} from '../../helpers/epic.helper';
+import { postWebRequest, getWebRequest } from '../../helpers/epic.helper';
 import StoreHelper from '../../helpers/store.helper';
 import * as api from '../constants/api.constants';
 import { controlActions } from '../slices/control.slice';
@@ -32,7 +29,7 @@ export const apiUpdateOptionGroupEpic = (action$: AnyAction, state$: any) => {
 
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
-      return ajaxPutResponse(
+      return putWebRequest(
         api.UPDATE_OPTION_GROUP,
         action.payload,
         state$.value
@@ -72,7 +69,7 @@ export const apiCreateOptionGroupEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxPostResponse(
+      return postWebRequest(
         api.CREATE_NEW_OPTION_GROUP,
         action.payload,
         state$.value,
@@ -117,7 +114,7 @@ export const apiGetAllOptionGroupsByProductIdListEpic = (
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
-      return ajaxGetWebResponse(api.GET_ALL_OPTION_GROUPS, state$.value, [
+      return getWebRequest(api.GET_ALL_OPTION_GROUPS, state$.value, [
         {
           key: 'productCategoryId',
           value: `${action.payload}`,
@@ -159,7 +156,7 @@ export const apiSearchOptionGroupsByProductIdListEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(api.GET_ALL_OPTION_GROUPS, state$.value, [
+      return getWebRequest(api.GET_ALL_OPTION_GROUPS, state$.value, [
         {
           key: 'search',
           value: `${state$.value.productSettings.searchWordOptionGroup}`,
@@ -207,7 +204,7 @@ export const apiModifyOptionUnitsOrderEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxPutResponse(
+      return putWebRequest(
         api.MODIFY_OPTION_UNITS_ORDER,
         action.payload,
         state$.value
@@ -247,7 +244,7 @@ export const apiUpdateOptionUnitEpic = (action$: AnyAction, state$: any) => {
       const formData: FormData = new FormData();
       formData.append(FORM_DATA_IMAGE_FILE_KEY, action.payload.imageBlob);
 
-      return ajaxPutFormDataResponse(
+      return putFormDataWebRequest(
         api.MODIFY_OPTION_UNIT,
         formData,
         state$.value,
@@ -312,7 +309,7 @@ export const apiCreateNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
       const formData: FormData = new FormData();
       formData.append(FORM_DATA_IMAGE_FILE_KEY, action.payload.imageBlob);
 
-      return ajaxPostFormDataResponse(
+      return postFormDataWebRequest(
         api.ADD_OPTION_UNIT,
         formData,
         state$.value,
@@ -381,7 +378,7 @@ export const apiDeleteOptionUnitByIdEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxDeleteResponse(api.DELETE_OPTION_UNIT_BY_ID, state$.value, [
+      return deleteWebRequest(api.DELETE_OPTION_UNIT_BY_ID, state$.value, [
         { key: 'optionUnitId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
@@ -419,7 +416,7 @@ export const apiGetOptionGroupByIdEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(api.GET_OPTION_GROUP_BY_ID, state$.value, [
+      return getWebRequest(api.GET_OPTION_GROUP_BY_ID, state$.value, [
         { key: 'groupId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
@@ -454,7 +451,7 @@ export const apiGetOptionUnitByIdEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
 
-      return ajaxGetWebResponse(api.GET_OPTION_UNIT_BY_ID, state$.value, [
+      return getWebRequest(api.GET_OPTION_UNIT_BY_ID, state$.value, [
         { key: 'optionUnitId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
@@ -493,7 +490,7 @@ export const apiDeleteOptionGroupByIdEpic = (
 
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
-      return ajaxDeleteResponse(api.DELETE_OPTION_GROUP_BY_ID, state$.value, [
+      return deleteWebRequest(api.DELETE_OPTION_GROUP_BY_ID, state$.value, [
         { key: 'optionGroupId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {

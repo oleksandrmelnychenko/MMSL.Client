@@ -8,12 +8,12 @@ import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import { getActiveLanguage } from 'react-localize-redux';
 import {
-  ajaxGetWebResponse,
-  ajaxPutResponse,
-  ajaxDeleteResponse,
-  ajaxPostFormDataResponse,
-  ajaxPutFormDataResponse,
-  ajaxPostResponse,
+  getWebRequest,
+  putWebRequest,
+  deleteWebRequest,
+  postFormDataWebRequest,
+  putFormDataWebRequest,
+  postWebRequest,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import { controlActions } from '../slices/control.slice';
@@ -28,11 +28,7 @@ export const getAllProductCategoryEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(
-        api.GET_ALL_PRODUCT_CATEGORY,
-        state$.value,
-        []
-      ).pipe(
+      return getWebRequest(api.GET_ALL_PRODUCT_CATEGORY, state$.value, []).pipe(
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
@@ -73,7 +69,7 @@ export const apiAddNewProductCategoryEpic = (
       const formData: FormData = new FormData();
       formData.append(FORM_DATA_IMAGE_FILE_KEY, action.payload.imageBlob);
 
-      return ajaxPostFormDataResponse(
+      return postFormDataWebRequest(
         api.ADD_PRODUCT_CATEGORY,
         formData,
         state$.value,
@@ -130,7 +126,7 @@ export const apiUpdateProductCategoryEpic = (
       const formData: FormData = new FormData();
       formData.append(FORM_DATA_IMAGE_FILE_KEY, action.payload.imageBlob);
 
-      return ajaxPutFormDataResponse(
+      return putFormDataWebRequest(
         api.UPDATE_PRODUCT_CATEGORY,
         formData,
         state$.value,
@@ -188,7 +184,7 @@ export const updateProductCategoryEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxPutResponse(
+      return putWebRequest(
         api.UPDATE_PRODUCT_CATEGORY,
         action.payload,
         state$.value
@@ -229,7 +225,7 @@ export const apiSaveUpdatedProductGroupsEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxPutResponse(
+      return putWebRequest(
         api.UPDATE_PRODUCT_CATEGORY_GROUPS_LIST,
         action.payload,
         state$.value
@@ -269,7 +265,7 @@ export const deleteProductCategoryEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxDeleteResponse(api.DELETE_PRODUCT_CATEGORY, state$.value, [
+      return deleteWebRequest(api.DELETE_PRODUCT_CATEGORY, state$.value, [
         { key: 'productCategoryId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
@@ -311,7 +307,7 @@ export const apiGetProductCategoryByIdEpic = (
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
-      return ajaxGetWebResponse(api.GET_PRODUCT_CATEGORY_BY_ID, state$.value, [
+      return getWebRequest(api.GET_PRODUCT_CATEGORY_BY_ID, state$.value, [
         { key: `productCategoryId`, value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
@@ -350,7 +346,7 @@ export const getMeasurementsByProductEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(api.GET_MEASUREMENTS_BY_PRODUCT, state$.value, [
+      return getWebRequest(api.GET_MEASUREMENTS_BY_PRODUCT, state$.value, [
         {
           key: 'productCategoryId',
           value: `${action.payload}`,
@@ -390,7 +386,7 @@ export const apiAddNewMeasurementEpic = (action$: AnyAction, state$: any) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
-      return ajaxPostFormDataResponse(
+      return postFormDataWebRequest(
         api.ADD_NEW_MEASUREMENT,
         action.payload,
         state$.value,
@@ -435,7 +431,7 @@ export const apiAssignProductTimelineEpic = (
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
-      return ajaxPostResponse(
+      return postWebRequest(
         api.PRODUCT_DELIVERY_TIMELINE_ASSIGN,
         action.payload,
         state$.value,
@@ -480,11 +476,9 @@ export const apiGetAllProductMeasurementsByProductIdEpic = (
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
-      return ajaxGetWebResponse(
-        api.GET_ALL_MEASUREMENTS_BY_PRODUCT,
-        state$.value,
-        [{ key: 'productId', value: `${action.payload}` }]
-      ).pipe(
+      return getWebRequest(api.GET_ALL_MEASUREMENTS_BY_PRODUCT, state$.value, [
+        { key: 'productId', value: `${action.payload}` },
+      ]).pipe(
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
