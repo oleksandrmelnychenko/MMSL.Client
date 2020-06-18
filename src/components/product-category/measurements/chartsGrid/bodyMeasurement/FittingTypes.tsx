@@ -6,10 +6,11 @@ import { Measurement } from '../../../../../interfaces/measurements';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
 import { FittingType } from '../../../../../interfaces/fittingTypes';
 import { CommandBarButton, FontWeights } from 'office-ui-fabric-react';
+import FittinTypeGrid from './FittinTypeGrid';
 
-export const CREATE_YOUR_FIRST_fitting_type: string =
+export const CREATE_YOUR_FIRST_FITTING_TYPE: string =
   'Create your first fitting type';
-export const CREATE_fitting_type: string = 'Create fitting type';
+export const CREATE_FITTING_TYPE: string = 'Create fitting type';
 
 const _addFirstFittingTypeButtonStyle = {
   root: {
@@ -51,7 +52,7 @@ const FittingTypes: React.FC = () => {
           [],
           [],
           (args: any) => {
-            /// TODO: args - is array of fitting types
+            dispatch(fittingTypesActions.changeFittingTypes([]));
           },
           (args: any) => {}
         )
@@ -67,7 +68,9 @@ const FittingTypes: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="fittingTypes">
+      <FittinTypeGrid />
+
       {fittingTypes && fittingTypes.length < 1 ? (
         <CommandBarButton
           onClick={() => addNewFittingType()}

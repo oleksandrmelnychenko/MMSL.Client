@@ -269,21 +269,7 @@ const ProductMeasurementChartGrid: React.FC = () => {
       </div>
     );
 
-    // <DetailsHeader
-    //       styles={{
-    //         root: { fontWeight: FontWeights.light },
-    //         accessibleLabel: { fontWeight: FontWeights.light },
-    //       }}
-    //       {...props}
-    //     />
-
     return (
-      // <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced>
-      //   {defaultRender!({
-      //     ...props,
-      //     onRenderColumnHeaderTooltip,
-      //   })}
-      // </Sticky>
       <div>
         {defaultRender!({
           ...props,
@@ -426,14 +412,7 @@ const ProductMeasurementChartGrid: React.FC = () => {
   const columns = buildDynamicChartColumns();
 
   return (
-    <div
-      className="productMeasurementChartGrid"
-      style={{
-        position: 'relative',
-        borderTop: '1px solid #dfdfdf',
-        paddingTop: '16px',
-      }}
-    >
+    <div className="productMeasurementChartGrid">
       {/* Main data grid with dynamic columns */}
       <DetailsList
         onRenderRow={onRenderRow}
