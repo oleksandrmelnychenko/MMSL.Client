@@ -10,6 +10,7 @@ import {
   mainTitleHintContent,
 } from '../../../common/fabric-styles/styles';
 import ProductMeasurementSelector from './ProductMeasurementSelector';
+import MeasurementChartViewSelector from './MeasurementChartViewSelector';
 import ProductMeasurementChartGrid from './chartsGrid/ProductMeasurementChartGrid';
 
 export const CREATE_YOUR_FIRST_MEASUREMENT: string =
@@ -52,11 +53,17 @@ const Measurements: React.FC = () => {
                   horizontal
                   tokens={{
                     ...horizontalGapStackTokens,
-                    childrenGap: 6,
+                    childrenGap: '24px',
                     padding: '18px 5px 10px 8px',
                   }}
                 >
-                  <ProductMeasurementSelector />
+                  <Stack.Item>
+                    <ProductMeasurementSelector />
+                  </Stack.Item>
+
+                  <Stack.Item>
+                    <MeasurementChartViewSelector />
+                  </Stack.Item>
                 </Stack>
               </Stack>
             </div>
