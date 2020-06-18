@@ -1,8 +1,13 @@
+import { FittingType } from './../../../interfaces/fittingTypes';
 import { createSlice } from '@reduxjs/toolkit';
 
-const INIT_STATE: IFittingTypesState = {};
+const INIT_STATE: IFittingTypesState = {
+  fittingTypes: [],
+};
 
-export interface IFittingTypesState {}
+export interface IFittingTypesState {
+  fittingTypes: FittingType[];
+}
 
 const fittingTypes = createSlice({
   name: 'fittingTypes',
@@ -25,6 +30,13 @@ const fittingTypes = createSlice({
       return state;
     },
     apiDeleteFittingTypeById(state, action: { type: string; payload: number }) {
+      return state;
+    },
+    changeFittingTypes(
+      state,
+      action: { type: string; payload: FittingType[] }
+    ) {
+      state.fittingTypes = action.payload;
       return state;
     },
   },

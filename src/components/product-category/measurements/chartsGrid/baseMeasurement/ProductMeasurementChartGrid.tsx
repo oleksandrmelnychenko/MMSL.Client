@@ -18,6 +18,7 @@ import {
   SelectionMode,
   getId,
   CommandBarButton,
+  FontWeights,
 } from 'office-ui-fabric-react';
 import { IApplicationState } from '../../../../../redux/reducers';
 import {
@@ -41,6 +42,23 @@ import { assignPendingActions } from '../../../../../helpers/action.helper';
 import { measurementActions } from '../../../../../redux/slices/measurements/measurement.slice';
 
 const FROZEN_COLUMN_WIDTH = 130;
+
+const _addFirstSizeButtonStyle = {
+  root: {
+    marginTop: '72px',
+    marginLeft: '32px',
+    height: '35px',
+    background: '#f0f0f0',
+    borderRadius: '2px',
+    padding: '0 12px',
+  },
+  label: {
+    fontWeight: FontWeights.regular,
+  },
+  rootHovered: {
+    background: '#e5e5e5',
+  },
+};
 
 const ProductMeasurementChartGrid: React.FC = () => {
   const dispatch = useDispatch();
@@ -471,22 +489,7 @@ const ProductMeasurementChartGrid: React.FC = () => {
           disabled={targetProductMeasurementChart ? false : true}
           onClick={() => addNewSize()}
           height={20}
-          styles={{
-            root: {
-              marginTop: '72px',
-              marginLeft: '32px',
-              height: '35px',
-              background: '#f0f0f0',
-              borderRadius: '2px',
-              padding: '0 12px',
-            },
-            label: {
-              fontWeight: '400',
-            },
-            rootHovered: {
-              background: '#e5e5e5',
-            },
-          }}
+          styles={_addFirstSizeButtonStyle}
           iconProps={{ iconName: 'Add' }}
           text="Add first size"
         />

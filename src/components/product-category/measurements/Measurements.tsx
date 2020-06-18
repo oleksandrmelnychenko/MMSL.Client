@@ -43,10 +43,6 @@ const Measurements: React.FC = () => {
     ChartDisplayToMeasurementType
   >((state) => state.measurementViewControls.chartDisplay);
 
-  useEffect(() => {
-    console.log(chartDisplayType);
-  }, [chartDisplayType]);
-
   return (
     <div className="content__root">
       <Stack verticalAlign="space-around">
