@@ -10,7 +10,7 @@ import { assignPendingActions } from '../../helpers/action.helper';
 import { List } from 'linq-typescript';
 import { productActions } from '../../redux/slices/product.slice';
 import { controlActions } from '../../redux/slices/control.slice';
-import ProductMeasurementPanel from './options/ProductMeasurementPanel';
+import ProductMeasurementPanel from './options/measurementOptions/ProductMeasurementPanel';
 import ProductTimelinesPanel from './options/ProductTimelinesPanel';
 import ProductSettingsBootstrapper from './productSettings/ProductSettingsBootstrapper';
 import ProductManagementPanel, {

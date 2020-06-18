@@ -2,27 +2,27 @@ import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Stack, TextField, Separator, Text } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
-import { FormicReference } from '../../../../interfaces';
+import { FormicReference } from '../../../../../../interfaces';
 import {
   Measurement,
   MeasurementMapDefinition,
   MeasurementMapSize,
   MeasurementMapValue,
-} from '../../../../interfaces/measurements';
-import * as fabricStyles from '../../../../common/fabric-styles/styles';
+} from '../../../../../../interfaces/measurements';
+import * as fabricStyles from '../../../../../../common/fabric-styles/styles';
 import './sizeForm.scss';
 import { List } from 'linq-typescript';
-import { controlActions } from '../../../../redux/slices/control.slice';
-import { measurementActions } from '../../../../redux/slices/measurements/measurement.slice';
-import { productActions } from '../../../../redux/slices/product.slice';
+import { controlActions } from '../../../../../../redux/slices/control.slice';
+import { measurementActions } from '../../../../../../redux/slices/measurements/measurement.slice';
+import { productActions } from '../../../../../../redux/slices/product.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   GetCommandBarItemProps,
   CommandBarItem,
   ChangeItemsDisabledState,
-} from '../../../../helpers/commandBar.helper';
-import { IApplicationState } from '../../../../redux/reducers';
-import { assignPendingActions } from '../../../../helpers/action.helper';
+} from '../../../../../../helpers/commandBar.helper';
+import { IApplicationState } from '../../../../../../redux/reducers';
+import { assignPendingActions } from '../../../../../../helpers/action.helper';
 
 export class SizeInitValues {
   constructor() {

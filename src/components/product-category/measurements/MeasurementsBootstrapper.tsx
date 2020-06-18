@@ -4,7 +4,7 @@ import { IApplicationState } from '../../../redux/reducers/index';
 import { Measurement } from '../../../interfaces/measurements';
 import { ProductCategory } from '../../../interfaces/products';
 import { controlActions } from '../../../redux/slices/control.slice';
-import MeasurementForm from './management/MeasurementForm';
+import MeasurementForm from './chartsGrid/baseMeasurement/management/MeasurementForm';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { productActions } from '../../../redux/slices/product.slice';
 import { measurementActions } from '../../../redux/slices/measurements/measurement.slice';

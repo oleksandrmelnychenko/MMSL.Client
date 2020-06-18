@@ -37,7 +37,7 @@ import {
 import { productActions } from '../../../../../redux/slices/product.slice';
 import ProductChartGridCell from './ProductChartGridCell';
 import ProductChartNameGridCell from './ProductChartNameGridCell';
-import SizesForm from '../../management/SizesForm';
+import SizesForm from './management/SizesForm';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
 import { measurementActions } from '../../../../../redux/slices/measurements/measurement.slice';
 

@@ -24,17 +24,6 @@ import { defaultCellStyle } from '../../../../../common/fabric-styles/styles';
 import './fittingTypeGrid.scss';
 import { List } from 'linq-typescript';
 
-const _mainDetailsListStyle = {
-  root: {
-    position: 'absolute',
-    top: '16px',
-    zIndex: 0,
-    left: '0',
-    overflowX: 'auto',
-    width: '100%',
-  },
-};
-
 const FittinTypeGrid: React.FC = () => {
   const dispatch = useDispatch();
 
