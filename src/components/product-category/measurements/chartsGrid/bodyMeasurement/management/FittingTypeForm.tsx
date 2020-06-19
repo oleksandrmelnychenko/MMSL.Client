@@ -54,10 +54,14 @@ const _buildNewFittingTypePayload = (
     valueDataContracts: [],
   };
 
+  /// TODO: vadymk don't repeat your self (Size Form use same entity and approach,
+  /// define shared helper for this flow)
   const dirtyValueItemsList = new List<DefinitionValueItem>(
     valueItems
   ).where((item) => item.resolveIsDirty());
 
+  /// TODO: vadymk don't repeat your self (Size Form use same entity and approach,
+  /// define shared helper for this flow)
   fittingTypePayload.valueDataContracts = dirtyValueItemsList
     .select((valueItem) => {
       return {
@@ -84,10 +88,14 @@ const _buildEditedFittingTypePayload = (
   fittingTypePayload.measurementUnitId = values.unitOfMeasurement?.id;
   fittingTypePayload.measurementUnit = values.unitOfMeasurement;
 
+  /// TODO: vadymk don't repeat your self (Size Form use same entity and approach,
+  /// define shared helper for this flow)
   const dirtyValueItemsList = new List<DefinitionValueItem>(
     valueItems
   ).where((item) => item.resolveIsDirty());
 
+  /// TODO: vadymk don't repeat your self (Size Form use same entity and approach,
+  /// define shared helper for this flow)
   fittingTypePayload.measurementMapValues = dirtyValueItemsList
     .select((valueItem) => {
       const valueDataContract: any = {};
@@ -185,6 +193,8 @@ const _resolveDefaultSelectedOptionKey = (
   return defaultSelectKey;
 };
 
+/// TODO: vadymk don't repeat your self (Size Form use same entity and approach,
+/// define shared helper for this flow)
 class DefinitionValueItem {
   private _mapValue: MeasurementMapValue | null | undefined;
 
@@ -525,12 +535,13 @@ export const FittingTypeForm: React.FC = () => {
                     </Field>
                   </Stack>
 
+                  {/* TODO: vadymk don't repeat your self (Size Form use same entity
+                  and approach, define shared helper for this flow) */}
                   <Stack tokens={{ childrenGap: '6px' }}>
                     <Separator alignContent="start">Columns (charts)</Separator>
                     {valueItems.map(
                       (valueItem: DefinitionValueItem, index: number) => {
                         return (
-                          // sizeForm__definitionItem
                           <div
                             className={
                               valueItem.isDirty

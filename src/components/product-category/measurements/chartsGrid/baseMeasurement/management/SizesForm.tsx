@@ -46,10 +46,14 @@ const _buildNewSizePayload = (
     valueDataContracts: [],
   };
 
+  /// TODO: vadymk don't repeat your self (Fitting Type Form use same entity and approach,
+  /// define shared helper for this flow)
   const dirtyValueItemsList = new List<DefinitionValueItem>(
     valueItems
   ).where((item) => item.resolveIsDirty());
 
+  /// TODO: vadymk don't repeat your self (Fitting Type Form use same entity and approach,
+  /// define shared helper for this flow)
   sizePayload.valueDataContracts = dirtyValueItemsList
     .select((valueItem) => {
       return {
@@ -78,10 +82,14 @@ const _buildEditedSizePayload = (
     valueDataContracts: [],
   };
 
+  /// TODO: vadymk don't repeat your self (Fitting Type Form use same entity and approach,
+  /// define shared helper for this flow)
   const dirtyValueItemsList = new List<DefinitionValueItem>(
     valueItems
   ).where((item) => item.resolveIsDirty());
 
+  /// TODO: vadymk don't repeat your self (Fitting Type Form use same entity and approach,
+  /// define shared helper for this flow)
   sizePayload.valueDataContracts = dirtyValueItemsList
     .select((valueItem) => {
       const valueDataContract: any = {};
@@ -433,6 +441,8 @@ export const SizesForm: React.FC = () => {
                     </Field>
                   </Stack>
 
+                  {/* TODO: vadymk don't repeat your self (Fitting Type Form use
+                  same entity and approach, define shared helper for this flow) */}
                   <Stack tokens={{ childrenGap: '6px' }}>
                     <Separator alignContent="start">Columns (charts)</Separator>
                     {valueItems.map(
