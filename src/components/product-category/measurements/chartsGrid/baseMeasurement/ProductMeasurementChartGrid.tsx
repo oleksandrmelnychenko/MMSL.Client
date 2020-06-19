@@ -35,8 +35,8 @@ import {
   CommonDialogType,
 } from '../../../../../redux/slices/control.slice';
 import { productActions } from '../../../../../redux/slices/product.slice';
-import ProductChartGridCell from './ProductChartGridCell';
-import ProductChartNameGridCell from './ProductChartNameGridCell';
+import BaseSizeValueCell from './BaseSizeValueCell';
+import BaseSizeNameCell from './BaseSizeNameCell';
 import SizesForm from './management/SizesForm';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
 import { measurementActions } from '../../../../../redux/slices/measurements/measurement.slice';
@@ -90,7 +90,7 @@ const ProductMeasurementChartGrid: React.FC = () => {
 
     onRender: (item?: any, index?: number, column?: IColumn) => {
       return (
-        <ProductChartNameGridCell
+        <BaseSizeNameCell
           mapSize={item}
           measurementChart={targetProductMeasurementChart}
           productCategory={targetProduct}
@@ -333,21 +333,6 @@ const ProductMeasurementChartGrid: React.FC = () => {
     };
   };
 
-  const onRenderDynamicSizeValueCell = (
-    item?: MeasurementMapSize,
-    index?: number,
-    column?: IColumn
-  ) => {
-    return (
-      <ProductChartGridCell
-        mapSize={item}
-        chartColumn={(column as any).rawSourceContext}
-        measurementChart={targetProductMeasurementChart}
-        productCategory={targetProduct}
-      />
-    );
-  };
-
   const buildDynamicChartColumns = () => {
     if (
       targetProduct &&
@@ -366,10 +351,22 @@ const ProductMeasurementChartGrid: React.FC = () => {
             isResizable: true,
             isCollapsible: false,
             data: 'string',
-            // defaultCellStyle:{{root:""}},
             isPadded: false,
             rawSourceContext: definitionMapItem,
-            onRender: onRenderDynamicSizeValueCell,
+            onRender: (
+              item?: MeasurementMapSize,
+              index?: number,
+              column?: IColumn
+            ) => {
+              return (
+                <BaseSizeValueCell
+                  mapSize={item}
+                  chartColumn={(column as any).rawSourceContext}
+                  measurementChart={targetProductMeasurementChart}
+                  productCategory={targetProduct}
+                />
+              );
+            },
           };
         })
         .toArray();

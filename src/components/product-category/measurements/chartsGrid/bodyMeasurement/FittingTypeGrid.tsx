@@ -31,6 +31,12 @@ import {
   CommonDialogType,
 } from '../../../../../redux/slices/control.slice';
 import FittingTypeForm from './management/FittingTypeForm';
+import {
+  Measurement,
+  MeasurementMapDefinition,
+} from '../../../../../interfaces/measurements';
+import { ProductCategory } from '../../../../../interfaces/products';
+import BodySizeValueCell from './BodySizeValueCell';
 
 const FittingTypeGrid: React.FC = () => {
   const dispatch = useDispatch();
@@ -41,6 +47,16 @@ const FittingTypeGrid: React.FC = () => {
     IApplicationState,
     FittingType[]
   >((state) => state.fittingTypes.fittingTypes);
+
+  const targetMeasurement: Measurement | null | undefined = useSelector<
+    IApplicationState,
+    Measurement | null | undefined
+  >((state) => state.product.productMeasurementsState.targetMeasurement);
+
+  const targetProduct: ProductCategory | null | undefined = useSelector<
+    IApplicationState,
+    ProductCategory | null | undefined
+  >((state) => state.product.choose.category);
 
   const onRenderRow = (args: any) => {
     return (
@@ -165,6 +181,46 @@ const FittingTypeGrid: React.FC = () => {
     );
   };
 
+  const buildDynamicChartColumns = () => {
+    if (targetMeasurement?.measurementMapDefinitions) {
+      const dynamicChartSizeColumns: any[] = new List(
+        targetMeasurement.measurementMapDefinitions
+      )
+        .select((definitionMapItem: MeasurementMapDefinition) => {
+          return {
+            key: definitionMapItem.id,
+            name: definitionMapItem.measurementDefinition.name,
+            minWidth: 50,
+            maxWidth: 70,
+            isResizable: true,
+            isCollapsible: false,
+            data: 'string',
+            isPadded: false,
+            rawSourceContext: definitionMapItem,
+            onRender: (
+              item?: FittingType,
+              index?: number,
+              column?: IColumn
+            ) => {
+              return (
+                <BodySizeValueCell
+                  fittingType={item}
+                  chartColumn={(column as any).rawSourceContext}
+                  measurementChart={targetMeasurement}
+                  productCategory={targetProduct}
+                />
+              );
+            },
+          };
+        })
+        .toArray();
+
+      const result = new List(dynamicChartSizeColumns);
+
+      return result.toArray();
+    }
+  };
+
   const onEdit = (fittingTypeToEdit: FittingType) => {
     if (fittingTypeToEdit) {
       dispatch(
@@ -238,7 +294,7 @@ const FittingTypeGrid: React.FC = () => {
     return result;
   });
 
-  const columns = [
+  const staticColumns = [
     onRenderPaddingStubColumn(),
     {
       key: 'type',
@@ -296,7 +352,9 @@ const FittingTypeGrid: React.FC = () => {
         items={gridItems}
         selectionMode={SelectionMode.single}
         checkboxVisibility={CheckboxVisibility.hidden}
-        columns={columns}
+        columns={new List(staticColumns)
+          .concat(buildDynamicChartColumns() as [])
+          .toArray()}
       />
 
       {/* Grid for "frozen size name" column */}

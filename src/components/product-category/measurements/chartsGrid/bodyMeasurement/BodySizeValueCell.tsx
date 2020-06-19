@@ -7,17 +7,17 @@ import { defaultCellStyle } from '../../../../../common/fabric-styles/styles';
 import {
   Measurement,
   MeasurementMapDefinition,
-  MeasurementMapSize,
   MeasurementMapValue,
 } from '../../../../../interfaces/measurements';
 import { ProductCategory } from '../../../../../interfaces/products';
 import { List } from 'linq-typescript';
-import { measurementActions } from '../../../../../redux/slices/measurements/measurement.slice';
+import '../baseMeasurement/chartGridCell.scss';
+import { FittingType } from '../../../../../interfaces/fittingTypes';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
-import './chartGridCell.scss';
+import { fittingTypesActions } from '../../../../../redux/slices/measurements/fittingTypes.slice';
 
-export interface IProductChartGridCellProps {
-  mapSize: MeasurementMapSize | null | undefined;
+export interface IBodySizeValueCellProps {
+  fittingType: FittingType | null | undefined;
   chartColumn: MeasurementMapDefinition | null | undefined;
   measurementChart: Measurement | null | undefined;
   productCategory: ProductCategory | null | undefined;
@@ -26,20 +26,13 @@ export interface IProductChartGridCellProps {
 const CELL_VALUE_STUB = '';
 
 const _findColumnSizeValue = (
-  mapSize: MeasurementMapSize | null | undefined,
+  fittingType: FittingType | null | undefined,
   chartColumn: MeasurementMapDefinition | null | undefined
 ) => {
   let truthValue: MeasurementMapValue | null | undefined;
 
-  if (
-    mapSize &&
-    mapSize.measurementSize &&
-    mapSize.measurementSize.measurementMapValues &&
-    chartColumn
-  ) {
-    truthValue = new List<any>(
-      mapSize.measurementSize.measurementMapValues
-    ).firstOrDefault(
+  if (fittingType && fittingType.measurementMapValues && chartColumn) {
+    truthValue = new List<any>(fittingType.measurementMapValues).firstOrDefault(
       (mapValueItem: any) =>
         mapValueItem.measurementDefinitionId ===
         chartColumn.measurementDefinitionId
@@ -57,8 +50,8 @@ const _normalizeInputValue = (rawInput: any) => {
   return normalizedValueResult;
 };
 
-const ProductChartGridCell: React.FC<IProductChartGridCellProps> = (
-  props: IProductChartGridCellProps
+const BodySizeValueCell: React.FC<IBodySizeValueCellProps> = (
+  props: IBodySizeValueCellProps
 ) => {
   const dispatch = useDispatch();
 
@@ -70,12 +63,14 @@ const ProductChartGridCell: React.FC<IProductChartGridCellProps> = (
   const [outputValue, setOutputValue] = useState<string | undefined>();
 
   const possibleSizeValue = _findColumnSizeValue(
-    props.mapSize,
+    props.fittingType,
     props.chartColumn
   );
 
   if (possibleSizeValue !== relativeMapValue) {
-    setRelativeMapValue(_findColumnSizeValue(props.mapSize, props.chartColumn));
+    setRelativeMapValue(
+      _findColumnSizeValue(props.fittingType, props.chartColumn)
+    );
   }
 
   useEffect(() => {
@@ -104,17 +99,16 @@ const ProductChartGridCell: React.FC<IProductChartGridCellProps> = (
   const onCompleteEditing = (input: string) => {
     if (
       input !== outputValue &&
-      props.mapSize &&
-      props.mapSize.measurementSize &&
+      props.fittingType &&
       props.measurementChart &&
       props.chartColumn
     ) {
-      const sizePayload: any = {
-        id: props.mapSize.measurementSizeId,
-        name: props.mapSize.measurementSize.name,
-        description: props.mapSize.measurementSize.description,
-        measurementId: props.measurementChart.id,
-        valueDataContracts: [
+      const payload = {
+        id: props.fittingType.id,
+        type: props.fittingType.type,
+        measurementUnitId: props.fittingType.measurementUnitId,
+        measurementId: props.fittingType.measurementId,
+        measurementMapValues: [
           {
             id: relativeMapValue ? relativeMapValue.id : 0,
             value: _normalizeInputValue(input),
@@ -125,7 +119,7 @@ const ProductChartGridCell: React.FC<IProductChartGridCellProps> = (
 
       dispatch(
         assignPendingActions(
-          measurementActions.apiUpdateMeasurementSize(sizePayload),
+          fittingTypesActions.apiUpdateFittingType(payload),
           [],
           [],
           (args: any) => {
@@ -212,4 +206,4 @@ const ProductChartGridCell: React.FC<IProductChartGridCellProps> = (
   );
 };
 
-export default ProductChartGridCell;
+export default BodySizeValueCell;
