@@ -9,6 +9,7 @@ import { CommandBarButton, FontWeights } from 'office-ui-fabric-react';
 import FittinTypeGrid from './FittingTypeGrid';
 import FittingTypeForm from './management/FittingTypeForm';
 import { controlActions } from '../../../../../redux/slices/control.slice';
+import { unitsOfMeasurementActions } from '../../../../../redux/slices/measurements/unitsOfMeasurement.slice';
 
 export const CREATE_YOUR_FIRST_FITTING_TYPE: string =
   'Create your first fitting type';
@@ -43,6 +44,21 @@ const FittingTypes: React.FC = () => {
     IApplicationState,
     FittingType[]
   >((state) => state.fittingTypes.fittingTypes);
+
+  useEffect(() => {
+    dispatch(
+      assignPendingActions(
+        unitsOfMeasurementActions.apiGetAllUnitsOfMeasurement(),
+        [],
+        [],
+        (args: any) => {
+          dispatch(unitsOfMeasurementActions.changeUnitsOfMeasurement(args));
+        },
+        (args: any) => {}
+      )
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (targetMeasurement) {

@@ -13,7 +13,6 @@ import { FormicReference } from '../../../../../../interfaces';
 import {
   Measurement,
   MeasurementMapDefinition,
-  MeasurementMapSize,
   MeasurementMapValue,
 } from '../../../../../../interfaces/measurements';
 import * as fabricStyles from '../../../../../../common/fabric-styles/styles';
@@ -33,7 +32,6 @@ import {
 } from '../../../../../../interfaces/fittingTypes';
 import { fittingTypesActions } from '../../../../../../redux/slices/measurements/fittingTypes.slice';
 import { assignPendingActions } from '../../../../../../helpers/action.helper';
-import { unitsOfMeasurementActions } from '../../../../../../redux/slices/measurements/unitsOfMeasurement.slice';
 
 export interface IFittingTypeInitValues {
   type: string;
@@ -117,15 +115,13 @@ const _buildEditedFittingTypePayload = (
 };
 
 const _initDefaultValues = (
-  unitsOfMeasurement: IDropdownOption[],
+  unitOptions: IDropdownOption[],
   sourceEntity?: FittingType | null | undefined
 ) => {
   const initValues: IFittingTypeInitValues = {
     type: '',
     unitOfMeasurement:
-      unitsOfMeasurement.length > 1
-        ? (unitsOfMeasurement[0] as any).unitOfMeasurement
-        : null,
+      unitOptions.length > 1 ? (unitOptions[0] as any).unitOfMeasurement : null,
   };
 
   if (sourceEntity) {
@@ -279,9 +275,7 @@ export const FittingTypeForm: React.FC = () => {
     new FormicReference(() => {})
   );
   const [isFormikDirty, setFormikDirty] = useState<boolean>(false);
-  const [unitsOfMeasurement, setUnitsOfMeasurement] = useState<
-    IDropdownOption[]
-  >([]);
+  const [unitOptions, setUnitOptions] = useState<IDropdownOption[]>([]);
   const [valueItems, setValueItems] = useState<DefinitionValueItem[]>([]);
 
   const measurement = useSelector<
@@ -298,6 +292,10 @@ export const FittingTypeForm: React.FC = () => {
     (state) => state.fittingTypes.fittingTypes
   );
 
+  const unitsOfMeasurement = useSelector<IApplicationState, MeasurementUnit[]>(
+    (state) => state.unitsOfMeasurement.unitsOfMeasurement
+  );
+
   const commandBarItems = useSelector<IApplicationState, any>(
     (state) => state.control.rightPanel.commandBarItems
   );
@@ -310,13 +308,13 @@ export const FittingTypeForm: React.FC = () => {
             formikReference.formik.submitForm();
           }),
           GetCommandBarItemProps(CommandBarItem.Reset, () => {
-            setUnitsOfMeasurement([...unitsOfMeasurement]);
+            setUnitOptions([...unitOptions]);
             formikReference.formik.resetForm();
           }),
         ])
       );
     }
-  }, [formikReference, unitsOfMeasurement, dispatch]);
+  }, [formikReference, unitOptions, dispatch]);
 
   useEffect(() => {
     if (new List(commandBarItems).any()) {
@@ -336,32 +334,24 @@ export const FittingTypeForm: React.FC = () => {
   useEffect(() => {
     setValueItems(_initValueItemsDefaults(measurement, fittingTypeForEdit));
 
-    dispatch(
-      assignPendingActions(
-        unitsOfMeasurementActions.apiGetAllUnitsOfMeasurement(),
-        [],
-        [],
-        (args: any) => {
-          setUnitsOfMeasurement(
-            args.map((unit: MeasurementUnit, index: number) => {
-              return {
-                key: `${unit.id}`,
-                text: unit.description,
-                // isSelected: index === 0,
-                unitOfMeasurement: unit,
-              } as IDropdownOption;
-            })
-          );
-        },
-        (args: any) => {}
-      )
-    );
-
     return () => {
       dispatch(fittingTypesActions.changeFittingTypeForEdit(null));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    setUnitOptions(
+      unitsOfMeasurement.map((unit: MeasurementUnit, index: number) => {
+        return {
+          key: `${unit.id}`,
+          text: unit.description,
+          // isSelected: index === 0,
+          unitOfMeasurement: unit,
+        } as IDropdownOption;
+      })
+    );
+  }, [unitsOfMeasurement]);
 
   const newFittingType = (values: IFittingTypeInitValues) => {
     if (measurement) {
@@ -434,7 +424,7 @@ export const FittingTypeForm: React.FC = () => {
     }
   };
 
-  const initValues = _initDefaultValues(unitsOfMeasurement, fittingTypeForEdit);
+  const initValues = _initDefaultValues(unitOptions, fittingTypeForEdit);
 
   return (
     <div className="fittingTypeForm">
@@ -509,12 +499,12 @@ export const FittingTypeForm: React.FC = () => {
                         <div className="form__group">
                           <Dropdown
                             defaultSelectedKey={_resolveDefaultSelectedOptionKey(
-                              unitsOfMeasurement,
+                              unitOptions,
                               fittingTypeForEdit
                             )}
-                            placeholder="Coose chart view"
-                            label="Chart View"
-                            options={unitsOfMeasurement}
+                            placeholder="Choose Unit of Measurement"
+                            label="Unit of measurement"
+                            options={unitOptions}
                             styles={fabricStyles.comboBoxStyles}
                             onChange={(
                               event: React.FormEvent<HTMLDivElement>,

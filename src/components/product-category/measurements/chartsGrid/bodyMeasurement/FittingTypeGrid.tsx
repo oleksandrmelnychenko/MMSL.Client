@@ -37,6 +37,7 @@ import {
 import { ProductCategory } from '../../../../../interfaces/products';
 import BodySizeValueCell from './BodySizeValueCell';
 import BodySizeTypeCell from './BodySizeTypeCell';
+import BodySizeUnitsCell from './BodySizeUnitsCell';
 
 const FittingTypeGrid: React.FC = () => {
   const dispatch = useDispatch();
@@ -307,7 +308,6 @@ const FittingTypeGrid: React.FC = () => {
             productCategory={targetProduct}
           />
         );
-        // return <Text style={defaultCellStyle}>{item.type}</Text>;
       },
     },
     {
@@ -321,10 +321,17 @@ const FittingTypeGrid: React.FC = () => {
       isPadded: false,
       onRender: (item: any) => {
         return (
-          <Text style={defaultCellStyle}>
-            {item?.measurementUnit ? item.measurementUnit.description : ''}
-          </Text>
+          <BodySizeUnitsCell
+            fittingType={item}
+            measurementChart={targetMeasurement}
+            productCategory={targetProduct}
+          />
         );
+        // return (
+        //   <Text style={defaultCellStyle}>
+        //     {item?.measurementUnit ? item.measurementUnit.description : ''}
+        //   </Text>
+        // );
       },
     },
   ];
