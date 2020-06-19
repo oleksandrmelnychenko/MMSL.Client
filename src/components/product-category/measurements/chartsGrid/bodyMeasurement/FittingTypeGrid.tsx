@@ -19,6 +19,8 @@ import {
   Stack,
   getId,
   IconButton,
+  DetailsHeader,
+  FontWeights,
 } from 'office-ui-fabric-react';
 import { defaultCellStyle } from '../../../../../common/fabric-styles/styles';
 import './fittingTypeGrid.scss';
@@ -92,21 +94,15 @@ const FittingTypeGrid: React.FC = () => {
     if (!props) {
       return null;
     }
-    const onRenderColumnHeaderTooltip: IRenderFunction<IDetailsColumnRenderTooltipProps> = (
-      tooltipHostProps
-    ) => (
-      <div className="list__header">
-        <TooltipHost {...tooltipHostProps} />
-      </div>
-    );
-
     return (
-      <div>
-        {defaultRender!({
-          ...props,
-          onRenderColumnHeaderTooltip,
-        })}
-      </div>
+      <DetailsHeader
+        {...props}
+        styles={{
+          root: {
+            paddingTop: '0px',
+          },
+        }}
+      />
     );
   };
 

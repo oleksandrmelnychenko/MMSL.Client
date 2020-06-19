@@ -117,6 +117,7 @@ const BodySizeValueCell: React.FC<IBodySizeValueCellProps> = (
         ],
       };
 
+      debugger;
       dispatch(
         assignPendingActions(
           fittingTypesActions.apiUpdateFittingType(payload),
