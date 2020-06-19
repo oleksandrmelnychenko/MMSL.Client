@@ -25,6 +25,12 @@ import './fittingTypeGrid.scss';
 import { List } from 'linq-typescript';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
 import { fittingTypesActions } from '../../../../../redux/slices/measurements/fittingTypes.slice';
+import {
+  controlActions,
+  DialogArgs,
+  CommonDialogType,
+} from '../../../../../redux/slices/control.slice';
+import FittingTypeForm from './management/FittingTypeForm';
 
 const FittingTypeGrid: React.FC = () => {
   const dispatch = useDispatch();
@@ -136,40 +142,14 @@ const FittingTypeGrid: React.FC = () => {
                 text: 'Edit',
                 label: 'Edit',
                 iconProps: { iconName: 'Edit' },
-                onClick: () => {
-                  /// TODO:
-                },
+                onClick: () => onEdit(item),
               },
               {
                 key: 'delete',
                 text: 'Delete',
                 label: 'Delete',
                 iconProps: { iconName: 'Delete' },
-                onClick: () => {
-                  dispatch(
-                    assignPendingActions(
-                      fittingTypesActions.apiDeleteFittingTypeById(item.id),
-                      [],
-                      [],
-                      (args: any) => {
-                        const fittingTypesList = new List(fittingTypes);
-                        const removedFittingType = fittingTypesList.firstOrDefault(
-                          (item) => item.id === args.body.id
-                        );
-
-                        if (removedFittingType) {
-                          fittingTypesList.remove(removedFittingType);
-                          dispatch(
-                            fittingTypesActions.changeFittingTypes(
-                              fittingTypesList.toArray()
-                            )
-                          );
-                        }
-                      },
-                      (args: any) => {}
-                    )
-                  );
-                },
+                onClick: () => onDelete(item),
               },
             ],
             styles: {
@@ -183,6 +163,72 @@ const FittingTypeGrid: React.FC = () => {
         />
       </div>
     );
+  };
+
+  const onEdit = (fittingTypeToEdit: FittingType) => {
+    if (fittingTypeToEdit) {
+      dispatch(
+        assignPendingActions(
+          fittingTypesActions.apiGetFittingTypeById(fittingTypeToEdit.id),
+          [],
+          [],
+          (args: any) => {
+            dispatch(fittingTypesActions.changeFittingTypeForEdit(args));
+
+            dispatch(
+              controlActions.openRightPanel({
+                title: 'Edit',
+                description: `${args.type}`,
+                width: '400px',
+                closeFunctions: () => {
+                  dispatch(controlActions.closeRightPanel());
+                },
+                component: FittingTypeForm,
+              })
+            );
+          },
+          (args: any) => {}
+        )
+      );
+    }
+  };
+
+  const onDelete = (fittingTypeToDelete: FittingType) => {
+    if (fittingTypeToDelete) {
+      dispatch(
+        controlActions.toggleCommonDialogVisibility(
+          new DialogArgs(
+            CommonDialogType.Delete,
+            'Delete fitting type',
+            `Are you sure you want to delete ${fittingTypeToDelete.type}?`,
+            () => {
+              if (fittingTypeToDelete) {
+                dispatch(
+                  assignPendingActions(
+                    fittingTypesActions.apiDeleteFittingTypeById(
+                      fittingTypeToDelete.id
+                    ),
+                    [],
+                    [],
+                    (args: any) => {
+                      dispatch(
+                        fittingTypesActions.changeFittingTypes(
+                          new List(fittingTypes)
+                            .where((item) => item.id !== args.body)
+                            .toArray()
+                        )
+                      );
+                    },
+                    (args: any) => {}
+                  )
+                );
+              }
+            },
+            () => {}
+          )
+        )
+      );
+    }
   };
 
   const gridItems = fittingTypes.map((item: any) => {

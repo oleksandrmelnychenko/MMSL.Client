@@ -28,7 +28,7 @@ const fittingTypes = createSlice({
     apiCreateFittingType(state, action: any) {
       return state;
     },
-    apiUpdateFittingType(state) {
+    apiUpdateFittingType(state, action: any) {
       return state;
     },
     apiDeleteFittingTypeById(state, action: { type: string; payload: number }) {

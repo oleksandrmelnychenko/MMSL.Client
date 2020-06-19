@@ -40,7 +40,7 @@ export interface IFittingTypeInitValues {
   unitOfMeasurement: MeasurementUnit | null | undefined;
 }
 
-const _buildNewSizePayload = (
+const _buildNewFittingTypePayload = (
   values: IFittingTypeInitValues,
   measurement: Measurement,
   valueItems: DefinitionValueItem[]
@@ -72,15 +72,40 @@ const _buildNewSizePayload = (
   return fittingTypePayload;
 };
 
-const _buildEditedSizePayload = (
+const _buildEditedFittingTypePayload = (
   values: IFittingTypeInitValues,
   measurement: Measurement,
   valueItems: DefinitionValueItem[],
-  sourceEntity: MeasurementMapSize
+  sourceEntity: FittingType
 ) => {
-  const sizePayload: any = {};
+  const fittingTypePayload: any = { ...sourceEntity };
+  fittingTypePayload.type = values.type;
 
-  return sizePayload;
+  fittingTypePayload.measurementUnitId = values.unitOfMeasurement?.id;
+  fittingTypePayload.measurementUnit = values.unitOfMeasurement;
+
+  const dirtyValueItemsList = new List<DefinitionValueItem>(
+    valueItems
+  ).where((item) => item.resolveIsDirty());
+
+  fittingTypePayload.measurementMapValues = dirtyValueItemsList
+    .select((valueItem) => {
+      const valueDataContract: any = {};
+      valueDataContract.id = valueItem.getMapValueId();
+      valueDataContract.value = parseFloat(valueItem.value);
+      valueDataContract.measurementDefinitionId =
+        valueItem.sourceMapDefinition.measurementDefinitionId;
+
+      if (isNaN(valueDataContract.value)) valueDataContract.value = null;
+
+      return valueDataContract;
+    })
+    // .where(
+    //   (itemContract) => itemContract.value !== null && itemContract.id !== 0
+    // )
+    .toArray();
+
+  return fittingTypePayload;
 };
 
 const _initDefaultValues = (
@@ -143,6 +168,21 @@ const _initValueItemsDefaults = (
   }
 
   return result;
+};
+
+const _resolveDefaultSelectedOptionKey = (
+  options: IDropdownOption[],
+  fittingTypeForEdit?: FittingType | null | undefined
+) => {
+  let defaultSelectKey: string = '';
+
+  if (fittingTypeForEdit) {
+    defaultSelectKey = `${fittingTypeForEdit.measurementUnitId}`;
+  } else {
+    defaultSelectKey = options.length > 0 ? `${options[0].key}` : '';
+  }
+
+  return defaultSelectKey;
 };
 
 class DefinitionValueItem {
@@ -313,9 +353,13 @@ export const FittingTypeForm: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const createNewFittingType = (values: IFittingTypeInitValues) => {
+  const newFittingType = (values: IFittingTypeInitValues) => {
     if (measurement) {
-      const payload = _buildNewSizePayload(values, measurement, valueItems);
+      const payload = _buildNewFittingTypePayload(
+        values,
+        measurement,
+        valueItems
+      );
 
       dispatch(
         assignPendingActions(
@@ -341,11 +385,42 @@ export const FittingTypeForm: React.FC = () => {
     }
   };
 
-  const createEditedSize = (
+  const editFittingType = (
     values: IFittingTypeInitValues,
     sourceEntity: FittingType
   ) => {
     if (measurement && fittingTypeForEdit) {
+      const payload = _buildEditedFittingTypePayload(
+        values,
+        measurement,
+        valueItems,
+        fittingTypeForEdit
+      );
+
+      dispatch(
+        assignPendingActions(
+          fittingTypesActions.apiUpdateFittingType(payload),
+          [],
+          [],
+          (args: any) => {
+            dispatch(
+              fittingTypesActions.changeFittingTypes(
+                new List(fittingTypes)
+                  .select((item) => {
+                    let selectResult = item;
+
+                    if (item.id === args.body.id) selectResult = args.body;
+
+                    return selectResult;
+                  })
+                  .toArray()
+              )
+            );
+            dispatch(controlActions.closeRightPanel());
+          },
+          (args: any) => {}
+        )
+      );
     }
   };
 
@@ -362,8 +437,8 @@ export const FittingTypeForm: React.FC = () => {
         })}
         initialValues={initValues}
         onSubmit={(values: any) => {
-          if (fittingTypeForEdit) createEditedSize(values, fittingTypeForEdit);
-          else createNewFittingType(values);
+          if (fittingTypeForEdit) editFittingType(values, fittingTypeForEdit);
+          else newFittingType(values);
         }}
         onReset={(values: any, formikHelpers: any) => {
           setValueItems(
@@ -423,11 +498,10 @@ export const FittingTypeForm: React.FC = () => {
                       {() => (
                         <div className="form__group">
                           <Dropdown
-                            defaultSelectedKey={
-                              unitsOfMeasurement.length > 0
-                                ? `${unitsOfMeasurement[0].key}`
-                                : ''
-                            }
+                            defaultSelectedKey={_resolveDefaultSelectedOptionKey(
+                              unitsOfMeasurement,
+                              fittingTypeForEdit
+                            )}
                             placeholder="Coose chart view"
                             label="Chart View"
                             options={unitsOfMeasurement}

@@ -147,7 +147,10 @@ export const apiUpdateFittingTypeEpic = (action$: AnyAction, state$: any) => {
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
-            [controlActions.disabledStatusBar()],
+            [
+              controlActions.showInfoMessage(successResponse.message),
+              controlActions.disabledStatusBar(),
+            ],
             action
           );
         }),
@@ -186,7 +189,10 @@ export const apiDeleteFittingTypeByIdEpic = (
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
-            [controlActions.disabledStatusBar()],
+            [
+              controlActions.showInfoMessage(successResponse.message),
+              controlActions.disabledStatusBar(),
+            ],
             action
           );
         }),
