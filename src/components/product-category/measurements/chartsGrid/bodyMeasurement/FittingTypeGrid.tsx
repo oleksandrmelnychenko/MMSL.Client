@@ -23,8 +23,10 @@ import {
 import { defaultCellStyle } from '../../../../../common/fabric-styles/styles';
 import './fittingTypeGrid.scss';
 import { List } from 'linq-typescript';
+import { assignPendingActions } from '../../../../../helpers/action.helper';
+import { fittingTypesActions } from '../../../../../redux/slices/measurements/fittingTypes.slice';
 
-const FittinTypeGrid: React.FC = () => {
+const FittingTypeGrid: React.FC = () => {
   const dispatch = useDispatch();
 
   const [selection] = useState(new Selection({}));
@@ -144,7 +146,29 @@ const FittinTypeGrid: React.FC = () => {
                 label: 'Delete',
                 iconProps: { iconName: 'Delete' },
                 onClick: () => {
-                  /// TODO:
+                  dispatch(
+                    assignPendingActions(
+                      fittingTypesActions.apiDeleteFittingTypeById(item.id),
+                      [],
+                      [],
+                      (args: any) => {
+                        const fittingTypesList = new List(fittingTypes);
+                        const removedFittingType = fittingTypesList.firstOrDefault(
+                          (item) => item.id === args.body.id
+                        );
+
+                        if (removedFittingType) {
+                          fittingTypesList.remove(removedFittingType);
+                          dispatch(
+                            fittingTypesActions.changeFittingTypes(
+                              fittingTypesList.toArray()
+                            )
+                          );
+                        }
+                      },
+                      (args: any) => {}
+                    )
+                  );
                 },
               },
             ],
@@ -260,4 +284,4 @@ const FittinTypeGrid: React.FC = () => {
   );
 };
 
-export default FittinTypeGrid;
+export default FittingTypeGrid;
