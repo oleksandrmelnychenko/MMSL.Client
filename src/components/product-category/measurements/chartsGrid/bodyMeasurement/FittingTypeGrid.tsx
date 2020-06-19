@@ -11,8 +11,6 @@ import {
   SelectionMode,
   CheckboxVisibility,
   DetailsRow,
-  TooltipHost,
-  IDetailsColumnRenderTooltipProps,
   IRenderFunction,
   IDetailsHeaderProps,
   IColumn,
@@ -20,7 +18,6 @@ import {
   getId,
   IconButton,
   DetailsHeader,
-  FontWeights,
 } from 'office-ui-fabric-react';
 import { defaultCellStyle } from '../../../../../common/fabric-styles/styles';
 import './fittingTypeGrid.scss';
@@ -39,6 +36,7 @@ import {
 } from '../../../../../interfaces/measurements';
 import { ProductCategory } from '../../../../../interfaces/products';
 import BodySizeValueCell from './BodySizeValueCell';
+import BodySizeTypeCell from './BodySizeTypeCell';
 
 const FittingTypeGrid: React.FC = () => {
   const dispatch = useDispatch();
@@ -302,7 +300,14 @@ const FittingTypeGrid: React.FC = () => {
       data: 'string',
       isPadded: false,
       onRender: (item: any) => {
-        return <Text style={defaultCellStyle}>{item.type}</Text>;
+        return (
+          <BodySizeTypeCell
+            fittingType={item}
+            measurementChart={targetMeasurement}
+            productCategory={targetProduct}
+          />
+        );
+        // return <Text style={defaultCellStyle}>{item.type}</Text>;
       },
     },
     {

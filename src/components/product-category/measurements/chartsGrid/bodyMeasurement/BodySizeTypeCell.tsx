@@ -4,13 +4,8 @@ import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
 import { TextField, Text } from 'office-ui-fabric-react';
 import { defaultCellStyle } from '../../../../../common/fabric-styles/styles';
-import {
-  Measurement,
-  MeasurementMapDefinition,
-  MeasurementMapValue,
-} from '../../../../../interfaces/measurements';
+import { Measurement } from '../../../../../interfaces/measurements';
 import { ProductCategory } from '../../../../../interfaces/products';
-import { List } from 'linq-typescript';
 import '../baseMeasurement/chartGridCell.scss';
 import { FittingType } from '../../../../../interfaces/fittingTypes';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
@@ -18,72 +13,37 @@ import { fittingTypesActions } from '../../../../../redux/slices/measurements/fi
 
 export interface IBodySizeValueCellProps {
   fittingType: FittingType | null | undefined;
-  chartColumn: MeasurementMapDefinition | null | undefined;
   measurementChart: Measurement | null | undefined;
   productCategory: ProductCategory | null | undefined;
 }
 
 const CELL_VALUE_STUB = '';
 
-const _findColumnSizeValue = (
-  fittingType: FittingType | null | undefined,
-  chartColumn: MeasurementMapDefinition | null | undefined
-) => {
-  let truthValue: MeasurementMapValue | null | undefined;
-
-  if (fittingType && fittingType.measurementMapValues && chartColumn) {
-    truthValue = new List<any>(fittingType.measurementMapValues).firstOrDefault(
-      (mapValueItem: any) =>
-        mapValueItem.measurementDefinitionId ===
-        chartColumn.measurementDefinitionId
-    );
-  }
-
-  return truthValue;
-};
-
-const _normalizeInputValue = (rawInput: any) => {
-  let normalizedValueResult: any = parseFloat(rawInput ? rawInput : '');
-
-  if (isNaN(normalizedValueResult)) normalizedValueResult = null;
-
-  return normalizedValueResult;
-};
-
-const BodySizeValueCell: React.FC<IBodySizeValueCellProps> = (
+const BodySizeTypeCell: React.FC<IBodySizeValueCellProps> = (
   props: IBodySizeValueCellProps
 ) => {
   const dispatch = useDispatch();
 
   const [inputEditRef] = useState<any>(React.createRef());
   const [isInEditMode, setIsInEditMode] = useState<boolean>(false);
-  const [relativeMapValue, setRelativeMapValue] = useState<
-    MeasurementMapValue | null | undefined
-  >(null);
+  const [sizeType, setSizeType] = useState<string | null | undefined>(null);
   const [outputValue, setOutputValue] = useState<string | undefined>();
 
-  const possibleSizeValue = _findColumnSizeValue(
-    props.fittingType,
-    props.chartColumn
-  );
-
-  if (possibleSizeValue !== relativeMapValue) {
-    setRelativeMapValue(
-      _findColumnSizeValue(props.fittingType, props.chartColumn)
-    );
+  if (sizeType !== props?.fittingType?.type) {
+    setSizeType(props?.fittingType?.type);
   }
 
   useEffect(() => {
-    if (relativeMapValue) {
-      if (relativeMapValue.value) {
-        setOutputValue(`${relativeMapValue.value}`);
+    if (sizeType) {
+      if (sizeType !== '') {
+        setOutputValue(sizeType);
       } else {
         setOutputValue(CELL_VALUE_STUB);
       }
     } else {
       setOutputValue(CELL_VALUE_STUB);
     }
-  }, [relativeMapValue]);
+  }, [sizeType]);
 
   useEffect(() => {
     if (
@@ -97,24 +57,13 @@ const BodySizeValueCell: React.FC<IBodySizeValueCellProps> = (
   }, [isInEditMode, inputEditRef, outputValue]);
 
   const onCompleteEditing = (input: string) => {
-    if (
-      input !== outputValue &&
-      props.fittingType &&
-      props.measurementChart &&
-      props.chartColumn
-    ) {
+    if (input !== outputValue && props.fittingType && props.measurementChart) {
       const payload = {
         id: props.fittingType.id,
-        type: props.fittingType.type,
+        type: input,
         measurementUnitId: props.fittingType.measurementUnitId,
         measurementId: props.fittingType.measurementId,
-        measurementMapValues: [
-          {
-            id: relativeMapValue ? relativeMapValue.id : 0,
-            value: _normalizeInputValue(input),
-            measurementDefinitionId: props.chartColumn.measurementDefinitionId,
-          },
-        ],
+        measurementMapValues: [],
       };
 
       dispatch(
@@ -135,19 +84,15 @@ const BodySizeValueCell: React.FC<IBodySizeValueCellProps> = (
   };
 
   let init = {
-    sizeValue: outputValue,
+    sizeType: outputValue,
   };
-
-  if (isNaN(parseFloat(init.sizeValue ? init.sizeValue : ''))) {
-    (init as any).sizeValue = '';
-  }
 
   return (
     <div className="chartGridCell">
       {isInEditMode ? (
         <Formik
           validationSchema={Yup.object().shape({
-            sizeValue: Yup.string().nullable(),
+            sizeType: Yup.string().nullable(),
           })}
           initialValues={init}
           onSubmit={(values: any) => {}}
@@ -155,20 +100,19 @@ const BodySizeValueCell: React.FC<IBodySizeValueCellProps> = (
           {(formik) => {
             return (
               <Form>
-                <Field name="sizeValue">
+                <Field name="sizeType">
                   {() => (
                     <TextField
-                      type="number"
                       styles={{ root: { position: 'absolute', top: '6px' } }}
                       autoFocus
                       componentRef={inputEditRef}
-                      value={formik.values.sizeValue}
+                      value={formik.values.sizeType}
                       onKeyPress={(args: any) => {
                         if (args) {
                           if (args.charCode === 13) {
                             onCompleteEditing(
-                              formik.values.sizeValue
-                                ? formik.values.sizeValue
+                              formik.values.sizeType
+                                ? formik.values.sizeType
                                 : ''
                             );
                           }
@@ -177,12 +121,12 @@ const BodySizeValueCell: React.FC<IBodySizeValueCellProps> = (
                       onChange={(args: any) => {
                         let value = args.target.value;
 
-                        formik.setFieldValue('sizeValue', value);
-                        formik.setFieldTouched('sizeValue');
+                        formik.setFieldValue('sizeType', value);
+                        formik.setFieldTouched('sizeType');
                       }}
                       onBlur={(args: any) =>
                         onCompleteEditing(
-                          formik.values.sizeValue ? formik.values.sizeValue : ''
+                          formik.values.sizeType ? formik.values.sizeType : ''
                         )
                       }
                     />
@@ -206,4 +150,4 @@ const BodySizeValueCell: React.FC<IBodySizeValueCellProps> = (
   );
 };
 
-export default BodySizeValueCell;
+export default BodySizeTypeCell;
