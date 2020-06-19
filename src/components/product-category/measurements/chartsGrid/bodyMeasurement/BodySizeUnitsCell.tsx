@@ -109,7 +109,6 @@ const BodySizeUnitsCell: React.FC<IBodySizeUnitsCellProps> = (
           [],
           (args: any) => {
             setIsInEditMode(false);
-
             dispatch(
               fittingTypesActions.changeFittingTypes(
                 new List(fittingTypes)
