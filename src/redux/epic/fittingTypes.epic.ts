@@ -1,4 +1,3 @@
-import { putWebRequest, deleteWebRequest } from './../../helpers/epic.helper';
 import { checkUnauthorized } from './../../helpers/error.helpers';
 import {
   successCommonEpicFlow,
@@ -8,33 +7,34 @@ import { switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import { getActiveLanguage } from 'react-localize-redux';
-import { postWebRequest, getWebRequest } from '../../helpers/epic.helper';
-import StoreHelper from '../../helpers/store.helper';
-import * as api from '../constants/api.constants';
+import {
+  getWebRequest,
+  postWebRequest,
+  deleteWebRequest,
+  putWebRequest,
+} from '../../helpers/epic.helper';
+import * as api from '../constants/api.fittingType.constants';
 import { controlActions } from '../slices/control.slice';
-import { deliveryTimelinesActions } from '../slices/deliveryTimeline.slice';
+import { fittingTypesActions } from '../slices/measurements/fittingTypes.slice';
 
-export const apiGetAllDeliveryTimelineEpic = (
+export const apiGetFittingTypesByMeasurementIdEpic = (
   action$: AnyAction,
   state$: any
 ) => {
   return action$.pipe(
-    ofType(deliveryTimelinesActions.apiGetAllDeliveryTimeline.type),
+    ofType(fittingTypesActions.apiGetFittingTypesByMeasurementId.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
 
-      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-
-      return getWebRequest(api.GET_ALL_DELIVERY_TIMELINES, state$.value).pipe(
+      return getWebRequest(
+        api.GET_ALL_FITTING_TYPES_BY_MEASUREMENT_ID,
+        state$.value,
+        [{ key: 'measurementId', value: `${action.payload}` }]
+      ).pipe(
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
-            [
-              deliveryTimelinesActions.successGetAllDeliveryTimelines(
-                successResponse
-              ),
-              controlActions.disabledStatusBar(),
-            ],
+            [controlActions.disabledStatusBar()],
             action
           );
         }),
@@ -43,10 +43,11 @@ export const apiGetAllDeliveryTimelineEpic = (
             return errorCommonEpicFlow(
               errorResponse,
               [
-                controlActions.disabledStatusBar(),
+                { type: 'ERROR_GET_FITTING_TYPES_BY_MEASUREMENT_ID' },
                 controlActions.showInfoMessage(
-                  `Error occurred while getting delivery timelines. ${errorResponse}`
+                  `Error occurred while getting measurement fitting types. ${errorResponse}`
                 ),
+                controlActions.disabledStatusBar(),
               ],
               action
             );
@@ -57,18 +58,50 @@ export const apiGetAllDeliveryTimelineEpic = (
   );
 };
 
-export const apiCreateNewDeliveryTimelineEpic = (
-  action$: AnyAction,
-  state$: any
-) => {
+export const apiGetFittingTypeByIdEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(deliveryTimelinesActions.apiCreateNewDeliveryTimeline.type),
+    ofType(fittingTypesActions.apiGetFittingTypeById.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
-      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
+      return getWebRequest(api.GET_FITTING_TYPE_BY_ID, state$.value, [
+        { key: 'fittingTypeId', value: `${action.payload}` },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_GET_FITTING_TYPE_BY_ID' },
+                controlActions.showInfoMessage(
+                  `Error occurred while getting fitting type. ${errorResponse}`
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiCreateFittingTypeEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(fittingTypesActions.apiCreateFittingType.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
 
       return postWebRequest(
-        api.ADD_DELIVERY_TIMELINE,
+        api.CREATE_FITTING_TYPE,
         action.payload,
         state$.value,
         true
@@ -76,11 +109,7 @@ export const apiCreateNewDeliveryTimelineEpic = (
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
-            [
-              deliveryTimelinesActions.apiGetAllDeliveryTimeline(),
-              controlActions.showInfoMessage(successResponse.message),
-              controlActions.disabledStatusBar(),
-            ],
+            [controlActions.disabledStatusBar()],
             action
           );
         }),
@@ -89,10 +118,11 @@ export const apiCreateNewDeliveryTimelineEpic = (
             return errorCommonEpicFlow(
               errorResponse,
               [
-                controlActions.disabledStatusBar(),
+                { type: 'ERROR_CREATE_FITTING_TYPE' },
                 controlActions.showInfoMessage(
-                  `Error occurred while creating new delivery timeline. ${errorResponse}`
+                  `Error occurred while creating fitting type. ${errorResponse}`
                 ),
+                controlActions.disabledStatusBar(),
               ],
               action
             );
@@ -103,19 +133,14 @@ export const apiCreateNewDeliveryTimelineEpic = (
   );
 };
 
-export const apiUpdateDeliveryTimelineEpic = (
-  action$: AnyAction,
-  state$: any
-) => {
+export const apiUpdateFittingTypeEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(deliveryTimelinesActions.apiUpdateDeliveryTimeline.type),
+    ofType(fittingTypesActions.apiUpdateFittingType.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
 
-      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-
       return putWebRequest(
-        api.UPDATE_DELIVERY_TIMELINE,
+        api.UPDATE_FITTING_TYPE,
         action.payload,
         state$.value
       ).pipe(
@@ -123,7 +148,6 @@ export const apiUpdateDeliveryTimelineEpic = (
           return successCommonEpicFlow(
             successResponse,
             [
-              deliveryTimelinesActions.apiGetAllDeliveryTimeline(),
               controlActions.showInfoMessage(successResponse.message),
               controlActions.disabledStatusBar(),
             ],
@@ -135,10 +159,11 @@ export const apiUpdateDeliveryTimelineEpic = (
             return errorCommonEpicFlow(
               errorResponse,
               [
-                controlActions.disabledStatusBar(),
+                { type: 'ERROR_UPDATE_FITTING_TYPE' },
                 controlActions.showInfoMessage(
-                  `Error occurred while updating delivery timeline. ${errorResponse}`
+                  `Error occurred while updating fitting type. ${errorResponse}`
                 ),
+                controlActions.disabledStatusBar(),
               ],
               action
             );
@@ -149,27 +174,22 @@ export const apiUpdateDeliveryTimelineEpic = (
   );
 };
 
-export const apiDeleteDeliveryTimelineEpic = (
+export const apiDeleteFittingTypeByIdEpic = (
   action$: AnyAction,
   state$: any
 ) => {
   return action$.pipe(
-    ofType(deliveryTimelinesActions.apiDeleteDeliveryTimeline.type),
+    ofType(fittingTypesActions.apiDeleteFittingTypeById.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
 
-      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-
-      return deleteWebRequest(
-        api.DELETE_DELIVERY_TIMELINE_BY_ID,
-        state$.value,
-        [{ key: 'deliveryTimelineId', value: `${action.payload}` }]
-      ).pipe(
+      return deleteWebRequest(api.DELETE_FITTING_TYPE, state$.value, [
+        { key: 'fittingTypeId', value: `${action.payload}` },
+      ]).pipe(
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
             [
-              deliveryTimelinesActions.apiGetAllDeliveryTimeline(),
               controlActions.showInfoMessage(successResponse.message),
               controlActions.disabledStatusBar(),
             ],
@@ -181,10 +201,11 @@ export const apiDeleteDeliveryTimelineEpic = (
             return errorCommonEpicFlow(
               errorResponse,
               [
-                controlActions.disabledStatusBar(),
+                { type: 'ERROR_DELETE_FITTING_TYPE_BY_ID' },
                 controlActions.showInfoMessage(
-                  `Error occurred while deleting delivery timeline. ${errorResponse}`
+                  `Error occurred while deleting fitting type. ${errorResponse}`
                 ),
+                controlActions.disabledStatusBar(),
               ],
               action
             );

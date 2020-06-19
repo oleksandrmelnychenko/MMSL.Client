@@ -18,38 +18,52 @@ import {
   SelectionMode,
   getId,
   CommandBarButton,
+  FontWeights,
 } from 'office-ui-fabric-react';
-import { IApplicationState } from '../../../../redux/reducers';
+import { IApplicationState } from '../../../../../redux/reducers';
 import {
   Measurement,
   MeasurementMapDefinition,
   MeasurementMapSize,
-} from '../../../../interfaces/measurements';
-import { ProductCategory } from '../../../../interfaces/products';
+} from '../../../../../interfaces/measurements';
+import { ProductCategory } from '../../../../../interfaces/products';
 import './productMeasurementChartGrid.scss';
 import { List } from 'linq-typescript';
 import {
   controlActions,
   DialogArgs,
   CommonDialogType,
-} from '../../../../redux/slices/control.slice';
-import { productActions } from '../../../../redux/slices/product.slice';
-import ProductChartGridCell from './ProductChartGridCell';
-import ProductChartNameGridCell from './ProductChartNameGridCell';
-import SizesForm from '../management/SizesForm';
-import { assignPendingActions } from '../../../../helpers/action.helper';
-import { measurementActions } from '../../../../redux/slices/measurement.slice';
+} from '../../../../../redux/slices/control.slice';
+import { productActions } from '../../../../../redux/slices/product.slice';
+import BaseSizeValueCell from './BaseSizeValueCell';
+import BaseSizeNameCell from './BaseSizeNameCell';
+import SizesForm from './management/SizesForm';
+import { assignPendingActions } from '../../../../../helpers/action.helper';
+import { measurementActions } from '../../../../../redux/slices/measurements/measurement.slice';
 
 const FROZEN_COLUMN_WIDTH = 130;
+
+const _addFirstSizeButtonStyle = {
+  root: {
+    marginTop: '72px',
+    marginLeft: '32px',
+    height: '35px',
+    background: '#f0f0f0',
+    borderRadius: '2px',
+    padding: '0 12px',
+  },
+  label: {
+    fontWeight: FontWeights.regular,
+  },
+  rootHovered: {
+    background: '#e5e5e5',
+  },
+};
 
 const ProductMeasurementChartGrid: React.FC = () => {
   const dispatch = useDispatch();
 
-  const [selection] = useState(
-    new Selection({
-      onSelectionChanged: () => {},
-    })
-  );
+  const [selection] = useState(new Selection({}));
 
   const targetProductMeasurementChart:
     | Measurement
@@ -76,7 +90,7 @@ const ProductMeasurementChartGrid: React.FC = () => {
 
     onRender: (item?: any, index?: number, column?: IColumn) => {
       return (
-        <ProductChartNameGridCell
+        <BaseSizeNameCell
           mapSize={item}
           measurementChart={targetProductMeasurementChart}
           productCategory={targetProduct}
@@ -255,21 +269,7 @@ const ProductMeasurementChartGrid: React.FC = () => {
       </div>
     );
 
-    // <DetailsHeader
-    //       styles={{
-    //         root: { fontWeight: FontWeights.light },
-    //         accessibleLabel: { fontWeight: FontWeights.light },
-    //       }}
-    //       {...props}
-    //     />
-
     return (
-      // <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced>
-      //   {defaultRender!({
-      //     ...props,
-      //     onRenderColumnHeaderTooltip,
-      //   })}
-      // </Sticky>
       <div>
         {defaultRender!({
           ...props,
@@ -333,21 +333,6 @@ const ProductMeasurementChartGrid: React.FC = () => {
     };
   };
 
-  const onRenderDynamicSizeValueCell = (
-    item?: MeasurementMapSize,
-    index?: number,
-    column?: IColumn
-  ) => {
-    return (
-      <ProductChartGridCell
-        mapSize={item}
-        chartColumn={(column as any).rawSourceContext}
-        measurementChart={targetProductMeasurementChart}
-        productCategory={targetProduct}
-      />
-    );
-  };
-
   const buildDynamicChartColumns = () => {
     if (
       targetProduct &&
@@ -366,10 +351,22 @@ const ProductMeasurementChartGrid: React.FC = () => {
             isResizable: true,
             isCollapsible: false,
             data: 'string',
-            // defaultCellStyle:{{root:""}},
             isPadded: false,
             rawSourceContext: definitionMapItem,
-            onRender: onRenderDynamicSizeValueCell,
+            onRender: (
+              item?: MeasurementMapSize,
+              index?: number,
+              column?: IColumn
+            ) => {
+              return (
+                <BaseSizeValueCell
+                  mapSize={item}
+                  chartColumn={(column as any).rawSourceContext}
+                  measurementChart={targetProductMeasurementChart}
+                  productCategory={targetProduct}
+                />
+              );
+            },
           };
         })
         .toArray();
@@ -412,14 +409,7 @@ const ProductMeasurementChartGrid: React.FC = () => {
   const columns = buildDynamicChartColumns();
 
   return (
-    <div
-      className="productMeasurementChartGrid"
-      style={{
-        position: 'relative',
-        borderTop: '1px solid #dfdfdf',
-        paddingTop: '16px',
-      }}
-    >
+    <div className="productMeasurementChartGrid">
       {/* Main data grid with dynamic columns */}
       <DetailsList
         onRenderRow={onRenderRow}
@@ -475,22 +465,7 @@ const ProductMeasurementChartGrid: React.FC = () => {
           disabled={targetProductMeasurementChart ? false : true}
           onClick={() => addNewSize()}
           height={20}
-          styles={{
-            root: {
-              marginTop: '72px',
-              marginLeft: '32px',
-              height: '35px',
-              background: '#f0f0f0',
-              borderRadius: '2px',
-              padding: '0 12px',
-            },
-            label: {
-              fontWeight: '400',
-            },
-            rootHovered: {
-              background: '#e5e5e5',
-            },
-          }}
+          styles={_addFirstSizeButtonStyle}
           iconProps={{ iconName: 'Add' }}
           text="Add first size"
         />

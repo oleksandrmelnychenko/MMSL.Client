@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ComboBox, IComboBox, IComboBoxOption } from 'office-ui-fabric-react';
 import { productActions } from '../../../redux/slices/product.slice';
-import { measurementActions } from '../../../redux/slices/measurement.slice';
+import { measurementActions } from '../../../redux/slices/measurements/measurement.slice';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { IApplicationState } from '../../../redux/reducers';
 import { Measurement } from '../../../interfaces/measurements';

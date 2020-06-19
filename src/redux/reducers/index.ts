@@ -36,7 +36,19 @@ import {
 import {
   default as measurementsStateReducer,
   MeasurementsState,
-} from '../slices/measurement.slice';
+} from '../slices/measurements/measurement.slice';
+import {
+  default as measurementViewControlsReducer,
+  IMeasurementViewControlsState,
+} from '../slices/measurements/measurementViewControls.slice';
+import {
+  default as fittingTypesReducer,
+  IFittingTypesState,
+} from '../slices/measurements/fittingTypes.slice';
+import {
+  default as unitsOfMeasurementReducer,
+  IUnitsOfMeasurementState,
+} from '../slices/measurements/unitsOfMeasurement.slice';
 
 export interface IApplicationState {
   auth: IAuthState;
@@ -51,6 +63,9 @@ export interface IApplicationState {
   measurements: MeasurementsState;
   productStylePermissions: ProductStylePermissionsState;
   deliveryTimelines: DeliveryTimelinesState;
+  measurementViewControls: IMeasurementViewControlsState;
+  fittingTypes: IFittingTypesState;
+  unitsOfMeasurement: IUnitsOfMeasurementState;
   dealerAccount: IDalerAccountState;
 }
 
@@ -67,5 +82,8 @@ export const reducer = combineReducers({
   measurements: measurementsStateReducer,
   productStylePermissions: productStylePermissionsReducer,
   deliveryTimelines: deliveryTimelinesReducer,
+  measurementViewControls: measurementViewControlsReducer,
+  fittingTypes: fittingTypesReducer,
+  unitsOfMeasurement: unitsOfMeasurementReducer,
   dealerAccount: dealerAccountReducer,
 });

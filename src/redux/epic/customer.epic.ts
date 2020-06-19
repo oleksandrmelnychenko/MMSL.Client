@@ -9,9 +9,9 @@ import { ofType } from 'redux-observable';
 import { customerActions } from '../../redux/slices/customer.slice';
 import { getActiveLanguage } from 'react-localize-redux';
 import {
-  ajaxGetWebResponse,
-  ajaxPostResponse,
-  ajaxPutResponse,
+  getWebRequest,
+  postWebRequest,
+  putWebRequest,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import { controlActions } from '../slices/control.slice';
@@ -27,10 +27,9 @@ export const getCustomersListPaginatedEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      /// TODO: support pagination for customers
-      return ajaxGetWebResponse(api.GET_CUSTOMERS_ALL, state$.value, [
-        { key: 'pageNumber', value: `1` },
-        { key: 'limit', value: `9999` },
+      return getWebRequest(api.GET_CUSTOMERS_ALL, state$.value, [
+        { key: 'pageNumber', value: `${pagination.paginationInfo.pageNumber}` },
+        { key: 'limit', value: `${pagination.limit}` },
         {
           key: 'searchPhrase',
           value: `${state$.value.customer.customerState.search}`,
@@ -80,7 +79,7 @@ export const customerFormStoreAutocompleteTextEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(api.GET_ALL_STORES, state$.value, [
+      return getWebRequest(api.GET_ALL_STORES, state$.value, [
         {
           key: 'searchPhrase',
           value: `${action.payload}`,
@@ -122,7 +121,7 @@ export const saveNewCustomerEpic = (action$: AnyAction, state$: any) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
-      return ajaxPostResponse(
+      return postWebRequest(
         api.CREATE_NEW_STORE_CUSTOMER,
         action.payload,
         state$.value,
@@ -162,7 +161,7 @@ export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
-      return ajaxPutResponse(
+      return putWebRequest(
         api.UPDATE_STORE_CUSTOMER,
         action.payload,
         state$.value

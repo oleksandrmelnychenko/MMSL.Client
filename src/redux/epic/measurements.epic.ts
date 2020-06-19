@@ -8,14 +8,14 @@ import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import { getActiveLanguage } from 'react-localize-redux';
 import {
-  ajaxGetWebResponse,
-  ajaxPostResponse,
-  ajaxDeleteResponse,
-  ajaxPutResponse,
+  getWebRequest,
+  postWebRequest,
+  deleteWebRequest,
+  putWebRequest,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import { controlActions } from '../slices/control.slice';
-import { measurementActions } from '../../redux/slices/measurement.slice';
+import { measurementActions } from '../../redux/slices/measurements/measurement.slice';
 import StoreHelper from '../../helpers/store.helper';
 
 export const apiGetAllMeasurementsEpic = (action$: AnyAction, state$: any) => {
@@ -24,14 +24,11 @@ export const apiGetAllMeasurementsEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(api.GET_ALL_MEASUREMENTS, state$.value).pipe(
+      return getWebRequest(api.GET_ALL_MEASUREMENTS, state$.value).pipe(
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
-            [
-              measurementActions.updateisMeasurementsWasRequested(true),
-              controlActions.disabledStatusBar(),
-            ],
+            [controlActions.disabledStatusBar()],
             action
           );
         }),
@@ -41,7 +38,6 @@ export const apiGetAllMeasurementsEpic = (action$: AnyAction, state$: any) => {
               errorResponse,
               [
                 { type: 'ERROR_GET_ALL_MEASUREMENTS' },
-                measurementActions.updateisMeasurementsWasRequested(true),
                 controlActions.showInfoMessage(
                   `Error occurred while getting measurements list. ${errorResponse}`
                 ),
@@ -66,7 +62,7 @@ export const apiCreateNewMeasurementEpic = (
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
-      return ajaxPostResponse(
+      return postWebRequest(
         api.ADD_NEW_MEASUREMENT,
         action.payload,
         state$.value,
@@ -110,7 +106,7 @@ export const apiGetMeasurementByIdEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(api.GET_MEASUREMENT_BY_ID, state$.value, [
+      return getWebRequest(api.GET_MEASUREMENT_BY_ID, state$.value, [
         { key: 'measurementId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
@@ -126,7 +122,6 @@ export const apiGetMeasurementByIdEpic = (action$: AnyAction, state$: any) => {
               errorResponse,
               [
                 { type: 'ERROR_GET_MEASUREMENT_BY_ID' },
-                measurementActions.updateisMeasurementsWasRequested(true),
                 controlActions.showInfoMessage(
                   `Error occurred while getting measurement by id. ${errorResponse}`
                 ),
@@ -150,7 +145,7 @@ export const apiDeleteMeasurementByIdEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxDeleteResponse(api.DELETE_MEASUREMENT, state$.value, [
+      return deleteWebRequest(api.DELETE_MEASUREMENT, state$.value, [
         {
           key: 'measurementId',
           value: `${action.payload}`,
@@ -194,7 +189,7 @@ export const apiUpdateMeasurementEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxPutResponse(
+      return putWebRequest(
         api.UPDATE_MEASUREMENT,
         action.payload,
         state$.value
@@ -241,7 +236,7 @@ export const apiCreateNewMeasurementSizeEpic = (
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
-      return ajaxPostResponse(
+      return postWebRequest(
         api.CREATE_MEASUREMENT_SIZE,
         action.payload,
         state$.value,
@@ -287,7 +282,7 @@ export const apiUpdateMeasurementSizeEpic = (
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
-      return ajaxPutResponse(
+      return putWebRequest(
         api.UPDATE_MEASUREMENT_SIZE,
         action.payload,
         state$.value
@@ -332,7 +327,7 @@ export const apiDeleteMeasurementSizeByIdEpic = (
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
-      return ajaxDeleteResponse(api.DELETE_MEASUREMENT_SIZE, state$.value, [
+      return deleteWebRequest(api.DELETE_MEASUREMENT_SIZE, state$.value, [
         {
           key: 'measurementId',
           value: `${action.payload.measurementId}`,

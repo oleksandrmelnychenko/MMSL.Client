@@ -7,7 +7,7 @@ import { switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import { getActiveLanguage } from 'react-localize-redux';
-import { ajaxGetWebResponse } from '../../helpers/epic.helper';
+import { getWebRequest } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import { unitsActions } from '../slices/units.slice';
 import { controlActions } from '../slices/control.slice';
@@ -19,7 +19,7 @@ export const getCurrenciesEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(api.GET_CURRENCIES_ALL, state$.value).pipe(
+      return getWebRequest(api.GET_CURRENCIES_ALL, state$.value).pipe(
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
@@ -50,7 +50,7 @@ export const getPaymentTypesEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const languageCode = getActiveLanguage(state$.value.localize).code;
-      return ajaxGetWebResponse(api.GET_PAYMENT_TYPES_ALL, state$.value).pipe(
+      return getWebRequest(api.GET_PAYMENT_TYPES_ALL, state$.value).pipe(
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,

@@ -1,12 +1,11 @@
 import {
   Measurement,
   MeasurementMapSize,
-} from './../../interfaces/measurements';
+} from './../../../interfaces/measurements';
 import { createSlice } from '@reduxjs/toolkit';
 
 export class MeasurementsState {
   constructor() {
-    this.isMeasurementsWasRequested = false;
     this.measurementList = [];
     this.targetMeasurement = null;
     this.managingMeasurementPanelContent = null;
@@ -16,7 +15,6 @@ export class MeasurementsState {
   }
 
   managingMeasurementPanelContent: ManagingMeasurementPanelComponent | null;
-  isMeasurementsWasRequested: boolean;
   measurementList: Measurement[];
   targetMeasurement: Measurement | null | undefined;
 
@@ -65,14 +63,6 @@ const measurements = createSlice({
         payload: { measurementId: number; sizeId: number };
       }
     ) {
-      return state;
-    },
-    updateisMeasurementsWasRequested(
-      state,
-      action: { type: string; payload: boolean }
-    ) {
-      state.isMeasurementsWasRequested = action.payload;
-
       return state;
     },
     updateMeasurementsList(

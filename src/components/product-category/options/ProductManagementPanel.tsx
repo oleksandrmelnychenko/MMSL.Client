@@ -9,7 +9,7 @@ import { IApplicationState } from '../../../redux/reducers/index';
 import { ProductCategory } from '../../../interfaces/products';
 import ProductMeasurementPanel, {
   measurementsPanelDismisActions,
-} from './ProductMeasurementPanel';
+} from './measurementOptions/ProductMeasurementPanel';
 import ProductTimelinesPanel from './ProductTimelinesPanel';
 import ProductStylesPanel, {
   stylesPanelDismisActions,

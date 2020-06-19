@@ -6,36 +6,46 @@ import {
   TooltipDelay,
   DirectionalHint,
 } from 'office-ui-fabric-react';
-import { productActions } from '../../../redux/slices/product.slice';
+import { productActions } from '../../../../redux/slices/product.slice';
 import {
   controlActions,
   DialogArgs,
   CommonDialogType,
-} from '../../../redux/slices/control.slice';
+} from '../../../../redux/slices/control.slice';
 import { useDispatch, useSelector } from 'react-redux';
-import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
-import { ProductManagingPanelComponent } from '../../../redux/slices/product.slice';
+import {
+  labelStyle,
+  btnMenuStyle,
+} from '../../../../common/fabric-styles/styles';
+import { ProductManagingPanelComponent } from '../../../../redux/slices/product.slice';
 import { useHistory } from 'react-router-dom';
-import { IApplicationState } from '../../../redux/reducers/index';
-import { Measurement } from '../../../interfaces/measurements';
-import { ProductCategory } from '../../../interfaces/products';
+import { IApplicationState } from '../../../../redux/reducers/index';
+import { Measurement } from '../../../../interfaces/measurements';
+import { ProductCategory } from '../../../../interfaces/products';
 import ProductManagementPanel, {
   IProductMenuItem,
-} from './ProductManagementPanel';
-import MeasurementForm from '../measurements/management/MeasurementForm';
-import { assignPendingActions } from '../../../helpers/action.helper';
-import { measurementActions } from '../../../redux/slices/measurement.slice';
+} from '../ProductManagementPanel';
+import { assignPendingActions } from '../../../../helpers/action.helper';
+import { measurementActions } from '../../../../redux/slices/measurements/measurement.slice';
 import { List } from 'linq-typescript';
-import SizesForm from '../measurements/management/SizesForm';
+import MeasurementForm from '../../measurements/chartsGrid/baseMeasurement/management/MeasurementForm';
+import SizesForm from '../../measurements/chartsGrid/baseMeasurement/management/SizesForm';
+import {
+  measurementViewControlsActions,
+  ChartDisplayToMeasurementType,
+} from '../../../../redux/slices/measurements/measurementViewControls.slice';
 
-export const measurementsPanelDismisActions = () => {
+export const baseMeasurementOptionsPanelDismisActions = () => {
   return [
+    measurementViewControlsActions.changeChartDisplay(
+      ChartDisplayToMeasurementType.Base
+    ),
     productActions.changeSelectedProductMeasurement(null),
     productActions.updateProductMeasurementsList([]),
   ];
 };
 
-const ProductMeasurementPanel: React.FC = () => {
+const BaseMeasurementOptions: React.FC = () => {
   const dispatch = useDispatch();
   let history = useHistory();
 
@@ -73,7 +83,7 @@ const ProductMeasurementPanel: React.FC = () => {
           })
         );
 
-        measurementsPanelDismisActions().forEach((action) => {
+        baseMeasurementOptionsPanelDismisActions().forEach((action) => {
           dispatch(action);
         });
       },
@@ -261,4 +271,4 @@ const ProductMeasurementPanel: React.FC = () => {
   );
 };
 
-export default ProductMeasurementPanel;
+export default BaseMeasurementOptions;

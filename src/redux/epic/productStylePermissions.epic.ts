@@ -1,7 +1,7 @@
 import {
-  ajaxPostResponse,
-  ajaxPutResponse,
-  ajaxDeleteResponse,
+  postWebRequest,
+  putWebRequest,
+  deleteWebRequest,
 } from './../../helpers/epic.helper';
 import { checkUnauthorized } from './../../helpers/error.helpers';
 import {
@@ -12,7 +12,7 @@ import { switchMap, mergeMap, catchError, debounceTime } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import { getActiveLanguage } from 'react-localize-redux';
-import { ajaxGetWebResponse } from '../../helpers/epic.helper';
+import { getWebRequest } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import { controlActions } from '../slices/control.slice';
 import StoreHelper from '../../helpers/store.helper';
@@ -29,7 +29,7 @@ export const apiGetAllStylePermissionsByProductIdEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(
+      return getWebRequest(
         api.GET_ALL_PERMISSION_SETTINGS_BY_PRODUCT_ID,
         state$.value,
         [
@@ -72,7 +72,7 @@ export const apiCreateNewPermissionEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxPostResponse(
+      return postWebRequest(
         api.CREATE_NEW_PERMISSION,
         action.payload,
         state$.value,
@@ -116,7 +116,7 @@ export const apiUpdatePermissionEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxPutResponse(
+      return putWebRequest(
         api.UPDATE_PERMISSION,
         action.payload,
         state$.value
@@ -159,7 +159,7 @@ export const apiDeletePermissionEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxDeleteResponse(api.DELETE_PERMISSION, state$.value, [
+      return deleteWebRequest(api.DELETE_PERMISSION, state$.value, [
         {
           key: 'productPermissionSettingId',
           value: `${action.payload}`,
@@ -209,7 +209,7 @@ export const apiGetOptionGroupsFromPermissionPerspectiveByIdEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(
+      return getWebRequest(
         api.GET_OPTION_GROUPS_FROM_PERMISSION_PERSPECTIVE,
         state$.value,
         [
@@ -256,7 +256,7 @@ export const apiGetPermissionByIdEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(api.GET_PERMISSION_BY_ID, state$.value, [
+      return getWebRequest(api.GET_PERMISSION_BY_ID, state$.value, [
         {
           key: 'productPermissionSettingId',
           value: `${action.payload}`,
@@ -298,16 +298,12 @@ export const apiGetDealersByPermissionIdEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(
-        api.GET_DEALERS_BY_PERMISSION_ID,
-        state$.value,
-        [
-          {
-            key: 'productPermissionId',
-            value: `${action.payload}`,
-          },
-        ]
-      ).pipe(
+      return getWebRequest(api.GET_DEALERS_BY_PERMISSION_ID, state$.value, [
+        {
+          key: 'productPermissionId',
+          value: `${action.payload}`,
+        },
+      ]).pipe(
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
@@ -347,7 +343,7 @@ export const apiSearchDealersByPermissionProductIdEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(
+      return getWebRequest(
         api.SEARCH_DEALERS_BY_PERMISSION_PRODUCT_ID,
         state$.value,
         [
@@ -397,7 +393,7 @@ export const apiBindDealersToPermissionEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxPostResponse(
+      return postWebRequest(
         api.BIND_DEALERS_TO_PERMISSION,
         action.payload,
         state$.value,

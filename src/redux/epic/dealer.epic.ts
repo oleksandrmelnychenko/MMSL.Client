@@ -10,10 +10,10 @@ import { dealerActions } from '../slices/dealer.slice';
 import { controlActions } from '../slices/control.slice';
 import { getActiveLanguage } from 'react-localize-redux';
 import {
-  ajaxPostResponse,
-  ajaxGetWebResponse,
-  ajaxPutResponse,
-  ajaxDeleteResponse,
+  postWebRequest,
+  getWebRequest,
+  putWebRequest,
+  deleteWebRequest,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import {
@@ -70,7 +70,7 @@ export const getStoresByDealerEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(api.GET_STORES_BY_DEALER, state$.value, [
+      return getWebRequest(api.GET_STORES_BY_DEALER, state$.value, [
         { key: 'dealerAccountId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
@@ -106,7 +106,7 @@ export const updateDealerStoreEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const languageCode = getActiveLanguage(state$.value.localize).code;
-      return ajaxPutResponse(
+      return putWebRequest(
         api.UPDATE_DEALER_STORE,
         action.payload,
         state$.value
@@ -145,7 +145,7 @@ export const addStoreToCurrentDealerEpic = (
     switchMap((action: AnyAction) => {
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const languageCode = getActiveLanguage(state$.value.localize).code;
-      return ajaxPostResponse(
+      return postWebRequest(
         api.CREATE_DEALER_STORE,
         action.payload,
         state$.value,
@@ -185,7 +185,7 @@ export const deleteCurrentDealerStoreEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxDeleteResponse(api.DELETE_CURRENT_DEALER_STORE, state$.value, [
+      return deleteWebRequest(api.DELETE_CURRENT_DEALER_STORE, state$.value, [
         { key: 'storeId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
@@ -225,7 +225,7 @@ export const getStoreCustomersByStoreIdEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxGetWebResponse(api.GET_CUSTOMERS_ALL, state$.value, [
+      return getWebRequest(api.GET_CUSTOMERS_ALL, state$.value, [
         {
           key: 'storeId',
           value: `${action.payload}`,
@@ -266,7 +266,7 @@ export const deleteCurrentCustomerFromStoreEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return ajaxDeleteResponse(api.DELETE_CUSTOMER_FROM_STORE, state$.value, [
+      return deleteWebRequest(api.DELETE_CUSTOMER_FROM_STORE, state$.value, [
         { key: 'storeCustomerId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
@@ -305,7 +305,7 @@ export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const languageCode = getActiveLanguage(state$.value.localize).code;
-      return ajaxPutResponse(
+      return putWebRequest(
         api.UPDATE_STORE_CUSTOMER,
         action.payload,
         state$.value

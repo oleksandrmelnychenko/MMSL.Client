@@ -8,6 +8,8 @@ import * as productSettings from './productSettings.epic';
 import * as productCategory from './productCategory.epic';
 import * as measurements from './measurements.epic';
 import * as productStylePermissions from './productStylePermissions.epic';
+import * as fittingTypes from './fittingTypes.epic';
+import * as unitsOfMeasurement from './unitsOfMeasurement.epic';
 import * as dealerAccount from './dealerAccount.epic';
 
 const arrayEpic = [
@@ -20,6 +22,8 @@ const arrayEpic = [
   ...Object.values(productCategory),
   ...Object.values(measurements),
   ...Object.values(productStylePermissions),
+  ...Object.values(fittingTypes),
+  ...Object.values(unitsOfMeasurement),
   ...Object.values(dealerAccount),
 ];
 
