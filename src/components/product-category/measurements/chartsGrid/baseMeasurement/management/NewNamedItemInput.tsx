@@ -80,7 +80,7 @@ export const NewNamedItemInput: React.FC<NewNamedItemInputProps> = (
                       }
                     }}
                     onChange={(args: any) => {
-                      setInput(args.target.value);
+                      setInput(args.target.value ? args.target.value : '');
                     }}
                     onFocus={(args: any) => {}}
                     onBlur={(args: any) => {
