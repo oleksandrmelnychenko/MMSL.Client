@@ -89,15 +89,13 @@ const _buildUpdatedUnitPayload = (
       )
       .toArray(),
     id: sourceEntity.id,
-    imageBlob: null,
-    imageUrl: '',
+    imageBlob: values.imageFile,
+    imageUrl: sourceEntity.imageUrl,
   };
 
   if (!values.isRemovingImage) {
     payload.imageBlob = null;
     payload.imageUrl = '';
-  } else {
-    payload.imageBlob = values.imageFile;
   }
 
   return payload;
