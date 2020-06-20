@@ -296,7 +296,7 @@ export const apiCreateNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const formData: FormData = new FormData();
 
-      formData.append(FORM_DATA_IMAGE_FILE_KEY, action.payload.imageBlob);
+      formData.append(FORM_DATA_IMAGE_FILE_KEY, action.payload.file);
       formData.append('orderIndex', action.payload.orderIndex);
       formData.append('value', action.payload.value);
       formData.append('isMandatory', action.payload.isMandatory);
