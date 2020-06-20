@@ -7,6 +7,7 @@ import {
   Text,
   Stack,
   IconButton,
+  Separator,
 } from 'office-ui-fabric-react';
 import { OptionUnit, UnitValue } from '../../../../interfaces/options';
 import { List } from 'linq-typescript';
@@ -141,11 +142,23 @@ const UnitValuesInput: React.FC<IUnitValuesInputProps> = (
     if (item && item.unitValueModel) {
       if (!item.unitValueModel.resolveIsStub()) {
         contentResult = (
-          <Stack horizontal horizontalAlign="space-between">
+          <Stack
+            horizontal
+            verticalAlign="center"
+            horizontalAlign="space-between"
+            styles={{ root: { margin: '0px 2px' } }}
+          >
             <Text>{item.text}</Text>
             <IconButton
               iconProps={{
-                iconName: 'Settings',
+                iconName: 'Cancel',
+                styles: {
+                  root: {
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    color: '#a4373a',
+                  },
+                },
               }}
               onClick={() => {
                 if (item && item.unitValueModel && item.index < values.length) {
@@ -183,31 +196,31 @@ const UnitValuesInput: React.FC<IUnitValuesInputProps> = (
 
   const onRenderMenuList = (menuListProps: any, defaultRender: any) => {
     return (
-      <div>
-        <div>
-          <TextField
-            type="number"
-            value={input}
-            placeholder="Enter new unit value"
-            onAbort={() => {}}
-            onChange={(args: any) => {
-              setInput(args?.target?.value ? args.target.value : '');
-            }}
-            onKeyPress={(args: any) => {
-              if (args) {
-                if (args.charCode === 13) {
-                  onReleaseInput();
-                }
+      <Stack>
+        <TextField
+          type="number"
+          value={input}
+          placeholder="Enter new unit value"
+          onAbort={() => {}}
+          onChange={(args: any) => {
+            setInput(args?.target?.value ? args.target.value : '');
+          }}
+          onKeyPress={(args: any) => {
+            if (args) {
+              if (args.charCode === 13) {
+                onReleaseInput();
               }
-            }}
-            onBlur={(args: any) => {
-              onReleaseInput();
-            }}
-          />
-        </div>
+            }
+          }}
+          onBlur={(args: any) => {
+            onReleaseInput();
+          }}
+        />
+
+        <Separator />
 
         {defaultRender(menuListProps)}
-      </div>
+      </Stack>
     );
   };
 
@@ -222,65 +235,69 @@ const UnitValuesInput: React.FC<IUnitValuesInputProps> = (
   };
 
   return (
-    <DefaultButton
-      onRenderText={(props?: any) => {
-        let textOutput = '';
+    <Stack tokens={{ childrenGap: '4px' }}>
+      <Text styles={{ root: { cursor: 'default' } }}>Values</Text>
 
-        values.forEach((item: UnitValueModel, index: number) => {
-          if (values.length > 1) {
-            if (!item.resolveIsStub()) {
-              textOutput += `${item.text}`;
-              if (index !== values.length - 1) {
-                textOutput += ', ';
+      <DefaultButton
+        onRenderText={(props?: any) => {
+          let textOutput = '';
+
+          values.forEach((item: UnitValueModel, index: number) => {
+            if (values.length > 1) {
+              if (!item.resolveIsStub()) {
+                textOutput += `${item.text}`;
+                if (index !== values.length - 1) {
+                  textOutput += ', ';
+                }
               }
+            } else {
+              textOutput += `${item.text}`;
             }
-          } else {
-            textOutput += `${item.text}`;
-          }
-        });
+          });
 
-        return (
-          <Text
-            key="0"
-            block
-            nowrap
-            styles={{
-              root: { textAlign: 'left' },
-            }}
-          >
-            {textOutput}
-          </Text>
-        );
-      }}
-      styles={{
-        icon: { display: 'none' },
-        root: { padding: '0px 9px' },
-        flexContainer: { justifyContent: 'flex-start' },
-        menuIcon: { display: 'none' },
-      }}
-      menuProps={{
-        styles: {
-          root: {
-            margin: '6px',
+          return (
+            <Text
+              key="0"
+              block
+              nowrap
+              styles={{
+                root: { textAlign: 'left' },
+              }}
+            >
+              {textOutput}
+            </Text>
+          );
+        }}
+        styles={{
+          icon: { display: 'none' },
+          root: { padding: '0px 9px' },
+          flexContainer: { justifyContent: 'flex-start' },
+          menuIcon: { display: 'none' },
+        }}
+        menuProps={{
+          styles: {
+            root: {
+              margin: '9px',
+            },
+            list: {
+              marginTop: '12px',
+            },
           },
-          list: {
-            marginTop: '12px',
-          },
-        },
-        onRenderMenuList: onRenderMenuList,
-        shouldFocusOnMount: true,
-        items: values.map((item, index) => {
-          return {
-            key: `${index}`,
-            text: item.text,
-            index: index,
-            onRender: onRenderUnitValueItem,
-            unitValueModel: item,
-          } as IContextualMenuItem;
-        }),
-        useTargetWidth: true,
-      }}
-    />
+          onRenderMenuList: onRenderMenuList,
+          shouldFocusOnMount: true,
+          items: values.map((item, index) => {
+            return {
+              key: `${index}`,
+              text: item.text,
+              index: index,
+              onRender: onRenderUnitValueItem,
+              unitValueModel: item,
+            } as IContextualMenuItem;
+          }),
+          useTargetWidth: true,
+        }}
+      />
+    </Stack>
   );
 };
 

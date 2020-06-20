@@ -81,6 +81,7 @@ const _buildUpdatedUnitPayload = (
           .select((deletedValueItem) => {
             return {
               id: deletedValueItem.getUnitValueId(),
+              value: deletedValueItem.text,
               isDeleted: true,
             };
           })
@@ -437,7 +438,7 @@ export const ManagingProductUnitForm: React.FC = () => {
                       value={formik.values.value}
                       styles={fabricStyles.textFildLabelStyles}
                       className="form__group__field"
-                      label="Value"
+                      label="Name"
                       required
                       onChange={(args: any) => {
                         let value = args.target.value;
