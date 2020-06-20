@@ -8,6 +8,7 @@ import {
   Stack,
   IconButton,
   Separator,
+  DirectionalHint,
 } from 'office-ui-fabric-react';
 import { OptionUnit, UnitValue } from '../../../../interfaces/options';
 import { List } from 'linq-typescript';
@@ -36,7 +37,7 @@ export class UnitValueModel {
 
     if (isStub !== null && isStub !== undefined) {
       this._isStub = isStub;
-      this.text = 'Add unit values';
+      this.text = '';
     } else {
       this._isStub = false;
     }
@@ -199,6 +200,13 @@ const UnitValuesInput: React.FC<IUnitValuesInputProps> = (
       <Stack>
         <TextField
           type="number"
+          styles={{
+            fieldGroup: {
+              border: '1px solid rgb(240, 240, 240)',
+              borderColor: 'rgb(240, 240, 240) !important',
+              background: 'rgb(240, 240, 240)',
+            },
+          }}
           value={input}
           placeholder="Enter new unit value"
           onAbort={() => {}}
@@ -218,6 +226,22 @@ const UnitValuesInput: React.FC<IUnitValuesInputProps> = (
         />
 
         <Separator />
+
+        {menuListProps.items.length === 1 &&
+        menuListProps.items[0].unitValueModel.resolveIsStub() ? (
+          <Text
+            styles={{
+              root: {
+                fontWeight: 400,
+                fontSize: '12px',
+                color: '#a19f9d',
+                textAlign: 'center',
+              },
+            }}
+          >
+            {'No values'}
+          </Text>
+        ) : null}
 
         {defaultRender(menuListProps)}
       </Stack>
@@ -271,6 +295,10 @@ const UnitValuesInput: React.FC<IUnitValuesInputProps> = (
         styles={{
           icon: { display: 'none' },
           root: { padding: '0px 9px' },
+          rootHovered: {
+            cursor: 'text',
+            background: 'white',
+          },
           flexContainer: { justifyContent: 'flex-start' },
           menuIcon: { display: 'none' },
         }}

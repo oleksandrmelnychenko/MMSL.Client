@@ -466,10 +466,6 @@ export const ManagingProductUnitForm: React.FC = () => {
                   dirtyUnitValues: UnitValueModel[],
                   dirtyValuesToDelete: UnitValueModel[]
                 ) => {
-                  console.log('onCallback');
-                  console.log(dirtyUnitValues);
-                  console.log(dirtyValuesToDelete);
-
                   formik.setFieldValue('dirtyValues', dirtyUnitValues);
                   formik.setFieldTouched('dirtyValues');
 
