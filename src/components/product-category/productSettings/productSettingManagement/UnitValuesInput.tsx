@@ -13,7 +13,10 @@ import { List } from 'linq-typescript';
 
 export interface IUnitValuesInputProps {
   optionUnit: OptionUnit | null | undefined;
-  onCallback: (unitValues: UnitValue[], valuesToDelete: UnitValue[]) => void;
+  onCallback: (
+    dirtyUnitValues: UnitValueModel[],
+    dirtyValuesToDelete: UnitValueModel[]
+  ) => void;
 }
 
 export class UnitValueModel {
@@ -46,11 +49,18 @@ export class UnitValueModel {
   resolveIsDirty: () => boolean = () => {
     let isDirty = false;
 
-    if (
-      this._unitValue.id === 0 ||
-      this.isDeleted === this._unitValue.isDeleted
-    )
-      isDirty = true;
+    if (!this.resolveIsStub()) {
+      if (this._unitValue.id === 0) {
+        isDirty = true;
+      } else {
+        if (
+          this.isDeleted !== this._unitValue.isDeleted ||
+          this.text !== `${this._unitValue.value}`
+        ) {
+          isDirty = true;
+        }
+      }
+    }
 
     return isDirty;
   };
@@ -78,8 +88,21 @@ const UnitValuesInput: React.FC<IUnitValuesInputProps> = (
         .concat(buildUnitValueModels(props.optionUnit))
         .toArray()
     );
+    setDeletedValues([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.optionUnit]);
+
+  useEffect(() => {
+    props.onCallback(
+      new List(values)
+        .where((valueItem) => valueItem.resolveIsDirty())
+        .toArray(),
+      new List(deletedValues)
+        .where((valueItem) => valueItem.resolveIsDirty())
+        .toArray()
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values, deletedValues]);
 
   const buildUnitValueModels = (optionUnit: OptionUnit | null | undefined) => {
     let result: UnitValueModel[] = [];

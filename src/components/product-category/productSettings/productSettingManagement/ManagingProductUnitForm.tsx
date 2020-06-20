@@ -25,7 +25,7 @@ import { List } from 'linq-typescript';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import { ProductCategory } from '../../../../interfaces/products';
 import AttachField from './AttachField';
-import UnitValuesInput from './UnitValuesInput';
+import UnitValuesInput, { UnitValueModel } from './UnitValuesInput';
 
 export interface IInitValues {
   value: string;
@@ -33,6 +33,8 @@ export interface IInitValues {
   isMandatory: boolean;
   imageFile: any | null;
   isRemovingImage: boolean;
+  dirtyValues: UnitValueModel[];
+  dirtyValuesToDelete: UnitValueModel[];
   unitToDelete: any;
 }
 
@@ -40,38 +42,64 @@ const _buildNewUnitPayload = (
   values: IInitValues,
   relativeOptionGroupId: number
 ) => {
-  let newUnit: OptionUnit = new OptionUnit();
-  newUnit.optionGroupId = relativeOptionGroupId;
-  newUnit.value = values.value;
-  newUnit.isMandatory = values.isMandatory;
+  let payload = {
+    id: 0,
+    orderIndex: 0,
+    value: values.value,
+    isMandatory: values.isMandatory,
+    optionGroupId: relativeOptionGroupId,
+    file: values.imageFile,
+    serializedValues: values.dirtyValues.map((item) => {
+      return {
+        value: item.text,
+      };
+    }),
+  };
 
-  if (!values.isRemovingImage) {
-    newUnit.imageBlob = null;
-    newUnit.imageUrl = '';
-  } else {
-    newUnit.imageBlob = values.imageFile;
-  }
-
-  return newUnit;
+  return payload;
 };
 
 const _buildUpdatedUnitPayload = (
   values: IInitValues,
   sourceEntity: OptionUnit
 ) => {
-  let newUnit: OptionUnit = { ...sourceEntity };
-
-  newUnit.value = values.value;
-  newUnit.isMandatory = values.isMandatory;
+  let payload = {
+    orderIndex: sourceEntity.orderIndex,
+    value: values.value,
+    isMandatory: values.isMandatory,
+    serializedValues: new List<any>(
+      new List(values.dirtyValues)
+        .select((valueItem) => {
+          return {
+            value: valueItem.text,
+          };
+        })
+        .toArray()
+    )
+      .concat(
+        new List<any>(values.dirtyValuesToDelete)
+          .select((deletedValueItem) => {
+            return {
+              id: deletedValueItem.getUnitValueId(),
+              isDeleted: true,
+            };
+          })
+          .toArray()
+      )
+      .toArray(),
+    id: sourceEntity.id,
+    imageBlob: null,
+    imageUrl: '',
+  };
 
   if (!values.isRemovingImage) {
-    newUnit.imageBlob = null;
-    newUnit.imageUrl = '';
+    payload.imageBlob = null;
+    payload.imageUrl = '';
   } else {
-    newUnit.imageBlob = values.imageFile;
+    payload.imageBlob = values.imageFile;
   }
 
-  return newUnit;
+  return payload;
 };
 
 /// Build single hint lable
@@ -94,12 +122,14 @@ const _renderHintLable = (textMessage: string): JSX.Element => {
 };
 
 const _initDefaultValues = (sourceEntity?: OptionUnit | null) => {
-  const initValues = {
+  const initValues: IInitValues = {
     value: '',
     imageUrl: '',
     isMandatory: false,
     imageFile: null,
     isRemovingImage: false,
+    dirtyValues: [],
+    dirtyValuesToDelete: [],
     unitToDelete: sourceEntity,
   };
 
@@ -127,7 +157,9 @@ const _isFormikDirty = (initValues: IInitValues, values: IInitValues) => {
       initValues.imageUrl !== values.imageUrl ||
       initValues.isMandatory !== values.isMandatory ||
       initValues.imageFile !== values.imageFile ||
-      initValues.isRemovingImage !== values.isRemovingImage;
+      initValues.isRemovingImage !== values.isRemovingImage ||
+      values.dirtyValuesToDelete.length > 0 ||
+      values.dirtyValues.length > 0;
   }
 
   return isDirty;
@@ -195,9 +227,14 @@ export const ManagingProductUnitForm: React.FC = () => {
             GetCommandBarItemProps(CommandBarItem.Save, () =>
               formikReference.formik.submitForm()
             ),
-            GetCommandBarItemProps(CommandBarItem.Reset, () =>
-              formikReference.formik.resetForm()
-            ),
+            GetCommandBarItemProps(CommandBarItem.Reset, () => {
+              dispatch(
+                productSettingsActions.changeTargetOptionUnit({
+                  ...sectedOptionUnit,
+                })
+              );
+              formikReference.formik.resetForm();
+            }),
           ])
         );
       } else {
@@ -364,6 +401,8 @@ export const ManagingProductUnitForm: React.FC = () => {
         imageFile: Yup.object().nullable(),
         isRemovingImage: Yup.boolean(),
         unitToDelete: Yup.object().nullable(),
+        dirtyValues: Yup.array(),
+        dirtyValuesToDelete: Yup.array(),
       })}
       initialValues={_initDefaultValues(sectedOptionUnit)}
       onSubmit={(values: any) => {
@@ -423,9 +462,22 @@ export const ManagingProductUnitForm: React.FC = () => {
               <UnitValuesInput
                 optionUnit={sectedOptionUnit}
                 onCallback={(
-                  unitValues: UnitValue[],
-                  valuesToDelete: UnitValue[]
-                ) => {}}
+                  dirtyUnitValues: UnitValueModel[],
+                  dirtyValuesToDelete: UnitValueModel[]
+                ) => {
+                  console.log('onCallback');
+                  console.log(dirtyUnitValues);
+                  console.log(dirtyValuesToDelete);
+
+                  formik.setFieldValue('dirtyValues', dirtyUnitValues);
+                  formik.setFieldTouched('dirtyValues');
+
+                  formik.setFieldValue(
+                    'dirtyValuesToDelete',
+                    dirtyValuesToDelete
+                  );
+                  formik.setFieldTouched('dirtyValuesToDelete');
+                }}
               />
 
               <AttachField formik={formik} />
