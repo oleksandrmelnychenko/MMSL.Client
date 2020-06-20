@@ -77,7 +77,8 @@ const Header: React.FC = () => {
         <DefaultButton
           styles={menuStyles}
           persistMenu={true}
-          menuProps={menuProps}>
+          menuProps={menuProps}
+        >
           <div>
             <Persona
               {...examplePersona}

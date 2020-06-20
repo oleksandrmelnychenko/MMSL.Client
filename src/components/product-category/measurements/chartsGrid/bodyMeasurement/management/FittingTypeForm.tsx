@@ -36,6 +36,7 @@ import { assignPendingActions } from '../../../../../../helpers/action.helper';
 export interface IFittingTypeInitValues {
   type: string;
   unitOfMeasurement: MeasurementUnit | null | undefined;
+  unitOfMeasurementId: number | null | undefined;
 }
 
 const _buildNewFittingTypePayload = (
@@ -118,10 +119,15 @@ const _initDefaultValues = (
   unitOptions: IDropdownOption[],
   sourceEntity?: FittingType | null | undefined
 ) => {
+  const defaultUnitOfMeasurement =
+    unitOptions.length > 1 ? (unitOptions[0] as any).unitOfMeasurement : null;
+
   const initValues: IFittingTypeInitValues = {
     type: '',
-    unitOfMeasurement:
-      unitOptions.length > 1 ? (unitOptions[0] as any).unitOfMeasurement : null,
+    unitOfMeasurement: defaultUnitOfMeasurement,
+    unitOfMeasurementId: defaultUnitOfMeasurement
+      ? defaultUnitOfMeasurement.id
+      : 0,
   };
 
   if (sourceEntity) {
@@ -434,6 +440,9 @@ export const FittingTypeForm: React.FC = () => {
           unitOfMeasurement: Yup.object()
             .nullable()
             .required('Unit of measurement is required'),
+          unitOfMeasurementId: Yup.number()
+            .nullable()
+            .required('Unit of measurement id is required'),
         })}
         initialValues={initValues}
         onSubmit={(values: any) => {
@@ -517,6 +526,12 @@ export const FittingTypeForm: React.FC = () => {
                                   (option as any).unitOfMeasurement
                                 );
                                 formik.setFieldTouched('unitOfMeasurement');
+
+                                formik.setFieldValue(
+                                  'unitOfMeasurementId',
+                                  (option as any).unitOfMeasurement.id
+                                );
+                                formik.setFieldTouched('unitOfMeasurementId');
                               }
                             }}
                           />

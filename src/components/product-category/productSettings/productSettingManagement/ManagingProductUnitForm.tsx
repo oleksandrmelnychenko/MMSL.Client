@@ -25,6 +25,7 @@ import { List } from 'linq-typescript';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import { ProductCategory } from '../../../../interfaces/products';
 import AttachField from './AttachField';
+import UnitValuesInput from './UnitValuesInput';
 
 export interface IInitValues {
   value: string;
@@ -418,6 +419,8 @@ export const ManagingProductUnitForm: React.FC = () => {
                   </div>
                 )}
               </Field>
+
+              <UnitValuesInput />
 
               <AttachField formik={formik} />
             </Stack>

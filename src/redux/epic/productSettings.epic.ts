@@ -307,38 +307,21 @@ export const apiCreateNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const formData: FormData = new FormData();
+
+      const stub = [{ value: 330 }, { value: 440 }, { value: 110 }];
+
       formData.append(FORM_DATA_IMAGE_FILE_KEY, action.payload.imageBlob);
+      formData.append('orderIndex', action.payload.orderIndex);
+      formData.append('value', action.payload.value);
+      formData.append('isMandatory', action.payload.isMandatory);
+      formData.append('id', action.payload.id);
+      formData.append('optionGroupId', action.payload.optionGroupId);
+      formData.append('serializedValues', JSON.stringify(stub));
 
       return postFormDataWebRequest(
         api.ADD_OPTION_UNIT,
         formData,
-        state$.value,
-        [
-          {
-            key: 'orderIndex',
-            value: `${action.payload.orderIndex}`,
-          },
-          {
-            key: 'value',
-            value: `${action.payload.value}`,
-          },
-          {
-            key: 'isMandatory',
-            value: `${action.payload.isMandatory}`,
-          },
-          {
-            key: 'imageUrl',
-            value: `${encodeURIComponent(action.payload.imageUrl)}`,
-          },
-          {
-            key: 'id',
-            value: `${action.payload.id}`,
-          },
-          {
-            key: 'optionGroupId',
-            value: `${action.payload.optionGroupId}`,
-          },
-        ]
+        state$.value
       ).pipe(
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
@@ -368,6 +351,74 @@ export const apiCreateNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
     })
   );
 };
+// export const apiCreateNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
+//   return action$.pipe(
+//     ofType(productSettingsActions.apiCreateNewOptionUnit.type),
+//     switchMap((action: AnyAction) => {
+//       const languageCode = getActiveLanguage(state$.value.localize).code;
+//       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+//       const formData: FormData = new FormData();
+//       formData.append(FORM_DATA_IMAGE_FILE_KEY, action.payload.imageBlob);
+
+//       return postFormDataWebRequest(
+//         api.ADD_OPTION_UNIT,
+//         formData,
+//         state$.value,
+//         [
+//           {
+//             key: 'orderIndex',
+//             value: `${action.payload.orderIndex}`,
+//           },
+//           {
+//             key: 'value',
+//             value: `${action.payload.value}`,
+//           },
+//           {
+//             key: 'isMandatory',
+//             value: `${action.payload.isMandatory}`,
+//           },
+//           {
+//             key: 'imageUrl',
+//             value: `${encodeURIComponent(action.payload.imageUrl)}`,
+//           },
+//           {
+//             key: 'id',
+//             value: `${action.payload.id}`,
+//           },
+//           {
+//             key: 'optionGroupId',
+//             value: `${action.payload.optionGroupId}`,
+//           },
+//         ]
+//       ).pipe(
+//         mergeMap((successResponse: any) => {
+//           return successCommonEpicFlow(
+//             successResponse,
+//             [
+//               controlActions.showInfoMessage(successResponse.message),
+//               controlActions.disabledStatusBar(),
+//             ],
+//             action
+//           );
+//         }),
+//         catchError((errorResponse: any) => {
+//           return checkUnauthorized(errorResponse.status, languageCode, () => {
+//             return errorCommonEpicFlow(
+//               errorResponse,
+//               [
+//                 controlActions.disabledStatusBar(),
+//                 controlActions.showInfoMessage(
+//                   `Error occurred while creating new style option. ${errorResponse}`
+//                 ),
+//               ],
+//               action
+//             );
+//           });
+//         })
+//       );
+//     })
+//   );
+// };
 
 export const apiDeleteOptionUnitByIdEpic = (
   action$: AnyAction,
