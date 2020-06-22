@@ -19,7 +19,6 @@ import {
   IconButton,
   DetailsHeader,
 } from 'office-ui-fabric-react';
-import { defaultCellStyle } from '../../../../../common/fabric-styles/styles';
 import './fittingTypeGrid.scss';
 import { List } from 'linq-typescript';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
@@ -38,6 +37,7 @@ import { ProductCategory } from '../../../../../interfaces/products';
 import BodySizeValueCell from './BodySizeValueCell';
 import BodySizeTypeCell from './BodySizeTypeCell';
 import BodySizeUnitsCell from './BodySizeUnitsCell';
+import BorderedCell from '../BorderedCell';
 
 const FittingTypeGrid: React.FC = () => {
   const dispatch = useDispatch();
@@ -198,12 +198,14 @@ const FittingTypeGrid: React.FC = () => {
               column?: IColumn
             ) => {
               return (
-                <BodySizeValueCell
-                  fittingType={item}
-                  chartColumn={(column as any).rawSourceContext}
-                  measurementChart={targetMeasurement}
-                  productCategory={targetProduct}
-                />
+                <BorderedCell>
+                  <BodySizeValueCell
+                    fittingType={item}
+                    chartColumn={(column as any).rawSourceContext}
+                    measurementChart={targetMeasurement}
+                    productCategory={targetProduct}
+                  />
+                </BorderedCell>
               );
             },
           };
@@ -302,11 +304,13 @@ const FittingTypeGrid: React.FC = () => {
       isPadded: false,
       onRender: (item: any) => {
         return (
-          <BodySizeTypeCell
-            fittingType={item}
-            measurementChart={targetMeasurement}
-            productCategory={targetProduct}
-          />
+          <BorderedCell>
+            <BodySizeTypeCell
+              fittingType={item}
+              measurementChart={targetMeasurement}
+              productCategory={targetProduct}
+            />
+          </BorderedCell>
         );
       },
     },
@@ -321,17 +325,14 @@ const FittingTypeGrid: React.FC = () => {
       isPadded: false,
       onRender: (item: any) => {
         return (
-          <BodySizeUnitsCell
-            fittingType={item}
-            measurementChart={targetMeasurement}
-            productCategory={targetProduct}
-          />
+          <BorderedCell>
+            <BodySizeUnitsCell
+              fittingType={item}
+              measurementChart={targetMeasurement}
+              productCategory={targetProduct}
+            />
+          </BorderedCell>
         );
-        // return (
-        //   <Text style={defaultCellStyle}>
-        //     {item?.measurementUnit ? item.measurementUnit.description : ''}
-        //   </Text>
-        // );
       },
     },
   ];
