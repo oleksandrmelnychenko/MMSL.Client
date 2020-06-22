@@ -48,12 +48,7 @@ const BaseSizeNameCell: React.FC<IBaseSizeNameCellProps> = (
   }, [sizeName]);
 
   useEffect(() => {
-    if (
-      isInEditMode &&
-      inputEditRef &&
-      inputEditRef.current &&
-      inputEditRef.focus
-    ) {
+    if (inputEditRef && inputEditRef.current && inputEditRef.focus) {
       inputEditRef.current.focus();
     }
   }, [isInEditMode, inputEditRef, outputValue]);

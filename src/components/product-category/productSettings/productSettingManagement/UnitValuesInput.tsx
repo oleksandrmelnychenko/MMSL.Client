@@ -103,6 +103,7 @@ const UnitValuesInput: React.FC<IUnitValuesInputProps> = (
         .where((valueItem) => valueItem.resolveIsDirty())
         .toArray()
     );
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values, deletedValues]);
 
@@ -200,6 +201,7 @@ const UnitValuesInput: React.FC<IUnitValuesInputProps> = (
       <Stack>
         <TextField
           type="number"
+          autoFocus
           styles={{
             fieldGroup: {
               border: '1px solid rgb(240, 240, 240)',
@@ -312,7 +314,6 @@ const UnitValuesInput: React.FC<IUnitValuesInputProps> = (
             },
           },
           onRenderMenuList: onRenderMenuList,
-          shouldFocusOnMount: true,
           items: values.map((item, index) => {
             return {
               key: `${index}`,
@@ -322,6 +323,7 @@ const UnitValuesInput: React.FC<IUnitValuesInputProps> = (
               unitValueModel: item,
             } as IContextualMenuItem;
           }),
+          shouldFocusOnMount: true,
           useTargetWidth: true,
         }}
       />

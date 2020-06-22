@@ -250,9 +250,14 @@ export const ManagingProductUnitForm: React.FC = () => {
             GetCommandBarItemProps(CommandBarItem.Save, () =>
               formikReference.formik.submitForm()
             ),
-            GetCommandBarItemProps(CommandBarItem.Reset, () =>
-              formikReference.formik.resetForm()
-            ),
+            GetCommandBarItemProps(CommandBarItem.Reset, () => {
+              dispatch(
+                productSettingsActions.changeTargetOptionUnit({
+                  ...sectedOptionUnit,
+                })
+              );
+              formikReference.formik.resetForm();
+            }),
             GetCommandBarItemProps(CommandBarItem.Delete, () => onDeleteUnit()),
           ])
         );
