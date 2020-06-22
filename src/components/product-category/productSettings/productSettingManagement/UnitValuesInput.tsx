@@ -15,6 +15,7 @@ import { List } from 'linq-typescript';
 
 export interface IUnitValuesInputProps {
   optionUnit: OptionUnit | null | undefined;
+  unitValues: UnitValue[];
   onCallback: (
     dirtyUnitValues: UnitValueModel[],
     dirtyValuesToDelete: UnitValueModel[]
@@ -87,12 +88,12 @@ const UnitValuesInput: React.FC<IUnitValuesInputProps> = (
   useEffect(() => {
     setValues(
       new List([_buildStubValueModel()])
-        .concat(buildUnitValueModels(props.optionUnit))
+        .concat(buildUnitValueModels(props.unitValues))
         .toArray()
     );
     setDeletedValues([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.optionUnit]);
+  }, [props.unitValues]);
 
   useEffect(() => {
     props.onCallback(
@@ -107,21 +108,35 @@ const UnitValuesInput: React.FC<IUnitValuesInputProps> = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values, deletedValues]);
 
-  const buildUnitValueModels = (optionUnit: OptionUnit | null | undefined) => {
+  const buildUnitValueModels = (unitValues: UnitValue[]) => {
     let result: UnitValueModel[] = [];
 
-    if (optionUnit) {
-      result = new List(optionUnit.unitValues)
-        .select((unitValue: UnitValue) => {
-          let selectResult = new UnitValueModel(unitValue);
+    result = new List(unitValues)
+      .select((unitValue: UnitValue) => {
+        let selectResult = new UnitValueModel(unitValue);
 
-          return selectResult;
-        })
-        .toArray();
-    }
+        return selectResult;
+      })
+      .toArray();
 
     return result;
   };
+
+  // const buildUnitValueModels = (optionUnit: OptionUnit | null | undefined) => {
+  //   let result: UnitValueModel[] = [];
+
+  //   if (optionUnit) {
+  //     result = new List(optionUnit.unitValues)
+  //       .select((unitValue: UnitValue) => {
+  //         let selectResult = new UnitValueModel(unitValue);
+
+  //         return selectResult;
+  //       })
+  //       .toArray();
+  //   }
+
+  //   return result;
+  // };
 
   const buildNewUnitValueModel = (valueInput: string) => {
     const unitValue = new UnitValue();

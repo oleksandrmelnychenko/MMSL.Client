@@ -172,6 +172,7 @@ export const ManagingProductUnitForm: React.FC = () => {
   );
   const [formikIsDirty, setFormikIsDirty] = useState<boolean>(false);
   const [dismissIsDirty, setDismissIsDirty] = useState<boolean>(false);
+  const [unitValues, setUnitValues] = useState<UnitValue[]>([]);
 
   const commandBarItems = useSelector<IApplicationState, any>(
     (state) => state.control.rightPanel.commandBarItems
@@ -227,10 +228,14 @@ export const ManagingProductUnitForm: React.FC = () => {
               formikReference.formik.submitForm()
             ),
             GetCommandBarItemProps(CommandBarItem.Reset, () => {
-              dispatch(
-                productSettingsActions.changeTargetOptionUnit({
-                  ...sectedOptionUnit,
-                })
+              // dispatch(
+              //   productSettingsActions.changeTargetOptionUnit({
+              //     ...sectedOptionUnit,
+              //   })
+              // );
+
+              setUnitValues(
+                sectedOptionUnit ? [...sectedOptionUnit.unitValues] : []
               );
               formikReference.formik.resetForm();
             }),
@@ -251,10 +256,8 @@ export const ManagingProductUnitForm: React.FC = () => {
               formikReference.formik.submitForm()
             ),
             GetCommandBarItemProps(CommandBarItem.Reset, () => {
-              dispatch(
-                productSettingsActions.changeTargetOptionUnit({
-                  ...sectedOptionUnit,
-                })
+              setUnitValues(
+                sectedOptionUnit ? [...sectedOptionUnit.unitValues] : []
               );
               formikReference.formik.resetForm();
             }),
@@ -264,7 +267,7 @@ export const ManagingProductUnitForm: React.FC = () => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formikReference]);
+  }, [formikReference, sectedOptionUnit]);
 
   useEffect(() => {
     if (formikReference.formik) {
@@ -289,6 +292,10 @@ export const ManagingProductUnitForm: React.FC = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formikIsDirty, dismissIsDirty]);
+
+  useEffect(() => {
+    setUnitValues(sectedOptionUnit ? sectedOptionUnit.unitValues : []);
+  }, [sectedOptionUnit]);
 
   const onUpdateUnit = (values: IInitValues) => {
     if (targetProduct && values.unitToDelete) {
@@ -465,6 +472,7 @@ export const ManagingProductUnitForm: React.FC = () => {
 
               <UnitValuesInput
                 optionUnit={sectedOptionUnit}
+                unitValues={unitValues}
                 onCallback={(
                   dirtyUnitValues: UnitValueModel[],
                   dirtyValuesToDelete: UnitValueModel[]

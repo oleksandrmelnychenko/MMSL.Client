@@ -65,6 +65,8 @@ export const Dealers: React.FC = (props: any) => {
                   styles={columnIconButtonStyle}
                   iconProps={{ iconName: 'Add' }}
                   onClick={() => {
+                    dispatch(dealerActions.setSelectedDealer(null));
+                    dispatch(controlActions.closeInfoPanelWithComponent());
                     dispatch(
                       controlActions.openRightPanel({
                         title: 'Add dealer',
