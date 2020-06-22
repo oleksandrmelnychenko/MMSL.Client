@@ -89,8 +89,8 @@ export class PaginationInfo {
 
 export class ExpandableItem {
   constructor() {
-    this.expandKey = '';
     this.item = null;
+    this.expandKey = '';
     this.isExpanded = false;
   }
 

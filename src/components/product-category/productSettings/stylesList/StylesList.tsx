@@ -33,30 +33,30 @@ export const StylesList: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   const oldExpandableList = new LINQList(expandableGroups);
+  useEffect(() => {
+    const oldExpandableList = new LINQList(expandableGroups);
 
-  //   const incomeGroupsList = new LINQList(outionGroups).select(
-  //     (item: OptionGroup) => {
-  //       let selectResult = new ExpandableItem();
-  //       selectResult.expandKey = `${item.id}`;
-  //       selectResult.item = item;
+    const incomeGroupsList = new LINQList(outionGroups).select(
+      (item: OptionGroup) => {
+        let selectResult = new ExpandableItem();
+        selectResult.expandKey = `${item.id}`;
+        selectResult.item = item;
 
-  //       const relatedExpandItem = oldExpandableList.firstOrDefault(
-  //         (oldExpandItem) => oldExpandItem.expandKey === selectResult.expandKey
-  //       );
+        const relatedExpandItem = oldExpandableList.firstOrDefault(
+          (oldExpandItem) => oldExpandItem.expandKey === selectResult.expandKey
+        );
 
-  //       selectResult.isExpanded = relatedExpandItem
-  //         ? relatedExpandItem.isExpanded
-  //         : false;
+        selectResult.isExpanded = relatedExpandItem
+          ? relatedExpandItem.isExpanded
+          : false;
 
-  //       return selectResult;
-  //     }
-  //   );
+        return selectResult;
+      }
+    );
 
-  //   setExpandableGroups(incomeGroupsList.toArray());
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [outionGroups]);
+    setExpandableGroups(incomeGroupsList.toArray());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [outionGroups]);
 
   const getProductStyles: (productId: number) => void = (productId: number) => {
     dispatch(
@@ -73,11 +73,7 @@ export const StylesList: React.FC = () => {
   };
 
   const onRenderCell = (item: any, index: number | undefined): JSX.Element => {
-    return (
-      <div style={{ marginBottom: '18px' }}>
-        <StyleGroupItem styleGroup={item} />
-      </div>
-    );
+    return <StyleGroupItem expandableStyleGroup={item} />;
   };
 
   return (
@@ -85,7 +81,8 @@ export const StylesList: React.FC = () => {
       className="wrapper-list"
       style={{ paddingBottom: '0px', paddingTop: '0px' }}
     >
-      <List items={outionGroups} onRenderCell={onRenderCell} />
+      {/* <List items={outionGroups} onRenderCell={onRenderCell} /> */}
+      <List items={expandableGroups} onRenderCell={onRenderCell} />
     </div>
   );
 };

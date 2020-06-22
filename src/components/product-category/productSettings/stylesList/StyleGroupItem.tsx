@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../../redux/reducers';
 import { OptionGroup, OptionUnit } from '../../../../interfaces/options';
@@ -27,6 +27,7 @@ import './styleGroupItem.scss';
 import { ManagingvOptionGroupForm } from './../productSettingManagement/ManagingProductGroupForm';
 import { OptionGroupDetails } from './../productSettingManagement/OptionGroupDetails';
 import { renderHintLable } from '../../../../helpers/uiComponent.helper';
+import { ExpandableItem } from '../../../../interfaces';
 
 export const buildGroupMandatoryHint = (group: OptionGroup) => {
   return (
@@ -53,7 +54,8 @@ export const buildGroupMandatoryHint = (group: OptionGroup) => {
 };
 
 export interface IStyleGroupItemProps {
-  styleGroup: OptionGroup;
+  // styleGroup: OptionGroup;
+  expandableStyleGroup: ExpandableItem;
 }
 
 const _groupContainerStyle = {
@@ -82,6 +84,8 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
 ) => {
   const dispatch = useDispatch();
 
+  const [isExpanded, setIsExpanded] = useState<boolean>();
+
   const targetProduct: ProductCategory | null = useSelector<
     IApplicationState,
     ProductCategory | null
@@ -102,7 +106,7 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
   };
 
   return (
-    <div className="styleGroupItem">
+    <div className={isExpanded ? 'styleGroupItem expanded' : 'styleGroupItem'}>
       <Stack tokens={{ childrenGap: 12 }}>
         <Stack
           horizontal
@@ -111,19 +115,21 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
           tokens={{ childrenGap: 12 }}
           styles={_groupContainerStyle}
         >
-          {/* <IconButton
+          <IconButton
             iconProps={{
-              iconName: 'ChevronDownMed',
+              iconName: isExpanded ? 'ChevronDownMed' : 'ChevronRightMed',
             }}
-            onClick={() => {}}
-          /> */}
+            onClick={() => setIsExpanded(!isExpanded)}
+          />
 
           <Stack horizontal tokens={{ childrenGap: 10 }}>
             <Stack.Item align="end">
-              <Text styles={_textStackStyle}>{props.styleGroup.name}</Text>
+              <Text styles={_textStackStyle}>
+                {props.expandableStyleGroup.item.name}
+              </Text>
             </Stack.Item>
             <Stack.Item align="end">
-              {buildGroupMandatoryHint(props.styleGroup)}
+              {buildGroupMandatoryHint(props.expandableStyleGroup.item)}
             </Stack.Item>
           </Stack>
 
@@ -144,7 +150,7 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
                 onClick={() => {
                   let action = assignPendingActions(
                     productSettingsActions.apiGetOptionGroupById(
-                      props.styleGroup.id
+                      props.expandableStyleGroup.item.id
                     ),
                     [],
                     [],
@@ -157,7 +163,7 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
                       dispatch(
                         controlActions.openRightPanel({
                           title: 'Manage Style',
-                          description: props.styleGroup.name,
+                          description: props.expandableStyleGroup.item.name,
                           width: '700px',
                           closeFunctions: () => {
                             dispatch(controlActions.closeRightPanel());
@@ -185,16 +191,16 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
                   iconName: 'Edit',
                 }}
                 onClick={() => {
-                  if (targetProduct && props.styleGroup) {
+                  if (targetProduct && props.expandableStyleGroup.item) {
                     dispatch(
                       productSettingsActions.changeEditingGroup(
-                        props.styleGroup
+                        props.expandableStyleGroup.item
                       )
                     );
                     dispatch(
                       controlActions.openRightPanel({
                         title: 'Details',
-                        description: props.styleGroup.name,
+                        description: props.expandableStyleGroup.item.name,
                         width: '400px',
                         closeFunctions: () => {
                           dispatch(controlActions.closeRightPanel());
@@ -224,11 +230,11 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
                       new DialogArgs(
                         CommonDialogType.Delete,
                         'Delete style',
-                        `Are you sure you want to delete ${props.styleGroup.name}?`,
+                        `Are you sure you want to delete ${props.expandableStyleGroup.item.name}?`,
                         () => {
                           let action = assignPendingActions(
                             productSettingsActions.apiDeleteOptionGroupById(
-                              props.styleGroup.id
+                              props.expandableStyleGroup.item.id
                             ),
                             [],
                             [],
@@ -249,25 +255,29 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
           </Stack>
         </Stack>
 
-        <Stack
-          wrap={true}
-          className="stack_option"
-          horizontal
-          tokens={{ childrenGap: 20 }}
-        >
-          {props.styleGroup.optionUnits &&
-          props.styleGroup.optionUnits.length > 0 ? (
-            props.styleGroup.optionUnits.map((item: OptionUnit) => (
-              <React.Fragment key={item.id}>
-                <UnitRowItem optionUnit={item} />
-              </React.Fragment>
-            ))
-          ) : (
-            <div style={{ marginLeft: '9px' }}>
-              {renderHintLable(`Current style does not have any options. `)}
-            </div>
-          )}
-        </Stack>
+        {isExpanded ? (
+          <Stack
+            wrap={true}
+            className="stack_option"
+            horizontal
+            tokens={{ childrenGap: 20 }}
+          >
+            {props.expandableStyleGroup.item.optionUnits &&
+            props.expandableStyleGroup.item.optionUnits.length > 0 ? (
+              props.expandableStyleGroup.item.optionUnits.map(
+                (item: OptionUnit) => (
+                  <React.Fragment key={item.id}>
+                    <UnitRowItem optionUnit={item} />
+                  </React.Fragment>
+                )
+              )
+            ) : (
+              <div style={{ marginLeft: '9px' }}>
+                {renderHintLable(`Current style does not have any options. `)}
+              </div>
+            )}
+          </Stack>
+        ) : null}
       </Stack>
     </div>
   );
