@@ -271,7 +271,9 @@ export const saveNewDealerEpic = (action$: AnyAction, state$: any) => {
             return errorCommonEpicFlow(
               errorResponse,
               [
-                controlActions.closeRightPanel(),
+                controlActions.showInfoMessage(
+                  `${errorResponse.response.message}`
+                ),
                 controlActions.disabledStatusBar(),
               ],
               action

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../../redux/reducers';
 import { OptionGroup } from '../../../../interfaces/options';
@@ -7,9 +7,15 @@ import { assignPendingActions } from '../../../../helpers/action.helper';
 import { productSettingsActions } from '../../../../redux/slices/productSettings.slice';
 import { List } from 'office-ui-fabric-react/lib/List';
 import StyleGroupItem from './StyleGroupItem';
+import { ExpandableItem } from '../../../../interfaces';
+import { List as LINQList } from 'linq-typescript';
 
 export const StylesList: React.FC = () => {
   const dispatch = useDispatch();
+
+  const [expandableGroups, setExpandableGroups] = useState<ExpandableItem[]>(
+    []
+  );
 
   const targetProduct: ProductCategory | null = useSelector<
     IApplicationState,
@@ -26,6 +32,31 @@ export const StylesList: React.FC = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
+
+  // useEffect(() => {
+  //   const oldExpandableList = new LINQList(expandableGroups);
+
+  //   const incomeGroupsList = new LINQList(outionGroups).select(
+  //     (item: OptionGroup) => {
+  //       let selectResult = new ExpandableItem();
+  //       selectResult.expandKey = `${item.id}`;
+  //       selectResult.item = item;
+
+  //       const relatedExpandItem = oldExpandableList.firstOrDefault(
+  //         (oldExpandItem) => oldExpandItem.expandKey === selectResult.expandKey
+  //       );
+
+  //       selectResult.isExpanded = relatedExpandItem
+  //         ? relatedExpandItem.isExpanded
+  //         : false;
+
+  //       return selectResult;
+  //     }
+  //   );
+
+  //   setExpandableGroups(incomeGroupsList.toArray());
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [outionGroups]);
 
   const getProductStyles: (productId: number) => void = (productId: number) => {
     dispatch(

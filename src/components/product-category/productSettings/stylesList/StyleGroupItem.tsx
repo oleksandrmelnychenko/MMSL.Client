@@ -111,6 +111,13 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
           tokens={{ childrenGap: 12 }}
           styles={_groupContainerStyle}
         >
+          {/* <IconButton
+            iconProps={{
+              iconName: 'ChevronDownMed',
+            }}
+            onClick={() => {}}
+          /> */}
+
           <Stack horizontal tokens={{ childrenGap: 10 }}>
             <Stack.Item align="end">
               <Text styles={_textStackStyle}>{props.styleGroup.name}</Text>

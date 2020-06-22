@@ -4,9 +4,13 @@ import {
   Toggle,
   Dropdown,
   Stack,
+  TooltipHost,
   TextField,
   MaskedTextField,
   IDropdownOption,
+  DirectionalHint,
+  IconButton,
+  getId,
 } from 'office-ui-fabric-react';
 import './manageDealerForm.scss';
 import * as Yup from 'yup';
@@ -27,6 +31,7 @@ import {
 } from '../../../helpers/commandBar.helper';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { dealerActions } from '../../../redux/slices/dealer.slice';
+import { authActions } from '../../../redux/slices/auth.slice';
 
 const resolveDefaultDropDownValue = (
   limitOptions: any[],
@@ -65,6 +70,7 @@ const buildDealerAccount = (values: any, sourceDealer?: DealerAccount) => {
   dealerAccount.currencyTypeId = parseInt(values.selectCurrency);
   dealerAccount.paymentTypeId = parseInt(values.selectPayment);
   dealerAccount.isCreditAllowed = values.creditAllowed;
+  (dealerAccount as any).password = values.password;
 
   return dealerAccount;
 };
@@ -75,6 +81,7 @@ const initDefaultValues = (account?: DealerAccount | null) => {
     name: '',
     email: '',
     alternativeEmail: '',
+    password: '',
     phoneNumber: '',
     taxNumber: '',
     selectCurrency: '1',
@@ -94,6 +101,8 @@ const initDefaultValues = (account?: DealerAccount | null) => {
     formikInitValues.selectPayment = `${account.paymentTypeId}`;
     formikInitValues.vatApplicate = account.isVatApplicable;
     formikInitValues.creditAllowed = account.isCreditAllowed;
+    /// TODO: temporary quick implementation
+    formikInitValues.password = account.name;
   }
 
   return formikInitValues;
@@ -115,6 +124,8 @@ export const ManageDealerForm: React.FC = () => {
   const [isFormikDirty, setFormikDirty] = useState<boolean>(false);
 
   const dispatch = useDispatch();
+
+  const generatePasswordTooltipId = getId();
 
   useEffect(() => {
     if (formikReference.formik) {
@@ -187,6 +198,7 @@ export const ManageDealerForm: React.FC = () => {
           alternativeEmail: Yup.string()
             .email('Invalid email')
             .required('Alternative email is required'),
+          password: Yup.string().required('Password is required'),
           phoneNumber: Yup.string().notRequired(),
           taxNumber: Yup.string().notRequired(),
           selectCurrency: Yup.string().notRequired(),
@@ -346,6 +358,89 @@ export const ManageDealerForm: React.FC = () => {
                         );
                       }}
                     </Field>
+
+                    {dealerAccount ? null : (
+                      <Field name="password">
+                        {() => {
+                          return (
+                            <div className="form__group">
+                              <Stack horizontal tokens={{ childrenGap: '6px' }}>
+                                <Stack.Item grow={1}>
+                                  <TextField
+                                    value={formik.values.password}
+                                    styles={fabricStyles.textFildLabelStyles}
+                                    label="Password"
+                                    required
+                                    className="form__group__field"
+                                    onChange={(args: any) => {
+                                      let value = args.target.value;
+                                      formik.setFieldValue('password', value);
+                                      formik.setFieldTouched('password');
+                                    }}
+                                    errorMessage={
+                                      formik.errors.password &&
+                                      formik.touched.password ? (
+                                        <span className="form__group__error">
+                                          {formik.errors.password}
+                                        </span>
+                                      ) : (
+                                        ''
+                                      )
+                                    }
+                                  />
+                                </Stack.Item>
+
+                                <Stack.Item align="end">
+                                  <TooltipHost
+                                    content="Auto Generate password"
+                                    directionalHint={
+                                      DirectionalHint.bottomRightEdge
+                                    }
+                                    id={generatePasswordTooltipId}
+                                    calloutProps={{ gapSpace: 0 }}
+                                    styles={{
+                                      root: { display: 'inline-block' },
+                                    }}
+                                  >
+                                    <IconButton
+                                      iconProps={{
+                                        iconName: 'PasswordField',
+                                      }}
+                                      onClick={() => {
+                                        dispatch(
+                                          assignPendingActions(
+                                            authActions.apiGeneratePassword(),
+                                            [],
+                                            [],
+                                            (args: any) => {
+                                              formik.setFieldValue(
+                                                'password',
+                                                args
+                                              );
+                                              formik.setFieldTouched(
+                                                'password'
+                                              );
+                                            },
+                                            (args: any) => {}
+                                          )
+                                        );
+                                      }}
+                                      styles={{
+                                        root:
+                                          formik.errors.password &&
+                                          formik.touched.password
+                                            ? { marginBottom: '5px' }
+                                            : {},
+                                      }}
+                                    />
+                                  </TooltipHost>
+                                </Stack.Item>
+                              </Stack>
+                            </div>
+                          );
+                        }}
+                      </Field>
+                    )}
 
                     <Field name="phoneNumber">
                       {() => {

@@ -30,6 +30,9 @@ const auth = createSlice({
       state.errorMessage = '';
       return state;
     },
+    apiGeneratePassword(state) {
+      return state;
+    },
   },
 });
 

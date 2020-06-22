@@ -86,3 +86,15 @@ export class PaginationInfo {
   pageNumber: number;
   pagesCount: number;
 }
+
+export class ExpandableItem {
+  constructor() {
+    this.expandKey = '';
+    this.item = null;
+    this.isExpanded = false;
+  }
+
+  expandKey: string;
+  item: any;
+  isExpanded: boolean;
+}
