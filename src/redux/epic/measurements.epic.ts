@@ -14,7 +14,11 @@ import {
   putWebRequest,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
-import { controlActions } from '../slices/control.slice';
+import {
+  controlActions,
+  InfoMessage,
+  InfoMessageType,
+} from '../slices/control.slice';
 import { measurementActions } from '../../redux/slices/measurements/measurement.slice';
 import StoreHelper from '../../helpers/store.helper';
 
@@ -39,7 +43,10 @@ export const apiGetAllMeasurementsEpic = (action$: AnyAction, state$: any) => {
               [
                 { type: 'ERROR_GET_ALL_MEASUREMENTS' },
                 controlActions.showInfoMessage(
-                  `Error occurred while getting measurements list. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while getting measurements list. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -73,7 +80,7 @@ export const apiCreateNewMeasurementEpic = (
             successResponse,
             [
               controlActions.showInfoMessage(
-                `New measurement successfully created.`
+                new InfoMessage(`New measurement successfully created.`)
               ),
               controlActions.disabledStatusBar(),
             ],
@@ -87,7 +94,10 @@ export const apiCreateNewMeasurementEpic = (
               [
                 { type: 'ERROR_CREATE_NEW_MEASUREMENT' },
                 controlActions.showInfoMessage(
-                  `Error occurred while creating new measurement. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while creating new measurement. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -123,7 +133,10 @@ export const apiGetMeasurementByIdEpic = (action$: AnyAction, state$: any) => {
               [
                 { type: 'ERROR_GET_MEASUREMENT_BY_ID' },
                 controlActions.showInfoMessage(
-                  `Error occurred while getting measurement by id. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while getting measurement by id. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -156,7 +169,7 @@ export const apiDeleteMeasurementByIdEpic = (
             successResponse,
             [
               controlActions.showInfoMessage(
-                `Measurement successfully deleted.`
+                new InfoMessage(`Measurement successfully deleted.`)
               ),
               controlActions.disabledStatusBar(),
             ],
@@ -170,7 +183,10 @@ export const apiDeleteMeasurementByIdEpic = (
               [
                 { type: 'ERROR_DELETE_MEASUREMENT' },
                 controlActions.showInfoMessage(
-                  `Error occurred while deleting measurement. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while deleting measurement. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -199,7 +215,7 @@ export const apiUpdateMeasurementEpic = (action$: AnyAction, state$: any) => {
             successResponse,
             [
               controlActions.showInfoMessage(
-                `Measurement successfully updated.`
+                new InfoMessage(`Measurement successfully updated.`)
               ),
               controlActions.disabledStatusBar(),
             ],
@@ -213,7 +229,10 @@ export const apiUpdateMeasurementEpic = (action$: AnyAction, state$: any) => {
               [
                 { type: 'ERROR_UPDATE_MEASUREMENT' },
                 controlActions.showInfoMessage(
-                  `Error occurred while updating measurement. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while updating measurement. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -246,7 +265,9 @@ export const apiCreateNewMeasurementSizeEpic = (
           return successCommonEpicFlow(
             successResponse,
             [
-              controlActions.showInfoMessage(`New size successfully created.`),
+              controlActions.showInfoMessage(
+                new InfoMessage(`New size successfully created.`)
+              ),
               controlActions.disabledStatusBar(),
             ],
             action
@@ -259,7 +280,10 @@ export const apiCreateNewMeasurementSizeEpic = (
               [
                 { type: 'ERROR_CREATE_NEW_MEASUREMENT_SIZE' },
                 controlActions.showInfoMessage(
-                  `Error occurred while creating new measurement size. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while creating new measurement size. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -291,7 +315,9 @@ export const apiUpdateMeasurementSizeEpic = (
           return successCommonEpicFlow(
             successResponse,
             [
-              controlActions.showInfoMessage(`Size successfully updated.`),
+              controlActions.showInfoMessage(
+                new InfoMessage(`Size successfully updated.`)
+              ),
               controlActions.disabledStatusBar(),
             ],
             action
@@ -304,7 +330,10 @@ export const apiUpdateMeasurementSizeEpic = (
               [
                 { type: 'ERROR_UPDATE_SIZE' },
                 controlActions.showInfoMessage(
-                  `Error occurred while updating size. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while updating size. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -341,7 +370,9 @@ export const apiDeleteMeasurementSizeByIdEpic = (
           return successCommonEpicFlow(
             successResponse,
             [
-              controlActions.showInfoMessage(`Size successfully deleted.`),
+              controlActions.showInfoMessage(
+                new InfoMessage(`Size successfully deleted.`)
+              ),
               controlActions.disabledStatusBar(),
             ],
             action
@@ -354,7 +385,10 @@ export const apiDeleteMeasurementSizeByIdEpic = (
               [
                 { type: 'ERROR_DELETE_SIZE' },
                 controlActions.showInfoMessage(
-                  `Error occurred while deleting size. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while deleting size. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],

@@ -12,7 +12,7 @@ import { routerReducer, RouterState } from 'react-router-redux';
 import { IAuthState } from '../../interfaces';
 import {
   default as controlReducer,
-  IControlState,
+  ControlState,
 } from '../slices/control.slice';
 import {
   default as productSettingsReducer,
@@ -48,7 +48,7 @@ import {
 
 export interface IApplicationState {
   auth: IAuthState;
-  control: IControlState;
+  control: ControlState;
   routing: RouterState;
   localize: LocalizeState;
   dealer: DealerState;

@@ -8,7 +8,11 @@ import { switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import { dealerActions } from '../slices/dealer.slice';
-import { controlActions } from '../slices/control.slice';
+import {
+  controlActions,
+  InfoMessage,
+  InfoMessageType,
+} from '../slices/control.slice';
 import { getActiveLanguage } from 'react-localize-redux';
 import {
   postWebRequest,
@@ -83,7 +87,10 @@ export const apiGetInfinitDealersPaginatedEpic = (
                 { type: 'ERROR_GET_DEALERS_PAGINATED' },
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while get dealers paginated. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while get dealers paginated. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
               ],
               action
@@ -178,7 +185,9 @@ export const deleteDealerByIdEpic = (action$: AnyAction, state$: any) => {
           return successCommonEpicFlow(
             successResponse,
             [
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
               controlActions.disabledStatusBar(),
             ],
             action
@@ -259,7 +268,9 @@ export const saveNewDealerEpic = (action$: AnyAction, state$: any) => {
           return successCommonEpicFlow(
             successResponse,
             [
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
               controlActions.disabledStatusBar(),
             ],
             action
@@ -271,7 +282,10 @@ export const saveNewDealerEpic = (action$: AnyAction, state$: any) => {
               errorResponse,
               [
                 controlActions.showInfoMessage(
-                  `${errorResponse.response.message}`
+                  new InfoMessage(
+                    `${errorResponse.response.message}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -299,7 +313,9 @@ export const updateDealerEpic = (action$: AnyAction, state$: any) => {
           return successCommonEpicFlow(
             successResponse,
             [
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
               controlActions.disabledStatusBar(),
             ],
             action
@@ -311,7 +327,10 @@ export const updateDealerEpic = (action$: AnyAction, state$: any) => {
               errorResponse,
               [
                 controlActions.showInfoMessage(
-                  `${errorResponse.response.message}`
+                  new InfoMessage(
+                    `${errorResponse.response.message}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -376,7 +395,9 @@ export const updateDealerStoreEpic = (action$: AnyAction, state$: any) => {
             successResponse,
             [
               dealerActions.setUpdateDealerStore(successResponse.body),
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
               controlActions.disabledStatusBar(),
             ],
             action
@@ -417,7 +438,9 @@ export const addStoreToCurrentDealerEpic = (
             [
               dealerActions.addNewStoreToCurrentDealer(successResponse.body),
               controlActions.disabledStatusBar(),
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
             ],
             action
           );
@@ -454,7 +477,9 @@ export const deleteCurrentDealerStoreEpic = (
             [
               dealerActions.updateDealerStoresAfterDelete(successResponse.body),
               controlActions.disabledStatusBar(),
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
             ],
             action
           );
@@ -537,7 +562,9 @@ export const deleteCurrentCustomerFromStoreEpic = (
                 successResponse.body
               ),
               controlActions.disabledStatusBar(),
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
             ],
             action
           );
@@ -581,7 +608,9 @@ export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
                 successResponse.body
               ),
               controlActions.disabledStatusBar(),
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
             ],
             action
           );

@@ -14,7 +14,11 @@ import {
   putWebRequest,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.fittingType.constants';
-import { controlActions } from '../slices/control.slice';
+import {
+  controlActions,
+  InfoMessage,
+  InfoMessageType,
+} from '../slices/control.slice';
 import { fittingTypesActions } from '../slices/measurements/fittingTypes.slice';
 
 export const apiGetFittingTypesByMeasurementIdEpic = (
@@ -45,7 +49,10 @@ export const apiGetFittingTypesByMeasurementIdEpic = (
               [
                 { type: 'ERROR_GET_FITTING_TYPES_BY_MEASUREMENT_ID' },
                 controlActions.showInfoMessage(
-                  `Error occurred while getting measurement fitting types. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while getting measurement fitting types. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -81,7 +88,10 @@ export const apiGetFittingTypeByIdEpic = (action$: AnyAction, state$: any) => {
               [
                 { type: 'ERROR_GET_FITTING_TYPE_BY_ID' },
                 controlActions.showInfoMessage(
-                  `Error occurred while getting fitting type. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while getting fitting type. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -120,7 +130,10 @@ export const apiCreateFittingTypeEpic = (action$: AnyAction, state$: any) => {
               [
                 { type: 'ERROR_CREATE_FITTING_TYPE' },
                 controlActions.showInfoMessage(
-                  `Error occurred while creating fitting type. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while creating fitting type. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -148,7 +161,9 @@ export const apiUpdateFittingTypeEpic = (action$: AnyAction, state$: any) => {
           return successCommonEpicFlow(
             successResponse,
             [
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
               controlActions.disabledStatusBar(),
             ],
             action
@@ -161,7 +176,10 @@ export const apiUpdateFittingTypeEpic = (action$: AnyAction, state$: any) => {
               [
                 { type: 'ERROR_UPDATE_FITTING_TYPE' },
                 controlActions.showInfoMessage(
-                  `Error occurred while updating fitting type. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while updating fitting type. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -190,7 +208,9 @@ export const apiDeleteFittingTypeByIdEpic = (
           return successCommonEpicFlow(
             successResponse,
             [
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
               controlActions.disabledStatusBar(),
             ],
             action
@@ -203,7 +223,10 @@ export const apiDeleteFittingTypeByIdEpic = (
               [
                 { type: 'ERROR_DELETE_FITTING_TYPE_BY_ID' },
                 controlActions.showInfoMessage(
-                  `Error occurred while deleting fitting type. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while deleting fitting type. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],

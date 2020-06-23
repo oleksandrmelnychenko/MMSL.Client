@@ -11,7 +11,11 @@ import { getActiveLanguage } from 'react-localize-redux';
 import { postWebRequest, getWebRequest } from '../../helpers/epic.helper';
 import StoreHelper from '../../helpers/store.helper';
 import * as api from '../constants/api.constants';
-import { controlActions } from '../slices/control.slice';
+import {
+  controlActions,
+  InfoMessage,
+  InfoMessageType,
+} from '../slices/control.slice';
 import { deliveryTimelinesActions } from '../slices/deliveryTimeline.slice';
 
 export const apiGetAllDeliveryTimelineEpic = (
@@ -45,7 +49,10 @@ export const apiGetAllDeliveryTimelineEpic = (
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while getting delivery timelines. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while getting delivery timelines. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
               ],
               action
@@ -78,7 +85,9 @@ export const apiCreateNewDeliveryTimelineEpic = (
             successResponse,
             [
               deliveryTimelinesActions.apiGetAllDeliveryTimeline(),
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
               controlActions.disabledStatusBar(),
             ],
             action
@@ -91,7 +100,10 @@ export const apiCreateNewDeliveryTimelineEpic = (
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while creating new delivery timeline. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while creating new delivery timeline. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
               ],
               action
@@ -124,7 +136,9 @@ export const apiUpdateDeliveryTimelineEpic = (
             successResponse,
             [
               deliveryTimelinesActions.apiGetAllDeliveryTimeline(),
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
               controlActions.disabledStatusBar(),
             ],
             action
@@ -137,7 +151,10 @@ export const apiUpdateDeliveryTimelineEpic = (
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while updating delivery timeline. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while updating delivery timeline. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
               ],
               action
@@ -170,7 +187,9 @@ export const apiDeleteDeliveryTimelineEpic = (
             successResponse,
             [
               deliveryTimelinesActions.apiGetAllDeliveryTimeline(),
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
               controlActions.disabledStatusBar(),
             ],
             action
@@ -183,7 +202,10 @@ export const apiDeleteDeliveryTimelineEpic = (
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while deleting delivery timeline. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while deleting delivery timeline. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
               ],
               action

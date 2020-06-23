@@ -14,7 +14,11 @@ import { ofType } from 'redux-observable';
 import { getActiveLanguage } from 'react-localize-redux';
 import { getWebRequest } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
-import { controlActions } from '../slices/control.slice';
+import {
+  controlActions,
+  InfoMessage,
+  InfoMessageType,
+} from '../slices/control.slice';
 import StoreHelper from '../../helpers/store.helper';
 import { productStylePermissionsActions } from '../slices/productStylePermissions.slice';
 
@@ -53,7 +57,10 @@ export const apiGetAllStylePermissionsByProductIdEpic = (
               [
                 { type: 'ERROR_GET_ALL_STYLE_PERMISSIONS_BY_PRODUCT_ID' },
                 controlActions.showInfoMessage(
-                  `Error occurred while getting permission settings by product id. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while getting permission settings by product id. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -83,7 +90,7 @@ export const apiCreateNewPermissionEpic = (action$: AnyAction, state$: any) => {
             successResponse,
             [
               controlActions.showInfoMessage(
-                `New style permission successfully created.`
+                new InfoMessage(`New style permission successfully created.`)
               ),
               controlActions.disabledStatusBar(),
             ],
@@ -97,7 +104,10 @@ export const apiCreateNewPermissionEpic = (action$: AnyAction, state$: any) => {
               [
                 { type: 'ERROR_CREATE_NEW_PRODUCT_STYLE_PERMISSION' },
                 controlActions.showInfoMessage(
-                  `Error occurred while creating new product style permission. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while creating new product style permission. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -126,7 +136,7 @@ export const apiUpdatePermissionEpic = (action$: AnyAction, state$: any) => {
             successResponse,
             [
               controlActions.showInfoMessage(
-                `Style permission successfully updated.`
+                new InfoMessage(`Style permission successfully updated.`)
               ),
               controlActions.disabledStatusBar(),
             ],
@@ -140,7 +150,10 @@ export const apiUpdatePermissionEpic = (action$: AnyAction, state$: any) => {
               [
                 { type: 'ERROR_EDITING_PRODUCT_STYLE_PERMISSION' },
                 controlActions.showInfoMessage(
-                  `Error occurred while editing product style permission. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while editing product style permission. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -170,7 +183,7 @@ export const apiDeletePermissionEpic = (action$: AnyAction, state$: any) => {
             successResponse,
             [
               controlActions.showInfoMessage(
-                `Style permission successfully deleted.`
+                new InfoMessage(`Style permission successfully deleted.`)
               ),
               controlActions.disabledStatusBar(),
             ],
@@ -184,7 +197,10 @@ export const apiDeletePermissionEpic = (action$: AnyAction, state$: any) => {
               [
                 { type: 'ERROR_DELETEING_PRODUCT_STYLE_PERMISSION' },
                 controlActions.showInfoMessage(
-                  `Error occurred while deleting product style permission. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while deleting product style permission. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -237,7 +253,10 @@ export const apiGetOptionGroupsFromPermissionPerspectiveByIdEpic = (
               [
                 { type: 'ERROR_GET_OPTION_GROUPS_FROM_PERMISSION_PERSPECTIVE' },
                 controlActions.showInfoMessage(
-                  `Error occurred while getting permissioned options. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while getting permissioned options. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -276,7 +295,10 @@ export const apiGetPermissionByIdEpic = (action$: AnyAction, state$: any) => {
               [
                 { type: 'ERROR_GET_PERMISSION_BY_ID' },
                 controlActions.showInfoMessage(
-                  `Error occurred while getting permission setting by id. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while getting permission setting by id. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -318,7 +340,10 @@ export const apiGetDealersByPermissionIdEpic = (
               [
                 { type: 'ERROR_GET_DEALERS_BY_PERMISSION_ID' },
                 controlActions.showInfoMessage(
-                  `Error occurred while getting dealers by permission id. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while getting dealers by permission id. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -371,7 +396,10 @@ export const apiSearchDealersByPermissionProductIdEpic = (
               [
                 { type: 'ERROR_SEARCH_DEALERS_BY_PERMISSION_PRODUCT_ID' },
                 controlActions.showInfoMessage(
-                  `Error occurred while search dealers by permission product id. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while search dealers by permission product id. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -403,7 +431,9 @@ export const apiBindDealersToPermissionEpic = (
           return successCommonEpicFlow(
             successResponse,
             [
-              controlActions.showInfoMessage(`Successfully completed.`),
+              controlActions.showInfoMessage(
+                new InfoMessage(`Successfully completed.`)
+              ),
               controlActions.disabledStatusBar(),
             ],
             action
@@ -416,7 +446,10 @@ export const apiBindDealersToPermissionEpic = (
               [
                 { type: 'ERROR_BIND_DEALERS_TO_PERMISSION' },
                 controlActions.showInfoMessage(
-                  `Error occurred while binding dealers to product style permission. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while binding dealers to product style permission. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],

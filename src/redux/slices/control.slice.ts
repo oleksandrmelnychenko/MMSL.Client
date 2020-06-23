@@ -1,13 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { IPanelInfo } from '../../interfaces';
 
-export interface IControlState {
+export class ControlState {
+  constructor() {
+    this.isGlobalShimmerActive = false;
+    this.isCollapseMenu = false;
+    this.panelInfo = new IPanelInfo();
+    this.rightPanel = new RightPanelProps();
+    this.commonDialog = new CommonDialogState();
+    this.infoMessage = null;
+    this.isActivateStatusBar = false;
+    this.isMasterBusy = false;
+    this.dashboardHintStub = new DashboardHintStubProps();
+  }
+
   isGlobalShimmerActive: boolean;
   isCollapseMenu: boolean;
   panelInfo: IPanelInfo;
   rightPanel: RightPanelProps;
   commonDialog: CommonDialogState;
-  infoMessage: string;
+  infoMessage: InfoMessage | null | undefined;
   isActivateStatusBar: boolean;
   isMasterBusy: boolean;
   dashboardHintStub: DashboardHintStubProps;
@@ -76,21 +88,26 @@ export class DashboardHintStubProps {
   buttonAction: () => void;
 }
 
-export const defaultControlState = {
-  isGlobalShimmerActive: false,
-  isCollapseMenu: false,
-  panelInfo: new IPanelInfo(),
-  rightPanel: new RightPanelProps(),
-  commonDialog: new CommonDialogState(),
-  infoMessage: '',
-  isActivateStatusBar: false,
-  isMasterBusy: false,
-  dashboardHintStub: new DashboardHintStubProps(),
-};
+export enum InfoMessageType {
+  Common,
+  Warning,
+}
+
+export class InfoMessage {
+  constructor(message: string, messageType?: InfoMessageType) {
+    this.message = message;
+
+    if (messageType) this.messageType = messageType;
+    else this.messageType = InfoMessageType.Common;
+  }
+
+  message: string;
+  messageType: InfoMessageType;
+}
 
 const controls = createSlice({
   name: 'control',
-  initialState: defaultControlState,
+  initialState: new ControlState(),
   reducers: {
     isOpenPanelInfo(state, action) {
       state.panelInfo.isOpenPanelInfo = action.payload;
@@ -126,13 +143,13 @@ const controls = createSlice({
       state.commonDialog.dialogArgs = action.payload;
       return state;
     },
-    showInfoMessage(state, action) {
+    showInfoMessage(state, action: { type: string; payload: InfoMessage }) {
       state.isActivateStatusBar = false;
       state.infoMessage = action.payload;
       return state;
     },
     clearInfoMessage(state) {
-      state.infoMessage = '';
+      state.infoMessage = null;
       return state;
     },
     enableStatusBar(state) {

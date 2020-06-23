@@ -15,7 +15,7 @@ import {
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import { Pagination } from '../../interfaces';
-import { controlActions } from '../slices/control.slice';
+import { controlActions, InfoMessage } from '../slices/control.slice';
 import { dealerActions } from '../../redux/slices/dealer.slice';
 import StoreHelper from '../../helpers/store.helper';
 
@@ -137,7 +137,9 @@ export const saveNewCustomerEpic = (action$: AnyAction, state$: any) => {
                 Array.of(successResponse.body)
               ),
               controlActions.disabledStatusBar(),
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
             ],
             action
           );
@@ -176,7 +178,9 @@ export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
               customerActions.getCustomersListPaginated(),
               customerActions.selectedCustomer(null),
               controlActions.disabledStatusBar(),
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
             ],
             action
           );

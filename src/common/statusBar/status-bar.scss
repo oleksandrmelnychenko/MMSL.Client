@@ -37,6 +37,10 @@
 
     &.active {
         left: 0;
+
+        &.warning {
+            background: #a4373a
+        }
     }
 }
 

@@ -16,7 +16,11 @@ import {
   postWebRequest,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
-import { controlActions } from '../slices/control.slice';
+import {
+  controlActions,
+  InfoMessage,
+  InfoMessageType,
+} from '../slices/control.slice';
 import { productActions } from '../slices/product.slice';
 import StoreHelper from '../../helpers/store.helper';
 
@@ -89,7 +93,9 @@ export const apiAddNewProductCategoryEpic = (
             successResponse,
             [
               controlActions.disabledStatusBar(),
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
             ],
             action
           );
@@ -101,7 +107,10 @@ export const apiAddNewProductCategoryEpic = (
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while creating new product. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while creating new product. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
               ],
               action
@@ -154,7 +163,9 @@ export const apiUpdateProductCategoryEpic = (
             successResponse,
             [
               controlActions.disabledStatusBar(),
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
             ],
             action
           );
@@ -166,7 +177,10 @@ export const apiUpdateProductCategoryEpic = (
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while updating product. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while updating product. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
               ],
               action
@@ -194,7 +208,9 @@ export const updateProductCategoryEpic = (action$: AnyAction, state$: any) => {
             successResponse,
             [
               controlActions.disabledStatusBar(),
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
             ],
             action
           );
@@ -235,7 +251,9 @@ export const apiSaveUpdatedProductGroupsEpic = (
             successResponse,
             [
               controlActions.disabledStatusBar(),
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
             ],
             action
           );
@@ -246,7 +264,10 @@ export const apiSaveUpdatedProductGroupsEpic = (
               errorResponse,
               [
                 controlActions.showInfoMessage(
-                  `Error occurred while updating product options stack. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while updating product options stack. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],
@@ -272,7 +293,9 @@ export const deleteProductCategoryEpic = (action$: AnyAction, state$: any) => {
           return successCommonEpicFlow(
             successResponse,
             [
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
               controlActions.disabledStatusBar(),
             ],
             action
@@ -285,7 +308,10 @@ export const deleteProductCategoryEpic = (action$: AnyAction, state$: any) => {
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while deleteing category. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while deleteing category. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
               ],
               action
@@ -325,7 +351,10 @@ export const apiGetProductCategoryByIdEpic = (
                 { type: 'ERROR_API_GET_PRODUCT_CATEGORY_BY_ID' },
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while getting product. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while getting product. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
               ],
               action
@@ -397,7 +426,9 @@ export const apiAddNewMeasurementEpic = (action$: AnyAction, state$: any) => {
             successResponse,
             [
               controlActions.disabledStatusBar(),
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
             ],
             action
           );
@@ -409,7 +440,10 @@ export const apiAddNewMeasurementEpic = (action$: AnyAction, state$: any) => {
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while creating new measurement. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while creating new measurement. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
               ],
               action
@@ -442,7 +476,9 @@ export const apiAssignProductTimelineEpic = (
             successResponse,
             [
               controlActions.disabledStatusBar(),
-              controlActions.showInfoMessage(successResponse.message),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
             ],
             action
           );
@@ -454,7 +490,10 @@ export const apiAssignProductTimelineEpic = (
               [
                 controlActions.disabledStatusBar(),
                 controlActions.showInfoMessage(
-                  `Error occurred while assign timeline for the product. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while assign timeline for the product. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
               ],
               action
@@ -493,7 +532,10 @@ export const apiGetAllProductMeasurementsByProductIdEpic = (
               [
                 { type: 'ERROR_GET_MEASUREMENTS_BY_PRODUCT' },
                 controlActions.showInfoMessage(
-                  `Error occurred while getting measurements by product. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while getting measurements by product. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],

@@ -9,7 +9,11 @@ import { ofType } from 'redux-observable';
 import { getActiveLanguage } from 'react-localize-redux';
 import { getWebRequest } from '../../helpers/epic.helper';
 import * as api from '../constants/api.unitOfMeasurements.constants';
-import { controlActions } from '../slices/control.slice';
+import {
+  controlActions,
+  InfoMessage,
+  InfoMessageType,
+} from '../slices/control.slice';
 import { unitsOfMeasurementActions } from '../slices/measurements/unitsOfMeasurement.slice';
 
 export const apiGetAllUnitsOfMeasurementEpic = (
@@ -36,7 +40,10 @@ export const apiGetAllUnitsOfMeasurementEpic = (
               [
                 { type: 'ERROR_GET_ALL_UNITS_OF_MEASUREMENT' },
                 controlActions.showInfoMessage(
-                  `Error occurred while getting units of measurement. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred while getting units of measurement. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],

@@ -8,7 +8,11 @@ import { postWebRequest, getWebRequest } from '../../helpers/epic.helper';
 import { TokenHelper } from '../../helpers/token.helper';
 import { authActions } from '../slices/auth.slice';
 import { getActiveLanguage } from 'react-localize-redux';
-import { controlActions } from '../slices/control.slice';
+import {
+  controlActions,
+  InfoMessage,
+  InfoMessageType,
+} from '../slices/control.slice';
 import {
   successCommonEpicFlow,
   errorCommonEpicFlow,
@@ -72,7 +76,10 @@ export const apiGeneratePasswordEpic = (action$: AnyAction, state$: any) => {
               [
                 { type: 'ERROR_GENERATE_PASSWORD' },
                 controlActions.showInfoMessage(
-                  `Error occurred whilegenerating password. ${errorResponse}`
+                  new InfoMessage(
+                    `Error occurred whilegenerating password. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
                 ),
                 controlActions.disabledStatusBar(),
               ],

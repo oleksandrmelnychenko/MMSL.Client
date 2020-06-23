@@ -10,6 +10,7 @@ import {
   IDropdownOption,
   DirectionalHint,
   IconButton,
+  Text,
   getId,
 } from 'office-ui-fabric-react';
 import './manageDealerForm.scss';
@@ -175,6 +176,7 @@ export const ManageDealerForm: React.FC = () => {
   const dispatch = useDispatch();
 
   const [isFormikDirty, setFormikDirty] = useState<boolean>(false);
+  const [formWarning, setFormWarning] = useState<string>('');
 
   const commandBarItems = useSelector<IApplicationState, any>(
     (state) => state.control.rightPanel.commandBarItems
@@ -193,13 +195,21 @@ export const ManageDealerForm: React.FC = () => {
   );
 
   useEffect(() => {
+    return () => {
+      setFormWarning('');
+    };
+  }, []);
+
+  useEffect(() => {
     if (formikReference.formik) {
       dispatch(
         controlActions.setPanelButtons([
           GetCommandBarItemProps(CommandBarItem.Save, () => {
+            setFormWarning('');
             formikReference.formik.submitForm();
           }),
           GetCommandBarItemProps(CommandBarItem.Reset, () => {
+            setFormWarning('');
             formikReference.formik.resetForm();
           }),
         ])
@@ -236,10 +246,24 @@ export const ManageDealerForm: React.FC = () => {
         [],
         [],
         (args: any) => {
+          dispatch(
+            dealerActions.updateDealersList(
+              new List(dealers).concat([args.body]).toArray()
+            )
+          );
+
           dispatch(controlActions.closeRightPanel());
-          dispatch(dealerActions.apiGetDealersListPaginated());
+          dispatch(controlActions.closeInfoPanelWithComponent());
+          dispatch(dealerActions.setSelectedDealer(null));
+          dispatch(
+            dealerActions.isOpenPanelWithDealerDetails(
+              new ToggleDealerPanelWithDetails()
+            )
+          );
         },
-        (args: any) => {}
+        (args: any) => {
+          setFormWarning(args.response.message);
+        }
       )
     );
   };
@@ -277,383 +301,411 @@ export const ManageDealerForm: React.FC = () => {
             )
           );
         },
-        (args: any) => {}
+        (args: any) => {
+          setFormWarning(args.response.message);
+        }
       )
     );
   };
 
   return (
-    <Formik
-      validationSchema={_buildFormikSchema(dealerAccount)}
-      initialValues={formikInitValues}
-      onSubmit={(values: any) => {
-        if (dealerAccount) onEditDealer(values, dealerAccount);
-        else onCreateDealer(values);
-      }}
-      innerRef={(formik: any) => {
-        formikReference.formik = formik;
+    <div style={{ position: 'relative' }}>
+      {formWarning && formWarning.length > 0 ? (
+        <Text
+          block
+          styles={{
+            root: {
+              position: 'absolute',
+              top: '-27px',
+              left: '0px',
+              color: 'rgb(164, 38, 44)',
+              fontSize: '12px',
+              maxWidth: '546px',
+              maxHeight: '36px',
+            },
+          }}
+        >
+          {formWarning}
+        </Text>
+      ) : null}
 
-        if (formik) setFormikDirty(formik.dirty);
-      }}
-      validateOnBlur={false}
-      enableReinitialize={true}
-    >
-      {(formik) => {
-        return (
-          <Form className="form">
-            <div className="dealerFormManage">
-              <Stack horizontal tokens={{ childrenGap: 20 }}>
-                <Stack grow={1}>
-                  <Field name="companyName">
-                    {() => {
-                      return (
-                        <div className="form__group">
-                          <TextField
-                            value={formik.values.companyName}
-                            styles={fabricStyles.textFildLabelStyles}
-                            className="form__group__field"
-                            label="Company name"
-                            required
-                            onChange={(args: any) => {
-                              let value = args.target.value;
+      <Formik
+        validationSchema={_buildFormikSchema(dealerAccount)}
+        initialValues={formikInitValues}
+        onSubmit={(values: any) => {
+          if (dealerAccount) onEditDealer(values, dealerAccount);
+          else onCreateDealer(values);
+        }}
+        innerRef={(formik: any) => {
+          formikReference.formik = formik;
 
-                              formik.setFieldValue('companyName', value);
-                              formik.setFieldTouched('companyName');
-                            }}
-                            errorMessage={
-                              formik.errors.companyName &&
-                              formik.touched.companyName ? (
-                                <span className="form__group__error">
-                                  {formik.errors.companyName}
-                                </span>
-                              ) : (
-                                ''
-                              )
-                            }
-                          />
-                        </div>
-                      );
-                    }}
-                  </Field>
-                  <Field name="name">
-                    {() => {
-                      return (
-                        <div className="form__group">
-                          <TextField
-                            value={formik.values.name}
-                            styles={fabricStyles.textFildLabelStyles}
-                            className="form__group__field"
-                            label="Name"
-                            required
-                            onChange={(args: any) => {
-                              let value = args.target.value;
-                              formik.setFieldValue('name', value);
-                              formik.setFieldTouched('name');
-                            }}
-                            errorMessage={
-                              formik.errors.name && formik.touched.name ? (
-                                <span className="form__group__error">
-                                  {formik.errors.name}
-                                </span>
-                              ) : (
-                                ''
-                              )
-                            }
-                          />
-                        </div>
-                      );
-                    }}
-                  </Field>
-                  <Field name="email">
-                    {() => {
-                      return (
-                        <div className="form__group">
-                          <TextField
-                            value={formik.values.email}
-                            styles={fabricStyles.textFildLabelStyles}
-                            className="form__group__field"
-                            label="Email"
-                            required
-                            onChange={(args: any) => {
-                              let value = args.target.value;
-                              formik.setFieldValue('email', value);
-                              formik.setFieldTouched('email');
-                            }}
-                            errorMessage={
-                              formik.errors.email && formik.touched.email ? (
-                                <span className="form__group__error">
-                                  {formik.errors.email}
-                                </span>
-                              ) : (
-                                ''
-                              )
-                            }
-                          />
-                        </div>
-                      );
-                    }}
-                  </Field>
-                  <Field name="alternativeEmail">
-                    {() => {
-                      return (
-                        <div className="form__group">
-                          <TextField
-                            value={formik.values.alternativeEmail}
-                            styles={fabricStyles.textFildLabelStyles}
-                            label="Alternative Email"
-                            required
-                            className="form__group__field"
-                            onChange={(args: any) => {
-                              let value = args.target.value;
-                              formik.setFieldValue('alternativeEmail', value);
-                              formik.setFieldTouched('alternativeEmail');
-                            }}
-                            errorMessage={
-                              formik.errors.alternativeEmail &&
-                              formik.touched.alternativeEmail ? (
-                                <span className="form__group__error">
-                                  {formik.errors.alternativeEmail}
-                                </span>
-                              ) : (
-                                ''
-                              )
-                            }
-                          />
-                        </div>
-                      );
-                    }}
-                  </Field>
-
-                  {dealerAccount ? null : (
-                    <Field name="password">
+          if (formik) setFormikDirty(formik.dirty);
+        }}
+        validateOnBlur={false}
+        enableReinitialize={true}
+      >
+        {(formik) => {
+          return (
+            <Form className="form">
+              <div className="dealerFormManage">
+                <Stack horizontal tokens={{ childrenGap: 20 }}>
+                  <Stack grow={1}>
+                    <Field name="companyName">
                       {() => {
                         return (
                           <div className="form__group">
-                            <Stack horizontal tokens={{ childrenGap: '6px' }}>
-                              <Stack.Item grow={1}>
-                                <TextField
-                                  value={formik.values.password}
-                                  styles={fabricStyles.textFildLabelStyles}
-                                  label="Password"
-                                  required
-                                  className="form__group__field"
-                                  onChange={(args: any) => {
-                                    let value = args.target.value;
-                                    formik.setFieldValue('password', value);
-                                    formik.setFieldTouched('password');
-                                  }}
-                                  errorMessage={
-                                    formik.errors.password &&
-                                    formik.touched.password ? (
-                                      <span className="form__group__error">
-                                        {formik.errors.password}
-                                      </span>
-                                    ) : (
-                                      ''
-                                    )
-                                  }
-                                />
-                              </Stack.Item>
+                            <TextField
+                              value={formik.values.companyName}
+                              styles={fabricStyles.textFildLabelStyles}
+                              className="form__group__field"
+                              label="Company name"
+                              required
+                              onChange={(args: any) => {
+                                let value = args.target.value;
 
-                              <Stack.Item align="end">
-                                <TooltipHost
-                                  content="Auto Generate password"
-                                  directionalHint={
-                                    DirectionalHint.bottomRightEdge
-                                  }
-                                  id={generatePasswordTooltipId}
-                                  calloutProps={{ gapSpace: 0 }}
-                                  styles={{
-                                    root: { display: 'inline-block' },
-                                  }}
-                                >
-                                  <IconButton
-                                    iconProps={{
-                                      iconName: 'PasswordField',
-                                    }}
-                                    onClick={() => {
-                                      dispatch(
-                                        assignPendingActions(
-                                          authActions.apiGeneratePassword(),
-                                          [],
-                                          [],
-                                          (args: any) => {
-                                            formik.setFieldValue(
-                                              'password',
-                                              args
-                                            );
-                                            formik.setFieldTouched('password');
-                                          },
-                                          (args: any) => {}
-                                        )
-                                      );
-                                    }}
-                                    styles={{
-                                      root:
-                                        formik.errors.password &&
-                                        formik.touched.password
-                                          ? { marginBottom: '5px' }
-                                          : {},
-                                    }}
-                                  />
-                                </TooltipHost>
-                              </Stack.Item>
-                            </Stack>
+                                formik.setFieldValue('companyName', value);
+                                formik.setFieldTouched('companyName');
+                              }}
+                              errorMessage={
+                                formik.errors.companyName &&
+                                formik.touched.companyName ? (
+                                  <span className="form__group__error">
+                                    {formik.errors.companyName}
+                                  </span>
+                                ) : (
+                                  ''
+                                )
+                              }
+                            />
                           </div>
                         );
                       }}
                     </Field>
-                  )}
+                    <Field name="name">
+                      {() => {
+                        return (
+                          <div className="form__group">
+                            <TextField
+                              value={formik.values.name}
+                              styles={fabricStyles.textFildLabelStyles}
+                              className="form__group__field"
+                              label="Name"
+                              required
+                              onChange={(args: any) => {
+                                let value = args.target.value;
+                                formik.setFieldValue('name', value);
+                                formik.setFieldTouched('name');
+                              }}
+                              errorMessage={
+                                formik.errors.name && formik.touched.name ? (
+                                  <span className="form__group__error">
+                                    {formik.errors.name}
+                                  </span>
+                                ) : (
+                                  ''
+                                )
+                              }
+                            />
+                          </div>
+                        );
+                      }}
+                    </Field>
+                    <Field name="email">
+                      {() => {
+                        return (
+                          <div className="form__group">
+                            <TextField
+                              value={formik.values.email}
+                              styles={fabricStyles.textFildLabelStyles}
+                              className="form__group__field"
+                              label="Email"
+                              required
+                              onChange={(args: any) => {
+                                let value = args.target.value;
+                                formik.setFieldValue('email', value);
+                                formik.setFieldTouched('email');
+                              }}
+                              errorMessage={
+                                formik.errors.email && formik.touched.email ? (
+                                  <span className="form__group__error">
+                                    {formik.errors.email}
+                                  </span>
+                                ) : (
+                                  ''
+                                )
+                              }
+                            />
+                          </div>
+                        );
+                      }}
+                    </Field>
+                    <Field name="alternativeEmail">
+                      {() => {
+                        return (
+                          <div className="form__group">
+                            <TextField
+                              value={formik.values.alternativeEmail}
+                              styles={fabricStyles.textFildLabelStyles}
+                              label="Alternative Email"
+                              required
+                              className="form__group__field"
+                              onChange={(args: any) => {
+                                let value = args.target.value;
+                                formik.setFieldValue('alternativeEmail', value);
+                                formik.setFieldTouched('alternativeEmail');
+                              }}
+                              errorMessage={
+                                formik.errors.alternativeEmail &&
+                                formik.touched.alternativeEmail ? (
+                                  <span className="form__group__error">
+                                    {formik.errors.alternativeEmail}
+                                  </span>
+                                ) : (
+                                  ''
+                                )
+                              }
+                            />
+                          </div>
+                        );
+                      }}
+                    </Field>
 
-                  <Field name="phoneNumber">
-                    {() => {
-                      return (
-                        <div className="form__group">
-                          <MaskedTextField
-                            value={formik.values.phoneNumber}
-                            styles={fabricStyles.textFildLabelStyles}
-                            className="form__group__field"
-                            label="Phone Number"
-                            mask="(999) 999 - 9999"
-                            onChange={(args: any) => {
-                              let value = args.target.value;
-                              formik.setFieldValue('phoneNumber', value);
-                              formik.setFieldTouched('phoneNumber');
-                            }}
-                          />
-                        </div>
-                      );
-                    }}
-                  </Field>
-                  <Field name="taxNumber">
-                    {() => {
-                      return (
-                        <div className="form__group">
-                          <TextField
-                            value={formik.values.taxNumber}
-                            styles={fabricStyles.textFildLabelStyles}
-                            label="Tax Number"
-                            className="form__group__field"
-                            onChange={(args: any) => {
-                              let value = args.target.value;
-                              formik.setFieldValue('taxNumber', value);
-                              formik.setFieldTouched('taxNumber');
-                            }}
-                          />
-                        </div>
-                      );
-                    }}
-                  </Field>
+                    {dealerAccount ? null : (
+                      <Field name="password">
+                        {() => {
+                          return (
+                            <div className="form__group">
+                              <Stack horizontal tokens={{ childrenGap: '6px' }}>
+                                <Stack.Item grow={1}>
+                                  <TextField
+                                    value={formik.values.password}
+                                    styles={fabricStyles.textFildLabelStyles}
+                                    label="Password"
+                                    required
+                                    className="form__group__field"
+                                    onChange={(args: any) => {
+                                      let value = args.target.value;
+                                      formik.setFieldValue('password', value);
+                                      formik.setFieldTouched('password');
+                                    }}
+                                    errorMessage={
+                                      formik.errors.password &&
+                                      formik.touched.password ? (
+                                        <span className="form__group__error">
+                                          {formik.errors.password}
+                                        </span>
+                                      ) : (
+                                        ''
+                                      )
+                                    }
+                                  />
+                                </Stack.Item>
+
+                                <Stack.Item align="end">
+                                  <TooltipHost
+                                    content="Auto Generate password"
+                                    directionalHint={
+                                      DirectionalHint.bottomRightEdge
+                                    }
+                                    id={generatePasswordTooltipId}
+                                    calloutProps={{ gapSpace: 0 }}
+                                    styles={{
+                                      root: { display: 'inline-block' },
+                                    }}
+                                  >
+                                    <IconButton
+                                      iconProps={{
+                                        iconName: 'PasswordField',
+                                      }}
+                                      onClick={() => {
+                                        dispatch(
+                                          assignPendingActions(
+                                            authActions.apiGeneratePassword(),
+                                            [],
+                                            [],
+                                            (args: any) => {
+                                              formik.setFieldValue(
+                                                'password',
+                                                args
+                                              );
+                                              formik.setFieldTouched(
+                                                'password'
+                                              );
+                                            },
+                                            (args: any) => {}
+                                          )
+                                        );
+                                      }}
+                                      styles={{
+                                        root:
+                                          formik.errors.password &&
+                                          formik.touched.password
+                                            ? { marginBottom: '5px' }
+                                            : {},
+                                      }}
+                                    />
+                                  </TooltipHost>
+                                </Stack.Item>
+                              </Stack>
+                            </div>
+                          );
+                        }}
+                      </Field>
+                    )}
+
+                    <Field name="phoneNumber">
+                      {() => {
+                        return (
+                          <div className="form__group">
+                            <MaskedTextField
+                              value={formik.values.phoneNumber}
+                              styles={fabricStyles.textFildLabelStyles}
+                              className="form__group__field"
+                              label="Phone Number"
+                              mask="(999) 999 - 9999"
+                              onChange={(args: any) => {
+                                let value = args.target.value;
+                                formik.setFieldValue('phoneNumber', value);
+                                formik.setFieldTouched('phoneNumber');
+                              }}
+                            />
+                          </div>
+                        );
+                      }}
+                    </Field>
+                    <Field name="taxNumber">
+                      {() => {
+                        return (
+                          <div className="form__group">
+                            <TextField
+                              value={formik.values.taxNumber}
+                              styles={fabricStyles.textFildLabelStyles}
+                              label="Tax Number"
+                              className="form__group__field"
+                              onChange={(args: any) => {
+                                let value = args.target.value;
+                                formik.setFieldValue('taxNumber', value);
+                                formik.setFieldTouched('taxNumber');
+                              }}
+                            />
+                          </div>
+                        );
+                      }}
+                    </Field>
+                  </Stack>
+                  <Stack grow={1}>
+                    <Field name="selectCurrency">
+                      {() => {
+                        return (
+                          <div className="form__group">
+                            <Dropdown
+                              defaultSelectedKey={
+                                _resolveDefaultDropDownValue(
+                                  _currencyOptions,
+                                  parseInt(formik.values.selectCurrency)
+                                ).key
+                              }
+                              className="form__group__field"
+                              label="Select Currency"
+                              options={_currencyOptions}
+                              styles={fabricStyles.dropDownStyles}
+                              onChange={(
+                                event: React.FormEvent<HTMLDivElement>,
+                                item: any
+                              ) => {
+                                let value = item.value;
+                                formik.setFieldValue('selectCurrency', value);
+                                formik.setFieldTouched('selectCurrency');
+                              }}
+                            />
+                          </div>
+                        );
+                      }}
+                    </Field>
+
+                    <Field name="selectPayment">
+                      {() => {
+                        return (
+                          <div className="form__group">
+                            <Dropdown
+                              className="form__group__field"
+                              label="Select Payment"
+                              options={_paymentOptions}
+                              defaultSelectedKey={
+                                _resolveDefaultDropDownValue(
+                                  _paymentOptions,
+                                  parseInt(formik.values.selectPayment)
+                                ).key
+                              }
+                              styles={fabricStyles.dropDownStyles}
+                              onChange={(
+                                event: React.FormEvent<HTMLDivElement>,
+                                item: any
+                              ) => {
+                                let value = item.value;
+                                formik.setFieldValue('selectPayment', value);
+                                formik.setFieldTouched('selectPayment');
+                              }}
+                            />
+                          </div>
+                        );
+                      }}
+                    </Field>
+
+                    <Field name="vatApplicate">
+                      {() => {
+                        return (
+                          <div className="form__group">
+                            <Toggle
+                              checked={formik.values.vatApplicate}
+                              styles={fabricStyles.toggleStyles}
+                              className="form__group__field"
+                              label="Vat Applicate"
+                              inlineLabel
+                              onText="On"
+                              offText="Off"
+                              onChange={(checked: any, isChecked: any) => {
+                                formik.setFieldValue('vatApplicate', isChecked);
+                                formik.setFieldTouched('vatApplicate');
+                              }}
+                            />
+                          </div>
+                        );
+                      }}
+                    </Field>
+
+                    <Field name="creditAllowed">
+                      {() => {
+                        return (
+                          <div className="form__group">
+                            <Toggle
+                              checked={formik.values.creditAllowed}
+                              className="form__group__field"
+                              label="Credit Allowed"
+                              styles={fabricStyles.toggleStyles}
+                              inlineLabel
+                              onText="On"
+                              offText="Off"
+                              onChange={(checked: any, isChecked: any) => {
+                                formik.setFieldValue(
+                                  'creditAllowed',
+                                  isChecked
+                                );
+                                formik.setFieldTouched('creditAllowed');
+                              }}
+                            />
+                          </div>
+                        );
+                      }}
+                    </Field>
+                  </Stack>
                 </Stack>
-                <Stack grow={1}>
-                  <Field name="selectCurrency">
-                    {() => {
-                      return (
-                        <div className="form__group">
-                          <Dropdown
-                            defaultSelectedKey={
-                              _resolveDefaultDropDownValue(
-                                _currencyOptions,
-                                parseInt(formik.values.selectCurrency)
-                              ).key
-                            }
-                            className="form__group__field"
-                            label="Select Currency"
-                            options={_currencyOptions}
-                            styles={fabricStyles.dropDownStyles}
-                            onChange={(
-                              event: React.FormEvent<HTMLDivElement>,
-                              item: any
-                            ) => {
-                              let value = item.value;
-                              formik.setFieldValue('selectCurrency', value);
-                              formik.setFieldTouched('selectCurrency');
-                            }}
-                          />
-                        </div>
-                      );
-                    }}
-                  </Field>
-
-                  <Field name="selectPayment">
-                    {() => {
-                      return (
-                        <div className="form__group">
-                          <Dropdown
-                            className="form__group__field"
-                            label="Select Payment"
-                            options={_paymentOptions}
-                            defaultSelectedKey={
-                              _resolveDefaultDropDownValue(
-                                _paymentOptions,
-                                parseInt(formik.values.selectPayment)
-                              ).key
-                            }
-                            styles={fabricStyles.dropDownStyles}
-                            onChange={(
-                              event: React.FormEvent<HTMLDivElement>,
-                              item: any
-                            ) => {
-                              let value = item.value;
-                              formik.setFieldValue('selectPayment', value);
-                              formik.setFieldTouched('selectPayment');
-                            }}
-                          />
-                        </div>
-                      );
-                    }}
-                  </Field>
-
-                  <Field name="vatApplicate">
-                    {() => {
-                      return (
-                        <div className="form__group">
-                          <Toggle
-                            checked={formik.values.vatApplicate}
-                            styles={fabricStyles.toggleStyles}
-                            className="form__group__field"
-                            label="Vat Applicate"
-                            inlineLabel
-                            onText="On"
-                            offText="Off"
-                            onChange={(checked: any, isChecked: any) => {
-                              formik.setFieldValue('vatApplicate', isChecked);
-                              formik.setFieldTouched('vatApplicate');
-                            }}
-                          />
-                        </div>
-                      );
-                    }}
-                  </Field>
-
-                  <Field name="creditAllowed">
-                    {() => {
-                      return (
-                        <div className="form__group">
-                          <Toggle
-                            checked={formik.values.creditAllowed}
-                            className="form__group__field"
-                            label="Credit Allowed"
-                            styles={fabricStyles.toggleStyles}
-                            inlineLabel
-                            onText="On"
-                            offText="Off"
-                            onChange={(checked: any, isChecked: any) => {
-                              formik.setFieldValue('creditAllowed', isChecked);
-                              formik.setFieldTouched('creditAllowed');
-                            }}
-                          />
-                        </div>
-                      );
-                    }}
-                  </Field>
-                </Stack>
-              </Stack>
-            </div>
-          </Form>
-        );
-      }}
-    </Formik>
+              </div>
+            </Form>
+          );
+        }}
+      </Formik>
+    </div>
   );
 };
 
