@@ -15,6 +15,7 @@ import {
   TooltipHost,
   FontIcon,
   mergeStyles,
+  CheckboxVisibility,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -109,7 +110,10 @@ export const DealerList: React.FC = () => {
       onColumnClick: () => {},
       onRender: (item: any, index?: number) => {
         return (
-          <Text style={defaultCellStyle}>
+          <Text
+            style={defaultCellStyle}
+            styles={{ root: { marginLeft: '6px' } }}
+          >
             {index !== null && index !== undefined ? index + 1 : -1}
           </Text>
         );
@@ -263,6 +267,7 @@ export const DealerList: React.FC = () => {
         enableShimmer={shimmer}
         styles={detailsListStyle}
         items={dealers}
+        checkboxVisibility={CheckboxVisibility.hidden}
         selection={selection}
         selectionMode={SelectionMode.single}
         columns={_dealerColumns}
@@ -294,9 +299,12 @@ export const DealerList: React.FC = () => {
                   };
 
                   if (selectedDealerId) {
-                    if (selectedDealerId === args.item.id) {
-                      unSelectFlow();
-                    } else {
+                    // if (selectedDealerId === args.item.id) {
+                    //   unSelectFlow();
+                    // } else {
+                    //   selectFlow();
+                    // }
+                    if (selectedDealerId !== args.item.id) {
                       selectFlow();
                     }
                   } else {
