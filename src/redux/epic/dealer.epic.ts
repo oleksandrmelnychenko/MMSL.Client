@@ -259,7 +259,6 @@ export const saveNewDealerEpic = (action$: AnyAction, state$: any) => {
           return successCommonEpicFlow(
             successResponse,
             [
-              controlActions.closeRightPanel(),
               controlActions.showInfoMessage(successResponse.message),
               controlActions.disabledStatusBar(),
             ],
@@ -300,7 +299,6 @@ export const updateDealerEpic = (action$: AnyAction, state$: any) => {
           return successCommonEpicFlow(
             successResponse,
             [
-              controlActions.closeRightPanel(),
               controlActions.showInfoMessage(successResponse.message),
               controlActions.disabledStatusBar(),
             ],
@@ -312,7 +310,9 @@ export const updateDealerEpic = (action$: AnyAction, state$: any) => {
             return errorCommonEpicFlow(
               errorResponse,
               [
-                controlActions.closeRightPanel(),
+                controlActions.showInfoMessage(
+                  `${errorResponse.response.message}`
+                ),
                 controlActions.disabledStatusBar(),
               ],
               action

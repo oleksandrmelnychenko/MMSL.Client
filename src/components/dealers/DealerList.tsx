@@ -13,6 +13,8 @@ import {
   IDetailsHeaderProps,
   IDetailsColumnRenderTooltipProps,
   TooltipHost,
+  FontIcon,
+  mergeStyles,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -32,6 +34,8 @@ import {
 import { Sticky, StickyPositionType } from 'office-ui-fabric-react/lib/Sticky';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
+const USED_OWN_PASSWORD: string = 'Own password used';
+const USED_OWN_PASSWORD_COLOR_HEX: string = '#a4373a80';
 
 export const DealerList: React.FC = () => {
   const dispatch = useDispatch();
@@ -71,6 +75,30 @@ export const DealerList: React.FC = () => {
       dispatch(controlActions.hideGlobalShimmer());
     }
   }, [dealers, dispatch, shimmer]);
+
+  const onRenderDetailsHeader: IRenderFunction<IDetailsHeaderProps> = (
+    props,
+    defaultRender
+  ) => {
+    if (!props) {
+      return null;
+    }
+    const onRenderColumnHeaderTooltip: IRenderFunction<IDetailsColumnRenderTooltipProps> = (
+      tooltipHostProps
+    ) => (
+      <div className="list__header">
+        <TooltipHost {...tooltipHostProps} />
+      </div>
+    );
+    return (
+      <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced>
+        {defaultRender!({
+          ...props,
+          onRenderColumnHeaderTooltip,
+        })}
+      </Sticky>
+    );
+  };
 
   const _dealerColumns: IColumn[] = [
     {
@@ -123,6 +151,50 @@ export const DealerList: React.FC = () => {
       data: 'string',
       onRender: (item: any) => {
         return <Text style={defaultCellStyle}>{item.companyName}</Text>;
+      },
+      isPadded: true,
+    },
+    {
+      key: 'tempPassword',
+      name: 'Temporay Password',
+      minWidth: 70,
+      maxWidth: 90,
+      isResizable: true,
+      isCollapsible: true,
+      data: 'string',
+      onRender: (item: any) => {
+        let cellContent =
+          item && item.tempPassword ? (
+            item.tempPassword.length > 0 ? (
+              <Text style={{ ...defaultCellStyle }} block nowrap>
+                {item.tempPassword}
+              </Text>
+            ) : (
+              <Stack horizontal>
+                <FontIcon
+                  style={{
+                    cursor: 'default',
+                    lineHeight: 1,
+                    marginTop: '2px',
+                    marginLeft: '-4px',
+                  }}
+                  iconName="RadioBullet"
+                  className={mergeStyles({
+                    fontSize: 16,
+                    color: USED_OWN_PASSWORD_COLOR_HEX,
+                  })}
+                />
+
+                <Text block nowrap>
+                  {USED_OWN_PASSWORD}
+                </Text>
+              </Stack>
+            )
+          ) : (
+            ''
+          );
+
+        return cellContent;
       },
       isPadded: true,
     },
@@ -183,30 +255,6 @@ export const DealerList: React.FC = () => {
       isPadded: true,
     },
   ];
-
-  const onRenderDetailsHeader: IRenderFunction<IDetailsHeaderProps> = (
-    props,
-    defaultRender
-  ) => {
-    if (!props) {
-      return null;
-    }
-    const onRenderColumnHeaderTooltip: IRenderFunction<IDetailsColumnRenderTooltipProps> = (
-      tooltipHostProps
-    ) => (
-      <div className="list__header">
-        <TooltipHost {...tooltipHostProps} />
-      </div>
-    );
-    return (
-      <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced>
-        {defaultRender!({
-          ...props,
-          onRenderColumnHeaderTooltip,
-        })}
-      </Sticky>
-    );
-  };
 
   return (
     <ScrollablePane styles={scrollablePaneStyleForDetailList}>

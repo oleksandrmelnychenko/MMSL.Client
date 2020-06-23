@@ -21,6 +21,7 @@ export class DealerAccount extends EntityBase {
     this.shippingAddressId = null;
     this.shippingAddress = null;
     this.stores = [];
+    this.tempPassword = '';
   }
 
   name: string;
@@ -39,4 +40,5 @@ export class DealerAccount extends EntityBase {
   shippingAddressId: number | null;
   shippingAddress: Address | null;
   stores: any[];
+  tempPassword: string;
 }

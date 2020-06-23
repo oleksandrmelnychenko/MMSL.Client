@@ -54,7 +54,6 @@ export const buildGroupMandatoryHint = (group: OptionGroup) => {
 };
 
 export interface IStyleGroupItemProps {
-  // styleGroup: OptionGroup;
   expandableStyleGroup: ExpandableItem;
 }
 
@@ -63,10 +62,6 @@ const _groupContainerStyle = {
     height: '40px',
     borderBottom: '1px solid rgb(243, 242, 241)',
     borderTop: '1px solid rgb(243, 242, 241)',
-    // borderBottom: '1px solid #dfdfdf',
-    // borderTop: '1px solid #dfdfdf',
-    // paddingTop: '5px',
-    // paddingBottom: '5px',
     marginBottom: '15px',
     marginTop: '15px',
   },

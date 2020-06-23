@@ -42,11 +42,7 @@ const NOT_APPLIED_COLOR_HEX: string = '#a4373a80';
 const PermissionsList: React.FC = () => {
   const dispatch = useDispatch();
 
-  const [selection] = useState(
-    new Selection({
-      onSelectionChanged: () => {},
-    })
-  );
+  const [selection] = useState(new Selection());
 
   const targetProduct = useSelector<IApplicationState, ProductCategory | null>(
     (state) => state.product.choose.category
