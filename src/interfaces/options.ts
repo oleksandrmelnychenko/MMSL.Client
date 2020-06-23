@@ -1,7 +1,8 @@
-import { EntityBaseNamed } from './base';
+import { EntityBaseNamed, EntityBase } from './base';
 import { ProductDeliveryTimelineSelected } from './deliveryTimelines';
 import { ProductCategory } from './products';
 import { Measurement } from './measurements';
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 
 export class OptionGroup extends EntityBaseNamed {
   constructor() {
@@ -32,6 +33,8 @@ export class OptionUnit extends EntityBaseNamed {
     this.orderIndex = 0;
     this.optionGroupId = null;
     this.optionGroup = null;
+
+    this.unitValues = [];
   }
 
   orderIndex: number;
@@ -43,6 +46,21 @@ export class OptionUnit extends EntityBaseNamed {
   isAllow: boolean;
   optionGroupId?: number | null;
   optionGroup?: OptionGroup | null;
+  unitValues: UnitValue[];
+}
+
+export class UnitValue extends EntityBase {
+  constructor() {
+    super();
+
+    this.value = 0;
+    this.optionUnitId = 0;
+    this.optionUnit = null;
+  }
+
+  value: number;
+  optionUnitId: number;
+  optionUnit: OptionUnit | null | undefined;
 }
 
 export class ModifiedOptionUnitOrder {

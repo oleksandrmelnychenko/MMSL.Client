@@ -242,34 +242,22 @@ export const apiUpdateOptionUnitEpic = (action$: AnyAction, state$: any) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const formData: FormData = new FormData();
+
       formData.append(FORM_DATA_IMAGE_FILE_KEY, action.payload.imageBlob);
+      formData.append('orderIndex', action.payload.orderIndex);
+      formData.append('value', action.payload.value);
+      formData.append('isMandatory', action.payload.isMandatory);
+      formData.append('ImageUrl', action.payload.imageUrl);
+      formData.append('id', action.payload.id);
+      formData.append(
+        'serializedValues',
+        JSON.stringify(action.payload.serializedValues)
+      );
 
       return putFormDataWebRequest(
         api.MODIFY_OPTION_UNIT,
         formData,
-        state$.value,
-        [
-          {
-            key: 'orderIndex',
-            value: `${action.payload.orderIndex}`,
-          },
-          {
-            key: 'value',
-            value: `${action.payload.value}`,
-          },
-          {
-            key: 'isMandatory',
-            value: `${action.payload.isMandatory}`,
-          },
-          {
-            key: 'ImageUrl',
-            value: `${encodeURIComponent(action.payload.imageUrl)}`,
-          },
-          {
-            key: 'id',
-            value: `${action.payload.id}`,
-          },
-        ]
+        state$.value
       ).pipe(
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
@@ -307,38 +295,22 @@ export const apiCreateNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const formData: FormData = new FormData();
-      formData.append(FORM_DATA_IMAGE_FILE_KEY, action.payload.imageBlob);
+
+      formData.append(FORM_DATA_IMAGE_FILE_KEY, action.payload.file);
+      formData.append('orderIndex', action.payload.orderIndex);
+      formData.append('value', action.payload.value);
+      formData.append('isMandatory', action.payload.isMandatory);
+      formData.append('id', action.payload.id);
+      formData.append('optionGroupId', action.payload.optionGroupId);
+      formData.append(
+        'serializedValues',
+        JSON.stringify(action.payload.serializedValues)
+      );
 
       return postFormDataWebRequest(
         api.ADD_OPTION_UNIT,
         formData,
-        state$.value,
-        [
-          {
-            key: 'orderIndex',
-            value: `${action.payload.orderIndex}`,
-          },
-          {
-            key: 'value',
-            value: `${action.payload.value}`,
-          },
-          {
-            key: 'isMandatory',
-            value: `${action.payload.isMandatory}`,
-          },
-          {
-            key: 'imageUrl',
-            value: `${encodeURIComponent(action.payload.imageUrl)}`,
-          },
-          {
-            key: 'id',
-            value: `${action.payload.id}`,
-          },
-          {
-            key: 'optionGroupId',
-            value: `${action.payload.optionGroupId}`,
-          },
-        ]
+        state$.value
       ).pipe(
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(

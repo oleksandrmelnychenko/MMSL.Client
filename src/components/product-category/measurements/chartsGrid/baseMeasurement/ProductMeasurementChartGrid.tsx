@@ -40,6 +40,7 @@ import BaseSizeNameCell from './BaseSizeNameCell';
 import SizesForm from './management/SizesForm';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
 import { measurementActions } from '../../../../../redux/slices/measurements/measurement.slice';
+import BorderedCell from '../BorderedCell';
 
 const FROZEN_COLUMN_WIDTH = 130;
 
@@ -90,11 +91,13 @@ const ProductMeasurementChartGrid: React.FC = () => {
 
     onRender: (item?: any, index?: number, column?: IColumn) => {
       return (
-        <BaseSizeNameCell
-          mapSize={item}
-          measurementChart={targetProductMeasurementChart}
-          productCategory={targetProduct}
-        />
+        <BorderedCell>
+          <BaseSizeNameCell
+            mapSize={item}
+            measurementChart={targetProductMeasurementChart}
+            productCategory={targetProduct}
+          />
+        </BorderedCell>
       );
     },
   };
@@ -359,12 +362,14 @@ const ProductMeasurementChartGrid: React.FC = () => {
               column?: IColumn
             ) => {
               return (
-                <BaseSizeValueCell
-                  mapSize={item}
-                  chartColumn={(column as any).rawSourceContext}
-                  measurementChart={targetProductMeasurementChart}
-                  productCategory={targetProduct}
-                />
+                <BorderedCell>
+                  <BaseSizeValueCell
+                    mapSize={item}
+                    chartColumn={(column as any).rawSourceContext}
+                    measurementChart={targetProductMeasurementChart}
+                    productCategory={targetProduct}
+                  />
+                </BorderedCell>
               );
             },
           };

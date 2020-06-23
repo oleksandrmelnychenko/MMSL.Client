@@ -159,7 +159,13 @@ const BodySizeValueCell: React.FC<IBodySizeValueCellProps> = (
                   {() => (
                     <TextField
                       type="number"
-                      styles={{ root: { position: 'absolute', top: '6px' } }}
+                      styles={{
+                        root: {
+                          position: 'absolute',
+                          top: '6px',
+                          marginRight: '9px',
+                        },
+                      }}
                       autoFocus
                       componentRef={inputEditRef}
                       value={formik.values.sizeValue}

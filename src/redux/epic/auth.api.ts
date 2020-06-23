@@ -4,10 +4,16 @@ import { push } from 'react-router-redux';
 import { ofType } from 'redux-observable';
 import { switchMap, mergeMap, catchError } from 'rxjs/operators';
 import * as API from '../constants/api.constants';
-import { postWebRequest } from '../../helpers/epic.helper';
+import { postWebRequest, getWebRequest } from '../../helpers/epic.helper';
 import { TokenHelper } from '../../helpers/token.helper';
 import { authActions } from '../slices/auth.slice';
 import { getActiveLanguage } from 'react-localize-redux';
+import { controlActions } from '../slices/control.slice';
+import {
+  successCommonEpicFlow,
+  errorCommonEpicFlow,
+} from '../../helpers/action.helper';
+import { checkUnauthorized } from '../../helpers/error.helpers';
 
 export const signInEpic = (action$: AnyAction, state$: any) =>
   action$.pipe(
@@ -44,3 +50,37 @@ export const logOutEpic = (action$: AnyAction, state$: any) =>
       return of(push(`/${currentLanguage}/account-security/sign-in`));
     })
   );
+
+export const apiGeneratePasswordEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(authActions.apiGeneratePassword.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      return getWebRequest(API.GENERATE_PASSWORD, state$.value, []).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_GENERATE_PASSWORD' },
+                controlActions.showInfoMessage(
+                  `Error occurred whilegenerating password. ${errorResponse}`
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};

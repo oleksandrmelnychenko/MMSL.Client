@@ -48,12 +48,7 @@ const BaseSizeNameCell: React.FC<IBaseSizeNameCellProps> = (
   }, [sizeName]);
 
   useEffect(() => {
-    if (
-      isInEditMode &&
-      inputEditRef &&
-      inputEditRef.current &&
-      inputEditRef.focus
-    ) {
+    if (inputEditRef && inputEditRef.current && inputEditRef.focus) {
       inputEditRef.current.focus();
     }
   }, [isInEditMode, inputEditRef, outputValue]);
@@ -116,7 +111,13 @@ const BaseSizeNameCell: React.FC<IBaseSizeNameCellProps> = (
                 <Field name="sizeName">
                   {() => (
                     <TextField
-                      styles={{ root: { position: 'absolute', top: '6px' } }}
+                      styles={{
+                        root: {
+                          position: 'absolute',
+                          top: '6px',
+                          marginRight: '9px',
+                        },
+                      }}
                       autoFocus
                       componentRef={inputEditRef}
                       value={formik.values.sizeName}

@@ -4,4 +4,8 @@
     // padding: 16px;
     // padding-top: 6px;
     border-radius: 1px;
+
+    &.expanded {
+        margin-bottom: 18px;
+    }
 }
