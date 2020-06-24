@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Stack, TextField, Checkbox } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
-import '../../../dealers/dealerManaging/manageDealerForm.scss';
+import '../../../dealers/managing/dealerManaging/manageDealerForm.scss';
 import { FormicReference } from '../../../../interfaces';
 import { OptionGroup } from '../../../../interfaces/options';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';

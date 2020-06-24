@@ -79,3 +79,7 @@ export const GET_PERMISSION_BY_ID = '/product/permissions/get/by/id';
 export const GET_OPTION_GROUPS_FROM_PERMISSION_PERSPECTIVE =
   '/product/permissions/get/options';
 export const BIND_DEALERS_TO_PERMISSION = '/product/permissions/bind/dealers';
+
+export const GET_DEALER_PRODUCTS_WITH_AVAILABILITY =
+  '/product/category/get/availability';
+export const UPDATE_DEALER_PRODUCTS_AVAILABILITY = '/product/availability/save';

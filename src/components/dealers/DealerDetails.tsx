@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ManageDealerForm from './dealerManaging/ManageDealerForm';
+import ManageDealerForm from './managing/dealerManaging/ManageDealerForm';
 import { useSelector } from 'react-redux';
 import { FormicReference } from '../../interfaces';
 import { DealerAccount } from '../../interfaces/dealer';

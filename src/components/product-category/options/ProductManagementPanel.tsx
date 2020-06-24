@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Label, PrimaryButton } from 'office-ui-fabric-react';
 import { controlActions } from '../../../redux/slices/control.slice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -43,10 +43,6 @@ const ProductManagementPanel: React.FC = () => {
   const choseCategory = useSelector<IApplicationState, ProductCategory | null>(
     (state) => state.product.choose.category
   );
-
-  useEffect(() => {
-    return () => {};
-  }, []);
 
   const menuItem: IProductMenuItem[] = [
     {

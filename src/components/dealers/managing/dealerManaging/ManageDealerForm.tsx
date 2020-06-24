@@ -15,26 +15,26 @@ import {
 } from 'office-ui-fabric-react';
 import './manageDealerForm.scss';
 import * as Yup from 'yup';
-import { FormicReference } from '../../../interfaces';
-import { DealerAccount } from '../../../interfaces/dealer';
-import { PaymentType } from '../../../interfaces/paymentTypes';
-import { Currency } from '../../../interfaces/currencyTypes';
-import * as fabricStyles from '../../../common/fabric-styles/styles';
+import { FormicReference } from '../../../../interfaces';
+import { DealerAccount } from '../../../../interfaces/dealer';
+import { PaymentType } from '../../../../interfaces/paymentTypes';
+import { Currency } from '../../../../interfaces/currencyTypes';
+import * as fabricStyles from '../../../../common/fabric-styles/styles';
 import { List } from 'linq-typescript';
 import { useSelector, useDispatch } from 'react-redux';
-import { IApplicationState } from '../../../redux/reducers';
-import { controlActions } from '../../../redux/slices/control.slice';
+import { IApplicationState } from '../../../../redux/reducers';
+import { controlActions } from '../../../../redux/slices/control.slice';
 import {
   CommandBarItem,
   GetCommandBarItemProps,
   ChangeItemsDisabledState,
-} from '../../../helpers/commandBar.helper';
-import { assignPendingActions } from '../../../helpers/action.helper';
+} from '../../../../helpers/commandBar.helper';
+import { assignPendingActions } from '../../../../helpers/action.helper';
 import {
   dealerActions,
   ToggleDealerPanelWithDetails,
-} from '../../../redux/slices/dealer.slice';
-import { authActions } from '../../../redux/slices/auth.slice';
+} from '../../../../redux/slices/dealer.slice';
+import { authActions } from '../../../../redux/slices/auth.slice';
 
 const _resolveDefaultDropDownValue = (
   limitOptions: any[],

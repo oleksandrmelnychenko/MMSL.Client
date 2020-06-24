@@ -67,6 +67,7 @@ export enum DealerDetilsComponents {
   DealerAddress,
   DealerStores,
   DealerCustomers,
+  DealerProducts,
 }
 
 export class ToggleDealerPanelWithDetails {
@@ -131,6 +132,9 @@ const dealer = createSlice({
       return state;
     },
     apiGetDealersListPaginated(state) {
+      return state;
+    },
+    apiDebounceGetDealersListPaginated(state) {
       return state;
     },
     deleteDealerById(state, action) {

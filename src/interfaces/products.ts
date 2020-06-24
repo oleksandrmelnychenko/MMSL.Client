@@ -9,6 +9,7 @@ export class ProductCategory extends EntityBaseNamed {
     this.measurements = null;
     this.optionGroupMaps = [];
     this.imageUrl = '';
+    this.isDisabled = false;
 
     this.imageBlob = null;
   }
@@ -16,6 +17,8 @@ export class ProductCategory extends EntityBaseNamed {
   imageUrl: string;
   measurements: null;
   optionGroupMaps: ProductCategoryMapOptionGroup[];
+  /// Describes availability of the product for dealers.
+  isDisabled: boolean;
 
   /// This field is used for just added (not saved) image files. Actual saved image source is provided through `imageUrl`.
   imageBlob: any;

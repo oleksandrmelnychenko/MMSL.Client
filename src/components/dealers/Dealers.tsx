@@ -15,7 +15,7 @@ import {
   columnIconButtonStyle,
 } from '../../common/fabric-styles/styles';
 import { controlActions } from '../../redux/slices/control.slice';
-import ManageDealerForm from './dealerManaging/ManageDealerForm';
+import ManageDealerForm from './managing/dealerManaging/ManageDealerForm';
 
 export const Dealers: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -122,10 +122,14 @@ export const Dealers: React.FC = (props: any) => {
                     if (args) {
                       let value = args.target.value;
                       dispatch(dealerActions.searchDealer(value));
-                      dispatch(dealerActions.apiGetDealersListPaginated());
+                      dispatch(
+                        dealerActions.apiDebounceGetDealersListPaginated()
+                      );
                     } else {
                       dispatch(dealerActions.searchDealer(''));
-                      dispatch(dealerActions.apiGetDealersListPaginated());
+                      dispatch(
+                        dealerActions.apiDebounceGetDealersListPaginated()
+                      );
                     }
                   }}
                 />

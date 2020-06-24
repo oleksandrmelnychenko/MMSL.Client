@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../managing/dealerManaging/createDealerPanel.scss';
+import './createDealerPanel.scss';
 import {
   Panel,
   PanelType,
@@ -7,16 +7,16 @@ import {
   ICommandBarItemProps,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
-import { IApplicationState } from '../../../redux/reducers';
-import { dealerActions } from '../../../redux/slices/dealer.slice';
-import ManageDealerForm from '../managing/dealerManaging/ManageDealerForm';
-import PanelTitle from '../../../common/panel/PanelTitle';
+import { IApplicationState } from '../../../../redux/reducers';
+import { dealerActions } from '../../../../redux/slices/dealer.slice';
+import ManageDealerForm from './ManageDealerForm';
+import PanelTitle from '../../../../common/panel/PanelTitle';
 import {
   panelStyle,
   commandBarStyles,
   commandBarButtonStyles,
-} from '../../../common/fabric-styles/styles';
-import { FormicReference } from '../../../interfaces';
+} from '../../../../common/fabric-styles/styles';
+import { FormicReference } from '../../../../interfaces';
 
 export const CreateDealerPanel: React.FC = (props: any) => {
   const dispatch = useDispatch();

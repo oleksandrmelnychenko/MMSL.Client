@@ -4,7 +4,7 @@ import {
   successCommonEpicFlow,
   errorCommonEpicFlow,
 } from './../../helpers/action.helper';
-import { switchMap, mergeMap, catchError } from 'rxjs/operators';
+import { switchMap, mergeMap, catchError, debounceTime } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import { dealerActions } from '../slices/dealer.slice';
@@ -108,6 +108,77 @@ export const apiGetDealersListPaginatedEpic = (
 ) => {
   return action$.pipe(
     ofType(dealerActions.apiGetDealersListPaginated.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      const pagination: Pagination = state$.value.dealer.dealerState.pagination;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+      const fromDate = state$.value.dealer.dealerState.fromDate;
+      const toDate = state$.value.dealer.dealerState.toDate;
+
+      return getWebRequest(api.GET_DEALERS_ALL, state$.value, [
+        { key: 'pageNumber', value: `${pagination.paginationInfo.pageNumber}` },
+        { key: 'limit', value: `${pagination.limit}` },
+        {
+          key: 'searchPhrase',
+          value: `${state$.value.dealer.dealerState.search}`,
+        },
+        {
+          key: 'from',
+          value: `${
+            fromDate
+              ? `${fromDate.getFullYear()}-${
+                  fromDate.getMonth() + 1
+                }-${fromDate.getDate()}`
+              : ''
+          }`,
+        },
+        {
+          key: 'to',
+          value: `${
+            toDate
+              ? `${toDate.getFullYear()}-${
+                  toDate.getMonth() + 1
+                }-${toDate.getDate()}`
+              : ''
+          }`,
+        },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              dealerActions.updateDealersList(
+                successResponse.entities ? successResponse.entities : null
+              ),
+              dealerActions.updateDealerListPaginationInfo(
+                successResponse.paginationInfo
+              ),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [{ type: 'ERROR' }, controlActions.disabledStatusBar()],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiDebounceGetDealersListPaginatedEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(dealerActions.apiDebounceGetDealersListPaginated.type),
+    debounceTime(500),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       const pagination: Pagination = state$.value.dealer.dealerState.pagination;

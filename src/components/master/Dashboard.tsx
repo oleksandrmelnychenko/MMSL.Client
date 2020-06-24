@@ -4,7 +4,7 @@ import Header from './header/Header';
 import Footer from './footer/Footer';
 import Menu from './menu/Menu';
 import { Switch, useLocation, Route } from 'react-router-dom';
-import Dealers from '../dealers/Dealers';
+import DealersBootstrapper from '../dealers/DealersBootstrapper';
 import Customers from '../customers/Customers';
 import CommonDialog from './CommonDialog';
 import { useSelector } from 'react-redux';
@@ -59,7 +59,7 @@ const Dashboard: React.FC = () => {
             }
           >
             <Switch>
-              <Route path={`/en/app/dealers`} component={Dealers} />
+              <Route path={`/en/app/dealers`} component={DealersBootstrapper} />
               <Route path={`/en/app/customer`} component={Customers} />
               <Route path={`/en/app/product`} component={ProductCategoryView} />
               {/* Old pages not neccessary now */}

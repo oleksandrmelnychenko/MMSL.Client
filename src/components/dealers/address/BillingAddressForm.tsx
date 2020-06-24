@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Checkbox, Stack, TextField } from 'office-ui-fabric-react';
-import '../dealerManaging/manageDealerForm.scss';
+import '../managing/dealerManaging/manageDealerForm.scss';
 import * as Yup from 'yup';
 import { FormicReference } from '../../../interfaces';
 import { Address } from '../../../interfaces/addresses';
