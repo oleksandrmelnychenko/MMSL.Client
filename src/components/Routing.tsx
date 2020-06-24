@@ -8,7 +8,7 @@ import Dashboard from './master/Dashboard';
 import { IApplicationState } from '../redux/reducers';
 import PageNotFound from './master/PageNotFound';
 import AccountSecurity from './account-security/AccountSecurity';
-import { IAuthState } from '../interfaces';
+import { IAuthState } from '../interfaces/identity';
 
 export interface IRoutingProps {
   onEnter: void;

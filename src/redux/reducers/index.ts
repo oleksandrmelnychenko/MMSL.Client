@@ -9,7 +9,7 @@ import {
 import { combineReducers } from '@reduxjs/toolkit';
 import { localizeReducer, LocalizeState } from 'react-localize-redux';
 import { routerReducer, RouterState } from 'react-router-redux';
-import { IAuthState } from '../../interfaces';
+import { IAuthState } from '../../interfaces/identity';
 import {
   default as controlReducer,
   ControlState,

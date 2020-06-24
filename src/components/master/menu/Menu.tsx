@@ -8,6 +8,9 @@ import './menu.scss';
 import { IApplicationState } from '../../../redux/reducers';
 import { LocalizeState, getActiveLanguage } from 'react-localize-redux';
 import { productSettingsActions } from '../../../redux/slices/productSettings.slice';
+import { TokenHelper } from '../../../helpers/token.helper';
+import { List } from 'linq-typescript';
+import { RoleType } from '../../../interfaces/identity';
 
 interface IMenuItem {
   title: string;
@@ -161,7 +164,34 @@ const Menu: React.FC = () => {
     </ul>
   );
 
-  return <div className="menu">{renderList(menu)}</div>;
+  const resolveMenu = () => {
+    const rolesList = new List(TokenHelper.extractRolesFromJWT());
+
+    let resolvedMenu: IMenuItem[] = [];
+
+    if (rolesList.contains(RoleType[RoleType.Administrator])) {
+      resolvedMenu = menu;
+    } else if (rolesList.contains(RoleType[RoleType.Manufacturer])) {
+      resolvedMenu = menu;
+    } else if (rolesList.contains(RoleType[RoleType.Customer])) {
+      debugger;
+    } else if (rolesList.contains(RoleType[RoleType.Dealer])) {
+      resolvedMenu = new List(menu)
+        .where(
+          (menuItem) =>
+            menuItem.title !== REPORTS_MENU_TITLE &&
+            menuItem.title !== PRODUCTS_MENU_TITLE &&
+            menuItem.title !== DEALERS_MENU_TITLE
+        )
+        .toArray();
+    } else {
+      debugger;
+    }
+
+    return resolvedMenu;
+  };
+
+  return <div className="menu">{renderList(resolveMenu())}</div>;
 };
 
 export default Menu;

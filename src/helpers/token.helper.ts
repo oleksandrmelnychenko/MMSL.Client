@@ -9,6 +9,19 @@ export class TokenHelper {
     return JSON.parse(window.atob(base64));
   }
 
+  public static extractRolesFromJWT(): any[] {
+    const jwtRole = TokenHelper.parseJwt(TokenHelper.getAccessToken()).role;
+    let result: string[] = [];
+
+    if (typeof jwtRole === 'string') {
+      result = [jwtRole];
+    } else {
+      result = jwtRole;
+    }
+
+    return result;
+  }
+
   public static SetToken(token: string): void {
     TokenHelper.SetAccessToken(token);
   }

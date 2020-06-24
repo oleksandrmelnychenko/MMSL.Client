@@ -14,7 +14,7 @@ import './account.scss';
 import { IApplicationState } from '../../redux/reducers';
 import { authActions } from '../../redux/slices/auth.slice';
 import { PreloaderModule } from '../../common/preloader/preloader.module/Preloader.module';
-import { IAuthentication } from '../../interfaces';
+import { IAuthentication } from '../../interfaces/identity';
 
 export const SignIn: React.FC = () => {
   const dispatch = useDispatch();
@@ -79,7 +79,8 @@ export const SignIn: React.FC = () => {
             };
 
             dispatch(authActions.signInAction(data));
-          }}>
+          }}
+        >
           {({ errors, touched }) => (
             <Form>
               <div className="form-group">
@@ -117,7 +118,8 @@ export const SignIn: React.FC = () => {
               <button
                 type="submit"
                 className="btn btn-submit"
-                disabled={isActiveForm}>
+                disabled={isActiveForm}
+              >
                 <Translate id="signIn" />
               </button>
             </Form>
@@ -126,7 +128,8 @@ export const SignIn: React.FC = () => {
         <Link
           to={`/${languageCode}/account-security/forgot-password`}
           className="account__forgot-psw"
-          onClick={handleClearErrorMessages}>
+          onClick={handleClearErrorMessages}
+        >
           <Translate id="forgotPassword" />
         </Link>
       </div>

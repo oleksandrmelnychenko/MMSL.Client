@@ -38,6 +38,7 @@ const Header: React.FC = () => {
       'box-sizing': 'content-box',
     },
   };
+
   const menuItems: IContextualMenuItem[] = [
     {
       key: 'logOut',
