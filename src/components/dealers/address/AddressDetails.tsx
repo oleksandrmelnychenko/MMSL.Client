@@ -8,7 +8,7 @@ import { FormicReference } from '../../../interfaces';
 import { DealerAccount } from '../../../interfaces/dealer';
 import { IApplicationState } from '../../../redux/reducers';
 import { ToggleDealerPanelWithDetails } from '../../../redux/slices/dealer.slice';
-import PanelTitle from '../panel/PanelTitle';
+import PanelTitle from '../../../common/panel/PanelTitle';
 import {
   commandBarButtonStyles,
   commandBarStyles,

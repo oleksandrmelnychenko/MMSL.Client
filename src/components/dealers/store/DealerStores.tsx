@@ -14,7 +14,7 @@ import { DealerAccount } from '../../../interfaces/dealer';
 import { dealerActions } from '../../../redux/slices/dealer.slice';
 import { IStore } from '../../../interfaces/store';
 import FormStore from './FormStore';
-import PanelTitle from '../panel/PanelTitle';
+import PanelTitle from '../../../common/panel/PanelTitle';
 import {
   commandBarButtonStyles,
   commandBarStyles,

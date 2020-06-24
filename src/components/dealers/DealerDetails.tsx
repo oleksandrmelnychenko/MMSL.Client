@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { FormicReference } from '../../interfaces';
 import { DealerAccount } from '../../interfaces/dealer';
 import { IApplicationState } from '../../redux/reducers';
-import PanelTitle from './panel/PanelTitle';
+import PanelTitle from '../../common/panel/PanelTitle';
 import './dealerDetails.scss';
 import { ICommandBarItemProps, CommandBar } from 'office-ui-fabric-react';
 import {

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FormicReference } from '../../../interfaces';
 import { ProductCategory } from '../../../interfaces/products';
 import { panelStyle } from '../../../common/fabric-styles/styles';
-import PanelTitle from '../../dealers/panel/PanelTitle';
+import PanelTitle from '../../../common/panel/PanelTitle';
 import CommonManagementActionBar, {
   buildCommonActionItems,
   hideAddEditPanelActions,

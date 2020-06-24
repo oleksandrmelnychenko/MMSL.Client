@@ -10,7 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
 import { dealerActions } from '../../../redux/slices/dealer.slice';
 import ManageDealerForm from './ManageDealerForm';
-import PanelTitle from '../panel/PanelTitle';
+import PanelTitle from '../../../common/panel/PanelTitle';
 import {
   panelStyle,
   commandBarStyles,

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, Stack, Separator } from 'office-ui-fabric-react';
-
 import './panelTitle.scss';
 
 class PanelTitleProps {
@@ -30,7 +29,8 @@ export const PanelTitle: React.FC<PanelTitleProps> = (
               <span
                 style={
                   index === 0 ? { padding: '0 5px 0 0' } : { padding: '0 5px' }
-                }>
+                }
+              >
                 {item}
               </span>
               {++index !== arrayItems.length ? <Separator vertical /> : null}
@@ -45,7 +45,8 @@ export const PanelTitle: React.FC<PanelTitleProps> = (
       <Stack
         tokens={{ childrenGap: 20 }}
         horizontal
-        className="panelTitle__panelHeader">
+        className="panelTitle__panelHeader"
+      >
         <Text className="panelTitle__title">{props.title}</Text>
         <Text className="panelTitle__description">
           {props.description ? renderPanelDescription(props.description) : null}

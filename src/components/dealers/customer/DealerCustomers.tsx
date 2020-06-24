@@ -12,7 +12,7 @@ import { FormicReference } from '../../../interfaces';
 import { dealerActions } from '../../../redux/slices/dealer.slice';
 import { IStore } from '../../../interfaces/store';
 import { Stack } from 'office-ui-fabric-react';
-import PanelTitle from '../panel/PanelTitle';
+import PanelTitle from '../../../common/panel/PanelTitle';
 import DealerCustomersList from './DealerCustomersList';
 import {
   commandBarButtonStyles,
