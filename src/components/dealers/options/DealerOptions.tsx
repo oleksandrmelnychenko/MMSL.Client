@@ -10,9 +10,9 @@ import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { ImenuItem } from '../../../interfaces';
 import { controlActions } from '../../../redux/slices/control.slice';
-import ManageDealerForm from './ManageDealerForm';
+import ManageDealerForm from '../dealerManaging/ManageDealerForm';
 
-const ManagementOptions: React.FC = () => {
+const DealerOptions: React.FC = () => {
   const dispatch = useDispatch();
 
   const isOpenPanelWithDealerDetails = useSelector<
@@ -123,4 +123,4 @@ const ManagementOptions: React.FC = () => {
   );
 };
 
-export default ManagementOptions;
+export default DealerOptions;

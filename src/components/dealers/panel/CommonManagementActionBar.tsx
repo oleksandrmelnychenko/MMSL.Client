@@ -78,6 +78,7 @@ export class CommonManagementActionBarProps {
   actionItems: ICommandBarItemProps[];
 }
 
+/// TODO: use "new common managing form", and simply remove this component
 export const CommonManagementActionBar: React.FC<CommonManagementActionBarProps> = (
   props: CommonManagementActionBarProps
 ) => {

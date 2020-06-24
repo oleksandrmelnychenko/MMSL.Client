@@ -24,7 +24,7 @@ import { DealerAccount } from '../../interfaces/dealer';
 import { assignPendingActions } from '../../helpers/action.helper';
 import { controlActions } from '../../redux/slices/control.slice';
 import { ToggleDealerPanelWithDetails } from '../../redux/slices/dealer.slice';
-import ManagementOptions from './dealerManaging/ManagementOptions';
+import DealerOptions from './options/DealerOptions';
 import { DialogArgs, CommonDialogType } from '../../redux/slices/control.slice';
 import {
   detailsListStyle,
@@ -287,16 +287,16 @@ export const DealerList: React.FC = () => {
                     dispatch(createAction);
                     dispatch(
                       controlActions.openInfoPanelWithComponent({
-                        component: ManagementOptions,
+                        component: DealerOptions,
                         onDismisPendingAction: () => {},
                       })
                     );
                   };
 
-                  const unSelectFlow = () => {
-                    dispatch(dealerActions.setSelectedDealer(null));
-                    dispatch(controlActions.closeInfoPanelWithComponent());
-                  };
+                  // const unSelectFlow = () => {
+                  //   dispatch(dealerActions.setSelectedDealer(null));
+                  //   dispatch(controlActions.closeInfoPanelWithComponent());
+                  // };
 
                   if (selectedDealerId) {
                     // if (selectedDealerId === args.item.id) {
