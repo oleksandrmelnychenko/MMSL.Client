@@ -151,6 +151,11 @@ const product = createSlice({
     },
     assignProductDeliveryTimeline(state, action) {},
     apiProductDeliveryTimelineByProduct(state, action) {},
+    resetWholeState(state) {
+      state = new ProductState();
+
+      return state;
+    },
   },
 });
 

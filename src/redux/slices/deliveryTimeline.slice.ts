@@ -57,6 +57,11 @@ const deliveryTimelines = createSlice({
       state.selectedDeliveryTimeline = null;
       return state;
     },
+    resetWholeState(state) {
+      state = new DeliveryTimelinesState();
+
+      return state;
+    },
   },
 });
 

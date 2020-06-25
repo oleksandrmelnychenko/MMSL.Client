@@ -51,7 +51,7 @@ const _buildNewUnitPayload = (
     file: values.imageFile,
     serializedValues: values.dirtyValues.map((item) => {
       return {
-        value: item.text,
+        value: item.value,
       };
     }),
   };
@@ -71,7 +71,7 @@ const _buildUpdatedUnitPayload = (
       new List(values.dirtyValues)
         .select((valueItem) => {
           return {
-            value: valueItem.text,
+            value: valueItem.value,
           };
         })
         .toArray()
@@ -228,12 +228,6 @@ export const ManagingProductUnitForm: React.FC = () => {
               formikReference.formik.submitForm()
             ),
             GetCommandBarItemProps(CommandBarItem.Reset, () => {
-              // dispatch(
-              //   productSettingsActions.changeTargetOptionUnit({
-              //     ...sectedOptionUnit,
-              //   })
-              // );
-
               setUnitValues(
                 sectedOptionUnit ? [...sectedOptionUnit.unitValues] : []
               );

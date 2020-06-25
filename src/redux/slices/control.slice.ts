@@ -210,6 +210,11 @@ const controls = createSlice({
 
       return state;
     },
+    resetWholeState(state) {
+      state = new ControlState();
+
+      return state;
+    },
   },
 });
 

@@ -193,6 +193,11 @@ const productSettings = createSlice({
       }
       return state;
     },
+    resetWholeState(state) {
+      state = new ProductSettingsState();
+
+      return state;
+    },
   },
 });
 

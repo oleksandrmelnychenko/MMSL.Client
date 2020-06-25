@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
-import { Stack, TextField, Checkbox } from 'office-ui-fabric-react';
+import {
+  Stack,
+  TextField,
+  Checkbox,
+  MaskedTextField,
+} from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import '../../../dealers/managing/dealerManaging/manageDealerForm.scss';
 import { FormicReference } from '../../../../interfaces';
@@ -22,6 +27,7 @@ import { productSettingsActions } from '../../../../redux/slices/productSettings
 interface IInitValues {
   name: string;
   isMandatory: boolean;
+  priceValue: number;
 }
 
 const _buildNewPayload = (values: IInitValues, product: ProductCategory) => {
@@ -46,7 +52,11 @@ const _buildUpdatedPayload = (
 };
 
 const _initDefaultValues = (sourceEntity?: OptionGroup | null) => {
-  const initValues: IInitValues = { name: '', isMandatory: false };
+  const initValues: IInitValues = {
+    name: '',
+    isMandatory: false,
+    priceValue: 0,
+  };
 
   if (sourceEntity) {
     initValues.name = sourceEntity.name;
@@ -179,84 +189,119 @@ export const ManagingvOptionGroupForm: React.FC = () => {
   };
 
   return (
-    <div>
-      <Formik
-        validationSchema={Yup.object().shape({
-          name: Yup.string()
-            .min(3)
-            .required(() => 'Name is required'),
-          isMandatory: Yup.boolean(),
-        })}
-        initialValues={_initDefaultValues(editingGroup)}
-        onSubmit={(values: any) => {
-          if (editingGroup) editGroup(values);
-          else createNewGroup(values);
-        }}
-        innerRef={(formik: any) => {
-          formikReference.formik = formik;
-          if (formik) setFormikDirty(formik.dirty);
-        }}
-        validateOnBlur={false}
-        enableReinitialize={true}
-      >
-        {(formik) => {
-          return (
-            <Form className="form">
-              <div className="dealerFormManage">
-                <Stack horizontal tokens={{ childrenGap: 20 }}>
-                  <Stack grow={1} tokens={{ childrenGap: 20 }}>
-                    <Field name="name">
-                      {() => (
-                        <div className="form__group">
-                          <TextField
-                            value={formik.values.name}
-                            styles={fabricStyles.textFildLabelStyles}
-                            className="form__group__field"
-                            label="Name"
-                            required
-                            onChange={(args: any) => {
-                              let value = args.target.value;
+    <Formik
+      validationSchema={Yup.object().shape({
+        name: Yup.string()
+          .min(3)
+          .required(() => 'Name is required'),
+        priceValue: Yup.number().min(0, `Price can't be negative`),
+        isMandatory: Yup.boolean(),
+      })}
+      initialValues={_initDefaultValues(editingGroup)}
+      onSubmit={(values: any) => {
+        if (editingGroup) editGroup(values);
+        else createNewGroup(values);
+      }}
+      innerRef={(formik: any) => {
+        formikReference.formik = formik;
+        if (formik) setFormikDirty(formik.dirty);
+      }}
+      validateOnBlur={false}
+      enableReinitialize={true}
+    >
+      {(formik) => {
+        return (
+          <Form className="form">
+            <div className="dealerFormManage">
+              <Stack>
+                <Field name="name">
+                  {() => (
+                    <div className="form__group">
+                      <TextField
+                        value={formik.values.name}
+                        styles={fabricStyles.textFildLabelStyles}
+                        className="form__group__field"
+                        label="Name"
+                        required
+                        onChange={(args: any) => {
+                          let value = args.target.value;
 
-                              formik.setFieldValue('name', value);
-                              formik.setFieldTouched('name');
-                            }}
-                            errorMessage={
-                              formik.errors.name && formik.touched.name ? (
-                                <span className="form__group__error">
-                                  {formik.errors.name}
-                                </span>
-                              ) : (
-                                ''
-                              )
-                            }
-                          />
-                        </div>
-                      )}
-                    </Field>
-                    <Field name="isMandatory">
-                      {() => {
-                        return (
-                          <div className="form__group">
-                            <Checkbox
-                              checked={formik.values.isMandatory}
-                              label="Is mandatory"
-                              onChange={(checked: any, isChecked: any) => {
-                                formik.setFieldValue('isMandatory', isChecked);
-                                formik.setFieldTouched('isMandatory');
-                              }}
-                            />
-                          </div>
-                        );
-                      }}
-                    </Field>
-                  </Stack>
-                </Stack>
-              </div>
-            </Form>
-          );
-        }}
-      </Formik>
-    </div>
+                          formik.setFieldValue('name', value);
+                          formik.setFieldTouched('name');
+                        }}
+                        errorMessage={
+                          formik.errors.name && formik.touched.name ? (
+                            <span className="form__group__error">
+                              {formik.errors.name}
+                            </span>
+                          ) : (
+                            ''
+                          )
+                        }
+                      />
+                    </div>
+                  )}
+                </Field>
+                <Field name="priceValue">
+                  {() => (
+                    <div className="form__group">
+                      <TextField
+                        type="number"
+                        step="0.01"
+                        value={`${formik.values.priceValue}`}
+                        styles={fabricStyles.textFildLabelStyles}
+                        className="form__group__field"
+                        label="Price"
+                        required
+                        onChange={(args: any) => {
+                          let value = args.target.value;
+
+                          let parsedValue = parseFloat(value);
+
+                          if (isNaN(parsedValue)) parsedValue = 0;
+
+                          formik.setFieldValue('priceValue', parsedValue);
+                          formik.setFieldTouched('priceValue');
+                        }}
+                        errorMessage={
+                          formik.errors.priceValue &&
+                          formik.touched.priceValue ? (
+                            <span className="form__group__error">
+                              {formik.errors.priceValue}
+                            </span>
+                          ) : (
+                            ''
+                          )
+                        }
+                      />
+                    </div>
+                  )}
+                </Field>
+                <Field name="isMandatory">
+                  {() => {
+                    return (
+                      <div
+                        className="form__group"
+                        style={{ marginTop: '20px' }}
+                      >
+                        <Checkbox
+                          checked={formik.values.isMandatory}
+                          label="Is mandatory"
+                          onChange={(checked: any, isChecked: any) => {
+                            formik.setFieldValue('isMandatory', isChecked);
+                            formik.setFieldTouched('isMandatory');
+                          }}
+                        />
+                      </div>
+                    );
+                  }}
+                </Field>
+              </Stack>
+            </div>
+          </Form>
+        );
+      }}
+    </Formik>
   );
 };
 

@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {
   DefaultButton,
-  ISearchBoxStyles,
   IContextualMenuItem,
   TextField,
   Text,
   Stack,
   IconButton,
   Separator,
-  DirectionalHint,
 } from 'office-ui-fabric-react';
 import { OptionUnit, UnitValue } from '../../../../interfaces/options';
 import { List } from 'linq-typescript';
@@ -23,22 +21,22 @@ export interface IUnitValuesInputProps {
 }
 
 export class UnitValueModel {
-  private _initValueNumber: number;
+  private _initValue: string;
   private _unitValue: UnitValue;
   private _isStub: boolean;
 
   constructor(unitValue: UnitValue, isStub?: boolean) {
-    this._initValueNumber = unitValue.value;
+    this._initValue = unitValue.value;
     this._unitValue = unitValue;
 
     this.isDeleted = false;
     this.index = 0;
 
-    this.text = `${unitValue.value}`;
+    this.value = `${unitValue.value}`;
 
     if (isStub !== null && isStub !== undefined) {
       this._isStub = isStub;
-      this.text = '';
+      this.value = '';
     } else {
       this._isStub = false;
     }
@@ -46,6 +44,8 @@ export class UnitValueModel {
 
   isDeleted: boolean;
   index: number;
+
+  value: string;
 
   resolveIsStub = () => this._isStub;
 
@@ -58,7 +58,7 @@ export class UnitValueModel {
       } else {
         if (
           this.isDeleted !== this._unitValue.isDeleted ||
-          this.text !== `${this._unitValue.value}`
+          this.value !== `${this._unitValue.value}`
         ) {
           isDirty = true;
         }
@@ -70,8 +70,6 @@ export class UnitValueModel {
 
   getUnitValueId: () => number = () =>
     this._unitValue ? this._unitValue.id : 0;
-
-  text: string;
 }
 
 const _buildStubValueModel = () => new UnitValueModel(new UnitValue(), true);
@@ -122,31 +120,11 @@ const UnitValuesInput: React.FC<IUnitValuesInputProps> = (
     return result;
   };
 
-  // const buildUnitValueModels = (optionUnit: OptionUnit | null | undefined) => {
-  //   let result: UnitValueModel[] = [];
-
-  //   if (optionUnit) {
-  //     result = new List(optionUnit.unitValues)
-  //       .select((unitValue: UnitValue) => {
-  //         let selectResult = new UnitValueModel(unitValue);
-
-  //         return selectResult;
-  //       })
-  //       .toArray();
-  //   }
-
-  //   return result;
-  // };
-
   const buildNewUnitValueModel = (valueInput: string) => {
     const unitValue = new UnitValue();
     unitValue.optionUnit = props.optionUnit;
     unitValue.optionUnitId = props.optionUnit ? props.optionUnit.id : 0;
-    unitValue.value = parseFloat(valueInput);
-
-    if (isNaN(unitValue.value)) {
-      unitValue.value = 0;
-    }
+    unitValue.value = valueInput;
 
     const unitValueModel = new UnitValueModel(unitValue);
 
@@ -215,7 +193,6 @@ const UnitValuesInput: React.FC<IUnitValuesInputProps> = (
     return (
       <Stack>
         <TextField
-          type="number"
           autoFocus
           styles={{
             fieldGroup: {
@@ -286,13 +263,13 @@ const UnitValuesInput: React.FC<IUnitValuesInputProps> = (
           values.forEach((item: UnitValueModel, index: number) => {
             if (values.length > 1) {
               if (!item.resolveIsStub()) {
-                textOutput += `${item.text}`;
+                textOutput += `${item.value}`;
                 if (index !== values.length - 1) {
                   textOutput += ', ';
                 }
               }
             } else {
-              textOutput += `${item.text}`;
+              textOutput += `${item.value}`;
             }
           });
 
@@ -332,7 +309,7 @@ const UnitValuesInput: React.FC<IUnitValuesInputProps> = (
           items: values.map((item, index) => {
             return {
               key: `${index}`,
-              text: item.text,
+              text: item.value,
               index: index,
               onRender: onRenderUnitValueItem,
               unitValueModel: item,

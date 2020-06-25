@@ -230,6 +230,11 @@ const dealer = createSlice({
       state.dealerCustomerState.selectedCustomer = action.payload;
       return state;
     },
+    resetWholeState(state) {
+      state = new DealerState();
+
+      return state;
+    },
   },
 });
 

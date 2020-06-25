@@ -62,6 +62,11 @@ const productStylePermissions = createSlice({
 
       return state;
     },
+    resetWholeState(state) {
+      state = new ProductStylePermissionsState();
+
+      return state;
+    },
   },
 });
 

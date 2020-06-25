@@ -1,6 +1,6 @@
-import { EntityBase } from './base';
+import { EntityBaseNamed } from './base';
 
-export class CurrencyF extends EntityBase {
+export class CurrencyType extends EntityBaseNamed {
   constructor() {
     super();
 

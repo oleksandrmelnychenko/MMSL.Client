@@ -3,6 +3,8 @@ import { ProductDeliveryTimelineSelected } from './deliveryTimelines';
 import { ProductCategory } from './products';
 import { Measurement } from './measurements';
 import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
+import { number } from 'yup';
+import { CurrencyType } from './currencyTypes';
 
 export class OptionGroup extends EntityBaseNamed {
   constructor() {
@@ -12,10 +14,13 @@ export class OptionGroup extends EntityBaseNamed {
     this.optionUnits = [];
 
     this.groupItemVisualState = new GroupItemVisualState();
+
+    this.optionPrices = [];
   }
 
   isMandatory: boolean;
   optionUnits: OptionUnit[];
+  optionPrices: OptionPrice[];
 
   /// Keeps item visual state (is not related to DTO model).
   groupItemVisualState: GroupItemVisualState;
@@ -35,6 +40,7 @@ export class OptionUnit extends EntityBaseNamed {
     this.optionGroup = null;
 
     this.unitValues = [];
+    this.optionPrices = [];
   }
 
   orderIndex: number;
@@ -47,18 +53,19 @@ export class OptionUnit extends EntityBaseNamed {
   optionGroupId?: number | null;
   optionGroup?: OptionGroup | null;
   unitValues: UnitValue[];
+  optionPrices: OptionPrice[];
 }
 
 export class UnitValue extends EntityBase {
   constructor() {
     super();
 
-    this.value = 0;
+    this.value = '';
     this.optionUnitId = 0;
     this.optionUnit = null;
   }
 
-  value: number;
+  value: string;
   optionUnitId: number;
   optionUnit: OptionUnit | null | undefined;
 }
@@ -82,6 +89,34 @@ export class ChooseOptions {
   category: ProductCategory | null;
   measurements: Measurement[];
   selectedTimeline: ProductDeliveryTimelineSelected;
+}
+
+export class OptionPrice extends EntityBase {
+  constructor() {
+    super();
+
+    this.price = 0;
+
+    this.currencyTypeId = 0;
+    this.currencyType = null;
+
+    this.optionGroupId = null;
+    this.optionGroup = null;
+
+    this.optionUnitId = null;
+    this.optionUnit = null;
+  }
+
+  price: number;
+
+  currencyTypeId: number;
+  currencyType: CurrencyType | null | undefined;
+
+  optionGroupId: number | null | undefined;
+  optionGroup: OptionGroup | null | undefined;
+
+  optionUnitId: number | null | undefined;
+  optionUnit: OptionUnit | null | undefined;
 }
 
 /// Keeps item visual state (is not related to DTO model).

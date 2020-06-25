@@ -80,6 +80,11 @@ const customer = createSlice({
       state.manageCustomerForm.storesAutocomplete = action.payload;
       return state;
     },
+    resetWholeState(state) {
+      state = new CustomerState();
+
+      return state;
+    },
   },
 });
 

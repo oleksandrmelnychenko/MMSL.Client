@@ -31,6 +31,11 @@ const units = createSlice({
     getPaymentTypes(state) {
       return state;
     },
+    resetWholeState(state) {
+      state = new UnitsState();
+
+      return state;
+    },
   },
 });
 
