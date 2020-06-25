@@ -1,0 +1,15 @@
+.priceInput {
+    position: relative;
+
+    &.dissabled {
+        opacity: 0.6;
+        pointer-events: none;
+    }
+
+    &__priceWarning {
+        position: absolute;
+        top: 7px;
+        left: 39px;
+        z-index: 1;
+    }
+}

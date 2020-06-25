@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
-import {
-  Stack,
-  TextField,
-  Checkbox,
-  MaskedTextField,
-} from 'office-ui-fabric-react';
+import { Stack, TextField, Checkbox } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import '../../../dealers/managing/dealerManaging/manageDealerForm.scss';
 import { FormicReference } from '../../../../interfaces';
@@ -23,19 +18,31 @@ import { IApplicationState } from '../../../../redux/reducers';
 import { ProductCategory } from '../../../../interfaces/products';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import { productSettingsActions } from '../../../../redux/slices/productSettings.slice';
+import PriceInput from './PriceInput';
+import { CurrencyType } from '../../../../interfaces/currencyTypes';
 
 interface IInitValues {
   name: string;
   isMandatory: boolean;
   priceValue: number;
+  priceCurrencyId: number;
+  declareSharedStylePrice: boolean;
 }
 
 const _buildNewPayload = (values: IInitValues, product: ProductCategory) => {
-  let payload = {
+  let payload: any = {
     productId: product.id,
     name: values.name,
     isMandatory: values.isMandatory,
   };
+
+  if (values.declareSharedStylePrice) {
+    payload.price = values.priceValue;
+    payload.currencyTypeId = values.priceCurrencyId;
+  } else {
+    payload.price = null;
+    payload.currencyTypeId = null;
+  }
 
   return payload;
 };
@@ -44,23 +51,51 @@ const _buildUpdatedPayload = (
   values: IInitValues,
   sourceEntity: OptionGroup
 ) => {
-  let payload = { ...sourceEntity };
+  // let payload = { ...sourceEntity };
+  // payload.name = values.name;
+  // payload.isMandatory = values.isMandatory;
+
+  let payload: any = {
+    id: sourceEntity.id,
+    isDeleted: sourceEntity.isDeleted,
+  };
+
   payload.name = values.name;
   payload.isMandatory = values.isMandatory;
+
+  if (values.declareSharedStylePrice) {
+    payload.price = values.priceValue;
+    payload.currencyTypeId = 0;
+    payload.currencyTypeId = parseInt(`${values.priceCurrencyId}`);
+  } else {
+    payload.price = null;
+    payload.currencyTypeId = null;
+  }
 
   return payload;
 };
 
-const _initDefaultValues = (sourceEntity?: OptionGroup | null) => {
+const _initDefaultValues = (
+  currencies: CurrencyType[],
+  sourceEntity?: OptionGroup | null
+) => {
   const initValues: IInitValues = {
     name: '',
     isMandatory: false,
     priceValue: 0,
+    priceCurrencyId: currencies.length > 0 ? currencies[0].id : 0,
+    declareSharedStylePrice: false,
   };
 
   if (sourceEntity) {
     initValues.name = sourceEntity.name;
     initValues.isMandatory = sourceEntity.isMandatory;
+
+    if (sourceEntity.currentPrice) {
+      initValues.declareSharedStylePrice = true;
+      initValues.priceValue = sourceEntity.currentPrice.price;
+      initValues.priceCurrencyId = sourceEntity.currentPrice.currencyTypeId;
+    }
   }
 
   return initValues;
@@ -87,6 +122,11 @@ export const ManagingvOptionGroupForm: React.FC = () => {
     IApplicationState,
     OptionGroup | null | undefined
   >((state) => state.productSettings.editingOptionGroup);
+
+  const currencies: CurrencyType[] = useSelector<
+    IApplicationState,
+    CurrencyType[]
+  >((state) => state.units.сurrencies);
 
   /// Disposing form
   useEffect(() => {
@@ -129,6 +169,8 @@ export const ManagingvOptionGroupForm: React.FC = () => {
   const editGroup = (values: IInitValues) => {
     if (targetProduct && editingGroup) {
       const payload = _buildUpdatedPayload(values, editingGroup);
+
+      console.log(payload);
       dispatch(
         assignPendingActions(
           productSettingsActions.apiUpdateOptionGroup(payload),
@@ -195,9 +237,11 @@ export const ManagingvOptionGroupForm: React.FC = () => {
           .min(3)
           .required(() => 'Name is required'),
         priceValue: Yup.number().min(0, `Price can't be negative`),
+        priceCurrencyId: Yup.string(),
         isMandatory: Yup.boolean(),
+        declareSharedStylePrice: Yup.boolean(),
       })}
-      initialValues={_initDefaultValues(editingGroup)}
+      initialValues={_initDefaultValues(currencies, editingGroup)}
       onSubmit={(values: any) => {
         if (editingGroup) editGroup(values);
         else createNewGroup(values);
@@ -242,41 +286,6 @@ export const ManagingvOptionGroupForm: React.FC = () => {
                     </div>
                   )}
                 </Field>
-                <Field name="priceValue">
-                  {() => (
-                    <div className="form__group">
-                      <TextField
-                        type="number"
-                        step="0.01"
-                        value={`${formik.values.priceValue}`}
-                        styles={fabricStyles.textFildLabelStyles}
-                        className="form__group__field"
-                        label="Price"
-                        required
-                        onChange={(args: any) => {
-                          let value = args.target.value;
-
-                          let parsedValue = parseFloat(value);
-
-                          if (isNaN(parsedValue)) parsedValue = 0;
-
-                          formik.setFieldValue('priceValue', parsedValue);
-                          formik.setFieldTouched('priceValue');
-                        }}
-                        errorMessage={
-                          formik.errors.priceValue &&
-                          formik.touched.priceValue ? (
-                            <span className="form__group__error">
-                              {formik.errors.priceValue}
-                            </span>
-                          ) : (
-                            ''
-                          )
-                        }
-                      />
-                    </div>
-                  )}
-                </Field>
                 <Field name="isMandatory">
                   {() => {
                     return (
@@ -295,6 +304,51 @@ export const ManagingvOptionGroupForm: React.FC = () => {
                       </div>
                     );
                   }}
+                </Field>
+                <Field name="declareSharedStylePrice">
+                  {() => {
+                    return (
+                      <div
+                        className="form__group"
+                        style={{ marginTop: '20px' }}
+                      >
+                        <Checkbox
+                          checked={formik.values.declareSharedStylePrice}
+                          label="Declare single style price"
+                          onChange={(checked: any, isChecked: any) => {
+                            formik.setFieldValue(
+                              'declareSharedStylePrice',
+                              isChecked
+                            );
+                            formik.setFieldTouched('declareSharedStylePrice');
+
+                            formik.setFieldValue(
+                              'priceValue',
+                              formik.initialValues.priceValue
+                            );
+                            formik.setFieldTouched('priceValue');
+
+                            formik.setFieldValue(
+                              'priceCurrencyId',
+                              formik.initialValues.priceCurrencyId
+                            );
+                            formik.setFieldTouched('priceCurrencyId');
+                          }}
+                        />
+                      </div>
+                    );
+                  }}
+                </Field>
+                <Field name="priceValue">
+                  {() => (
+                    <div className="form__group">
+                      <PriceInput
+                        isEnabled={formik.values.declareSharedStylePrice}
+                        editingGroup={editingGroup}
+                        formik={formik}
+                      />
+                    </div>
+                  )}
                 </Field>
               </Stack>
             </div>

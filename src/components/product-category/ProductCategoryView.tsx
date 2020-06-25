@@ -23,6 +23,7 @@ import ProductManagementPanel, {
 import ProductStylesPanel from './options/ProductStylesPanel';
 import ProductPermissions from './productPermissions/ProductPermissions';
 import ProductPermissionsPanel from './options/ProductPermissionsPanel';
+import { unitsActions } from '../../redux/slices/units.slice';
 
 const _extractCategoryIdFromPath = (history: any) => {
   const lastSegment: any = new List(
@@ -40,6 +41,21 @@ const ProductCategoryView: React.FC = () => {
   const targetCategory = useSelector<IApplicationState, ProductCategory | null>(
     (state) => state.product.choose.category
   );
+
+  useEffect(() => {
+    dispatch(
+      assignPendingActions(
+        unitsActions.apiGetCurrencies(),
+        [],
+        [],
+        (args: any) => {
+          dispatch(unitsActions.changeCurrencies(args));
+        },
+        (args: any) => {}
+      )
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (history?.location?.pathname?.includes(PRODUCT_MEASUREMENTS_PATH)) {

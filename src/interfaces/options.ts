@@ -16,11 +16,16 @@ export class OptionGroup extends EntityBaseNamed {
     this.groupItemVisualState = new GroupItemVisualState();
 
     this.optionPrices = [];
+    this.canDeclareOwnPrice = false;
+
+    this.currentPrice = null;
   }
 
   isMandatory: boolean;
   optionUnits: OptionUnit[];
   optionPrices: OptionPrice[];
+  currentPrice: OptionPrice | null | undefined;
+  canDeclareOwnPrice: boolean;
 
   /// Keeps item visual state (is not related to DTO model).
   groupItemVisualState: GroupItemVisualState;
@@ -41,6 +46,8 @@ export class OptionUnit extends EntityBaseNamed {
 
     this.unitValues = [];
     this.optionPrices = [];
+
+    this.canDeclareOwnPrice = false;
   }
 
   orderIndex: number;
@@ -54,6 +61,7 @@ export class OptionUnit extends EntityBaseNamed {
   optionGroup?: OptionGroup | null;
   unitValues: UnitValue[];
   optionPrices: OptionPrice[];
+  canDeclareOwnPrice: boolean;
 }
 
 export class UnitValue extends EntityBase {

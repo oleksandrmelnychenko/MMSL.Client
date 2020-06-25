@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { PaymentTypeF } from '../../interfaces/paymentTypes';
-import { CurrencyF } from '../../interfaces/currencyTypes';
+import { CurrencyType } from '../../interfaces/currencyTypes';
 
 export class UnitsState {
   constructor() {
@@ -8,7 +8,7 @@ export class UnitsState {
     this.paymentTypes = [];
   }
 
-  сurrencies: CurrencyF[];
+  сurrencies: CurrencyType[];
   paymentTypes: PaymentTypeF[];
 }
 
@@ -16,19 +16,18 @@ const units = createSlice({
   name: 'units',
   initialState: new UnitsState(),
   reducers: {
-    setCurrencies(state, action) {
+    apiGetCurrencies(state) {
+      return state;
+    },
+    apiGetPaymentTypes(state) {
+      return state;
+    },
+    changeCurrencies(state, action) {
       state.сurrencies = action.payload;
       return state;
     },
-    setPaymentTypes(state, action) {
+    changePaymentTypes(state, action) {
       state.paymentTypes = action.payload;
-      return state;
-    },
-
-    getCurrencies(state) {
-      return state;
-    },
-    getPaymentTypes(state) {
       return state;
     },
     resetWholeState(state) {

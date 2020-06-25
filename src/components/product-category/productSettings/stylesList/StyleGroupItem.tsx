@@ -143,33 +143,34 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
                   iconName: 'Settings',
                 }}
                 onClick={() => {
-                  let action = assignPendingActions(
-                    productSettingsActions.apiGetOptionGroupById(
-                      props.expandableStyleGroup.item.id
-                    ),
-                    [],
-                    [],
-                    (args: any) => {
-                      dispatch(
-                        productSettingsActions.changeTargetOptionGroupForUnitsEdit(
-                          args
-                        )
-                      );
-                      dispatch(
-                        controlActions.openRightPanel({
-                          title: 'Manage Style',
-                          description: props.expandableStyleGroup.item.name,
-                          width: '700px',
-                          closeFunctions: () => {
-                            dispatch(controlActions.closeRightPanel());
-                          },
-                          component: OptionGroupDetails,
-                        })
-                      );
-                    },
-                    (args: any) => {}
+                  dispatch(
+                    assignPendingActions(
+                      productSettingsActions.apiGetOptionGroupById(
+                        props.expandableStyleGroup.item.id
+                      ),
+                      [],
+                      [],
+                      (args: any) => {
+                        dispatch(
+                          productSettingsActions.changeTargetOptionGroupForUnitsEdit(
+                            args
+                          )
+                        );
+                        dispatch(
+                          controlActions.openRightPanel({
+                            title: 'Manage Style',
+                            description: props.expandableStyleGroup.item.name,
+                            width: '700px',
+                            closeFunctions: () => {
+                              dispatch(controlActions.closeRightPanel());
+                            },
+                            component: OptionGroupDetails,
+                          })
+                        );
+                      },
+                      (args: any) => {}
+                    )
                   );
-                  dispatch(action);
                 }}
               />
             </TooltipHost>
@@ -188,20 +189,32 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
                 onClick={() => {
                   if (targetProduct && props.expandableStyleGroup.item) {
                     dispatch(
-                      productSettingsActions.changeEditingGroup(
-                        props.expandableStyleGroup.item
-                      )
-                    );
-                    dispatch(
-                      controlActions.openRightPanel({
-                        title: 'Details',
-                        description: props.expandableStyleGroup.item.name,
-                        width: '400px',
-                        closeFunctions: () => {
-                          dispatch(controlActions.closeRightPanel());
+                      assignPendingActions(
+                        productSettingsActions.apiGetOptionGroupById(
+                          props.expandableStyleGroup.item.id
+                        ),
+                        [],
+                        [],
+                        (args: any) => {
+                          console.log(args);
+
+                          dispatch(
+                            productSettingsActions.changeEditingGroup(args)
+                          );
+                          dispatch(
+                            controlActions.openRightPanel({
+                              title: 'Details',
+                              description: args.name,
+                              width: '400px',
+                              closeFunctions: () => {
+                                dispatch(controlActions.closeRightPanel());
+                              },
+                              component: ManagingvOptionGroupForm,
+                            })
+                          );
                         },
-                        component: ManagingvOptionGroupForm,
-                      })
+                        (args: any) => {}
+                      )
                     );
                   }
                 }}

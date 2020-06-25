@@ -10,12 +10,16 @@ import { getActiveLanguage } from 'react-localize-redux';
 import { getWebRequest } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import { unitsActions } from '../slices/units.slice';
-import { controlActions } from '../slices/control.slice';
+import {
+  controlActions,
+  InfoMessage,
+  InfoMessageType,
+} from '../slices/control.slice';
 import StoreHelper from '../../helpers/store.helper';
 
-export const getCurrenciesEpic = (action$: AnyAction, state$: any) => {
+export const apiGetCurrenciesEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(unitsActions.getCurrencies.type),
+    ofType(unitsActions.apiGetCurrencies.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
@@ -23,10 +27,7 @@ export const getCurrenciesEpic = (action$: AnyAction, state$: any) => {
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
-            [
-              unitsActions.setCurrencies(successResponse),
-              controlActions.disabledStatusBar(),
-            ],
+            [controlActions.disabledStatusBar()],
             action
           );
         }),
@@ -34,7 +35,16 @@ export const getCurrenciesEpic = (action$: AnyAction, state$: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             return errorCommonEpicFlow(
               errorResponse,
-              [{ type: 'ERROR' }, controlActions.disabledStatusBar()],
+              [
+                { type: 'ERROR_GET_CURRENCIES' },
+                controlActions.showInfoMessage(
+                  new InfoMessage(
+                    `Error occurred while get currencies. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
+                ),
+                controlActions.disabledStatusBar(),
+              ],
               action
             );
           });
@@ -46,7 +56,7 @@ export const getCurrenciesEpic = (action$: AnyAction, state$: any) => {
 
 export const getPaymentTypesEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
-    ofType(unitsActions.getPaymentTypes.type),
+    ofType(unitsActions.apiGetPaymentTypes.type),
     switchMap((action: AnyAction) => {
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
       const languageCode = getActiveLanguage(state$.value.localize).code;
@@ -54,10 +64,7 @@ export const getPaymentTypesEpic = (action$: AnyAction, state$: any) => {
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
-            [
-              unitsActions.setPaymentTypes(successResponse),
-              controlActions.disabledStatusBar(),
-            ],
+            [controlActions.disabledStatusBar()],
             action
           );
         }),
@@ -65,7 +72,16 @@ export const getPaymentTypesEpic = (action$: AnyAction, state$: any) => {
           return checkUnauthorized(errorResponse.status, languageCode, () => {
             return errorCommonEpicFlow(
               errorResponse,
-              [{ type: 'ERROR' }, controlActions.disabledStatusBar()],
+              [
+                { type: 'ERROR_GET_PAYMENT_TYPES' },
+                controlActions.showInfoMessage(
+                  new InfoMessage(
+                    `Error occurred while get payment types. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
+                ),
+                controlActions.disabledStatusBar(),
+              ],
               action
             );
           });
