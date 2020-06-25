@@ -18,7 +18,7 @@ import { IApplicationState } from '../../../../redux/reducers';
 import { ProductCategory } from '../../../../interfaces/products';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import { productSettingsActions } from '../../../../redux/slices/productSettings.slice';
-import PriceInput from './PriceInput';
+import GroupPriceInput from './price/GroupPriceInput';
 import { CurrencyType } from '../../../../interfaces/currencyTypes';
 
 interface IInitValues {
@@ -170,7 +170,6 @@ export const ManagingvOptionGroupForm: React.FC = () => {
     if (targetProduct && editingGroup) {
       const payload = _buildUpdatedPayload(values, editingGroup);
 
-      console.log(payload);
       dispatch(
         assignPendingActions(
           productSettingsActions.apiUpdateOptionGroup(payload),
@@ -342,7 +341,7 @@ export const ManagingvOptionGroupForm: React.FC = () => {
                 <Field name="priceValue">
                   {() => (
                     <div className="form__group">
-                      <PriceInput
+                      <GroupPriceInput
                         isEnabled={formik.values.declareSharedStylePrice}
                         editingGroup={editingGroup}
                         formik={formik}

@@ -46,6 +46,7 @@ export class OptionUnit extends EntityBaseNamed {
 
     this.unitValues = [];
     this.optionPrices = [];
+    this.currentPrice = null;
 
     this.canDeclareOwnPrice = false;
   }
@@ -61,6 +62,7 @@ export class OptionUnit extends EntityBaseNamed {
   optionGroup?: OptionGroup | null;
   unitValues: UnitValue[];
   optionPrices: OptionPrice[];
+  currentPrice: OptionPrice | null | undefined;
   canDeclareOwnPrice: boolean;
 }
 

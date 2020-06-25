@@ -196,8 +196,6 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
                         [],
                         [],
                         (args: any) => {
-                          console.log(args);
-
                           dispatch(
                             productSettingsActions.changeEditingGroup(args)
                           );

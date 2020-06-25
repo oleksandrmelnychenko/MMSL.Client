@@ -3,7 +3,11 @@ import { Formik, Form, Field } from 'formik';
 import { Stack, TextField, Label } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import { FormicReference } from '../../../../interfaces';
-import { OptionUnit, UnitValue } from '../../../../interfaces/options';
+import {
+  OptionUnit,
+  UnitValue,
+  OptionGroup,
+} from '../../../../interfaces/options';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
 import { IApplicationState } from '../../../../redux/reducers';
 import { useSelector, useDispatch } from 'react-redux';
@@ -26,6 +30,8 @@ import { assignPendingActions } from '../../../../helpers/action.helper';
 import { ProductCategory } from '../../../../interfaces/products';
 import AttachField from './AttachField';
 import UnitValuesInput, { UnitValueModel } from './UnitValuesInput';
+import UnitPriceInput from './price/UnitPriceInput';
+import { CurrencyType } from '../../../../interfaces/currencyTypes';
 
 export interface IInitValues {
   value: string;
@@ -36,6 +42,9 @@ export interface IInitValues {
   dirtyValues: UnitValueModel[];
   dirtyValuesToDelete: UnitValueModel[];
   unitToDelete: any;
+
+  priceValue: number;
+  priceCurrencyId: number;
 }
 
 const _buildNewUnitPayload = (
@@ -54,6 +63,8 @@ const _buildNewUnitPayload = (
         value: item.value,
       };
     }),
+    price: values.priceValue,
+    currencyTypeId: values.priceCurrencyId,
   };
 
   return payload;
@@ -91,12 +102,19 @@ const _buildUpdatedUnitPayload = (
     id: sourceEntity.id,
     imageBlob: values.imageFile,
     imageUrl: sourceEntity.imageUrl,
+    price: sourceEntity.currentPrice ? sourceEntity.currentPrice.price : 0,
+    currencyTypeId: sourceEntity.currentPrice
+      ? sourceEntity.currentPrice.currencyTypeId
+      : 0,
   };
 
   if (!values.isRemovingImage) {
     payload.imageBlob = null;
     payload.imageUrl = '';
   }
+
+  payload.price = values.priceValue;
+  payload.currencyTypeId = values.priceCurrencyId;
 
   return payload;
 };
@@ -120,7 +138,10 @@ const _renderHintLable = (textMessage: string): JSX.Element => {
   return result;
 };
 
-const _initDefaultValues = (sourceEntity?: OptionUnit | null) => {
+const _initDefaultValues = (
+  currencies: CurrencyType[],
+  sourceEntity?: OptionUnit | null
+) => {
   const initValues: IInitValues = {
     value: '',
     imageUrl: '',
@@ -130,6 +151,8 @@ const _initDefaultValues = (sourceEntity?: OptionUnit | null) => {
     dirtyValues: [],
     dirtyValuesToDelete: [],
     unitToDelete: sourceEntity,
+    priceValue: 0,
+    priceCurrencyId: currencies.length > 0 ? currencies[0].id : 0,
   };
 
   if (sourceEntity) {
@@ -141,6 +164,11 @@ const _initDefaultValues = (sourceEntity?: OptionUnit | null) => {
 
     if (initValues.imageUrl && initValues.imageUrl.length > 0) {
       initValues.isRemovingImage = true;
+    }
+
+    if (sourceEntity.currentPrice) {
+      initValues.priceValue = sourceEntity.currentPrice.price;
+      initValues.priceCurrencyId = sourceEntity.currentPrice.currencyTypeId;
     }
   }
 
@@ -158,7 +186,9 @@ const _isFormikDirty = (initValues: IInitValues, values: IInitValues) => {
       initValues.imageFile !== values.imageFile ||
       initValues.isRemovingImage !== values.isRemovingImage ||
       values.dirtyValuesToDelete.length > 0 ||
-      values.dirtyValues.length > 0;
+      values.dirtyValues.length > 0 ||
+      initValues.priceValue !== values.priceValue ||
+      initValues.priceCurrencyId !== values.priceCurrencyId;
   }
 
   return isDirty;
@@ -190,12 +220,16 @@ export const ManagingProductUnitForm: React.FC = () => {
     (state) => state.productSettings.managingOptionUnitsState.selectedOptionUnit
   );
 
-  const sectedOptionGroupId: number | null | undefined = useSelector<
+  const currencies: CurrencyType[] = useSelector<
     IApplicationState,
-    number | null | undefined
+    CurrencyType[]
+  >((state) => state.units.сurrencies);
+
+  const optionGroup: OptionGroup | null | undefined = useSelector<
+    IApplicationState,
+    OptionGroup | null | undefined
   >(
-    (state) =>
-      state.productSettings.managingOptionUnitsState.targetOptionGroup?.id
+    (state) => state.productSettings.managingOptionUnitsState.targetOptionGroup
   );
 
   const isUnitFormVisible: boolean = useSelector<IApplicationState, boolean>(
@@ -294,6 +328,7 @@ export const ManagingProductUnitForm: React.FC = () => {
   const onUpdateUnit = (values: IInitValues) => {
     if (targetProduct && values.unitToDelete) {
       const payload = _buildUpdatedUnitPayload(values, values.unitToDelete);
+      console.log(payload);
 
       dispatch(
         assignPendingActions(
@@ -323,8 +358,8 @@ export const ManagingProductUnitForm: React.FC = () => {
   };
 
   const onCreateNewUnit = (values: IInitValues) => {
-    if (targetProduct && sectedOptionGroupId) {
-      const payload = _buildNewUnitPayload(values, sectedOptionGroupId);
+    if (targetProduct && optionGroup) {
+      const payload = _buildNewUnitPayload(values, optionGroup.id);
 
       dispatch(
         assignPendingActions(
@@ -408,8 +443,10 @@ export const ManagingProductUnitForm: React.FC = () => {
         unitToDelete: Yup.object().nullable(),
         dirtyValues: Yup.array(),
         dirtyValuesToDelete: Yup.array(),
+        priceValue: Yup.number().min(0, `Price can't be negative`),
+        priceCurrencyId: Yup.string(),
       })}
-      initialValues={_initDefaultValues(sectedOptionUnit)}
+      initialValues={_initDefaultValues(currencies, sectedOptionUnit)}
       onSubmit={(values: any) => {
         if (values.unitToDelete) onUpdateUnit(values);
         else onCreateNewUnit(values);
@@ -434,7 +471,7 @@ export const ManagingProductUnitForm: React.FC = () => {
       {(formik) => {
         return isUnitFormVisible ? (
           <Form>
-            <Stack grow={1} tokens={{ childrenGap: 20 }}>
+            <Stack grow={1}>
               <Field name="value">
                 {() => (
                   <div className="form__group">
@@ -464,25 +501,41 @@ export const ManagingProductUnitForm: React.FC = () => {
                 )}
               </Field>
 
-              <UnitValuesInput
-                optionUnit={sectedOptionUnit}
-                unitValues={unitValues}
-                onCallback={(
-                  dirtyUnitValues: UnitValueModel[],
-                  dirtyValuesToDelete: UnitValueModel[]
-                ) => {
-                  formik.setFieldValue('dirtyValues', dirtyUnitValues);
-                  formik.setFieldTouched('dirtyValues');
+              <div style={{ marginTop: '15px' }}>
+                <UnitValuesInput
+                  optionUnit={sectedOptionUnit}
+                  unitValues={unitValues}
+                  onCallback={(
+                    dirtyUnitValues: UnitValueModel[],
+                    dirtyValuesToDelete: UnitValueModel[]
+                  ) => {
+                    formik.setFieldValue('dirtyValues', dirtyUnitValues);
+                    formik.setFieldTouched('dirtyValues');
 
-                  formik.setFieldValue(
-                    'dirtyValuesToDelete',
-                    dirtyValuesToDelete
-                  );
-                  formik.setFieldTouched('dirtyValuesToDelete');
-                }}
-              />
+                    formik.setFieldValue(
+                      'dirtyValuesToDelete',
+                      dirtyValuesToDelete
+                    );
+                    formik.setFieldTouched('dirtyValuesToDelete');
+                  }}
+                />
+              </div>
 
-              <AttachField formik={formik} />
+              <Field name="priceValue">
+                {() => (
+                  <div className="form__group">
+                    <UnitPriceInput
+                      optionGroup={optionGroup}
+                      editingUnit={sectedOptionUnit}
+                      formik={formik}
+                    />
+                  </div>
+                )}
+              </Field>
+
+              <div style={{ marginTop: '20px' }}>
+                <AttachField formik={formik} />
+              </div>
             </Stack>
           </Form>
         ) : (

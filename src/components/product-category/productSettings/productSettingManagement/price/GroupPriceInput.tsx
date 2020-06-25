@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Stack,
   TextField,
@@ -10,13 +10,12 @@ import {
   FontIcon,
   mergeStyles,
 } from 'office-ui-fabric-react';
-import '../../../dealers/managing/dealerManaging/manageDealerForm.scss';
-import { OptionGroup } from '../../../../interfaces/options';
-import * as fabricStyles from '../../../../common/fabric-styles/styles';
+import { OptionGroup } from '../../../../../interfaces/options';
+import * as fabricStyles from '../../../../../common/fabric-styles/styles';
 import { useSelector } from 'react-redux';
 import { List } from 'linq-typescript';
-import { IApplicationState } from '../../../../redux/reducers';
-import { CurrencyType } from '../../../../interfaces/currencyTypes';
+import { IApplicationState } from '../../../../../redux/reducers';
+import { CurrencyType } from '../../../../../interfaces/currencyTypes';
 import './priceInput.scss';
 
 const _resolveDefaultSelectedOptionKey = (
@@ -77,14 +76,14 @@ const _renderPriceWarning = (
   return resultContent;
 };
 
-export interface IPriceInputProps {
+export interface IGroupPriceInputProps {
   formik: any;
   editingGroup: OptionGroup | null | undefined;
   isEnabled: boolean;
 }
 
-export const PriceInput: React.FC<IPriceInputProps> = (
-  props: IPriceInputProps
+export const GroupPriceInput: React.FC<IGroupPriceInputProps> = (
+  props: IGroupPriceInputProps
 ) => {
   const currencies: CurrencyType[] = useSelector<
     IApplicationState,
@@ -166,4 +165,4 @@ export const PriceInput: React.FC<IPriceInputProps> = (
   );
 };
 
-export default PriceInput;
+export default GroupPriceInput;

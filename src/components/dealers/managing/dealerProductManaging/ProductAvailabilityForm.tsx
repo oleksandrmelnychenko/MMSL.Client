@@ -210,7 +210,6 @@ export const ProductAvailabilityForm: React.FC = () => {
         initialValues={_initDefaultValues()}
         onSubmit={(values: any) => {
           /// TODO:
-          debugger;
           if (dealer) onChangeProductAvailablity(values, dealer);
         }}
         onReset={(values: any, formikHelpers: any) => {}}

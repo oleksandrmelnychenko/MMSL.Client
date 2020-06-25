@@ -33,6 +33,7 @@ export const apiUpdateOptionGroupEpic = (action$: AnyAction, state$: any) => {
 
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
+      debugger;
       return putWebRequest(
         api.UPDATE_OPTION_GROUP,
         action.payload,
@@ -276,6 +277,8 @@ export const apiUpdateOptionUnitEpic = (action$: AnyAction, state$: any) => {
         'serializedValues',
         JSON.stringify(action.payload.serializedValues)
       );
+      formData.append('price', action.payload.price);
+      formData.append('currencyTypeId', action.payload.currencyTypeId);
 
       return putFormDataWebRequest(
         api.MODIFY_OPTION_UNIT,
@@ -334,6 +337,8 @@ export const apiCreateNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
         'serializedValues',
         JSON.stringify(action.payload.serializedValues)
       );
+      formData.append('price', action.payload.price);
+      formData.append('currencyTypeId', action.payload.currencyTypeId);
 
       return postFormDataWebRequest(
         api.ADD_OPTION_UNIT,
