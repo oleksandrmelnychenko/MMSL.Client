@@ -40,12 +40,11 @@ const customer = createSlice({
   name: 'customer',
   initialState: new CustomerState(),
   reducers: {
-    updateCustomersList(state, action) {
-      state.customerState.customersList = action.payload;
+    apiDeleteCustomerById(state, action: { type: string; payload: number }) {
       return state;
     },
-    clearCustomerList(state) {
-      state.customerState.customersList = [];
+    updateCustomersList(state, action) {
+      state.customerState.customersList = action.payload;
       return state;
     },
     updateCustomersListPaginationInfo(state, action) {

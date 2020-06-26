@@ -12,10 +12,15 @@ import {
   getWebRequest,
   postWebRequest,
   putWebRequest,
+  deleteWebRequest,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import { Pagination } from '../../interfaces';
-import { controlActions, InfoMessage } from '../slices/control.slice';
+import {
+  controlActions,
+  InfoMessage,
+  InfoMessageType,
+} from '../slices/control.slice';
 import { dealerActions } from '../../redux/slices/dealer.slice';
 import StoreHelper from '../../helpers/store.helper';
 
@@ -191,6 +196,53 @@ export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
               errorResponse,
               [
                 { type: 'ERROR_UPDATE_STORE_CUSTOMER' },
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiDeleteCustomerByIdEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(customerActions.apiDeleteCustomerById.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+      return deleteWebRequest(api.DELETE_CUSTOMER_BY_ID, state$.value, [
+        { key: 'storeCustomerId', value: `${action.payload}` },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.disabledStatusBar(),
+              controlActions.showInfoMessage(
+                new InfoMessage(`Customer successfully deleted.`)
+              ),
+              controlActions.showInfoMessage(
+                new InfoMessage(successResponse.message)
+              ),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'DELETE_CUSTOMER_BY_ID' },
+                controlActions.showInfoMessage(
+                  new InfoMessage(
+                    `Error occurred while deleting сustomer. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
+                ),
                 controlActions.disabledStatusBar(),
               ],
               action

@@ -38,15 +38,30 @@ const CommonDialog: React.FC = () => {
 
   const onRenderCommonDialog = () => {
     return (
-      <DialogFooter>
-        <PrimaryButton
-          onClick={() => {
-            dispatch(controlActions.toggleCommonDialogVisibility(null));
-            dialogArgs?.onSubmitClick();
-          }}
-          text="Ok"
-        />
-      </DialogFooter>
+      <>
+        <Stack horizontal tokens={{ childrenGap: 9 }}>
+          <FontIcon
+            style={{ cursor: 'default' }}
+            iconName="Info"
+            className={mergeStyles({
+              fontSize: '32px',
+              color: '#2b579a',
+            })}
+          />
+          <Stack verticalAlign="center">
+            <Text styles={{ root: { fontSize: '14px' } }}>{subText}</Text>
+          </Stack>
+        </Stack>
+        <DialogFooter>
+          <PrimaryButton
+            onClick={() => {
+              dispatch(controlActions.toggleCommonDialogVisibility(null));
+              dialogArgs?.onSubmitClick();
+            }}
+            text="Ok"
+          />
+        </DialogFooter>
+      </>
     );
   };
 

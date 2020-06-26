@@ -622,7 +622,7 @@ export const deleteCurrentCustomerFromStoreEpic = (
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
-      return deleteWebRequest(api.DELETE_CUSTOMER_FROM_STORE, state$.value, [
+      return deleteWebRequest(api.DELETE_CUSTOMER_BY_ID, state$.value, [
         { key: 'storeCustomerId', value: `${action.payload}` },
       ]).pipe(
         mergeMap((successResponse: any) => {
@@ -645,7 +645,7 @@ export const deleteCurrentCustomerFromStoreEpic = (
             return errorCommonEpicFlow(
               errorResponse,
               [
-                { type: 'DELETE_CUSTOMER_FROM_STORE' },
+                { type: 'DELETE_CUSTOMER_BY_ID' },
                 controlActions.disabledStatusBar(),
               ],
               action

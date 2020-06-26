@@ -25,7 +25,7 @@ export const Customers: React.FC = (props: any) => {
   useEffect(() => {
     return () => {
       dispatch(controlActions.closeInfoPanelWithComponent());
-      dispatch(customerActions.clearCustomerList());
+      dispatch(customerActions.updateCustomersList([]));
     };
   }, [dispatch]);
   const searchBoxStyles = { root: { width: 200 } };
