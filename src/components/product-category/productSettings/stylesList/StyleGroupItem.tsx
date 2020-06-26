@@ -100,7 +100,7 @@ const _buildGroupPriceHint = (group: OptionGroup) => {
     }
   } else {
     resultContent = renderPriceTooltip(
-      `The price for style is formed by prices of the style options`,
+      `The price for style is consists of prices of the style options`,
       semiColor
     );
   }
