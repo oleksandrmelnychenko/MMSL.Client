@@ -4,7 +4,7 @@ import { fittingTypesActions } from '../../../../../redux/slices/measurements/fi
 import { IApplicationState } from '../../../../../redux/reducers';
 import { Measurement } from '../../../../../interfaces/measurements';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
-import { FittingType } from '../../../../../interfaces/fittingTypes';
+import { FittingType } from '../../../../../interfaces/measurements';
 import { CommandBarButton, FontWeights } from 'office-ui-fabric-react';
 import FittinTypeGrid from './FittingTypeGrid';
 import FittingTypeForm from './management/FittingTypeForm';

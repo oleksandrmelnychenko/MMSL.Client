@@ -12,7 +12,7 @@ import {
 import { ProductCategory } from '../../../../../interfaces/products';
 import { List } from 'linq-typescript';
 import '../baseMeasurement/chartGridCell.scss';
-import { FittingType } from '../../../../../interfaces/fittingTypes';
+import { FittingType } from '../../../../../interfaces/measurements';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
 import { fittingTypesActions } from '../../../../../redux/slices/measurements/fittingTypes.slice';
 

@@ -29,7 +29,7 @@ import { IApplicationState } from '../../../../../../redux/reducers';
 import {
   FittingType,
   MeasurementUnit,
-} from '../../../../../../interfaces/fittingTypes';
+} from '../../../../../../interfaces/measurements';
 import { fittingTypesActions } from '../../../../../../redux/slices/measurements/fittingTypes.slice';
 import { assignPendingActions } from '../../../../../../helpers/action.helper';
 

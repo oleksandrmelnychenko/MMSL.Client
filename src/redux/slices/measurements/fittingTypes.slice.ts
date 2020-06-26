@@ -1,4 +1,4 @@
-import { FittingType } from './../../../interfaces/fittingTypes';
+import { FittingType } from './../../../interfaces/measurements';
 import { createSlice } from '@reduxjs/toolkit';
 
 const INIT_STATE: IFittingTypesState = {

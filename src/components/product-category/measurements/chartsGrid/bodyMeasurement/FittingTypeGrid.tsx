@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IApplicationState } from '../../../../../redux/reducers';
-import { FittingType } from '../../../../../interfaces/fittingTypes';
+import { FittingType } from '../../../../../interfaces/measurements';
 import {
   DetailsList,
   ConstrainMode,

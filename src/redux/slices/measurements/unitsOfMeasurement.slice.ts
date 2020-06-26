@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { MeasurementUnit } from '../../../interfaces/fittingTypes';
+import { MeasurementUnit } from '../../../interfaces/measurements';
 
 const INIT_STATE: IUnitsOfMeasurementState = {
   unitsOfMeasurement: [],

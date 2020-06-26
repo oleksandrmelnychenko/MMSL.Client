@@ -7,8 +7,6 @@ import {
   IDropdownOption,
   Dropdown,
   IDropdown,
-  IKeytipProps,
-  ICalloutProps,
 } from 'office-ui-fabric-react';
 import { defaultCellStyle } from '../../../../../common/fabric-styles/styles';
 import { Measurement } from '../../../../../interfaces/measurements';
@@ -17,7 +15,7 @@ import '../baseMeasurement/chartGridCell.scss';
 import {
   FittingType,
   MeasurementUnit,
-} from '../../../../../interfaces/fittingTypes';
+} from '../../../../../interfaces/measurements';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
 import { fittingTypesActions } from '../../../../../redux/slices/measurements/fittingTypes.slice';
 import { IApplicationState } from '../../../../../redux/reducers';
