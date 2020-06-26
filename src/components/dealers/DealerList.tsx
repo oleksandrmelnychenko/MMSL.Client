@@ -16,6 +16,7 @@ import {
   FontIcon,
   mergeStyles,
   CheckboxVisibility,
+  DetailsList,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -262,9 +263,8 @@ export const DealerList: React.FC = () => {
 
   return (
     <ScrollablePane styles={scrollablePaneStyleForDetailList}>
-      <ShimmeredDetailsList
+      <DetailsList
         onRenderDetailsHeader={onRenderDetailsHeader}
-        enableShimmer={shimmer}
         styles={detailsListStyle}
         items={dealers}
         checkboxVisibility={CheckboxVisibility.hidden}

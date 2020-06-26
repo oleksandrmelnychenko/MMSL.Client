@@ -12,6 +12,8 @@ import {
   Sticky,
   StickyPositionType,
   IDetailsColumnRenderTooltipProps,
+  DetailsList,
+  DetailsRow,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
@@ -101,24 +103,12 @@ const _customerColumns: IColumn[] = [
 export const CustomerList: React.FC = () => {
   const dispatch = useDispatch();
 
-  const [selection] = useState(
-    new Selection({
-      onSelectionChanged: () => {
-        if (selection.count > 0) {
-          customerSelection();
-        }
-      },
-    })
-  );
+  const [selection] = useState(new Selection());
 
   const { customersList, selectedCustomer } = useSelector<
     IApplicationState,
     CustomerListState
   >((state) => state.customer.customerState);
-
-  const shimmer = useSelector<IApplicationState, boolean>(
-    (state) => state.control.isGlobalShimmerActive
-  );
 
   useEffect(() => {
     dispatch(controlActions.showGlobalShimmer());
@@ -130,28 +120,12 @@ export const CustomerList: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (customersList.length > 0 && shimmer) {
-      dispatch(controlActions.hideGlobalShimmer());
-    }
-  }, [customersList, dispatch, shimmer]);
-
-  useEffect(() => {
     if (!selectedCustomer) {
       selection.setAllSelected(false);
       dispatch(controlActions.closeInfoPanelWithComponent());
     }
-  }, [selectedCustomer, selection, dispatch]);
-
-  const customerSelection = () => {
-    const selectedCustomer = selection.getSelection()[0] as any;
-    dispatch(customerActions.selectedCustomer(selectedCustomer));
-    dispatch(
-      controlActions.openInfoPanelWithComponent({
-        component: ManagementPanel,
-        onDismisPendingAction: () => {},
-      })
-    );
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCustomer]);
 
   const onRenderDetailsHeader: IRenderFunction<IDetailsHeaderProps> = (
     props,
@@ -177,17 +151,45 @@ export const CustomerList: React.FC = () => {
     );
   };
 
+  const onRenderRow = (args: any) => {
+    return (
+      <div
+        onClick={(clickArgs: any) => {
+          const selectFlow = () => {
+            dispatch(customerActions.selectedCustomer(args.item));
+            dispatch(
+              controlActions.openInfoPanelWithComponent({
+                component: ManagementPanel,
+                onDismisPendingAction: () => {},
+              })
+            );
+          };
+
+          if (selectedCustomer) {
+            if (selectedCustomer.id !== args.item.id) {
+              selectFlow();
+            }
+          } else {
+            selectFlow();
+          }
+        }}
+      >
+        <DetailsRow {...args} />
+      </div>
+    );
+  };
+
   return (
     <div>
       <ScrollablePane styles={scrollablePaneStyleForDetailList}>
-        <ShimmeredDetailsList
+        <DetailsList
           onRenderDetailsHeader={onRenderDetailsHeader}
-          enableShimmer={shimmer}
           styles={detailsListStyle}
           items={customersList}
           selection={selection}
           selectionMode={SelectionMode.single}
           columns={_customerColumns}
+          onRenderRow={onRenderRow}
         />
       </ScrollablePane>
     </div>

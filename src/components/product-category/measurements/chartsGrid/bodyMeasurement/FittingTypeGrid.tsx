@@ -317,32 +317,6 @@ const FittingTypeGrid: React.FC = () => {
         );
       },
     },
-    // {
-    //   key: 'unitsOfMeasurement',
-    //   name: 'Units',
-    //   minWidth: 60,
-    //   maxWidth: 120,
-    //   isResizable: true,
-    //   isCollapsible: false,
-    //   data: 'string',
-    //   isPadded: false,
-    //   onRender: (item: any) => {
-    //     const uOfMeasurementName = unitsOfMeasurementLinqList.firstOrDefault(
-    //       (unit) => unit.id === targetMeasurement?.measurementUnitId
-    //     )?.description;
-
-    //     return (
-    //       <BorderedCell>
-    //         <Text
-    //           block
-    //           style={{ ...defaultCellStyle, margin: '10px 0 0 10px' }}
-    //         >
-    //           {uOfMeasurementName}
-    //         </Text>
-    //       </BorderedCell>
-    //     );
-    //   },
-    // },
   ];
 
   return (
