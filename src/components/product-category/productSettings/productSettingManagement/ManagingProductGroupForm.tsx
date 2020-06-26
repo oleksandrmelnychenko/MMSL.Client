@@ -51,10 +51,6 @@ const _buildUpdatedPayload = (
   values: IInitValues,
   sourceEntity: OptionGroup
 ) => {
-  // let payload = { ...sourceEntity };
-  // payload.name = values.name;
-  // payload.isMandatory = values.isMandatory;
-
   let payload: any = {
     id: sourceEntity.id,
     isDeleted: sourceEntity.isDeleted,

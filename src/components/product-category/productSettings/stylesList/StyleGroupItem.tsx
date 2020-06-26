@@ -29,6 +29,10 @@ import { OptionGroupDetails } from './../productSettingManagement/OptionGroupDet
 import { renderHintLable } from '../../../../helpers/uiComponent.helper';
 import { ExpandableItem } from '../../../../interfaces';
 
+export interface IStyleGroupItemProps {
+  expandableStyleGroup: ExpandableItem;
+}
+
 export const buildGroupMandatoryHint = (group: OptionGroup) => {
   return (
     <TooltipHost
@@ -53,9 +57,56 @@ export const buildGroupMandatoryHint = (group: OptionGroup) => {
   );
 };
 
-export interface IStyleGroupItemProps {
-  expandableStyleGroup: ExpandableItem;
-}
+const _buildGroupPriceHint = (group: OptionGroup) => {
+  const color: string = '#2b579a';
+  const semiColor: string = '#2b579a60';
+
+  const renderPriceTooltip = (tooltipText: string, iconColor: string) => {
+    return (
+      <Stack.Item align="end">
+        <TooltipHost
+          id={`priceTooltip_${group.id}`}
+          calloutProps={{ gapSpace: 0 }}
+          delay={TooltipDelay.zero}
+          directionalHint={DirectionalHint.bottomCenter}
+          styles={{ root: { display: 'inline-block' } }}
+          content={tooltipText}
+        >
+          <FontIcon
+            style={{ cursor: 'default' }}
+            iconName="Money"
+            className={mergeStyles({
+              fontSize: 16,
+              position: 'relative',
+              top: '2px',
+              color: iconColor,
+            })}
+          />
+        </TooltipHost>
+      </Stack.Item>
+    );
+  };
+
+  let resultContent = null;
+
+  if (group.canDeclareOwnPrice) {
+    if (group.currentPrice?.currencyType) {
+      resultContent = renderPriceTooltip(
+        `${group.currentPrice.price} ${group.currentPrice.currencyType.name}`,
+        color
+      );
+    } else {
+      resultContent = renderPriceTooltip(`Free of charge`, semiColor);
+    }
+  } else {
+    resultContent = renderPriceTooltip(
+      `The price for style is formed by prices of the style options`,
+      semiColor
+    );
+  }
+
+  return resultContent;
+};
 
 const _groupContainerStyle = {
   root: {
@@ -126,6 +177,8 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
             <Stack.Item align="end">
               {buildGroupMandatoryHint(props.expandableStyleGroup.item)}
             </Stack.Item>
+
+            {_buildGroupPriceHint(props.expandableStyleGroup.item)}
           </Stack>
 
           <Separator vertical styles={{ root: { height: '26px' } }} />
@@ -273,7 +326,12 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
               props.expandableStyleGroup.item.optionUnits.map(
                 (item: OptionUnit) => (
                   <React.Fragment key={item.id}>
-                    <UnitRowItem optionUnit={item} />
+                    <UnitRowItem
+                      optionUnit={item}
+                      optionGroup={
+                        props.expandableStyleGroup.item as OptionGroup
+                      }
+                    />
                   </React.Fragment>
                 )
               )

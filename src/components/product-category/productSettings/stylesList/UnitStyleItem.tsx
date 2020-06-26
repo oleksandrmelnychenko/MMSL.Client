@@ -7,8 +7,10 @@ import {
   Stack,
   TooltipDelay,
   DirectionalHint,
+  FontIcon,
+  mergeStyles,
 } from 'office-ui-fabric-react';
-import { OptionUnit } from '../../../../interfaces/options';
+import { OptionUnit, OptionGroup } from '../../../../interfaces/options';
 import { ProductCategory } from '../../../../interfaces/products';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -28,13 +30,75 @@ import ManagingProductUnitForm from './../productSettingManagement/ManagingProdu
 
 export class UnitRowItemProps {
   constructor() {
+    this.optionGroup = new OptionGroup();
     this.optionUnit = new OptionUnit();
     this.takeMarginWhenNoImage = false;
   }
 
+  optionGroup: OptionGroup;
   optionUnit: OptionUnit;
   takeMarginWhenNoImage?: boolean;
 }
+
+const _buildGroupPriceHint = (unit: OptionUnit, group: OptionGroup) => {
+  const color: string = '#2b579a';
+  const semiColor: string = '#2b579a60';
+
+  const renderPriceTooltip = (tooltipText: string, iconColor: string) => {
+    return (
+      <Stack.Item>
+        <TooltipHost
+          id={`priceTooltip_${group.id}`}
+          calloutProps={{ gapSpace: 0 }}
+          delay={TooltipDelay.zero}
+          directionalHint={DirectionalHint.bottomCenter}
+          styles={{
+            root: { display: 'inline-block', position: 'relative', zIndex: 3 },
+          }}
+          content={tooltipText}
+        >
+          <FontIcon
+            style={{ cursor: 'default' }}
+            iconName="Money"
+            className={mergeStyles({
+              fontSize: 16,
+              position: 'relative',
+              top: '2px',
+              color: iconColor,
+            })}
+          />
+        </TooltipHost>
+      </Stack.Item>
+    );
+  };
+
+  let resultContent = null;
+
+  if (unit.canDeclareOwnPrice) {
+    if (unit.currentPrice?.currencyType) {
+      resultContent = renderPriceTooltip(
+        `${unit.currentPrice.price} ${unit.currentPrice.currencyType.name}`,
+        color
+      );
+    } else {
+      resultContent = renderPriceTooltip(`Free of charge`, semiColor);
+    }
+  } else {
+    if (group.currentPrice?.currencyType) {
+      resultContent = renderPriceTooltip(
+        `Full style price ${group.currentPrice.price} ${group.currentPrice.currencyType.name}`,
+        semiColor
+      );
+    } else {
+      resultContent = renderPriceTooltip(
+        `Full style is free of charge`,
+        semiColor
+      );
+    }
+  }
+
+  return resultContent;
+};
 
 export const UnitRowItem: React.FC<UnitRowItemProps> = (
   props: UnitRowItemProps
@@ -74,6 +138,7 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
             ...fabricStyles.cardText.root,
             zIndex: 2,
             cursor: 'auto',
+            marginTop: '0px',
           },
         }}
       >
@@ -116,24 +181,10 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
             styles={fabricStyles.marginImageCenter}
           ></Image>
         </Card.Section>
-        <Card.Section>
-          <Stack horizontal>
-            {/* <Text
-              block
-              nowrap
-              variant="mediumPlus"
-              styles={{
-                ...fabricStyles.cardText,
-                root: {
-                  ...fabricStyles.cardText.root,
-                  zIndex: 2,
-                  cursor: 'auto',
-                },
-              }}
-            >
-              {props.optionUnit.value}
-            </Text> */}
+        <Card.Section styles={{ root: { marginTop: '0px !important' } }}>
+          <Stack>
             {onRendedStyleOptionLabel()}
+            {_buildGroupPriceHint(props.optionUnit, props.optionGroup)}
           </Stack>
         </Card.Section>
         <Card.Section
