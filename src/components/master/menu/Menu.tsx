@@ -20,7 +20,7 @@ interface IMenuItem {
 }
 
 const DASHBOARD_MENU_TITLE: string = 'Dashboard';
-const ORDER_MENU_TITLE: string = 'Order';
+const ORDER_PROFILES_MENU_TITLE: string = 'Order Profiles';
 const CUSTOMER_MENU_TITLE: string = 'Customer';
 const DEALERS_MENU_TITLE: string = 'Dealers';
 const STOCK_MENU_TITLE: string = 'Stock';
@@ -72,9 +72,9 @@ const Menu: React.FC = () => {
       link: `/${languageCode}/app/dashboard`,
     },
     {
-      title: ORDER_MENU_TITLE,
+      title: ORDER_PROFILES_MENU_TITLE,
       className: 'order',
-      link: `/${languageCode}/app/order`,
+      link: `/${languageCode}/app/order-profiles`,
     },
     {
       title: CUSTOMER_MENU_TITLE,
@@ -170,9 +170,13 @@ const Menu: React.FC = () => {
     let resolvedMenu: IMenuItem[] = [];
 
     if (rolesList.contains(RoleType[RoleType.Administrator])) {
-      resolvedMenu = menu;
+      resolvedMenu = new List(menu)
+        .where((menuItem) => menuItem.title !== ORDER_PROFILES_MENU_TITLE)
+        .toArray();
     } else if (rolesList.contains(RoleType[RoleType.Manufacturer])) {
-      resolvedMenu = menu;
+      resolvedMenu = new List(menu)
+        .where((menuItem) => menuItem.title !== ORDER_PROFILES_MENU_TITLE)
+        .toArray();
     } else if (rolesList.contains(RoleType[RoleType.Customer])) {
       debugger;
     } else if (rolesList.contains(RoleType[RoleType.Dealer])) {

@@ -20,6 +20,7 @@ import ProductCategoryView from '../product-category/ProductCategoryView';
 import { RightPanel } from './panel/RightPanel';
 import DashboardLeftMenuPanel from './DashboardLeftMenuPanel';
 import HintStub from './dashboardHint/HintStub';
+import IdentityDashboardRoute from './IdentityDashboardRoute';
 
 const Dashboard: React.FC = () => {
   const location = useLocation();
@@ -58,16 +59,7 @@ const Dashboard: React.FC = () => {
                 : {}
             }
           >
-            <Switch>
-              <Route path={`/en/app/dealers`} component={DealersBootstrapper} />
-              <Route path={`/en/app/customer`} component={Customers} />
-              <Route path={`/en/app/product`} component={ProductCategoryView} />
-              {/* Old pages not neccessary now */}
-              {/* <Route path={`/en/app/timeline`} component={Timeline} /> */}
-              {/* Old pages not neccessary now */}
-              {/* <Route path={`/en/app/styles`} component={ProductSettings} /> */}
-              <Route path={`/en/app/reports`} component={Reports} />
-            </Switch>
+            <IdentityDashboardRoute />
           </div>
 
           <div
