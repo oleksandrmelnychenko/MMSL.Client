@@ -6,6 +6,7 @@ import { FormicReference } from '../../../../../../interfaces';
 import {
   Measurement,
   MeasurementMapDefinition,
+  MeasurementUnit,
 } from '../../../../../../interfaces/measurements';
 import { ProductCategory } from '../../../../../../interfaces/products';
 import * as fabricStyles from '../../../../../../common/fabric-styles/styles';
@@ -37,19 +38,16 @@ import {
   DraggableStateSnapshot,
   DraggableRubric,
 } from 'react-beautiful-dnd';
+import UnitOfMeasurementInput from './UnitOfMeasurementInput';
 
-class MeasurementFormInitValues {
-  constructor() {
-    this.name = '';
-    this.description = '';
-  }
-
+interface IFormValues {
   name: string;
   description: string;
+  unitOfMeasurementId: number;
 }
 
 const _buildNewMeasurementPayload = (
-  values: MeasurementFormInitValues,
+  values: IFormValues,
   charts: ChartItemInitPayload[],
   productCategory: ProductCategory
 ) => {
@@ -58,6 +56,7 @@ const _buildNewMeasurementPayload = (
     name: values.name,
     description: values.description,
     measurementDefinitions: [],
+    measurementUnitId: values.unitOfMeasurementId,
   };
 
   payload.measurementDefinitions = new List(charts)
@@ -74,7 +73,7 @@ const _buildNewMeasurementPayload = (
 };
 
 const _buildEditedMeasurementPayload = (
-  values: MeasurementFormInitValues,
+  values: IFormValues,
   charts: ChartItemInitPayload[],
   sourceEntity: Measurement
 ) => {
@@ -83,6 +82,7 @@ const _buildEditedMeasurementPayload = (
     name: values.name,
     description: values.description,
     measurementDefinitions: [],
+    measurementUnitId: values.unitOfMeasurementId,
   };
 
   payload.measurementDefinitions = new List(charts)
@@ -100,14 +100,23 @@ const _buildEditedMeasurementPayload = (
   return payload;
 };
 
-const _initDefaultValues = (sourceEntity?: Measurement | null) => {
-  const initValues: MeasurementFormInitValues = new MeasurementFormInitValues();
+const _initDefaultValues = (
+  unitsOfMeasurement: MeasurementUnit[],
+  sourceEntity?: Measurement | null
+) => {
+  const initValues: IFormValues = {
+    name: '',
+    description: '',
+    unitOfMeasurementId:
+      unitsOfMeasurement.length > 0 ? unitsOfMeasurement[0].id : 0,
+  };
 
   if (sourceEntity) {
     initValues.name = sourceEntity.name;
     initValues.description = sourceEntity.description
       ? sourceEntity.description
       : '';
+    initValues.unitOfMeasurementId = sourceEntity.measurementUnitId;
   }
 
   return initValues;
@@ -170,6 +179,10 @@ export const MeasurementForm: React.FC = () => {
     (state) => state.product.productMeasurementsState.measurementList
   );
 
+  const unitsOfMeasurement = useSelector<IApplicationState, MeasurementUnit[]>(
+    (state) => state.unitsOfMeasurement.unitsOfMeasurement
+  );
+
   const productCategory = useSelector<
     IApplicationState,
     ProductCategory | null
@@ -227,33 +240,7 @@ export const MeasurementForm: React.FC = () => {
     }
   };
 
-  const tryDeleteItem = (
-    itemToDelete: ChartItemInitPayload,
-    inputState: IChartItemInputState
-  ) => {
-    if (inputState.name.length < 1 || inputState.isRemoved) {
-      const rowList = new List(charts);
-      rowList.remove(itemToDelete);
-
-      if (itemToDelete.rawSource && itemToDelete.rawSource.id !== 0) {
-        const toDelete = new List(deletedCharts);
-
-        if (
-          !toDelete.any(
-            (deletedRow) =>
-              deletedRow.rawSource.id === itemToDelete.rawSource.id
-          )
-        ) {
-          itemToDelete.isDeleted = true;
-          setDeletedCharts(toDelete.concat([itemToDelete]).toArray());
-        }
-      }
-
-      setCharts(rowList.toArray());
-    }
-  };
-
-  const editMeasurement = (values: MeasurementFormInitValues) => {
+  const editMeasurement = (values: IFormValues) => {
     if (productCategory && measurementToEdit) {
       const payload = _buildEditedMeasurementPayload(
         values,
@@ -263,6 +250,7 @@ export const MeasurementForm: React.FC = () => {
           .toArray(),
         measurementToEdit
       );
+
       dispatch(
         assignPendingActions(
           measurementActions.apiUpdateMeasurement(payload),
@@ -294,7 +282,7 @@ export const MeasurementForm: React.FC = () => {
     }
   };
 
-  const createNewMeasurement = (values: MeasurementFormInitValues) => {
+  const createNewMeasurement = (values: IFormValues) => {
     if (productCategory) {
       const payload = _buildNewMeasurementPayload(
         values,
@@ -304,6 +292,7 @@ export const MeasurementForm: React.FC = () => {
           .toArray(),
         productCategory
       );
+
       dispatch(
         assignPendingActions(
           measurementActions.apiCreateNewMeasurement(payload),
@@ -323,6 +312,32 @@ export const MeasurementForm: React.FC = () => {
           (args: any) => {}
         )
       );
+    }
+  };
+
+  const tryDeleteItem = (
+    itemToDelete: ChartItemInitPayload,
+    inputState: IChartItemInputState
+  ) => {
+    if (inputState.name.length < 1 || inputState.isRemoved) {
+      const rowList = new List(charts);
+      rowList.remove(itemToDelete);
+
+      if (itemToDelete.rawSource && itemToDelete.rawSource.id !== 0) {
+        const toDelete = new List(deletedCharts);
+
+        if (
+          !toDelete.any(
+            (deletedRow) =>
+              deletedRow.rawSource.id === itemToDelete.rawSource.id
+          )
+        ) {
+          itemToDelete.isDeleted = true;
+          setDeletedCharts(toDelete.concat([itemToDelete]).toArray());
+        }
+      }
+
+      setCharts(rowList.toArray());
     }
   };
 
@@ -416,8 +431,14 @@ export const MeasurementForm: React.FC = () => {
             .min(3)
             .required(() => 'Name is required'),
           description: Yup.string(),
+          unitOfMeasurementId: Yup.number()
+            .nullable()
+            .required('Unit of measurement id is required'),
         })}
-        initialValues={_initDefaultValues(measurementToEdit)}
+        initialValues={_initDefaultValues(
+          unitsOfMeasurement,
+          measurementToEdit
+        )}
         onSubmit={(values: any) => {
           if (measurementToEdit) editMeasurement(values);
           else createNewMeasurement(values);
@@ -428,13 +449,15 @@ export const MeasurementForm: React.FC = () => {
         }}
         innerRef={(formik: any) => {
           formikReference.formik = formik;
-          if (formik)
+          if (formik) {
             setFormikDirty(
               formik.dirty ||
                 new List(charts)
                   .concat(deletedCharts)
                   .any((item) => _isChartItemDirty(item))
             );
+            console.log(formik.values);
+          }
         }}
         validateOnBlur={false}
         enableReinitialize={true}
@@ -443,34 +466,46 @@ export const MeasurementForm: React.FC = () => {
           return (
             <Form className="form">
               <div className="dealerFormManage">
-                <Stack tokens={{ childrenGap: '20px' }}>
-                  <Field name="name">
-                    {() => (
-                      <div className="form__group">
-                        <TextField
-                          value={formik.values.name}
-                          styles={fabricStyles.textFildLabelStyles}
-                          className="form__group__field"
-                          label="Name"
-                          required
-                          onChange={(args: any) => {
-                            formik.setFieldValue('name', args.target.value);
-                            formik.setFieldTouched('name');
-                          }}
-                          errorMessage={
-                            formik.errors.name && formik.touched.name ? (
-                              <span className="form__group__error">
-                                {formik.errors.name}
-                              </span>
-                            ) : (
-                              ''
-                            )
-                          }
-                        />
-                      </div>
-                    )}
-                  </Field>
+                <Stack tokens={{ childrenGap: '15px' }}>
                   <Stack>
+                    <Field name="name">
+                      {() => (
+                        <div className="form__group">
+                          <TextField
+                            value={formik.values.name}
+                            styles={fabricStyles.textFildLabelStyles}
+                            className="form__group__field"
+                            label="Name"
+                            required
+                            onChange={(args: any) => {
+                              formik.setFieldValue('name', args.target.value);
+                              formik.setFieldTouched('name');
+                            }}
+                            errorMessage={
+                              formik.errors.name && formik.touched.name ? (
+                                <span className="form__group__error">
+                                  {formik.errors.name}
+                                </span>
+                              ) : (
+                                ''
+                              )
+                            }
+                          />
+                        </div>
+                      )}
+                    </Field>
+
+                    <Field name="unitOfMeasurement">
+                      {() => (
+                        <UnitOfMeasurementInput
+                          formik={formik}
+                          measurement={measurementToEdit}
+                        />
+                      )}
+                    </Field>
+                  </Stack>
+
+                  <Stack tokens={{ childrenGap: '6px' }}>
                     <NewNamedItemInput
                       label="New column"
                       onReleaseInputCallback={(input: string) =>

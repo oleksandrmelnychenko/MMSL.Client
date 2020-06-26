@@ -106,7 +106,6 @@ const BodySizeValueCell: React.FC<IBodySizeValueCellProps> = (
       const payload = {
         id: props.fittingType.id,
         type: props.fittingType.type,
-        measurementUnitId: props.fittingType.measurementUnitId,
         measurementId: props.fittingType.measurementId,
         measurementMapValues: [
           {

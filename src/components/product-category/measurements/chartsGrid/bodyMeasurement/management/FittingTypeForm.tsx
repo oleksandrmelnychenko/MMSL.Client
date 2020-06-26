@@ -3,7 +3,6 @@ import { Formik, Form, Field } from 'formik';
 import {
   Stack,
   TextField,
-  Dropdown,
   Text,
   IDropdownOption,
   Separator,
@@ -180,20 +179,20 @@ const _initValueItemsDefaults = (
   return result;
 };
 
-const _resolveDefaultSelectedOptionKey = (
-  options: IDropdownOption[],
-  fittingTypeForEdit?: FittingType | null | undefined
-) => {
-  let defaultSelectKey: string = '';
+// const _resolveDefaultSelectedOptionKey = (
+//   options: IDropdownOption[],
+//   fittingTypeForEdit?: FittingType | null | undefined
+// ) => {
+//   let defaultSelectKey: string = '';
 
-  if (fittingTypeForEdit) {
-    defaultSelectKey = `${fittingTypeForEdit.measurementUnitId}`;
-  } else {
-    defaultSelectKey = options.length > 0 ? `${options[0].key}` : '';
-  }
+//   if (fittingTypeForEdit) {
+//     defaultSelectKey = `${fittingTypeForEdit.measurementUnitId}`;
+//   } else {
+//     defaultSelectKey = options.length > 0 ? `${options[0].key}` : '';
+//   }
 
-  return defaultSelectKey;
-};
+//   return defaultSelectKey;
+// };
 
 /// TODO: vadymk don't repeat your self (Size Form use same entity and approach,
 /// define shared helper for this flow)
@@ -281,7 +280,6 @@ export const FittingTypeForm: React.FC = () => {
     new FormicReference(() => {})
   );
   const [isFormikDirty, setFormikDirty] = useState<boolean>(false);
-  const [unitOptions, setUnitOptions] = useState<IDropdownOption[]>([]);
   const [valueItems, setValueItems] = useState<DefinitionValueItem[]>([]);
 
   const measurement = useSelector<
@@ -298,10 +296,6 @@ export const FittingTypeForm: React.FC = () => {
     (state) => state.fittingTypes.fittingTypes
   );
 
-  const unitsOfMeasurement = useSelector<IApplicationState, MeasurementUnit[]>(
-    (state) => state.unitsOfMeasurement.unitsOfMeasurement
-  );
-
   const commandBarItems = useSelector<IApplicationState, any>(
     (state) => state.control.rightPanel.commandBarItems
   );
@@ -314,13 +308,12 @@ export const FittingTypeForm: React.FC = () => {
             formikReference.formik.submitForm();
           }),
           GetCommandBarItemProps(CommandBarItem.Reset, () => {
-            setUnitOptions([...unitOptions]);
             formikReference.formik.resetForm();
           }),
         ])
       );
     }
-  }, [formikReference, unitOptions, dispatch]);
+  }, [formikReference, dispatch]);
 
   useEffect(() => {
     if (new List(commandBarItems).any()) {
@@ -345,19 +338,6 @@ export const FittingTypeForm: React.FC = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    setUnitOptions(
-      unitsOfMeasurement.map((unit: MeasurementUnit, index: number) => {
-        return {
-          key: `${unit.id}`,
-          text: unit.description,
-          // isSelected: index === 0,
-          unitOfMeasurement: unit,
-        } as IDropdownOption;
-      })
-    );
-  }, [unitsOfMeasurement]);
 
   const newFittingType = (values: IFittingTypeInitValues) => {
     if (measurement) {
@@ -430,7 +410,7 @@ export const FittingTypeForm: React.FC = () => {
     }
   };
 
-  const initValues = _initDefaultValues(unitOptions, fittingTypeForEdit);
+  const initValues = _initDefaultValues([], fittingTypeForEdit);
 
   return (
     <div className="fittingTypeForm">
@@ -498,42 +478,6 @@ export const FittingTypeForm: React.FC = () => {
                                 ''
                               )
                             }
-                          />
-                        </div>
-                      )}
-                    </Field>
-
-                    <Field name="unitOfMeasurement">
-                      {() => (
-                        <div className="form__group">
-                          <Dropdown
-                            defaultSelectedKey={_resolveDefaultSelectedOptionKey(
-                              unitOptions,
-                              fittingTypeForEdit
-                            )}
-                            placeholder="Choose Unit of Measurement"
-                            label="Unit of measurement"
-                            options={unitOptions}
-                            styles={fabricStyles.comboBoxStyles}
-                            onChange={(
-                              event: React.FormEvent<HTMLDivElement>,
-                              option?: IDropdownOption,
-                              index?: number
-                            ) => {
-                              if (option) {
-                                formik.setFieldValue(
-                                  'unitOfMeasurement',
-                                  (option as any).unitOfMeasurement
-                                );
-                                formik.setFieldTouched('unitOfMeasurement');
-
-                                formik.setFieldValue(
-                                  'unitOfMeasurementId',
-                                  (option as any).unitOfMeasurement.id
-                                );
-                                formik.setFieldTouched('unitOfMeasurementId');
-                              }
-                            }}
                           />
                         </div>
                       )}

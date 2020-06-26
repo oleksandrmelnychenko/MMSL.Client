@@ -6,10 +6,16 @@ export class Measurement extends EntityBaseNamed {
     super();
     this.measurementMapSizes = [];
     this.measurementMapDefinitions = [];
+
+    this.measurementUnitId = 0;
+    this.measurementUnit = null;
   }
 
   measurementMapSizes: MeasurementMapSize[];
   measurementMapDefinitions: MeasurementMapDefinition[];
+
+  measurementUnitId: number;
+  measurementUnit: MeasurementUnit | null;
 }
 
 export class MeasurementSize extends EntityBaseNamed {
@@ -98,9 +104,6 @@ export class FittingType extends EntityBase {
 
     this.type = '';
 
-    this.measurementUnitId = 0;
-    this.measurementUnit = null;
-
     this.measurementId = 0;
     this.measurement = null;
 
@@ -108,9 +111,6 @@ export class FittingType extends EntityBase {
   }
 
   type: string;
-
-  measurementUnitId: number;
-  measurementUnit: MeasurementUnit | null;
 
   measurementId: number;
   measurement: Measurement | null;

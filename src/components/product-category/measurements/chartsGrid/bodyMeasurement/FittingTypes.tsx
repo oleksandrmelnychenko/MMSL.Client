@@ -46,21 +46,6 @@ const FittingTypes: React.FC = () => {
   >((state) => state.fittingTypes.fittingTypes);
 
   useEffect(() => {
-    dispatch(
-      assignPendingActions(
-        unitsOfMeasurementActions.apiGetAllUnitsOfMeasurement(),
-        [],
-        [],
-        (args: any) => {
-          dispatch(unitsOfMeasurementActions.changeUnitsOfMeasurement(args));
-        },
-        (args: any) => {}
-      )
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     if (targetMeasurement) {
       dispatch(
         assignPendingActions(

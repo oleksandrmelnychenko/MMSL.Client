@@ -36,7 +36,6 @@ import {
 import { ProductCategory } from '../../../../../interfaces/products';
 import BodySizeValueCell from './BodySizeValueCell';
 import BodySizeTypeCell from './BodySizeTypeCell';
-import BodySizeUnitsCell from './BodySizeUnitsCell';
 import BorderedCell from '../BorderedCell';
 
 const FittingTypeGrid: React.FC = () => {
@@ -306,27 +305,6 @@ const FittingTypeGrid: React.FC = () => {
         return (
           <BorderedCell>
             <BodySizeTypeCell
-              fittingType={item}
-              measurementChart={targetMeasurement}
-              productCategory={targetProduct}
-            />
-          </BorderedCell>
-        );
-      },
-    },
-    {
-      key: 'unit',
-      name: 'Unit',
-      minWidth: 60,
-      maxWidth: 120,
-      isResizable: true,
-      isCollapsible: false,
-      data: 'string',
-      isPadded: false,
-      onRender: (item: any) => {
-        return (
-          <BorderedCell>
-            <BodySizeUnitsCell
               fittingType={item}
               measurementChart={targetMeasurement}
               productCategory={targetProduct}

@@ -10,6 +10,7 @@ import { productActions } from '../../../redux/slices/product.slice';
 import { measurementActions } from '../../../redux/slices/measurements/measurement.slice';
 import Measurements from './Measurements';
 import { List } from 'linq-typescript';
+import { unitsOfMeasurementActions } from '../../../redux/slices/measurements/unitsOfMeasurement.slice';
 
 export const CREATE_YOUR_FIRST_MEASUREMENT: string =
   'Create your first measurement';
@@ -30,8 +31,19 @@ const MeasurementsBootstrapper: React.FC = () => {
     (state) => state.product.choose.category
   );
 
-  /// Dispose own state
   useEffect(() => {
+    dispatch(
+      assignPendingActions(
+        unitsOfMeasurementActions.apiGetAllUnitsOfMeasurement(),
+        [],
+        [],
+        (args: any) => {
+          dispatch(unitsOfMeasurementActions.changeUnitsOfMeasurement(args));
+        },
+        (args: any) => {}
+      )
+    );
+
     return () => {
       dispatch(productActions.updateProductMeasurementsList([]));
       dispatch(controlActions.closeDashboardHintStub());
