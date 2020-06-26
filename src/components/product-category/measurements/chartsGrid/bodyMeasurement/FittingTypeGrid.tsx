@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IApplicationState } from '../../../../../redux/reducers';
-import { FittingType } from '../../../../../interfaces/measurements';
+import {
+  FittingType,
+  MeasurementUnit,
+} from '../../../../../interfaces/measurements';
 import {
   DetailsList,
   ConstrainMode,
@@ -37,6 +40,7 @@ import { ProductCategory } from '../../../../../interfaces/products';
 import BodySizeValueCell from './BodySizeValueCell';
 import BodySizeTypeCell from './BodySizeTypeCell';
 import BorderedCell from '../BorderedCell';
+import { defaultCellStyle } from '../../../../../common/fabric-styles/styles';
 
 const FittingTypeGrid: React.FC = () => {
   const dispatch = useDispatch();
@@ -313,6 +317,32 @@ const FittingTypeGrid: React.FC = () => {
         );
       },
     },
+    // {
+    //   key: 'unitsOfMeasurement',
+    //   name: 'Units',
+    //   minWidth: 60,
+    //   maxWidth: 120,
+    //   isResizable: true,
+    //   isCollapsible: false,
+    //   data: 'string',
+    //   isPadded: false,
+    //   onRender: (item: any) => {
+    //     const uOfMeasurementName = unitsOfMeasurementLinqList.firstOrDefault(
+    //       (unit) => unit.id === targetMeasurement?.measurementUnitId
+    //     )?.description;
+
+    //     return (
+    //       <BorderedCell>
+    //         <Text
+    //           block
+    //           style={{ ...defaultCellStyle, margin: '10px 0 0 10px' }}
+    //         >
+    //           {uOfMeasurementName}
+    //         </Text>
+    //       </BorderedCell>
+    //     );
+    //   },
+    // },
   ];
 
   return (
