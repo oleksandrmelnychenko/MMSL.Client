@@ -26,9 +26,52 @@ import StoreHelper from '../../helpers/store.helper';
 
 const FORM_DATA_IMAGE_FILE_KEY = 'file';
 
-export const getAllProductCategoryEpic = (action$: AnyAction, state$: any) => {
+export const apiGetAllProductCategoriesEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
   return action$.pipe(
-    ofType(productActions.apiGetAllProductCategory.type),
+    ofType(productActions.apiGetAllProductCategories.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      return getWebRequest(api.GET_ALL_PRODUCT_CATEGORY, state$.value, []).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_GET_ALL_PRODUCT_CATEGORIES' },
+                controlActions.showInfoMessage(
+                  new InfoMessage(
+                    `Error occurred while getting all product categories. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiGetAllProductCategoryAnUpdateListEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(productActions.apiGetAllProductCategoryAnUpdateList.type),
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());

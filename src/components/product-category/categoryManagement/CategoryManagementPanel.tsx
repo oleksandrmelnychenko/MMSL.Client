@@ -89,7 +89,7 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
               [],
               (args: any) => {
                 dispatch(productActions.changeManagingPanelContent(null));
-                dispatch(productActions.apiGetAllProductCategory());
+                dispatch(productActions.apiGetAllProductCategoryAnUpdateList());
               }
             );
 
@@ -121,7 +121,7 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
                 dispatch(
                   productActions.changeTargetSingeleManagingProduct(null)
                 );
-                dispatch(productActions.apiGetAllProductCategory());
+                dispatch(productActions.apiGetAllProductCategoryAnUpdateList());
               }
             );
 
@@ -150,7 +150,7 @@ export const CategoryManagementPanel: React.FC = (props: any) => {
 
             let action = assignPendingActions(
               productActions.apiSaveUpdatedProductGroups(args),
-              [productActions.apiGetAllProductCategory()],
+              [productActions.apiGetAllProductCategoryAnUpdateList()],
               [productActions.toggleIsDetailsformDisabled(false)],
               (args: any) => {
                 if (targetProductCategoryForDetails) {

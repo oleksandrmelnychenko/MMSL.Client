@@ -76,7 +76,8 @@ const product = createSlice({
   name: 'product',
   initialState: new ProductState(),
   reducers: {
-    apiGetAllProductCategory(state) {},
+    apiGetAllProductCategories(state) {},
+    apiGetAllProductCategoryAnUpdateList(state) {},
     apiAddNewProductCategory(state, action) {},
     apiUpdateProductCategory(state, action) {},
     apiDeleteProductCategory(state, action) {},

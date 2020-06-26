@@ -43,6 +43,9 @@ const customer = createSlice({
     apiDeleteCustomerById(state, action: { type: string; payload: number }) {
       return state;
     },
+    apigetAllCustomers(state) {
+      return state;
+    },
     updateCustomersList(state, action) {
       state.customerState.customersList = action.payload;
       return state;

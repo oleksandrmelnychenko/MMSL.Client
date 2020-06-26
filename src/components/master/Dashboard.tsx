@@ -3,9 +3,7 @@ import './dashboard.scss';
 import Header from './header/Header';
 import Footer from './footer/Footer';
 import Menu from './menu/Menu';
-import { Switch, useLocation, Route } from 'react-router-dom';
-import DealersBootstrapper from '../dealers/DealersBootstrapper';
-import Customers from '../customers/Customers';
+import { useLocation, Route } from 'react-router-dom';
 import CommonDialog from './CommonDialog';
 import { useSelector } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers/index';
@@ -15,8 +13,6 @@ import {
   DashboardHintStubProps,
 } from '../../redux/slices/control.slice';
 import { panelStyle } from '../../common/fabric-styles/styles';
-import Reports from '../reports/Reports';
-import ProductCategoryView from '../product-category/ProductCategoryView';
 import { RightPanel } from './panel/RightPanel';
 import DashboardLeftMenuPanel from './DashboardLeftMenuPanel';
 import HintStub from './dashboardHint/HintStub';

@@ -38,7 +38,7 @@ const ProductCategories: React.FC = () => {
   );
 
   useEffect(() => {
-    dispatch(productActions.apiGetAllProductCategory());
+    dispatch(productActions.apiGetAllProductCategoryAnUpdateList());
   }, [dispatch]);
 
   const deleteProductCategory = (
@@ -61,7 +61,7 @@ const ProductCategories: React.FC = () => {
               [],
               [],
               (args: any) => {
-                dispatch(productActions.apiGetAllProductCategory());
+                dispatch(productActions.apiGetAllProductCategoryAnUpdateList());
               }
             );
 

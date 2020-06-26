@@ -76,6 +76,43 @@ export const getCustomersListPaginatedEpic = (
   );
 };
 
+export const apigetAllCustomersEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(customerActions.apigetAllCustomers.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      return getWebRequest(api.GET_CUSTOMERS_ALL, state$.value, []).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_GET_ALL_CUSTOMERS_LIST' },
+                controlActions.showInfoMessage(
+                  new InfoMessage(
+                    `Error occurred while getting all store customers. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
 export const customerFormStoreAutocompleteTextEpic = (
   action$: AnyAction,
   state$: any

@@ -83,3 +83,7 @@ export const BIND_DEALERS_TO_PERMISSION = '/product/permissions/bind/dealers';
 export const GET_DEALER_PRODUCTS_WITH_AVAILABILITY =
   '/product/category/get/availability';
 export const UPDATE_DEALER_PRODUCTS_AVAILABILITY = '/product/availability/save';
+
+export const GET_ALL_ORDER_PROFILES =
+  '/store/customers/product/profile/get/all';
+export const CREATE_ORDER_PROFILE = '/store/customers/product/profile/add';
