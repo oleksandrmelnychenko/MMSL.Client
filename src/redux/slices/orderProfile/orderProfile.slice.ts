@@ -1,3 +1,4 @@
+import { CustomerProductProfile } from './../../../interfaces/orderProfile';
 import { createSlice } from '@reduxjs/toolkit';
 
 const INIT_STATE: IOrderProfileState = {
@@ -6,8 +7,8 @@ const INIT_STATE: IOrderProfileState = {
 };
 
 export interface IOrderProfileState {
-  orderProfiles: any[];
-  targetOrderProfile: any | null | undefined;
+  orderProfiles: CustomerProductProfile[];
+  targetOrderProfile: CustomerProductProfile | null | undefined;
 }
 
 const orderProfile = createSlice({
@@ -21,13 +22,19 @@ const orderProfile = createSlice({
     apiCreateOrderProfile(state, action: { type: string; payload: any }) {
       return state;
     },
-    changeOrderProfiles(state, action: { type: string; payload: any[] }) {
+    changeOrderProfiles(
+      state,
+      action: { type: string; payload: CustomerProductProfile[] }
+    ) {
       state.orderProfiles = action.payload;
       return state;
     },
     changeTargetOrderProfile(
       state,
-      action: { type: string; payload: any | null | undefined }
+      action: {
+        type: string;
+        payload: CustomerProductProfile | null | undefined;
+      }
     ) {
       state.targetOrderProfile = action.payload;
       return state;

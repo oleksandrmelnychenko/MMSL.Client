@@ -22,6 +22,7 @@ import CustomersInput from './CustomersInput';
 import ProductsInput from './ProductsInput';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import { orderProfileActions } from '../../../../redux/slices/orderProfile/orderProfile.slice';
+import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
 
 export interface IOrderProfileFormProps {
   customers: StoreCustomer[];
@@ -36,7 +37,7 @@ interface IFormValues {
 }
 
 const _initDefaultValues = (
-  sourceEntity?: ProductPermissionSettings | null
+  sourceEntity?: CustomerProductProfile | null | undefined
 ) => {
   const initValues: IFormValues = {
     name: '',
@@ -89,13 +90,17 @@ export const OrderProfileForm: React.FC<IOrderProfileFormProps> = (
     (state) => state.control.rightPanel.commandBarItems
   );
 
-  const orderProfiles: any[] = useSelector<IApplicationState, any[]>(
-    (state) => state.orderProfile.orderProfiles
-  );
-
-  const targetOrderProfile: any | null | undefined = useSelector<
+  const orderProfiles: CustomerProductProfile[] = useSelector<
     IApplicationState,
-    any | null | undefined
+    CustomerProductProfile[]
+  >((state) => state.orderProfile.orderProfiles);
+
+  const targetOrderProfile:
+    | CustomerProductProfile
+    | null
+    | undefined = useSelector<
+    IApplicationState,
+    CustomerProductProfile | null | undefined
   >((state) => state.orderProfile.targetOrderProfile);
 
   useEffect(() => {
@@ -142,7 +147,6 @@ export const OrderProfileForm: React.FC<IOrderProfileFormProps> = (
         [],
         [],
         (args: any) => {
-          debugger;
           dispatch(
             orderProfileActions.changeOrderProfiles(
               new List(orderProfiles).concat([args.body]).toArray()
