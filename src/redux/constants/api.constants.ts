@@ -87,3 +87,4 @@ export const UPDATE_DEALER_PRODUCTS_AVAILABILITY = '/product/availability/save';
 export const GET_ALL_ORDER_PROFILES =
   '/store/customers/product/profile/get/all';
 export const CREATE_ORDER_PROFILE = '/store/customers/product/profile/add';
+export const DELETE_ORDER_PROFILE = '/store/customers/product/profile/delete';

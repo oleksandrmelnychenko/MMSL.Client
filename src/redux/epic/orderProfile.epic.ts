@@ -7,7 +7,11 @@ import { switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import { getActiveLanguage } from 'react-localize-redux';
-import { getWebRequest, postWebRequest } from '../../helpers/epic.helper';
+import {
+  getWebRequest,
+  postWebRequest,
+  deleteWebRequest,
+} from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import {
   controlActions,
@@ -85,6 +89,55 @@ export const apiCreateOrderProfileEpic = (action$: AnyAction, state$: any) => {
                 controlActions.showInfoMessage(
                   new InfoMessage(
                     `Error occurred while creating new product style permission. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiDeleteOrderProfileByIdEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(orderProfileActions.apiDeleteOrderProfileById.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      return deleteWebRequest(api.DELETE_ORDER_PROFILE, state$.value, [
+        {
+          key: 'customerProductProfileId',
+          value: `${action.payload}`,
+        },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.showInfoMessage(
+                new InfoMessage(`Order profile successfully deleted.`)
+              ),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_DELETE_ORDER_PROFILE' },
+                controlActions.showInfoMessage(
+                  new InfoMessage(
+                    `Error occurred while deleting order profile permission. ${errorResponse}`,
                     InfoMessageType.Warning
                   )
                 ),

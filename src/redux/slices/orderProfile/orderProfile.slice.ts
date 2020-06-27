@@ -22,6 +22,12 @@ const orderProfile = createSlice({
     apiCreateOrderProfile(state, action: { type: string; payload: any }) {
       return state;
     },
+    apiDeleteOrderProfileById(
+      state,
+      action: { type: string; payload: number }
+    ) {
+      return state;
+    },
     changeOrderProfiles(
       state,
       action: { type: string; payload: CustomerProductProfile[] }

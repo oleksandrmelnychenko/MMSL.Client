@@ -6,8 +6,13 @@ import {
   horizontalGapStackTokens,
   columnIconButtonStyle,
 } from '../../common/fabric-styles/styles';
+import { useDispatch } from 'react-redux';
+import { controlActions } from '../../redux/slices/control.slice';
+import OrderProfileFormBootstrapper from './managing/orderProfile/OrderProfileFormBootstrapper';
 
 const OrderProfileHeader: React.FC = () => {
+  const dispatch = useDispatch();
+
   return (
     <div>
       <Stack
@@ -22,16 +27,16 @@ const OrderProfileHeader: React.FC = () => {
           styles={columnIconButtonStyle}
           iconProps={{ iconName: 'Add' }}
           onClick={() => {
-            // dispatch(
-            //   controlActions.openRightPanel({
-            //     title: 'Add dealer',
-            //     width: '600px',
-            //     closeFunctions: () => {
-            //       dispatch(controlActions.closeRightPanel());
-            //     },
-            //     component: ManageDealerForm,
-            //   })
-            // );
+            dispatch(
+              controlActions.openRightPanel({
+                title: 'New Order profile',
+                width: '400px',
+                closeFunctions: () => {
+                  dispatch(controlActions.closeRightPanel());
+                },
+                component: OrderProfileFormBootstrapper,
+              })
+            );
           }}
         >
           New order profile
