@@ -45,7 +45,7 @@ const _extractCurrentValueFromFormik = (formik: any, valueIndex: number) => {
   return result;
 };
 
-const _onSetValue = (value: string, formik: any, valueIndex: number) => {
+const _onSetItemValue = (value: string, formik: any, valueIndex: number) => {
   let formikValuePath: string = '';
   let formikField: string = '';
 
@@ -73,6 +73,8 @@ export interface IInputValueModel {
   measurementDefinitionId: number;
   definitionName: string;
   id: number;
+  initValue: string;
+  initFittingValue: string;
 }
 
 export interface IValueItemProps {
@@ -84,17 +86,6 @@ export interface IValueItemProps {
 export const ValueItem: React.FC<IValueItemProps> = (
   props: IValueItemProps
 ) => {
-  const [initInput, setInitInput] = useState<string>('');
-
-  if (props.valueModel.value !== initInput) {
-    setInitInput(props.valueModel.value);
-  }
-
-  useEffect(() => {
-    setInitInput(props.valueModel.value);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <>
       <Field
@@ -103,8 +94,7 @@ export const ValueItem: React.FC<IValueItemProps> = (
         {() => (
           <div
             className={
-              initInput !==
-              _extractCurrentValueFromFormik(props.formik, props.index)
+              props.valueModel.value !== props.valueModel.initValue
                 ? 'valueItem isDirty'
                 : 'valueItem'
             }
@@ -130,7 +120,7 @@ export const ValueItem: React.FC<IValueItemProps> = (
                       props.index
                     )}
                     onChange={(args: any) => {
-                      _onSetValue(
+                      _onSetItemValue(
                         args?.target?.value ? args.target.value : '',
                         props.formik,
                         props.index

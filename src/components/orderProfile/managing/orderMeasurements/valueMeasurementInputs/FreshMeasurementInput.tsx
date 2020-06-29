@@ -30,11 +30,13 @@ export const initInputValueModelDefaults = (
         const resultItem = {
           value: '',
           fittingValue: '',
-          measurementDefinitionId: mapDefinition.id,
+          measurementDefinitionId: mapDefinition.measurementDefinitionId,
           definitionName: mapDefinition.measurementDefinition
             ? mapDefinition.measurementDefinition.name
             : '',
           id: 0,
+          initValue: '',
+          initFittingValue: '',
         };
 
         if (sourceEntity) {
@@ -59,6 +61,9 @@ export const initInputValueModelDefaults = (
               resultItem.fittingValue = profileValue.fittingValue
                 ? `${profileValue.fittingValue}`
                 : '';
+
+              resultItem.initValue = resultItem.value;
+              resultItem.initFittingValue = resultItem.fittingValue;
             }
           }
         }

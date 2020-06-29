@@ -8,11 +8,15 @@ import { ProfileTypes } from '../ProfileTypeInput';
 import { CustomerProductProfile } from '../../../../../interfaces/orderProfile';
 import { List } from 'linq-typescript';
 import { ComboBox, IComboBoxOption, IComboBox } from 'office-ui-fabric-react';
-import { MEASUREMENT_SIZE_ID_FORM_FIELD } from '../OrderMeasurementsForm';
+import {
+  MEASUREMENT_SIZE_ID_FORM_FIELD,
+  BASE_MEASUREMRNT_VALUES_FORM_FIELD,
+} from '../OrderMeasurementsForm';
 import { useDispatch } from 'react-redux';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
 import { measurementActions } from '../../../../../redux/slices/measurements/measurement.slice';
 import * as fabricStyles from '../../../../../common/fabric-styles/styles';
+import { IInputValueModel } from './ValueItem';
 
 const _buildSizeOptions = (measurement: Measurement) => {
   let result: IComboBoxOption[] = [];
@@ -50,6 +54,38 @@ const _resolveSelectedId = (
   return result;
 };
 
+const _applySizeValues = (
+  mapSize: MeasurementMapSize | null | undefined,
+  formik: any
+) => {
+  if (mapSize?.measurementSize?.measurementMapValues) {
+    if (formik.values.profileType === ProfileTypes.BaseMeasurement) {
+      const syncCharts = formik.values.baseMeasuremrntValues.map(
+        (valueItem: IInputValueModel, index: number) => {
+          const sizeValue = new List(
+            mapSize?.measurementSize?.measurementMapValues
+              ? mapSize.measurementSize.measurementMapValues
+              : []
+          ).firstOrDefault(
+            (item) =>
+              item.measurementDefinitionId === valueItem.measurementDefinitionId
+          );
+
+          if (sizeValue) valueItem.value = `${sizeValue.value}`;
+
+          valueItem.initValue = valueItem.value;
+
+          return valueItem;
+        }
+      );
+
+      formik.setFieldValue(BASE_MEASUREMRNT_VALUES_FORM_FIELD, syncCharts);
+      formik.setFieldTouched(BASE_MEASUREMRNT_VALUES_FORM_FIELD);
+    }
+  } else {
+  }
+};
+
 export interface ISizeSelectorInputProps {
   formik: any;
   orderProfile: CustomerProductProfile | null | undefined;
@@ -61,6 +97,7 @@ export const SizeSelectorInput: React.FC<ISizeSelectorInputProps> = (
   const dispatch = useDispatch();
 
   const [measurementId, setMeasurementId] = useState<number>(0);
+  const [sizeMapId, setSizeMapId] = useState<number>(0);
   const [profileType, setProfileType] = useState<ProfileTypes>(
     ProfileTypes.BaseMeasurement
   );
@@ -71,6 +108,9 @@ export const SizeSelectorInput: React.FC<ISizeSelectorInputProps> = (
 
   if (profileType !== props.formik.values.profileType)
     setProfileType(props.formik.values.profileType);
+
+  if (sizeMapId !== props.formik.values.measurementSizeId)
+    setSizeMapId(props.formik.values.measurementSizeId);
 
   useEffect(() => {
     if (
@@ -102,6 +142,16 @@ export const SizeSelectorInput: React.FC<ISizeSelectorInputProps> = (
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [measurementId, profileType]);
+
+  useEffect(() => {
+    _applySizeValues(
+      new List(sizeOptions).firstOrDefault(
+        (option) => option.sizeMap.id === sizeMapId
+      )?.sizeMap,
+      props.formik
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sizeMapId, sizeOptions]);
 
   return (
     <Field name={MEASUREMENT_SIZE_ID_FORM_FIELD}>
