@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Stack, Text, TextField } from 'office-ui-fabric-react';
 import './valueItem.scss';
 import { Field } from 'formik';
@@ -6,7 +6,79 @@ import { ProfileTypes } from '../ProfileTypeInput';
 import {
   FRESH_MEASUREMRNT_VALUES_FORM_FIELD,
   BASE_MEASUREMRNT_VALUES_FORM_FIELD,
+  BODY_MEASUREMRNT_VALUES_FORM_FIELD,
 } from '../OrderMeasurementsForm';
+import {
+  Measurement,
+  MeasurementMapDefinition,
+} from '../../../../../interfaces/measurements';
+import {
+  CustomerProductProfile,
+  CustomerProfileSizeValue,
+} from '../../../../../interfaces/orderProfile';
+import { List } from 'linq-typescript';
+
+export const initInputValueModelDefaults = (
+  measurement: Measurement | null | undefined,
+  sourceEntity: CustomerProductProfile | null | undefined
+) => {
+  let result: IInputValueModel[] = [];
+
+  if (measurement?.measurementMapDefinitions) {
+    result = new List(
+      measurement.measurementMapDefinitions
+        ? measurement.measurementMapDefinitions
+        : []
+    )
+      .select<IInputValueModel>((mapDefinition: MeasurementMapDefinition) => {
+        const resultItem = {
+          value: '',
+          fittingValue: '',
+          measurementDefinitionId: mapDefinition.measurementDefinitionId,
+          definitionName: mapDefinition.measurementDefinition
+            ? mapDefinition.measurementDefinition.name
+            : '',
+          id: 0,
+          initValue: '',
+          initFittingValue: '',
+        };
+
+        if (sourceEntity) {
+          const targetDefinitionId = mapDefinition.measurementDefinitionId;
+
+          if (sourceEntity?.customerProfileSizeValues) {
+            const profileValue:
+              | CustomerProfileSizeValue
+              | null
+              | undefined = new List<CustomerProfileSizeValue>(
+              sourceEntity.customerProfileSizeValues
+            ).firstOrDefault(
+              (valueItem) =>
+                valueItem.measurementDefinitionId === targetDefinitionId
+            );
+
+            if (profileValue) {
+              resultItem.id = profileValue.id;
+              resultItem.value = profileValue.value
+                ? `${profileValue.value}`
+                : '';
+              resultItem.fittingValue = profileValue.fittingValue
+                ? `${profileValue.fittingValue}`
+                : '';
+
+              resultItem.initValue = resultItem.value;
+              resultItem.initFittingValue = resultItem.fittingValue;
+            }
+          }
+        }
+
+        return resultItem;
+      })
+      .toArray();
+  }
+
+  return result;
+};
 
 const _buildFieldName = (profileType: ProfileTypes, valueIndex: number) => {
   let result = '';
@@ -16,8 +88,7 @@ const _buildFieldName = (profileType: ProfileTypes, valueIndex: number) => {
   } else if (profileType === ProfileTypes.BaseMeasurement) {
     result = `${BASE_MEASUREMRNT_VALUES_FORM_FIELD}.${valueIndex}`;
   } else if (profileType === ProfileTypes.BodyMeasurement) {
-    debugger;
-    console.log('TODO: ProfileTypes.BodyMeasurement');
+    result = `${BODY_MEASUREMRNT_VALUES_FORM_FIELD}.${valueIndex}`;
   } else {
     debugger;
     console.log('TODO: Handle unknown ProfileTypes');
@@ -26,7 +97,11 @@ const _buildFieldName = (profileType: ProfileTypes, valueIndex: number) => {
   return result;
 };
 
-const _extractCurrentValueFromFormik = (formik: any, valueIndex: number) => {
+const _extractCurrentValueFromFormik = (
+  formik: any,
+  valueIndex: number,
+  isBodySizeOffset: boolean
+) => {
   let result = '';
 
   if (formik.values.profileType === ProfileTypes.FreshMeasurement) {
@@ -34,9 +109,9 @@ const _extractCurrentValueFromFormik = (formik: any, valueIndex: number) => {
   } else if (formik.values.profileType === ProfileTypes.BaseMeasurement) {
     result = formik.values.baseMeasuremrntValues[valueIndex].value;
   } else if (formik.values.profileType === ProfileTypes.BodyMeasurement) {
-    debugger;
-    console.log('TODO: ProfileTypes.BodyMeasurement value');
-    // result = formik.values.baseMeasuremrntValues[valueIndex].fittingValue;
+    if (isBodySizeOffset)
+      result = formik.values.bodyMeasuremrntValues[valueIndex].fittingValue;
+    else result = formik.values.bodyMeasuremrntValues[valueIndex].value;
   } else {
     debugger;
     console.log('TODO: Handle unknown ProfileTypes value');
@@ -45,7 +120,12 @@ const _extractCurrentValueFromFormik = (formik: any, valueIndex: number) => {
   return result;
 };
 
-const _onSetItemValue = (value: string, formik: any, valueIndex: number) => {
+const _onSetItemValue = (
+  value: string,
+  formik: any,
+  valueIndex: number,
+  isBodySizeOffset: boolean
+) => {
   let formikValuePath: string = '';
   let formikField: string = '';
 
@@ -56,8 +136,13 @@ const _onSetItemValue = (value: string, formik: any, valueIndex: number) => {
     formikValuePath = `${BASE_MEASUREMRNT_VALUES_FORM_FIELD}[${valueIndex}].value`;
     formikField = BASE_MEASUREMRNT_VALUES_FORM_FIELD;
   } else if (formik.values.profileType === ProfileTypes.BodyMeasurement) {
-    debugger;
-    console.log('TODO: ProfileTypes.BodyMeasurement on set value');
+    if (isBodySizeOffset) {
+      formikValuePath = `${BODY_MEASUREMRNT_VALUES_FORM_FIELD}[${valueIndex}].fittingValue`;
+      formikField = BODY_MEASUREMRNT_VALUES_FORM_FIELD;
+    } else {
+      formikValuePath = `${BODY_MEASUREMRNT_VALUES_FORM_FIELD}[${valueIndex}].value`;
+      formikField = BODY_MEASUREMRNT_VALUES_FORM_FIELD;
+    }
   } else {
     debugger;
     console.log('TODO: Handle unknown ProfileTypes on set  value');
@@ -65,6 +150,21 @@ const _onSetItemValue = (value: string, formik: any, valueIndex: number) => {
 
   formik.setFieldValue(formikValuePath, value);
   formik.setFieldTouched(formikField);
+};
+
+const _resolveIsDirty = (
+  valueModel: IInputValueModel,
+  isBodySizeOffset: boolean
+) => {
+  let result: boolean = false;
+
+  if (isBodySizeOffset) {
+    result = valueModel.fittingValue !== valueModel.initFittingValue;
+  } else {
+    result = valueModel.value !== valueModel.initValue;
+  }
+
+  return result;
 };
 
 export interface IInputValueModel {
@@ -81,6 +181,7 @@ export interface IValueItemProps {
   formik: any;
   valueModel: IInputValueModel;
   index: number;
+  isBodySizeOffset: boolean;
 }
 
 export const ValueItem: React.FC<IValueItemProps> = (
@@ -94,7 +195,7 @@ export const ValueItem: React.FC<IValueItemProps> = (
         {() => (
           <div
             className={
-              props.valueModel.value !== props.valueModel.initValue
+              _resolveIsDirty(props.valueModel, props.isBodySizeOffset)
                 ? 'valueItem isDirty'
                 : 'valueItem'
             }
@@ -117,13 +218,15 @@ export const ValueItem: React.FC<IValueItemProps> = (
                     borderless
                     value={_extractCurrentValueFromFormik(
                       props.formik,
-                      props.index
+                      props.index,
+                      props.isBodySizeOffset
                     )}
                     onChange={(args: any) => {
                       _onSetItemValue(
                         args?.target?.value ? args.target.value : '',
                         props.formik,
-                        props.index
+                        props.index,
+                        props.isBodySizeOffset
                       );
                     }}
                   />

@@ -122,7 +122,7 @@ export const OrderProfileList: React.FC = () => {
               controlActions.openRightPanel({
                 title: 'Measurement Details',
                 description: `${profileToConfigure.name}`,
-                width: '400px',
+                width: '600px',
                 closeFunctions: () => {
                   dispatch(controlActions.closeRightPanel());
                 },

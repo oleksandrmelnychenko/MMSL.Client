@@ -14,68 +14,6 @@ import { Stack, Separator } from 'office-ui-fabric-react';
 import ValueItem, { IInputValueModel } from './ValueItem';
 import { FRESH_MEASUREMRNT_VALUES_FORM_FIELD } from '../OrderMeasurementsForm';
 
-export const initInputValueModelDefaults = (
-  measurement: Measurement | null | undefined,
-  sourceEntity: CustomerProductProfile | null | undefined
-) => {
-  let result: IInputValueModel[] = [];
-
-  if (measurement?.measurementMapDefinitions) {
-    result = new List(
-      measurement.measurementMapDefinitions
-        ? measurement.measurementMapDefinitions
-        : []
-    )
-      .select<IInputValueModel>((mapDefinition: MeasurementMapDefinition) => {
-        const resultItem = {
-          value: '',
-          fittingValue: '',
-          measurementDefinitionId: mapDefinition.measurementDefinitionId,
-          definitionName: mapDefinition.measurementDefinition
-            ? mapDefinition.measurementDefinition.name
-            : '',
-          id: 0,
-          initValue: '',
-          initFittingValue: '',
-        };
-
-        if (sourceEntity) {
-          const targetDefinitionId = mapDefinition.measurementDefinitionId;
-
-          if (sourceEntity?.customerProfileSizeValues) {
-            const profileValue:
-              | CustomerProfileSizeValue
-              | null
-              | undefined = new List<CustomerProfileSizeValue>(
-              sourceEntity.customerProfileSizeValues
-            ).firstOrDefault(
-              (valueItem) =>
-                valueItem.measurementDefinitionId === targetDefinitionId
-            );
-
-            if (profileValue) {
-              resultItem.id = profileValue.id;
-              resultItem.value = profileValue.value
-                ? `${profileValue.value}`
-                : '';
-              resultItem.fittingValue = profileValue.fittingValue
-                ? `${profileValue.fittingValue}`
-                : '';
-
-              resultItem.initValue = resultItem.value;
-              resultItem.initFittingValue = resultItem.fittingValue;
-            }
-          }
-        }
-
-        return resultItem;
-      })
-      .toArray();
-  }
-
-  return result;
-};
-
 export interface IFreshMeasurementInputProps {
   formik: any;
   orderProfile: CustomerProductProfile | null | undefined;
@@ -101,6 +39,7 @@ export const FreshMeasurementInput: React.FC<IFreshMeasurementInputProps> = (
                   (valueModel: IInputValueModel, index: number) => {
                     return (
                       <ValueItem
+                        isBodySizeOffset={false}
                         key={index}
                         index={index}
                         formik={props.formik}

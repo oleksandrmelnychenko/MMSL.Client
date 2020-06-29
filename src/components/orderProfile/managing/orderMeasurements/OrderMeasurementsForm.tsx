@@ -15,15 +15,18 @@ import { IApplicationState } from '../../../../redux/reducers';
 import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
 import { Measurement } from '../../../../interfaces/measurements';
 import MeasurementInput from './MeasurementInput';
-import FittingTypeInput from './FittingTypeInput';
+import FittingTypeInput from './valueMeasurementInputs/FittingTypeInput';
 import BaseMeasurementInput from './valueMeasurementInputs/BaseMeasurementInput';
-import FreshMeasurementInput, {
-  initInputValueModelDefaults,
-} from './valueMeasurementInputs/FreshMeasurementInput';
+import FreshMeasurementInput from './valueMeasurementInputs/FreshMeasurementInput';
+import BodyMeasurementInput from './valueMeasurementInputs/BodyMeasurementInput';
 import ProfileTypeInput, {
   ProfileTypes,
   resolveProfileTypeInitValue,
 } from './ProfileTypeInput';
+import {
+  IInputValueModel,
+  initInputValueModelDefaults,
+} from './valueMeasurementInputs/ValueItem';
 
 export interface IOrderMeasurementsFormProps {
   measurements: Measurement[];
@@ -35,14 +38,16 @@ export const FITTING_TYPE_ID_FORM_FIELD = 'fittingTypeId';
 export const FRESH_MEASUREMRNT_VALUES_FORM_FIELD = 'freshMeasuremrntValues';
 export const MEASUREMENT_SIZE_ID_FORM_FIELD = 'measurementSizeId';
 export const BASE_MEASUREMRNT_VALUES_FORM_FIELD = 'baseMeasuremrntValues';
+export const BODY_MEASUREMRNT_VALUES_FORM_FIELD = 'bodyMeasuremrntValues';
 
 interface IFormValues {
   profileType: ProfileTypes;
   measurementId: number;
   fittingTypeId: number;
-  freshMeasuremrntValues: [];
+  freshMeasuremrntValues: IInputValueModel[];
   measurementSizeId: number;
-  baseMeasuremrntValues: [];
+  baseMeasuremrntValues: IInputValueModel[];
+  bodyMeasuremrntValues: IInputValueModel[];
 }
 
 const _initDefaultValues = (
@@ -56,6 +61,7 @@ const _initDefaultValues = (
     freshMeasuremrntValues: [],
     measurementSizeId: 0,
     baseMeasuremrntValues: [],
+    bodyMeasuremrntValues: [],
   };
 
   const targetMeasurement: Measurement | null | undefined = new List(
@@ -70,6 +76,11 @@ const _initDefaultValues = (
   ) as [];
 
   initValues.baseMeasuremrntValues = initInputValueModelDefaults(
+    targetMeasurement,
+    sourceEntity
+  ) as [];
+
+  initValues.bodyMeasuremrntValues = initInputValueModelDefaults(
     targetMeasurement,
     sourceEntity
   ) as [];
@@ -166,7 +177,6 @@ export const OrderMeasurementsForm: React.FC<IOrderMeasurementsFormProps> = (
         profileType: Yup.number().required(() => 'Profile type is required'),
         measurementId: Yup.number().required(() => 'Measurement is required'),
         fittingTypeId: Yup.number(),
-        TEST: Yup.array(),
       })}
       initialValues={_initDefaultValues(props.measurements, targetOrderProfile)}
       onSubmit={(values: any) => {
@@ -200,14 +210,17 @@ export const OrderMeasurementsForm: React.FC<IOrderMeasurementsFormProps> = (
                   orderProfile={targetOrderProfile}
                 />
 
-                <FittingTypeInput formik={formik} />
-
                 <FreshMeasurementInput
                   formik={formik}
                   orderProfile={targetOrderProfile}
                 />
 
                 <BaseMeasurementInput
+                  formik={formik}
+                  orderProfile={targetOrderProfile}
+                />
+
+                <BodyMeasurementInput
                   formik={formik}
                   orderProfile={targetOrderProfile}
                 />

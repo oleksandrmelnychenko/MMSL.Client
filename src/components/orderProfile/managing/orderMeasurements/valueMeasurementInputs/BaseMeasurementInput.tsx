@@ -40,6 +40,7 @@ export const BaseMeasurementInput: React.FC<IBaseMeasurementInputProps> = (
                         (valueModel: IInputValueModel, index: number) => {
                           return (
                             <ValueItem
+                              isBodySizeOffset={false}
                               key={index}
                               index={index}
                               formik={props.formik}

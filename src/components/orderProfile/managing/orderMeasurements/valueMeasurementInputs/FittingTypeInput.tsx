@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Field } from 'formik';
 import { IDropdownOption, Dropdown } from 'office-ui-fabric-react';
-import * as fabricStyles from '../../../../common/fabric-styles/styles';
-import { FittingType } from '../../../../interfaces/measurements';
+import * as fabricStyles from '../../../../../common/fabric-styles/styles';
+import { FittingType } from '../../../../../interfaces/measurements';
 import { useDispatch } from 'react-redux';
-import { fittingTypesActions } from '../../../../redux/slices/measurements/fittingTypes.slice';
-import { assignPendingActions } from '../../../../helpers/action.helper';
-import { ProfileTypes } from './ProfileTypeInput';
-import { FITTING_TYPE_ID_FORM_FIELD } from './OrderMeasurementsForm';
+import { fittingTypesActions } from '../../../../../redux/slices/measurements/fittingTypes.slice';
+import { assignPendingActions } from '../../../../../helpers/action.helper';
+import { ProfileTypes } from '../ProfileTypeInput';
+import { FITTING_TYPE_ID_FORM_FIELD } from '../OrderMeasurementsForm';
 
 export interface IFittingTypeInputProps {
   formik: any;
@@ -61,7 +61,7 @@ export const FittingTypeInput: React.FC<IFittingTypeInputProps> = (
         <Field name={FITTING_TYPE_ID_FORM_FIELD}>
           {() => (
             <Dropdown
-              defaultSelectedKey={`${props.formik.values.fittingTypeId}`}
+              selectedKey={`${props.formik.values.fittingTypeId}`}
               label="Fitting type"
               options={_buildOptions(fittingTypes)}
               styles={fabricStyles.comboBoxStyles}

@@ -4,13 +4,14 @@ import { IDropdownOption, Dropdown } from 'office-ui-fabric-react';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
 import { Measurement } from '../../../../interfaces/measurements';
 import { ProfileTypes } from './ProfileTypeInput';
-import { initInputValueModelDefaults } from './valueMeasurementInputs/FreshMeasurementInput';
+import { initInputValueModelDefaults } from './valueMeasurementInputs/ValueItem';
 import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
 import { List } from 'linq-typescript';
 import {
   MEASUREMENT_ID_FORM_FIELD,
   FRESH_MEASUREMRNT_VALUES_FORM_FIELD,
   BASE_MEASUREMRNT_VALUES_FORM_FIELD,
+  BODY_MEASUREMRNT_VALUES_FORM_FIELD,
 } from './OrderMeasurementsForm';
 
 export interface IMeasurementInputProps {
@@ -36,7 +37,6 @@ export const updateFormChartValues = (
   orderProfile: CustomerProductProfile | null | undefined
 ) => {
   if (targetMeasurementId !== 0) {
-    // if (targetMeasurementId !== formik.values.measurementId) {
     const targetMeasurement: Measurement | null | undefined = new List(
       measurements
     ).firstOrDefault((measurement) => measurement.id === targetMeasurementId);
@@ -50,7 +50,11 @@ export const updateFormChartValues = (
       BASE_MEASUREMRNT_VALUES_FORM_FIELD,
       initInputValueModelDefaults(targetMeasurement, orderProfile)
     );
-    // }
+
+    formik.setFieldValue(
+      BODY_MEASUREMRNT_VALUES_FORM_FIELD,
+      initInputValueModelDefaults(targetMeasurement, orderProfile)
+    );
   } else {
     formik.setFieldValue(FRESH_MEASUREMRNT_VALUES_FORM_FIELD, []);
     formik.setFieldValue(BASE_MEASUREMRNT_VALUES_FORM_FIELD, []);
