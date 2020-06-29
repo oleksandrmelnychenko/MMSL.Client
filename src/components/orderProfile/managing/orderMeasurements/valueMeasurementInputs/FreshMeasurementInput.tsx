@@ -56,6 +56,9 @@ export const initInputValueModelDefaults = (
               resultItem.value = profileValue.value
                 ? `${profileValue.value}`
                 : '';
+              resultItem.fittingValue = profileValue.fittingValue
+                ? `${profileValue.fittingValue}`
+                : '';
             }
           }
         }
@@ -94,7 +97,6 @@ export const FreshMeasurementInput: React.FC<IFreshMeasurementInputProps> = (
                     return (
                       <ValueItem
                         key={index}
-                        fieldName={FRESH_MEASUREMRNT_VALUES_FORM_FIELD}
                         index={index}
                         formik={props.formik}
                         valueModel={valueModel}

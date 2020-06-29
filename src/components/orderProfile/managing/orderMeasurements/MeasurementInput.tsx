@@ -10,6 +10,7 @@ import { List } from 'linq-typescript';
 import {
   MEASUREMENT_ID_FORM_FIELD,
   FRESH_MEASUREMRNT_VALUES_FORM_FIELD,
+  BASE_MEASUREMRNT_VALUES_FORM_FIELD,
 } from './OrderMeasurementsForm';
 
 export interface IMeasurementInputProps {
@@ -26,6 +27,34 @@ const _buildOptions = (measurements: Measurement[]) => {
       measurement: measurement,
     } as IDropdownOption;
   });
+};
+
+export const updateFormChartValues = (
+  targetMeasurementId: number,
+  measurements: Measurement[],
+  formik: any,
+  orderProfile: CustomerProductProfile | null | undefined
+) => {
+  if (targetMeasurementId !== 0) {
+    // if (targetMeasurementId !== formik.values.measurementId) {
+    const targetMeasurement: Measurement | null | undefined = new List(
+      measurements
+    ).firstOrDefault((measurement) => measurement.id === targetMeasurementId);
+
+    formik.setFieldValue(
+      FRESH_MEASUREMRNT_VALUES_FORM_FIELD,
+      initInputValueModelDefaults(targetMeasurement, orderProfile)
+    );
+
+    formik.setFieldValue(
+      BASE_MEASUREMRNT_VALUES_FORM_FIELD,
+      initInputValueModelDefaults(targetMeasurement, orderProfile)
+    );
+    // }
+  } else {
+    formik.setFieldValue(FRESH_MEASUREMRNT_VALUES_FORM_FIELD, []);
+    formik.setFieldValue(BASE_MEASUREMRNT_VALUES_FORM_FIELD, []);
+  }
 };
 
 export const MeasurementInput: React.FC<IMeasurementInputProps> = (
@@ -45,38 +74,25 @@ export const MeasurementInput: React.FC<IMeasurementInputProps> = (
               styles={fabricStyles.comboBoxStyles}
               onChange={(
                 event: React.FormEvent<HTMLDivElement>,
-                option?: IDropdownOption,
+                option?: any,
                 index?: number
               ) => {
-                if (option && (option as any).measurement) {
-                  const measurementId = (option as any).measurement.id;
+                const measurementId = option?.measurement
+                  ? option.measurement.id
+                  : 0;
 
-                  if (measurementId !== props.formik.values.measurementId) {
-                    props.formik.setFieldValue(
-                      FRESH_MEASUREMRNT_VALUES_FORM_FIELD,
-                      initInputValueModelDefaults(
-                        new List(props.measurements).firstOrDefault(
-                          (measurement) => measurement.id === measurementId
-                        ),
-                        props.orderProfile
-                      )
-                    );
-                  }
+                updateFormChartValues(
+                  measurementId,
+                  props.measurements,
+                  props.formik,
+                  props.orderProfile
+                );
 
-                  props.formik.setFieldValue(
-                    MEASUREMENT_ID_FORM_FIELD,
-                    measurementId
-                  );
-                  props.formik.setFieldTouched(MEASUREMENT_ID_FORM_FIELD);
-                } else {
-                  props.formik.setFieldValue(MEASUREMENT_ID_FORM_FIELD, 0);
-                  props.formik.setFieldTouched(MEASUREMENT_ID_FORM_FIELD);
-
-                  props.formik.setFieldValue(
-                    FRESH_MEASUREMRNT_VALUES_FORM_FIELD,
-                    []
-                  );
-                }
+                props.formik.setFieldValue(
+                  MEASUREMENT_ID_FORM_FIELD,
+                  measurementId
+                );
+                props.formik.setFieldTouched(MEASUREMENT_ID_FORM_FIELD);
               }}
             />
           )}

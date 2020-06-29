@@ -5,17 +5,19 @@ import * as fabricStyles from '../../../../common/fabric-styles/styles';
 import { Measurement } from '../../../../interfaces/measurements';
 import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
 import { PROFILE_TYPE_FORM_FIELD } from './OrderMeasurementsForm';
+import { updateFormChartValues } from './MeasurementInput';
 
 export interface IProfileTypeInputProps {
   formik: any;
   availableMeasurements: Measurement[];
+  orderProfile: CustomerProductProfile | null | undefined;
 }
 
 export enum ProfileTypes {
-  FreshMeasurement,
-  BaseMeasurement,
-  BodyMeasurement,
-  Reference,
+  FreshMeasurement = 0,
+  BaseMeasurement = 1,
+  BodyMeasurement = 2,
+  Reference = 3,
 }
 
 export const resolveProfileTypeInitValue = (
@@ -79,22 +81,22 @@ export const ProfileTypeInput: React.FC<IProfileTypeInputProps> = (
           styles={fabricStyles.comboBoxStyles}
           onChange={(
             event: React.FormEvent<HTMLDivElement>,
-            option?: IDropdownOption,
+            option?: any,
             index?: number
           ) => {
-            if (option) {
-              props.formik.setFieldValue(
-                PROFILE_TYPE_FORM_FIELD,
-                (option as any).profileType
-              );
-              props.formik.setFieldTouched(PROFILE_TYPE_FORM_FIELD);
-            } else {
-              props.formik.setFieldValue(
-                PROFILE_TYPE_FORM_FIELD,
-                ProfileTypes.FreshMeasurement
-              );
-              props.formik.setFieldTouched(PROFILE_TYPE_FORM_FIELD);
-            }
+            const value = option
+              ? option.profileType
+              : ProfileTypes.FreshMeasurement;
+
+            updateFormChartValues(
+              props.formik.values.measurementId,
+              props.availableMeasurements,
+              props.formik,
+              props.orderProfile
+            );
+
+            props.formik.setFieldValue(PROFILE_TYPE_FORM_FIELD, value);
+            props.formik.setFieldTouched(PROFILE_TYPE_FORM_FIELD);
           }}
         />
       )}

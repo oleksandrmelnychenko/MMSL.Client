@@ -34,6 +34,7 @@ export const MEASUREMENT_ID_FORM_FIELD = 'measurementId';
 export const FITTING_TYPE_ID_FORM_FIELD = 'fittingTypeId';
 export const FRESH_MEASUREMRNT_VALUES_FORM_FIELD = 'freshMeasuremrntValues';
 export const MEASUREMENT_SIZE_ID_FORM_FIELD = 'measurementSizeId';
+export const BASE_MEASUREMRNT_VALUES_FORM_FIELD = 'baseMeasuremrntValues';
 
 interface IFormValues {
   profileType: ProfileTypes;
@@ -41,6 +42,7 @@ interface IFormValues {
   fittingTypeId: number;
   freshMeasuremrntValues: [];
   measurementSizeId: number;
+  baseMeasuremrntValues: [];
 }
 
 const _initDefaultValues = (
@@ -53,12 +55,22 @@ const _initDefaultValues = (
     fittingTypeId: 0,
     freshMeasuremrntValues: [],
     measurementSizeId: 0,
+    baseMeasuremrntValues: [],
   };
 
+  const targetMeasurement: Measurement | null | undefined = new List(
+    measurements
+  ).firstOrDefault(
+    (measurement) => measurement.id === initValues.measurementId
+  );
+
   initValues.freshMeasuremrntValues = initInputValueModelDefaults(
-    new List(measurements).firstOrDefault(
-      (measurement) => measurement.id === initValues.measurementId
-    ),
+    targetMeasurement,
+    sourceEntity
+  ) as [];
+
+  initValues.baseMeasuremrntValues = initInputValueModelDefaults(
+    targetMeasurement,
     sourceEntity
   ) as [];
 
@@ -179,6 +191,7 @@ export const OrderMeasurementsForm: React.FC<IOrderMeasurementsFormProps> = (
                 <ProfileTypeInput
                   formik={formik}
                   availableMeasurements={props.measurements}
+                  orderProfile={targetOrderProfile}
                 />
 
                 <MeasurementInput

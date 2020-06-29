@@ -22,6 +22,7 @@ import ValueItem, { IInputValueModel } from './ValueItem';
 import {
   FRESH_MEASUREMRNT_VALUES_FORM_FIELD,
   MEASUREMENT_SIZE_ID_FORM_FIELD,
+  BASE_MEASUREMRNT_VALUES_FORM_FIELD,
 } from '../OrderMeasurementsForm';
 import { useDispatch } from 'react-redux';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
@@ -126,8 +127,6 @@ export const BaseMeasurementInput: React.FC<IBaseMeasurementInputProps> = (
             styles={{ root: { marginTop: '20px !important' } }}
             tokens={{ childrenGap: '12px' }}
           >
-            <Separator alignContent="start">Base measurement</Separator>
-
             <Field name={MEASUREMENT_SIZE_ID_FORM_FIELD}>
               {(arrayHelper: any) => {
                 return (
@@ -173,22 +172,18 @@ export const BaseMeasurementInput: React.FC<IBaseMeasurementInputProps> = (
               }}
             </Field>
 
-            {/* <Stack
-              styles={{ root: { marginTop: '20px !important' } }}
-              tokens={{ childrenGap: '6px' }}
-            >
-              <Separator alignContent="start">Fresh measurement</Separator>
+            <Stack tokens={{ childrenGap: '6px' }}>
+              <Separator alignContent="start">Base measurement</Separator>
 
-              <FieldArray name={FRESH_MEASUREMRNT_VALUES_FORM_FIELD}>
+              <FieldArray name={BASE_MEASUREMRNT_VALUES_FORM_FIELD}>
                 {(arrayHelper: any) => {
                   return (
                     <Stack tokens={{ childrenGap: '6px' }}>
-                      {props.formik.values.freshMeasuremrntValues.map(
+                      {props.formik.values.baseMeasuremrntValues.map(
                         (valueModel: IInputValueModel, index: number) => {
                           return (
                             <ValueItem
                               key={index}
-                              fieldName={FRESH_MEASUREMRNT_VALUES_FORM_FIELD}
                               index={index}
                               formik={props.formik}
                               valueModel={valueModel}
@@ -200,7 +195,7 @@ export const BaseMeasurementInput: React.FC<IBaseMeasurementInputProps> = (
                   );
                 }}
               </FieldArray>
-            </Stack> */}
+            </Stack>
           </Stack>
         </>
       ) : null}
