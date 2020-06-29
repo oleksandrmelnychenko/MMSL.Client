@@ -16,6 +16,7 @@ import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
 import { Measurement } from '../../../../interfaces/measurements';
 import MeasurementInput from './MeasurementInput';
 import FittingTypeInput from './FittingTypeInput';
+import BaseMeasurementInput from './valueMeasurementInputs/BaseMeasurementInput';
 import FreshMeasurementInput, {
   initInputValueModelDefaults,
 } from './valueMeasurementInputs/FreshMeasurementInput';
@@ -189,6 +190,11 @@ export const OrderMeasurementsForm: React.FC<IOrderMeasurementsFormProps> = (
                 <FittingTypeInput formik={formik} />
 
                 <FreshMeasurementInput
+                  formik={formik}
+                  orderProfile={targetOrderProfile}
+                />
+
+                <BaseMeasurementInput
                   formik={formik}
                   orderProfile={targetOrderProfile}
                 />
