@@ -37,7 +37,7 @@ const _buildNewPayload = (values: IInitValues, product: ProductCategory) => {
   };
 
   if (values.declareSharedStylePrice) {
-    payload.price = values.priceValue;
+    payload.price = `${values.priceValue}`;
     payload.currencyTypeId = values.priceCurrencyId;
   } else {
     payload.price = null;
@@ -60,7 +60,7 @@ const _buildUpdatedPayload = (
   payload.isMandatory = values.isMandatory;
 
   if (values.declareSharedStylePrice) {
-    payload.price = values.priceValue;
+    payload.price = `${values.priceValue}`;
     payload.currencyTypeId = 0;
     payload.currencyTypeId = parseInt(`${values.priceCurrencyId}`);
   } else {

@@ -34,8 +34,6 @@ import { assignPendingActions } from '../../../../../../helpers/action.helper';
 
 export interface IFittingTypeInitValues {
   type: string;
-  unitOfMeasurement: MeasurementUnit | null | undefined;
-  unitOfMeasurementId: number | null | undefined;
 }
 
 const _buildNewFittingTypePayload = (
@@ -45,9 +43,6 @@ const _buildNewFittingTypePayload = (
 ) => {
   const fittingTypePayload: any = {
     type: values.type,
-    measurementUnitId: values.unitOfMeasurement
-      ? values.unitOfMeasurement.id
-      : 0,
     measurementId: measurement.id,
     valueDataContracts: [],
   };
@@ -83,9 +78,6 @@ const _buildEditedFittingTypePayload = (
   const fittingTypePayload: any = { ...sourceEntity };
   fittingTypePayload.type = values.type;
 
-  fittingTypePayload.measurementUnitId = values.unitOfMeasurement?.id;
-  fittingTypePayload.measurementUnit = values.unitOfMeasurement;
-
   /// TODO: vadymk don't repeat your self (Size Form use same entity and approach,
   /// define shared helper for this flow)
   const dirtyValueItemsList = new List<DefinitionValueItem>(
@@ -118,15 +110,8 @@ const _initDefaultValues = (
   unitOptions: IDropdownOption[],
   sourceEntity?: FittingType | null | undefined
 ) => {
-  const defaultUnitOfMeasurement =
-    unitOptions.length > 1 ? (unitOptions[0] as any).unitOfMeasurement : null;
-
   const initValues: IFittingTypeInitValues = {
     type: '',
-    unitOfMeasurement: defaultUnitOfMeasurement,
-    unitOfMeasurementId: defaultUnitOfMeasurement
-      ? defaultUnitOfMeasurement.id
-      : 0,
   };
 
   if (sourceEntity) {
@@ -178,21 +163,6 @@ const _initValueItemsDefaults = (
 
   return result;
 };
-
-// const _resolveDefaultSelectedOptionKey = (
-//   options: IDropdownOption[],
-//   fittingTypeForEdit?: FittingType | null | undefined
-// ) => {
-//   let defaultSelectKey: string = '';
-
-//   if (fittingTypeForEdit) {
-//     defaultSelectKey = `${fittingTypeForEdit.measurementUnitId}`;
-//   } else {
-//     defaultSelectKey = options.length > 0 ? `${options[0].key}` : '';
-//   }
-
-//   return defaultSelectKey;
-// };
 
 /// TODO: vadymk don't repeat your self (Size Form use same entity and approach,
 /// define shared helper for this flow)
@@ -417,12 +387,6 @@ export const FittingTypeForm: React.FC = () => {
       <Formik
         validationSchema={Yup.object().shape({
           type: Yup.string().required(() => 'Type is required'),
-          unitOfMeasurement: Yup.object()
-            .nullable()
-            .required('Unit of measurement is required'),
-          unitOfMeasurementId: Yup.number()
-            .nullable()
-            .required('Unit of measurement id is required'),
         })}
         initialValues={initValues}
         onSubmit={(values: any) => {

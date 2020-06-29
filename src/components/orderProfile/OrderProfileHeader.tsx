@@ -9,6 +9,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { controlActions } from '../../redux/slices/control.slice';
 import OrderProfileFormBootstrapper from './managing/orderProfile/OrderProfileFormBootstrapper';
+import { orderProfileActions } from '../../redux/slices/orderProfile/orderProfile.slice';
 
 const OrderProfileHeader: React.FC = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ const OrderProfileHeader: React.FC = () => {
           styles={columnIconButtonStyle}
           iconProps={{ iconName: 'Add' }}
           onClick={() => {
+            dispatch(orderProfileActions.changeTargetOrderProfile(null));
             dispatch(
               controlActions.openRightPanel({
                 title: 'New Order profile',

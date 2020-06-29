@@ -90,27 +90,27 @@ const DealerOptions: React.FC = () => {
       onClickAction: () => {},
       isSelected: false,
     },
-    {
-      title: 'Products',
-      className: 'management__btn-styles',
-      componentType: DealerDetilsComponents.DealerProducts,
-      onClickAction: () => {
-        if (dealer) {
-          dispatch(
-            controlActions.openRightPanel({
-              title: 'Manage products',
-              description: dealer.name,
-              width: '600px',
-              closeFunctions: () => {
-                dispatch(controlActions.closeRightPanel());
-              },
-              component: ProductAvailabilityForm,
-            })
-          );
-        }
-      },
-      isSelected: false,
-    },
+    // {
+    //   title: 'Products',
+    //   className: 'management__btn-styles',
+    //   componentType: DealerDetilsComponents.DealerProducts,
+    //   onClickAction: () => {
+    //     if (dealer) {
+    //       dispatch(
+    //         controlActions.openRightPanel({
+    //           title: 'Manage products',
+    //           description: dealer.name,
+    //           width: '600px',
+    //           closeFunctions: () => {
+    //             dispatch(controlActions.closeRightPanel());
+    //           },
+    //           component: ProductAvailabilityForm,
+    //         })
+    //       );
+    //     }
+    //   },
+    //   isSelected: false,
+    // },
   ];
 
   // const [menu, setMenu] = useState(menuItem);

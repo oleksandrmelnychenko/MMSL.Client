@@ -33,30 +33,51 @@ const ORDER_PROFILES_ROUTE: string = 'OrderProfiles';
 
 const _routes: any[] = [
   {
-    route: <Route path={`/en/app/dealers`} component={DealersBootstrapper} />,
+    // route: <Route path={`/en/app/dealers`} component={DealersBootstrapper} />,
     description: DEALERS_ROUTE,
   },
   {
-    route: <Route path={`/en/app/customer`} component={Customers} />,
+    // route: <Route path={`/en/app/customer`} component={Customers} />,
     description: CUSTOMER_ROUTE,
   },
   {
-    route: <Route path={`/en/app/product`} component={ProductCategoryView} />,
+    // route: <Route path={`/en/app/product`} component={ProductCategoryView} />,
     description: PRODUCT_ROUTE,
   },
   {
-    route: <Route path={`/en/app/reports`} component={Reports} />,
+    // route: <Route path={`/en/app/reports`} component={Reports} />,
     description: REPORTS_ROUTE,
   },
   {
-    route: (
-      <Route path={`/en/app/order-profiles`} component={OrderProfileView} />
-    ),
+    // route: (
+    //   <Route path={`/en/app/order-profiles`} component={OrderProfileView} />
+    // ),
     description: ORDER_PROFILES_ROUTE,
   },
 ];
 
 const IdentityDashboardRoute: React.FC = () => {
+  const onRenderRoute = (routeDescription: string, index: number) => {
+    if (routeDescription === DEALERS_ROUTE)
+      return (
+        <Route
+          key={index}
+          path={`/en/app/dealers`}
+          component={DealersBootstrapper}
+        />
+      );
+    else if (routeDescription === CUSTOMER_ROUTE)
+      return <Route path={`/en/app/customer`} component={Customers} />;
+    else if (routeDescription === PRODUCT_ROUTE)
+      return <Route path={`/en/app/product`} component={ProductCategoryView} />;
+    else if (routeDescription === REPORTS_ROUTE)
+      return <Route path={`/en/app/reports`} component={Reports} />;
+    else if (routeDescription === ORDER_PROFILES_ROUTE)
+      return (
+        <Route path={`/en/app/order-profiles`} component={OrderProfileView} />
+      );
+  };
+
   const rolesList = new List(TokenHelper.extractRolesFromJWT());
 
   let resolvedRoutes: any[] = [];
@@ -84,7 +105,13 @@ const IdentityDashboardRoute: React.FC = () => {
     debugger;
   }
 
-  return <Switch>{resolvedRoutes.map((route) => route.route)}</Switch>;
+  return (
+    <Switch>
+      {resolvedRoutes.map((route, index) => {
+        return onRenderRoute(route.description, index);
+      })}
+    </Switch>
+  );
 };
 
 export default IdentityDashboardRoute;

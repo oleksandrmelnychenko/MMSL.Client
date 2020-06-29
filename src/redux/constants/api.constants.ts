@@ -88,3 +88,5 @@ export const GET_ALL_ORDER_PROFILES =
   '/store/customers/product/profile/get/all';
 export const CREATE_ORDER_PROFILE = '/store/customers/product/profile/add';
 export const DELETE_ORDER_PROFILE = '/store/customers/product/profile/delete';
+export const GET_ORDER_PROFILE_BY_ID = '/store/customers/product/profile/get';
+export const UPDATE_ORDER_PROFILE = '/store/customers/product/profile/update';

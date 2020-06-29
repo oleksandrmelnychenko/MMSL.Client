@@ -31,6 +31,8 @@ import {
 import { assignPendingActions } from '../../helpers/action.helper';
 import { orderProfileActions } from '../../redux/slices/orderProfile/orderProfile.slice';
 import { List } from 'linq-typescript';
+import OrderProfileFormBootstrapper from './managing/orderProfile/OrderProfileFormBootstrapper';
+import OrderMeasurementsFormBootstrapper from './managing/orderMeasurements/OrderMeasurementsFormBootstrapper';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
@@ -76,117 +78,62 @@ export const OrderProfileList: React.FC = () => {
     );
   };
 
-  const columns: IColumn[] = [
-    // {
-    //   key: 'index',
-    //   name: '',
-    //   minWidth: 16,
-    //   maxWidth: 24,
-    //   onColumnClick: () => {},
-    //   onRender: (item: any, index?: number) => {
-    //     return (
-    //       <Text
-    //         style={defaultCellStyle}
-    //         styles={{ root: { marginLeft: '6px' } }}
-    //       >
-    //         {index !== null && index !== undefined ? index + 1 : -1}
-    //       </Text>
-    //     );
-    //   },
-    // },
-    {
-      key: 'name',
-      name: 'Name',
-      minWidth: 70,
-      maxWidth: 90,
-      isResizable: true,
-      isCollapsible: true,
-      data: 'string',
-      onRender: (item: any) => {
-        return <Text style={defaultCellStyle}>{item.name}</Text>;
-      },
-      isPadded: true,
-    },
-    {
-      key: 'description',
-      name: 'Description',
-      minWidth: 70,
-      maxWidth: 90,
-      isResizable: true,
-      isCollapsible: true,
-      data: 'string',
-      onRender: (item: any) => {
-        return <Text style={defaultCellStyle}>{item.description}</Text>;
-      },
-      isPadded: true,
-    },
-    {
-      key: 'product',
-      name: 'Product',
-      minWidth: 70,
-      maxWidth: 90,
-      isResizable: true,
-      isCollapsible: true,
-      data: 'string',
-      onRender: (item: any) => {
-        return (
-          <Text style={defaultCellStyle}>
-            {/* {item.productCategory?.name} */}
-            {item.productCategoryId}
-          </Text>
-        );
-      },
-      isPadded: true,
-    },
-    {
-      key: 'customer',
-      name: 'Customer',
-      minWidth: 70,
-      maxWidth: 90,
-      isResizable: true,
-      isCollapsible: true,
-      data: 'string',
-      onRender: (item: any) => {
-        return (
-          <Text style={defaultCellStyle}>
-            {/* {item.storeCustomer?.customerName} */}
-            {item.storeCustomerId}
-          </Text>
-        );
-      },
-      isPadded: true,
-    },
-  ];
+  const onEditProfile = (profileToEdit: CustomerProductProfile) => {
+    if (profileToEdit) {
+      dispatch(
+        assignPendingActions(
+          orderProfileActions.apiGetOrderProfileById(profileToEdit.id),
+          [],
+          [],
+          (args: any) => {
+            dispatch(orderProfileActions.changeTargetOrderProfile(args));
 
-  const onEditPermission = (permissionId: number | null | undefined) => {
-    // if (permissionId && targetProduct) {
-    //   dispatch(
-    //     assignPendingActions(
-    //       productStylePermissionsActions.apiGetPermissionById(permissionId),
-    //       [],
-    //       [],
-    //       (args: any) => {
-    //         dispatch(
-    //           productStylePermissionsActions.changeEditingPermissionSetting(
-    //             args
-    //           )
-    //         );
-    //         dispatch(
-    //           controlActions.openRightPanel({
-    //             title: 'Edit style permission',
-    //             description: args.name,
-    //             width: '400px',
-    //             closeFunctions: () => {
-    //               dispatch(controlActions.closeRightPanel());
-    //             },
-    //             component: ProductPermissionForm,
-    //           })
-    //         );
-    //       },
-    //       (args: any) => {}
-    //     )
-    //   );
-    // }
+            dispatch(
+              controlActions.openRightPanel({
+                title: 'Edit',
+                description: `${profileToEdit.name}`,
+                width: '400px',
+                closeFunctions: () => {
+                  dispatch(controlActions.closeRightPanel());
+                },
+                component: OrderProfileFormBootstrapper,
+              })
+            );
+          },
+          (args: any) => {}
+        )
+      );
+    }
+  };
+
+  const onConfigureMeasurement = (
+    profileToConfigure: CustomerProductProfile
+  ) => {
+    if (profileToConfigure) {
+      dispatch(
+        assignPendingActions(
+          orderProfileActions.apiGetOrderProfileById(profileToConfigure.id),
+          [],
+          [],
+          (args: any) => {
+            dispatch(orderProfileActions.changeTargetOrderProfile(args));
+
+            dispatch(
+              controlActions.openRightPanel({
+                title: 'Measurement Details',
+                description: `${profileToConfigure.name}`,
+                width: '400px',
+                closeFunctions: () => {
+                  dispatch(controlActions.closeRightPanel());
+                },
+                component: OrderMeasurementsFormBootstrapper,
+              })
+            );
+          },
+          (args: any) => {}
+        )
+      );
+    }
   };
 
   const onDeleteProfile = (profileToDelete: CustomerProductProfile) => {
@@ -248,19 +195,33 @@ export const OrderProfileList: React.FC = () => {
                 text: 'Edit',
                 label: 'Edit',
                 iconProps: { iconName: 'Edit' },
-                onClick: () => onEditPermission(args?.item?.id),
+                onClick: () => onEditProfile(args?.item),
+              },
+              {
+                key: 'measurementDetails',
+                text: 'Measurement Details',
+                label: 'Measurement Details',
+                iconProps: { iconName: 'Table' },
+                onClick: () => onConfigureMeasurement(args?.item),
+              },
+              {
+                key: 'styleDetails',
+                text: 'Style Details',
+                label: 'Style Details',
+                iconProps: { iconName: 'Settings' },
+                onClick: () => {},
               },
               {
                 key: 'delete',
                 text: 'Delete',
                 label: 'Delete',
                 iconProps: { iconName: 'Delete' },
-                onClick: () => onDeleteProfile(args.item),
+                onClick: () => onDeleteProfile(args?.item),
               },
             ],
             styles: {
-              root: { width: '137px' },
-              container: { width: '137px' },
+              root: { width: '174px' },
+              container: { width: '174px' },
             },
           }}
           onRenderMenuIcon={(props?: any, defaultRender?: any) => null}
@@ -275,6 +236,84 @@ export const OrderProfileList: React.FC = () => {
       </div>
     );
   };
+
+  const columns: IColumn[] = [
+    // {
+    //   key: 'index',
+    //   name: '',
+    //   minWidth: 16,
+    //   maxWidth: 24,
+    //   onColumnClick: () => {},
+    //   onRender: (item: any, index?: number) => {
+    //     return (
+    //       <Text
+    //         style={defaultCellStyle}
+    //         styles={{ root: { marginLeft: '6px' } }}
+    //       >
+    //         {index !== null && index !== undefined ? index + 1 : -1}
+    //       </Text>
+    //     );
+    //   },
+    // },
+    {
+      key: 'name',
+      name: 'Name',
+      minWidth: 70,
+      maxWidth: 90,
+      isResizable: true,
+      isCollapsible: true,
+      data: 'string',
+      onRender: (item: any) => {
+        return <Text style={defaultCellStyle}>{item.name}</Text>;
+      },
+      isPadded: true,
+    },
+    {
+      key: 'description',
+      name: 'Description',
+      minWidth: 70,
+      maxWidth: 90,
+      isResizable: true,
+      isCollapsible: true,
+      data: 'string',
+      onRender: (item: any) => {
+        return <Text style={defaultCellStyle}>{item.description}</Text>;
+      },
+      isPadded: true,
+    },
+    {
+      key: 'product',
+      name: 'Product',
+      minWidth: 70,
+      maxWidth: 90,
+      isResizable: true,
+      isCollapsible: true,
+      data: 'string',
+      onRender: (item: any) => {
+        return (
+          <Text style={defaultCellStyle}>{item.productCategory?.name}</Text>
+        );
+      },
+      isPadded: true,
+    },
+    {
+      key: 'customer',
+      name: 'Customer',
+      minWidth: 70,
+      maxWidth: 90,
+      isResizable: true,
+      isCollapsible: true,
+      data: 'string',
+      onRender: (item: any) => {
+        return (
+          <Text style={defaultCellStyle}>
+            {item.storeCustomer?.customerName}
+          </Text>
+        );
+      },
+      isPadded: true,
+    },
+  ];
 
   return (
     <ScrollablePane styles={scrollablePaneStyleForDetailList}>

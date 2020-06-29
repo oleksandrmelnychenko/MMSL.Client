@@ -456,7 +456,6 @@ export const MeasurementForm: React.FC = () => {
                   .concat(deletedCharts)
                   .any((item) => _isChartItemDirty(item))
             );
-            console.log(formik.values);
           }
         }}
         validateOnBlur={false}

@@ -11,6 +11,7 @@ import {
   getWebRequest,
   postWebRequest,
   deleteWebRequest,
+  putWebRequest,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.constants';
 import {
@@ -138,6 +139,89 @@ export const apiDeleteOrderProfileByIdEpic = (
                 controlActions.showInfoMessage(
                   new InfoMessage(
                     `Error occurred while deleting order profile permission. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiGetOrderProfileByIdEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(orderProfileActions.apiGetOrderProfileById.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      return getWebRequest(api.GET_ORDER_PROFILE_BY_ID, state$.value, [
+        {
+          key: 'profileId',
+          value: `${action.payload}`,
+        },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_GET_ORDER_PROFILE_BY_ID' },
+                controlActions.showInfoMessage(
+                  new InfoMessage(
+                    `Error occurred while getting order profile. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiUpdateOrderProfileEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(orderProfileActions.apiUpdateOrderProfile.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      return putWebRequest(
+        api.UPDATE_ORDER_PROFILE,
+        action.payload,
+        state$.value
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_UPDATE_ORDER_PROFILE' },
+                controlActions.showInfoMessage(
+                  new InfoMessage(
+                    `Error occurred while updating order profile. ${errorResponse}`,
                     InfoMessageType.Warning
                   )
                 ),

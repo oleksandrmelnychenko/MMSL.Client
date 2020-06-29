@@ -15,6 +15,7 @@ import { ProductCategory } from '../../../../interfaces/products';
 export interface IProductsInputProps {
   products: ProductCategory[];
   formik: any;
+  isDisabled: boolean;
 }
 
 const _buildOptions = (products: ProductCategory[]) => {
@@ -38,6 +39,7 @@ export const ProductsInput: React.FC<IProductsInputProps> = (
           {() => (
             <div className="form__group">
               <ComboBox
+                disabled={props.isDisabled}
                 useComboBoxAsMenuWidth={true}
                 className="form__group__comboBox"
                 text={

@@ -33,7 +33,6 @@ export const apiUpdateOptionGroupEpic = (action$: AnyAction, state$: any) => {
 
       StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
 
-      debugger;
       return putWebRequest(
         api.UPDATE_OPTION_GROUP,
         action.payload,

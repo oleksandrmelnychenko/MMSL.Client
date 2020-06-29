@@ -23,9 +23,15 @@ const ProductMeasurementSelector: React.FC = () => {
 
   const itemOptions = new List(productMeasurements)
     .select((measurementItem) => {
+      let text = measurementItem.name;
+
+      if (measurementItem.measurementUnit) {
+        text = `${text} (${measurementItem.measurementUnit.name})`;
+      }
+
       return {
         key: `${measurementItem.id}`,
-        text: measurementItem.name,
+        text: text,
         measurement: measurementItem,
       };
     })
@@ -53,17 +59,19 @@ const ProductMeasurementSelector: React.FC = () => {
           let measurementId = (option as any)?.measurement?.id;
 
           if (measurementId) {
-            let action = assignPendingActions(
-              measurementActions.apiGetMeasurementById(measurementId),
-              [],
-              [],
-              (args: any) => {
-                dispatch(productActions.changeSelectedProductMeasurement(args));
-              },
-              (args: any) => {}
+            dispatch(
+              assignPendingActions(
+                measurementActions.apiGetMeasurementById(measurementId),
+                [],
+                [],
+                (args: any) => {
+                  dispatch(
+                    productActions.changeSelectedProductMeasurement(args)
+                  );
+                },
+                (args: any) => {}
+              )
             );
-
-            dispatch(action);
           } else {
             dispatch(productActions.changeSelectedProductMeasurement(null));
           }

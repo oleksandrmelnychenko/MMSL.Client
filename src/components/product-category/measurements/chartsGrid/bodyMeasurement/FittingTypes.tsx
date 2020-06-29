@@ -9,7 +9,6 @@ import { CommandBarButton, FontWeights } from 'office-ui-fabric-react';
 import FittinTypeGrid from './FittingTypeGrid';
 import FittingTypeForm from './management/FittingTypeForm';
 import { controlActions } from '../../../../../redux/slices/control.slice';
-import { unitsOfMeasurementActions } from '../../../../../redux/slices/measurements/unitsOfMeasurement.slice';
 
 export const CREATE_YOUR_FIRST_FITTING_TYPE: string =
   'Create your first fitting type';

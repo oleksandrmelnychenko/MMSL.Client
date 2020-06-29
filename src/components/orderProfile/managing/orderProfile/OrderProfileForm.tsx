@@ -51,6 +51,8 @@ const _initDefaultValues = (
     initValues.description = sourceEntity.description
       ? sourceEntity.description
       : '';
+    initValues.customer = sourceEntity.storeCustomer;
+    initValues.productCategory = sourceEntity.productCategory;
   }
 
   return initValues;
@@ -71,7 +73,13 @@ const _buildEditedPayload = (
   values: IFormValues,
   sourceEntity: any | null | undefined
 ) => {
-  let payload: any = {};
+  let payload: any = {
+    name: values.name,
+    description: values.description,
+    productCategoryId: values.productCategory ? values.productCategory.id : 0,
+    storeCustomerId: values.customer ? values.customer.id : 0,
+    id: sourceEntity.id,
+  };
 
   return payload;
 };
@@ -135,7 +143,28 @@ export const OrderProfileForm: React.FC<IOrderProfileFormProps> = (
 
   const onEdit = (values: IFormValues) => {
     const payload = _buildEditedPayload(values, targetOrderProfile);
-    console.log(payload);
+
+    dispatch(
+      assignPendingActions(
+        orderProfileActions.apiUpdateOrderProfile(payload),
+        [],
+        [],
+        (args: any) => {
+          dispatch(
+            assignPendingActions(
+              orderProfileActions.apiGetOrderProfiles(),
+              [],
+              [],
+              (args: any) => {
+                dispatch(orderProfileActions.changeOrderProfiles(args));
+              },
+              (args: any) => {}
+            )
+          );
+        },
+        (args: any) => {}
+      )
+    );
   };
 
   const onCreate = (values: IFormValues) => {
@@ -247,6 +276,7 @@ export const OrderProfileForm: React.FC<IOrderProfileFormProps> = (
                 </Field>
                 <CustomersInput customers={props.customers} formik={formik} />
                 <ProductsInput
+                  isDisabled={targetOrderProfile ? true : false}
                   products={props.productCategories}
                   formik={formik}
                 />

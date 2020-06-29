@@ -63,7 +63,7 @@ const _buildNewUnitPayload = (
         value: item.value,
       };
     }),
-    price: values.priceValue,
+    price: `${values.priceValue}`,
     currencyTypeId: values.priceCurrencyId,
   };
 
@@ -102,7 +102,9 @@ const _buildUpdatedUnitPayload = (
     id: sourceEntity.id,
     imageBlob: values.imageFile,
     imageUrl: sourceEntity.imageUrl,
-    price: sourceEntity.currentPrice ? sourceEntity.currentPrice.price : 0,
+    price: sourceEntity.currentPrice
+      ? `${sourceEntity.currentPrice.price}`
+      : '0',
     currencyTypeId: sourceEntity.currentPrice
       ? sourceEntity.currentPrice.currencyTypeId
       : 0,
@@ -113,7 +115,7 @@ const _buildUpdatedUnitPayload = (
     payload.imageUrl = '';
   }
 
-  payload.price = values.priceValue;
+  payload.price = `${values.priceValue}`;
   payload.currencyTypeId = values.priceCurrencyId;
 
   return payload;
@@ -328,7 +330,6 @@ export const ManagingProductUnitForm: React.FC = () => {
   const onUpdateUnit = (values: IInitValues) => {
     if (targetProduct && values.unitToDelete) {
       const payload = _buildUpdatedUnitPayload(values, values.unitToDelete);
-      console.log(payload);
 
       dispatch(
         assignPendingActions(
