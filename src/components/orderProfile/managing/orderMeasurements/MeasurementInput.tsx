@@ -4,10 +4,18 @@ import { IDropdownOption, Dropdown } from 'office-ui-fabric-react';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
 import { Measurement } from '../../../../interfaces/measurements';
 import { ProfileTypes } from './ProfileTypeInput';
+import { initInputValueModelDefaults } from './valueMeasurementInputs/FreshMeasurementInput';
+import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
+import { List } from 'linq-typescript';
+import {
+  MEASUREMENT_ID_FORM_FIELD,
+  FRESH_MEASUREMRNT_VALUES_FORM_FIELD,
+} from './OrderMeasurementsForm';
 
 export interface IMeasurementInputProps {
   measurements: Measurement[];
   formik: any;
+  orderProfile: CustomerProductProfile | null | undefined;
 }
 
 const _buildOptions = (measurements: Measurement[]) => {
@@ -28,7 +36,7 @@ export const MeasurementInput: React.FC<IMeasurementInputProps> = (
   return (
     <>
       {props.formik.values.profileType === ProfileTypes.Reference ? null : (
-        <Field name="measurementId">
+        <Field name={MEASUREMENT_ID_FORM_FIELD}>
           {() => (
             <Dropdown
               defaultSelectedKey={`${props.formik.values.measurementId}`}
@@ -40,15 +48,34 @@ export const MeasurementInput: React.FC<IMeasurementInputProps> = (
                 option?: IDropdownOption,
                 index?: number
               ) => {
-                if (option) {
+                if (option && (option as any).measurement) {
+                  const measurementId = (option as any).measurement.id;
+
+                  if (measurementId !== props.formik.values.measurementId) {
+                    props.formik.setFieldValue(
+                      FRESH_MEASUREMRNT_VALUES_FORM_FIELD,
+                      initInputValueModelDefaults(
+                        new List(props.measurements).firstOrDefault(
+                          (measurement) => measurement.id === measurementId
+                        ),
+                        props.orderProfile
+                      )
+                    );
+                  }
+
                   props.formik.setFieldValue(
-                    'measurementId',
-                    (option as any).measurement.id
+                    MEASUREMENT_ID_FORM_FIELD,
+                    measurementId
                   );
-                  props.formik.setFieldTouched('measurementId');
+                  props.formik.setFieldTouched(MEASUREMENT_ID_FORM_FIELD);
                 } else {
-                  props.formik.setFieldValue('measurementId', 0);
-                  props.formik.setFieldTouched('measurementId');
+                  props.formik.setFieldValue(MEASUREMENT_ID_FORM_FIELD, 0);
+                  props.formik.setFieldTouched(MEASUREMENT_ID_FORM_FIELD);
+
+                  props.formik.setFieldValue(
+                    FRESH_MEASUREMRNT_VALUES_FORM_FIELD,
+                    []
+                  );
                 }
               }}
             />

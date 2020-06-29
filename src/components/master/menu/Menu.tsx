@@ -71,11 +71,11 @@ const Menu: React.FC = () => {
       className: 'dashboard',
       link: `/${languageCode}/app/dashboard`,
     },
-    // {
-    //   title: ORDER_PROFILES_MENU_TITLE,
-    //   className: 'order',
-    //   link: `/${languageCode}/app/order-profiles`,
-    // },
+    {
+      title: ORDER_PROFILES_MENU_TITLE,
+      className: 'order',
+      link: `/${languageCode}/app/order-profiles`,
+    },
     {
       title: CUSTOMER_MENU_TITLE,
       className: 'customer',

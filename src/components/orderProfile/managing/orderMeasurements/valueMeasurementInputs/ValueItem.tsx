@@ -38,7 +38,8 @@ export const ValueItem: React.FC<IValueItemProps> = (
         {() => (
           <div
             className={
-              initInput !== props.formik.values.TEST[props.index].value
+              initInput !==
+              props.formik.values.freshMeasuremrntValues[props.index].value
                 ? 'valueItem isDirty'
                 : 'valueItem'
             }
@@ -59,7 +60,10 @@ export const ValueItem: React.FC<IValueItemProps> = (
                   <TextField
                     type="number"
                     borderless
-                    value={props.formik.values.TEST[props.index].value}
+                    value={
+                      props.formik.values.freshMeasuremrntValues[props.index]
+                        .value
+                    }
                     onChange={(args: any) => {
                       props.formik.setFieldValue(
                         `${props.fieldName}[${props.index}].value`,

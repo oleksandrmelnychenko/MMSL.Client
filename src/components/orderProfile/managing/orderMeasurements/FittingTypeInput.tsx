@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { fittingTypesActions } from '../../../../redux/slices/measurements/fittingTypes.slice';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import { ProfileTypes } from './ProfileTypeInput';
+import { FITTING_TYPE_ID_FORM_FIELD } from './OrderMeasurementsForm';
 
 export interface IFittingTypeInputProps {
   formik: any;
@@ -57,7 +58,7 @@ export const FittingTypeInput: React.FC<IFittingTypeInputProps> = (
   return (
     <>
       {props.formik.values.profileType === ProfileTypes.BodyMeasurement ? (
-        <Field name="fittingTypeId">
+        <Field name={FITTING_TYPE_ID_FORM_FIELD}>
           {() => (
             <Dropdown
               defaultSelectedKey={`${props.formik.values.fittingTypeId}`}
@@ -71,13 +72,13 @@ export const FittingTypeInput: React.FC<IFittingTypeInputProps> = (
               ) => {
                 if (option) {
                   props.formik.setFieldValue(
-                    'fittingTypeId',
+                    FITTING_TYPE_ID_FORM_FIELD,
                     (option as any).fittingType.id
                   );
-                  props.formik.setFieldTouched('fittingTypeId');
+                  props.formik.setFieldTouched(FITTING_TYPE_ID_FORM_FIELD);
                 } else {
-                  props.formik.setFieldValue('fittingTypeId', 0);
-                  props.formik.setFieldTouched('fittingTypeId');
+                  props.formik.setFieldValue(FITTING_TYPE_ID_FORM_FIELD, 0);
+                  props.formik.setFieldTouched(FITTING_TYPE_ID_FORM_FIELD);
                 }
               }}
             />

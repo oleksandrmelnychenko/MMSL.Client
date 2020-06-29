@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { FieldArray } from 'formik';
 import {
   Measurement,
   MeasurementMapDefinition,
 } from '../../../../../interfaces/measurements';
-import { useDispatch } from 'react-redux';
-import { assignPendingActions } from '../../../../../helpers/action.helper';
 import { ProfileTypes } from '../ProfileTypeInput';
-import { measurementActions } from '../../../../../redux/slices/measurements/measurement.slice';
 import {
   CustomerProductProfile,
   CustomerProfileSizeValue,
@@ -15,9 +12,10 @@ import {
 import { List } from 'linq-typescript';
 import { Stack, Separator } from 'office-ui-fabric-react';
 import ValueItem, { IInputValueModel } from './ValueItem';
+import { FRESH_MEASUREMRNT_VALUES_FORM_FIELD } from '../OrderMeasurementsForm';
 
-const _initInputValueModelDefaults = (
-  measurement: Measurement,
+export const initInputValueModelDefaults = (
+  measurement: Measurement | null | undefined,
   sourceEntity: CustomerProductProfile | null | undefined
 ) => {
   let result: IInputValueModel[] = [];
@@ -78,59 +76,11 @@ export interface IFreshMeasurementInputProps {
 export const FreshMeasurementInput: React.FC<IFreshMeasurementInputProps> = (
   props: IFreshMeasurementInputProps
 ) => {
-  const dispatch = useDispatch();
-
-  // const [measurementId, setMeasurementId] = useState<number>(0);
-  const [profileType, setProfileType] = useState<ProfileTypes>(
-    ProfileTypes.FreshMeasurement
-  );
-
-  // if (props.formik.values.measurementId !== measurementId)
-  //   setMeasurementId(props.formik.values.measurementId);
-
-  // if (props.formik.values.profileType !== profileType)
-  //   setProfileType(props.formik.values.profileType);
-
-  // useEffect(() => {
-  //   return () => {
-  //     setMeasurementId(0);
-  //   };
-  // }, []);
-
-  // useEffect(() => {
-  //   if (
-  //     measurementId !== 0 &&
-  //     props.formik.values.profileType === ProfileTypes.FreshMeasurement
-  //   ) {
-  //     dispatch(
-  //       assignPendingActions(
-  //         measurementActions.apiGetMeasurementById(measurementId),
-  //         [],
-  //         [],
-  //         (args: any) => {
-  //           const items = _initInputValueModelDefaults(
-  //             args,
-  //             props.orderProfile
-  //           );
-
-  //           props.formik.setFieldValue('TEST', items);
-  //         },
-  //         (args: any) => {
-  //           props.formik.setFieldValue('TEST', []);
-  //         }
-  //       )
-  //     );
-  //   } else {
-  //     props.formik.setFieldValue('TEST', []);
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [measurementId, profileType]);
-
   return (
     <>
       {props.formik.values.profileType === ProfileTypes.FreshMeasurement &&
-      props.formik.values.TEST ? (
-        <FieldArray name="TEST">
+      props.formik.values.measurementId !== 0 ? (
+        <FieldArray name={FRESH_MEASUREMRNT_VALUES_FORM_FIELD}>
           {(arrayHelper: any) => {
             return (
               <Stack
@@ -139,12 +89,12 @@ export const FreshMeasurementInput: React.FC<IFreshMeasurementInputProps> = (
               >
                 <Separator alignContent="start">Fresh measurement</Separator>
 
-                {props.formik.values.TEST.map(
+                {props.formik.values.freshMeasuremrntValues.map(
                   (valueModel: IInputValueModel, index: number) => {
                     return (
                       <ValueItem
                         key={index}
-                        fieldName={'TEST'}
+                        fieldName={FRESH_MEASUREMRNT_VALUES_FORM_FIELD}
                         index={index}
                         formik={props.formik}
                         valueModel={valueModel}

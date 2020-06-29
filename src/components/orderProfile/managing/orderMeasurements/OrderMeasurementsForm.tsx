@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Formik, Form, FieldArray } from 'formik';
+import { Formik, Form } from 'formik';
 import { Stack } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import { FormicReference } from '../../../../interfaces';
@@ -16,7 +16,9 @@ import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
 import { Measurement } from '../../../../interfaces/measurements';
 import MeasurementInput from './MeasurementInput';
 import FittingTypeInput from './FittingTypeInput';
-import FreshMeasurementInput from './freshMeasurementInputs/FreshMeasurementInput';
+import FreshMeasurementInput, {
+  initInputValueModelDefaults,
+} from './valueMeasurementInputs/FreshMeasurementInput';
 import ProfileTypeInput, {
   ProfileTypes,
   resolveProfileTypeInitValue,
@@ -26,24 +28,38 @@ export interface IOrderMeasurementsFormProps {
   measurements: Measurement[];
 }
 
+export const PROFILE_TYPE_FORM_FIELD = 'profileType';
+export const MEASUREMENT_ID_FORM_FIELD = 'measurementId';
+export const FITTING_TYPE_ID_FORM_FIELD = 'fittingTypeId';
+export const FRESH_MEASUREMRNT_VALUES_FORM_FIELD = 'freshMeasuremrntValues';
+export const MEASUREMENT_SIZE_ID_FORM_FIELD = 'measurementSizeId';
+
 interface IFormValues {
   profileType: ProfileTypes;
   measurementId: number;
   fittingTypeId: number;
-  TEST: [];
+  freshMeasuremrntValues: [];
+  measurementSizeId: number;
 }
 
 const _initDefaultValues = (
   measurements: Measurement[],
   sourceEntity?: CustomerProductProfile | null | undefined
 ) => {
-  console.log(measurements);
   const initValues: IFormValues = {
     profileType: resolveProfileTypeInitValue(measurements, sourceEntity),
     measurementId: measurements.length > 0 ? measurements[0].id : 0,
     fittingTypeId: 0,
-    TEST: [],
+    freshMeasuremrntValues: [],
+    measurementSizeId: 0,
   };
+
+  initValues.freshMeasuremrntValues = initInputValueModelDefaults(
+    new List(measurements).firstOrDefault(
+      (measurement) => measurement.id === initValues.measurementId
+    ),
+    sourceEntity
+  ) as [];
 
   if (sourceEntity) {
     /// TODO: probably use input helpers
@@ -120,11 +136,15 @@ export const OrderMeasurementsForm: React.FC<IOrderMeasurementsFormProps> = (
   }, [isFormikDirty, dispatch]);
 
   const onEdit = (values: IFormValues) => {
+    console.log(values);
     const payload = _buildEditedPayload(values, targetOrderProfile);
+    console.log(payload);
   };
 
   const onCreate = (values: IFormValues) => {
+    console.log(values);
     const payload = _buildNewPayload(values);
+    console.log(payload);
   };
 
   return (
@@ -163,6 +183,7 @@ export const OrderMeasurementsForm: React.FC<IOrderMeasurementsFormProps> = (
                 <MeasurementInput
                   measurements={props.measurements}
                   formik={formik}
+                  orderProfile={targetOrderProfile}
                 />
 
                 <FittingTypeInput formik={formik} />

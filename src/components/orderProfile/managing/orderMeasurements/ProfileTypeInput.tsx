@@ -4,6 +4,7 @@ import { IDropdownOption, Dropdown } from 'office-ui-fabric-react';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
 import { Measurement } from '../../../../interfaces/measurements';
 import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
+import { PROFILE_TYPE_FORM_FIELD } from './OrderMeasurementsForm';
 
 export interface IProfileTypeInputProps {
   formik: any;
@@ -69,7 +70,7 @@ export const ProfileTypeInput: React.FC<IProfileTypeInputProps> = (
   props: IProfileTypeInputProps
 ) => {
   return (
-    <Field name="profileType">
+    <Field name={PROFILE_TYPE_FORM_FIELD}>
       {() => (
         <Dropdown
           defaultSelectedKey={`${props.formik.values.profileType}`}
@@ -83,16 +84,16 @@ export const ProfileTypeInput: React.FC<IProfileTypeInputProps> = (
           ) => {
             if (option) {
               props.formik.setFieldValue(
-                'profileType',
+                PROFILE_TYPE_FORM_FIELD,
                 (option as any).profileType
               );
-              props.formik.setFieldTouched('profileType');
+              props.formik.setFieldTouched(PROFILE_TYPE_FORM_FIELD);
             } else {
               props.formik.setFieldValue(
-                'profileType',
+                PROFILE_TYPE_FORM_FIELD,
                 ProfileTypes.FreshMeasurement
               );
-              props.formik.setFieldTouched('profileType');
+              props.formik.setFieldTouched(PROFILE_TYPE_FORM_FIELD);
             }
           }}
         />
