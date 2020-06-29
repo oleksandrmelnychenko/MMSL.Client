@@ -20,10 +20,7 @@ export const BodyMeasurementInput: React.FC<IBodyMeasurementInputProps> = (
       {props.formik.values.profileType === ProfileTypes.BodyMeasurement &&
       props.formik.values.measurementId !== 0 ? (
         <>
-          <Stack
-            styles={{ root: { marginTop: '20px !important' } }}
-            tokens={{ childrenGap: '12px' }}
-          >
+          <Stack tokens={{ childrenGap: '12px' }}>
             <FittingTypeInput formik={props.formik} />
 
             <Stack horizontal tokens={{ childrenGap: '12px' }}>

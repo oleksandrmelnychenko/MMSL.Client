@@ -47,9 +47,7 @@ const _resolveSelectedId = (
     (option: IComboBoxOption) => option.key === `${idToSelect}`
   );
 
-  if (targetOption) {
-    result = (targetOption as any).sizeMap.id;
-  }
+  if (targetOption) result = (targetOption as any).sizeMap.id;
 
   return result;
 };
@@ -83,6 +81,7 @@ const _applySizeValues = (
       formik.setFieldTouched(BASE_MEASUREMRNT_VALUES_FORM_FIELD);
     }
   } else {
+    /// TODO:
   }
 };
 
@@ -130,6 +129,7 @@ export const SizeSelectorInput: React.FC<ISizeSelectorInputProps> = (
               _resolveSelectedId(options, props.formik.values.measurementSizeId)
             );
             props.formik.setFieldTouched(MEASUREMENT_SIZE_ID_FORM_FIELD);
+
             setSizeOptions(options);
           },
           (args: any) => {

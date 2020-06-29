@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Field } from 'formik';
-import { IDropdownOption, Dropdown } from 'office-ui-fabric-react';
+import {
+  IDropdownOption,
+  Dropdown,
+  IComboBoxOption,
+} from 'office-ui-fabric-react';
 import * as fabricStyles from '../../../../../common/fabric-styles/styles';
 import { FittingType } from '../../../../../interfaces/measurements';
 import { useDispatch } from 'react-redux';
 import { fittingTypesActions } from '../../../../../redux/slices/measurements/fittingTypes.slice';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
+import {
+  FITTING_TYPE_ID_FORM_FIELD,
+  BODY_MEASUREMRNT_VALUES_FORM_FIELD,
+} from '../OrderMeasurementsForm';
+import { List } from 'linq-typescript';
 import { ProfileTypes } from '../ProfileTypeInput';
-import { FITTING_TYPE_ID_FORM_FIELD } from '../OrderMeasurementsForm';
+import { IInputValueModel } from './ValueItem';
 
 export interface IFittingTypeInputProps {
   formik: any;
@@ -23,16 +32,70 @@ const _buildOptions = (fittingTypes: FittingType[]) => {
   });
 };
 
+const _resolveSelectedId = (
+  fittingOptions: IComboBoxOption[],
+  idToSelect: number
+) => {
+  let result: number =
+    fittingOptions.length > 0 ? (fittingOptions[0] as any).fittingType.id : 0;
+
+  const targetOption = new List(fittingOptions).firstOrDefault(
+    (option: IComboBoxOption) => option.key === `${idToSelect}`
+  );
+
+  if (targetOption) result = (targetOption as any).fittingType.id;
+
+  return result;
+};
+
+const _applyOffsetSizeValues = (
+  fittingType: FittingType | null | undefined,
+  formik: any
+) => {
+  debugger;
+  if (fittingType?.measurementMapValues) {
+    if (formik.values.profileType === ProfileTypes.BodyMeasurement) {
+      const syncCharts = formik.values.bodyMeasuremrntValues.map(
+        (valueItem: IInputValueModel, index: number) => {
+          const sizeValue = new List(
+            fittingType?.measurementMapValues
+              ? fittingType.measurementMapValues
+              : []
+          ).firstOrDefault(
+            (item) =>
+              item.measurementDefinitionId === valueItem.measurementDefinitionId
+          );
+
+          if (sizeValue) valueItem.fittingValue = `${sizeValue.value}`;
+
+          valueItem.initFittingValue = valueItem.fittingValue;
+
+          return valueItem;
+        }
+      );
+
+      formik.setFieldValue(BODY_MEASUREMRNT_VALUES_FORM_FIELD, syncCharts);
+      formik.setFieldTouched(BODY_MEASUREMRNT_VALUES_FORM_FIELD);
+    }
+  } else {
+    /// TODO:
+  }
+};
+
 export const FittingTypeInput: React.FC<IFittingTypeInputProps> = (
   props: IFittingTypeInputProps
 ) => {
   const dispatch = useDispatch();
 
   const [measurementId, setMeasurementId] = useState<number>(0);
-  const [fittingTypes, setFittingTypes] = useState<FittingType[]>([]);
+  const [fittingTypeId, setFittingTypeId] = useState<number>(0);
+  const [fittingTypeOptions, setFittingTypeOptions] = useState<any[]>([]);
 
   if (props.formik.values.measurementId !== measurementId)
     setMeasurementId(props.formik.values.measurementId);
+
+  if (props.formik.values.fittingTypeId !== fittingTypeId)
+    setFittingTypeId(props.formik.values.fittingTypeId);
 
   useEffect(() => {
     if (measurementId !== 0) {
@@ -42,49 +105,65 @@ export const FittingTypeInput: React.FC<IFittingTypeInputProps> = (
           [],
           [],
           (args: any) => {
-            setFittingTypes(args);
+            const options = _buildOptions(args);
+
+            props.formik.setFieldValue(
+              FITTING_TYPE_ID_FORM_FIELD,
+              _resolveSelectedId(options, props.formik.values.fittingTypeId)
+            );
+            props.formik.setFieldTouched(FITTING_TYPE_ID_FORM_FIELD);
+
+            setFittingTypeOptions(options);
           },
           (args: any) => {
-            setFittingTypes([]);
+            setFittingTypeOptions([]);
           }
         )
       );
     } else {
-      setFittingTypes([]);
+      setFittingTypeOptions([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [measurementId]);
 
+  useEffect(() => {
+    _applyOffsetSizeValues(
+      new List(fittingTypeOptions).firstOrDefault(
+        (option) => option.fittingType.id === fittingTypeId
+      )?.fittingType,
+      props.formik
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fittingTypeId, fittingTypeOptions]);
+
   return (
     <>
-      {props.formik.values.profileType === ProfileTypes.BodyMeasurement ? (
-        <Field name={FITTING_TYPE_ID_FORM_FIELD}>
-          {() => (
-            <Dropdown
-              selectedKey={`${props.formik.values.fittingTypeId}`}
-              label="Fitting type"
-              options={_buildOptions(fittingTypes)}
-              styles={fabricStyles.comboBoxStyles}
-              onChange={(
-                event: React.FormEvent<HTMLDivElement>,
-                option?: IDropdownOption,
-                index?: number
-              ) => {
-                if (option) {
-                  props.formik.setFieldValue(
-                    FITTING_TYPE_ID_FORM_FIELD,
-                    (option as any).fittingType.id
-                  );
-                  props.formik.setFieldTouched(FITTING_TYPE_ID_FORM_FIELD);
-                } else {
-                  props.formik.setFieldValue(FITTING_TYPE_ID_FORM_FIELD, 0);
-                  props.formik.setFieldTouched(FITTING_TYPE_ID_FORM_FIELD);
-                }
-              }}
-            />
-          )}
-        </Field>
-      ) : null}
+      <Field name={FITTING_TYPE_ID_FORM_FIELD}>
+        {() => (
+          <Dropdown
+            selectedKey={`${props.formik.values.fittingTypeId}`}
+            label="Fitting type"
+            options={fittingTypeOptions}
+            styles={fabricStyles.comboBoxStyles}
+            onChange={(
+              event: React.FormEvent<HTMLDivElement>,
+              option?: IDropdownOption,
+              index?: number
+            ) => {
+              if (option) {
+                props.formik.setFieldValue(
+                  FITTING_TYPE_ID_FORM_FIELD,
+                  (option as any).fittingType.id
+                );
+                props.formik.setFieldTouched(FITTING_TYPE_ID_FORM_FIELD);
+              } else {
+                props.formik.setFieldValue(FITTING_TYPE_ID_FORM_FIELD, 0);
+                props.formik.setFieldTouched(FITTING_TYPE_ID_FORM_FIELD);
+              }
+            }}
+          />
+        )}
+      </Field>
     </>
   );
 };
