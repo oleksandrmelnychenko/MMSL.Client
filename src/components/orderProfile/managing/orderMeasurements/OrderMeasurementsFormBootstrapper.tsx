@@ -3,10 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import OrderMeasurementsForm from './OrderMeasurementsForm';
 import { productActions } from '../../../../redux/slices/product.slice';
-import { Measurement, FittingType } from '../../../../interfaces/measurements';
+import { Measurement } from '../../../../interfaces/measurements';
 import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
 import { IApplicationState } from '../../../../redux/reducers';
-import { fittingTypesActions } from '../../../../redux/slices/measurements/fittingTypes.slice';
 
 export const OrderMeasurementsFormBootstrapper: React.FC = () => {
   const dispatch = useDispatch();

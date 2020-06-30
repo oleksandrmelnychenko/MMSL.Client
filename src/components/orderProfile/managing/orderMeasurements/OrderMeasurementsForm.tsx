@@ -15,7 +15,6 @@ import { IApplicationState } from '../../../../redux/reducers';
 import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
 import { Measurement } from '../../../../interfaces/measurements';
 import MeasurementInput from './MeasurementInput';
-import FittingTypeInput from './valueMeasurementInputs/FittingTypeInput';
 import BaseMeasurementInput from './valueMeasurementInputs/BaseMeasurementInput';
 import FreshMeasurementInput from './valueMeasurementInputs/FreshMeasurementInput';
 import BodyMeasurementInput from './valueMeasurementInputs/BodyMeasurementInput';
@@ -27,6 +26,8 @@ import {
   IInputValueModel,
   initInputValueModelDefaults,
 } from './valueMeasurementInputs/ValueItem';
+import { assignPendingActions } from '../../../../helpers/action.helper';
+import { orderProfileActions } from '../../../../redux/slices/orderProfile/orderProfile.slice';
 
 export interface IOrderMeasurementsFormProps {
   measurements: Measurement[];
@@ -39,6 +40,32 @@ export const FRESH_MEASUREMRNT_VALUES_FORM_FIELD = 'freshMeasuremrntValues';
 export const MEASUREMENT_SIZE_ID_FORM_FIELD = 'measurementSizeId';
 export const BASE_MEASUREMRNT_VALUES_FORM_FIELD = 'baseMeasuremrntValues';
 export const BODY_MEASUREMRNT_VALUES_FORM_FIELD = 'bodyMeasuremrntValues';
+
+interface IUpdateOrderProfilePayload {
+  measurementId: number;
+  fittingTypeId: number;
+  measurementSizeId: number;
+  profileType: number;
+  values: IMeasurementValuePayload[];
+  productStyles: IProductStyleValuePayload[];
+  name: string;
+  description: string;
+  id: number;
+}
+
+interface IMeasurementValuePayload {
+  value: string;
+  fittingValue: string;
+  measurementDefinitionId: number;
+  id: number;
+}
+
+interface IProductStyleValuePayload {
+  id: number;
+  isDeleted: boolean;
+  selectedStyleValue: string;
+  optionUnitId: number;
+}
 
 interface IFormValues {
   profileType: ProfileTypes;
@@ -92,17 +119,57 @@ const _initDefaultValues = (
   return initValues;
 };
 
-const _buildNewPayload = (values: IFormValues) => {
-  let payload: any = {};
-
-  return payload;
+const _buildMeasurementPayloadValues = (valueModels: IInputValueModel[]) => {
+  return new List(valueModels)
+    .select((valueItem) => {
+      const result: IMeasurementValuePayload = {
+        value: valueItem.value,
+        fittingValue: valueItem.fittingValue,
+        measurementDefinitionId: valueItem.measurementDefinitionId,
+        id: valueItem.id,
+      };
+      return result;
+    })
+    .toArray();
 };
 
 const _buildEditedPayload = (
   values: IFormValues,
-  sourceEntity: any | null | undefined
+  sourceEntity: CustomerProductProfile
 ) => {
-  let payload: any = {};
+  let payload: IUpdateOrderProfilePayload = {
+    fittingTypeId: values.fittingTypeId,
+    measurementSizeId: values.measurementSizeId,
+    measurementId: values.measurementId,
+    profileType: values.profileType,
+    values: [],
+    productStyles: [],
+    name: sourceEntity.name,
+    description: sourceEntity.description,
+    id: sourceEntity.id,
+  };
+
+  if (payload.profileType === ProfileTypes.FreshMeasurement) {
+    payload.values = _buildMeasurementPayloadValues(
+      values.freshMeasuremrntValues
+    );
+    payload.fittingTypeId = 0;
+    payload.measurementSizeId = 0;
+  } else if (payload.profileType === ProfileTypes.BaseMeasurement) {
+    payload.values = _buildMeasurementPayloadValues(
+      values.baseMeasuremrntValues
+    );
+    payload.fittingTypeId = 0;
+  } else if (payload.profileType === ProfileTypes.BodyMeasurement) {
+    payload.values = _buildMeasurementPayloadValues(
+      values.bodyMeasuremrntValues
+    );
+    payload.measurementSizeId = 0;
+  } else if (payload.profileType === ProfileTypes.Reference) {
+    payload.fittingTypeId = 0;
+    payload.measurementSizeId = 0;
+    payload.measurementId = 0;
+  }
 
   return payload;
 };
@@ -160,28 +227,44 @@ export const OrderMeasurementsForm: React.FC<IOrderMeasurementsFormProps> = (
   }, [isFormikDirty, dispatch]);
 
   const onEdit = (values: IFormValues) => {
-    console.log(values);
-    const payload = _buildEditedPayload(values, targetOrderProfile);
-    console.log(payload);
-  };
+    if (targetOrderProfile) {
+      const payload = _buildEditedPayload(values, targetOrderProfile);
 
-  const onCreate = (values: IFormValues) => {
-    console.log(values);
-    const payload = _buildNewPayload(values);
-    console.log(payload);
+      console.log(payload);
+      dispatch(
+        assignPendingActions(
+          orderProfileActions.apiUpdateOrderProfile(payload),
+          [],
+          [],
+          (args: any) => {
+            dispatch(
+              assignPendingActions(
+                orderProfileActions.apiGetOrderProfiles(),
+                [],
+                [],
+                (args: any) => {
+                  dispatch(orderProfileActions.changeOrderProfiles(args));
+                },
+                (args: any) => {}
+              )
+            );
+          },
+          (args: any) => {}
+        )
+      );
+    }
   };
 
   return (
     <Formik
       validationSchema={Yup.object().shape({
         profileType: Yup.number().required(() => 'Profile type is required'),
-        measurementId: Yup.number().required(() => 'Measurement is required'),
+        measurementId: Yup.number(),
         fittingTypeId: Yup.number(),
       })}
       initialValues={_initDefaultValues(props.measurements, targetOrderProfile)}
       onSubmit={(values: any) => {
         if (targetOrderProfile) onEdit(values);
-        else onCreate(values);
       }}
       onReset={(values: any, formikHelpers: any) => {}}
       innerRef={(formik: any) => {

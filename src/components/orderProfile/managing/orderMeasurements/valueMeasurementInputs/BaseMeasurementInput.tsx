@@ -21,7 +21,7 @@ export const BaseMeasurementInput: React.FC<IBaseMeasurementInputProps> = (
       props.formik.values.measurementId !== 0 ? (
         <>
           <Stack
-            styles={{ root: { marginTop: '20px !important' } }}
+            styles={{ root: { marginTop: '15px !important' } }}
             tokens={{ childrenGap: '12px' }}
           >
             <SizeSelectorInput

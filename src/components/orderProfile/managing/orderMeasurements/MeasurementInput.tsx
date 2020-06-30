@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Field } from 'formik';
 import { IDropdownOption, Dropdown } from 'office-ui-fabric-react';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
@@ -19,16 +19,6 @@ export interface IMeasurementInputProps {
   formik: any;
   orderProfile: CustomerProductProfile | null | undefined;
 }
-
-const _buildOptions = (measurements: Measurement[]) => {
-  return measurements.map((measurement: Measurement, index: number) => {
-    return {
-      key: `${measurement.id}`,
-      text: measurement.name,
-      measurement: measurement,
-    } as IDropdownOption;
-  });
-};
 
 export const updateFormChartValues = (
   targetMeasurementId: number,
@@ -58,7 +48,18 @@ export const updateFormChartValues = (
   } else {
     formik.setFieldValue(FRESH_MEASUREMRNT_VALUES_FORM_FIELD, []);
     formik.setFieldValue(BASE_MEASUREMRNT_VALUES_FORM_FIELD, []);
+    formik.setFieldValue(BODY_MEASUREMRNT_VALUES_FORM_FIELD, []);
   }
+};
+
+const _buildOptions = (measurements: Measurement[]) => {
+  return measurements.map((measurement: Measurement, index: number) => {
+    return {
+      key: `${measurement.id}`,
+      text: measurement.name,
+      measurement: measurement,
+    } as IDropdownOption;
+  });
 };
 
 export const MeasurementInput: React.FC<IMeasurementInputProps> = (

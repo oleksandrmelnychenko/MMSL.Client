@@ -1,15 +1,8 @@
 import React from 'react';
 import { FieldArray } from 'formik';
-import {
-  Measurement,
-  MeasurementMapDefinition,
-} from '../../../../../interfaces/measurements';
+import {} from '../../../../../interfaces/measurements';
 import { ProfileTypes } from '../ProfileTypeInput';
-import {
-  CustomerProductProfile,
-  CustomerProfileSizeValue,
-} from '../../../../../interfaces/orderProfile';
-import { List } from 'linq-typescript';
+import { CustomerProductProfile } from '../../../../../interfaces/orderProfile';
 import { Stack, Separator } from 'office-ui-fabric-react';
 import ValueItem, { IInputValueModel } from './ValueItem';
 import { FRESH_MEASUREMRNT_VALUES_FORM_FIELD } from '../OrderMeasurementsForm';

@@ -52,7 +52,6 @@ const _applyOffsetSizeValues = (
   fittingType: FittingType | null | undefined,
   formik: any
 ) => {
-  debugger;
   if (fittingType?.measurementMapValues) {
     if (formik.values.profileType === ProfileTypes.BodyMeasurement) {
       const syncCharts = formik.values.bodyMeasuremrntValues.map(

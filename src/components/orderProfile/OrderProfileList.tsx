@@ -116,6 +116,7 @@ export const OrderProfileList: React.FC = () => {
           [],
           [],
           (args: any) => {
+            console.log(args);
             dispatch(orderProfileActions.changeTargetOrderProfile(args));
 
             dispatch(
