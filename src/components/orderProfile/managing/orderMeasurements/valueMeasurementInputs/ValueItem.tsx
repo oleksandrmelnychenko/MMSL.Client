@@ -2,7 +2,6 @@ import React from 'react';
 import { Stack, Text, TextField } from 'office-ui-fabric-react';
 import './valueItem.scss';
 import { Field } from 'formik';
-import { ProfileTypes } from '../ProfileTypeInput';
 import {
   FRESH_MEASUREMRNT_VALUES_FORM_FIELD,
   BASE_MEASUREMRNT_VALUES_FORM_FIELD,
@@ -15,6 +14,7 @@ import {
 import {
   CustomerProductProfile,
   CustomerProfileSizeValue,
+  ProfileTypes,
 } from '../../../../../interfaces/orderProfile';
 import { List } from 'linq-typescript';
 
@@ -46,6 +46,7 @@ export const initInputValueModelDefaults = (
         if (sourceEntity) {
           const targetDefinitionId = mapDefinition.measurementDefinitionId;
 
+          debugger;
           if (sourceEntity?.customerProfileSizeValues) {
             const profileValue:
               | CustomerProfileSizeValue

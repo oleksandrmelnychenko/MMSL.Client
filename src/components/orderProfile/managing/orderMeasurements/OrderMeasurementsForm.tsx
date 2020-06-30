@@ -12,22 +12,22 @@ import {
   ChangeItemsDisabledState,
 } from '../../../../helpers/commandBar.helper';
 import { IApplicationState } from '../../../../redux/reducers';
-import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
+import {
+  CustomerProductProfile,
+  ProfileTypes,
+} from '../../../../interfaces/orderProfile';
 import { Measurement } from '../../../../interfaces/measurements';
 import MeasurementInput from './MeasurementInput';
 import BaseMeasurementInput from './valueMeasurementInputs/BaseMeasurementInput';
 import FreshMeasurementInput from './valueMeasurementInputs/FreshMeasurementInput';
 import BodyMeasurementInput from './valueMeasurementInputs/BodyMeasurementInput';
-import ProfileTypeInput, {
-  ProfileTypes,
-  resolveProfileTypeInitValue,
-} from './ProfileTypeInput';
 import {
   IInputValueModel,
   initInputValueModelDefaults,
 } from './valueMeasurementInputs/ValueItem';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import { orderProfileActions } from '../../../../redux/slices/orderProfile/orderProfile.slice';
+import ProfileTypeInput from './ProfileTypeInput';
 
 export interface IOrderMeasurementsFormProps {
   measurements: Measurement[];
@@ -75,6 +75,7 @@ interface IFormValues {
   measurementSizeId: number;
   baseMeasuremrntValues: IInputValueModel[];
   bodyMeasuremrntValues: IInputValueModel[];
+  valuesDefaultsHelper: IInputValueModel[];
 }
 
 const _initDefaultValues = (
@@ -82,14 +83,31 @@ const _initDefaultValues = (
   sourceEntity?: CustomerProductProfile | null | undefined
 ) => {
   const initValues: IFormValues = {
-    profileType: resolveProfileTypeInitValue(measurements, sourceEntity),
+    profileType:
+      measurements.length === 0
+        ? ProfileTypes.Reference
+        : ProfileTypes.FreshMeasurement,
     measurementId: measurements.length > 0 ? measurements[0].id : 0,
     fittingTypeId: 0,
-    freshMeasuremrntValues: [],
     measurementSizeId: 0,
+    freshMeasuremrntValues: [],
     baseMeasuremrntValues: [],
     bodyMeasuremrntValues: [],
+    valuesDefaultsHelper: [],
   };
+
+  if (sourceEntity) {
+    initValues.profileType = sourceEntity.profileType;
+    initValues.measurementId = sourceEntity.measurementId
+      ? sourceEntity.measurementId
+      : 0;
+    initValues.fittingTypeId = sourceEntity.fittingTypeId
+      ? sourceEntity.fittingTypeId
+      : 0;
+    initValues.measurementSizeId = sourceEntity.measurementSizeId
+      ? sourceEntity.measurementSizeId
+      : 0;
+  }
 
   const targetMeasurement: Measurement | null | undefined = new List(
     measurements
@@ -112,9 +130,10 @@ const _initDefaultValues = (
     sourceEntity
   ) as [];
 
-  if (sourceEntity) {
-    /// TODO: probably use input helpers
-  }
+  initValues.valuesDefaultsHelper = initInputValueModelDefaults(
+    targetMeasurement,
+    sourceEntity
+  ) as [];
 
   return initValues;
 };
@@ -174,6 +193,31 @@ const _buildEditedPayload = (
   return payload;
 };
 
+const _urgentItemsDirtyHelper = (formik: any) => {
+  let isDirtyResult = false;
+
+  if (formik.values.profileType === ProfileTypes.FreshMeasurement) {
+    isDirtyResult = new List(formik.values.freshMeasuremrntValues).any(
+      (item: any) => item.value !== item.initValue
+    );
+    debugger;
+  } else if (formik.values.profileType === ProfileTypes.BaseMeasurement) {
+    isDirtyResult = new List(formik.values.baseMeasuremrntValues).any(
+      (item: any) => item.value !== item.initValue
+    );
+    debugger;
+  } else if (formik.values.profileType === ProfileTypes.BodyMeasurement) {
+    isDirtyResult = new List(formik.values.bodyMeasuremrntValues).any(
+      (item: any) =>
+        item.value !== item.initValue ||
+        item.fittingValue !== item.initFittingValue
+    );
+    debugger;
+  }
+
+  return isDirtyResult;
+};
+
 export const OrderMeasurementsForm: React.FC<IOrderMeasurementsFormProps> = (
   props: IOrderMeasurementsFormProps
 ) => {
@@ -196,6 +240,14 @@ export const OrderMeasurementsForm: React.FC<IOrderMeasurementsFormProps> = (
     CustomerProductProfile | null | undefined
   >((state) => state.orderProfile.targetOrderProfile);
 
+  const [formInit, setFormInit] = useState<any>(
+    _initDefaultValues(props.measurements, targetOrderProfile)
+  );
+
+  useEffect(() => {
+    setFormInit(_initDefaultValues(props.measurements, targetOrderProfile));
+  }, [targetOrderProfile, props.measurements]);
+
   useEffect(() => {
     if (formikReference.formik) {
       dispatch(
@@ -205,11 +257,17 @@ export const OrderMeasurementsForm: React.FC<IOrderMeasurementsFormProps> = (
           }),
           GetCommandBarItemProps(CommandBarItem.Reset, () => {
             formikReference.formik.resetForm();
+
+            debugger;
+            setFormInit(
+              _initDefaultValues(props.measurements, targetOrderProfile)
+            );
           }),
         ])
       );
     }
-  }, [formikReference, dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formikReference, dispatch, props.measurements]);
 
   useEffect(() => {
     if (new List(commandBarItems).any()) {
@@ -244,6 +302,7 @@ export const OrderMeasurementsForm: React.FC<IOrderMeasurementsFormProps> = (
                 [],
                 (args: any) => {
                   dispatch(orderProfileActions.changeOrderProfiles(args));
+                  dispatch(controlActions.closeRightPanel());
                 },
                 (args: any) => {}
               )
@@ -258,11 +317,15 @@ export const OrderMeasurementsForm: React.FC<IOrderMeasurementsFormProps> = (
   return (
     <Formik
       validationSchema={Yup.object().shape({
-        profileType: Yup.number().required(() => 'Profile type is required'),
+        profileType: Yup.number(),
         measurementId: Yup.number(),
         fittingTypeId: Yup.number(),
+        measurementSizeId: Yup.number(),
+        freshMeasuremrntValues: Yup.array(),
+        baseMeasuremrntValues: Yup.array(),
+        bodyMeasuremrntValues: Yup.array(),
       })}
-      initialValues={_initDefaultValues(props.measurements, targetOrderProfile)}
+      initialValues={formInit}
       onSubmit={(values: any) => {
         if (targetOrderProfile) onEdit(values);
       }}
@@ -270,7 +333,7 @@ export const OrderMeasurementsForm: React.FC<IOrderMeasurementsFormProps> = (
       innerRef={(formik: any) => {
         formikReference.formik = formik;
         if (formik) {
-          setFormikDirty(formik.dirty);
+          setFormikDirty(formik.dirty || _urgentItemsDirtyHelper(formik));
         }
       }}
       validateOnBlur={false}

@@ -1,7 +1,9 @@
 import React from 'react';
 import { FieldArray } from 'formik';
-import { ProfileTypes } from '../ProfileTypeInput';
-import { CustomerProductProfile } from '../../../../../interfaces/orderProfile';
+import {
+  CustomerProductProfile,
+  ProfileTypes,
+} from '../../../../../interfaces/orderProfile';
 import { Stack, Separator } from 'office-ui-fabric-react';
 import ValueItem, { IInputValueModel } from './ValueItem';
 import { BASE_MEASUREMRNT_VALUES_FORM_FIELD } from '../OrderMeasurementsForm';

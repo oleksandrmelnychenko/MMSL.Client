@@ -4,8 +4,10 @@ import {
   Measurement,
   MeasurementMapSize,
 } from '../../../../../interfaces/measurements';
-import { ProfileTypes } from '../ProfileTypeInput';
-import { CustomerProductProfile } from '../../../../../interfaces/orderProfile';
+import {
+  CustomerProductProfile,
+  ProfileTypes,
+} from '../../../../../interfaces/orderProfile';
 import { List } from 'linq-typescript';
 import { ComboBox, IComboBoxOption, IComboBox } from 'office-ui-fabric-react';
 import {
@@ -72,6 +74,7 @@ const _applySizeValues = (
           if (sizeValue) valueItem.value = `${sizeValue.value}`;
 
           valueItem.initValue = valueItem.value;
+          _helper(valueItem, formik);
 
           return valueItem;
         }
@@ -82,6 +85,21 @@ const _applySizeValues = (
     }
   } else {
     /// TODO:
+  }
+};
+
+const _helper = (valueItem: IInputValueModel, formik: any) => {
+  const initialItem: any = new List(
+    formik.initialValues.valuesDefaultsHelper
+  ).firstOrDefault(
+    (item: any) =>
+      valueItem.measurementDefinitionId === item.measurementDefinitionId
+  );
+
+  if (initialItem) {
+    valueItem.initValue = initialItem.initValue;
+  } else {
+    valueItem.initValue = '';
   }
 };
 
@@ -131,6 +149,13 @@ export const SizeSelectorInput: React.FC<ISizeSelectorInputProps> = (
             props.formik.setFieldTouched(MEASUREMENT_SIZE_ID_FORM_FIELD);
 
             setSizeOptions(options);
+
+            _applySizeValues(
+              new List(sizeOptions).firstOrDefault(
+                (option) => option.sizeMap.id === sizeMapId
+              )?.sizeMap,
+              props.formik
+            );
           },
           (args: any) => {
             setSizeOptions([]);
@@ -143,15 +168,15 @@ export const SizeSelectorInput: React.FC<ISizeSelectorInputProps> = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [measurementId, profileType]);
 
-  useEffect(() => {
-    _applySizeValues(
-      new List(sizeOptions).firstOrDefault(
-        (option) => option.sizeMap.id === sizeMapId
-      )?.sizeMap,
-      props.formik
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sizeMapId, sizeOptions]);
+  // useEffect(() => {
+  //   _applySizeValues(
+  //     new List(sizeOptions).firstOrDefault(
+  //       (option) => option.sizeMap.id === sizeMapId
+  //     )?.sizeMap,
+  //     props.formik
+  //   );
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [sizeMapId, sizeOptions]);
 
   return (
     <Field name={MEASUREMENT_SIZE_ID_FORM_FIELD}>
@@ -184,6 +209,13 @@ export const SizeSelectorInput: React.FC<ISizeSelectorInputProps> = (
                 sizeId
               );
               props.formik.setFieldTouched(MEASUREMENT_SIZE_ID_FORM_FIELD);
+
+              _applySizeValues(
+                new List(sizeOptions).firstOrDefault(
+                  (option) => option.sizeMap.id === sizeMapId
+                )?.sizeMap,
+                props.formik
+              );
             }}
           />
         );

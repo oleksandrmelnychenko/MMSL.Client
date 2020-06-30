@@ -9,9 +9,18 @@ import {
 import { EntityBaseNamed, EntityBase } from './base';
 import { ProductCategory } from './products';
 
+export enum ProfileTypes {
+  FreshMeasurement = 0,
+  BaseMeasurement = 1,
+  BodyMeasurement = 2,
+  Reference = 3,
+}
+
 export class CustomerProductProfile extends EntityBaseNamed {
   constructor() {
     super();
+
+    this.profileType = ProfileTypes.FreshMeasurement;
 
     this.dealerAccountId = 0;
     this.dealerAccount = null;
@@ -34,6 +43,8 @@ export class CustomerProductProfile extends EntityBaseNamed {
     this.customerProfileSizeValues = [];
   }
 
+  profileType: ProfileTypes;
+
   dealerAccountId: number;
   dealerAccount: DealerAccount | null | undefined;
 
@@ -43,13 +54,13 @@ export class CustomerProductProfile extends EntityBaseNamed {
   productCategoryId: number;
   productCategory: ProductCategory | null | undefined;
 
-  measurementId: number;
+  measurementId: number | null | undefined;
   measurement: Measurement | null | undefined;
 
-  fittingTypeId: number;
+  fittingTypeId: number | null | undefined;
   fittingType: FittingType | null | undefined;
 
-  measurementSizeId: number;
+  measurementSizeId: number | null | undefined;
   measurementSize: MeasurementSize | null | undefined;
 
   customerProfileSizeValues: CustomerProfileSizeValue[];

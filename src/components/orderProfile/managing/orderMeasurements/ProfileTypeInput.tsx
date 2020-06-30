@@ -3,7 +3,10 @@ import { Field } from 'formik';
 import { IDropdownOption, Dropdown } from 'office-ui-fabric-react';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
 import { Measurement } from '../../../../interfaces/measurements';
-import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
+import {
+  CustomerProductProfile,
+  ProfileTypes,
+} from '../../../../interfaces/orderProfile';
 import { PROFILE_TYPE_FORM_FIELD } from './OrderMeasurementsForm';
 import { updateFormChartValues } from './MeasurementInput';
 
@@ -12,30 +15,6 @@ export interface IProfileTypeInputProps {
   availableMeasurements: Measurement[];
   orderProfile: CustomerProductProfile | null | undefined;
 }
-
-export enum ProfileTypes {
-  FreshMeasurement = 0,
-  BaseMeasurement = 1,
-  BodyMeasurement = 2,
-  Reference = 3,
-}
-
-export const resolveProfileTypeInitValue = (
-  availableMeasurements: Measurement[],
-  sourceEntity?: CustomerProductProfile | null | undefined
-) => {
-  let initValue = ProfileTypes.FreshMeasurement;
-
-  if (availableMeasurements.length === 0) {
-    initValue = ProfileTypes.Reference;
-  }
-
-  if (sourceEntity) {
-    /// TODO
-  }
-
-  return initValue;
-};
 
 const _buildOptions = (availableMeasurements: Measurement[]) => {
   const disabledOptionHint: string =
