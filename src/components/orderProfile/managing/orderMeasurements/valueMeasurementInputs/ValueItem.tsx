@@ -46,7 +46,6 @@ export const initInputValueModelDefaults = (
         if (sourceEntity) {
           const targetDefinitionId = mapDefinition.measurementDefinitionId;
 
-          debugger;
           if (sourceEntity?.customerProfileSizeValues) {
             const profileValue:
               | CustomerProfileSizeValue
@@ -79,6 +78,28 @@ export const initInputValueModelDefaults = (
   }
 
   return result;
+};
+
+export const resolveInitialValue = (
+  valueItem: IInputValueModel,
+  formik: any,
+  isBodySizeOffset: boolean
+) => {
+  const initialItem: any = new List(
+    formik.initialValues.valuesDefaultsHelper
+  ).firstOrDefault(
+    (item: any) =>
+      valueItem.measurementDefinitionId === item.measurementDefinitionId
+  );
+
+  if (initialItem) {
+    if (isBodySizeOffset)
+      valueItem.initFittingValue = initialItem.initFittingValue;
+    else valueItem.initValue = initialItem.initValue;
+  } else {
+    if (isBodySizeOffset) valueItem.initFittingValue = '';
+    else valueItem.initValue = '';
+  }
 };
 
 const _buildFieldName = (profileType: ProfileTypes, valueIndex: number) => {

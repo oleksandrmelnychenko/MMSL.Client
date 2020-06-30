@@ -33,6 +33,7 @@ import { orderProfileActions } from '../../redux/slices/orderProfile/orderProfil
 import { List } from 'linq-typescript';
 import OrderProfileFormBootstrapper from './managing/orderProfile/OrderProfileFormBootstrapper';
 import OrderMeasurementsFormBootstrapper from './managing/orderMeasurements/OrderMeasurementsFormBootstrapper';
+import OrderStylesFormBootstrapper from './managing/orderStyles/OrderStylesFormBootstrapper';
 
 export const DATA_SELECTION_DISABLED_CLASS: string = 'dataSelectionDisabled';
 
@@ -116,7 +117,6 @@ export const OrderProfileList: React.FC = () => {
           [],
           [],
           (args: any) => {
-            console.log(args);
             dispatch(orderProfileActions.changeTargetOrderProfile(args));
 
             dispatch(
@@ -128,6 +128,35 @@ export const OrderProfileList: React.FC = () => {
                   dispatch(controlActions.closeRightPanel());
                 },
                 component: OrderMeasurementsFormBootstrapper,
+              })
+            );
+          },
+          (args: any) => {}
+        )
+      );
+    }
+  };
+
+  const onConfigureStyles = (profileToConfigure: CustomerProductProfile) => {
+    if (profileToConfigure) {
+      dispatch(
+        assignPendingActions(
+          orderProfileActions.apiGetOrderProfileById(profileToConfigure.id),
+          [],
+          [],
+          (args: any) => {
+            dispatch(orderProfileActions.changeTargetOrderProfile(args));
+
+            console.log(args);
+            dispatch(
+              controlActions.openRightPanel({
+                title: 'Style Details',
+                description: `${profileToConfigure.name}`,
+                width: '612px',
+                closeFunctions: () => {
+                  dispatch(controlActions.closeRightPanel());
+                },
+                component: OrderStylesFormBootstrapper,
               })
             );
           },
@@ -210,7 +239,7 @@ export const OrderProfileList: React.FC = () => {
                 text: 'Style Details',
                 label: 'Style Details',
                 iconProps: { iconName: 'Settings' },
-                onClick: () => {},
+                onClick: () => onConfigureStyles(args?.item),
               },
               {
                 key: 'delete',

@@ -2,8 +2,6 @@ import { EntityBaseNamed, EntityBase } from './base';
 import { ProductDeliveryTimelineSelected } from './deliveryTimelines';
 import { ProductCategory } from './products';
 import { Measurement } from './measurements';
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
-import { number } from 'yup';
 import { CurrencyType } from './currencyTypes';
 
 export class OptionGroup extends EntityBaseNamed {

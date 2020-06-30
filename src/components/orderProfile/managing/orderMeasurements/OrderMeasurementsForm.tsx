@@ -14,6 +14,8 @@ import {
 import { IApplicationState } from '../../../../redux/reducers';
 import {
   CustomerProductProfile,
+  IMeasurementValuePayload,
+  IUpdateOrderProfilePayload,
   ProfileTypes,
 } from '../../../../interfaces/orderProfile';
 import { Measurement } from '../../../../interfaces/measurements';
@@ -40,32 +42,6 @@ export const FRESH_MEASUREMRNT_VALUES_FORM_FIELD = 'freshMeasuremrntValues';
 export const MEASUREMENT_SIZE_ID_FORM_FIELD = 'measurementSizeId';
 export const BASE_MEASUREMRNT_VALUES_FORM_FIELD = 'baseMeasuremrntValues';
 export const BODY_MEASUREMRNT_VALUES_FORM_FIELD = 'bodyMeasuremrntValues';
-
-interface IUpdateOrderProfilePayload {
-  measurementId: number;
-  fittingTypeId: number;
-  measurementSizeId: number;
-  profileType: number;
-  values: IMeasurementValuePayload[];
-  productStyles: IProductStyleValuePayload[];
-  name: string;
-  description: string;
-  id: number;
-}
-
-interface IMeasurementValuePayload {
-  value: string;
-  fittingValue: string;
-  measurementDefinitionId: number;
-  id: number;
-}
-
-interface IProductStyleValuePayload {
-  id: number;
-  isDeleted: boolean;
-  selectedStyleValue: string;
-  optionUnitId: number;
-}
 
 interface IFormValues {
   profileType: ProfileTypes;
@@ -206,19 +182,16 @@ const _urgentItemsDirtyHelper = (formik: any) => {
     isDirtyResult = new List(formik.values.freshMeasuremrntValues).any(
       (item: any) => item.value !== item.initValue
     );
-    debugger;
   } else if (formik.values.profileType === ProfileTypes.BaseMeasurement) {
     isDirtyResult = new List(formik.values.baseMeasuremrntValues).any(
       (item: any) => item.value !== item.initValue
     );
-    debugger;
   } else if (formik.values.profileType === ProfileTypes.BodyMeasurement) {
     isDirtyResult = new List(formik.values.bodyMeasuremrntValues).any(
       (item: any) =>
         item.value !== item.initValue ||
         item.fittingValue !== item.initFittingValue
     );
-    debugger;
   }
 
   return isDirtyResult;
@@ -294,7 +267,6 @@ export const OrderMeasurementsForm: React.FC<IOrderMeasurementsFormProps> = (
     if (targetOrderProfile) {
       const payload = _buildEditedPayload(values, targetOrderProfile);
 
-      console.log(payload);
       dispatch(
         assignPendingActions(
           orderProfileActions.apiUpdateOrderProfile(payload),

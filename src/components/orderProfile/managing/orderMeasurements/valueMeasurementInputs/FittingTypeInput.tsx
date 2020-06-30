@@ -15,7 +15,7 @@ import {
   BODY_MEASUREMRNT_VALUES_FORM_FIELD,
 } from '../OrderMeasurementsForm';
 import { List } from 'linq-typescript';
-import { IInputValueModel } from './ValueItem';
+import { IInputValueModel, resolveInitialValue } from './ValueItem';
 import { ProfileTypes } from '../../../../../interfaces/orderProfile';
 
 export interface IFittingTypeInputProps {
@@ -68,7 +68,7 @@ const _applyOffsetSizeValues = (
           if (sizeValue) valueItem.fittingValue = `${sizeValue.value}`;
 
           valueItem.initFittingValue = valueItem.fittingValue;
-          _helper(valueItem, formik);
+          resolveInitialValue(valueItem, formik, true);
 
           return valueItem;
         }
@@ -79,21 +79,6 @@ const _applyOffsetSizeValues = (
     }
   } else {
     /// TODO:
-  }
-};
-
-const _helper = (valueItem: IInputValueModel, formik: any) => {
-  const initialItem: any = new List(
-    formik.initialValues.valuesDefaultsHelper
-  ).firstOrDefault(
-    (item: any) =>
-      valueItem.measurementDefinitionId === item.measurementDefinitionId
-  );
-
-  if (initialItem) {
-    valueItem.initFittingValue = initialItem.initFittingValue;
-  } else {
-    valueItem.initFittingValue = '';
   }
 };
 

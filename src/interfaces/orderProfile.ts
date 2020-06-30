@@ -8,6 +8,7 @@ import {
 } from './measurements';
 import { EntityBaseNamed, EntityBase } from './base';
 import { ProductCategory } from './products';
+import { OptionUnit, UnitValue } from './options';
 
 export enum ProfileTypes {
   FreshMeasurement = 0,
@@ -41,6 +42,8 @@ export class CustomerProductProfile extends EntityBaseNamed {
     this.measurementSize = null;
 
     this.customerProfileSizeValues = [];
+
+    this.customerProfileStyleConfigurations = [];
   }
 
   profileType: ProfileTypes;
@@ -64,6 +67,8 @@ export class CustomerProductProfile extends EntityBaseNamed {
   measurementSize: MeasurementSize | null | undefined;
 
   customerProfileSizeValues: CustomerProfileSizeValue[];
+
+  customerProfileStyleConfigurations: CustomerProfileStyleConfiguration[];
 }
 
 export class CustomerProfileSizeValue extends EntityBase {
@@ -91,4 +96,53 @@ export class CustomerProfileSizeValue extends EntityBase {
 
   customerProductProfileId: number;
   customerProductProfile: CustomerProductProfile | null | undefined;
+}
+
+export class CustomerProfileStyleConfiguration extends EntityBase {
+  constructor() {
+    super();
+
+    this.unitValueId = 0;
+    this.unitValue = null;
+
+    this.optionUnitId = 0;
+    this.optionUnit = null;
+
+    this.customerProductProfileId = 0;
+  }
+
+  unitValueId: number | null | undefined;
+  unitValue: UnitValue | null | undefined;
+
+  optionUnitId: number;
+  optionUnit: OptionUnit | null | undefined;
+
+  customerProductProfileId: number;
+  customerProductProfile: CustomerProductProfile | null | undefined;
+}
+
+export interface IUpdateOrderProfilePayload {
+  measurementId: number;
+  fittingTypeId: number;
+  measurementSizeId: number;
+  profileType: number;
+  values: IMeasurementValuePayload[];
+  productStyles: IProductStyleValuePayload[];
+  name: string;
+  description: string;
+  id: number;
+}
+
+export interface IMeasurementValuePayload {
+  value: string;
+  fittingValue: string;
+  measurementDefinitionId: number;
+  id: number;
+}
+
+export interface IProductStyleValuePayload {
+  id: number;
+  isDeleted: boolean;
+  selectedStyleValueId: number;
+  optionUnitId: number;
 }

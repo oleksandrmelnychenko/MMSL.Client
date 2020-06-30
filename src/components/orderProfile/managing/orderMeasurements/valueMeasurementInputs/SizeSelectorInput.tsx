@@ -18,7 +18,7 @@ import { useDispatch } from 'react-redux';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
 import { measurementActions } from '../../../../../redux/slices/measurements/measurement.slice';
 import * as fabricStyles from '../../../../../common/fabric-styles/styles';
-import { IInputValueModel } from './ValueItem';
+import { IInputValueModel, resolveInitialValue } from './ValueItem';
 
 const _buildSizeOptions = (measurement: Measurement) => {
   let result: IComboBoxOption[] = [];
@@ -74,7 +74,7 @@ const _applySizeValues = (
           if (sizeValue) valueItem.value = `${sizeValue.value}`;
 
           valueItem.initValue = valueItem.value;
-          _helper(valueItem, formik);
+          resolveInitialValue(valueItem, formik, false);
 
           return valueItem;
         }
@@ -85,21 +85,6 @@ const _applySizeValues = (
     }
   } else {
     /// TODO:
-  }
-};
-
-const _helper = (valueItem: IInputValueModel, formik: any) => {
-  const initialItem: any = new List(
-    formik.initialValues.valuesDefaultsHelper
-  ).firstOrDefault(
-    (item: any) =>
-      valueItem.measurementDefinitionId === item.measurementDefinitionId
-  );
-
-  if (initialItem) {
-    valueItem.initValue = initialItem.initValue;
-  } else {
-    valueItem.initValue = '';
   }
 };
 
