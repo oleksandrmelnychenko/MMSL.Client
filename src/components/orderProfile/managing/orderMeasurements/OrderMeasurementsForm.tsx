@@ -83,11 +83,8 @@ const _initDefaultValues = (
   sourceEntity?: CustomerProductProfile | null | undefined
 ) => {
   const initValues: IFormValues = {
-    profileType:
-      measurements.length === 0
-        ? ProfileTypes.Reference
-        : ProfileTypes.FreshMeasurement,
-    measurementId: measurements.length > 0 ? measurements[0].id : 0,
+    profileType: ProfileTypes.FreshMeasurement,
+    measurementId: 0,
     fittingTypeId: 0,
     measurementSizeId: 0,
     freshMeasuremrntValues: [],
@@ -108,6 +105,15 @@ const _initDefaultValues = (
       ? sourceEntity.measurementSizeId
       : 0;
   }
+
+  if (initValues.profileType === 0)
+    initValues.profileType =
+      measurements.length === 0
+        ? ProfileTypes.Reference
+        : ProfileTypes.FreshMeasurement;
+
+  if (initValues.measurementId === 0)
+    initValues.measurementId = measurements.length > 0 ? measurements[0].id : 0;
 
   const targetMeasurement: Measurement | null | undefined = new List(
     measurements
