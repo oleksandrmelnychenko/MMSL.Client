@@ -91,9 +91,9 @@ export const OrderProfileList: React.FC = () => {
 
             dispatch(
               controlActions.openRightPanel({
-                title: 'Edit',
+                title: 'Details',
                 description: `${profileToEdit.name}`,
-                width: '400px',
+                width: '700px',
                 closeFunctions: () => {
                   dispatch(controlActions.closeRightPanel());
                 },
@@ -237,7 +237,7 @@ export const OrderProfileList: React.FC = () => {
                 key: 'styleDetails',
                 text: 'Style Details',
                 label: 'Style Details',
-                iconProps: { iconName: 'Settings' },
+                iconProps: { iconName: 'GiftboxOpen' },
                 onClick: () => onConfigureStyles(args?.item),
               },
               {

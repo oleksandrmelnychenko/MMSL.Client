@@ -11,6 +11,7 @@ import {
 } from 'office-ui-fabric-react';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
 import { ProductCategory } from '../../../../interfaces/products';
+import { List } from 'linq-typescript';
 
 export interface IProductsInputProps {
   products: ProductCategory[];
@@ -28,6 +29,45 @@ const _buildOptions = (products: ProductCategory[]) => {
     } as IDropdownOption;
   });
 };
+
+// const _renderProductInfo = (customers: ProductCategory[], formik: any) => {
+//   let result = null;
+
+//   if (formik.values.customer) {
+//     const selectedCustomer = new List<ProductCategory>(
+//       customers
+//     ).firstOrDefault((customer) => customer.id === formik.values.customer.id);
+
+//     if (selectedCustomer) {
+//       const partialContents: any[] = [];
+
+//       partialContents.push(
+//         onRenderPartialDetail('Name', selectedCustomer.userName)
+//       );
+//       partialContents.push(
+//         onRenderPartialDetail('Email', selectedCustomer.email)
+//       );
+//       partialContents.push(
+//         onRenderPartialDetail('Store', selectedCustomer.store?.name)
+//       );
+//       partialContents.push(
+//         onRenderPartialDetail('Phone Number', selectedCustomer.phoneNumber)
+//       );
+
+//       if (partialContents.length > 0) {
+//         result = (
+//           <Stack tokens={{ childrenGap: 3 }}>
+//             {partialContents.map((partialContent, index) => (
+//               <Stack.Item key={index}>{partialContent}</Stack.Item>
+//             ))}
+//           </Stack>
+//         );
+//       }
+//     }
+//   }
+
+//   return result;
+// };
 
 export const ProductsInput: React.FC<IProductsInputProps> = (
   props: IProductsInputProps

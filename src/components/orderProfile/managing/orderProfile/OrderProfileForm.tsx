@@ -23,10 +23,12 @@ import ProductsInput from './ProductsInput';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import { orderProfileActions } from '../../../../redux/slices/orderProfile/orderProfile.slice';
 import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
+import OrderProfileDetails from './OrderProfileDetails';
 
 export interface IOrderProfileFormProps {
   customers: StoreCustomer[];
   productCategories: ProductCategory[];
+  isEditingOrderProfile: boolean;
 }
 
 interface IFormValues {
@@ -218,68 +220,86 @@ export const OrderProfileForm: React.FC<IOrderProfileFormProps> = (
         return (
           <Form className="form">
             <div className="dealerFormManage">
-              <Stack>
-                <Field name="name">
-                  {() => (
-                    <div className="form__group">
-                      <TextField
-                        value={formik.values.name}
-                        styles={fabricStyles.textFildLabelStyles}
-                        className="form__group__field"
-                        label="Name"
-                        required
-                        onChange={(args: any) => {
-                          formik.setFieldValue('name', args.target.value);
-                          formik.setFieldTouched('name');
-                        }}
-                        errorMessage={
-                          formik.errors.name && formik.touched.name ? (
-                            <span className="form__group__error">
-                              {formik.errors.name}
-                            </span>
-                          ) : (
-                            ''
-                          )
-                        }
+              <Stack horizontal tokens={{ childrenGap: '24px' }}>
+                <Stack.Item styles={{ root: { maxWidth: '39%' } }} grow={1}>
+                  <Stack>
+                    <Field name="name">
+                      {() => (
+                        <div className="form__group">
+                          <TextField
+                            value={formik.values.name}
+                            styles={fabricStyles.textFildLabelStyles}
+                            className="form__group__field"
+                            label="Name"
+                            required
+                            onChange={(args: any) => {
+                              formik.setFieldValue('name', args.target.value);
+                              formik.setFieldTouched('name');
+                            }}
+                            errorMessage={
+                              formik.errors.name && formik.touched.name ? (
+                                <span className="form__group__error">
+                                  {formik.errors.name}
+                                </span>
+                              ) : (
+                                ''
+                              )
+                            }
+                          />
+                        </div>
+                      )}
+                    </Field>
+                    <Field name="description">
+                      {() => (
+                        <div className="form__group">
+                          <TextField
+                            value={formik.values.description}
+                            styles={fabricStyles.textFildLabelStyles}
+                            className="form__group__field"
+                            label="Description"
+                            onChange={(args: any) => {
+                              formik.setFieldValue(
+                                'description',
+                                args.target.value
+                              );
+                              formik.setFieldTouched('description');
+                            }}
+                            errorMessage={
+                              formik.errors.description &&
+                              formik.touched.description ? (
+                                <span className="form__group__error">
+                                  {formik.errors.description}
+                                </span>
+                              ) : (
+                                ''
+                              )
+                            }
+                          />
+                        </div>
+                      )}
+                    </Field>
+                    <CustomersInput
+                      customers={props.customers}
+                      formik={formik}
+                    />
+
+                    {props.isEditingOrderProfile ? null : (
+                      <ProductsInput
+                        isDisabled={targetOrderProfile ? true : false}
+                        products={props.productCategories}
+                        formik={formik}
                       />
-                    </div>
-                  )}
-                </Field>
-                <Field name="description">
-                  {() => (
-                    <div className="form__group">
-                      <TextField
-                        value={formik.values.description}
-                        styles={fabricStyles.textFildLabelStyles}
-                        className="form__group__field"
-                        label="Description"
-                        onChange={(args: any) => {
-                          formik.setFieldValue(
-                            'description',
-                            args.target.value
-                          );
-                          formik.setFieldTouched('description');
-                        }}
-                        errorMessage={
-                          formik.errors.description &&
-                          formik.touched.description ? (
-                            <span className="form__group__error">
-                              {formik.errors.description}
-                            </span>
-                          ) : (
-                            ''
-                          )
-                        }
-                      />
-                    </div>
-                  )}
-                </Field>
-                <CustomersInput customers={props.customers} formik={formik} />
-                <ProductsInput
-                  isDisabled={targetOrderProfile ? true : false}
-                  products={props.productCategories}
-                  formik={formik}
-                />
+                    )}
+                  </Stack>
+                </Stack.Item>
+                <Stack.Item grow={1} styles={{ root: { maxWidth: '59%' } }}>
+                  <OrderProfileDetails
+                    isEditingOrderProfile={props.isEditingOrderProfile}
+                    formik={formik}
+                    customers={props.customers}
+                    products={props.productCategories}
+                  />
+                </Stack.Item>
               </Stack>
             </div>
           </Form>

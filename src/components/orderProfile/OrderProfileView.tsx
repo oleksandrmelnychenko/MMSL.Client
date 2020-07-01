@@ -60,7 +60,7 @@ const OrderProfileView: React.FC = () => {
               dispatch(
                 controlActions.openRightPanel({
                   title: 'New Order profile',
-                  width: '400px',
+                  width: '700px',
                   closeFunctions: () => {
                     dispatch(controlActions.closeRightPanel());
                   },
