@@ -121,6 +121,18 @@ export class CustomerProfileStyleConfiguration extends EntityBase {
   customerProductProfile: CustomerProductProfile | null | undefined;
 }
 
+export interface IUpdateOrderProfileDetailsPayload {
+  measurementId: number;
+  fittingTypeId: number;
+  productCategoryId: number;
+  measurementSizeId: number;
+  profileType: number;
+  name: string;
+  description: string;
+  id: number;
+  storeCustomerId: number;
+}
+
 export interface IUpdateOrderProfilePayload {
   measurementId: number;
   fittingTypeId: number;
@@ -131,6 +143,7 @@ export interface IUpdateOrderProfilePayload {
   name: string;
   description: string;
   id: number;
+  storeCustomerId: number;
 }
 
 export interface IMeasurementValuePayload {

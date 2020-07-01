@@ -72,6 +72,7 @@ const _buildEditedPayload = (
     name: sourceEntity.name,
     description: sourceEntity.description,
     id: sourceEntity.id,
+    storeCustomerId: sourceEntity.storeCustomerId,
     values: [],
     productStyles: new List(values.productStyleValues)
       .where((unitModel: IStyleUnitModel) => unitModel.isDirty)

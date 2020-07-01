@@ -3,10 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import { Stack, TextField } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import { FormicReference } from '../../../../interfaces';
-import {
-  ProductPermissionSettings,
-  ProductCategory,
-} from '../../../../interfaces/products';
+import { ProductCategory } from '../../../../interfaces/products';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
 import { List } from 'linq-typescript';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,7 +19,11 @@ import CustomersInput from './CustomersInput';
 import ProductsInput from './ProductsInput';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import { orderProfileActions } from '../../../../redux/slices/orderProfile/orderProfile.slice';
-import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
+import {
+  CustomerProductProfile,
+  ProfileTypes,
+  IUpdateOrderProfileDetailsPayload,
+} from '../../../../interfaces/orderProfile';
 import OrderProfileDetails from './OrderProfileDetails';
 
 export interface IOrderProfileFormProps {
@@ -73,14 +74,22 @@ const _buildNewPayload = (values: IFormValues) => {
 
 const _buildEditedPayload = (
   values: IFormValues,
-  sourceEntity: any | null | undefined
+  sourceEntity: CustomerProductProfile | null | undefined
 ) => {
-  let payload: any = {
+  let payload: IUpdateOrderProfileDetailsPayload = {
     name: values.name,
     description: values.description,
     productCategoryId: values.productCategory ? values.productCategory.id : 0,
     storeCustomerId: values.customer ? values.customer.id : 0,
-    id: sourceEntity.id,
+    measurementId: sourceEntity?.measurementId ? sourceEntity.measurementId : 0,
+    fittingTypeId: sourceEntity?.fittingTypeId ? sourceEntity.fittingTypeId : 0,
+    measurementSizeId: sourceEntity?.measurementSizeId
+      ? sourceEntity.measurementSizeId
+      : 0,
+    profileType: sourceEntity?.profileType
+      ? sourceEntity.profileType
+      : ProfileTypes.FreshMeasurement,
+    id: sourceEntity?.id ? sourceEntity.id : 0,
   };
 
   return payload;
@@ -152,6 +161,7 @@ export const OrderProfileForm: React.FC<IOrderProfileFormProps> = (
         [],
         [],
         (args: any) => {
+          dispatch(orderProfileActions.changeTargetOrderProfile(args.body));
           dispatch(
             assignPendingActions(
               orderProfileActions.apiGetOrderProfiles(),
@@ -159,6 +169,10 @@ export const OrderProfileForm: React.FC<IOrderProfileFormProps> = (
               [],
               (args: any) => {
                 dispatch(orderProfileActions.changeOrderProfiles(args));
+
+                if (formikReference?.formik?.resetForm) {
+                  formikReference.formik.resetForm();
+                }
               },
               (args: any) => {}
             )

@@ -148,6 +148,7 @@ const _buildEditedPayload = (
     name: sourceEntity.name,
     description: sourceEntity.description,
     id: sourceEntity.id,
+    storeCustomerId: sourceEntity.storeCustomerId,
   };
 
   if (payload.profileType === ProfileTypes.FreshMeasurement) {
