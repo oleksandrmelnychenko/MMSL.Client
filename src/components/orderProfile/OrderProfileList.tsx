@@ -221,9 +221,9 @@ export const OrderProfileList: React.FC = () => {
             items: [
               {
                 key: 'edit',
-                text: 'Edit',
-                label: 'Edit',
-                iconProps: { iconName: 'Edit' },
+                text: 'Details',
+                label: 'Details',
+                iconProps: { iconName: 'Settings' },
                 onClick: () => onEditProfile(args?.item),
               },
               {

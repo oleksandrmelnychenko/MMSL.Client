@@ -32,7 +32,7 @@ const OrderProfileHeader: React.FC = () => {
             dispatch(
               controlActions.openRightPanel({
                 title: 'New Order profile',
-                width: '400px',
+                width: '800px',
                 closeFunctions: () => {
                   dispatch(controlActions.closeRightPanel());
                 },

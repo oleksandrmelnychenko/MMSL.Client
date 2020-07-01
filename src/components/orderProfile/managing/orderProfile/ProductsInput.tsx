@@ -93,7 +93,7 @@ export const ProductsInput: React.FC<IProductsInputProps> = (
       ) : (
         <div
           style={{
-            marginTop: '20px',
+            marginTop: '15px',
             padding: '6px 6px',
             backgroundColor: 'rgb(240, 240, 240)',
           }}
