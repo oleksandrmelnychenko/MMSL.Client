@@ -50,7 +50,9 @@ export const StyleSelectorInput: React.FC<IStyleSelectorInputProps> = (
                 />
               );
             })
-          : _renderHintLable('There are no defined styles for this product.')}
+          : _renderHintLable(
+              'There are no available styles for this product. Contact with your manufacturer'
+            )}
       </Stack>
     </>
   );

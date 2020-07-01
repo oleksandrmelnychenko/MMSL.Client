@@ -37,12 +37,11 @@ export const BaseMeasurementInput: React.FC<IBaseMeasurementInputProps> = (
               <FieldArray name={BASE_MEASUREMRNT_VALUES_FORM_FIELD}>
                 {(arrayHelper: any) => {
                   return (
-                    <Stack tokens={{ childrenGap: '6px' }}>
+                    <Stack horizontal wrap tokens={{ childrenGap: '9px' }}>
                       {props.formik.values.baseMeasuremrntValues.map(
                         (valueModel: IInputValueModel, index: number) => {
                           return (
                             <ValueItem
-                              isBodySizeOffset={false}
                               key={index}
                               index={index}
                               formik={props.formik}

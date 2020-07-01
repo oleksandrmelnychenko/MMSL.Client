@@ -3,6 +3,7 @@
     padding: 6px 9px;
     border: 1px solid rgb(200, 200, 200);
     border-left: 3px solid rgb(200, 200, 200);
+    width: 48%;
 
     &.isDirty {
         border-left: 3px solid #0078d4;
@@ -10,5 +11,21 @@
 
     &__editNameInput {
         border: 1px solid rgb(200, 200, 200);
+    }
+
+    // &__text {
+    //     width: 176px;
+    // }
+
+    &__sizeMeasurement {
+        min-width: 160px;
+    }
+
+    &__fittingMeasurement {
+        min-width: 160px;
+    }
+
+    &.fittingValueItem {
+        width: auto;
     }
 }

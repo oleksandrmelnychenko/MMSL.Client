@@ -4,7 +4,7 @@ import {
   CustomerProductProfile,
   ProfileTypes,
 } from '../../../../../interfaces/orderProfile';
-import { Stack, Separator } from 'office-ui-fabric-react';
+import { Stack, Separator, Text } from 'office-ui-fabric-react';
 import ValueItem, { IInputValueModel } from './ValueItem';
 import { BODY_MEASUREMRNT_VALUES_FORM_FIELD } from '../OrderMeasurementsForm';
 import FittingTypeInput from './FittingTypeInput';
@@ -13,6 +13,8 @@ export interface IBodyMeasurementInputProps {
   formik: any;
   orderProfile: CustomerProductProfile | null | undefined;
 }
+
+const _measurementLabelsStyle = { root: { color: '#b6b6b6' } };
 
 export const BodyMeasurementInput: React.FC<IBodyMeasurementInputProps> = (
   props: IBodyMeasurementInputProps
@@ -25,65 +27,43 @@ export const BodyMeasurementInput: React.FC<IBodyMeasurementInputProps> = (
           <Stack tokens={{ childrenGap: '12px' }}>
             <FittingTypeInput formik={props.formik} />
 
-            <Stack horizontal tokens={{ childrenGap: '12px' }}>
-              <Stack.Item grow={1}>
-                <Stack tokens={{ childrenGap: '6px' }}>
-                  <Separator alignContent="start">Body measurement</Separator>
-
-                  <FieldArray name={BODY_MEASUREMRNT_VALUES_FORM_FIELD}>
-                    {(arrayHelper: any) => {
-                      return (
-                        <Stack tokens={{ childrenGap: '6px' }}>
-                          {props.formik.values.bodyMeasuremrntValues.map(
-                            (valueModel: IInputValueModel, index: number) => {
-                              return (
-                                <ValueItem
-                                  isBodySizeOffset={false}
-                                  key={index}
-                                  index={index}
-                                  formik={props.formik}
-                                  valueModel={valueModel}
-                                />
-                              );
-                            }
-                          )}
-                        </Stack>
-                      );
-                    }}
-                  </FieldArray>
+            <Stack.Item grow={1}>
+              <Stack tokens={{ childrenGap: '3px' }}>
+                {/* <Separator alignContent="start">Body measurement</Separator> */}
+                <Stack
+                  horizontal
+                  tokens={{ childrenGap: '176px' }}
+                  styles={{ root: { marginLeft: '120px' } }}
+                >
+                  <Text block styles={_measurementLabelsStyle}>
+                    Fresh
+                  </Text>
+                  <Text block styles={_measurementLabelsStyle}>
+                    Body
+                  </Text>
                 </Stack>
-              </Stack.Item>
-
-              {/* <Stack.Item grow={1}>
-                <Stack tokens={{ childrenGap: '6px' }}>
-                  <Separator alignContent="start">
-                    Body measurement offsets
-                  </Separator>
-
-                  <FieldArray name={BODY_MEASUREMRNT_VALUES_FORM_FIELD}>
-                    {(arrayHelper: any) => {
-                      return (
-                        <Stack tokens={{ childrenGap: '6px' }}>
-                          {props.formik.values.bodyMeasuremrntValues.map(
-                            (valueModel: IInputValueModel, index: number) => {
-                              return (
-                                <ValueItem
-                                  isBodySizeOffset={true}
-                                  key={index}
-                                  index={index}
-                                  formik={props.formik}
-                                  valueModel={valueModel}
-                                />
-                              );
-                            }
-                          )}
-                        </Stack>
-                      );
-                    }}
-                  </FieldArray>
-                </Stack>
-              </Stack.Item> */}
-            </Stack>
+                <FieldArray name={BODY_MEASUREMRNT_VALUES_FORM_FIELD}>
+                  {(arrayHelper: any) => {
+                    return (
+                      <Stack tokens={{ childrenGap: '6px' }}>
+                        {props.formik.values.bodyMeasuremrntValues.map(
+                          (valueModel: IInputValueModel, index: number) => {
+                            return (
+                              <ValueItem
+                                key={index}
+                                index={index}
+                                formik={props.formik}
+                                valueModel={valueModel}
+                              />
+                            );
+                          }
+                        )}
+                      </Stack>
+                    );
+                  }}
+                </FieldArray>
+              </Stack>
+            </Stack.Item>
           </Stack>
         </>
       ) : null}

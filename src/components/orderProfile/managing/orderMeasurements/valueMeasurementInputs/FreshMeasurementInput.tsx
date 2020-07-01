@@ -30,19 +30,20 @@ export const FreshMeasurementInput: React.FC<IFreshMeasurementInputProps> = (
               >
                 <Separator alignContent="start">Fresh measurement</Separator>
 
-                {props.formik.values.freshMeasuremrntValues.map(
-                  (valueModel: IInputValueModel, index: number) => {
-                    return (
-                      <ValueItem
-                        isBodySizeOffset={false}
-                        key={index}
-                        index={index}
-                        formik={props.formik}
-                        valueModel={valueModel}
-                      />
-                    );
-                  }
-                )}
+                <Stack horizontal wrap tokens={{ childrenGap: '9px' }}>
+                  {props.formik.values.freshMeasuremrntValues.map(
+                    (valueModel: IInputValueModel, index: number) => {
+                      return (
+                        <ValueItem
+                          key={index}
+                          index={index}
+                          formik={props.formik}
+                          valueModel={valueModel}
+                        />
+                      );
+                    }
+                  )}
+                </Stack>
               </Stack>
             );
           }}

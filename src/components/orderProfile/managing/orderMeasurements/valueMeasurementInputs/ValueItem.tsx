@@ -174,14 +174,13 @@ const _onSetItemValue = (
   formik.setFieldTouched(formikField);
 };
 
-const _resolveIsDirty = (
-  valueModel: IInputValueModel,
-  isBodySizeOffset: boolean
-) => {
+const _resolveIsDirty = (valueModel: IInputValueModel, formik: any) => {
   let result: boolean = false;
 
-  if (isBodySizeOffset) {
-    result = valueModel.fittingValue !== valueModel.initFittingValue;
+  if (formik.values.profileType === ProfileTypes.BodyMeasurement) {
+    result =
+      valueModel.fittingValue !== valueModel.initFittingValue ||
+      valueModel.value !== valueModel.initValue;
   } else {
     result = valueModel.value !== valueModel.initValue;
   }
@@ -203,27 +202,34 @@ export interface IValueItemProps {
   formik: any;
   valueModel: IInputValueModel;
   index: number;
-  isBodySizeOffset: boolean;
+  // isBodySizeOffset: boolean;
 }
 
 export const ValueItem: React.FC<IValueItemProps> = (
   props: IValueItemProps
 ) => {
+  let componentClassName = _resolveIsDirty(props.valueModel, props.formik)
+    ? 'valueItem isDirty'
+    : 'valueItem';
+
+  if (props.formik.values.profileType === ProfileTypes.BodyMeasurement)
+    componentClassName += ' fittingValueItem';
+
   return (
     <>
       <Field
         name={_buildFieldName(props.formik.values.profileType, props.index)}
       >
         {() => (
-          <div
-            className={
-              _resolveIsDirty(props.valueModel, props.isBodySizeOffset)
-                ? 'valueItem isDirty'
-                : 'valueItem'
-            }
-          >
-            <Stack horizontal horizontalAlign="space-between">
+          <div className={componentClassName}>
+            <Stack
+              tokens={{ childrenGap: '12px' }}
+              horizontal
+              horizontalAlign="space-between"
+            >
               <Stack.Item
+                className={'valueItem__text'}
+                grow={2}
                 styles={{
                   root: {
                     display: 'flex',
@@ -231,9 +237,11 @@ export const ValueItem: React.FC<IValueItemProps> = (
                   },
                 }}
               >
-                <Text>{props.valueModel.definitionName}</Text>
+                <Text block nowrap styles={{ root: { width: '70px' } }}>
+                  {props.valueModel.definitionName}
+                </Text>
               </Stack.Item>
-              <Stack.Item>
+              <Stack.Item grow={1} className={'valueItem__sizeMeasurement'}>
                 <div className="valueItem__editNameInput">
                   <TextField
                     autoComplete={false ? 'on' : 'off'}
@@ -242,19 +250,52 @@ export const ValueItem: React.FC<IValueItemProps> = (
                     value={_extractCurrentValueFromFormik(
                       props.formik,
                       props.index,
-                      props.isBodySizeOffset
+                      false
                     )}
                     onChange={(args: any) => {
                       _onSetItemValue(
                         args?.target?.value ? args.target.value : '',
                         props.formik,
                         props.index,
-                        props.isBodySizeOffset
+                        false
                       );
                     }}
                   />
                 </div>
               </Stack.Item>
+
+              {
+                <>
+                  {props.formik.values.profileType ===
+                  ProfileTypes.BodyMeasurement ? (
+                    <Stack.Item
+                      grow={1}
+                      className={'valueItem__fittingMeasurement'}
+                    >
+                      <div className="valueItem__editNameInput">
+                        <TextField
+                          autoComplete={false ? 'on' : 'off'}
+                          type="number"
+                          borderless
+                          value={_extractCurrentValueFromFormik(
+                            props.formik,
+                            props.index,
+                            true
+                          )}
+                          onChange={(args: any) => {
+                            _onSetItemValue(
+                              args?.target?.value ? args.target.value : '',
+                              props.formik,
+                              props.index,
+                              true
+                            );
+                          }}
+                        />
+                      </div>
+                    </Stack.Item>
+                  ) : null}
+                </>
+              }
             </Stack>
           </div>
         )}
