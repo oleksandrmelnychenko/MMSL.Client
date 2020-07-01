@@ -25,7 +25,6 @@ export const initUnitItems = (
   productCategory: ProductCategory | null | undefined,
   sourceEntity: CustomerProductProfile | null | undefined
 ) => {
-  debugger;
   let result: IStyleUnitModel[] = [];
 
   if (productCategory?.optionGroupMaps) {
@@ -57,8 +56,6 @@ export const initUnitItems = (
           isChecked: false,
           isDirty: false,
         };
-
-        debugger;
 
         if (sourceEntity?.customerProfileStyleConfigurations) {
           const profileValue:

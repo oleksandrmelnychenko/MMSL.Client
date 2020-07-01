@@ -258,7 +258,12 @@ export const ManageCustomerForm: React.FC<ManageCustomerFormProps> = (
                             firstDayOfWeek={DayOfWeek.Monday}
                             strings={fabricControlSettings.dayPickerStrings}
                             textField={fabricStyles.datePickerStyles}
-                            value={new Date(formik.values.birthDate)}
+                            // value={new Date(formik.values.birthDate)}
+                            value={
+                              formik.values.birthDate
+                                ? new Date(formik.values.birthDate)
+                                : undefined
+                            }
                             label="Birth Date"
                             onSelectDate={(date: Date | null | undefined) => {
                               formik.setFieldValue(

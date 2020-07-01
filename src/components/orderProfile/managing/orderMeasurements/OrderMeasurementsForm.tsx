@@ -238,7 +238,6 @@ export const OrderMeasurementsForm: React.FC<IOrderMeasurementsFormProps> = (
           GetCommandBarItemProps(CommandBarItem.Reset, () => {
             formikReference.formik.resetForm();
 
-            debugger;
             setFormInit(
               _initDefaultValues(props.measurements, targetOrderProfile)
             );
