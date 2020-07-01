@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack, Separator, Text } from 'office-ui-fabric-react';
+import { Stack, Separator, Text, FontWeights } from 'office-ui-fabric-react';
 import StyleUnitItem, { IStyleUnitModel } from './StyleUnitItem';
 
 export interface IStyleGroupItemProps {
@@ -16,7 +16,14 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
     <div className="styleGroupItem">
       <Stack tokens={{ childrenGap: 9 }}>
         <Stack.Item align="start">
-          <Text>{props.groupName}</Text>
+          <Text
+            style={{ fontSize: '16px' }}
+            styles={{
+              root: { color: '#0078d4', fontWeight: FontWeights.bold },
+            }}
+          >
+            {props.groupName}
+          </Text>
         </Stack.Item>
 
         {props.unitModels && props.unitModels.length > 0 ? (

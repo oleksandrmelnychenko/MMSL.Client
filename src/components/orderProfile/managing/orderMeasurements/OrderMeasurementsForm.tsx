@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form } from 'formik';
-import { Stack } from 'office-ui-fabric-react';
+import { Stack, Text } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import { FormicReference } from '../../../../interfaces';
 import { List } from 'linq-typescript';
@@ -348,6 +348,24 @@ export const OrderMeasurementsForm: React.FC<IOrderMeasurementsFormProps> = (
                   formik={formik}
                   orderProfile={targetOrderProfile}
                 />
+
+                {formik.values.profileType === ProfileTypes.Reference ? (
+                  <Text
+                    block
+                    styles={{
+                      root: {
+                        marginTop: '15px !important',
+                        fontWeight: 400,
+                        fontSize: '14px',
+                        color: '#a19f9d',
+                      },
+                    }}
+                  >
+                    {
+                      'Customer should provide fit shirt to replicate measurement'
+                    }
+                  </Text>
+                ) : null}
               </Stack>
             </div>
           </Form>
