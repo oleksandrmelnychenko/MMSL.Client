@@ -54,7 +54,7 @@ export const BodyMeasurementInput: React.FC<IBodyMeasurementInputProps> = (
                 </Stack>
               </Stack.Item>
 
-              <Stack.Item grow={1}>
+              {/* <Stack.Item grow={1}>
                 <Stack tokens={{ childrenGap: '6px' }}>
                   <Separator alignContent="start">
                     Body measurement offsets
@@ -82,7 +82,7 @@ export const BodyMeasurementInput: React.FC<IBodyMeasurementInputProps> = (
                     }}
                   </FieldArray>
                 </Stack>
-              </Stack.Item>
+              </Stack.Item> */}
             </Stack>
           </Stack>
         </>

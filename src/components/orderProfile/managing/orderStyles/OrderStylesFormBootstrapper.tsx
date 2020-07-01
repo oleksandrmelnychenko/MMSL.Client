@@ -35,7 +35,6 @@ export const OrderStylesFormBootstrapper: React.FC = () => {
           [],
           [],
           (args: any) => {
-            console.log('========>');
             setIsCategoryWasIntended(true);
             setProductCategory(args);
           },

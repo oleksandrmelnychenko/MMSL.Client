@@ -147,7 +147,6 @@ export const OrderProfileList: React.FC = () => {
           (args: any) => {
             dispatch(orderProfileActions.changeTargetOrderProfile(args));
 
-            console.log(args);
             dispatch(
               controlActions.openRightPanel({
                 title: 'Style Details',

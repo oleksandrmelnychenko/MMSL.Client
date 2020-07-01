@@ -236,6 +236,7 @@ export const ValueItem: React.FC<IValueItemProps> = (
               <Stack.Item>
                 <div className="valueItem__editNameInput">
                   <TextField
+                    autoComplete={false ? 'on' : 'off'}
                     type="number"
                     borderless
                     value={_extractCurrentValueFromFormik(

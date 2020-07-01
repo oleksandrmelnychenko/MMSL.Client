@@ -197,7 +197,6 @@ export const OrderStylesForm: React.FC<IOrderStylesFormProps> = (
       innerRef={(formik: any) => {
         formikReference.formik = formik;
         if (formik) {
-          console.log(formik.values);
           setFormikDirty(
             formik.dirty ||
               new List<IStyleUnitModel>(formik.values.productStyleValues).any(
