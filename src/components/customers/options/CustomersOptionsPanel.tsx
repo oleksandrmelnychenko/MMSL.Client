@@ -32,7 +32,7 @@ import {
 import { useHistory } from 'react-router-dom';
 
 export const onDismisActionsCustomersOptionsPanel = () => {
-  return [customerActions.selectedCustomer(null)];
+  return [customerActions.updateSelectedCustomer(null)];
 };
 
 const CustomersOptionsPanel: React.FC = () => {
@@ -58,7 +58,7 @@ const CustomersOptionsPanel: React.FC = () => {
               width: '400px',
               closeFunctions: () => {
                 dispatch(controlActions.closeRightPanel());
-                dispatch(customerActions.selectedCustomer(null));
+                dispatch(customerActions.updateSelectedCustomer(null));
               },
               component: ManageCustomerForm,
             })
@@ -128,7 +128,9 @@ const CustomersOptionsPanel: React.FC = () => {
                             )
                           );
 
-                          dispatch(customerActions.selectedCustomer(null));
+                          dispatch(
+                            customerActions.updateSelectedCustomer(null)
+                          );
                           dispatch(
                             controlActions.closeInfoPanelWithComponent()
                           );

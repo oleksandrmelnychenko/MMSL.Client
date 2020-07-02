@@ -42,6 +42,7 @@ const customer = createSlice({
   reducers: {
     apiDeleteCustomerById(state, action: { type: string; payload: number }) {},
     apigetAllCustomers(state) {},
+    apiGetCustomerById(state, action: { type: string; payload: number }) {},
     getCustomersListPaginated(state) {},
     customerFormStoreAutocompleteText(state, action) {},
     updateStoreCustomer(state, action) {},
@@ -62,7 +63,7 @@ const customer = createSlice({
       state.customerState.searchByStore = action.payload;
       return state;
     },
-    selectedCustomer(state, action) {
+    updateSelectedCustomer(state, action) {
       state.customerState.selectedCustomer = action.payload;
       return state;
     },

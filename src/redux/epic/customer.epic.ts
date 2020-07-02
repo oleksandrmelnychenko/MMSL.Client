@@ -113,6 +113,48 @@ export const apigetAllCustomersEpic = (action$: AnyAction, state$: any) => {
   );
 };
 
+export const apiGetCustomerByIdEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(customerActions.apiGetCustomerById.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      return getWebRequest(api.GET_CUSTOMER_BY_ID, state$.value, [
+        {
+          key: 'storeCustomerId',
+          value: `${action.payload}`,
+        },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_GET_CUSTOMER_BY_ID' },
+                controlActions.showInfoMessage(
+                  new InfoMessage(
+                    `Error occurred while getting customer. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
 export const customerFormStoreAutocompleteTextEpic = (
   action$: AnyAction,
   state$: any
@@ -218,7 +260,7 @@ export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
             [
               controlActions.closeRightPanel(),
               customerActions.getCustomersListPaginated(),
-              customerActions.selectedCustomer(null),
+              customerActions.updateSelectedCustomer(null),
               controlActions.disabledStatusBar(),
               controlActions.showInfoMessage(
                 new InfoMessage(successResponse.message)

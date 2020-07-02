@@ -1,18 +1,19 @@
 import React from 'react';
-import { Stack, ActionButton, Text } from 'office-ui-fabric-react';
-import '../dealers/dealers.scss';
+import { Stack, Text, Separator } from 'office-ui-fabric-react';
 import {
   mainTitleContent,
   horizontalGapStackTokens,
-  columnIconButtonStyle,
+  mainTitleHintContent,
 } from '../../../common/fabric-styles/styles';
-import { useDispatch } from 'react-redux';
-import { controlActions } from '../../../redux/slices/control.slice';
-import OrderProfileFormBootstrapper from './managing/orderProfile/OrderProfileFormBootstrapper';
-import { orderProfileActions } from '../../../redux/slices/customer/orderProfile/orderProfile.slice';
+import { useSelector } from 'react-redux';
+import { IApplicationState } from '../../../redux/reducers';
+import { StoreCustomer } from '../../../interfaces/storeCustomer';
 
 const OrderProfileHeader: React.FC = () => {
-  const dispatch = useDispatch();
+  const selectedCustomer: StoreCustomer | null | undefined = useSelector<
+    IApplicationState,
+    StoreCustomer | null | undefined
+  >((state) => state.customer.customerState.selectedCustomer);
 
   return (
     <div>
@@ -24,25 +25,12 @@ const OrderProfileHeader: React.FC = () => {
         <Text variant="xLarge" block styles={mainTitleContent}>
           Order profile
         </Text>
-        <ActionButton
-          styles={columnIconButtonStyle}
-          iconProps={{ iconName: 'Add' }}
-          onClick={() => {
-            dispatch(orderProfileActions.changeTargetOrderProfile(null));
-            dispatch(
-              controlActions.openRightPanel({
-                title: 'New Order profile',
-                width: '700px',
-                closeFunctions: () => {
-                  dispatch(controlActions.closeRightPanel());
-                },
-                component: OrderProfileFormBootstrapper,
-              })
-            );
-          }}
-        >
-          New order profile
-        </ActionButton>
+
+        <Separator vertical />
+
+        <Text variant="xLarge" styles={mainTitleHintContent}>
+          {selectedCustomer ? selectedCustomer.customerName : ''}
+        </Text>
       </Stack>
     </div>
   );

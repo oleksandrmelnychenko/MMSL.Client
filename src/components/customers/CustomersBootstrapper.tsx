@@ -6,7 +6,10 @@ import { assignPendingActions } from '../../helpers/action.helper';
 import { List } from 'linq-typescript';
 import { productActions } from '../../redux/slices/product.slice';
 import { controlActions } from '../../redux/slices/control.slice';
-import { CustomerListState } from '../../redux/slices/customer/customer.slice';
+import {
+  CustomerListState,
+  customerActions,
+} from '../../redux/slices/customer/customer.slice';
 import CustomersOptionsPanel, {
   onDismisActionsCustomersOptionsPanel,
 } from './options/CustomersOptionsPanel';
@@ -58,16 +61,16 @@ const CustomersBootstrapper: React.FC = () => {
 
   const resolveTargetCustomerFlow = (optionsLeftPanelComponent: any) => {
     if (!selectedCustomer) {
-      const categoryId: number = _extractCustomerIdFromPath(history);
+      const customerId: number = _extractCustomerIdFromPath(history);
 
-      if (categoryId && !isNaN(categoryId)) {
+      if (customerId && !isNaN(customerId)) {
         dispatch(
           assignPendingActions(
-            productActions.apiGetProductCategoryById(categoryId),
+            customerActions.apiGetCustomerById(customerId),
             [],
             [],
             (args: any) => {
-              dispatch(productActions.chooseProductCategory(args));
+              dispatch(customerActions.updateSelectedCustomer(args));
               dispatch(
                 controlActions.openInfoPanelWithComponent({
                   component: optionsLeftPanelComponent,

@@ -36,7 +36,7 @@ export const CustomersHeader: React.FC = (props: any) => {
       <ActionButton
         className="customersAdd"
         onClick={() => {
-          dispatch(customerActions.selectedCustomer(null));
+          dispatch(customerActions.updateSelectedCustomer(null));
           dispatch(
             controlActions.openRightPanel({
               title: 'New Customer',

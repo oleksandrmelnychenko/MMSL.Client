@@ -16,24 +16,14 @@ const orderProfile = createSlice({
   initialState: INIT_STATE,
 
   reducers: {
-    apiGetOrderProfiles(state) {
-      return state;
-    },
-    apiCreateOrderProfile(state, action: { type: string; payload: any }) {
-      return state;
-    },
+    apiGetOrderProfiles(state) {},
+    apiCreateOrderProfile(state, action: { type: string; payload: any }) {},
     apiDeleteOrderProfileById(
       state,
       action: { type: string; payload: number }
-    ) {
-      return state;
-    },
-    apiUpdateOrderProfile(state, action: { type: string; payload: any }) {
-      return state;
-    },
-    apiGetOrderProfileById(state, action: { type: string; payload: number }) {
-      return state;
-    },
+    ) {},
+    apiUpdateOrderProfile(state, action: { type: string; payload: any }) {},
+    apiGetOrderProfileById(state, action: { type: string; payload: number }) {},
     changeOrderProfiles(
       state,
       action: { type: string; payload: CustomerProductProfile[] }

@@ -114,7 +114,7 @@ export const CustomerList: React.FC = () => {
   useEffect(() => {
     dispatch(customerActions.getCustomersListPaginated());
     return () => {
-      dispatch(customerActions.selectedCustomer(null));
+      dispatch(customerActions.updateSelectedCustomer(null));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -156,7 +156,7 @@ export const CustomerList: React.FC = () => {
       <div
         onClick={(clickArgs: any) => {
           const selectFlow = () => {
-            dispatch(customerActions.selectedCustomer(args.item));
+            dispatch(customerActions.updateSelectedCustomer(args.item));
             dispatch(
               controlActions.openInfoPanelWithComponent({
                 component: CustomersOptionsPanel,
