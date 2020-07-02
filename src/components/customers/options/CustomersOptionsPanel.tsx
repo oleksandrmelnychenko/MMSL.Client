@@ -1,5 +1,11 @@
 import React from 'react';
-import { Label, PrimaryButton } from 'office-ui-fabric-react';
+import {
+  Label,
+  PrimaryButton,
+  TooltipHost,
+  TooltipDelay,
+  DirectionalHint,
+} from 'office-ui-fabric-react';
 import {
   customerActions,
   CustomerListState,
@@ -34,7 +40,7 @@ const CustomersOptionsPanel: React.FC = () => {
       title: 'Details',
       className: 'management__btn-detail',
       isDisabled: selectedCustomer ? false : true,
-      tooltip: '',
+      tooltip: 'Store customer details info',
       onClickFunc: () => {
         if (selectedCustomer) {
           dispatch(
@@ -108,19 +114,29 @@ const CustomersOptionsPanel: React.FC = () => {
   return (
     <div className="management">
       {menuItem.map((item, index) => (
-        <Label
+        <TooltipHost
           key={index}
-          styles={labelStyle}
-          className={false ? 'selected' : ''}
+          id={`{${index}__optionTooltip}`}
+          calloutProps={{ gapSpace: 0 }}
+          delay={TooltipDelay.zero}
+          directionalHint={DirectionalHint.rightCenter}
+          styles={{ root: { display: 'inline-block' } }}
+          content={(item as any).tooltip}
         >
-          <PrimaryButton
-            styles={btnMenuStyle}
-            className={item.className}
-            onClick={() => item.onClickFunc()}
-            allowDisabledFocus
-          />
-          {item.title}
-        </Label>
+          <Label
+            key={index}
+            styles={labelStyle}
+            className={false ? 'selected' : ''}
+          >
+            <PrimaryButton
+              styles={btnMenuStyle}
+              className={item.className}
+              onClick={() => item.onClickFunc()}
+              allowDisabledFocus
+            />
+            {item.title}
+          </Label>
+        </TooltipHost>
       ))}
     </div>
   );
