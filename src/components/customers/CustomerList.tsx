@@ -13,26 +13,20 @@ import {
   IDetailsColumnRenderTooltipProps,
   DetailsList,
   DetailsRow,
-  IconButton,
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import { customerActions } from '../../redux/slices/customer.slice';
-import {
-  controlActions,
-  DialogArgs,
-  CommonDialogType,
-} from '../../redux/slices/control.slice';
-import ManagementPanel from './options/ManagmentPanel';
+import { controlActions } from '../../redux/slices/control.slice';
+import CustomersOptionsPanel, {
+  onDismisActionsCustomersOptionsPanel,
+} from './options/CustomersOptionsPanel';
 import { CustomerListState } from '../../redux/slices/customer.slice';
 import {
   scrollablePaneStyleForDetailList,
   detailsListStyle,
   defaultCellStyle,
 } from '../../common/fabric-styles/styles';
-import { StoreCustomer } from '../../interfaces/storeCustomer';
-import { assignPendingActions } from '../../helpers/action.helper';
-import { List } from 'linq-typescript';
 
 const _customerColumns: IColumn[] = [
   {
@@ -133,45 +127,6 @@ export const CustomerList: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCustomer]);
 
-  const onDeleteCustomer = (customerToDelete: StoreCustomer) => {
-    if (customerToDelete) {
-      dispatch(
-        controlActions.toggleCommonDialogVisibility(
-          new DialogArgs(
-            CommonDialogType.Delete,
-            'Delete customer',
-            `Are you sure you want to delete ${customerToDelete.customerName}?`,
-            () => {
-              if (customerToDelete) {
-                dispatch(
-                  assignPendingActions(
-                    customerActions.apiDeleteCustomerById(customerToDelete.id),
-                    [],
-                    [],
-                    (args: any) => {
-                      dispatch(
-                        customerActions.updateCustomersList(
-                          new List(customersList)
-                            .where((item) => item.id !== customerToDelete.id)
-                            .toArray()
-                        )
-                      );
-
-                      dispatch(customerActions.selectedCustomer(null));
-                      dispatch(controlActions.closeInfoPanelWithComponent());
-                    },
-                    (args: any) => {}
-                  )
-                );
-              }
-            },
-            () => {}
-          )
-        )
-      );
-    }
-  };
-
   const onRenderDetailsHeader: IRenderFunction<IDetailsHeaderProps> = (
     props,
     defaultRender
@@ -197,31 +152,6 @@ export const CustomerList: React.FC = () => {
   };
 
   const onRenderRow = (args: any) => {
-    // args.onRenderDetailsCheckbox = (props?: any, defaultRender?: any) => {
-    //   return (
-    //     <IconButton
-    //       menuProps={{
-    //         onDismiss: (ev) => {},
-    //         items: [
-    //           {
-    //             key: 'delete',
-    //             text: 'Delete',
-    //             label: 'Delete',
-    //             iconProps: { iconName: 'Delete' },
-    //             onClick: () => onDeleteCustomer(args.item),
-    //           },
-    //         ],
-    //         styles: {
-    //           root: { width: '137px' },
-    //           container: { width: '137px' },
-    //         },
-    //       }}
-    //       onRenderMenuIcon={(props?: any, defaultRender?: any) => null}
-    //       iconProps={{ iconName: 'More' }}
-    //       onMenuClick={(ev?: any) => {}}
-    //     />
-    //   );
-    // };
     return (
       <div
         onClick={(clickArgs: any) => {
@@ -229,8 +159,11 @@ export const CustomerList: React.FC = () => {
             dispatch(customerActions.selectedCustomer(args.item));
             dispatch(
               controlActions.openInfoPanelWithComponent({
-                component: ManagementPanel,
-                onDismisPendingAction: () => {},
+                component: CustomersOptionsPanel,
+                onDismisPendingAction: () =>
+                  onDismisActionsCustomersOptionsPanel().forEach((action) => {
+                    dispatch(action);
+                  }),
               })
             );
           };

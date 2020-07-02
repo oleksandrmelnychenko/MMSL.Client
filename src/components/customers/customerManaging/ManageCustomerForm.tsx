@@ -134,6 +134,7 @@ export const ManageCustomerForm: React.FC = () => {
       dispatch(
         controlActions.setPanelButtons([
           GetCommandBarItemProps(CommandBarItem.Save, () => {
+            debugger;
             formikReference.formik.submitForm();
           }),
           GetCommandBarItemProps(CommandBarItem.Reset, () => {
@@ -218,6 +219,7 @@ export const ManageCustomerForm: React.FC = () => {
                       {() => (
                         <div className="form__group">
                           <TextField
+                            autoComplete={'off'}
                             value={formik.values.userName}
                             styles={fabricStyles.textFildLabelStyles}
                             className="form__group__field"
@@ -247,6 +249,7 @@ export const ManageCustomerForm: React.FC = () => {
                       {() => (
                         <div className="form__group">
                           <TextField
+                            autoComplete={'off'}
                             value={formik.values.customerName}
                             styles={fabricStyles.textFildLabelStyles}
                             className="form__group__field"
@@ -275,6 +278,7 @@ export const ManageCustomerForm: React.FC = () => {
                       {() => (
                         <div className="form__group">
                           <TextField
+                            autoComplete={'off'}
                             value={formik.values.email}
                             styles={fabricStyles.textFildLabelStyles}
                             className="form__group__field"
@@ -379,6 +383,7 @@ export const ManageCustomerForm: React.FC = () => {
                       {() => (
                         <div className="form__group">
                           <MaskedTextField
+                            autoComplete={'off'}
                             value={formik.values.phoneNumber}
                             styles={fabricStyles.textFildLabelStyles}
                             className="form__group__field"

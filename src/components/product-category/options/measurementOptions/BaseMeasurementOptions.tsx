@@ -18,7 +18,6 @@ import {
   labelStyle,
   btnMenuStyle,
 } from '../../../../common/fabric-styles/styles';
-import { ProductManagingPanelComponent } from '../../../../redux/slices/product.slice';
 import { useHistory } from 'react-router-dom';
 import { IApplicationState } from '../../../../redux/reducers/index';
 import { Measurement } from '../../../../interfaces/measurements';
@@ -85,7 +84,7 @@ const BaseMeasurementOptions: React.FC = () => {
           dispatch(action);
         });
       },
-    } as IInfoPanelMenuItem,
+    },
     {
       title: 'New',
       className: choseCategory
@@ -107,7 +106,7 @@ const BaseMeasurementOptions: React.FC = () => {
           );
         }
       },
-    } as IInfoPanelMenuItem,
+    },
     {
       title: 'Edit',
       className:
@@ -137,7 +136,7 @@ const BaseMeasurementOptions: React.FC = () => {
           );
         }
       },
-    } as IInfoPanelMenuItem,
+    },
     {
       title: 'Delete',
       className:
@@ -208,7 +207,7 @@ const BaseMeasurementOptions: React.FC = () => {
           );
         }
       },
-    } as IInfoPanelMenuItem,
+    },
     {
       title: 'New size',
       className:
@@ -232,7 +231,7 @@ const BaseMeasurementOptions: React.FC = () => {
           );
         }
       },
-    } as IInfoPanelMenuItem,
+    },
   ];
 
   return (
