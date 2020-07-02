@@ -2,18 +2,11 @@ import { ProductCategory } from './../../../../interfaces/products';
 import { CustomerProductProfile } from './../../../../interfaces/orderProfile';
 import { createSlice } from '@reduxjs/toolkit';
 
-export enum MainProfileView {
-  ExploreProfileList,
-  ExploreSingleProfile,
-  CreatingNewProfile,
-}
-
 export interface IOrderProfileState {
   /// TODO: remove
   orderProfiles: CustomerProductProfile[];
   targetOrderProfile: CustomerProductProfile | null | undefined;
   customerProductProfiles: ProductCategory[];
-  mainProfileView: MainProfileView;
 }
 
 const INIT_STATE: IOrderProfileState = {
@@ -21,7 +14,6 @@ const INIT_STATE: IOrderProfileState = {
   orderProfiles: [],
   targetOrderProfile: null,
   customerProductProfiles: [],
-  mainProfileView: MainProfileView.ExploreProfileList,
 };
 
 const orderProfile = createSlice({
@@ -64,13 +56,6 @@ const orderProfile = createSlice({
       action: { type: string; payload: ProductCategory[] }
     ) {
       state.customerProductProfiles = action.payload;
-      return state;
-    },
-    changeMainProfileView(
-      state,
-      action: { type: string; payload: MainProfileView }
-    ) {
-      state.mainProfileView = action.payload;
       return state;
     },
   },

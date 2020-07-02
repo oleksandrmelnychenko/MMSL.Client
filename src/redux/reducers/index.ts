@@ -53,6 +53,10 @@ import {
   default as orderProfileReducer,
   IOrderProfileState,
 } from '../slices/customer/orderProfile/orderProfile.slice';
+import {
+  default as profileManagingReducer,
+  IProfileManagingState,
+} from '../slices/customer/orderProfile/profileManaging.slice';
 
 export interface IApplicationState {
   auth: IAuthState;
@@ -72,6 +76,7 @@ export interface IApplicationState {
   unitsOfMeasurement: IUnitsOfMeasurementState;
   dealerProducts: IDealerProductsState;
   orderProfile: IOrderProfileState;
+  profileManaging: IProfileManagingState;
 }
 
 export const reducer = combineReducers({
@@ -92,4 +97,5 @@ export const reducer = combineReducers({
   unitsOfMeasurement: unitsOfMeasurementReducer,
   dealerProducts: dealerProductsReducer,
   orderProfile: orderProfileReducer,
+  profileManaging: profileManagingReducer,
 });

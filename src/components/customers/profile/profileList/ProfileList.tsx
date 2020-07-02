@@ -18,6 +18,10 @@ export const ProfileList: React.FC = (props: any) => {
     ExpandableItem[]
   >([]);
 
+  const { selectedCustomer } = useSelector<IApplicationState, any>(
+    (state) => state.customer.customerState
+  );
+
   const customerProductProfiles: ProductCategory[] = useSelector<
     IApplicationState,
     ProductCategory[]
@@ -54,7 +58,12 @@ export const ProfileList: React.FC = (props: any) => {
         <List
           items={expandableProducts}
           onRenderCell={(item: any, index: number | undefined): JSX.Element => {
-            return <ProfileProduct expandableProfileProduct={item} />;
+            return (
+              <ProfileProduct
+                expandableProfileProduct={item}
+                customer={selectedCustomer}
+              />
+            );
           }}
         />
       ) : (

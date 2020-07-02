@@ -16,13 +16,12 @@ import { useDispatch } from 'react-redux';
 import ManageProfileOptiosPanel, {
   onDismissManageProfileOptiosPanel,
 } from '../../options/ManageProfileOptiosPanel';
-import {
-  orderProfileActions,
-  MainProfileView,
-} from '../../../../redux/slices/customer/orderProfile/orderProfile.slice';
+import { StoreCustomer } from '../../../../interfaces/storeCustomer';
+import { profileManagingActions } from '../../../../redux/slices/customer/orderProfile/profileManaging.slice';
 
 export interface IProfileProductProps {
   expandableProfileProduct: ExpandableItem;
+  customer: StoreCustomer;
 }
 
 const _addFirstSizeButtonStyle = {
@@ -63,6 +62,26 @@ export const ProfileProduct: React.FC<IProfileProductProps> = (
   const dispatch = useDispatch();
 
   const [isExpanded, setIsExpanded] = useState<boolean>();
+
+  const onCreateNewProfile = () => {
+    dispatch(
+      controlActions.openInfoPanelWithComponent({
+        component: ManageProfileOptiosPanel,
+        onDismisPendingAction: () => {
+          onDismissManageProfileOptiosPanel().forEach((action) =>
+            dispatch(action)
+          );
+        },
+      })
+    );
+    dispatch(
+      profileManagingActions.beginManaging({
+        customer: props.customer,
+        product: props.expandableProfileProduct.item,
+        profileForEdit: null,
+      })
+    );
+  };
 
   return (
     <div className={isExpanded ? 'profileProduct expanded' : 'profileProduct'}>
@@ -114,23 +133,7 @@ export const ProfileProduct: React.FC<IProfileProductProps> = (
                   </Stack.Item>
                   <Stack.Item align="start">
                     <CommandBarButton
-                      onClick={() => {
-                        dispatch(
-                          controlActions.openInfoPanelWithComponent({
-                            component: ManageProfileOptiosPanel,
-                            onDismisPendingAction: () => {
-                              onDismissManageProfileOptiosPanel().forEach(
-                                (action) => dispatch(action)
-                              );
-                            },
-                          })
-                        );
-                        dispatch(
-                          orderProfileActions.changeMainProfileView(
-                            MainProfileView.CreatingNewProfile
-                          )
-                        );
-                      }}
+                      onClick={() => onCreateNewProfile()}
                       height={20}
                       styles={_addFirstSizeButtonStyle}
                       iconProps={{ iconName: 'Add' }}

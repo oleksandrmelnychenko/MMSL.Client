@@ -14,20 +14,13 @@ import {
 } from '../../../redux/slices/control.slice';
 import { CUSTOMERS_PATH } from '../CustomersBootstrapper';
 import { useHistory } from 'react-router-dom';
-import {
-  orderProfileActions,
-  MainProfileView,
-} from '../../../redux/slices/customer/orderProfile/orderProfile.slice';
 import CustomerProfileOptiosPanel, {
   onDismisActionsCustomerProfileOptiosPanel,
 } from './CustomerProfileOptiosPanel';
+import { profileManagingActions } from '../../../redux/slices/customer/orderProfile/profileManaging.slice';
 
 export const onDismissManageProfileOptiosPanel = () => {
-  return [
-    orderProfileActions.changeMainProfileView(
-      MainProfileView.ExploreProfileList
-    ),
-  ];
+  return [profileManagingActions.stopManaging()];
 };
 
 const ManageProfileOptiosPanel: React.FC = () => {
