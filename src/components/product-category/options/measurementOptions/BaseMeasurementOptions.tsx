@@ -45,7 +45,7 @@ export const baseMeasurementOptionsPanelDismisActions = () => {
 
 const BaseMeasurementOptions: React.FC = () => {
   const dispatch = useDispatch();
-  let history = useHistory();
+  const history = useHistory();
 
   const choseCategory = useSelector<IApplicationState, ProductCategory | null>(
     (state) => state.product.choose.category

@@ -1,4 +1,3 @@
-import './customers.scss';
 import React from 'react';
 import { Stack } from 'office-ui-fabric-react';
 import CustomerList from './CustomerList';

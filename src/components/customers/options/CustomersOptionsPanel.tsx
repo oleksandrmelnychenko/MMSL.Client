@@ -22,6 +22,14 @@ import {
 import ManageCustomerForm from '../customerManaging/ManageCustomerForm';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { List } from 'linq-typescript';
+import CustomerProfileOptiosPanel, {
+  onDismisActionsCustomerProfileOptiosPanel,
+} from './CustomerProfileOptiosPanel';
+import {
+  CUSTOMERS_PATH,
+  CUSTOMER_PROFILES_PATH,
+} from '../CustomersBootstrapper';
+import { useHistory } from 'react-router-dom';
 
 export const onDismisActionsCustomersOptionsPanel = () => {
   return [customerActions.selectedCustomer(null)];
@@ -29,6 +37,7 @@ export const onDismisActionsCustomersOptionsPanel = () => {
 
 const CustomersOptionsPanel: React.FC = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const { customersList, selectedCustomer } = useSelector<
     IApplicationState,
@@ -63,24 +72,25 @@ const CustomersOptionsPanel: React.FC = () => {
       isDisabled: selectedCustomer ? false : true,
       tooltip: 'Manage profiles',
       onClickFunc: () => {
-        // dispatch(controlActions.closeInfoPanelWithComponent());
-        // dispatch(
-        //   controlActions.openInfoPanelWithComponent({
-        //     component: ProductStylesPanel,
-        //     onDismisPendingAction: () => {
-        //       history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
-        //       stylesPanelDismisActions().forEach((action) => {
-        //         dispatch(action);
-        //       });
-        //     },
-        //   })
-        // );
-        // if (choseCategory) {
-        //   history.push(`${PRODUCT_STYLES_PATH}${choseCategory.id}`);
-        // } else {
-        //   dispatch(controlActions.closeInfoPanelWithComponent());
-        //   history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
-        // }
+        dispatch(controlActions.closeInfoPanelWithComponent());
+        dispatch(
+          controlActions.openInfoPanelWithComponent({
+            component: CustomerProfileOptiosPanel,
+            onDismisPendingAction: () => {
+              history.push(CUSTOMERS_PATH);
+              onDismisActionsCustomerProfileOptiosPanel().forEach((action) => {
+                dispatch(action);
+              });
+            },
+          })
+        );
+
+        if (selectedCustomer) {
+          history.push(`${CUSTOMER_PROFILES_PATH}${selectedCustomer.id}`);
+        } else {
+          dispatch(controlActions.closeInfoPanelWithComponent());
+          history.push(CUSTOMERS_PATH);
+        }
       },
     },
     {

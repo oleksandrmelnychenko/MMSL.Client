@@ -1,25 +1,10 @@
 import React from 'react';
 import './dashboard.scss';
-import Header from './header/Header';
-import Footer from './footer/Footer';
-import Menu from './menu/Menu';
-import { Switch, useLocation, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import DealersBootstrapper from '../dealers/DealersBootstrapper';
-import Customers from '../customers/Customers';
-import CommonDialog from './CommonDialog';
-import { useSelector } from 'react-redux';
-import { IApplicationState } from '../../redux/reducers/index';
-import { Panel, PanelType } from 'office-ui-fabric-react';
-import {
-  RightPanelProps,
-  DashboardHintStubProps,
-} from '../../redux/slices/control.slice';
-import { panelStyle } from '../../common/fabric-styles/styles';
+import CustomersBootstrapper from '../customers/CustomersBootstrapper';
 import Reports from '../reports/Reports';
 import ProductCategoryView from '../product-category/ProductCategoryView';
-import { RightPanel } from './panel/RightPanel';
-import DashboardLeftMenuPanel from './DashboardLeftMenuPanel';
-import HintStub from './dashboardHint/HintStub';
 import { List } from 'linq-typescript';
 import { TokenHelper } from '../../helpers/token.helper';
 import { RoleType } from '../../interfaces/identity';
@@ -67,14 +52,30 @@ const IdentityDashboardRoute: React.FC = () => {
         />
       );
     else if (routeDescription === CUSTOMER_ROUTE)
-      return <Route path={`/en/app/customer`} component={Customers} />;
+      return (
+        <Route
+          key={index}
+          path={`/en/app/customers`}
+          component={CustomersBootstrapper}
+        />
+      );
     else if (routeDescription === PRODUCT_ROUTE)
-      return <Route path={`/en/app/product`} component={ProductCategoryView} />;
+      return (
+        <Route
+          key={index}
+          path={`/en/app/product`}
+          component={ProductCategoryView}
+        />
+      );
     else if (routeDescription === REPORTS_ROUTE)
-      return <Route path={`/en/app/reports`} component={Reports} />;
+      return <Route key={index} path={`/en/app/reports`} component={Reports} />;
     else if (routeDescription === ORDER_PROFILES_ROUTE)
       return (
-        <Route path={`/en/app/order-profiles`} component={OrderProfileView} />
+        <Route
+          key={index}
+          path={`/en/app/order-profiles`}
+          component={OrderProfileView}
+        />
       );
   };
 
