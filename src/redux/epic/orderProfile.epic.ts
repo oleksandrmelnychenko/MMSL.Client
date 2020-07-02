@@ -153,6 +153,54 @@ export const apiDeleteOrderProfileByIdEpic = (
   );
 };
 
+export const apiGetProductProfilesByCutomerIdEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(orderProfileActions.apiGetProductProfilesByCutomerId.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      return getWebRequest(
+        api.GET_PRODUCT_PROFILES_BY_CUSTOMER_ID,
+        state$.value,
+        [
+          {
+            key: 'storeCustomerId',
+            value: `${action.payload}`,
+          },
+        ]
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_GET_PRODUCT_PROFILES_BY_CUTOMER' },
+                controlActions.showInfoMessage(
+                  new InfoMessage(
+                    `Error occurred while getting profile by customer. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
 export const apiGetOrderProfileByIdEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
     ofType(orderProfileActions.apiGetOrderProfileById.type),

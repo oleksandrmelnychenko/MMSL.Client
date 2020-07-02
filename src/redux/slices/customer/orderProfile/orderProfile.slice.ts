@@ -1,14 +1,19 @@
+import { ProductCategory } from './../../../../interfaces/products';
 import { CustomerProductProfile } from './../../../../interfaces/orderProfile';
 import { createSlice } from '@reduxjs/toolkit';
 
 const INIT_STATE: IOrderProfileState = {
+  /// TODO: remove
   orderProfiles: [],
   targetOrderProfile: null,
+  customerProductProfiles: [],
 };
 
 export interface IOrderProfileState {
+  /// TODO: remove
   orderProfiles: CustomerProductProfile[];
   targetOrderProfile: CustomerProductProfile | null | undefined;
+  customerProductProfiles: ProductCategory[];
 }
 
 const orderProfile = createSlice({
@@ -24,6 +29,11 @@ const orderProfile = createSlice({
     ) {},
     apiUpdateOrderProfile(state, action: { type: string; payload: any }) {},
     apiGetOrderProfileById(state, action: { type: string; payload: number }) {},
+    apiGetProductProfilesByCutomerId(
+      state,
+      action: { type: string; payload: number }
+    ) {},
+    /// TODO: remove
     changeOrderProfiles(
       state,
       action: { type: string; payload: CustomerProductProfile[] }
@@ -39,6 +49,13 @@ const orderProfile = createSlice({
       }
     ) {
       state.targetOrderProfile = action.payload;
+      return state;
+    },
+    changeCustomerProductProfiles(
+      state,
+      action: { type: string; payload: ProductCategory[] }
+    ) {
+      state.customerProductProfiles = action.payload;
       return state;
     },
   },

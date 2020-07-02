@@ -27,6 +27,8 @@ import {
   detailsListStyle,
   defaultCellStyle,
 } from '../../common/fabric-styles/styles';
+import { List } from 'linq-typescript';
+import { StoreCustomer } from '../../interfaces/storeCustomer';
 
 const _customerColumns: IColumn[] = [
   {
@@ -113,9 +115,6 @@ export const CustomerList: React.FC = () => {
 
   useEffect(() => {
     dispatch(customerActions.getCustomersListPaginated());
-    return () => {
-      dispatch(customerActions.updateSelectedCustomer(null));
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -126,6 +125,19 @@ export const CustomerList: React.FC = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCustomer]);
+
+  /// UI selection
+  // useEffect(() => {
+  //   if (selectedCustomer) {
+  //     selection.getItems().forEach((customer: any, index: number) => {
+  //       if (customer.id === selectedCustomer.id) {
+  //         selection.selectToIndex(index);
+  //       }
+  //     });
+  //   }
+
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [customersList]);
 
   const onRenderDetailsHeader: IRenderFunction<IDetailsHeaderProps> = (
     props,

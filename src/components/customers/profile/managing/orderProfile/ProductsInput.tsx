@@ -29,45 +29,6 @@ const _buildOptions = (products: ProductCategory[]) => {
   });
 };
 
-// const _renderProductInfo = (customers: ProductCategory[], formik: any) => {
-//   let result = null;
-
-//   if (formik.values.customer) {
-//     const selectedCustomer = new List<ProductCategory>(
-//       customers
-//     ).firstOrDefault((customer) => customer.id === formik.values.customer.id);
-
-//     if (selectedCustomer) {
-//       const partialContents: any[] = [];
-
-//       partialContents.push(
-//         onRenderPartialDetail('Name', selectedCustomer.userName)
-//       );
-//       partialContents.push(
-//         onRenderPartialDetail('Email', selectedCustomer.email)
-//       );
-//       partialContents.push(
-//         onRenderPartialDetail('Store', selectedCustomer.store?.name)
-//       );
-//       partialContents.push(
-//         onRenderPartialDetail('Phone Number', selectedCustomer.phoneNumber)
-//       );
-
-//       if (partialContents.length > 0) {
-//         result = (
-//           <Stack tokens={{ childrenGap: 3 }}>
-//             {partialContents.map((partialContent, index) => (
-//               <Stack.Item key={index}>{partialContent}</Stack.Item>
-//             ))}
-//           </Stack>
-//         );
-//       }
-//     }
-//   }
-
-//   return result;
-// };
-
 export const ProductsInput: React.FC<IProductsInputProps> = (
   props: IProductsInputProps
 ) => {

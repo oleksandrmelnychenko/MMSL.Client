@@ -324,8 +324,8 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
             {props.expandableStyleGroup.item.optionUnits &&
             props.expandableStyleGroup.item.optionUnits.length > 0 ? (
               props.expandableStyleGroup.item.optionUnits.map(
-                (item: OptionUnit) => (
-                  <React.Fragment key={item.id}>
+                (item: OptionUnit, index: number) => (
+                  <React.Fragment key={index}>
                     <UnitRowItem
                       optionUnit={item}
                       optionGroup={
@@ -336,7 +336,7 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
                 )
               )
             ) : (
-              <div style={{ marginLeft: '9px' }}>
+              <div style={{ marginLeft: '9px', marginTop: '-6px' }}>
                 {renderHintLable(`Current style does not have any options. `)}
               </div>
             )}

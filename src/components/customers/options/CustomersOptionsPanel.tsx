@@ -72,21 +72,33 @@ const CustomersOptionsPanel: React.FC = () => {
       isDisabled: selectedCustomer ? false : true,
       tooltip: 'Manage profiles',
       onClickFunc: () => {
-        dispatch(controlActions.closeInfoPanelWithComponent());
-        dispatch(
-          controlActions.openInfoPanelWithComponent({
-            component: CustomerProfileOptiosPanel,
-            onDismisPendingAction: () => {
-              history.push(CUSTOMERS_PATH);
-              onDismisActionsCustomerProfileOptiosPanel().forEach((action) => {
-                dispatch(action);
-              });
-            },
-          })
-        );
-
         if (selectedCustomer) {
-          history.push(`${CUSTOMER_PROFILES_PATH}${selectedCustomer.id}`);
+          dispatch(controlActions.closeInfoPanelWithComponent());
+
+          dispatch(
+            assignPendingActions(
+              customerActions.apiGetCustomerById(selectedCustomer.id),
+              [],
+              [],
+              (args: any) => {
+                dispatch(customerActions.updateSelectedCustomer(args));
+                history.push(`${CUSTOMER_PROFILES_PATH}${selectedCustomer.id}`);
+                dispatch(
+                  controlActions.openInfoPanelWithComponent({
+                    component: CustomerProfileOptiosPanel,
+                    onDismisPendingAction: () => {
+                      history.push(CUSTOMERS_PATH);
+                      onDismisActionsCustomerProfileOptiosPanel().forEach(
+                        (action) => {
+                          dispatch(action);
+                        }
+                      );
+                    },
+                  })
+                );
+              }
+            )
+          );
         } else {
           dispatch(controlActions.closeInfoPanelWithComponent());
           history.push(CUSTOMERS_PATH);

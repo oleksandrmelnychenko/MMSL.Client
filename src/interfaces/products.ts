@@ -1,6 +1,7 @@
 import { EntityBase, EntityBaseNamed } from './base';
 import { OptionGroup, OptionUnit } from './options';
 import { ProductDeliveryTimeline } from './deliveryTimelines';
+import { CustomerProductProfile } from './orderProfile';
 
 export class ProductCategory extends EntityBaseNamed {
   constructor() {
@@ -12,13 +13,18 @@ export class ProductCategory extends EntityBaseNamed {
     this.isDisabled = false;
 
     this.imageBlob = null;
+
+    this.customerProductProfiles = [];
   }
+
   deliveryTimelineProductMaps: ProductDeliveryTimeline[];
   imageUrl: string;
   measurements: null;
   optionGroupMaps: ProductCategoryMapOptionGroup[];
   /// Describes availability of the product for dealers.
   isDisabled: boolean;
+
+  customerProductProfiles: CustomerProductProfile[];
 
   /// This field is used for just added (not saved) image files. Actual saved image source is provided through `imageUrl`.
   imageBlob: any;
