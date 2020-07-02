@@ -292,6 +292,7 @@ export const OrderProfileForm: React.FC<IOrderProfileFormProps> = (
                         </div>
                       )}
                     </Field>
+
                     <CustomersInput
                       customers={props.customers}
                       formik={formik}

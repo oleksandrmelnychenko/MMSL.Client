@@ -6,6 +6,7 @@ import { IApplicationState } from '../../../../../redux/reducers';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
 import { productActions } from '../../../../../redux/slices/product.slice';
 import ProfileForm from './ProfileForm';
+import { ProductCategory } from '../../../../../interfaces/products';
 
 export const ProfileFormBootstrapper: React.FC = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,13 @@ export const ProfileFormBootstrapper: React.FC = () => {
     boolean
   >(false);
 
+  const [productCategory, setProductCategory] = useState<
+    ProductCategory | null | undefined
+  >(null);
+  const [isCategoryWasIntended, setIsCategoryWasIntended] = useState<boolean>(
+    false
+  );
+
   const { customer, product }: any = useSelector<IApplicationState, any>(
     (state) => state.profileManaging
   );
@@ -22,8 +30,12 @@ export const ProfileFormBootstrapper: React.FC = () => {
   useEffect(() => {
     return () => {
       dispatch(profileManagingActions.stopManaging());
+
       setMeasurements([]);
       setIsMeasurementsWasIntended(false);
+
+      setProductCategory(null);
+      setIsCategoryWasIntended(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -45,6 +57,22 @@ export const ProfileFormBootstrapper: React.FC = () => {
           }
         )
       );
+
+      dispatch(
+        assignPendingActions(
+          productActions.apiGetProductCategoryById(product.id),
+          [],
+          [],
+          (args: any) => {
+            setIsCategoryWasIntended(true);
+            setProductCategory(args);
+          },
+          (args: any) => {
+            setIsCategoryWasIntended(true);
+            setProductCategory(null);
+          }
+        )
+      );
     } else {
       setIsMeasurementsWasIntended(false);
       setMeasurements([]);
@@ -53,16 +81,19 @@ export const ProfileFormBootstrapper: React.FC = () => {
     return () => {
       setIsMeasurementsWasIntended(false);
       setMeasurements([]);
+
+      setIsCategoryWasIntended(false);
+      setProductCategory(null);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product]);
 
   return (
     <>
-      {isMeasurementsWasIntended ? (
+      {isMeasurementsWasIntended && isCategoryWasIntended && productCategory ? (
         <ProfileForm
           measurements={measurements}
-          product={product}
+          product={productCategory}
           customer={customer}
         />
       ) : null}

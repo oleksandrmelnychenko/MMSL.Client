@@ -6,7 +6,7 @@ import {
   TooltipDelay,
   DirectionalHint,
 } from 'office-ui-fabric-react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import {
   controlActions,
@@ -17,7 +17,11 @@ import { useHistory } from 'react-router-dom';
 import CustomerProfileOptiosPanel, {
   onDismisActionsCustomerProfileOptiosPanel,
 } from './CustomerProfileOptiosPanel';
-import { profileManagingActions } from '../../../redux/slices/customer/orderProfile/profileManaging.slice';
+import {
+  profileManagingActions,
+  ICommand,
+} from '../../../redux/slices/customer/orderProfile/profileManaging.slice';
+import { IApplicationState } from '../../../redux/reducers';
 
 export const onDismissManageProfileOptiosPanel = () => {
   return [profileManagingActions.stopManaging()];
@@ -26,6 +30,10 @@ export const onDismissManageProfileOptiosPanel = () => {
 const ManageProfileOptiosPanel: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const commands: ICommand[] = useSelector<IApplicationState, ICommand[]>(
+    (state) => state.profileManaging.commands
+  );
 
   const menuItem: IInfoPanelMenuItem[] = [
     {
@@ -52,6 +60,16 @@ const ManageProfileOptiosPanel: React.FC = () => {
       },
     },
   ];
+
+  commands.forEach((command: ICommand) => {
+    menuItem.push({
+      title: command.name,
+      className: command.className,
+      isDisabled: command.isDisabled,
+      tooltip: '',
+      onClickFunc: () => command.onClick(),
+    });
+  });
 
   return (
     <div className="management">

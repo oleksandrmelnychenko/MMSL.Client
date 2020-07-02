@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Measurement } from '../../../../../interfaces/measurements';
 import {
-  CustomerProductProfile,
   ProfileTypes,
-  IUpdateOrderProfilePayload,
   ICreateOrderProfilePayload,
   IMeasurementValuePayload,
 } from '../../../../../interfaces/orderProfile';
@@ -21,6 +19,17 @@ import {
 } from '../orderStyles/styleSelector/StyleUnitItem';
 import { List } from 'linq-typescript';
 import { StoreCustomer } from '../../../../../interfaces/storeCustomer';
+import { Stack, Text } from 'office-ui-fabric-react';
+import ProductCustomerDetails from './ProductCustomerDetails';
+import EntityInput from './EntityInput';
+import ProfileTypeInput from '../orderMeasurements/ProfileTypeInput';
+import MeasurementInput from '../orderMeasurements/MeasurementInput';
+import FreshMeasurementInput from '../orderMeasurements/valueMeasurementInputs/FreshMeasurementInput';
+import BaseMeasurementInput from '../orderMeasurements/valueMeasurementInputs/BaseMeasurementInput';
+import BodyMeasurementInput from '../orderMeasurements/valueMeasurementInputs/BodyMeasurementInput';
+import StyleSelectorInput from '../orderStyles/styleSelector/StyleSelectorInput';
+import { profileManagingActions } from '../../../../../redux/slices/customer/orderProfile/profileManaging.slice';
+import { FormicReference } from '../../../../../interfaces';
 
 export interface IProfileFormProps {
   measurements: Measurement[];
@@ -44,6 +53,28 @@ interface IFormValues {
   productStyleValues: IStyleUnitModel[];
   productStyleValuesDefaultsHelper: IStyleUnitModel[];
 }
+
+const _urgentItemsDirtyHelper = (formik: any) => {
+  let isDirtyResult = false;
+
+  if (formik.values.profileType === ProfileTypes.FreshMeasurement) {
+    isDirtyResult = new List(formik.values.freshMeasuremrntValues).any(
+      (item: any) => item.value !== item.initValue
+    );
+  } else if (formik.values.profileType === ProfileTypes.BaseMeasurement) {
+    isDirtyResult = new List(formik.values.baseMeasuremrntValues).any(
+      (item: any) => item.value !== item.initValue
+    );
+  } else if (formik.values.profileType === ProfileTypes.BodyMeasurement) {
+    isDirtyResult = new List(formik.values.bodyMeasuremrntValues).any(
+      (item: any) =>
+        item.value !== item.initValue ||
+        item.fittingValue !== item.initFittingValue
+    );
+  }
+
+  return isDirtyResult;
+};
 
 const _initDefaultMeasurementValues = (
   initValues: IFormValues,
@@ -200,6 +231,50 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
   const [formInit, setFormInit] = useState<any>(
     _initDefaultValues(props.measurements, props.product)
   );
+  const [isFormikDirty, setFormikDirty] = useState<boolean>(false);
+  const [formikReference] = useState<FormicReference>(
+    new FormicReference(() => {})
+  );
+
+  useEffect(() => {
+    // if (new List(commandBarItems).any()) {
+    //   dispatch(
+    //     controlActions.setPanelButtons(
+    //       ChangeItemsDisabledState(
+    //         commandBarItems,
+    //         [CommandBarItem.Reset, CommandBarItem.Save],
+    //         !isFormikDirty
+    //       )
+    //     )
+    //   );
+    // }
+
+    dispatch(
+      profileManagingActions.updateCommands([
+        {
+          className: 'management__btn-back_measurement',
+          isDisabled: !isFormikDirty,
+          name: 'Save',
+          onClick: () => {
+            if (formikReference.formik) {
+              formikReference.formik.submitForm();
+            }
+          },
+        },
+        {
+          className: 'management__btn-back_measurement',
+          isDisabled: !isFormikDirty,
+          name: 'Reset',
+          onClick: () => {
+            if (formikReference.formik) {
+              formikReference.formik.resetForm();
+            }
+          },
+        },
+      ])
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFormikDirty, dispatch]);
 
   useEffect(() => {
     setFormInit(_initDefaultValues(props.measurements, props.product));
@@ -219,16 +294,39 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
               .min(3)
               .required(() => 'Name is required'),
             description: Yup.string(),
+            profileType: Yup.number(),
+            measurementId: Yup.number(),
+            fittingTypeId: Yup.number(),
+            measurementSizeId: Yup.number(),
+            freshMeasuremrntValues: Yup.array(),
+            baseMeasuremrntValues: Yup.array(),
+            bodyMeasuremrntValues: Yup.array(),
+            productStyleValues: Yup.array(),
+            productStyleValuesDefaultsHelper: Yup.array(),
           })}
           initialValues={formInit}
           onSubmit={(values: any) => {
             // if (targetOrderProfile) onEdit(values);
             // else onCreate(values);
+            onCreate(values);
           }}
           onReset={(values: any, formikHelpers: any) => {}}
           innerRef={(formik: any) => {
             // formikReference.formik = formik;
             // if (formik) setFormikDirty(formik.dirty);
+
+            formikReference.formik = formik;
+
+            if (formik) {
+              console.log(formik.values);
+              setFormikDirty(
+                formik.dirty ||
+                  _urgentItemsDirtyHelper(formik) ||
+                  new List<IStyleUnitModel>(
+                    formik.values.productStyleValues
+                  ).any((item: IStyleUnitModel) => item.isDirty)
+              );
+            }
           }}
           validateOnBlur={false}
           enableReinitialize={true}
@@ -236,7 +334,72 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
           {(formik) => {
             return (
               <Form className="form">
-                <div className="dealerFormManage"></div>
+                <div className="dealerFormManage">
+                  <Stack horizontal tokens={{ childrenGap: '24px' }}>
+                    <ProductCustomerDetails
+                      customer={props.customer}
+                      product={props.product}
+                    />
+
+                    <Stack horizontal tokens={{ childrenGap: '24px' }}>
+                      <Stack tokens={{ childrenGap: '12px' }}>
+                        <EntityInput formik={formik} />
+
+                        <Stack tokens={{ childrenGap: '12px' }}>
+                          <ProfileTypeInput
+                            formik={formik}
+                            availableMeasurements={props.measurements}
+                            orderProfile={null}
+                          />
+
+                          <MeasurementInput
+                            measurements={props.measurements}
+                            formik={formik}
+                            orderProfile={null}
+                          />
+
+                          <FreshMeasurementInput
+                            formik={formik}
+                            orderProfile={null}
+                          />
+
+                          <BaseMeasurementInput
+                            formik={formik}
+                            orderProfile={null}
+                          />
+
+                          <BodyMeasurementInput
+                            formik={formik}
+                            orderProfile={null}
+                          />
+
+                          {formik.values.profileType ===
+                          ProfileTypes.Reference ? (
+                            <Text
+                              block
+                              styles={{
+                                root: {
+                                  marginTop: '15px !important',
+                                  fontWeight: 400,
+                                  fontSize: '14px',
+                                  color: '#a19f9d',
+                                },
+                              }}
+                            >
+                              {
+                                'Customer should provide fit shirt to replicate measurement'
+                              }
+                            </Text>
+                          ) : null}
+                        </Stack>
+
+                        <Stack>
+                          <StyleSelectorInput formik={formik} />
+                        </Stack>
+                      </Stack>
+                    </Stack>
+                  </Stack>
+                </div>
               </Form>
             );
           }}
