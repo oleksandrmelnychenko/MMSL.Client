@@ -118,7 +118,6 @@ export const CustomerList: React.FC = () => {
   >((state) => state.customer.customerState);
 
   useEffect(() => {
-    dispatch(controlActions.showGlobalShimmer());
     dispatch(customerActions.getCustomersListPaginated());
     return () => {
       dispatch(customerActions.selectedCustomer(null));
@@ -198,31 +197,31 @@ export const CustomerList: React.FC = () => {
   };
 
   const onRenderRow = (args: any) => {
-    args.onRenderDetailsCheckbox = (props?: any, defaultRender?: any) => {
-      return (
-        <IconButton
-          menuProps={{
-            onDismiss: (ev) => {},
-            items: [
-              {
-                key: 'delete',
-                text: 'Delete',
-                label: 'Delete',
-                iconProps: { iconName: 'Delete' },
-                onClick: () => onDeleteCustomer(args.item),
-              },
-            ],
-            styles: {
-              root: { width: '137px' },
-              container: { width: '137px' },
-            },
-          }}
-          onRenderMenuIcon={(props?: any, defaultRender?: any) => null}
-          iconProps={{ iconName: 'More' }}
-          onMenuClick={(ev?: any) => {}}
-        />
-      );
-    };
+    // args.onRenderDetailsCheckbox = (props?: any, defaultRender?: any) => {
+    //   return (
+    //     <IconButton
+    //       menuProps={{
+    //         onDismiss: (ev) => {},
+    //         items: [
+    //           {
+    //             key: 'delete',
+    //             text: 'Delete',
+    //             label: 'Delete',
+    //             iconProps: { iconName: 'Delete' },
+    //             onClick: () => onDeleteCustomer(args.item),
+    //           },
+    //         ],
+    //         styles: {
+    //           root: { width: '137px' },
+    //           container: { width: '137px' },
+    //         },
+    //       }}
+    //       onRenderMenuIcon={(props?: any, defaultRender?: any) => null}
+    //       iconProps={{ iconName: 'More' }}
+    //       onMenuClick={(ev?: any) => {}}
+    //     />
+    //   );
+    // };
     return (
       <div
         onClick={(clickArgs: any) => {
@@ -257,6 +256,7 @@ export const CustomerList: React.FC = () => {
           onRenderDetailsHeader={onRenderDetailsHeader}
           styles={detailsListStyle}
           items={customersList}
+          selectionPreservedOnEmptyClick
           selection={selection}
           selectionMode={SelectionMode.single}
           columns={_customerColumns}

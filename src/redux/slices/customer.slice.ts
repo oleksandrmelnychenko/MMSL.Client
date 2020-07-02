@@ -40,30 +40,18 @@ const customer = createSlice({
   name: 'customer',
   initialState: new CustomerState(),
   reducers: {
-    apiDeleteCustomerById(state, action: { type: string; payload: number }) {
-      return state;
-    },
-    apigetAllCustomers(state) {
-      return state;
-    },
+    apiDeleteCustomerById(state, action: { type: string; payload: number }) {},
+    apigetAllCustomers(state) {},
+    getCustomersListPaginated(state) {},
+    customerFormStoreAutocompleteText(state, action) {},
+    updateStoreCustomer(state, action) {},
+    saveNewCustomer(state, action) {},
     updateCustomersList(state, action) {
       state.customerState.customersList = action.payload;
       return state;
     },
     updateCustomersListPaginationInfo(state, action) {
       state.customerState.pagination.paginationInfo = action.payload;
-      return state;
-    },
-    getCustomersListPaginated(state) {
-      return state;
-    },
-    customerFormStoreAutocompleteText(state, action) {
-      return state;
-    },
-    updateStoreCustomer(state, action) {
-      return state;
-    },
-    saveNewCustomer(state, action) {
       return state;
     },
     searchCustomer(state, action) {
