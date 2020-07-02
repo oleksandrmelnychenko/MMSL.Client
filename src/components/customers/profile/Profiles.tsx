@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stack } from 'office-ui-fabric-react';
-import OrderProfileHeader from './OrderProfileHeader';
+import ProfileHeader from './ProfileHeader';
 
 export const Profiles: React.FC = (props: any) => {
   return (
@@ -9,7 +9,7 @@ export const Profiles: React.FC = (props: any) => {
         <Stack.Item align="stretch">
           <div className="content__header">
             <div className="content__header__top">
-              <OrderProfileHeader />
+              <ProfileHeader />
             </div>
           </div>
         </Stack.Item>

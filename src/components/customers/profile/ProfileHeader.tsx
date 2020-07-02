@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
 import { StoreCustomer } from '../../../interfaces/storeCustomer';
 
-const OrderProfileHeader: React.FC = () => {
+const ProfileHeader: React.FC = () => {
   const selectedCustomer: StoreCustomer | null | undefined = useSelector<
     IApplicationState,
     StoreCustomer | null | undefined
@@ -36,4 +36,4 @@ const OrderProfileHeader: React.FC = () => {
   );
 };
 
-export default OrderProfileHeader;
+export default ProfileHeader;
