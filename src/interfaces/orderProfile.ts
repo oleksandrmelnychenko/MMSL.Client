@@ -133,6 +133,20 @@ export interface IUpdateOrderProfileDetailsPayload {
   storeCustomerId: number;
 }
 
+export interface ICreateOrderProfilePayload {
+  productCategoryId: number;
+  measurementId: number;
+  fittingTypeId: number;
+  measurementSizeId: number;
+  profileType: number;
+  values: IMeasurementValuePayload[];
+  productStyles: IProductStyleValuePayload[];
+  name: string;
+  description: string;
+  id: number;
+  storeCustomerId: number;
+}
+
 export interface IUpdateOrderProfilePayload {
   measurementId: number;
   fittingTypeId: number;

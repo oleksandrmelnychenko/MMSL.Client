@@ -18,6 +18,8 @@ import ManageProfileOptiosPanel, {
 } from '../../options/ManageProfileOptiosPanel';
 import { StoreCustomer } from '../../../../interfaces/storeCustomer';
 import { profileManagingActions } from '../../../../redux/slices/customer/orderProfile/profileManaging.slice';
+import { assignPendingActions } from '../../../../helpers/action.helper';
+import { productActions } from '../../../../redux/slices/product.slice';
 
 export interface IProfileProductProps {
   expandableProfileProduct: ExpandableItem;
@@ -65,21 +67,33 @@ export const ProfileProduct: React.FC<IProfileProductProps> = (
 
   const onCreateNewProfile = () => {
     dispatch(
-      controlActions.openInfoPanelWithComponent({
-        component: ManageProfileOptiosPanel,
-        onDismisPendingAction: () => {
-          onDismissManageProfileOptiosPanel().forEach((action) =>
-            dispatch(action)
+      assignPendingActions(
+        productActions.apiGetProductCategoryById(
+          props.expandableProfileProduct.item.id
+        ),
+        [],
+        [],
+        (args: any) => {
+          dispatch(
+            controlActions.openInfoPanelWithComponent({
+              component: ManageProfileOptiosPanel,
+              onDismisPendingAction: () => {
+                onDismissManageProfileOptiosPanel().forEach((action) =>
+                  dispatch(action)
+                );
+              },
+            })
+          );
+          dispatch(
+            profileManagingActions.beginManaging({
+              customer: props.customer,
+              product: args,
+              profileForEdit: null,
+            })
           );
         },
-      })
-    );
-    dispatch(
-      profileManagingActions.beginManaging({
-        customer: props.customer,
-        product: props.expandableProfileProduct.item,
-        profileForEdit: null,
-      })
+        (args: any) => {}
+      )
     );
   };
 
