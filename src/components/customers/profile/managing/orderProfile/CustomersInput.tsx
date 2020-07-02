@@ -9,9 +9,8 @@ import {
   Stack,
   mergeStyles,
 } from 'office-ui-fabric-react';
-import * as fabricStyles from '../../../../common/fabric-styles/styles';
-import { StoreCustomer } from '../../../../interfaces/storeCustomer';
-import { List } from 'linq-typescript';
+import * as fabricStyles from '../../../../../common/fabric-styles/styles';
+import { StoreCustomer } from '../../../../../interfaces/storeCustomer';
 
 export interface ICustomersInputProps {
   customers: StoreCustomer[];
@@ -52,45 +51,6 @@ export const onRenderPartialDetail = (
         </Text>
       </Stack>
     );
-  }
-
-  return result;
-};
-
-const _renderCustomerInfo = (customers: StoreCustomer[], formik: any) => {
-  let result = null;
-
-  if (formik.values.customer) {
-    const selectedCustomer = new List<StoreCustomer>(customers).firstOrDefault(
-      (customer) => customer.id === formik.values.customer.id
-    );
-
-    if (selectedCustomer) {
-      const partialContents: any[] = [];
-
-      partialContents.push(
-        onRenderPartialDetail('Name', selectedCustomer.userName)
-      );
-      partialContents.push(
-        onRenderPartialDetail('Email', selectedCustomer.email)
-      );
-      partialContents.push(
-        onRenderPartialDetail('Store', selectedCustomer.store?.name)
-      );
-      partialContents.push(
-        onRenderPartialDetail('Phone Number', selectedCustomer.phoneNumber)
-      );
-
-      if (partialContents.length > 0) {
-        result = (
-          <Stack tokens={{ childrenGap: 3 }}>
-            {partialContents.map((partialContent, index) => (
-              <Stack.Item key={index}>{partialContent}</Stack.Item>
-            ))}
-          </Stack>
-        );
-      }
-    }
   }
 
   return result;
@@ -158,8 +118,6 @@ export const CustomersInput: React.FC<ICustomersInputProps> = (
               </div>
             )}
           </Field>
-
-          {/* {_renderCustomerInfo(props.customers, props.formik)} */}
         </Stack>
       ) : (
         <div

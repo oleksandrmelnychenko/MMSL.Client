@@ -9,9 +9,8 @@ import {
   FontIcon,
   mergeStyles,
 } from 'office-ui-fabric-react';
-import * as fabricStyles from '../../../../common/fabric-styles/styles';
-import { ProductCategory } from '../../../../interfaces/products';
-import { List } from 'linq-typescript';
+import * as fabricStyles from '../../../../../common/fabric-styles/styles';
+import { ProductCategory } from '../../../../../interfaces/products';
 
 export interface IProductsInputProps {
   products: ProductCategory[];

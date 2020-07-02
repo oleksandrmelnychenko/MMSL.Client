@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { assignPendingActions } from '../../../../helpers/action.helper';
+import { assignPendingActions } from '../../../../../helpers/action.helper';
 import OrderMeasurementsForm from './OrderMeasurementsForm';
-import { productActions } from '../../../../redux/slices/product.slice';
-import { Measurement } from '../../../../interfaces/measurements';
-import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
-import { IApplicationState } from '../../../../redux/reducers';
+import { productActions } from '../../../../../redux/slices/product.slice';
+import { Measurement } from '../../../../../interfaces/measurements';
+import { CustomerProductProfile } from '../../../../../interfaces/orderProfile';
+import { IApplicationState } from '../../../../../redux/reducers';
 
 export const OrderMeasurementsFormBootstrapper: React.FC = () => {
   const dispatch = useDispatch();

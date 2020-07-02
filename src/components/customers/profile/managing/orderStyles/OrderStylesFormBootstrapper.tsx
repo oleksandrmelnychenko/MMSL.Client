@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { assignPendingActions } from '../../../../helpers/action.helper';
-import { productActions } from '../../../../redux/slices/product.slice';
-import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
-import { IApplicationState } from '../../../../redux/reducers';
+import { assignPendingActions } from '../../../../../helpers/action.helper';
+import { productActions } from '../../../../../redux/slices/product.slice';
+import { CustomerProductProfile } from '../../../../../interfaces/orderProfile';
+import { IApplicationState } from '../../../../../redux/reducers';
 import OrderStylesForm from './OrderStylesForm';
-import { ProductCategory } from '../../../../interfaces/products';
+import { ProductCategory } from '../../../../../interfaces/products';
 
 export const OrderStylesFormBootstrapper: React.FC = () => {
   const dispatch = useDispatch();

@@ -1,13 +1,13 @@
 import React from 'react';
 import { Field } from 'formik';
 import { IDropdownOption, Dropdown } from 'office-ui-fabric-react';
-import * as fabricStyles from '../../../../common/fabric-styles/styles';
-import { Measurement } from '../../../../interfaces/measurements';
+import * as fabricStyles from '../../../../../common/fabric-styles/styles';
+import { Measurement } from '../../../../../interfaces/measurements';
 import { initInputValueModelDefaults } from './valueMeasurementInputs/ValueItem';
 import {
   CustomerProductProfile,
   ProfileTypes,
-} from '../../../../interfaces/orderProfile';
+} from '../../../../../interfaces/orderProfile';
 import { List } from 'linq-typescript';
 import {
   MEASUREMENT_ID_FORM_FIELD,

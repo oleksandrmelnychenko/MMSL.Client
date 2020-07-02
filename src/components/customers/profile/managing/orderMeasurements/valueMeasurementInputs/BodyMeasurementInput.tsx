@@ -3,8 +3,8 @@ import { FieldArray } from 'formik';
 import {
   CustomerProductProfile,
   ProfileTypes,
-} from '../../../../../interfaces/orderProfile';
-import { Stack, Separator, Text } from 'office-ui-fabric-react';
+} from '../../../../../../interfaces/orderProfile';
+import { Stack, Text } from 'office-ui-fabric-react';
 import ValueItem, { IInputValueModel } from './ValueItem';
 import { BODY_MEASUREMRNT_VALUES_FORM_FIELD } from '../OrderMeasurementsForm';
 import FittingTypeInput from './FittingTypeInput';

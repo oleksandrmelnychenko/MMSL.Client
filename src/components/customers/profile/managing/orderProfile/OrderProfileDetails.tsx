@@ -10,11 +10,10 @@ import {
   FontIcon,
   mergeStyles,
 } from 'office-ui-fabric-react';
-import { StoreCustomer } from '../../../../interfaces/storeCustomer';
 import { List } from 'linq-typescript';
-import { ProductCategory } from '../../../../interfaces/products';
+import { ProductCategory } from '../../../../../interfaces/products';
 import './orderProfileDetails.scss';
-import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
+import { StoreCustomer } from '../../../../../interfaces/storeCustomer';
 
 export interface IOrderProfileDetailsProps {
   customers: StoreCustomer[];

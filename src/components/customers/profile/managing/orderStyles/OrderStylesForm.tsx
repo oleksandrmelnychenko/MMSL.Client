@@ -2,25 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Form } from 'formik';
 import { Stack } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
-import { FormicReference } from '../../../../interfaces';
+import { FormicReference } from '../../../../../interfaces';
 import { List } from 'linq-typescript';
 import { useDispatch, useSelector } from 'react-redux';
-import { controlActions } from '../../../../redux/slices/control.slice';
+import { controlActions } from '../../../../../redux/slices/control.slice';
 import {
   CommandBarItem,
   GetCommandBarItemProps,
   ChangeItemsDisabledState,
-} from '../../../../helpers/commandBar.helper';
-import { IApplicationState } from '../../../../redux/reducers';
+} from '../../../../../helpers/commandBar.helper';
+import { IApplicationState } from '../../../../../redux/reducers';
 import {
   CustomerProductProfile,
   IUpdateOrderProfilePayload,
-} from '../../../../interfaces/orderProfile';
-import { ProductCategory } from '../../../../interfaces/products';
+} from '../../../../../interfaces/orderProfile';
+import { ProductCategory } from '../../../../../interfaces/products';
 import StyleSelectorInput from './styleSelector/StyleSelectorInput';
 import { IStyleUnitModel, initUnitItems } from './styleSelector/StyleUnitItem';
-import { assignPendingActions } from '../../../../helpers/action.helper';
-import { orderProfileActions } from '../../../../redux/slices/customer/orderProfile/orderProfile.slice';
+import { assignPendingActions } from '../../../../../helpers/action.helper';
+import { orderProfileActions } from '../../../../../redux/slices/customer/orderProfile/orderProfile.slice';
 
 export interface IOrderStylesFormProps {
   productCategory: ProductCategory;

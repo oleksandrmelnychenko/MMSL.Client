@@ -3,7 +3,7 @@ import { FieldArray } from 'formik';
 import {
   CustomerProductProfile,
   ProfileTypes,
-} from '../../../../../interfaces/orderProfile';
+} from '../../../../../../interfaces/orderProfile';
 import { Stack, Separator } from 'office-ui-fabric-react';
 import ValueItem, { IInputValueModel } from './ValueItem';
 import { BASE_MEASUREMRNT_VALUES_FORM_FIELD } from '../OrderMeasurementsForm';

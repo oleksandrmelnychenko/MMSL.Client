@@ -18,25 +18,18 @@ const ORDER_PROFILES_ROUTE: string = 'OrderProfiles';
 
 const _routes: any[] = [
   {
-    // route: <Route path={`/en/app/dealers`} component={DealersBootstrapper} />,
     description: DEALERS_ROUTE,
   },
   {
-    // route: <Route path={`/en/app/customer`} component={Customers} />,
     description: CUSTOMER_ROUTE,
   },
   {
-    // route: <Route path={`/en/app/product`} component={ProductCategoryView} />,
     description: PRODUCT_ROUTE,
   },
   {
-    // route: <Route path={`/en/app/reports`} component={Reports} />,
     description: REPORTS_ROUTE,
   },
   {
-    // route: (
-    //   <Route path={`/en/app/order-profiles`} component={OrderProfileView} />
-    // ),
     description: ORDER_PROFILES_ROUTE,
   },
 ];

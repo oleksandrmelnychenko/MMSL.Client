@@ -2,23 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Form } from 'formik';
 import { Stack, Text } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
-import { FormicReference } from '../../../../interfaces';
+import { FormicReference } from '../../../../../interfaces';
 import { List } from 'linq-typescript';
 import { useDispatch, useSelector } from 'react-redux';
-import { controlActions } from '../../../../redux/slices/control.slice';
+import { controlActions } from '../../../../../redux/slices/control.slice';
 import {
   CommandBarItem,
   GetCommandBarItemProps,
   ChangeItemsDisabledState,
-} from '../../../../helpers/commandBar.helper';
-import { IApplicationState } from '../../../../redux/reducers';
+} from '../../../../../helpers/commandBar.helper';
+import { IApplicationState } from '../../../../../redux/reducers';
 import {
   CustomerProductProfile,
   IMeasurementValuePayload,
   IUpdateOrderProfilePayload,
   ProfileTypes,
-} from '../../../../interfaces/orderProfile';
-import { Measurement } from '../../../../interfaces/measurements';
+} from '../../../../../interfaces/orderProfile';
+import { Measurement } from '../../../../../interfaces/measurements';
 import MeasurementInput from './MeasurementInput';
 import BaseMeasurementInput from './valueMeasurementInputs/BaseMeasurementInput';
 import FreshMeasurementInput from './valueMeasurementInputs/FreshMeasurementInput';
@@ -27,8 +27,8 @@ import {
   IInputValueModel,
   initInputValueModelDefaults,
 } from './valueMeasurementInputs/ValueItem';
-import { assignPendingActions } from '../../../../helpers/action.helper';
-import { orderProfileActions } from '../../../../redux/slices/customer/orderProfile/orderProfile.slice';
+import { assignPendingActions } from '../../../../../helpers/action.helper';
+import { orderProfileActions } from '../../../../../redux/slices/customer/orderProfile/orderProfile.slice';
 import ProfileTypeInput from './ProfileTypeInput';
 
 export interface IOrderMeasurementsFormProps {

@@ -5,11 +5,11 @@ import {
   mainTitleContent,
   horizontalGapStackTokens,
   columnIconButtonStyle,
-} from '../../common/fabric-styles/styles';
+} from '../../../common/fabric-styles/styles';
 import { useDispatch } from 'react-redux';
-import { controlActions } from '../../redux/slices/control.slice';
+import { controlActions } from '../../../redux/slices/control.slice';
 import OrderProfileFormBootstrapper from './managing/orderProfile/OrderProfileFormBootstrapper';
-import { orderProfileActions } from '../../redux/slices/customer/orderProfile/orderProfile.slice';
+import { orderProfileActions } from '../../../redux/slices/customer/orderProfile/orderProfile.slice';
 
 const OrderProfileHeader: React.FC = () => {
   const dispatch = useDispatch();

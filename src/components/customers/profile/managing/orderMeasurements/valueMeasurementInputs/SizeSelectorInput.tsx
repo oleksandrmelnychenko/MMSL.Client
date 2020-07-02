@@ -3,11 +3,11 @@ import { Field } from 'formik';
 import {
   Measurement,
   MeasurementMapSize,
-} from '../../../../../interfaces/measurements';
+} from '../../../../../../interfaces/measurements';
 import {
   CustomerProductProfile,
   ProfileTypes,
-} from '../../../../../interfaces/orderProfile';
+} from '../../../../../../interfaces/orderProfile';
 import { List } from 'linq-typescript';
 import { ComboBox, IComboBoxOption, IComboBox } from 'office-ui-fabric-react';
 import {
@@ -15,9 +15,9 @@ import {
   BASE_MEASUREMRNT_VALUES_FORM_FIELD,
 } from '../OrderMeasurementsForm';
 import { useDispatch } from 'react-redux';
-import { assignPendingActions } from '../../../../../helpers/action.helper';
-import { measurementActions } from '../../../../../redux/slices/measurements/measurement.slice';
-import * as fabricStyles from '../../../../../common/fabric-styles/styles';
+import { assignPendingActions } from '../../../../../../helpers/action.helper';
+import { measurementActions } from '../../../../../../redux/slices/measurements/measurement.slice';
+import * as fabricStyles from '../../../../../../common/fabric-styles/styles';
 import { IInputValueModel, resolveInitialValue } from './ValueItem';
 
 const _buildSizeOptions = (measurement: Measurement) => {

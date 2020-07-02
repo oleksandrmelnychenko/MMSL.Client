@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Stack } from 'office-ui-fabric-react';
-import OrderProfileHeader from './OrderProfileHeader';
 import OrderProfileList from './OrderProfileList';
 import '../dealers/dealers.scss';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,7 +7,7 @@ import { IApplicationState } from '../../redux/reducers';
 import { assignPendingActions } from '../../helpers/action.helper';
 import { orderProfileActions } from '../../redux/slices/customer/orderProfile/orderProfile.slice';
 import { controlActions } from '../../redux/slices/control.slice';
-import OrderProfileFormBootstrapper from './managing/orderProfile/OrderProfileFormBootstrapper';
+// import OrderProfileFormBootstrapper from './managing/orderProfile/OrderProfileFormBootstrapper';
 
 export const CREATE_YOUR_FIRST_ORDER_PROFILE: string =
   'Create your first order profile';
@@ -64,7 +63,7 @@ const OrderProfileView: React.FC = () => {
                   closeFunctions: () => {
                     dispatch(controlActions.closeRightPanel());
                   },
-                  component: OrderProfileFormBootstrapper,
+                  component: null,
                 })
               );
             },
@@ -85,7 +84,7 @@ const OrderProfileView: React.FC = () => {
             <Stack.Item align="stretch">
               <div className="content__header">
                 <div className="content__header__top">
-                  <OrderProfileHeader />
+                  {/* <OrderProfileHeader /> */}
                 </div>
               </div>
             </Stack.Item>

@@ -2,28 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { Stack, TextField } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
-import { FormicReference } from '../../../../interfaces';
-import { ProductCategory } from '../../../../interfaces/products';
-import * as fabricStyles from '../../../../common/fabric-styles/styles';
+import { FormicReference } from '../../../../../interfaces';
+import { ProductCategory } from '../../../../../interfaces/products';
+import * as fabricStyles from '../../../../../common/fabric-styles/styles';
 import { List } from 'linq-typescript';
 import { useDispatch, useSelector } from 'react-redux';
-import { controlActions } from '../../../../redux/slices/control.slice';
+import { controlActions } from '../../../../../redux/slices/control.slice';
 import {
   CommandBarItem,
   GetCommandBarItemProps,
   ChangeItemsDisabledState,
-} from '../../../../helpers/commandBar.helper';
-import { IApplicationState } from '../../../../redux/reducers';
-import { StoreCustomer } from '../../../../interfaces/storeCustomer';
+} from '../../../../../helpers/commandBar.helper';
+import { IApplicationState } from '../../../../../redux/reducers';
+import { StoreCustomer } from '../../../../../interfaces/storeCustomer';
 import CustomersInput from './CustomersInput';
 import ProductsInput from './ProductsInput';
-import { assignPendingActions } from '../../../../helpers/action.helper';
-import { orderProfileActions } from '../../../../redux/slices/customer/orderProfile/orderProfile.slice';
+import { assignPendingActions } from '../../../../../helpers/action.helper';
+import { orderProfileActions } from '../../../../../redux/slices/customer/orderProfile/orderProfile.slice';
 import {
   CustomerProductProfile,
   ProfileTypes,
   IUpdateOrderProfileDetailsPayload,
-} from '../../../../interfaces/orderProfile';
+} from '../../../../../interfaces/orderProfile';
 import OrderProfileDetails from './OrderProfileDetails';
 
 export interface IOrderProfileFormProps {

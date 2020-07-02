@@ -10,12 +10,12 @@ import {
 import {
   Measurement,
   MeasurementMapDefinition,
-} from '../../../../../interfaces/measurements';
+} from '../../../../../../interfaces/measurements';
 import {
   CustomerProductProfile,
   CustomerProfileSizeValue,
   ProfileTypes,
-} from '../../../../../interfaces/orderProfile';
+} from '../../../../../../interfaces/orderProfile';
 import { List } from 'linq-typescript';
 
 export const initInputValueModelDefaults = (
