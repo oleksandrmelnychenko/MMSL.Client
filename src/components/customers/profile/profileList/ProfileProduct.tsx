@@ -5,13 +5,21 @@ import {
   Text,
   FontWeights,
   CommandBarButton,
-  ActionButton,
 } from 'office-ui-fabric-react';
 import './profileProduct.scss';
 import { ExpandableItem } from '../../../../interfaces';
 import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
 import { renderHintLable } from '../../../../helpers/uiComponent.helper';
 import ProfileItem from './ProfileItem';
+import { controlActions } from '../../../../redux/slices/control.slice';
+import { useDispatch } from 'react-redux';
+import ManageProfileOptiosPanel, {
+  onDismissManageProfileOptiosPanel,
+} from '../../options/ManageProfileOptiosPanel';
+import {
+  orderProfileActions,
+  MainProfileView,
+} from '../../../../redux/slices/customer/orderProfile/orderProfile.slice';
 
 export interface IProfileProductProps {
   expandableProfileProduct: ExpandableItem;
@@ -52,6 +60,8 @@ const _textStackStyle = {
 export const ProfileProduct: React.FC<IProfileProductProps> = (
   props: IProfileProductProps
 ) => {
+  const dispatch = useDispatch();
+
   const [isExpanded, setIsExpanded] = useState<boolean>();
 
   return (
@@ -103,9 +113,24 @@ export const ProfileProduct: React.FC<IProfileProductProps> = (
                     {renderHintLable(`No profiles for this product.`)}
                   </Stack.Item>
                   <Stack.Item align="start">
-                    {/* <CommandBarButton */}
                     <CommandBarButton
-                      onClick={() => {}}
+                      onClick={() => {
+                        dispatch(
+                          controlActions.openInfoPanelWithComponent({
+                            component: ManageProfileOptiosPanel,
+                            onDismisPendingAction: () => {
+                              onDismissManageProfileOptiosPanel().forEach(
+                                (action) => dispatch(action)
+                              );
+                            },
+                          })
+                        );
+                        dispatch(
+                          orderProfileActions.changeMainProfileView(
+                            MainProfileView.CreatingNewProfile
+                          )
+                        );
+                      }}
                       height={20}
                       styles={_addFirstSizeButtonStyle}
                       iconProps={{ iconName: 'Add' }}

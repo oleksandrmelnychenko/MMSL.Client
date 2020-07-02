@@ -5,8 +5,10 @@ import ProfileList from './profileList/ProfileList';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { useDispatch, useSelector } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
-import { orderProfileActions } from '../../../redux/slices/customer/orderProfile/orderProfile.slice';
-import { productActions } from '../../../redux/slices/product.slice';
+import {
+  orderProfileActions,
+  MainProfileView,
+} from '../../../redux/slices/customer/orderProfile/orderProfile.slice';
 
 export const Profiles: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -19,9 +21,19 @@ export const Profiles: React.FC = (props: any) => {
     (state) => state.customer.customerState
   );
 
+  const mainProfileView: MainProfileView = useSelector<
+    IApplicationState,
+    MainProfileView
+  >((state) => state.orderProfile.mainProfileView);
+
   useEffect(() => {
     return () => {
       dispatch(orderProfileActions.changeCustomerProductProfiles([]));
+      dispatch(
+        orderProfileActions.changeMainProfileView(
+          MainProfileView.ExploreProfileList
+        )
+      );
       setIsProfilesWasRequested(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,22 +68,28 @@ export const Profiles: React.FC = (props: any) => {
 
   return (
     <>
-      {isProfilesWasRequested ? (
-        <div className="content__root">
-          <Stack verticalAlign="space-around">
-            <Stack.Item align="stretch">
-              <div className="content__header">
-                <div className="content__header__top">
-                  <ProfileHeader />
-                </div>
-              </div>
-            </Stack.Item>
-            <Stack.Item>
-              <ProfileList />
-            </Stack.Item>
-          </Stack>
-        </div>
-      ) : null}
+      {mainProfileView === MainProfileView.ExploreProfileList ? (
+        <>
+          {isProfilesWasRequested ? (
+            <div className="content__root">
+              <Stack verticalAlign="space-around">
+                <Stack.Item align="stretch">
+                  <div className="content__header">
+                    <div className="content__header__top">
+                      <ProfileHeader />
+                    </div>
+                  </div>
+                </Stack.Item>
+                <Stack.Item>
+                  <ProfileList />
+                </Stack.Item>
+              </Stack>
+            </div>
+          ) : null}
+        </>
+      ) : (
+        'DETAILS'
+      )}
     </>
   );
 };
