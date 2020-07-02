@@ -16,12 +16,12 @@ import {
 } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
-import { customerActions } from '../../redux/slices/customer.slice';
+import { customerActions } from '../../redux/slices/customer/customer.slice';
 import { controlActions } from '../../redux/slices/control.slice';
 import CustomersOptionsPanel, {
   onDismisActionsCustomersOptionsPanel,
 } from './options/CustomersOptionsPanel';
-import { CustomerListState } from '../../redux/slices/customer.slice';
+import { CustomerListState } from '../../redux/slices/customer/customer.slice';
 import {
   scrollablePaneStyleForDetailList,
   detailsListStyle,

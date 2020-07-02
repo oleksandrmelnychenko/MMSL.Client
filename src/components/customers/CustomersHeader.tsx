@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { SearchBox, ActionButton, Text, Stack } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
-import { customerActions } from '../../redux/slices/customer.slice';
+import { customerActions } from '../../redux/slices/customer/customer.slice';
 import { controlActions } from '../../redux/slices/control.slice';
 import {
   horizontalGapStackTokens,

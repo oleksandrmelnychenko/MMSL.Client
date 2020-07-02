@@ -17,7 +17,7 @@ import { StoreCustomer } from '../../../interfaces/storeCustomer';
 import * as fabricStyles from '../../../common/fabric-styles/styles';
 import * as fabricControlSettings from '../../../common/fabric-control-settings/fabricControlSettings';
 import { useDispatch, useSelector } from 'react-redux';
-import { customerActions } from '../../../redux/slices/customer.slice';
+import { customerActions } from '../../../redux/slices/customer/customer.slice';
 import {
   GetCommandBarItemProps,
   CommandBarItem,

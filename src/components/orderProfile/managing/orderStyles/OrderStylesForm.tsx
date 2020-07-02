@@ -20,7 +20,7 @@ import { ProductCategory } from '../../../../interfaces/products';
 import StyleSelectorInput from './styleSelector/StyleSelectorInput';
 import { IStyleUnitModel, initUnitItems } from './styleSelector/StyleUnitItem';
 import { assignPendingActions } from '../../../../helpers/action.helper';
-import { orderProfileActions } from '../../../../redux/slices/orderProfile/orderProfile.slice';
+import { orderProfileActions } from '../../../../redux/slices/customer/orderProfile/orderProfile.slice';
 
 export interface IOrderStylesFormProps {
   productCategory: ProductCategory;

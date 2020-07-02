@@ -25,8 +25,7 @@ import {
 } from '../../../redux/slices/control.slice';
 import { List } from 'linq-typescript';
 import ManageCustomerForm from './ManageDealerCustomerForm';
-
-import { customerActions } from '../../../redux/slices/customer.slice';
+import { customerActions } from '../../../redux/slices/customer/customer.slice';
 import { DealerState } from '../../../redux/slices/dealer.slice';
 
 export const DealerCustomers: React.FC = () => {

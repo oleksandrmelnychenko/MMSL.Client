@@ -9,7 +9,7 @@ import {
 import {
   customerActions,
   CustomerListState,
-} from '../../../redux/slices/customer.slice';
+} from '../../../redux/slices/customer/customer.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { IApplicationState } from '../../../redux/reducers/index';
@@ -55,6 +55,32 @@ const CustomersOptionsPanel: React.FC = () => {
             })
           );
         }
+      },
+    },
+    {
+      title: 'Profiles',
+      className: 'management__btn-styles',
+      isDisabled: selectedCustomer ? false : true,
+      tooltip: 'Manage profiles',
+      onClickFunc: () => {
+        // dispatch(controlActions.closeInfoPanelWithComponent());
+        // dispatch(
+        //   controlActions.openInfoPanelWithComponent({
+        //     component: ProductStylesPanel,
+        //     onDismisPendingAction: () => {
+        //       history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+        //       stylesPanelDismisActions().forEach((action) => {
+        //         dispatch(action);
+        //       });
+        //     },
+        //   })
+        // );
+        // if (choseCategory) {
+        //   history.push(`${PRODUCT_STYLES_PATH}${choseCategory.id}`);
+        // } else {
+        //   dispatch(controlActions.closeInfoPanelWithComponent());
+        //   history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+        // }
       },
     },
     {

@@ -6,7 +6,7 @@ import {
 import { debounceTime, switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
-import { customerActions } from '../../redux/slices/customer.slice';
+import { customerActions } from '../slices/customer/customer.slice';
 import { getActiveLanguage } from 'react-localize-redux';
 import {
   getWebRequest,

@@ -29,7 +29,7 @@ import {
   controlActions,
 } from '../../redux/slices/control.slice';
 import { assignPendingActions } from '../../helpers/action.helper';
-import { orderProfileActions } from '../../redux/slices/orderProfile/orderProfile.slice';
+import { orderProfileActions } from '../../redux/slices/customer/orderProfile/orderProfile.slice';
 import { List } from 'linq-typescript';
 import OrderProfileFormBootstrapper from './managing/orderProfile/OrderProfileFormBootstrapper';
 import OrderMeasurementsFormBootstrapper from './managing/orderMeasurements/OrderMeasurementsFormBootstrapper';

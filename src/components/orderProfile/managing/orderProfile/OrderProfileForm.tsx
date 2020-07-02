@@ -18,7 +18,7 @@ import { StoreCustomer } from '../../../../interfaces/storeCustomer';
 import CustomersInput from './CustomersInput';
 import ProductsInput from './ProductsInput';
 import { assignPendingActions } from '../../../../helpers/action.helper';
-import { orderProfileActions } from '../../../../redux/slices/orderProfile/orderProfile.slice';
+import { orderProfileActions } from '../../../../redux/slices/customer/orderProfile/orderProfile.slice';
 import {
   CustomerProductProfile,
   ProfileTypes,

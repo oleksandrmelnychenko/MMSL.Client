@@ -1,4 +1,4 @@
-import { CustomerProductProfile } from './../../../interfaces/orderProfile';
+import { CustomerProductProfile } from './../../../../interfaces/orderProfile';
 import { createSlice } from '@reduxjs/toolkit';
 
 const INIT_STATE: IOrderProfileState = {

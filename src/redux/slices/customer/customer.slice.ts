@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Pagination } from '../../interfaces';
-import { StoreCustomer } from '../../interfaces/storeCustomer';
-import { IStore } from '../../interfaces/store';
+import { Pagination } from '../../../interfaces';
+import { StoreCustomer } from '../../../interfaces/storeCustomer';
+import { IStore } from '../../../interfaces/store';
 
 export class CustomerState {
   constructor() {

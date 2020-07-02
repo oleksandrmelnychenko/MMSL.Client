@@ -28,7 +28,7 @@ import {
 import {
   default as customerReducer,
   CustomerState,
-} from '../slices/customer.slice';
+} from '../slices/customer/customer.slice';
 import {
   default as measurementsStateReducer,
   MeasurementsState,
@@ -52,7 +52,7 @@ import {
 import {
   default as orderProfileReducer,
   IOrderProfileState,
-} from '../slices/orderProfile/orderProfile.slice';
+} from '../slices/customer/orderProfile/orderProfile.slice';
 
 export interface IApplicationState {
   auth: IAuthState;

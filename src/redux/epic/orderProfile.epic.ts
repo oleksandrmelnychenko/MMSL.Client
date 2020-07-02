@@ -19,7 +19,7 @@ import {
   InfoMessage,
   InfoMessageType,
 } from '../slices/control.slice';
-import { orderProfileActions } from '../slices/orderProfile/orderProfile.slice';
+import { orderProfileActions } from '../slices/customer/orderProfile/orderProfile.slice';
 
 export const apiGetOrderProfilesEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(

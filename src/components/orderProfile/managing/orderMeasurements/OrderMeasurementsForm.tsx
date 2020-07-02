@@ -28,7 +28,7 @@ import {
   initInputValueModelDefaults,
 } from './valueMeasurementInputs/ValueItem';
 import { assignPendingActions } from '../../../../helpers/action.helper';
-import { orderProfileActions } from '../../../../redux/slices/orderProfile/orderProfile.slice';
+import { orderProfileActions } from '../../../../redux/slices/customer/orderProfile/orderProfile.slice';
 import ProfileTypeInput from './ProfileTypeInput';
 
 export interface IOrderMeasurementsFormProps {

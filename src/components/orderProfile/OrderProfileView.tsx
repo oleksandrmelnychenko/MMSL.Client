@@ -6,7 +6,7 @@ import '../dealers/dealers.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import { assignPendingActions } from '../../helpers/action.helper';
-import { orderProfileActions } from '../../redux/slices/orderProfile/orderProfile.slice';
+import { orderProfileActions } from '../../redux/slices/customer/orderProfile/orderProfile.slice';
 import { controlActions } from '../../redux/slices/control.slice';
 import OrderProfileFormBootstrapper from './managing/orderProfile/OrderProfileFormBootstrapper';
 

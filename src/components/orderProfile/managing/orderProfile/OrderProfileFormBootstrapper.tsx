@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import OrderProfileForm from './OrderProfileForm';
 import { StoreCustomer } from '../../../../interfaces/storeCustomer';
-import { customerActions } from '../../../../redux/slices/customer.slice';
+import { customerActions } from '../../../../redux/slices/customer/customer.slice';
 import { productActions } from '../../../../redux/slices/product.slice';
 import { ProductCategory } from '../../../../interfaces/products';
 import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
