@@ -54,19 +54,7 @@ const ManagementPanel: React.FC = () => {
           <PrimaryButton
             styles={btnMenuStyle}
             className={item.className}
-            onClick={() => {
-              dispatch(
-                controlActions.openRightPanel({
-                  title: `Customer: ${targetCustomer!.userName}`,
-                  width: '400px',
-                  closeFunctions: () => {
-                    dispatch(controlActions.closeRightPanel());
-                    dispatch(customerActions.selectedCustomer(null));
-                  },
-                  component: ManageCustomerForm,
-                })
-              );
-            }}
+            onClick={() => item.onClickFunc()}
             allowDisabledFocus
           />
           {item.title}

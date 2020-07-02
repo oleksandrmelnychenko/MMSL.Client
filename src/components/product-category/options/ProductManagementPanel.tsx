@@ -162,9 +162,7 @@ const ProductManagementPanel: React.FC = () => {
             disabled={item.isDisabled}
             styles={btnMenuStyle}
             className={item.className}
-            onClick={() => {
-              item.onClickFunc();
-            }}
+            onClick={() => item.onClickFunc()}
             allowDisabledFocus
           />
           {item.title}
