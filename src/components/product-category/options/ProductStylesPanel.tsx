@@ -6,16 +6,16 @@ import {
   TooltipDelay,
   DirectionalHint,
 } from 'office-ui-fabric-react';
-import { controlActions } from '../../../redux/slices/control.slice';
+import {
+  controlActions,
+  IInfoPanelMenuItem,
+} from '../../../redux/slices/control.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
-import { ProductManagingPanelComponent } from '../../../redux/slices/product.slice';
 import { useHistory } from 'react-router-dom';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { ProductCategory } from '../../../interfaces/products';
-import ProductManagementPanel, {
-  IProductMenuItem,
-} from './ProductManagementPanel';
+import ProductManagementPanel from './ProductManagementPanel';
 import { productSettingsActions } from '../../../redux/slices/productSettings.slice';
 import ManagingvOptionGroupForm from '../productSettings/productSettingManagement/ManagingProductGroupForm';
 
@@ -38,11 +38,10 @@ const ProductStylesPanel: React.FC = () => {
     return () => {};
   }, []);
 
-  const menuItem: IProductMenuItem[] = [
+  const menuItem: IInfoPanelMenuItem[] = [
     {
       title: 'Back',
       className: 'management__btn-back_measurement',
-      componentType: ProductManagingPanelComponent.ProductCategoryDetails,
       isDisabled: false,
       tooltip: 'Go back to products',
       onClickFunc: () => {
@@ -60,13 +59,12 @@ const ProductStylesPanel: React.FC = () => {
           dispatch(action);
         });
       },
-    } as IProductMenuItem,
+    },
     {
       title: 'New',
       className: choseCategory
         ? 'management__btn-new_style'
         : 'management__btn-new_style management__btn-disabled',
-      componentType: ProductManagingPanelComponent.ProductMeasurement,
       isDisabled: choseCategory ? false : true,
       tooltip: 'Create new product style',
       onClickFunc: () => {
@@ -83,7 +81,7 @@ const ProductStylesPanel: React.FC = () => {
           );
         }
       },
-    } as IProductMenuItem,
+    },
   ];
 
   return (

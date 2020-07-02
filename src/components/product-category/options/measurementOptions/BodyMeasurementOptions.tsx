@@ -6,17 +6,17 @@ import {
   TooltipDelay,
   DirectionalHint,
 } from 'office-ui-fabric-react';
-import { controlActions } from '../../../../redux/slices/control.slice';
+import {
+  controlActions,
+  IInfoPanelMenuItem,
+} from '../../../../redux/slices/control.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   labelStyle,
   btnMenuStyle,
 } from '../../../../common/fabric-styles/styles';
-import { ProductManagingPanelComponent } from '../../../../redux/slices/product.slice';
 import { useHistory } from 'react-router-dom';
-import ProductManagementPanel, {
-  IProductMenuItem,
-} from '../ProductManagementPanel';
+import ProductManagementPanel from '../ProductManagementPanel';
 import { fittingTypesActions } from '../../../../redux/slices/measurements/fittingTypes.slice';
 import {
   measurementViewControlsActions,
@@ -49,11 +49,10 @@ const BodyMeasurementOptions: React.FC = () => {
     Measurement | null | undefined
   >((state) => state.product.productMeasurementsState.targetMeasurement);
 
-  const menuItem: IProductMenuItem[] = [
+  const menuItem: IInfoPanelMenuItem[] = [
     {
       title: 'Back',
       className: 'management__btn-back_measurement',
-      componentType: ProductManagingPanelComponent.Unknown,
       isDisabled: false,
       tooltip: 'Go back to products',
       onClickFunc: () => {
@@ -69,14 +68,13 @@ const BodyMeasurementOptions: React.FC = () => {
           dispatch(action);
         });
       },
-    } as IProductMenuItem,
+    },
     {
       title: 'New',
       className:
         category && targetProductMeasurement
           ? 'management__btn-new_measurement'
           : 'management__btn-new_measurement management__btn-disabled',
-      componentType: ProductManagingPanelComponent.Unknown,
       isDisabled: category && targetProductMeasurement ? false : true,
       tooltip: 'Add fitting type',
       onClickFunc: () => {
@@ -93,7 +91,7 @@ const BodyMeasurementOptions: React.FC = () => {
           );
         }
       },
-    } as IProductMenuItem,
+    },
   ];
 
   return (

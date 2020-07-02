@@ -11,6 +11,7 @@ import {
   controlActions,
   DialogArgs,
   CommonDialogType,
+  IInfoPanelMenuItem,
 } from '../../../../redux/slices/control.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -22,9 +23,7 @@ import { useHistory } from 'react-router-dom';
 import { IApplicationState } from '../../../../redux/reducers/index';
 import { Measurement } from '../../../../interfaces/measurements';
 import { ProductCategory } from '../../../../interfaces/products';
-import ProductManagementPanel, {
-  IProductMenuItem,
-} from '../ProductManagementPanel';
+import ProductManagementPanel from '../ProductManagementPanel';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import { measurementActions } from '../../../../redux/slices/measurements/measurement.slice';
 import { List } from 'linq-typescript';
@@ -67,11 +66,10 @@ const BaseMeasurementOptions: React.FC = () => {
     return () => {};
   }, []);
 
-  const menuItem: IProductMenuItem[] = [
+  const menuItem: IInfoPanelMenuItem[] = [
     {
       title: 'Back',
       className: 'management__btn-back_measurement',
-      componentType: ProductManagingPanelComponent.ProductCategoryDetails,
       isDisabled: false,
       tooltip: 'Go back to products',
       onClickFunc: () => {
@@ -87,13 +85,12 @@ const BaseMeasurementOptions: React.FC = () => {
           dispatch(action);
         });
       },
-    } as IProductMenuItem,
+    } as IInfoPanelMenuItem,
     {
       title: 'New',
       className: choseCategory
         ? 'management__btn-new_measurement'
         : 'management__btn-new_measurement management__btn-disabled',
-      componentType: ProductManagingPanelComponent.ProductMeasurement,
       isDisabled: choseCategory ? false : true,
       tooltip: 'Create new measurement',
       onClickFunc: () => {
@@ -110,14 +107,13 @@ const BaseMeasurementOptions: React.FC = () => {
           );
         }
       },
-    } as IProductMenuItem,
+    } as IInfoPanelMenuItem,
     {
       title: 'Edit',
       className:
         choseCategory && targetProductMeasurement
           ? 'management__btn-edit_measurement'
           : 'management__btn-edit_measurement management__btn-disabled',
-      componentType: ProductManagingPanelComponent.ProductTimeLine,
       isDisabled: choseCategory && targetProductMeasurement ? false : true,
       tooltip: 'Edit measurement',
       onClickFunc: () => {
@@ -141,14 +137,13 @@ const BaseMeasurementOptions: React.FC = () => {
           );
         }
       },
-    } as IProductMenuItem,
+    } as IInfoPanelMenuItem,
     {
       title: 'Delete',
       className:
         choseCategory && targetProductMeasurement
           ? 'management__btn-delete_measurement'
           : 'management__btn-delete_measurement management__btn-disabled',
-      componentType: ProductManagingPanelComponent.ProductTimeLine,
       isDisabled: choseCategory && targetProductMeasurement ? false : true,
       tooltip: 'Delete measurement',
       onClickFunc: () => {
@@ -213,14 +208,13 @@ const BaseMeasurementOptions: React.FC = () => {
           );
         }
       },
-    } as IProductMenuItem,
+    } as IInfoPanelMenuItem,
     {
       title: 'New size',
       className:
         choseCategory && targetProductMeasurement
           ? 'management__btn-new_size_measurement'
           : 'management__btn-new_size_measurement management__btn-disabled',
-      componentType: ProductManagingPanelComponent.ProductTimeLine,
       isDisabled: choseCategory && targetProductMeasurement ? false : true,
       tooltip: 'Add new measurement size',
       onClickFunc: () => {
@@ -238,7 +232,7 @@ const BaseMeasurementOptions: React.FC = () => {
           );
         }
       },
-    } as IProductMenuItem,
+    } as IInfoPanelMenuItem,
   ];
 
   return (

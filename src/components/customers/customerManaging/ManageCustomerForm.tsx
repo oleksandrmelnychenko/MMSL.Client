@@ -100,9 +100,10 @@ export const ManageCustomerForm: React.FC = () => {
     (state) => state.customer.manageCustomerForm.storesAutocomplete
   );
 
-  const selectedCustomer = useSelector<IApplicationState, StoreCustomer | null>(
-    (state) => state.customer.customerState.selectedCustomer
-  );
+  const selectedCustomer = useSelector<
+    IApplicationState,
+    StoreCustomer | null | undefined
+  >((state) => state.customer.customerState.selectedCustomer);
 
   const initValues = initDefaultValuesForNewStoreCustomerForm(selectedCustomer);
 

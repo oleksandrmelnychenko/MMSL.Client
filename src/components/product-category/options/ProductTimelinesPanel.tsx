@@ -7,16 +7,16 @@ import {
   DirectionalHint,
 } from 'office-ui-fabric-react';
 import { productActions } from '../../../redux/slices/product.slice';
-import { controlActions } from '../../../redux/slices/control.slice';
+import {
+  controlActions,
+  IInfoPanelMenuItem,
+} from '../../../redux/slices/control.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
-import { ProductManagingPanelComponent } from '../../../redux/slices/product.slice';
 import { useHistory } from 'react-router-dom';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { ProductCategory } from '../../../interfaces/products';
-import ProductManagementPanel, {
-  IProductMenuItem,
-} from './ProductManagementPanel';
+import ProductManagementPanel from './ProductManagementPanel';
 import ProductDeliverTimelineForm from '../delivery-timeline/ProductDeliverTimelineForm';
 
 const ProductTimelinesPanel: React.FC = () => {
@@ -31,11 +31,10 @@ const ProductTimelinesPanel: React.FC = () => {
     return () => {};
   }, []);
 
-  const menuItem: IProductMenuItem[] = [
+  const menuItem: IInfoPanelMenuItem[] = [
     {
       title: 'Back',
       className: 'management__btn-back_measurement',
-      componentType: ProductManagingPanelComponent.ProductCategoryDetails,
       isDisabled: false,
       tooltip: 'Go back to products',
       onClickFunc: () => {
@@ -47,13 +46,12 @@ const ProductTimelinesPanel: React.FC = () => {
           })
         );
       },
-    } as IProductMenuItem,
+    },
     {
       title: 'New',
       className: choseCategory
         ? 'management__btn-new_measurement'
         : 'management__btn-new_measurement management__btn-disabled',
-      componentType: ProductManagingPanelComponent.ProductMeasurement,
       isDisabled: choseCategory ? false : true,
       tooltip: 'Create new timeline',
       onClickFunc: () => {
@@ -71,7 +69,7 @@ const ProductTimelinesPanel: React.FC = () => {
           );
         }
       },
-    } as IProductMenuItem,
+    },
   ];
 
   return (

@@ -23,7 +23,7 @@ export class CustomerListState {
   }
 
   customersList: StoreCustomer[];
-  selectedCustomer: StoreCustomer | null;
+  selectedCustomer: StoreCustomer | null | undefined;
   pagination: Pagination;
   search: string;
   searchByStore: string;

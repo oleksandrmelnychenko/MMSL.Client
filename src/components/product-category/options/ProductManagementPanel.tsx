@@ -1,9 +1,11 @@
 import React from 'react';
 import { Label, PrimaryButton } from 'office-ui-fabric-react';
-import { controlActions } from '../../../redux/slices/control.slice';
+import {
+  controlActions,
+  IInfoPanelMenuItem,
+} from '../../../redux/slices/control.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
-import { ProductManagingPanelComponent } from '../../../redux/slices/product.slice';
 import { useHistory } from 'react-router-dom';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { ProductCategory } from '../../../interfaces/products';
@@ -28,14 +30,6 @@ export const PRODUCT_TIMELINES_PATH: string =
 export const PRODUCT_STYLE_PERMISSIONS_PATH: string =
   '/en/app/product/style-permissions/';
 
-export interface IProductMenuItem {
-  title: string;
-  className: string;
-  componentType: ProductManagingPanelComponent;
-  onClickFunc: Function;
-  isDisabled: boolean;
-}
-
 const ProductManagementPanel: React.FC = () => {
   const dispatch = useDispatch();
   let history = useHistory();
@@ -44,12 +38,12 @@ const ProductManagementPanel: React.FC = () => {
     (state) => state.product.choose.category
   );
 
-  const menuItem: IProductMenuItem[] = [
+  const menuItem: IInfoPanelMenuItem[] = [
     {
       title: 'Styles',
       className: 'management__btn-styles',
-      componentType: ProductManagingPanelComponent.ProductCategoryDetails,
       isDisabled: choseCategory ? false : true,
+      tooltip: '',
       onClickFunc: () => {
         dispatch(controlActions.closeInfoPanelWithComponent());
         dispatch(
@@ -76,8 +70,8 @@ const ProductManagementPanel: React.FC = () => {
     {
       title: 'Measurements',
       className: 'management__btn-measurements',
-      componentType: ProductManagingPanelComponent.ProductMeasurement,
       isDisabled: choseCategory ? false : true,
+      tooltip: '',
       onClickFunc: () => {
         // dispatch(productActions.setChooseProductCategoryId(choseCategory!.id));
         dispatch(controlActions.closeInfoPanelWithComponent());
@@ -105,8 +99,8 @@ const ProductManagementPanel: React.FC = () => {
     {
       title: 'Timeline',
       className: 'management__btn-timeline',
-      componentType: ProductManagingPanelComponent.ProductTimeLine,
       isDisabled: choseCategory ? false : true,
+      tooltip: '',
       onClickFunc: () => {
         dispatch(controlActions.closeInfoPanelWithComponent());
         dispatch(
@@ -129,8 +123,8 @@ const ProductManagementPanel: React.FC = () => {
     {
       title: 'Style Permissions',
       className: 'management__btn-style_permissions',
-      componentType: ProductManagingPanelComponent.StylePermissions,
       isDisabled: choseCategory ? false : true,
+      tooltip: '',
       onClickFunc: () => {
         dispatch(controlActions.closeInfoPanelWithComponent());
         dispatch(

@@ -105,6 +105,14 @@ export class InfoMessage {
   messageType: InfoMessageType;
 }
 
+export interface IInfoPanelMenuItem {
+  title: string;
+  className: string;
+  onClickFunc: Function;
+  isDisabled: boolean;
+  tooltip: string;
+}
+
 const controls = createSlice({
   name: 'control',
   initialState: new ControlState(),

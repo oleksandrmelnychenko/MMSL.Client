@@ -6,15 +6,16 @@ import {
   TooltipDelay,
   DirectionalHint,
 } from 'office-ui-fabric-react';
-import { controlActions } from '../../../redux/slices/control.slice';
+import {
+  controlActions,
+  IInfoPanelMenuItem,
+} from '../../../redux/slices/control.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
-import { ProductManagingPanelComponent } from '../../../redux/slices/product.slice';
 import { useHistory } from 'react-router-dom';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { ProductCategory } from '../../../interfaces/products';
 import ProductManagementPanel, {
-  IProductMenuItem,
   PRODUCT_CATEGORIES_DASHBOARD_PATH,
 } from './ProductManagementPanel';
 import ProductPermissionForm from '../productPermissions/managing/ProductPermissionForm';
@@ -35,11 +36,10 @@ const ProductPermissionsPanel: React.FC = () => {
     return () => {};
   }, []);
 
-  const menuItem: IProductMenuItem[] = [
+  const menuItem: IInfoPanelMenuItem[] = [
     {
       title: 'Back',
       className: 'management__btn-back_measurement',
-      componentType: ProductManagingPanelComponent.ProductCategoryDetails,
       isDisabled: false,
       tooltip: 'Go back to products',
       onClickFunc: () => {
@@ -57,13 +57,12 @@ const ProductPermissionsPanel: React.FC = () => {
           dispatch(action);
         });
       },
-    } as IProductMenuItem,
+    },
     {
       title: 'New',
       className: choseCategory
         ? 'management__btn-style_add_permissions'
         : 'management__btn-style_add_permissions management__btn-disabled',
-      componentType: ProductManagingPanelComponent.ProductCategoryDetails,
       isDisabled: choseCategory ? false : true,
       tooltip: 'Create new product style permission',
       onClickFunc: () => {
@@ -80,7 +79,7 @@ const ProductPermissionsPanel: React.FC = () => {
           );
         }
       },
-    } as IProductMenuItem,
+    },
   ];
 
   return (

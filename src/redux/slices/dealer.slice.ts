@@ -17,6 +17,7 @@ export class DealerState {
   dealerState: DealersListState;
   manageDealerForm: ManageDealerFormState;
   selectedDealer: DealerAccount | null;
+  /// TODO: probably for remove
   isOpenPanelWithDealerDetails: ToggleDealerPanelWithDetails;
   dealerStores: IStore[];
   dealerCustomerState: DealerCustomerState;
