@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Measurement } from '../../../../../interfaces/measurements';
 import {
   ProfileTypes,
@@ -19,17 +19,14 @@ import {
 } from '../orderStyles/styleSelector/StyleUnitItem';
 import { List } from 'linq-typescript';
 import { StoreCustomer } from '../../../../../interfaces/storeCustomer';
-import { Stack, Text } from 'office-ui-fabric-react';
-import ProductCustomerDetails from './ProductCustomerDetails';
-import EntityInput from './EntityInput';
-import ProfileTypeInput from '../orderMeasurements/ProfileTypeInput';
-import MeasurementInput from '../orderMeasurements/MeasurementInput';
-import FreshMeasurementInput from '../orderMeasurements/valueMeasurementInputs/FreshMeasurementInput';
-import BaseMeasurementInput from '../orderMeasurements/valueMeasurementInputs/BaseMeasurementInput';
-import BodyMeasurementInput from '../orderMeasurements/valueMeasurementInputs/BodyMeasurementInput';
-import StyleSelectorInput from '../orderStyles/styleSelector/StyleSelectorInput';
 import { profileManagingActions } from '../../../../../redux/slices/customer/orderProfile/profileManaging.slice';
 import { FormicReference } from '../../../../../interfaces';
+import { assignPendingActions } from '../../../../../helpers/action.helper';
+import { orderProfileActions } from '../../../../../redux/slices/customer/orderProfile/orderProfile.slice';
+import { useHistory } from 'react-router-dom';
+import { onBackFromProfileManaging } from '../../../options/ManageProfileOptiosPanel';
+import ProfileFormMarkup from './ProfileFormMarkup';
+import { IApplicationState } from '../../../../../redux/reducers';
 
 export interface IProfileFormProps {
   measurements: Measurement[];
@@ -227,6 +224,7 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
   props: IProfileFormProps
 ) => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [formInit, setFormInit] = useState<any>(
     _initDefaultValues(props.measurements, props.product)
@@ -236,19 +234,12 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
     new FormicReference(() => {})
   );
 
-  useEffect(() => {
-    // if (new List(commandBarItems).any()) {
-    //   dispatch(
-    //     controlActions.setPanelButtons(
-    //       ChangeItemsDisabledState(
-    //         commandBarItems,
-    //         [CommandBarItem.Reset, CommandBarItem.Save],
-    //         !isFormikDirty
-    //       )
-    //     )
-    //   );
-    // }
+  const customerProductProfiles: ProductCategory[] = useSelector<
+    IApplicationState,
+    ProductCategory[]
+  >((state) => state.orderProfile.customerProductProfiles);
 
+  useEffect(() => {
     dispatch(
       profileManagingActions.updateCommands([
         {
@@ -268,6 +259,9 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
           onClick: () => {
             if (formikReference.formik) {
               formikReference.formik.resetForm();
+              setFormInit(
+                _initDefaultValues(props.measurements, props.product)
+              );
             }
           },
         },
@@ -283,10 +277,37 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
   const onCreate = (values: IFormValues) => {
     const payload = _buildNewPayload(values, props.product, props.customer);
     console.log(payload);
+
+    dispatch(
+      assignPendingActions(
+        orderProfileActions.apiCreateOrderProfile(payload),
+        [],
+        [],
+        (args: any) => {
+          dispatch(
+            assignPendingActions(
+              orderProfileActions.apiGetProductProfilesByCutomerId(
+                props.customer.id
+              ),
+              [],
+              [],
+              (args: any) => {
+                dispatch(
+                  orderProfileActions.changeCustomerProductProfiles(args)
+                );
+                onBackFromProfileManaging(dispatch, history);
+              },
+              (args: any) => {}
+            )
+          );
+        },
+        (args: any) => {}
+      )
+    );
   };
 
   return (
-    <>
+    <div className="profileForm">
       {
         <Formik
           validationSchema={Yup.object().shape({
@@ -318,7 +339,6 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
             formikReference.formik = formik;
 
             if (formik) {
-              console.log(formik.values);
               setFormikDirty(
                 formik.dirty ||
                   _urgentItemsDirtyHelper(formik) ||
@@ -335,77 +355,19 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
             return (
               <Form className="form">
                 <div className="dealerFormManage">
-                  <Stack horizontal tokens={{ childrenGap: '24px' }}>
-                    <ProductCustomerDetails
-                      customer={props.customer}
-                      product={props.product}
-                    />
-
-                    <Stack horizontal tokens={{ childrenGap: '24px' }}>
-                      <Stack tokens={{ childrenGap: '12px' }}>
-                        <EntityInput formik={formik} />
-
-                        <Stack tokens={{ childrenGap: '12px' }}>
-                          <ProfileTypeInput
-                            formik={formik}
-                            availableMeasurements={props.measurements}
-                            orderProfile={null}
-                          />
-
-                          <MeasurementInput
-                            measurements={props.measurements}
-                            formik={formik}
-                            orderProfile={null}
-                          />
-
-                          <FreshMeasurementInput
-                            formik={formik}
-                            orderProfile={null}
-                          />
-
-                          <BaseMeasurementInput
-                            formik={formik}
-                            orderProfile={null}
-                          />
-
-                          <BodyMeasurementInput
-                            formik={formik}
-                            orderProfile={null}
-                          />
-
-                          {formik.values.profileType ===
-                          ProfileTypes.Reference ? (
-                            <Text
-                              block
-                              styles={{
-                                root: {
-                                  marginTop: '15px !important',
-                                  fontWeight: 400,
-                                  fontSize: '14px',
-                                  color: '#a19f9d',
-                                },
-                              }}
-                            >
-                              {
-                                'Customer should provide fit shirt to replicate measurement'
-                              }
-                            </Text>
-                          ) : null}
-                        </Stack>
-
-                        <Stack>
-                          <StyleSelectorInput formik={formik} />
-                        </Stack>
-                      </Stack>
-                    </Stack>
-                  </Stack>
+                  <ProfileFormMarkup
+                    measurements={props.measurements}
+                    product={props.product}
+                    customer={props.customer}
+                    formik={formik}
+                  />
                 </div>
               </Form>
             );
           }}
         </Formik>
       }
-    </>
+    </div>
   );
 };
 

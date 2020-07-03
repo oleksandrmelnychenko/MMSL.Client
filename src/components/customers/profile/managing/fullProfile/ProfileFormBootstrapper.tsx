@@ -7,6 +7,8 @@ import { assignPendingActions } from '../../../../../helpers/action.helper';
 import { productActions } from '../../../../../redux/slices/product.slice';
 import ProfileForm from './ProfileForm';
 import { ProductCategory } from '../../../../../interfaces/products';
+import { ScrollablePane } from 'office-ui-fabric-react';
+import { scrollablePaneStyleForDetailList } from '../../../../../common/fabric-styles/styles';
 
 export const ProfileFormBootstrapper: React.FC = () => {
   const dispatch = useDispatch();
@@ -89,7 +91,7 @@ export const ProfileFormBootstrapper: React.FC = () => {
   }, [product]);
 
   return (
-    <>
+    <div className="formBootstrapper">
       {isMeasurementsWasIntended && isCategoryWasIntended && productCategory ? (
         <ProfileForm
           measurements={measurements}
@@ -97,7 +99,7 @@ export const ProfileFormBootstrapper: React.FC = () => {
           customer={customer}
         />
       ) : null}
-    </>
+    </div>
   );
 };
 

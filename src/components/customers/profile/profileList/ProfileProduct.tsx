@@ -5,6 +5,9 @@ import {
   Text,
   FontWeights,
   CommandBarButton,
+  Separator,
+  TooltipHost,
+  DirectionalHint,
 } from 'office-ui-fabric-react';
 import './profileProduct.scss';
 import { ExpandableItem } from '../../../../interfaces';
@@ -20,6 +23,8 @@ import { StoreCustomer } from '../../../../interfaces/storeCustomer';
 import { profileManagingActions } from '../../../../redux/slices/customer/orderProfile/profileManaging.slice';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import { productActions } from '../../../../redux/slices/product.slice';
+import { List } from 'linq-typescript';
+import { orderProfileActions } from '../../../../redux/slices/customer/orderProfile/orderProfile.slice';
 
 export interface IProfileProductProps {
   expandableProfileProduct: ExpandableItem;
@@ -46,7 +51,7 @@ const _groupContainerStyle = {
     height: '40px',
     borderBottom: '1px solid rgb(243, 242, 241)',
     borderTop: '1px solid rgb(243, 242, 241)',
-    marginBottom: '15px',
+    marginBottom: '0px',
     marginTop: '15px',
   },
 };
@@ -65,6 +70,9 @@ export const ProfileProduct: React.FC<IProfileProductProps> = (
 
   const [isExpanded, setIsExpanded] = useState<boolean>();
 
+  if (props.expandableProfileProduct.isExpanded !== isExpanded)
+    setIsExpanded(props.expandableProfileProduct.isExpanded);
+
   const onCreateNewProfile = () => {
     dispatch(
       assignPendingActions(
@@ -74,6 +82,8 @@ export const ProfileProduct: React.FC<IProfileProductProps> = (
         [],
         [],
         (args: any) => {
+          dispatch(orderProfileActions.changeTargetOrderProfile(null));
+
           dispatch(
             controlActions.openInfoPanelWithComponent({
               component: ManageProfileOptiosPanel,
@@ -84,6 +94,7 @@ export const ProfileProduct: React.FC<IProfileProductProps> = (
               },
             })
           );
+
           dispatch(
             profileManagingActions.beginManaging({
               customer: props.customer,
@@ -97,9 +108,19 @@ export const ProfileProduct: React.FC<IProfileProductProps> = (
     );
   };
 
+  let profiles: CustomerProductProfile[] = [];
+
+  if (props.expandableProfileProduct.item.customerProductProfiles) {
+    profiles = new List<CustomerProductProfile>(
+      props.expandableProfileProduct.item.customerProductProfiles
+    )
+      .where((item) => item !== null && item !== undefined)
+      .toArray();
+  }
+
   return (
     <div className={isExpanded ? 'profileProduct expanded' : 'profileProduct'}>
-      <Stack tokens={{ childrenGap: 12 }}>
+      <Stack tokens={{ childrenGap: 0 }}>
         <Stack
           horizontal
           verticalAlign="center"
@@ -110,7 +131,10 @@ export const ProfileProduct: React.FC<IProfileProductProps> = (
             iconProps={{
               iconName: isExpanded ? 'ChevronDownMed' : 'ChevronRightMed',
             }}
-            onClick={() => setIsExpanded(!isExpanded)}
+            onClick={() => {
+              props.expandableProfileProduct.isExpanded = !isExpanded;
+              setIsExpanded(!isExpanded);
+            }}
           />
 
           <Stack horizontal tokens={{ childrenGap: 10 }}>
@@ -120,25 +144,41 @@ export const ProfileProduct: React.FC<IProfileProductProps> = (
               </Text>
             </Stack.Item>
           </Stack>
+
+          <Separator vertical styles={{ root: { height: '26px' } }} />
+
+          <Stack horizontal tokens={{ childrenGap: 0 }}>
+            <TooltipHost
+              content="Add profile"
+              directionalHint={DirectionalHint.bottomRightEdge}
+              id="AddProfile"
+              calloutProps={{ gapSpace: 0 }}
+              styles={{ root: { display: 'inline-block' } }}
+            >
+              <IconButton
+                iconProps={{ iconName: 'BoxAdditionSolid' }}
+                onClick={() => onCreateNewProfile()}
+              />
+            </TooltipHost>
+          </Stack>
         </Stack>
 
         {isExpanded ? (
-          <Stack
-            wrap={true}
-            className="stack_option"
-            horizontal
-            tokens={{ childrenGap: 20 }}
-          >
-            {props.expandableProfileProduct.item.optionUnits &&
-            props.expandableProfileProduct.item.customerProductProfiles.length >
-              0 ? (
-              props.expandableProfileProduct.item.customerProductProfiles.map(
-                (profile: CustomerProductProfile, index: number) => (
-                  <React.Fragment key={index}>
-                    <ProfileItem profile={profile} />
-                  </React.Fragment>
-                )
-              )
+          <Stack wrap={true} tokens={{ childrenGap: 0 }}>
+            {profiles && profiles.length > 0 ? (
+              profiles.map((profile: CustomerProductProfile, index: number) => {
+                let result = null;
+
+                if (profile) {
+                  result = (
+                    <React.Fragment key={index}>
+                      <ProfileItem profile={profile} />
+                    </React.Fragment>
+                  );
+                }
+
+                return result;
+              })
             ) : (
               <div style={{ marginLeft: '9px', marginTop: '-6px' }}>
                 <Stack horizontal tokens={{ childrenGap: '12px' }}>

@@ -40,7 +40,6 @@ export const Profiles: React.FC = (props: any) => {
           orderProfileActions.apiGetProductProfilesByCutomerId(
             selectedCustomer.id
           ),
-          // productActions.apiGetAllProductCategories(),
           [],
           [],
           (args: any) => {

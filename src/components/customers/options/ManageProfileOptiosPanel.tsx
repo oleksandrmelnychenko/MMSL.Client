@@ -27,6 +27,24 @@ export const onDismissManageProfileOptiosPanel = () => {
   return [profileManagingActions.stopManaging()];
 };
 
+export const onBackFromProfileManaging = (dispatch: any, history: any) => {
+  dispatch(
+    controlActions.openInfoPanelWithComponent({
+      component: CustomerProfileOptiosPanel,
+      onDismisPendingAction: () => {
+        history.push(CUSTOMERS_PATH);
+        onDismisActionsCustomerProfileOptiosPanel().forEach((action) => {
+          dispatch(action);
+        });
+      },
+    })
+  );
+
+  onDismissManageProfileOptiosPanel().forEach((action) => {
+    dispatch(action);
+  });
+};
+
 const ManageProfileOptiosPanel: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -42,21 +60,7 @@ const ManageProfileOptiosPanel: React.FC = () => {
       isDisabled: false,
       tooltip: 'Go back to customers',
       onClickFunc: () => {
-        dispatch(
-          controlActions.openInfoPanelWithComponent({
-            component: CustomerProfileOptiosPanel,
-            onDismisPendingAction: () => {
-              history.push(CUSTOMERS_PATH);
-              onDismisActionsCustomerProfileOptiosPanel().forEach((action) => {
-                dispatch(action);
-              });
-            },
-          })
-        );
-
-        onDismissManageProfileOptiosPanel().forEach((action) => {
-          dispatch(action);
-        });
+        onBackFromProfileManaging(dispatch, history);
       },
     },
   ];

@@ -18,23 +18,26 @@ import { CUSTOMERS_PATH } from '../CustomersBootstrapper';
 import CustomersOptionsPanel from './CustomersOptionsPanel';
 import { useHistory } from 'react-router-dom';
 import { IApplicationState } from '../../../redux/reducers';
-import { CustomerProductProfile } from '../../../interfaces/orderProfile';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { orderProfileActions } from '../../../redux/slices/customer/orderProfile/orderProfile.slice';
-import { List } from 'linq-typescript';
+import { StoreCustomer } from '../../../interfaces/storeCustomer';
 
 export const onDismisActionsCustomerProfileOptiosPanel = () => {
-  return [];
+  return [orderProfileActions.changeTargetOrderProfile(null)];
 };
 
 const CustomerProfileOptiosPanel: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { targetOrderProfile, orderProfiles } = useSelector<
+  const { targetOrderProfile } = useSelector<IApplicationState, any>(
+    (state) => state.orderProfile
+  );
+
+  const selectedCustomer: StoreCustomer | null | undefined = useSelector<
     IApplicationState,
-    any
-  >((state) => state.orderProfile);
+    StoreCustomer | null | undefined
+  >((state) => state.customer.customerState.selectedCustomer);
 
   const menuItem: IInfoPanelMenuItem[] = [
     {
@@ -57,14 +60,25 @@ const CustomerProfileOptiosPanel: React.FC = () => {
       },
     },
     {
+      title: 'Edit',
+      className:
+        targetOrderProfile && selectedCustomer
+          ? 'management__btn-edit_measurement'
+          : 'management__btn-edit_measurement management__btn-disabled',
+      isDisabled: targetOrderProfile && selectedCustomer ? false : true,
+      tooltip: 'Edit profile',
+      onClickFunc: () => {},
+    },
+    {
       title: 'Delete',
-      className: false
-        ? 'management__btn-delete_measurement'
-        : 'management__btn-delete_measurement management__btn-disabled',
-      isDisabled: targetOrderProfile ? false : true,
+      className:
+        targetOrderProfile && selectedCustomer
+          ? 'management__btn-delete_measurement'
+          : 'management__btn-delete_measurement management__btn-disabled',
+      isDisabled: targetOrderProfile && selectedCustomer ? false : true,
       tooltip: 'Delete profile',
       onClickFunc: () => {
-        if (targetOrderProfile) {
+        if (targetOrderProfile && selectedCustomer) {
           dispatch(
             controlActions.toggleCommonDialogVisibility(
               new DialogArgs(
@@ -72,7 +86,7 @@ const CustomerProfileOptiosPanel: React.FC = () => {
                 'Delete profile',
                 `Are you sure you want to delete ${targetOrderProfile.name}?`,
                 () => {
-                  if (targetOrderProfile) {
+                  if (targetOrderProfile && selectedCustomer) {
                     dispatch(
                       assignPendingActions(
                         orderProfileActions.apiDeleteOrderProfileById(
@@ -81,16 +95,25 @@ const CustomerProfileOptiosPanel: React.FC = () => {
                         [],
                         [],
                         (args: any) => {
+                          debugger;
                           dispatch(
-                            orderProfileActions.changeOrderProfiles(
-                              new List<CustomerProductProfile>(orderProfiles)
-                                .where(
-                                  (orderProfiles) =>
-                                    targetOrderProfile.id !== args.body.id
-                                )
-                                .toArray()
+                            assignPendingActions(
+                              orderProfileActions.apiGetProductProfilesByCutomerId(
+                                selectedCustomer.id
+                              ),
+                              [],
+                              [],
+                              (args: any) => {
+                                dispatch(
+                                  orderProfileActions.changeCustomerProductProfiles(
+                                    args
+                                  )
+                                );
+                              },
+                              (args: any) => {}
                             )
                           );
+
                           if (
                             targetOrderProfile &&
                             targetOrderProfile.id === args.body.id
