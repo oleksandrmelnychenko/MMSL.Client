@@ -16,6 +16,7 @@ export const EntityInput: React.FC<IEntityInputProps> = (
         {() => (
           <div className="form__group">
             <TextField
+              autoComplete="off"
               value={props.formik.values.name}
               styles={fabricStyles.textFildLabelStyles}
               className="form__group__field"
@@ -42,6 +43,7 @@ export const EntityInput: React.FC<IEntityInputProps> = (
         {() => (
           <div className="form__group">
             <TextField
+              autoComplete="off"
               value={props.formik.values.description}
               styles={fabricStyles.textFildLabelStyles}
               className="form__group__field"

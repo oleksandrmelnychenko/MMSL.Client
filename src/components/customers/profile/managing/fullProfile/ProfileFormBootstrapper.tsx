@@ -7,8 +7,7 @@ import { assignPendingActions } from '../../../../../helpers/action.helper';
 import { productActions } from '../../../../../redux/slices/product.slice';
 import ProfileForm from './ProfileForm';
 import { ProductCategory } from '../../../../../interfaces/products';
-import { ScrollablePane } from 'office-ui-fabric-react';
-import { scrollablePaneStyleForDetailList } from '../../../../../common/fabric-styles/styles';
+import { StoreCustomer } from '../../../../../interfaces/storeCustomer';
 
 export const ProfileFormBootstrapper: React.FC = () => {
   const dispatch = useDispatch();
@@ -25,8 +24,16 @@ export const ProfileFormBootstrapper: React.FC = () => {
     false
   );
 
-  const { customer, product }: any = useSelector<IApplicationState, any>(
-    (state) => state.profileManaging
+  // const { customer, product }: any = useSelector<IApplicationState, any>(
+  //   (state) => state.profileManaging.
+  // );
+  const customer: StoreCustomer | null | undefined = useSelector<
+    IApplicationState,
+    StoreCustomer | null | undefined
+  >((state) => state.profileManaging.customer);
+
+  const productId: number = useSelector<IApplicationState, number>(
+    (state) => state.profileManaging.productId
   );
 
   useEffect(() => {
@@ -43,10 +50,10 @@ export const ProfileFormBootstrapper: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (product) {
+    if (productId > 0) {
       dispatch(
         assignPendingActions(
-          productActions.apiGetAllProductMeasurementsByProductId(product.id),
+          productActions.apiGetAllProductMeasurementsByProductId(productId),
           [],
           [],
           (args: any) => {
@@ -62,7 +69,7 @@ export const ProfileFormBootstrapper: React.FC = () => {
 
       dispatch(
         assignPendingActions(
-          productActions.apiGetProductCategoryById(product.id),
+          productActions.apiGetProductCategoryById(productId),
           [],
           [],
           (args: any) => {
@@ -88,11 +95,17 @@ export const ProfileFormBootstrapper: React.FC = () => {
       setProductCategory(null);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [product]);
+  }, [productId]);
 
+  console.log(isMeasurementsWasIntended);
+  console.log(isCategoryWasIntended);
+  console.log(productCategory);
   return (
     <div className="formBootstrapper">
-      {isMeasurementsWasIntended && isCategoryWasIntended && productCategory ? (
+      {isMeasurementsWasIntended &&
+      isCategoryWasIntended &&
+      productCategory &&
+      customer ? (
         <ProfileForm
           measurements={measurements}
           product={productCategory}

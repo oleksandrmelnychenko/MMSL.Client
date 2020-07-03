@@ -21,6 +21,11 @@ import { IApplicationState } from '../../../redux/reducers';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { orderProfileActions } from '../../../redux/slices/customer/orderProfile/orderProfile.slice';
 import { StoreCustomer } from '../../../interfaces/storeCustomer';
+import ManageProfileOptiosPanel, {
+  onDismissManageProfileOptiosPanel,
+} from './ManageProfileOptiosPanel';
+import { profileManagingActions } from '../../../redux/slices/customer/orderProfile/profileManaging.slice';
+import { CustomerProductProfile } from '../../../interfaces/orderProfile';
 
 export const onDismisActionsCustomerProfileOptiosPanel = () => {
   return [orderProfileActions.changeTargetOrderProfile(null)];
@@ -30,9 +35,13 @@ const CustomerProfileOptiosPanel: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { targetOrderProfile } = useSelector<IApplicationState, any>(
-    (state) => state.orderProfile
-  );
+  const targetOrderProfile:
+    | CustomerProductProfile
+    | null
+    | undefined = useSelector<
+    IApplicationState,
+    CustomerProductProfile | null | undefined
+  >((state) => state.orderProfile.targetOrderProfile);
 
   const selectedCustomer: StoreCustomer | null | undefined = useSelector<
     IApplicationState,
@@ -66,8 +75,31 @@ const CustomerProfileOptiosPanel: React.FC = () => {
           ? 'management__btn-edit_measurement'
           : 'management__btn-edit_measurement management__btn-disabled',
       isDisabled: targetOrderProfile && selectedCustomer ? false : true,
-      tooltip: 'Edit profile',
-      onClickFunc: () => {},
+      tooltip: 'Details',
+      onClickFunc: () => {
+        if (targetOrderProfile && selectedCustomer) {
+          dispatch(
+            controlActions.openInfoPanelWithComponent({
+              component: ManageProfileOptiosPanel,
+              onDismisPendingAction: () => {
+                onDismissManageProfileOptiosPanel().forEach((action) =>
+                  dispatch(action)
+                );
+              },
+            })
+          );
+
+          dispatch(
+            profileManagingActions.beginManaging({
+              customer: selectedCustomer,
+              productId: targetOrderProfile.productCategoryId,
+              profileForEdit: targetOrderProfile,
+            })
+          );
+
+          dispatch(orderProfileActions.changeTargetOrderProfile(null));
+        }
+      },
     },
     {
       title: 'Delete',
@@ -95,7 +127,6 @@ const CustomerProfileOptiosPanel: React.FC = () => {
                         [],
                         [],
                         (args: any) => {
-                          debugger;
                           dispatch(
                             assignPendingActions(
                               orderProfileActions.apiGetProductProfilesByCutomerId(

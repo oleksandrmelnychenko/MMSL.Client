@@ -12,7 +12,7 @@ import FreshMeasurementInput from '../orderMeasurements/valueMeasurementInputs/F
 import BaseMeasurementInput from '../orderMeasurements/valueMeasurementInputs/BaseMeasurementInput';
 import BodyMeasurementInput from '../orderMeasurements/valueMeasurementInputs/BodyMeasurementInput';
 import StyleSelectorInput from '../orderStyles/styleSelector/StyleSelectorInput';
-import { scrollablePaneStyleForDetailList } from '../../../../../common/fabric-styles/styles';
+import './profileFormMarkup.scss';
 
 export interface IProfileFormMarkupProps {
   measurements: Measurement[];
@@ -25,43 +25,56 @@ export const ProfileFormMarkup: React.FC<IProfileFormMarkupProps> = (
   props: IProfileFormMarkupProps
 ) => {
   return (
-    <ScrollablePane
-      styles={{
-        ...scrollablePaneStyleForDetailList,
-        root: { ...scrollablePaneStyleForDetailList.root, top: '0px' },
-      }}
+    <Stack
+      className="profileFormMarkup"
+      horizontal
+      tokens={{ childrenGap: '24px' }}
     >
-      <Stack horizontal tokens={{ childrenGap: '24px' }}>
+      <Stack>
+        <EntityInput formik={props.formik} />
+
         <ProductCustomerDetails
           customer={props.customer}
           product={props.product}
         />
+      </Stack>
 
-        <Stack horizontal tokens={{ childrenGap: '24px' }}>
+      <ScrollablePane className="profileFormMarkup__formScrollablePane">
+        <Stack
+          className="profileFormMarkup__formScrollablePane__container"
+          horizontal
+          tokens={{ childrenGap: '24px' }}
+        >
           <Stack tokens={{ childrenGap: '12px' }}>
-            <EntityInput formik={props.formik} />
-
             <Stack tokens={{ childrenGap: '12px' }}>
-              <ProfileTypeInput
-                formik={props.formik}
-                availableMeasurements={props.measurements}
-                orderProfile={null}
-              />
+              <Stack horizontal>
+                <ProfileTypeInput
+                  formik={props.formik}
+                  availableMeasurements={props.measurements}
+                  orderProfile={null}
+                />
+              </Stack>
 
-              <MeasurementInput
-                measurements={props.measurements}
-                formik={props.formik}
-                orderProfile={null}
-              />
+              <Stack horizontal>
+                <MeasurementInput
+                  measurements={props.measurements}
+                  formik={props.formik}
+                  orderProfile={null}
+                />
+                <FreshMeasurementInput
+                  formik={props.formik}
+                  orderProfile={null}
+                />
+                <BaseMeasurementInput
+                  formik={props.formik}
+                  orderProfile={null}
+                />
 
-              <FreshMeasurementInput
-                formik={props.formik}
-                orderProfile={null}
-              />
-
-              <BaseMeasurementInput formik={props.formik} orderProfile={null} />
-
-              <BodyMeasurementInput formik={props.formik} orderProfile={null} />
+                <BodyMeasurementInput
+                  formik={props.formik}
+                  orderProfile={null}
+                />
+              </Stack>
 
               {props.formik.values.profileType === ProfileTypes.Reference ? (
                 <Text
@@ -85,8 +98,8 @@ export const ProfileFormMarkup: React.FC<IProfileFormMarkupProps> = (
             </Stack>
           </Stack>
         </Stack>
-      </Stack>
-    </ScrollablePane>
+      </ScrollablePane>
+    </Stack>
   );
 };
 

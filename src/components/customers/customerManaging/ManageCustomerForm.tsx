@@ -134,7 +134,6 @@ export const ManageCustomerForm: React.FC = () => {
       dispatch(
         controlActions.setPanelButtons([
           GetCommandBarItemProps(CommandBarItem.Save, () => {
-            debugger;
             formikReference.formik.submitForm();
           }),
           GetCommandBarItemProps(CommandBarItem.Reset, () => {

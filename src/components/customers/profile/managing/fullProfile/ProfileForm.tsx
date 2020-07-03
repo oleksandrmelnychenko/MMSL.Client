@@ -5,6 +5,7 @@ import {
   ProfileTypes,
   ICreateOrderProfilePayload,
   IMeasurementValuePayload,
+  CustomerProductProfile,
 } from '../../../../../interfaces/orderProfile';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
@@ -75,7 +76,8 @@ const _urgentItemsDirtyHelper = (formik: any) => {
 
 const _initDefaultMeasurementValues = (
   initValues: IFormValues,
-  measurements: Measurement[]
+  measurements: Measurement[],
+  sourceEntity: CustomerProductProfile | null | undefined
 ) => {
   if (initValues.profileType === 0)
     initValues.profileType =
@@ -94,40 +96,45 @@ const _initDefaultMeasurementValues = (
 
   initValues.freshMeasuremrntValues = initInputValueModelDefaults(
     targetMeasurement,
-    null
+    sourceEntity
   ) as [];
 
   initValues.baseMeasuremrntValues = initInputValueModelDefaults(
     targetMeasurement,
-    null
+    sourceEntity
   ) as [];
 
   initValues.bodyMeasuremrntValues = initInputValueModelDefaults(
     targetMeasurement,
-    null
+    sourceEntity
   ) as [];
 
   initValues.valuesDefaultsHelper = initInputValueModelDefaults(
     targetMeasurement,
-    null
+    sourceEntity
   ) as [];
 };
 
 const _initDefaultStyleValues = (
   initValues: IFormValues,
-  productCategory: ProductCategory
+  productCategory: ProductCategory,
+  sourceEntity: CustomerProductProfile | null | undefined
 ) => {
-  initValues.productStyleValues = initUnitItems(productCategory, null) as [];
+  initValues.productStyleValues = initUnitItems(
+    productCategory,
+    sourceEntity
+  ) as [];
 
   initValues.productStyleValuesDefaultsHelper = initUnitItems(
     productCategory,
-    null
+    sourceEntity
   ) as [];
 };
 
 const _initDefaultValues = (
   measurements: Measurement[],
-  productCategory: ProductCategory
+  productCategory: ProductCategory,
+  sourceEntity: CustomerProductProfile | null | undefined
 ) => {
   const initValues: IFormValues = {
     name: '',
@@ -146,8 +153,15 @@ const _initDefaultValues = (
     productStyleValuesDefaultsHelper: [],
   };
 
-  _initDefaultMeasurementValues(initValues, measurements);
-  _initDefaultStyleValues(initValues, productCategory);
+  _initDefaultMeasurementValues(initValues, measurements, sourceEntity);
+  _initDefaultStyleValues(initValues, productCategory, sourceEntity);
+
+  if (sourceEntity) {
+    initValues.name = sourceEntity.name;
+    initValues.description = sourceEntity.description
+      ? sourceEntity.description
+      : '';
+  }
 
   return initValues;
 };
@@ -220,24 +234,79 @@ const _buildNewPayload = (
   return payload;
 };
 
+const _buildEditedPayload = (
+  values: IFormValues,
+  productCategory: ProductCategory,
+  customer: StoreCustomer,
+  sourceEntity: CustomerProductProfile
+) => {
+  let payload: ICreateOrderProfilePayload = {
+    fittingTypeId: values.fittingTypeId,
+    measurementSizeId: values.measurementSizeId,
+    measurementId: values.measurementId,
+    profileType: values.profileType,
+    values: [],
+    productStyles: new List(values.productStyleValues)
+      .where((unitModel: IStyleUnitModel) => unitModel.isDirty)
+      .select((unitModel: IStyleUnitModel) => {
+        return {
+          id: unitModel.id,
+          isDeleted: unitModel.isDeleted,
+          selectedStyleValueId: unitModel.selectedStyleValueId,
+          optionUnitId: unitModel.optionUnitId,
+        };
+      })
+      .toArray(),
+    name: values.name,
+    description: values.description,
+    id: sourceEntity.id,
+    storeCustomerId: customer.id,
+    productCategoryId: productCategory.id,
+  };
+
+  if (payload.profileType === ProfileTypes.FreshMeasurement) {
+    payload.values = _buildMeasurementPayloadValues(
+      values.freshMeasuremrntValues
+    );
+    payload.fittingTypeId = 0;
+    payload.measurementSizeId = 0;
+  } else if (payload.profileType === ProfileTypes.BaseMeasurement) {
+    payload.values = _buildMeasurementPayloadValues(
+      values.baseMeasuremrntValues
+    );
+    payload.fittingTypeId = 0;
+  } else if (payload.profileType === ProfileTypes.BodyMeasurement) {
+    payload.values = _buildMeasurementPayloadValues(
+      values.bodyMeasuremrntValues
+    );
+    payload.measurementSizeId = 0;
+  } else if (payload.profileType === ProfileTypes.Reference) {
+    payload.fittingTypeId = 0;
+    payload.measurementSizeId = 0;
+    payload.measurementId = 0;
+  }
+
+  return payload;
+};
+
 export const ProfileForm: React.FC<IProfileFormProps> = (
   props: IProfileFormProps
 ) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const profileForEdit: CustomerProductProfile | null | undefined = useSelector<
+    IApplicationState,
+    CustomerProductProfile | null | undefined
+  >((state) => state.profileManaging.profileForEdit);
+
   const [formInit, setFormInit] = useState<any>(
-    _initDefaultValues(props.measurements, props.product)
+    _initDefaultValues(props.measurements, props.product, profileForEdit)
   );
   const [isFormikDirty, setFormikDirty] = useState<boolean>(false);
   const [formikReference] = useState<FormicReference>(
     new FormicReference(() => {})
   );
-
-  const customerProductProfiles: ProductCategory[] = useSelector<
-    IApplicationState,
-    ProductCategory[]
-  >((state) => state.orderProfile.customerProductProfiles);
 
   useEffect(() => {
     dispatch(
@@ -260,7 +329,11 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
             if (formikReference.formik) {
               formikReference.formik.resetForm();
               setFormInit(
-                _initDefaultValues(props.measurements, props.product)
+                _initDefaultValues(
+                  props.measurements,
+                  props.product,
+                  profileForEdit
+                )
               );
             }
           },
@@ -271,16 +344,56 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
   }, [isFormikDirty, dispatch]);
 
   useEffect(() => {
-    setFormInit(_initDefaultValues(props.measurements, props.product));
-  }, [props.measurements, props.product]);
+    setFormInit(
+      _initDefaultValues(props.measurements, props.product, profileForEdit)
+    );
+  }, [props.measurements, props.product, profileForEdit]);
 
   const onCreate = (values: IFormValues) => {
     const payload = _buildNewPayload(values, props.product, props.customer);
-    console.log(payload);
 
     dispatch(
       assignPendingActions(
         orderProfileActions.apiCreateOrderProfile(payload),
+        [],
+        [],
+        (args: any) => {
+          dispatch(
+            assignPendingActions(
+              orderProfileActions.apiGetProductProfilesByCutomerId(
+                props.customer.id
+              ),
+              [],
+              [],
+              (args: any) => {
+                dispatch(
+                  orderProfileActions.changeCustomerProductProfiles(args)
+                );
+                onBackFromProfileManaging(dispatch, history);
+              },
+              (args: any) => {}
+            )
+          );
+        },
+        (args: any) => {}
+      )
+    );
+  };
+
+  const onEdit = (
+    values: IFormValues,
+    profileForEdit: CustomerProductProfile
+  ) => {
+    const payload = _buildEditedPayload(
+      values,
+      props.product,
+      props.customer,
+      profileForEdit
+    );
+
+    dispatch(
+      assignPendingActions(
+        orderProfileActions.apiUpdateOrderProfile(payload),
         [],
         [],
         (args: any) => {
@@ -327,17 +440,12 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
           })}
           initialValues={formInit}
           onSubmit={(values: any) => {
-            // if (targetOrderProfile) onEdit(values);
-            // else onCreate(values);
-            onCreate(values);
+            if (profileForEdit) onEdit(values, profileForEdit);
+            else onCreate(values);
           }}
           onReset={(values: any, formikHelpers: any) => {}}
           innerRef={(formik: any) => {
-            // formikReference.formik = formik;
-            // if (formik) setFormikDirty(formik.dirty);
-
             formikReference.formik = formik;
-
             if (formik) {
               setFormikDirty(
                 formik.dirty ||

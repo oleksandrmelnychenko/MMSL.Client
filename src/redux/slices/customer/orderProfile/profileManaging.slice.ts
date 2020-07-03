@@ -1,19 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { StoreCustomer } from '../../../../interfaces/storeCustomer';
-import { ProductCategory } from '../../../../interfaces/products';
 import { CustomerProductProfile } from '../../../../interfaces/orderProfile';
 
 export interface IProfileManagingState {
   isManaging: boolean;
   customer: StoreCustomer | null | undefined;
-  product: ProductCategory | null | undefined;
+  productId: number;
+  profileForEdit: CustomerProductProfile | null | undefined;
   commands: ICommand[];
 }
 
 const INIT_STATE: IProfileManagingState = {
   isManaging: false,
   customer: null,
-  product: null,
+  productId: 0,
+  profileForEdit: null,
   commands: [],
 };
 
@@ -36,13 +37,14 @@ const profileManaging = createSlice({
         payload: {
           profileForEdit: CustomerProductProfile | null | undefined;
           customer: StoreCustomer;
-          product: ProductCategory;
+          productId: number;
         };
       }
     ) {
       state.isManaging = true;
       state.customer = action.payload.customer;
-      state.product = action.payload.product;
+      state.productId = action.payload.productId;
+      state.profileForEdit = action.payload.profileForEdit;
       state.commands = [];
 
       return state;
@@ -50,7 +52,8 @@ const profileManaging = createSlice({
     stopManaging(state) {
       state.isManaging = false;
       state.customer = null;
-      state.product = null;
+      state.productId = 0;
+      state.profileForEdit = null;
       state.commands = [];
 
       return state;

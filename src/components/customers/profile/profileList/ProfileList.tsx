@@ -28,7 +28,6 @@ export const ProfileList: React.FC = (props: any) => {
   >((state) => state.orderProfile.customerProductProfiles);
 
   useEffect(() => {
-    debugger;
     const oldExpandableList = new LINQList(expandableProducts);
 
     const incomeGroupsList = new LINQList(customerProductProfiles).select(

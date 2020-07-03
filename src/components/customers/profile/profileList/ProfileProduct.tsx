@@ -74,38 +74,38 @@ export const ProfileProduct: React.FC<IProfileProductProps> = (
     setIsExpanded(props.expandableProfileProduct.isExpanded);
 
   const onCreateNewProfile = () => {
+    // dispatch(
+    //   assignPendingActions(
+    //     productActions.apiGetProductCategoryById(
+    //       props.expandableProfileProduct.item.id
+    //     ),
+    //     [],
+    //     [],
+    //     (args: any) => {
+    dispatch(orderProfileActions.changeTargetOrderProfile(null));
+
     dispatch(
-      assignPendingActions(
-        productActions.apiGetProductCategoryById(
-          props.expandableProfileProduct.item.id
-        ),
-        [],
-        [],
-        (args: any) => {
-          dispatch(orderProfileActions.changeTargetOrderProfile(null));
-
-          dispatch(
-            controlActions.openInfoPanelWithComponent({
-              component: ManageProfileOptiosPanel,
-              onDismisPendingAction: () => {
-                onDismissManageProfileOptiosPanel().forEach((action) =>
-                  dispatch(action)
-                );
-              },
-            })
-          );
-
-          dispatch(
-            profileManagingActions.beginManaging({
-              customer: props.customer,
-              product: args,
-              profileForEdit: null,
-            })
+      controlActions.openInfoPanelWithComponent({
+        component: ManageProfileOptiosPanel,
+        onDismisPendingAction: () => {
+          onDismissManageProfileOptiosPanel().forEach((action) =>
+            dispatch(action)
           );
         },
-        (args: any) => {}
-      )
+      })
     );
+
+    dispatch(
+      profileManagingActions.beginManaging({
+        customer: props.customer,
+        productId: props.expandableProfileProduct.item.id,
+        profileForEdit: null,
+      })
+    );
+    //     },
+    //     (args: any) => {}
+    //   )
+    // );
   };
 
   let profiles: CustomerProductProfile[] = [];
