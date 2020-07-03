@@ -178,7 +178,6 @@ const Menu: React.FC = () => {
         .where((menuItem) => menuItem.title !== ORDER_PROFILES_MENU_TITLE)
         .toArray();
     } else if (rolesList.contains(RoleType[RoleType.Customer])) {
-      debugger;
     } else if (rolesList.contains(RoleType[RoleType.Dealer])) {
       resolvedMenu = new List(menu)
         .where(
@@ -189,7 +188,6 @@ const Menu: React.FC = () => {
         )
         .toArray();
     } else {
-      debugger;
     }
 
     return resolvedMenu;

@@ -57,6 +57,7 @@ export const ProfileTypeInput: React.FC<IProfileTypeInputProps> = (
           defaultSelectedKey={`${props.formik.values.profileType}`}
           label="Profile Type"
           options={_buildOptions(props.availableMeasurements)}
+          style={{ width: '300px' }}
           styles={fabricStyles.comboBoxStyles}
           onChange={(
             event: React.FormEvent<HTMLDivElement>,

@@ -79,6 +79,19 @@ const _initDefaultMeasurementValues = (
   measurements: Measurement[],
   sourceEntity: CustomerProductProfile | null | undefined
 ) => {
+  if (sourceEntity) {
+    initValues.profileType = sourceEntity.profileType;
+    initValues.measurementId = sourceEntity.measurementId
+      ? sourceEntity.measurementId
+      : 0;
+    initValues.fittingTypeId = sourceEntity.fittingTypeId
+      ? sourceEntity.fittingTypeId
+      : 0;
+    initValues.measurementSizeId = sourceEntity.measurementSizeId
+      ? sourceEntity.measurementSizeId
+      : 0;
+  }
+
   if (initValues.profileType === 0)
     initValues.profileType =
       measurements.length === 0
@@ -309,10 +322,11 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
   );
 
   useEffect(() => {
+    console.log(isFormikDirty);
     dispatch(
       profileManagingActions.updateCommands([
         {
-          className: 'management__btn-back_measurement',
+          className: 'management',
           isDisabled: !isFormikDirty,
           name: 'Save',
           onClick: () => {
@@ -322,7 +336,7 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
           },
         },
         {
-          className: 'management__btn-back_measurement',
+          className: 'management',
           isDisabled: !isFormikDirty,
           name: 'Reset',
           onClick: () => {
@@ -347,7 +361,7 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
     setFormInit(
       _initDefaultValues(props.measurements, props.product, profileForEdit)
     );
-  }, [props.measurements, props.product, profileForEdit]);
+  }, [props.measurements, props.product, props.customer, profileForEdit]);
 
   const onCreate = (values: IFormValues) => {
     const payload = _buildNewPayload(values, props.product, props.customer);
@@ -468,6 +482,7 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
                     product={props.product}
                     customer={props.customer}
                     formik={formik}
+                    profileForEdit={profileForEdit}
                   />
                 </div>
               </Form>

@@ -3,7 +3,7 @@
     padding: 6px 9px;
     border: 1px solid rgb(200, 200, 200);
     border-left: 3px solid rgb(200, 200, 200);
-    width: 48%;
+    width: 173px;
 
     &.isDirty {
         border-left: 3px solid #0078d4;
@@ -14,14 +14,14 @@
     }
 
     &__sizeMeasurement {
-        min-width: 160px;
+        min-width: 70px;
     }
 
     &__fittingMeasurement {
-        min-width: 160px;
+        min-width: 70px;
     }
 
     &.fittingValueItem {
-        width: auto;
+        width: 260px;
     }
 }

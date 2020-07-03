@@ -12,6 +12,7 @@ export class ControlState {
     this.isActivateStatusBar = false;
     this.isMasterBusy = false;
     this.dashboardHintStub = new DashboardHintStubProps();
+    this.contentClassName = '';
   }
 
   isGlobalShimmerActive: boolean;
@@ -23,6 +24,7 @@ export class ControlState {
   isActivateStatusBar: boolean;
   isMasterBusy: boolean;
   dashboardHintStub: DashboardHintStubProps;
+  contentClassName: string;
 }
 
 export class CommonDialogState {
@@ -215,6 +217,11 @@ const controls = createSlice({
     },
     closeDashboardHintStub(state) {
       state.dashboardHintStub = new DashboardHintStubProps();
+
+      return state;
+    },
+    changeContentClassName(state, action) {
+      state.contentClassName = action.payload;
 
       return state;
     },

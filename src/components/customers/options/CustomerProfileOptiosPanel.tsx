@@ -26,9 +26,13 @@ import ManageProfileOptiosPanel, {
 } from './ManageProfileOptiosPanel';
 import { profileManagingActions } from '../../../redux/slices/customer/orderProfile/profileManaging.slice';
 import { CustomerProductProfile } from '../../../interfaces/orderProfile';
+import { customerActions } from '../../../redux/slices/customer/customer.slice';
 
 export const onDismisActionsCustomerProfileOptiosPanel = () => {
-  return [orderProfileActions.changeTargetOrderProfile(null)];
+  return [
+    orderProfileActions.changeTargetOrderProfile(null),
+    customerActions.updateSelectedCustomer(null),
+  ];
 };
 
 const CustomerProfileOptiosPanel: React.FC = () => {

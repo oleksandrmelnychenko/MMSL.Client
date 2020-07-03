@@ -42,7 +42,7 @@ export const ProfileList: React.FC = (props: any) => {
 
         selectResult.isExpanded = relatedExpandItem
           ? relatedExpandItem.isExpanded
-          : false;
+          : true;
 
         return selectResult;
       }

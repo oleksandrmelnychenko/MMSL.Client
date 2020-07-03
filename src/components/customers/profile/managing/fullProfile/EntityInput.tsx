@@ -2,6 +2,7 @@ import React from 'react';
 import { Field } from 'formik';
 import { Stack, TextField } from 'office-ui-fabric-react';
 import * as fabricStyles from '../../../../../common/fabric-styles/styles';
+import { textFildLabelNoTopPaddingStyles } from '../../../../../common/fabric-styles/styles';
 
 export interface IEntityInputProps {
   formik: any;
@@ -18,7 +19,7 @@ export const EntityInput: React.FC<IEntityInputProps> = (
             <TextField
               autoComplete="off"
               value={props.formik.values.name}
-              styles={fabricStyles.textFildLabelStyles}
+              styles={textFildLabelNoTopPaddingStyles}
               className="form__group__field"
               label="Name"
               required

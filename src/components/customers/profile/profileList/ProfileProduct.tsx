@@ -21,8 +21,6 @@ import ManageProfileOptiosPanel, {
 } from '../../options/ManageProfileOptiosPanel';
 import { StoreCustomer } from '../../../../interfaces/storeCustomer';
 import { profileManagingActions } from '../../../../redux/slices/customer/orderProfile/profileManaging.slice';
-import { assignPendingActions } from '../../../../helpers/action.helper';
-import { productActions } from '../../../../redux/slices/product.slice';
 import { List } from 'linq-typescript';
 import { orderProfileActions } from '../../../../redux/slices/customer/orderProfile/orderProfile.slice';
 
@@ -68,20 +66,12 @@ export const ProfileProduct: React.FC<IProfileProductProps> = (
 ) => {
   const dispatch = useDispatch();
 
-  const [isExpanded, setIsExpanded] = useState<boolean>();
+  const [isExpanded, setIsExpanded] = useState<boolean>(true);
 
   if (props.expandableProfileProduct.isExpanded !== isExpanded)
     setIsExpanded(props.expandableProfileProduct.isExpanded);
 
   const onCreateNewProfile = () => {
-    // dispatch(
-    //   assignPendingActions(
-    //     productActions.apiGetProductCategoryById(
-    //       props.expandableProfileProduct.item.id
-    //     ),
-    //     [],
-    //     [],
-    //     (args: any) => {
     dispatch(orderProfileActions.changeTargetOrderProfile(null));
 
     dispatch(
@@ -102,10 +92,6 @@ export const ProfileProduct: React.FC<IProfileProductProps> = (
         profileForEdit: null,
       })
     );
-    //     },
-    //     (args: any) => {}
-    //   )
-    // );
   };
 
   let profiles: CustomerProductProfile[] = [];
@@ -180,7 +166,7 @@ export const ProfileProduct: React.FC<IProfileProductProps> = (
                 return result;
               })
             ) : (
-              <div style={{ marginLeft: '9px', marginTop: '-6px' }}>
+              <div style={{ marginLeft: '9px', marginTop: '6px' }}>
                 <Stack horizontal tokens={{ childrenGap: '12px' }}>
                   <Stack.Item styles={{ root: { marginTop: '5px' } }}>
                     {renderHintLable(`No profiles for this product.`)}

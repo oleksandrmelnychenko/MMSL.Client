@@ -23,16 +23,16 @@ export const BaseMeasurementInput: React.FC<IBaseMeasurementInputProps> = (
       props.formik.values.measurementId !== 0 ? (
         <>
           <Stack
-            styles={{ root: { marginTop: '15px !important' } }}
+            // styles={{ root: { marginTop: '15px !important' } }}
             tokens={{ childrenGap: '12px' }}
           >
-            <SizeSelectorInput
+            {/* <SizeSelectorInput
               formik={props.formik}
               orderProfile={props.orderProfile}
-            />
+            /> */}
 
             <Stack tokens={{ childrenGap: '6px' }}>
-              <Separator alignContent="start">Base measurement</Separator>
+              <Separator alignContent="start">Columns</Separator>
 
               <FieldArray name={BASE_MEASUREMRNT_VALUES_FORM_FIELD}>
                 {(arrayHelper: any) => {

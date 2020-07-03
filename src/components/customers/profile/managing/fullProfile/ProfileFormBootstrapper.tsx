@@ -8,6 +8,7 @@ import { productActions } from '../../../../../redux/slices/product.slice';
 import ProfileForm from './ProfileForm';
 import { ProductCategory } from '../../../../../interfaces/products';
 import { StoreCustomer } from '../../../../../interfaces/storeCustomer';
+import { controlActions } from '../../../../../redux/slices/control.slice';
 
 export const ProfileFormBootstrapper: React.FC = () => {
   const dispatch = useDispatch();
@@ -37,8 +38,10 @@ export const ProfileFormBootstrapper: React.FC = () => {
   );
 
   useEffect(() => {
+    dispatch(controlActions.changeContentClassName('noBackgroundColor'));
     return () => {
       dispatch(profileManagingActions.stopManaging());
+      dispatch(controlActions.changeContentClassName(''));
 
       setMeasurements([]);
       setIsMeasurementsWasIntended(false);
@@ -97,9 +100,6 @@ export const ProfileFormBootstrapper: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productId]);
 
-  console.log(isMeasurementsWasIntended);
-  console.log(isCategoryWasIntended);
-  console.log(productCategory);
   return (
     <div className="formBootstrapper">
       {isMeasurementsWasIntended &&

@@ -23,7 +23,7 @@ const ProfileHeader: React.FC = () => {
         tokens={horizontalGapStackTokens}
       >
         <Text variant="xLarge" block styles={mainTitleContent}>
-          Order profile
+          Profile
         </Text>
 
         <Separator vertical />

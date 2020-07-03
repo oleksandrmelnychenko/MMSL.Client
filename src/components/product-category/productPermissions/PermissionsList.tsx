@@ -111,7 +111,7 @@ const PermissionsList: React.FC = () => {
               controlActions.openRightPanel({
                 title: 'Assign Dealers',
                 description: args.name,
-                width: '700px',
+                width: '720px',
                 closeFunctions: () => {
                   dispatch(controlActions.closeRightPanel());
                 },

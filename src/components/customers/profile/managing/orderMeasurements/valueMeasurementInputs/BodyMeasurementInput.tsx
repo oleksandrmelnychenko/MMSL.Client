@@ -4,7 +4,7 @@ import {
   CustomerProductProfile,
   ProfileTypes,
 } from '../../../../../../interfaces/orderProfile';
-import { Stack, Text } from 'office-ui-fabric-react';
+import { Stack, Text, Separator } from 'office-ui-fabric-react';
 import ValueItem, { IInputValueModel } from './ValueItem';
 import { BODY_MEASUREMRNT_VALUES_FORM_FIELD } from '../OrderMeasurementsForm';
 import FittingTypeInput from './FittingTypeInput';
@@ -25,27 +25,16 @@ export const BodyMeasurementInput: React.FC<IBodyMeasurementInputProps> = (
       props.formik.values.measurementId !== 0 ? (
         <>
           <Stack tokens={{ childrenGap: '12px' }}>
-            <FittingTypeInput formik={props.formik} />
+            {/* <FittingTypeInput formik={props.formik} /> */}
 
             <Stack.Item grow={1}>
               <Stack tokens={{ childrenGap: '3px' }}>
                 {/* <Separator alignContent="start">Body measurement</Separator> */}
-                <Stack
-                  horizontal
-                  tokens={{ childrenGap: '176px' }}
-                  styles={{ root: { marginLeft: '120px' } }}
-                >
-                  <Text block styles={_measurementLabelsStyle}>
-                    Fresh
-                  </Text>
-                  <Text block styles={_measurementLabelsStyle}>
-                    Body
-                  </Text>
-                </Stack>
+                <Separator alignContent="start">Columns</Separator>
                 <FieldArray name={BODY_MEASUREMRNT_VALUES_FORM_FIELD}>
                   {(arrayHelper: any) => {
                     return (
-                      <Stack tokens={{ childrenGap: '6px' }}>
+                      <Stack horizontal wrap tokens={{ childrenGap: '6px' }}>
                         {props.formik.values.bodyMeasuremrntValues.map(
                           (valueModel: IInputValueModel, index: number) => {
                             return (

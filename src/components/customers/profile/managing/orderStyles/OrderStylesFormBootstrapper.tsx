@@ -6,6 +6,7 @@ import { CustomerProductProfile } from '../../../../../interfaces/orderProfile';
 import { IApplicationState } from '../../../../../redux/reducers';
 import OrderStylesForm from './OrderStylesForm';
 import { ProductCategory } from '../../../../../interfaces/products';
+import { controlActions } from '../../../../../redux/slices/control.slice';
 
 export const OrderStylesFormBootstrapper: React.FC = () => {
   const dispatch = useDispatch();

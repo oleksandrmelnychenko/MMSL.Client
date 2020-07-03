@@ -85,7 +85,6 @@ const IdentityDashboardRoute: React.FC = () => {
       .where((route) => route.description !== ORDER_PROFILES_ROUTE)
       .toArray();
   } else if (rolesList.contains(RoleType[RoleType.Customer])) {
-    debugger;
   } else if (rolesList.contains(RoleType[RoleType.Dealer])) {
     resolvedRoutes = new List(_routes)
       .where(
@@ -96,7 +95,6 @@ const IdentityDashboardRoute: React.FC = () => {
       )
       .toArray();
   } else {
-    debugger;
   }
 
   return (

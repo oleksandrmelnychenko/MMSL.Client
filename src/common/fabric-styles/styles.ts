@@ -157,6 +157,29 @@ export const textFildLabelStyles = {
   },
 };
 
+export const textFildLabelNoTopPaddingStyles = {
+  subComponentStyles: {
+    label: {
+      root: {
+        fontWeight: FontWeights.regular,
+        paddingTop: '0px',
+        paddingBottom: '5px',
+      },
+      selectors: {
+        '&:after': {
+          content: '',
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          width: '1px',
+          height: '1px',
+          background: 'red',
+        },
+      },
+    },
+  },
+};
+
 export const textFildUnderlineLabelStyles = {
   wrapper: {
     padding: '0px',

@@ -10,6 +10,11 @@
   transition: all 0.3s linear;
   height: calc(100vh - 100px);
 
+  &.noBackgroundColor {
+    background-color: transparent;
+    box-shadow: none
+  }
+
   &__header {
     padding: 12px;
 
@@ -112,8 +117,7 @@ main.collapse {
   }
 
   &__btn-new_measurement {
-    background: url('../../assets/images/measurements/new_measurement.svg')
-      no-repeat;
+    background: url('../../assets/images/measurements/new_measurement.svg') no-repeat;
   }
 
   &__btn-edit_measurement {
@@ -129,8 +133,7 @@ main.collapse {
   }
 
   &__btn-back_measurement {
-    background: url('../../assets/images/measurements/back_in_circle.svg')
-      no-repeat;
+    background: url('../../assets/images/measurements/back_in_circle.svg') no-repeat;
   }
 
   &__btn-new_style {
@@ -155,7 +158,7 @@ main.collapse {
 }
 
 .list__header {
-  span > span {
+  span>span {
     font-weight: 400;
     color: #323130;
     font-size: 14px;

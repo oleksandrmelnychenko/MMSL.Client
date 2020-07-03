@@ -25,10 +25,10 @@ export const FreshMeasurementInput: React.FC<IFreshMeasurementInputProps> = (
           {(arrayHelper: any) => {
             return (
               <Stack
-                styles={{ root: { marginTop: '20px !important' } }}
+                // styles={{ root: { marginTop: '20px !important' } }}
                 tokens={{ childrenGap: '6px' }}
               >
-                <Separator alignContent="start">Fresh measurement</Separator>
+                <Separator alignContent="start">Columns</Separator>
 
                 <Stack horizontal wrap tokens={{ childrenGap: '9px' }}>
                   {props.formik.values.freshMeasuremrntValues.map(

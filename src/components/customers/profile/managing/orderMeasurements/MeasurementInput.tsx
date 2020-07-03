@@ -78,6 +78,7 @@ export const MeasurementInput: React.FC<IMeasurementInputProps> = (
               defaultSelectedKey={`${props.formik.values.measurementId}`}
               label="Chart"
               options={options}
+              style={{ width: '300px' }}
               styles={fabricStyles.comboBoxStyles}
               onChange={(
                 event: React.FormEvent<HTMLDivElement>,

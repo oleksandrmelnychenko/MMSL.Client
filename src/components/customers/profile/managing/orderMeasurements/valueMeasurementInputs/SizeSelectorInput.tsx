@@ -164,48 +164,52 @@ export const SizeSelectorInput: React.FC<ISizeSelectorInputProps> = (
   // }, [sizeMapId, sizeOptions]);
 
   return (
-    <Field name={MEASUREMENT_SIZE_ID_FORM_FIELD}>
-      {(arrayHelper: any) => {
-        return (
-          <ComboBox
-            selectedKey={`${props.formik.values.measurementSizeId}`}
-            allowFreeform={true}
-            label="Size"
-            autoComplete={true ? 'on' : 'off'}
-            options={sizeOptions}
-            useComboBoxAsMenuWidth={true}
-            styles={{
-              ...fabricStyles.comboBoxStyles,
-              label: {
-                ...fabricStyles.comboBoxStyles.label,
-                paddingTop: '0px',
-              },
-            }}
-            onChange={(
-              event: React.FormEvent<IComboBox>,
-              option?: any,
-              index?: number,
-              value?: string
-            ) => {
-              let sizeId = option ? option.sizeMap.id : 0;
+    <>
+      {props.formik.values.profileType === ProfileTypes.BaseMeasurement ? (
+        <Field name={MEASUREMENT_SIZE_ID_FORM_FIELD}>
+          {(arrayHelper: any) => {
+            return (
+              <ComboBox
+                selectedKey={`${props.formik.values.measurementSizeId}`}
+                allowFreeform={true}
+                label="Size"
+                style={{ width: '300px' }}
+                autoComplete={true ? 'on' : 'off'}
+                options={sizeOptions}
+                useComboBoxAsMenuWidth={true}
+                styles={{
+                  ...fabricStyles.comboBoxStyles,
+                  label: {
+                    ...fabricStyles.comboBoxStyles.label,
+                  },
+                }}
+                onChange={(
+                  event: React.FormEvent<IComboBox>,
+                  option?: any,
+                  index?: number,
+                  value?: string
+                ) => {
+                  let sizeId = option ? option.sizeMap.id : 0;
 
-              props.formik.setFieldValue(
-                MEASUREMENT_SIZE_ID_FORM_FIELD,
-                sizeId
-              );
-              props.formik.setFieldTouched(MEASUREMENT_SIZE_ID_FORM_FIELD);
+                  props.formik.setFieldValue(
+                    MEASUREMENT_SIZE_ID_FORM_FIELD,
+                    sizeId
+                  );
+                  props.formik.setFieldTouched(MEASUREMENT_SIZE_ID_FORM_FIELD);
 
-              _applySizeValues(
-                new List(sizeOptions).firstOrDefault(
-                  (option) => option.sizeMap.id === sizeMapId
-                )?.sizeMap,
-                props.formik
-              );
-            }}
-          />
-        );
-      }}
-    </Field>
+                  _applySizeValues(
+                    new List(sizeOptions).firstOrDefault(
+                      (option) => option.sizeMap.id === sizeMapId
+                    )?.sizeMap,
+                    props.formik
+                  );
+                }}
+              />
+            );
+          }}
+        </Field>
+      ) : null}
+    </>
   );
 };
 

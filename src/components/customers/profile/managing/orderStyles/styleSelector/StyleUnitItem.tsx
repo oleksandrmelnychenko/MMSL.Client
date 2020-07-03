@@ -178,7 +178,7 @@ export const StyleUnitItem: React.FC<IStyleUnitItemProps> = (
               content={props.unitModel.optionUnitName}
             >
               <Text
-                style={{ cursor: 'default', maxWidth: '60px' }}
+                style={{ cursor: 'default', maxWidth: '90px' }}
                 block
                 nowrap
               >

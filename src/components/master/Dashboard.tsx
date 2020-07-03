@@ -34,6 +34,10 @@ const Dashboard: React.FC = () => {
     DashboardHintStubProps
   >((state) => state.control.dashboardHintStub);
 
+  const contentClassName = useSelector<IApplicationState, string>(
+    (state) => state.control.contentClassName
+  );
+
   return (
     <>
       <Header />
@@ -42,7 +46,7 @@ const Dashboard: React.FC = () => {
 
         <DashboardLeftMenuPanel />
 
-        <div className="content">
+        <div className={`content ${contentClassName}`}>
           <div
             style={
               dashboardStubHint?.isVisible

@@ -1,5 +1,12 @@
 import React from 'react';
-import { Stack, Text, TextField } from 'office-ui-fabric-react';
+import {
+  Stack,
+  Text,
+  TextField,
+  TooltipHost,
+  TooltipDelay,
+  DirectionalHint,
+} from 'office-ui-fabric-react';
 import './valueItem.scss';
 import { Field } from 'formik';
 import {
@@ -17,13 +24,13 @@ import {
   ProfileTypes,
 } from '../../../../../../interfaces/orderProfile';
 import { List } from 'linq-typescript';
+import { mainTitleHintContent } from '../../../../../../common/fabric-styles/styles';
 
 export const initInputValueModelDefaults = (
   measurement: Measurement | null | undefined,
   sourceEntity: CustomerProductProfile | null | undefined
 ) => {
   let result: IInputValueModel[] = [];
-
   if (measurement?.measurementMapDefinitions) {
     result = new List(
       measurement.measurementMapDefinitions
@@ -112,7 +119,6 @@ const _buildFieldName = (profileType: ProfileTypes, valueIndex: number) => {
   } else if (profileType === ProfileTypes.BodyMeasurement) {
     result = `${BODY_MEASUREMRNT_VALUES_FORM_FIELD}.${valueIndex}`;
   } else {
-    debugger;
     console.log('TODO: Handle unknown ProfileTypes');
   }
 
@@ -135,7 +141,6 @@ const _extractCurrentValueFromFormik = (
       result = formik.values.bodyMeasuremrntValues[valueIndex].fittingValue;
     else result = formik.values.bodyMeasuremrntValues[valueIndex].value;
   } else {
-    debugger;
     console.log('TODO: Handle unknown ProfileTypes value');
   }
 
@@ -166,7 +171,6 @@ const _onSetItemValue = (
       formikField = BODY_MEASUREMRNT_VALUES_FORM_FIELD;
     }
   } else {
-    debugger;
     console.log('TODO: Handle unknown ProfileTypes on set  value');
   }
 
@@ -237,31 +241,51 @@ export const ValueItem: React.FC<IValueItemProps> = (
                   },
                 }}
               >
-                <Text block nowrap styles={{ root: { width: '70px' } }}>
-                  {props.valueModel.definitionName}
-                </Text>
+                <TooltipHost
+                  id={`unitItem_${props.valueModel.id}`}
+                  calloutProps={{ gapSpace: 0 }}
+                  delay={TooltipDelay.zero}
+                  directionalHint={DirectionalHint.bottomCenter}
+                  styles={{ root: { display: 'inline-block' } }}
+                  content={props.valueModel.definitionName}
+                >
+                  <Text block nowrap styles={{ root: { width: '70px' } }}>
+                    {props.valueModel.definitionName}
+                  </Text>
+                </TooltipHost>
               </Stack.Item>
               <Stack.Item grow={1} className={'valueItem__sizeMeasurement'}>
-                <div className="valueItem__editNameInput">
-                  <TextField
-                    autoComplete={false ? 'on' : 'off'}
-                    type="number"
-                    borderless
-                    value={_extractCurrentValueFromFormik(
-                      props.formik,
-                      props.index,
-                      false
-                    )}
-                    onChange={(args: any) => {
-                      _onSetItemValue(
-                        args?.target?.value ? args.target.value : '',
+                <Stack>
+                  <>
+                    {props.formik.values.profileType ===
+                    ProfileTypes.BodyMeasurement ? (
+                      <Text variant="small" styles={mainTitleHintContent}>
+                        {'Fresh'}
+                      </Text>
+                    ) : null}
+                  </>
+
+                  <div className="valueItem__editNameInput">
+                    <TextField
+                      autoComplete={false ? 'on' : 'off'}
+                      type="number"
+                      borderless
+                      value={_extractCurrentValueFromFormik(
                         props.formik,
                         props.index,
                         false
-                      );
-                    }}
-                  />
-                </div>
+                      )}
+                      onChange={(args: any) => {
+                        _onSetItemValue(
+                          args?.target?.value ? args.target.value : '',
+                          props.formik,
+                          props.index,
+                          false
+                        );
+                      }}
+                    />
+                  </div>
+                </Stack>
               </Stack.Item>
 
               {
@@ -272,26 +296,31 @@ export const ValueItem: React.FC<IValueItemProps> = (
                       grow={1}
                       className={'valueItem__fittingMeasurement'}
                     >
-                      <div className="valueItem__editNameInput">
-                        <TextField
-                          autoComplete={false ? 'on' : 'off'}
-                          type="number"
-                          borderless
-                          value={_extractCurrentValueFromFormik(
-                            props.formik,
-                            props.index,
-                            true
-                          )}
-                          onChange={(args: any) => {
-                            _onSetItemValue(
-                              args?.target?.value ? args.target.value : '',
+                      <Stack>
+                        <Text variant="small" styles={mainTitleHintContent}>
+                          {'Body'}
+                        </Text>
+                        <div className="valueItem__editNameInput">
+                          <TextField
+                            autoComplete={false ? 'on' : 'off'}
+                            type="number"
+                            borderless
+                            value={_extractCurrentValueFromFormik(
                               props.formik,
                               props.index,
                               true
-                            );
-                          }}
-                        />
-                      </div>
+                            )}
+                            onChange={(args: any) => {
+                              _onSetItemValue(
+                                args?.target?.value ? args.target.value : '',
+                                props.formik,
+                                props.index,
+                                true
+                              );
+                            }}
+                          />
+                        </div>
+                      </Stack>
                     </Stack.Item>
                   ) : null}
                 </>

@@ -145,36 +145,39 @@ export const FittingTypeInput: React.FC<IFittingTypeInputProps> = (
 
   return (
     <>
-      <Field name={FITTING_TYPE_ID_FORM_FIELD}>
-        {() => (
-          <Dropdown
-            selectedKey={`${props.formik.values.fittingTypeId}`}
-            label="Fitting type"
-            options={fittingTypeOptions}
-            styles={fabricStyles.comboBoxStyles}
-            onChange={(
-              event: React.FormEvent<HTMLDivElement>,
-              option?: any,
-              index?: number
-            ) => {
-              let fittingTypeId = option ? option.fittingType.id : 0;
+      {props.formik.values.profileType === ProfileTypes.BodyMeasurement ? (
+        <Field name={FITTING_TYPE_ID_FORM_FIELD}>
+          {() => (
+            <Dropdown
+              selectedKey={`${props.formik.values.fittingTypeId}`}
+              label="Fitting type"
+              style={{ width: '300px' }}
+              options={fittingTypeOptions}
+              styles={fabricStyles.comboBoxStyles}
+              onChange={(
+                event: React.FormEvent<HTMLDivElement>,
+                option?: any,
+                index?: number
+              ) => {
+                let fittingTypeId = option ? option.fittingType.id : 0;
 
-              props.formik.setFieldValue(
-                FITTING_TYPE_ID_FORM_FIELD,
-                fittingTypeId
-              );
-              props.formik.setFieldTouched(FITTING_TYPE_ID_FORM_FIELD);
+                props.formik.setFieldValue(
+                  FITTING_TYPE_ID_FORM_FIELD,
+                  fittingTypeId
+                );
+                props.formik.setFieldTouched(FITTING_TYPE_ID_FORM_FIELD);
 
-              _applyOffsetSizeValues(
-                new List(fittingTypeOptions).firstOrDefault(
-                  (option) => option.fittingType.id === fittingTypeId
-                )?.fittingType,
-                props.formik
-              );
-            }}
-          />
-        )}
-      </Field>
+                _applyOffsetSizeValues(
+                  new List(fittingTypeOptions).firstOrDefault(
+                    (option) => option.fittingType.id === fittingTypeId
+                  )?.fittingType,
+                  props.formik
+                );
+              }}
+            />
+          )}
+        </Field>
+      ) : null}
     </>
   );
 };
