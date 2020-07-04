@@ -8,7 +8,7 @@ import { IApplicationState } from '../../../redux/reducers';
 import ProfileFormBootstrapper from './managing/fullProfile/ProfileFormBootstrapper';
 import { orderProfileActions } from '../../../redux/slices/customer/orderProfile/orderProfile.slice';
 import { renderHintLable } from '../../../helpers/uiComponent.helper';
-import ProductsStack from './profileList/ProductsStack';
+import ProductSelector from './profileList/ProductSelector';
 
 export const Profiles: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -83,7 +83,7 @@ export const Profiles: React.FC = (props: any) => {
                         <Stack.Item>
                           {/* <ProfileList /> */}
                           <Stack>
-                            <ProductsStack />
+                            <ProductSelector />
                             <ProfileList />
                           </Stack>
                         </Stack.Item>

@@ -3,14 +3,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ProductCategory } from '../../../../interfaces/products';
 import { IApplicationState } from '../../../../redux/reducers';
 import { ComboBox, IComboBox } from 'office-ui-fabric-react';
-import './productsStack.scss';
+import './productSelector.scss';
 import { orderProfileActions } from '../../../../redux/slices/customer/orderProfile/orderProfile.slice';
 import { List } from 'linq-typescript';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
 
 export interface IProductsStackProps {}
 
-export const ProductsStack: React.FC<IProductsStackProps> = (
+export const ProductSelector: React.FC<IProductsStackProps> = (
   props: IProductsStackProps
 ) => {
   const dispatch = useDispatch();
@@ -52,7 +52,7 @@ export const ProductsStack: React.FC<IProductsStackProps> = (
     .toArray();
 
   return (
-    <div className="productsStack">
+    <div className="productSelector">
       <ComboBox
         selectedKey={
           selectedProductProfile ? `${selectedProductProfile.id}` : ''
@@ -84,4 +84,4 @@ export const ProductsStack: React.FC<IProductsStackProps> = (
   );
 };
 
-export default ProductsStack;
+export default ProductSelector;
