@@ -3,11 +3,10 @@ import { FieldArray } from 'formik';
 import {
   CustomerProductProfile,
   ProfileTypes,
-} from '../../../../../../interfaces/orderProfile';
+} from '../../../../../../../../interfaces/orderProfile';
 import { Stack, Separator } from 'office-ui-fabric-react';
-import ValueItem, { IInputValueModel } from './ValueItem';
-import { BASE_MEASUREMRNT_VALUES_FORM_FIELD } from '../OrderMeasurementsForm';
-import SizeSelectorInput from './SizeSelectorInput';
+import ValueItem, { IInputValueModel } from '../ValueItem';
+import { BASE_MEASUREMRNT_VALUES_FORM_FIELD } from '../../../ProfileForm';
 
 export interface IBaseMeasurementInputProps {
   formik: any;
@@ -22,15 +21,7 @@ export const BaseMeasurementInput: React.FC<IBaseMeasurementInputProps> = (
       {props.formik.values.profileType === ProfileTypes.BaseMeasurement &&
       props.formik.values.measurementId !== 0 ? (
         <>
-          <Stack
-            // styles={{ root: { marginTop: '15px !important' } }}
-            tokens={{ childrenGap: '12px' }}
-          >
-            {/* <SizeSelectorInput
-              formik={props.formik}
-              orderProfile={props.orderProfile}
-            /> */}
-
+          <Stack tokens={{ childrenGap: '12px' }}>
             <Stack tokens={{ childrenGap: '6px' }}>
               <Separator alignContent="start">Columns</Separator>
 

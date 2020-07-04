@@ -27,6 +27,8 @@ import ManageProfileOptiosPanel, {
 import { profileManagingActions } from '../../../redux/slices/customer/orderProfile/profileManaging.slice';
 import { CustomerProductProfile } from '../../../interfaces/orderProfile';
 import { customerActions } from '../../../redux/slices/customer/customer.slice';
+import { ProductCategory } from '../../../interfaces/products';
+import { List } from 'linq-typescript';
 
 export const onDismisActionsCustomerProfileOptiosPanel = () => {
   return [
@@ -46,6 +48,14 @@ const CustomerProfileOptiosPanel: React.FC = () => {
     IApplicationState,
     CustomerProductProfile | null | undefined
   >((state) => state.orderProfile.targetOrderProfile);
+
+  const selectedProductProfile:
+    | ProductCategory
+    | null
+    | undefined = useSelector<
+    IApplicationState,
+    ProductCategory | null | undefined
+  >((state) => state.orderProfile.selectedProductProfiles);
 
   const selectedCustomer: StoreCustomer | null | undefined = useSelector<
     IApplicationState,
@@ -70,6 +80,39 @@ const CustomerProfileOptiosPanel: React.FC = () => {
         onDismisActionsCustomerProfileOptiosPanel().forEach((action) => {
           dispatch(action);
         });
+      },
+    },
+    {
+      title: 'New',
+      className:
+        selectedCustomer && selectedProductProfile
+          ? 'management__btn-new_measurement'
+          : 'management__btn-new_measurement management__btn-disabled',
+      isDisabled: selectedCustomer ? false : true,
+      tooltip: 'Create new profile',
+      onClickFunc: () => {
+        if (selectedCustomer && selectedProductProfile) {
+          dispatch(orderProfileActions.changeTargetOrderProfile(null));
+
+          dispatch(
+            controlActions.openInfoPanelWithComponent({
+              component: ManageProfileOptiosPanel,
+              onDismisPendingAction: () => {
+                onDismissManageProfileOptiosPanel().forEach((action) =>
+                  dispatch(action)
+                );
+              },
+            })
+          );
+
+          dispatch(
+            profileManagingActions.beginManaging({
+              customer: selectedCustomer,
+              productId: selectedProductProfile.id,
+              profileForEdit: null,
+            })
+          );
+        }
       },
     },
     {
@@ -142,6 +185,18 @@ const CustomerProfileOptiosPanel: React.FC = () => {
                                 dispatch(
                                   orderProfileActions.changeCustomerProductProfiles(
                                     args
+                                  )
+                                );
+
+                                dispatch(
+                                  orderProfileActions.changeSelectedProductProfiles(
+                                    new List<ProductCategory>(
+                                      args
+                                    ).firstOrDefault(
+                                      (product) =>
+                                        product.id ===
+                                        selectedProductProfile?.id
+                                    )
                                   )
                                 );
                               },

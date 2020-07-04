@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { List } from 'linq-typescript';
 import { IComboBoxOption, Dropdown } from 'office-ui-fabric-react';
-import * as fabricStyles from '../../../../../../common/fabric-styles/styles';
+import * as fabricStyles from '../../../../../../../common/fabric-styles/styles';
 import { IStyleUnitModel, updateIsUnitDirty } from './StyleUnitItem';
-import { UnitValue } from '../../../../../../interfaces/options';
-import { STYLE_UNITS_VALUES_FORM_FIELD } from '../OrderStylesForm';
+import { UnitValue } from '../../../../../../../interfaces/options';
+import { STYLE_UNITS_VALUES_FORM_FIELD } from '../../../fullProfile/ProfileForm';
 
 export interface IUnitValueSelectorInputProps {
   formik: any;

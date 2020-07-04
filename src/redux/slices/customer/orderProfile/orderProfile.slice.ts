@@ -3,17 +3,15 @@ import { CustomerProductProfile } from './../../../../interfaces/orderProfile';
 import { createSlice } from '@reduxjs/toolkit';
 
 export interface IOrderProfileState {
-  /// TODO: remove
-  orderProfiles: CustomerProductProfile[];
   targetOrderProfile: CustomerProductProfile | null | undefined;
   customerProductProfiles: ProductCategory[];
+  selectedProductProfiles: ProductCategory | null | undefined;
 }
 
 const INIT_STATE: IOrderProfileState = {
-  /// TODO: remove
-  orderProfiles: [],
   targetOrderProfile: null,
   customerProductProfiles: [],
+  selectedProductProfiles: null,
 };
 
 const orderProfile = createSlice({
@@ -33,14 +31,6 @@ const orderProfile = createSlice({
       state,
       action: { type: string; payload: number }
     ) {},
-    /// TODO: remove
-    changeOrderProfiles(
-      state,
-      action: { type: string; payload: CustomerProductProfile[] }
-    ) {
-      state.orderProfiles = action.payload;
-      return state;
-    },
     changeTargetOrderProfile(
       state,
       action: {
@@ -56,6 +46,16 @@ const orderProfile = createSlice({
       action: { type: string; payload: ProductCategory[] }
     ) {
       state.customerProductProfiles = action.payload;
+      return state;
+    },
+    changeSelectedProductProfiles(
+      state,
+      action: {
+        type: string;
+        payload: ProductCategory | null | undefined;
+      }
+    ) {
+      state.selectedProductProfiles = action.payload;
       return state;
     },
   },

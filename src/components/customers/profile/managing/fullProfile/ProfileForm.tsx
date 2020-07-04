@@ -13,11 +13,11 @@ import { ProductCategory } from '../../../../../interfaces/products';
 import {
   IInputValueModel,
   initInputValueModelDefaults,
-} from '../orderMeasurements/valueMeasurementInputs/ValueItem';
+} from './inputs/productMeasurement/ValueItem';
 import {
   IStyleUnitModel,
   initUnitItems,
-} from '../orderStyles/styleSelector/StyleUnitItem';
+} from './inputs/productStyle/StyleUnitItem';
 import { List } from 'linq-typescript';
 import { StoreCustomer } from '../../../../../interfaces/storeCustomer';
 import { profileManagingActions } from '../../../../../redux/slices/customer/orderProfile/profileManaging.slice';
@@ -28,6 +28,15 @@ import { useHistory } from 'react-router-dom';
 import { onBackFromProfileManaging } from '../../../options/ManageProfileOptiosPanel';
 import ProfileFormMarkup from './ProfileFormMarkup';
 import { IApplicationState } from '../../../../../redux/reducers';
+
+export const PROFILE_TYPE_FORM_FIELD = 'profileType';
+export const MEASUREMENT_ID_FORM_FIELD = 'measurementId';
+export const FITTING_TYPE_ID_FORM_FIELD = 'fittingTypeId';
+export const FRESH_MEASUREMRNT_VALUES_FORM_FIELD = 'freshMeasuremrntValues';
+export const MEASUREMENT_SIZE_ID_FORM_FIELD = 'measurementSizeId';
+export const BASE_MEASUREMRNT_VALUES_FORM_FIELD = 'baseMeasuremrntValues';
+export const BODY_MEASUREMRNT_VALUES_FORM_FIELD = 'bodyMeasuremrntValues';
+export const STYLE_UNITS_VALUES_FORM_FIELD = 'productStyleValues';
 
 export interface IProfileFormProps {
   measurements: Measurement[];
@@ -313,6 +322,14 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
     CustomerProductProfile | null | undefined
   >((state) => state.profileManaging.profileForEdit);
 
+  const selectedProductProfile:
+    | ProductCategory
+    | null
+    | undefined = useSelector<
+    IApplicationState,
+    ProductCategory | null | undefined
+  >((state) => state.orderProfile.selectedProductProfiles);
+
   const [formInit, setFormInit] = useState<any>(
     _initDefaultValues(props.measurements, props.product, profileForEdit)
   );
@@ -383,6 +400,15 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
                 dispatch(
                   orderProfileActions.changeCustomerProductProfiles(args)
                 );
+
+                dispatch(
+                  orderProfileActions.changeSelectedProductProfiles(
+                    new List<ProductCategory>(args).firstOrDefault(
+                      (product) => product.id === selectedProductProfile?.id
+                    )
+                  )
+                );
+
                 onBackFromProfileManaging(dispatch, history);
               },
               (args: any) => {}
@@ -422,6 +448,15 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
                 dispatch(
                   orderProfileActions.changeCustomerProductProfiles(args)
                 );
+
+                dispatch(
+                  orderProfileActions.changeSelectedProductProfiles(
+                    new List<ProductCategory>(args).firstOrDefault(
+                      (product) => product.id === selectedProductProfile?.id
+                    )
+                  )
+                );
+
                 onBackFromProfileManaging(dispatch, history);
               },
               (args: any) => {}

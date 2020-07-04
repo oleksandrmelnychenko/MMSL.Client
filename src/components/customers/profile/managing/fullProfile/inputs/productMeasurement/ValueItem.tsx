@@ -10,21 +10,21 @@ import {
 import './valueItem.scss';
 import { Field } from 'formik';
 import {
-  FRESH_MEASUREMRNT_VALUES_FORM_FIELD,
-  BASE_MEASUREMRNT_VALUES_FORM_FIELD,
-  BODY_MEASUREMRNT_VALUES_FORM_FIELD,
-} from '../OrderMeasurementsForm';
-import {
   Measurement,
   MeasurementMapDefinition,
-} from '../../../../../../interfaces/measurements';
+} from '../../../../../../../interfaces/measurements';
 import {
   CustomerProductProfile,
   CustomerProfileSizeValue,
   ProfileTypes,
-} from '../../../../../../interfaces/orderProfile';
+} from '../../../../../../../interfaces/orderProfile';
 import { List } from 'linq-typescript';
-import { mainTitleHintContent } from '../../../../../../common/fabric-styles/styles';
+import { mainTitleHintContent } from '../../../../../../../common/fabric-styles/styles';
+import {
+  FRESH_MEASUREMRNT_VALUES_FORM_FIELD,
+  BASE_MEASUREMRNT_VALUES_FORM_FIELD,
+  BODY_MEASUREMRNT_VALUES_FORM_FIELD,
+} from '../../ProfileForm';
 
 export const initInputValueModelDefaults = (
   measurement: Measurement | null | undefined,

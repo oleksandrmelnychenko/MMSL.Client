@@ -1,13 +1,13 @@
 import React from 'react';
 import { FieldArray } from 'formik';
-import {} from '../../../../../../interfaces/measurements';
+import {} from '../../../../../../../../interfaces/measurements';
 import {
   CustomerProductProfile,
   ProfileTypes,
-} from '../../../../../../interfaces/orderProfile';
+} from '../../../../../../../../interfaces/orderProfile';
 import { Stack, Separator } from 'office-ui-fabric-react';
-import ValueItem, { IInputValueModel } from './ValueItem';
-import { FRESH_MEASUREMRNT_VALUES_FORM_FIELD } from '../OrderMeasurementsForm';
+import ValueItem, { IInputValueModel } from '../ValueItem';
+import { FRESH_MEASUREMRNT_VALUES_FORM_FIELD } from '../../../ProfileForm';
 
 export interface IFreshMeasurementInputProps {
   formik: any;

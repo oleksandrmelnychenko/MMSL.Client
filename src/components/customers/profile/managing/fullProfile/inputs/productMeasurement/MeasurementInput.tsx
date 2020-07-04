@@ -1,20 +1,20 @@
 import React from 'react';
 import { Field } from 'formik';
 import { IDropdownOption, Dropdown } from 'office-ui-fabric-react';
-import * as fabricStyles from '../../../../../common/fabric-styles/styles';
-import { Measurement } from '../../../../../interfaces/measurements';
-import { initInputValueModelDefaults } from './valueMeasurementInputs/ValueItem';
+import * as fabricStyles from '../../../../../../../common/fabric-styles/styles';
+import { Measurement } from '../../../../../../../interfaces/measurements';
+import { initInputValueModelDefaults } from './ValueItem';
 import {
   CustomerProductProfile,
   ProfileTypes,
-} from '../../../../../interfaces/orderProfile';
+} from '../../../../../../../interfaces/orderProfile';
 import { List } from 'linq-typescript';
 import {
-  MEASUREMENT_ID_FORM_FIELD,
   FRESH_MEASUREMRNT_VALUES_FORM_FIELD,
   BASE_MEASUREMRNT_VALUES_FORM_FIELD,
   BODY_MEASUREMRNT_VALUES_FORM_FIELD,
-} from './OrderMeasurementsForm';
+  MEASUREMENT_ID_FORM_FIELD,
+} from '../../../fullProfile/ProfileForm';
 
 export interface IMeasurementInputProps {
   measurements: Measurement[];

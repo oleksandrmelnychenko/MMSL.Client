@@ -38,6 +38,13 @@ const CustomersBootstrapper: React.FC = () => {
   >((state) => state.customer.customerState);
 
   useEffect(() => {
+    return () => {
+      dispatch(dispatch(customerActions.updateSelectedCustomer(null)));
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     if (history?.location?.pathname?.includes(CUSTOMER_PROFILES_PATH)) {
       resolveTargetCustomerFlow(CustomerProfileOptiosPanel);
     } else {

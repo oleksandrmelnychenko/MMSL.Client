@@ -32,7 +32,14 @@ const DashboardLeftMenuPanel: React.FC = () => {
         hasCloseButton={panelInfo.hasCloseButton}
         styles={stylesPanelInfo}
         isOpen={panelInfo.isOpenPanelInfo}
-        onDismiss={dismissPanelInfo}
+        onDismiss={(args: any) => {
+          console.log(args);
+
+          if (args && args?.key === 'Escape') {
+          } else {
+            dismissPanelInfo();
+          }
+        }}
       >
         <Route
           path={location.pathname}

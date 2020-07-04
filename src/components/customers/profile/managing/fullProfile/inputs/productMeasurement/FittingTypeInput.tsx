@@ -5,18 +5,18 @@ import {
   Dropdown,
   IComboBoxOption,
 } from 'office-ui-fabric-react';
-import * as fabricStyles from '../../../../../../common/fabric-styles/styles';
-import { FittingType } from '../../../../../../interfaces/measurements';
+import * as fabricStyles from '../../../../../../../common/fabric-styles/styles';
+import { FittingType } from '../../../../../../../interfaces/measurements';
 import { useDispatch } from 'react-redux';
-import { fittingTypesActions } from '../../../../../../redux/slices/measurements/fittingTypes.slice';
-import { assignPendingActions } from '../../../../../../helpers/action.helper';
+import { fittingTypesActions } from '../../../../../../../redux/slices/measurements/fittingTypes.slice';
+import { assignPendingActions } from '../../../../../../../helpers/action.helper';
+import { List } from 'linq-typescript';
+import { IInputValueModel, resolveInitialValue } from './ValueItem';
+import { ProfileTypes } from '../../../../../../../interfaces/orderProfile';
 import {
   FITTING_TYPE_ID_FORM_FIELD,
   BODY_MEASUREMRNT_VALUES_FORM_FIELD,
-} from '../OrderMeasurementsForm';
-import { List } from 'linq-typescript';
-import { IInputValueModel, resolveInitialValue } from './ValueItem';
-import { ProfileTypes } from '../../../../../../interfaces/orderProfile';
+} from '../../ProfileForm';
 
 export interface IFittingTypeInputProps {
   formik: any;
@@ -132,16 +132,6 @@ export const FittingTypeInput: React.FC<IFittingTypeInputProps> = (
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [measurementId]);
-
-  // useEffect(() => {
-  //   _applyOffsetSizeValues(
-  //     new List(fittingTypeOptions).firstOrDefault(
-  //       (option) => option.fittingType.id === fittingTypeId
-  //     )?.fittingType,
-  //     props.formik
-  //   );
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [fittingTypeId, fittingTypeOptions]);
 
   return (
     <>

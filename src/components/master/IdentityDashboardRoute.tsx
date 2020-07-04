@@ -8,7 +8,6 @@ import ProductCategoryView from '../product-category/ProductCategoryView';
 import { List } from 'linq-typescript';
 import { TokenHelper } from '../../helpers/token.helper';
 import { RoleType } from '../../interfaces/identity';
-import OrderProfileView from '../orderProfile/OrderProfileView';
 
 const DEALERS_ROUTE: string = 'Dealers';
 const CUSTOMER_ROUTE: string = 'Customer';
@@ -62,14 +61,7 @@ const IdentityDashboardRoute: React.FC = () => {
       );
     else if (routeDescription === REPORTS_ROUTE)
       return <Route key={index} path={`/en/app/reports`} component={Reports} />;
-    else if (routeDescription === ORDER_PROFILES_ROUTE)
-      return (
-        <Route
-          key={index}
-          path={`/en/app/order-profiles`}
-          component={OrderProfileView}
-        />
-      );
+    else if (routeDescription === ORDER_PROFILES_ROUTE) return null;
   };
 
   const rolesList = new List(TokenHelper.extractRolesFromJWT());

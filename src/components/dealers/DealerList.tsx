@@ -8,7 +8,6 @@ import {
   IconButton,
   DetailsRow,
   ScrollablePane,
-  ShimmeredDetailsList,
   IRenderFunction,
   IDetailsHeaderProps,
   IDetailsColumnRenderTooltipProps,
@@ -267,6 +266,7 @@ export const DealerList: React.FC = () => {
         onRenderDetailsHeader={onRenderDetailsHeader}
         styles={detailsListStyle}
         items={dealers}
+        selectionPreservedOnEmptyClick
         checkboxVisibility={CheckboxVisibility.hidden}
         selection={selection}
         selectionMode={SelectionMode.single}

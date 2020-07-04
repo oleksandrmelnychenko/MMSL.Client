@@ -8,6 +8,7 @@ import { IApplicationState } from '../../../redux/reducers';
 import ProfileFormBootstrapper from './managing/fullProfile/ProfileFormBootstrapper';
 import { orderProfileActions } from '../../../redux/slices/customer/orderProfile/orderProfile.slice';
 import { renderHintLable } from '../../../helpers/uiComponent.helper';
+import ProductsStack from './profileList/ProductsStack';
 
 export const Profiles: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ export const Profiles: React.FC = (props: any) => {
   useEffect(() => {
     return () => {
       dispatch(orderProfileActions.changeCustomerProductProfiles([]));
-
+      dispatch(orderProfileActions.changeSelectedProductProfiles(null));
       setIsProfilesWasRequested(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -80,7 +81,11 @@ export const Profiles: React.FC = (props: any) => {
                           </div>
                         </Stack.Item>
                         <Stack.Item>
-                          <ProfileList />
+                          {/* <ProfileList /> */}
+                          <Stack>
+                            <ProductsStack />
+                            <ProfileList />
+                          </Stack>
                         </Stack.Item>
                       </Stack>
                     </div>

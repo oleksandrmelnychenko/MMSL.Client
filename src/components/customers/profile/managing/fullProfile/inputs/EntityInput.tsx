@@ -1,8 +1,8 @@
 import React from 'react';
 import { Field } from 'formik';
 import { Stack, TextField } from 'office-ui-fabric-react';
-import * as fabricStyles from '../../../../../common/fabric-styles/styles';
-import { textFildLabelNoTopPaddingStyles } from '../../../../../common/fabric-styles/styles';
+import * as fabricStyles from '../../../../../../common/fabric-styles/styles';
+import { textFildLabelNoTopPaddingStyles } from '../../../../../../common/fabric-styles/styles';
 
 export interface IEntityInputProps {
   formik: any;

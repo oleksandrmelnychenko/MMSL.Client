@@ -3,22 +3,22 @@ import { Field } from 'formik';
 import {
   Measurement,
   MeasurementMapSize,
-} from '../../../../../../interfaces/measurements';
+} from '../../../../../../../interfaces/measurements';
 import {
   CustomerProductProfile,
   ProfileTypes,
-} from '../../../../../../interfaces/orderProfile';
+} from '../../../../../../../interfaces/orderProfile';
 import { List } from 'linq-typescript';
 import { ComboBox, IComboBoxOption, IComboBox } from 'office-ui-fabric-react';
-import {
-  MEASUREMENT_SIZE_ID_FORM_FIELD,
-  BASE_MEASUREMRNT_VALUES_FORM_FIELD,
-} from '../OrderMeasurementsForm';
 import { useDispatch } from 'react-redux';
-import { assignPendingActions } from '../../../../../../helpers/action.helper';
-import { measurementActions } from '../../../../../../redux/slices/measurements/measurement.slice';
-import * as fabricStyles from '../../../../../../common/fabric-styles/styles';
+import { assignPendingActions } from '../../../../../../../helpers/action.helper';
+import { measurementActions } from '../../../../../../../redux/slices/measurements/measurement.slice';
+import * as fabricStyles from '../../../../../../../common/fabric-styles/styles';
 import { IInputValueModel, resolveInitialValue } from './ValueItem';
+import {
+  BASE_MEASUREMRNT_VALUES_FORM_FIELD,
+  MEASUREMENT_SIZE_ID_FORM_FIELD,
+} from '../../ProfileForm';
 
 const _buildSizeOptions = (measurement: Measurement) => {
   let result: IComboBoxOption[] = [];
@@ -152,16 +152,6 @@ export const SizeSelectorInput: React.FC<ISizeSelectorInputProps> = (
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [measurementId, profileType]);
-
-  // useEffect(() => {
-  //   _applySizeValues(
-  //     new List(sizeOptions).firstOrDefault(
-  //       (option) => option.sizeMap.id === sizeMapId
-  //     )?.sizeMap,
-  //     props.formik
-  //   );
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [sizeMapId, sizeOptions]);
 
   return (
     <>

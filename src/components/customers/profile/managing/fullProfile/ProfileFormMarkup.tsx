@@ -8,16 +8,16 @@ import { ProductCategory } from '../../../../../interfaces/products';
 import { StoreCustomer } from '../../../../../interfaces/storeCustomer';
 import { Stack, Text, ScrollablePane } from 'office-ui-fabric-react';
 import ProductCustomerDetails from './ProductCustomerDetails';
-import EntityInput from './EntityInput';
-import ProfileTypeInput from '../orderMeasurements/ProfileTypeInput';
-import MeasurementInput from '../orderMeasurements/MeasurementInput';
-import FreshMeasurementInput from '../orderMeasurements/valueMeasurementInputs/FreshMeasurementInput';
-import BaseMeasurementInput from '../orderMeasurements/valueMeasurementInputs/BaseMeasurementInput';
-import BodyMeasurementInput from '../orderMeasurements/valueMeasurementInputs/BodyMeasurementInput';
-import StyleSelectorInput from '../orderStyles/styleSelector/StyleSelectorInput';
+import EntityInput from './inputs/EntityInput';
+import ProfileTypeInput from './inputs/productMeasurement/ProfileTypeInput';
+import MeasurementInput from './inputs/productMeasurement/MeasurementInput';
+import FreshMeasurementInput from './inputs/productMeasurement/chartBulkInputs/FreshMeasurementInput';
+import BaseMeasurementInput from './inputs/productMeasurement/chartBulkInputs/BaseMeasurementInput';
+import BodyMeasurementInput from './inputs/productMeasurement/chartBulkInputs/BodyMeasurementInput';
+import StyleSelectorInput from './inputs/productStyle/StyleSelectorInput';
 import './profileFormMarkup.scss';
-import SizeSelectorInput from '../orderMeasurements/valueMeasurementInputs/SizeSelectorInput';
-import FittingTypeInput from '../orderMeasurements/valueMeasurementInputs/FittingTypeInput';
+import SizeSelectorInput from './inputs/productMeasurement/SizeSelectorInput';
+import FittingTypeInput from './inputs/productMeasurement/FittingTypeInput';
 import { mainTitleHintContent } from '../../../../../common/fabric-styles/styles';
 
 export interface IProfileFormMarkupProps {
