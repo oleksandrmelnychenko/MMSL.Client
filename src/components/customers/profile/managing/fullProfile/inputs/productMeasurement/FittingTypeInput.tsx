@@ -4,6 +4,8 @@ import {
   IDropdownOption,
   Dropdown,
   IComboBoxOption,
+  ComboBox,
+  IComboBox,
 } from 'office-ui-fabric-react';
 import * as fabricStyles from '../../../../../../../common/fabric-styles/styles';
 import { FittingType } from '../../../../../../../interfaces/measurements';
@@ -98,7 +100,10 @@ export const FittingTypeInput: React.FC<IFittingTypeInputProps> = (
     setFittingTypeId(props.formik.values.fittingTypeId);
 
   useEffect(() => {
-    if (measurementId !== 0) {
+    if (
+      measurementId !== 0 &&
+      props.formik.values.profileType === ProfileTypes.BodyMeasurement
+    ) {
       dispatch(
         assignPendingActions(
           fittingTypesActions.apiGetFittingTypesByMeasurementId(measurementId),
@@ -107,20 +112,20 @@ export const FittingTypeInput: React.FC<IFittingTypeInputProps> = (
           (args: any) => {
             const options = _buildOptions(args);
 
-            props.formik.setFieldValue(
-              FITTING_TYPE_ID_FORM_FIELD,
-              _resolveSelectedId(options, props.formik.values.fittingTypeId)
-            );
-            props.formik.setFieldTouched(FITTING_TYPE_ID_FORM_FIELD);
+            // props.formik.setFieldValue(
+            //   FITTING_TYPE_ID_FORM_FIELD,
+            //   _resolveSelectedId(options, props.formik.values.fittingTypeId)
+            // );
+            // props.formik.setFieldTouched(FITTING_TYPE_ID_FORM_FIELD);
 
             setFittingTypeOptions(options);
 
-            _applyOffsetSizeValues(
-              new List(fittingTypeOptions).firstOrDefault(
-                (option) => option.fittingType.id === fittingTypeId
-              )?.fittingType,
-              props.formik
-            );
+            // _applyOffsetSizeValues(
+            //   new List(fittingTypeOptions).firstOrDefault(
+            //     (option) => option.fittingType.id === fittingTypeId
+            //   )?.fittingType,
+            //   props.formik
+            // );
           },
           (args: any) => {
             setFittingTypeOptions([]);
@@ -133,21 +138,31 @@ export const FittingTypeInput: React.FC<IFittingTypeInputProps> = (
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [measurementId]);
 
+  useEffect(() => {
+    return () => {
+      props.formik.setFieldValue(FITTING_TYPE_ID_FORM_FIELD, 0);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       {props.formik.values.profileType === ProfileTypes.BodyMeasurement ? (
         <Field name={FITTING_TYPE_ID_FORM_FIELD}>
           {() => (
-            <Dropdown
+            <ComboBox
               selectedKey={`${props.formik.values.fittingTypeId}`}
               label="Fitting type"
+              placeholder={'Choose fitting type'}
               style={{ width: '300px' }}
+              allowFreeform={false}
               options={fittingTypeOptions}
               styles={fabricStyles.comboBoxStyles}
               onChange={(
-                event: React.FormEvent<HTMLDivElement>,
+                event: React.FormEvent<IComboBox>,
                 option?: any,
-                index?: number
+                index?: number,
+                value?: string
               ) => {
                 let fittingTypeId = option ? option.fittingType.id : 0;
 

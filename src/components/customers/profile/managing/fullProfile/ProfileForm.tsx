@@ -338,7 +338,7 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
     dispatch(
       profileManagingActions.updateCommands([
         {
-          className: 'management',
+          className: 'management__btn-save',
           isDisabled: !isFormikDirty,
           name: 'Save',
           onClick: () => {
@@ -348,7 +348,7 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
           },
         },
         {
-          className: 'management',
+          className: 'management__btn-reset',
           isDisabled: !isFormikDirty,
           name: 'Reset',
           onClick: () => {
@@ -491,6 +491,17 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
           innerRef={(formik: any) => {
             formikReference.formik = formik;
             if (formik) {
+              // console.log(formik);
+              // console.log(`formik: ${formik.dirty}`);
+              // console.log(
+              //   `_urgentItemsDirtyHelper: ${_urgentItemsDirtyHelper(formik)}`
+              // );
+              // console.log(
+              //   `list: ${new List<IStyleUnitModel>(
+              //     formik.values.productStyleValues
+              //   ).any((item: IStyleUnitModel) => item.isDirty)}`
+              // );
+
               setFormikDirty(
                 formik.dirty ||
                   _urgentItemsDirtyHelper(formik) ||

@@ -8,7 +8,11 @@ import {
   ProfileTypes,
 } from '../../../../../../../interfaces/orderProfile';
 import { updateFormChartValues } from './MeasurementInput';
-import { PROFILE_TYPE_FORM_FIELD } from '../../ProfileForm';
+import {
+  PROFILE_TYPE_FORM_FIELD,
+  FITTING_TYPE_ID_FORM_FIELD,
+  MEASUREMENT_SIZE_ID_FORM_FIELD,
+} from '../../ProfileForm';
 
 export interface IProfileTypeInputProps {
   formik: any;
@@ -68,15 +72,27 @@ export const ProfileTypeInput: React.FC<IProfileTypeInputProps> = (
               ? option.profileType
               : ProfileTypes.FreshMeasurement;
 
+            if (value === ProfileTypes.FreshMeasurement) {
+              props.formik.setFieldValue(FITTING_TYPE_ID_FORM_FIELD, 0);
+              props.formik.setFieldValue(MEASUREMENT_SIZE_ID_FORM_FIELD, 0);
+            } else if (value === ProfileTypes.BaseMeasurement) {
+              props.formik.setFieldValue(FITTING_TYPE_ID_FORM_FIELD, 0);
+            } else if (value === ProfileTypes.BodyMeasurement) {
+              props.formik.setFieldValue(FITTING_TYPE_ID_FORM_FIELD, 0);
+            } else if (value === ProfileTypes.Reference) {
+              props.formik.setFieldValue(FITTING_TYPE_ID_FORM_FIELD, 0);
+              props.formik.setFieldValue(MEASUREMENT_SIZE_ID_FORM_FIELD, 0);
+            }
+
+            props.formik.setFieldValue(PROFILE_TYPE_FORM_FIELD, value);
+            props.formik.setFieldTouched(PROFILE_TYPE_FORM_FIELD);
+
             updateFormChartValues(
               props.formik.values.measurementId,
               props.availableMeasurements,
               props.formik,
               props.orderProfile
             );
-
-            props.formik.setFieldValue(PROFILE_TYPE_FORM_FIELD, value);
-            props.formik.setFieldTouched(PROFILE_TYPE_FORM_FIELD);
           }}
         />
       )}

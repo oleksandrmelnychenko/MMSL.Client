@@ -152,6 +152,14 @@ main.collapse {
     background: url('../../assets/images/styles/gear_lock_plus.svg') no-repeat;
   }
 
+  &__btn-save {
+    background: url('../../assets/images/menu-icons/save.svg') no-repeat;
+  }
+
+  &__btn-reset {
+    background: url('../../assets/images/menu-icons/reset.svg') no-repeat;
+  }
+
   &__btn-disabled {
     opacity: 0.4;
   }

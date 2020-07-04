@@ -38,21 +38,21 @@ const _buildSizeOptions = (measurement: Measurement) => {
   return result;
 };
 
-const _resolveSelectedId = (
-  sizeOptions: IComboBoxOption[],
-  idToSelect: number
-) => {
-  let result: number =
-    sizeOptions.length > 0 ? (sizeOptions[0] as any).sizeMap.id : 0;
+// const _resolveSelectedId = (
+//   sizeOptions: IComboBoxOption[],
+//   idToSelect: number
+// ) => {
+//   let result: number =
+//     sizeOptions.length > 0 ? (sizeOptions[0] as any).sizeMap.id : 0;
 
-  const targetOption = new List(sizeOptions).firstOrDefault(
-    (option: IComboBoxOption) => option.key === `${idToSelect}`
-  );
+//   const targetOption = new List(sizeOptions).firstOrDefault(
+//     (option: IComboBoxOption) => option.key === `${idToSelect}`
+//   );
 
-  if (targetOption) result = (targetOption as any).sizeMap.id;
+//   if (targetOption) result = (targetOption as any).sizeMap.id;
 
-  return result;
-};
+//   return result;
+// };
 
 const _applySizeValues = (
   mapSize: MeasurementMapSize | null | undefined,
@@ -75,7 +75,6 @@ const _applySizeValues = (
 
           valueItem.initValue = valueItem.value;
           resolveInitialValue(valueItem, formik, false);
-
           return valueItem;
         }
       );
@@ -127,20 +126,20 @@ export const SizeSelectorInput: React.FC<ISizeSelectorInputProps> = (
           (args: any) => {
             const options = _buildSizeOptions(args);
 
-            props.formik.setFieldValue(
-              MEASUREMENT_SIZE_ID_FORM_FIELD,
-              _resolveSelectedId(options, props.formik.values.measurementSizeId)
-            );
-            props.formik.setFieldTouched(MEASUREMENT_SIZE_ID_FORM_FIELD);
+            // props.formik.setFieldValue(
+            //   MEASUREMENT_SIZE_ID_FORM_FIELD,
+            //   _resolveSelectedId(options, props.formik.values.measurementSizeId)
+            // );
+            // props.formik.setFieldTouched(MEASUREMENT_SIZE_ID_FORM_FIELD);
 
             setSizeOptions(options);
 
-            _applySizeValues(
-              new List(sizeOptions).firstOrDefault(
-                (option) => option.sizeMap.id === sizeMapId
-              )?.sizeMap,
-              props.formik
-            );
+            // _applySizeValues(
+            //   new List(sizeOptions).firstOrDefault(
+            //     (option) => option.sizeMap.id === sizeMapId
+            //   )?.sizeMap,
+            //   props.formik
+            // );
           },
           (args: any) => {
             setSizeOptions([]);
@@ -161,8 +160,9 @@ export const SizeSelectorInput: React.FC<ISizeSelectorInputProps> = (
             return (
               <ComboBox
                 selectedKey={`${props.formik.values.measurementSizeId}`}
-                allowFreeform={true}
+                allowFreeform={false}
                 label="Size"
+                placeholder={'Choose size'}
                 style={{ width: '300px' }}
                 autoComplete={true ? 'on' : 'off'}
                 options={sizeOptions}
@@ -189,7 +189,7 @@ export const SizeSelectorInput: React.FC<ISizeSelectorInputProps> = (
 
                   _applySizeValues(
                     new List(sizeOptions).firstOrDefault(
-                      (option) => option.sizeMap.id === sizeMapId
+                      (option) => option.sizeMap.id === sizeId
                     )?.sizeMap,
                     props.formik
                   );

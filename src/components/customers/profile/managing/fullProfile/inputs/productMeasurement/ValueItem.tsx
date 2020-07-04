@@ -99,6 +99,7 @@ export const resolveInitialValue = (
       valueItem.measurementDefinitionId === item.measurementDefinitionId
   );
 
+  debugger;
   if (initialItem) {
     if (isBodySizeOffset)
       valueItem.initFittingValue = initialItem.initFittingValue;
