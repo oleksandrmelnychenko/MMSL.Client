@@ -1,17 +1,9 @@
 import React from 'react';
 import {
-  Label,
-  PrimaryButton,
-  TooltipHost,
-  TooltipDelay,
-  DirectionalHint,
-} from 'office-ui-fabric-react';
-import {
   customerActions,
   CustomerListState,
 } from '../../../redux/slices/customer/customer.slice';
 import { useDispatch, useSelector } from 'react-redux';
-import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { IApplicationState } from '../../../redux/reducers/index';
 import {
   controlActions,
@@ -30,6 +22,8 @@ import {
   CUSTOMER_PROFILES_PATH,
 } from '../CustomersBootstrapper';
 import { useHistory } from 'react-router-dom';
+import { RoleType } from '../../../interfaces/identity';
+import { renderMenuItem } from '../../master/DashboardLeftMenuPanel';
 
 export const onDismisActionsCustomersOptionsPanel = () => {
   return [customerActions.updateSelectedCustomer(null)];
@@ -46,6 +40,11 @@ const CustomersOptionsPanel: React.FC = () => {
 
   const menuItem: IInfoPanelMenuItem[] = [
     {
+      allowedRoles: [
+        RoleType.Administrator,
+        RoleType.Manufacturer,
+        RoleType.Dealer,
+      ],
       title: 'Details',
       className: 'management__btn-detail',
       isDisabled: selectedCustomer ? false : true,
@@ -67,6 +66,7 @@ const CustomersOptionsPanel: React.FC = () => {
       },
     },
     {
+      allowedRoles: [RoleType.Dealer],
       title: 'Profiles',
       className: 'management__btn-styles',
       isDisabled: selectedCustomer ? false : true,
@@ -106,6 +106,11 @@ const CustomersOptionsPanel: React.FC = () => {
       },
     },
     {
+      allowedRoles: [
+        RoleType.Administrator,
+        RoleType.Manufacturer,
+        RoleType.Dealer,
+      ],
       title: 'Delete',
       className: selectedCustomer
         ? 'management__btn-delete_measurement'
@@ -161,35 +166,7 @@ const CustomersOptionsPanel: React.FC = () => {
     },
   ];
 
-  return (
-    <div className="management">
-      {menuItem.map((item, index) => (
-        <TooltipHost
-          key={index}
-          id={`{${index}__optionTooltip}`}
-          calloutProps={{ gapSpace: 0 }}
-          delay={TooltipDelay.zero}
-          directionalHint={DirectionalHint.rightCenter}
-          styles={{ root: { display: 'inline-block' } }}
-          content={(item as any).tooltip}
-        >
-          <Label
-            key={index}
-            styles={labelStyle}
-            className={false ? 'selected' : ''}
-          >
-            <PrimaryButton
-              styles={btnMenuStyle}
-              className={item.className}
-              onClick={() => item.onClickFunc()}
-              allowDisabledFocus
-            />
-            {item.title}
-          </Label>
-        </TooltipHost>
-      ))}
-    </div>
-  );
+  return <>{renderMenuItem(menuItem)}</>;
 };
 
 export default CustomersOptionsPanel;

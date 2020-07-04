@@ -86,7 +86,6 @@ const IdentityDashboardRoute: React.FC = () => {
           route.description !== DEALERS_ROUTE
       )
       .toArray();
-  } else {
   }
 
   return (

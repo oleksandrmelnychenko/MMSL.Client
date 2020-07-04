@@ -15,6 +15,8 @@ import CustomersOptionsPanel, {
 import CustomerProfileOptiosPanel from './options/CustomerProfileOptiosPanel';
 import Customers from './Customers';
 import Profiles from './profile/Profiles';
+import { TokenHelper } from '../../helpers/token.helper';
+import { RoleType } from '../../interfaces/identity';
 
 const _extractCustomerIdFromPath = (history: any) => {
   const lastSegment: any = new List(
@@ -45,8 +47,14 @@ const CustomersBootstrapper: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    const rolesList = new List(TokenHelper.extractRolesFromJWT());
+
     if (history?.location?.pathname?.includes(CUSTOMER_PROFILES_PATH)) {
-      resolveTargetCustomerFlow(CustomerProfileOptiosPanel);
+      if (rolesList.contains(RoleType[RoleType.Dealer])) {
+        resolveTargetCustomerFlow(CustomerProfileOptiosPanel);
+      } else {
+        history.push(CUSTOMERS_PATH);
+      }
     } else {
       if (selectedCustomer) {
         dispatch(
@@ -62,6 +70,7 @@ const CustomersBootstrapper: React.FC = () => {
         dispatch(controlActions.closeInfoPanelWithComponent());
       }
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 

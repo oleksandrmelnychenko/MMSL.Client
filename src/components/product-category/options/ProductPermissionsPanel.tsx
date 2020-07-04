@@ -19,6 +19,8 @@ import ProductManagementPanel, {
   PRODUCT_CATEGORIES_DASHBOARD_PATH,
 } from './ProductManagementPanel';
 import ProductPermissionForm from '../productPermissions/managing/ProductPermissionForm';
+import { RoleType } from '../../../interfaces/identity';
+import { renderMenuItem } from '../../master/DashboardLeftMenuPanel';
 
 export const permissionsPanelDismisActions = () => {
   return [];
@@ -38,6 +40,7 @@ const ProductPermissionsPanel: React.FC = () => {
 
   const menuItem: IInfoPanelMenuItem[] = [
     {
+      allowedRoles: [RoleType.Administrator, RoleType.Manufacturer],
       title: 'Back',
       className: 'management__btn-back_measurement',
       isDisabled: false,
@@ -59,6 +62,7 @@ const ProductPermissionsPanel: React.FC = () => {
       },
     },
     {
+      allowedRoles: [RoleType.Administrator, RoleType.Manufacturer],
       title: 'New',
       className: choseCategory
         ? 'management__btn-style_add_permissions'
@@ -82,38 +86,7 @@ const ProductPermissionsPanel: React.FC = () => {
     },
   ];
 
-  return (
-    <div className="management">
-      {menuItem.map((item, index) => (
-        <TooltipHost
-          key={index}
-          id={`{${index}_timelineOptionPanel}`}
-          calloutProps={{ gapSpace: 0 }}
-          delay={TooltipDelay.zero}
-          directionalHint={DirectionalHint.rightCenter}
-          styles={{ root: { display: 'inline-block' } }}
-          content={(item as any).tooltip}
-        >
-          <Label
-            styles={labelStyle}
-            disabled={item.isDisabled}
-            className={false ? `selected` : ''}
-          >
-            <PrimaryButton
-              disabled={item.isDisabled}
-              styles={btnMenuStyle}
-              className={item.className}
-              onClick={() => {
-                item.onClickFunc();
-              }}
-              allowDisabledFocus
-            />
-            {item.title}
-          </Label>
-        </TooltipHost>
-      ))}
-    </div>
-  );
+  return <>{renderMenuItem(menuItem)}</>;
 };
 
 export default ProductPermissionsPanel;

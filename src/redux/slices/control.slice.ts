@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { IPanelInfo } from '../../interfaces';
+import { RoleType } from '../../interfaces/identity';
 
 export class ControlState {
   constructor() {
@@ -113,6 +114,7 @@ export interface IInfoPanelMenuItem {
   onClickFunc: Function;
   isDisabled: boolean;
   tooltip: string;
+  allowedRoles: RoleType[];
 }
 
 const controls = createSlice({

@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  Label,
-  PrimaryButton,
-  TooltipHost,
-  TooltipDelay,
-  DirectionalHint,
-} from 'office-ui-fabric-react';
+
 import { useDispatch, useSelector } from 'react-redux';
-import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import {
   controlActions,
   IInfoPanelMenuItem,
@@ -29,6 +22,8 @@ import { CustomerProductProfile } from '../../../interfaces/orderProfile';
 import { customerActions } from '../../../redux/slices/customer/customer.slice';
 import { ProductCategory } from '../../../interfaces/products';
 import { List } from 'linq-typescript';
+import { RoleType } from '../../../interfaces/identity';
+import { renderMenuItem } from '../../master/DashboardLeftMenuPanel';
 
 export const onDismisActionsCustomerProfileOptiosPanel = () => {
   return [
@@ -64,6 +59,11 @@ const CustomerProfileOptiosPanel: React.FC = () => {
 
   const menuItem: IInfoPanelMenuItem[] = [
     {
+      allowedRoles: [
+        RoleType.Administrator,
+        RoleType.Manufacturer,
+        RoleType.Dealer,
+      ],
       title: 'Back',
       className: 'management__btn-back_measurement',
       isDisabled: false,
@@ -83,6 +83,7 @@ const CustomerProfileOptiosPanel: React.FC = () => {
       },
     },
     {
+      allowedRoles: [RoleType.Dealer],
       title: 'New',
       className:
         selectedCustomer && selectedProductProfile
@@ -116,6 +117,7 @@ const CustomerProfileOptiosPanel: React.FC = () => {
       },
     },
     {
+      allowedRoles: [RoleType.Dealer],
       title: 'Edit',
       className:
         targetOrderProfile && selectedCustomer
@@ -149,6 +151,7 @@ const CustomerProfileOptiosPanel: React.FC = () => {
       },
     },
     {
+      allowedRoles: [RoleType.Dealer],
       title: 'Delete',
       className:
         targetOrderProfile && selectedCustomer
@@ -226,35 +229,7 @@ const CustomerProfileOptiosPanel: React.FC = () => {
     },
   ];
 
-  return (
-    <div className="management">
-      {menuItem.map((item, index) => (
-        <TooltipHost
-          key={index}
-          id={`{${index}__optionTooltip}`}
-          calloutProps={{ gapSpace: 0 }}
-          delay={TooltipDelay.zero}
-          directionalHint={DirectionalHint.rightCenter}
-          styles={{ root: { display: 'inline-block' } }}
-          content={(item as any).tooltip}
-        >
-          <Label
-            key={index}
-            styles={labelStyle}
-            className={false ? 'selected' : ''}
-          >
-            <PrimaryButton
-              styles={btnMenuStyle}
-              className={item.className}
-              onClick={() => item.onClickFunc()}
-              allowDisabledFocus
-            />
-            {item.title}
-          </Label>
-        </TooltipHost>
-      ))}
-    </div>
-  );
+  return <>{renderMenuItem(menuItem)}</>;
 };
 
 export default CustomerProfileOptiosPanel;

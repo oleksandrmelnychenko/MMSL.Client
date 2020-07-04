@@ -32,6 +32,7 @@ import {
   measurementViewControlsActions,
   ChartDisplayToMeasurementType,
 } from '../../../../redux/slices/measurements/measurementViewControls.slice';
+import { RoleType } from '../../../../interfaces/identity';
 
 export const baseMeasurementOptionsPanelDismisActions = () => {
   return [
@@ -67,6 +68,11 @@ const BaseMeasurementOptions: React.FC = () => {
 
   const menuItem: IInfoPanelMenuItem[] = [
     {
+      allowedRoles: [
+        RoleType.Administrator,
+        RoleType.Manufacturer,
+        RoleType.Dealer,
+      ],
       title: 'Back',
       className: 'management__btn-back_measurement',
       isDisabled: false,
@@ -86,6 +92,7 @@ const BaseMeasurementOptions: React.FC = () => {
       },
     },
     {
+      allowedRoles: [RoleType.Administrator, RoleType.Manufacturer],
       title: 'New',
       className: choseCategory
         ? 'management__btn-new_measurement'
@@ -108,6 +115,7 @@ const BaseMeasurementOptions: React.FC = () => {
       },
     },
     {
+      allowedRoles: [RoleType.Administrator, RoleType.Manufacturer],
       title: 'Edit',
       className:
         choseCategory && targetProductMeasurement
@@ -138,6 +146,7 @@ const BaseMeasurementOptions: React.FC = () => {
       },
     },
     {
+      allowedRoles: [RoleType.Administrator, RoleType.Manufacturer],
       title: 'Delete',
       className:
         choseCategory && targetProductMeasurement
@@ -209,6 +218,7 @@ const BaseMeasurementOptions: React.FC = () => {
       },
     },
     {
+      allowedRoles: [RoleType.Administrator, RoleType.Manufacturer],
       title: 'New size',
       className:
         choseCategory && targetProductMeasurement

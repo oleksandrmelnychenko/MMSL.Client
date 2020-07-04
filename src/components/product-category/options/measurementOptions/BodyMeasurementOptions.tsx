@@ -1,20 +1,9 @@
 import React from 'react';
 import {
-  Label,
-  PrimaryButton,
-  TooltipHost,
-  TooltipDelay,
-  DirectionalHint,
-} from 'office-ui-fabric-react';
-import {
   controlActions,
   IInfoPanelMenuItem,
 } from '../../../../redux/slices/control.slice';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  labelStyle,
-  btnMenuStyle,
-} from '../../../../common/fabric-styles/styles';
 import { useHistory } from 'react-router-dom';
 import ProductManagementPanel from '../ProductManagementPanel';
 import { fittingTypesActions } from '../../../../redux/slices/measurements/fittingTypes.slice';
@@ -26,6 +15,8 @@ import { ProductCategory } from '../../../../interfaces/products';
 import FittingTypeForm from '../../measurements/chartsGrid/bodyMeasurement/management/FittingTypeForm';
 import { IApplicationState } from '../../../../redux/reducers';
 import { Measurement } from '../../../../interfaces/measurements';
+import { RoleType } from '../../../../interfaces/identity';
+import { renderMenuItem } from '../../../master/DashboardLeftMenuPanel';
 
 export const bodyMeasurementOptionsPanelDismisActions = () => {
   return [
@@ -51,6 +42,11 @@ const BodyMeasurementOptions: React.FC = () => {
 
   const menuItem: IInfoPanelMenuItem[] = [
     {
+      allowedRoles: [
+        RoleType.Administrator,
+        RoleType.Manufacturer,
+        RoleType.Dealer,
+      ],
       title: 'Back',
       className: 'management__btn-back_measurement',
       isDisabled: false,
@@ -70,6 +66,7 @@ const BodyMeasurementOptions: React.FC = () => {
       },
     },
     {
+      allowedRoles: [RoleType.Administrator, RoleType.Manufacturer],
       title: 'New',
       className:
         category && targetProductMeasurement
@@ -94,34 +91,7 @@ const BodyMeasurementOptions: React.FC = () => {
     },
   ];
 
-  return (
-    <div className="management">
-      {menuItem.map((item, index) => (
-        <TooltipHost
-          key={index}
-          id={`{${index}_measurementOptionPanel}`}
-          calloutProps={{ gapSpace: 0 }}
-          delay={TooltipDelay.zero}
-          directionalHint={DirectionalHint.rightCenter}
-          styles={{ root: { display: 'inline-block' } }}
-          content={(item as any).tooltip}
-        >
-          <Label styles={labelStyle} className={false ? 'selected' : ''}>
-            <PrimaryButton
-              disabled={item.isDisabled}
-              styles={btnMenuStyle}
-              className={item.className}
-              onClick={() => {
-                item.onClickFunc();
-              }}
-              allowDisabledFocus
-            />
-            {item.title}
-          </Label>
-        </TooltipHost>
-      ))}
-    </div>
-  );
+  return <>{renderMenuItem(menuItem)}</>;
 };
 
 export default BodyMeasurementOptions;

@@ -1,11 +1,9 @@
 import React from 'react';
-import { Label, PrimaryButton } from 'office-ui-fabric-react';
 import {
   controlActions,
   IInfoPanelMenuItem,
 } from '../../../redux/slices/control.slice';
 import { useDispatch, useSelector } from 'react-redux';
-import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { useHistory } from 'react-router-dom';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { ProductCategory } from '../../../interfaces/products';
@@ -19,6 +17,8 @@ import ProductStylesPanel, {
 import ProductPermissionsPanel, {
   permissionsPanelDismisActions,
 } from './ProductPermissionsPanel';
+import { RoleType } from '../../../interfaces/identity';
+import { renderMenuItem } from '../../master/DashboardLeftMenuPanel';
 
 export const PRODUCT_CATEGORIES_DASHBOARD_PATH: string =
   '/en/app/product/product-categories';
@@ -40,6 +40,7 @@ const ProductManagementPanel: React.FC = () => {
 
   const menuItem: IInfoPanelMenuItem[] = [
     {
+      allowedRoles: [RoleType.Administrator, RoleType.Manufacturer],
       title: 'Styles',
       className: 'management__btn-styles',
       isDisabled: choseCategory ? false : true,
@@ -68,12 +69,12 @@ const ProductManagementPanel: React.FC = () => {
       },
     },
     {
+      allowedRoles: [RoleType.Administrator, RoleType.Manufacturer],
       title: 'Measurements',
       className: 'management__btn-measurements',
       isDisabled: choseCategory ? false : true,
       tooltip: '',
       onClickFunc: () => {
-        // dispatch(productActions.setChooseProductCategoryId(choseCategory!.id));
         dispatch(controlActions.closeInfoPanelWithComponent());
         dispatch(
           controlActions.openInfoPanelWithComponent({
@@ -97,6 +98,7 @@ const ProductManagementPanel: React.FC = () => {
       },
     },
     {
+      allowedRoles: [RoleType.Administrator, RoleType.Manufacturer],
       title: 'Timeline',
       className: 'management__btn-timeline',
       isDisabled: choseCategory ? false : true,
@@ -121,6 +123,7 @@ const ProductManagementPanel: React.FC = () => {
       },
     },
     {
+      allowedRoles: [RoleType.Administrator, RoleType.Manufacturer],
       title: 'Style Permissions',
       className: 'management__btn-style_permissions',
       isDisabled: choseCategory ? false : true,
@@ -150,26 +153,7 @@ const ProductManagementPanel: React.FC = () => {
     },
   ];
 
-  return (
-    <div className="management">
-      {menuItem.map((item, index) => (
-        <Label
-          key={index}
-          styles={labelStyle}
-          className={false ? 'selected' : ''}
-        >
-          <PrimaryButton
-            disabled={item.isDisabled}
-            styles={btnMenuStyle}
-            className={item.className}
-            onClick={() => item.onClickFunc()}
-            allowDisabledFocus
-          />
-          {item.title}
-        </Label>
-      ))}
-    </div>
-  );
+  return <>{renderMenuItem(menuItem)}</>;
 };
 
 export default ProductManagementPanel;
