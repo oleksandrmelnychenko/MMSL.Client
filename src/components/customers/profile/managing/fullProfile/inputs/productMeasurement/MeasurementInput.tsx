@@ -2,18 +2,21 @@ import React from 'react';
 import { Field } from 'formik';
 import { IDropdownOption, Dropdown } from 'office-ui-fabric-react';
 import * as fabricStyles from '../../../../../../../common/fabric-styles/styles';
-import { Measurement } from '../../../../../../../interfaces/measurements';
-import { initInputValueModelDefaults } from './ValueItem';
+import {
+  Measurement,
+  MeasurementMapDefinition,
+} from '../../../../../../../interfaces/measurements';
+import { initInputValueModelDefaults, IInputValueModel } from './ValueItem';
 import {
   CustomerProductProfile,
   ProfileTypes,
 } from '../../../../../../../interfaces/orderProfile';
 import { List } from 'linq-typescript';
 import {
-  FRESH_MEASUREMRNT_VALUES_FORM_FIELD,
-  BASE_MEASUREMRNT_VALUES_FORM_FIELD,
-  BODY_MEASUREMRNT_VALUES_FORM_FIELD,
   MEASUREMENT_ID_FORM_FIELD,
+  MEASUREMENT_VALUES_FORM_FIELD,
+  FITTING_TYPE_ID_FORM_FIELD,
+  MEASUREMENT_SIZE_ID_FORM_FIELD,
 } from '../../../fullProfile/ProfileForm';
 
 export interface IMeasurementInputProps {
@@ -22,6 +25,7 @@ export interface IMeasurementInputProps {
   orderProfile: CustomerProductProfile | null | undefined;
 }
 
+/// ????????
 export const updateFormChartValues = (
   targetMeasurementId: number,
   measurements: Measurement[],
@@ -34,24 +38,75 @@ export const updateFormChartValues = (
     ).firstOrDefault((measurement) => measurement.id === targetMeasurementId);
 
     formik.setFieldValue(
-      FRESH_MEASUREMRNT_VALUES_FORM_FIELD,
-      initInputValueModelDefaults(targetMeasurement, orderProfile)
-    );
-
-    formik.setFieldValue(
-      BASE_MEASUREMRNT_VALUES_FORM_FIELD,
-      initInputValueModelDefaults(targetMeasurement, orderProfile)
-    );
-
-    formik.setFieldValue(
-      BODY_MEASUREMRNT_VALUES_FORM_FIELD,
+      MEASUREMENT_VALUES_FORM_FIELD,
       initInputValueModelDefaults(targetMeasurement, orderProfile)
     );
   } else {
-    formik.setFieldValue(FRESH_MEASUREMRNT_VALUES_FORM_FIELD, []);
-    formik.setFieldValue(BASE_MEASUREMRNT_VALUES_FORM_FIELD, []);
-    formik.setFieldValue(BODY_MEASUREMRNT_VALUES_FORM_FIELD, []);
+    formik.setFieldValue(MEASUREMENT_VALUES_FORM_FIELD, []);
+    // formik.setFieldValue(MEASUREMENT_VALUES_FORM_FIELD, []);
+    // formik.setFieldValue(MEASUREMENT_VALUES_FORM_FIELD, []);
   }
+};
+
+const _helper_1 = (
+  targetMeasurementId: number,
+  measurements: Measurement[]
+) => {
+  let result: IInputValueModel[] = [];
+
+  const targetMeasurement: Measurement | null | undefined = new List(
+    measurements
+  ).firstOrDefault((measurement) => measurement.id === targetMeasurementId);
+
+  if (targetMeasurement?.measurementMapDefinitions) {
+    result = new List(
+      targetMeasurement.measurementMapDefinitions
+        ? targetMeasurement.measurementMapDefinitions
+        : []
+    )
+      .select<IInputValueModel>((mapDefinition: MeasurementMapDefinition) => {
+        const resultItem = {
+          value: '',
+          fittingValue: '',
+          measurementDefinitionId: mapDefinition.measurementDefinitionId,
+          definitionName: mapDefinition.measurementDefinition
+            ? mapDefinition.measurementDefinition.name
+            : '',
+          id: 0,
+          initValue: '',
+          initFittingValue: '',
+        };
+
+        return resultItem;
+      })
+      .toArray();
+  }
+
+  return result;
+};
+
+const _helper = (
+  valueMaps: IInputValueModel[],
+  defaults: IInputValueModel[]
+) => {
+  return valueMaps.map((valueModel: IInputValueModel, index: number) => {
+    let mapResult: IInputValueModel = valueModel;
+    mapResult.value = '';
+    mapResult.fittingValue = '';
+
+    if (
+      index < defaults.length &&
+      mapResult.measurementDefinitionId ===
+        defaults[index].measurementDefinitionId
+    ) {
+      mapResult.value = defaults[index].value;
+      mapResult.fittingValue = defaults[index].fittingValue;
+      mapResult.initValue = defaults[index].initValue;
+      mapResult.initFittingValue = defaults[index].initFittingValue;
+    }
+
+    return mapResult;
+  });
 };
 
 const _buildOptions = (measurements: Measurement[]) => {
@@ -89,11 +144,22 @@ export const MeasurementInput: React.FC<IMeasurementInputProps> = (
                   ? option.measurement.id
                   : 0;
 
-                updateFormChartValues(
-                  measurementId,
-                  props.measurements,
-                  props.formik,
-                  props.orderProfile
+                props.formik.setFieldValue(FITTING_TYPE_ID_FORM_FIELD, 0);
+                props.formik.setFieldValue(MEASUREMENT_SIZE_ID_FORM_FIELD, 0);
+
+                // updateFormChartValues(
+                //   measurementId,
+                //   props.measurements,
+                //   props.formik,
+                //   props.orderProfile
+                // );
+
+                props.formik.setFieldValue(
+                  MEASUREMENT_VALUES_FORM_FIELD,
+                  _helper(
+                    _helper_1(measurementId, props.measurements),
+                    props.formik.values.valuesDefaultsHelper
+                  )
                 );
 
                 props.formik.setFieldValue(

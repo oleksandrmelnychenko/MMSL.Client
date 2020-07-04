@@ -7,12 +7,13 @@ import {
   CustomerProductProfile,
   ProfileTypes,
 } from '../../../../../../../interfaces/orderProfile';
-import { updateFormChartValues } from './MeasurementInput';
 import {
   PROFILE_TYPE_FORM_FIELD,
   FITTING_TYPE_ID_FORM_FIELD,
   MEASUREMENT_SIZE_ID_FORM_FIELD,
+  MEASUREMENT_VALUES_FORM_FIELD,
 } from '../../ProfileForm';
+import { IInputValueModel } from './ValueItem';
 
 export interface IProfileTypeInputProps {
   formik: any;
@@ -51,6 +52,42 @@ const _buildOptions = (availableMeasurements: Measurement[]) => {
   ];
 };
 
+const _helper = (
+  valueMaps: IInputValueModel[],
+  defaults: IInputValueModel[],
+  onlyForFittingValues: boolean
+) => {
+  return valueMaps.map((valueModel: IInputValueModel, index: number) => {
+    let mapResult: IInputValueModel = valueModel;
+    if (!onlyForFittingValues) {
+      mapResult.value = '';
+    }
+
+    mapResult.fittingValue = '';
+
+    if (
+      index < defaults.length &&
+      mapResult.measurementDefinitionId ===
+        defaults[index].measurementDefinitionId
+    ) {
+      if (!onlyForFittingValues) {
+        mapResult.value = defaults[index].value;
+        mapResult.initValue = defaults[index].initValue;
+      }
+      mapResult.fittingValue = defaults[index].fittingValue;
+      mapResult.initFittingValue = defaults[index].initFittingValue;
+    }
+
+    // mapResult.value = '';
+    // mapResult.fittingValue = '';
+
+    // mapResult.initValue = defaults[index].initValue;
+    // mapResult.initFittingValue = defaults[index].initFittingValue;
+
+    return mapResult;
+  });
+};
+
 export const ProfileTypeInput: React.FC<IProfileTypeInputProps> = (
   props: IProfileTypeInputProps
 ) => {
@@ -84,15 +121,28 @@ export const ProfileTypeInput: React.FC<IProfileTypeInputProps> = (
               props.formik.setFieldValue(MEASUREMENT_SIZE_ID_FORM_FIELD, 0);
             }
 
+            if (value === ProfileTypes.Reference) {
+              props.formik.setFieldValue(
+                MEASUREMENT_VALUES_FORM_FIELD,
+                _helper(
+                  props.formik.values.measurementValues,
+                  props.formik.values.valuesDefaultsHelper,
+                  false
+                )
+              );
+            } else {
+              props.formik.setFieldValue(
+                MEASUREMENT_VALUES_FORM_FIELD,
+                _helper(
+                  props.formik.values.measurementValues,
+                  props.formik.values.valuesDefaultsHelper,
+                  true
+                )
+              );
+            }
+
             props.formik.setFieldValue(PROFILE_TYPE_FORM_FIELD, value);
             props.formik.setFieldTouched(PROFILE_TYPE_FORM_FIELD);
-
-            updateFormChartValues(
-              props.formik.values.measurementId,
-              props.availableMeasurements,
-              props.formik,
-              props.orderProfile
-            );
           }}
         />
       )}

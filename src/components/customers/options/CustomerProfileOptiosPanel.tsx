@@ -118,11 +118,11 @@ const CustomerProfileOptiosPanel: React.FC = () => {
     },
     {
       allowedRoles: [RoleType.Dealer],
-      title: 'Edit',
+      title: 'Details',
       className:
         targetOrderProfile && selectedCustomer
-          ? 'management__btn-edit_measurement'
-          : 'management__btn-edit_measurement management__btn-disabled',
+          ? 'management__btn-styles'
+          : 'management__btn-styles management__btn-disabled',
       isDisabled: targetOrderProfile && selectedCustomer ? false : true,
       tooltip: 'Details',
       onClickFunc: () => {

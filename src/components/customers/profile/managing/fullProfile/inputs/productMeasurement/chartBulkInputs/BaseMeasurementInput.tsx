@@ -6,7 +6,7 @@ import {
 } from '../../../../../../../../interfaces/orderProfile';
 import { Stack, Separator } from 'office-ui-fabric-react';
 import ValueItem, { IInputValueModel } from '../ValueItem';
-import { BASE_MEASUREMRNT_VALUES_FORM_FIELD } from '../../../ProfileForm';
+import { MEASUREMENT_VALUES_FORM_FIELD } from '../../../ProfileForm';
 
 export interface IBaseMeasurementInputProps {
   formik: any;
@@ -25,11 +25,11 @@ export const BaseMeasurementInput: React.FC<IBaseMeasurementInputProps> = (
             <Stack tokens={{ childrenGap: '6px' }}>
               <Separator alignContent="start">Columns</Separator>
 
-              <FieldArray name={BASE_MEASUREMRNT_VALUES_FORM_FIELD}>
+              <FieldArray name={MEASUREMENT_VALUES_FORM_FIELD}>
                 {(arrayHelper: any) => {
                   return (
                     <Stack horizontal wrap tokens={{ childrenGap: '9px' }}>
-                      {props.formik.values.baseMeasuremrntValues.map(
+                      {props.formik.values.measurementValues.map(
                         (valueModel: IInputValueModel, index: number) => {
                           return (
                             <ValueItem

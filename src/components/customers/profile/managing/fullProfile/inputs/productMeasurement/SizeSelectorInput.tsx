@@ -16,8 +16,8 @@ import { measurementActions } from '../../../../../../../redux/slices/measuremen
 import * as fabricStyles from '../../../../../../../common/fabric-styles/styles';
 import { IInputValueModel, resolveInitialValue } from './ValueItem';
 import {
-  BASE_MEASUREMRNT_VALUES_FORM_FIELD,
   MEASUREMENT_SIZE_ID_FORM_FIELD,
+  MEASUREMENT_VALUES_FORM_FIELD,
 } from '../../ProfileForm';
 
 const _buildSizeOptions = (measurement: Measurement) => {
@@ -60,7 +60,7 @@ const _applySizeValues = (
 ) => {
   if (mapSize?.measurementSize?.measurementMapValues) {
     if (formik.values.profileType === ProfileTypes.BaseMeasurement) {
-      const syncCharts = formik.values.baseMeasuremrntValues.map(
+      const syncCharts = formik.values.measurementValues.map(
         (valueItem: IInputValueModel, index: number) => {
           const sizeValue = new List(
             mapSize?.measurementSize?.measurementMapValues
@@ -75,12 +75,13 @@ const _applySizeValues = (
 
           valueItem.initValue = valueItem.value;
           resolveInitialValue(valueItem, formik, false);
+
           return valueItem;
         }
       );
 
-      formik.setFieldValue(BASE_MEASUREMRNT_VALUES_FORM_FIELD, syncCharts);
-      formik.setFieldTouched(BASE_MEASUREMRNT_VALUES_FORM_FIELD);
+      formik.setFieldValue(MEASUREMENT_VALUES_FORM_FIELD, syncCharts);
+      formik.setFieldTouched(MEASUREMENT_VALUES_FORM_FIELD);
     }
   } else {
     /// TODO:
@@ -99,25 +100,17 @@ export const SizeSelectorInput: React.FC<ISizeSelectorInputProps> = (
 
   const [measurementId, setMeasurementId] = useState<number>(0);
   const [sizeMapId, setSizeMapId] = useState<number>(0);
-  const [profileType, setProfileType] = useState<ProfileTypes>(
-    ProfileTypes.BaseMeasurement
-  );
+
   const [sizeOptions, setSizeOptions] = useState<any[]>([]);
 
   if (measurementId !== props.formik.values.measurementId)
     setMeasurementId(props.formik.values.measurementId);
 
-  if (profileType !== props.formik.values.profileType)
-    setProfileType(props.formik.values.profileType);
-
   if (sizeMapId !== props.formik.values.measurementSizeId)
     setSizeMapId(props.formik.values.measurementSizeId);
 
   useEffect(() => {
-    if (
-      measurementId !== 0 &&
-      props.formik.values.profileType === ProfileTypes.BaseMeasurement
-    ) {
+    if (measurementId !== 0) {
       dispatch(
         assignPendingActions(
           measurementActions.apiGetMeasurementById(measurementId),
@@ -150,7 +143,7 @@ export const SizeSelectorInput: React.FC<ISizeSelectorInputProps> = (
       setSizeOptions([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [measurementId, profileType]);
+  }, [measurementId]);
 
   return (
     <>

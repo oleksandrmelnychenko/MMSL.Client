@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Field } from 'formik';
-import {
-  IDropdownOption,
-  Dropdown,
-  IComboBoxOption,
-  ComboBox,
-  IComboBox,
-} from 'office-ui-fabric-react';
+import { IDropdownOption, ComboBox, IComboBox } from 'office-ui-fabric-react';
 import * as fabricStyles from '../../../../../../../common/fabric-styles/styles';
 import { FittingType } from '../../../../../../../interfaces/measurements';
 import { useDispatch } from 'react-redux';
@@ -17,7 +11,7 @@ import { IInputValueModel, resolveInitialValue } from './ValueItem';
 import { ProfileTypes } from '../../../../../../../interfaces/orderProfile';
 import {
   FITTING_TYPE_ID_FORM_FIELD,
-  BODY_MEASUREMRNT_VALUES_FORM_FIELD,
+  MEASUREMENT_VALUES_FORM_FIELD,
 } from '../../ProfileForm';
 
 export interface IFittingTypeInputProps {
@@ -34,31 +28,16 @@ const _buildOptions = (fittingTypes: FittingType[]) => {
   });
 };
 
-const _resolveSelectedId = (
-  fittingOptions: IComboBoxOption[],
-  idToSelect: number
-) => {
-  let result: number =
-    fittingOptions.length > 0 ? (fittingOptions[0] as any).fittingType.id : 0;
-
-  const targetOption = new List(fittingOptions).firstOrDefault(
-    (option: IComboBoxOption) => option.key === `${idToSelect}`
-  );
-
-  if (targetOption) result = (targetOption as any).fittingType.id;
-
-  return result;
-};
-
 const _applyOffsetSizeValues = (
   fittingType: FittingType | null | undefined,
   formik: any
 ) => {
+  debugger;
   if (fittingType?.measurementMapValues) {
     if (formik.values.profileType === ProfileTypes.BodyMeasurement) {
-      const syncCharts = formik.values.bodyMeasuremrntValues.map(
+      const syncCharts = formik.values.measurementValues.map(
         (valueItem: IInputValueModel, index: number) => {
-          const sizeValue = new List(
+          const fittingTypeValue = new List(
             fittingType?.measurementMapValues
               ? fittingType.measurementMapValues
               : []
@@ -67,7 +46,11 @@ const _applyOffsetSizeValues = (
               item.measurementDefinitionId === valueItem.measurementDefinitionId
           );
 
-          if (sizeValue) valueItem.fittingValue = `${sizeValue.value}`;
+          debugger;
+          if (fittingTypeValue) {
+            debugger;
+            valueItem.fittingValue = `${fittingTypeValue.value}`;
+          }
 
           valueItem.initFittingValue = valueItem.fittingValue;
           resolveInitialValue(valueItem, formik, true);
@@ -76,8 +59,8 @@ const _applyOffsetSizeValues = (
         }
       );
 
-      formik.setFieldValue(BODY_MEASUREMRNT_VALUES_FORM_FIELD, syncCharts);
-      formik.setFieldTouched(BODY_MEASUREMRNT_VALUES_FORM_FIELD);
+      formik.setFieldValue(MEASUREMENT_VALUES_FORM_FIELD, syncCharts);
+      formik.setFieldTouched(MEASUREMENT_VALUES_FORM_FIELD);
     }
   } else {
     /// TODO:
@@ -100,10 +83,7 @@ export const FittingTypeInput: React.FC<IFittingTypeInputProps> = (
     setFittingTypeId(props.formik.values.fittingTypeId);
 
   useEffect(() => {
-    if (
-      measurementId !== 0 &&
-      props.formik.values.profileType === ProfileTypes.BodyMeasurement
-    ) {
+    if (measurementId !== 0) {
       dispatch(
         assignPendingActions(
           fittingTypesActions.apiGetFittingTypesByMeasurementId(measurementId),

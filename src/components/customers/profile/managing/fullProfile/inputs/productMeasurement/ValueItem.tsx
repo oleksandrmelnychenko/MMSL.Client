@@ -20,11 +20,7 @@ import {
 } from '../../../../../../../interfaces/orderProfile';
 import { List } from 'linq-typescript';
 import { mainTitleHintContent } from '../../../../../../../common/fabric-styles/styles';
-import {
-  FRESH_MEASUREMRNT_VALUES_FORM_FIELD,
-  BASE_MEASUREMRNT_VALUES_FORM_FIELD,
-  BODY_MEASUREMRNT_VALUES_FORM_FIELD,
-} from '../../ProfileForm';
+import { MEASUREMENT_VALUES_FORM_FIELD } from '../../ProfileForm';
 
 export const initInputValueModelDefaults = (
   measurement: Measurement | null | undefined,
@@ -99,7 +95,6 @@ export const resolveInitialValue = (
       valueItem.measurementDefinitionId === item.measurementDefinitionId
   );
 
-  debugger;
   if (initialItem) {
     if (isBodySizeOffset)
       valueItem.initFittingValue = initialItem.initFittingValue;
@@ -113,12 +108,12 @@ export const resolveInitialValue = (
 const _buildFieldName = (profileType: ProfileTypes, valueIndex: number) => {
   let result = '';
 
-  if (profileType === ProfileTypes.FreshMeasurement) {
-    result = `${FRESH_MEASUREMRNT_VALUES_FORM_FIELD}.${valueIndex}`;
-  } else if (profileType === ProfileTypes.BaseMeasurement) {
-    result = `${BASE_MEASUREMRNT_VALUES_FORM_FIELD}.${valueIndex}`;
-  } else if (profileType === ProfileTypes.BodyMeasurement) {
-    result = `${BODY_MEASUREMRNT_VALUES_FORM_FIELD}.${valueIndex}`;
+  if (
+    profileType === ProfileTypes.FreshMeasurement ||
+    profileType === ProfileTypes.BaseMeasurement ||
+    profileType === ProfileTypes.BodyMeasurement
+  ) {
+    result = `${MEASUREMENT_VALUES_FORM_FIELD}.${valueIndex}`;
   } else {
     console.log('TODO: Handle unknown ProfileTypes');
   }
@@ -133,14 +128,15 @@ const _extractCurrentValueFromFormik = (
 ) => {
   let result = '';
 
-  if (formik.values.profileType === ProfileTypes.FreshMeasurement) {
-    result = formik.values.freshMeasuremrntValues[valueIndex].value;
-  } else if (formik.values.profileType === ProfileTypes.BaseMeasurement) {
-    result = formik.values.baseMeasuremrntValues[valueIndex].value;
+  if (
+    formik.values.profileType === ProfileTypes.FreshMeasurement ||
+    formik.values.profileType === ProfileTypes.BaseMeasurement
+  ) {
+    result = formik.values.measurementValues[valueIndex].value;
   } else if (formik.values.profileType === ProfileTypes.BodyMeasurement) {
     if (isBodySizeOffset)
-      result = formik.values.bodyMeasuremrntValues[valueIndex].fittingValue;
-    else result = formik.values.bodyMeasuremrntValues[valueIndex].value;
+      result = formik.values.measurementValues[valueIndex].fittingValue;
+    else result = formik.values.measurementValues[valueIndex].value;
   } else {
     console.log('TODO: Handle unknown ProfileTypes value');
   }
@@ -157,19 +153,19 @@ const _onSetItemValue = (
   let formikValuePath: string = '';
   let formikField: string = '';
 
-  if (formik.values.profileType === ProfileTypes.FreshMeasurement) {
-    formikValuePath = `${FRESH_MEASUREMRNT_VALUES_FORM_FIELD}[${valueIndex}].value`;
-    formikField = FRESH_MEASUREMRNT_VALUES_FORM_FIELD;
-  } else if (formik.values.profileType === ProfileTypes.BaseMeasurement) {
-    formikValuePath = `${BASE_MEASUREMRNT_VALUES_FORM_FIELD}[${valueIndex}].value`;
-    formikField = BASE_MEASUREMRNT_VALUES_FORM_FIELD;
+  if (
+    formik.values.profileType === ProfileTypes.FreshMeasurement ||
+    formik.values.profileType === ProfileTypes.BaseMeasurement
+  ) {
+    formikValuePath = `${MEASUREMENT_VALUES_FORM_FIELD}[${valueIndex}].value`;
+    formikField = MEASUREMENT_VALUES_FORM_FIELD;
   } else if (formik.values.profileType === ProfileTypes.BodyMeasurement) {
     if (isBodySizeOffset) {
-      formikValuePath = `${BODY_MEASUREMRNT_VALUES_FORM_FIELD}[${valueIndex}].fittingValue`;
-      formikField = BODY_MEASUREMRNT_VALUES_FORM_FIELD;
+      formikValuePath = `${MEASUREMENT_VALUES_FORM_FIELD}[${valueIndex}].fittingValue`;
+      formikField = MEASUREMENT_VALUES_FORM_FIELD;
     } else {
-      formikValuePath = `${BODY_MEASUREMRNT_VALUES_FORM_FIELD}[${valueIndex}].value`;
-      formikField = BODY_MEASUREMRNT_VALUES_FORM_FIELD;
+      formikValuePath = `${MEASUREMENT_VALUES_FORM_FIELD}[${valueIndex}].value`;
+      formikField = MEASUREMENT_VALUES_FORM_FIELD;
     }
   } else {
     console.log('TODO: Handle unknown ProfileTypes on set  value');

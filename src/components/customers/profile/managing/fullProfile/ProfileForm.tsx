@@ -32,10 +32,8 @@ import { IApplicationState } from '../../../../../redux/reducers';
 export const PROFILE_TYPE_FORM_FIELD = 'profileType';
 export const MEASUREMENT_ID_FORM_FIELD = 'measurementId';
 export const FITTING_TYPE_ID_FORM_FIELD = 'fittingTypeId';
-export const FRESH_MEASUREMRNT_VALUES_FORM_FIELD = 'freshMeasuremrntValues';
 export const MEASUREMENT_SIZE_ID_FORM_FIELD = 'measurementSizeId';
-export const BASE_MEASUREMRNT_VALUES_FORM_FIELD = 'baseMeasuremrntValues';
-export const BODY_MEASUREMRNT_VALUES_FORM_FIELD = 'bodyMeasuremrntValues';
+export const MEASUREMENT_VALUES_FORM_FIELD = 'measurementValues';
 export const STYLE_UNITS_VALUES_FORM_FIELD = 'productStyleValues';
 
 export interface IProfileFormProps {
@@ -51,10 +49,8 @@ interface IFormValues {
   profileType: ProfileTypes;
   measurementId: number;
   fittingTypeId: number;
-  freshMeasuremrntValues: IInputValueModel[];
   measurementSizeId: number;
-  baseMeasuremrntValues: IInputValueModel[];
-  bodyMeasuremrntValues: IInputValueModel[];
+  measurementValues: IInputValueModel[];
   valuesDefaultsHelper: IInputValueModel[];
   /// Styles scope
   productStyleValues: IStyleUnitModel[];
@@ -64,16 +60,15 @@ interface IFormValues {
 const _urgentItemsDirtyHelper = (formik: any) => {
   let isDirtyResult = false;
 
-  if (formik.values.profileType === ProfileTypes.FreshMeasurement) {
-    isDirtyResult = new List(formik.values.freshMeasuremrntValues).any(
-      (item: any) => item.value !== item.initValue
-    );
-  } else if (formik.values.profileType === ProfileTypes.BaseMeasurement) {
-    isDirtyResult = new List(formik.values.baseMeasuremrntValues).any(
+  if (
+    formik.values.profileType === ProfileTypes.FreshMeasurement ||
+    formik.values.profileType === ProfileTypes.BaseMeasurement
+  ) {
+    isDirtyResult = new List(formik.values.measurementValues).any(
       (item: any) => item.value !== item.initValue
     );
   } else if (formik.values.profileType === ProfileTypes.BodyMeasurement) {
-    isDirtyResult = new List(formik.values.bodyMeasuremrntValues).any(
+    isDirtyResult = new List(formik.values.measurementValues).any(
       (item: any) =>
         item.value !== item.initValue ||
         item.fittingValue !== item.initFittingValue
@@ -116,17 +111,7 @@ const _initDefaultMeasurementValues = (
     (measurement) => measurement.id === initValues.measurementId
   );
 
-  initValues.freshMeasuremrntValues = initInputValueModelDefaults(
-    targetMeasurement,
-    sourceEntity
-  ) as [];
-
-  initValues.baseMeasuremrntValues = initInputValueModelDefaults(
-    targetMeasurement,
-    sourceEntity
-  ) as [];
-
-  initValues.bodyMeasuremrntValues = initInputValueModelDefaults(
+  initValues.measurementValues = initInputValueModelDefaults(
     targetMeasurement,
     sourceEntity
   ) as [];
@@ -166,9 +151,7 @@ const _initDefaultValues = (
     measurementId: 0,
     fittingTypeId: 0,
     measurementSizeId: 0,
-    freshMeasuremrntValues: [],
-    baseMeasuremrntValues: [],
-    bodyMeasuremrntValues: [],
+    measurementValues: [],
     valuesDefaultsHelper: [],
     /// Styles scope
     productStyleValues: [],
@@ -188,12 +171,18 @@ const _initDefaultValues = (
   return initValues;
 };
 
-const _buildMeasurementPayloadValues = (valueModels: IInputValueModel[]) => {
+const _buildMeasurementPayloadValues = (
+  valueModels: IInputValueModel[],
+  profileType: ProfileTypes
+) => {
   return new List(valueModels)
     .select((valueItem) => {
       const result: IMeasurementValuePayload = {
         value: valueItem.value,
-        fittingValue: valueItem.fittingValue,
+        fittingValue:
+          profileType === ProfileTypes.BodyMeasurement
+            ? valueItem.fittingValue
+            : '',
         measurementDefinitionId: valueItem.measurementDefinitionId,
         id: valueItem.id,
       };
@@ -233,18 +222,21 @@ const _buildNewPayload = (
 
   if (payload.profileType === ProfileTypes.FreshMeasurement) {
     payload.values = _buildMeasurementPayloadValues(
-      values.freshMeasuremrntValues
+      values.measurementValues,
+      payload.profileType
     );
     payload.fittingTypeId = 0;
     payload.measurementSizeId = 0;
   } else if (payload.profileType === ProfileTypes.BaseMeasurement) {
     payload.values = _buildMeasurementPayloadValues(
-      values.baseMeasuremrntValues
+      values.measurementValues,
+      payload.profileType
     );
     payload.fittingTypeId = 0;
   } else if (payload.profileType === ProfileTypes.BodyMeasurement) {
     payload.values = _buildMeasurementPayloadValues(
-      values.bodyMeasuremrntValues
+      values.measurementValues,
+      payload.profileType
     );
     payload.measurementSizeId = 0;
   } else if (payload.profileType === ProfileTypes.Reference) {
@@ -288,18 +280,21 @@ const _buildEditedPayload = (
 
   if (payload.profileType === ProfileTypes.FreshMeasurement) {
     payload.values = _buildMeasurementPayloadValues(
-      values.freshMeasuremrntValues
+      values.measurementValues,
+      payload.profileType
     );
     payload.fittingTypeId = 0;
     payload.measurementSizeId = 0;
   } else if (payload.profileType === ProfileTypes.BaseMeasurement) {
     payload.values = _buildMeasurementPayloadValues(
-      values.baseMeasuremrntValues
+      values.measurementValues,
+      payload.profileType
     );
     payload.fittingTypeId = 0;
   } else if (payload.profileType === ProfileTypes.BodyMeasurement) {
     payload.values = _buildMeasurementPayloadValues(
-      values.bodyMeasuremrntValues
+      values.measurementValues,
+      payload.profileType
     );
     payload.measurementSizeId = 0;
   } else if (payload.profileType === ProfileTypes.Reference) {
@@ -476,9 +471,7 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
             measurementId: Yup.number(),
             fittingTypeId: Yup.number(),
             measurementSizeId: Yup.number(),
-            freshMeasuremrntValues: Yup.array(),
-            baseMeasuremrntValues: Yup.array(),
-            bodyMeasuremrntValues: Yup.array(),
+            measurementValues: Yup.array(),
             productStyleValues: Yup.array(),
             productStyleValuesDefaultsHelper: Yup.array(),
           })}

@@ -64,12 +64,13 @@ const ManageProfileOptiosPanel: React.FC = () => {
       },
     },
   ];
-
   commands.forEach((command: ICommand) => {
     menuItem.push({
       allowedRoles: [RoleType.Dealer],
       title: command.name,
-      className: command.className,
+      className: command.isDisabled
+        ? `${command.className} management__btn-disabled`
+        : command.className,
       isDisabled: command.isDisabled,
       tooltip: '',
       onClickFunc: () => command.onClick(),
