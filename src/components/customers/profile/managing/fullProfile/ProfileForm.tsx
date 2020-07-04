@@ -322,13 +322,9 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
     CustomerProductProfile | null | undefined
   >((state) => state.profileManaging.profileForEdit);
 
-  const selectedProductProfile:
-    | ProductCategory
-    | null
-    | undefined = useSelector<
-    IApplicationState,
-    ProductCategory | null | undefined
-  >((state) => state.orderProfile.selectedProductProfiles);
+  const productId: number = useSelector<IApplicationState, number>(
+    (state) => state.profileManaging.productId
+  );
 
   const [formInit, setFormInit] = useState<any>(
     _initDefaultValues(props.measurements, props.product, profileForEdit)
@@ -339,7 +335,6 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
   );
 
   useEffect(() => {
-    console.log(isFormikDirty);
     dispatch(
       profileManagingActions.updateCommands([
         {
@@ -404,7 +399,7 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
                 dispatch(
                   orderProfileActions.changeSelectedProductProfiles(
                     new List<ProductCategory>(args).firstOrDefault(
-                      (product) => product.id === selectedProductProfile?.id
+                      (product) => product.id === productId
                     )
                   )
                 );
@@ -452,7 +447,7 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
                 dispatch(
                   orderProfileActions.changeSelectedProductProfiles(
                     new List<ProductCategory>(args).firstOrDefault(
-                      (product) => product.id === selectedProductProfile?.id
+                      (product) => product.id === productId
                     )
                   )
                 );
