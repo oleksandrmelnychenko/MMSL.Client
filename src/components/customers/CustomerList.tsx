@@ -46,15 +46,28 @@ const _customerColumns: IColumn[] = [
     },
   },
   {
-    key: 'userName',
-    name: 'User Name',
+    key: 'customerId',
+    name: 'Customer ID',
     minWidth: 70,
     maxWidth: 90,
     isResizable: true,
     isCollapsible: true,
     data: 'string',
     onRender: (item: any) => {
-      return <Text style={defaultCellStyle}>{item.userName}</Text>;
+      return <Text style={defaultCellStyle}>{item.uniqueId}</Text>;
+    },
+    isPadded: true,
+  },
+  {
+    key: 'customer',
+    name: 'Customer Name',
+    minWidth: 70,
+    maxWidth: 90,
+    isResizable: true,
+    isCollapsible: true,
+    data: 'string',
+    onRender: (item: any) => {
+      return <Text style={defaultCellStyle}>{item.customerName}</Text>;
     },
     isPadded: true,
   },
@@ -72,15 +85,15 @@ const _customerColumns: IColumn[] = [
     isPadded: true,
   },
   {
-    key: 'customer',
-    name: 'Customer Name',
+    key: 'phoneNumber',
+    name: 'Phone Number',
     minWidth: 70,
     maxWidth: 90,
     isResizable: true,
     isCollapsible: true,
     data: 'string',
     onRender: (item: any) => {
-      return <Text style={defaultCellStyle}>{item.customerName}</Text>;
+      return <Text style={defaultCellStyle}>{item.phoneNumber}</Text>;
     },
     isPadded: true,
   },

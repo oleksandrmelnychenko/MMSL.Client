@@ -71,7 +71,7 @@ const _renderCustomerInfo = (customer: StoreCustomer) => {
   if (customer) {
     const partialContents: any[] = [];
 
-    partialContents.push(_onRenderPartialDetail('Name', customer.userName));
+    partialContents.push(_onRenderPartialDetail('Name', customer.customerName));
     partialContents.push(_onRenderPartialDetail('Email', customer.email));
     partialContents.push(_onRenderPartialDetail('Store', customer.store?.name));
     partialContents.push(

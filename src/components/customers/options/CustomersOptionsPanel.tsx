@@ -53,7 +53,7 @@ const CustomersOptionsPanel: React.FC = () => {
         if (selectedCustomer) {
           dispatch(
             controlActions.openRightPanel({
-              title: `Customer: ${selectedCustomer!.userName}`,
+              title: `Customer: ${selectedCustomer!.customerName}`,
               width: '400px',
               closeFunctions: () => {
                 dispatch(controlActions.closeRightPanel());

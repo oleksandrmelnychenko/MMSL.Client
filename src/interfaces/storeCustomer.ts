@@ -5,6 +5,8 @@ import { EntityBase } from './base';
 export class StoreCustomer extends EntityBase {
   constructor() {
     super();
+
+    this.uniqueId = 0;
     this.userName = '';
     this.customerName = '';
     this.email = '';
@@ -19,6 +21,7 @@ export class StoreCustomer extends EntityBase {
     this.store = null;
   }
 
+  uniqueId: number;
   userName: string;
   customerName: string;
   email: string;

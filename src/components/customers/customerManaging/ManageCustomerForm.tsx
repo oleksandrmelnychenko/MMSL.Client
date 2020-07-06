@@ -29,18 +29,7 @@ import { assignPendingActions } from '../../../helpers/action.helper';
 import { List } from 'linq-typescript';
 import { dateToString } from '../../../helpers/date.helper';
 
-export class CreateStoreCustomerFormInitValues {
-  constructor() {
-    this.userName = '';
-    this.customerName = '';
-    this.email = '';
-    this.phoneNumber = '';
-    // this.birthDate = '1989-05-11T21:00:00.000Z';
-    this.birthDate = '';
-    this.store = null;
-  }
-
-  userName: string;
+interface IFormValues {
   customerName: string;
   email: string;
   phoneNumber: string;
@@ -49,7 +38,7 @@ export class CreateStoreCustomerFormInitValues {
 }
 
 const buildCustomerAccountData = (
-  values: any,
+  values: IFormValues,
   sourceEntity?: StoreCustomer
 ) => {
   let newAccount: StoreCustomer;
@@ -64,11 +53,10 @@ const buildCustomerAccountData = (
     newAccount.deliveryAddressId = newAccount.deliveryAddress.id;
   }
 
-  newAccount.userName = values.userName;
+  newAccount.userName = values.customerName;
   newAccount.customerName = values.customerName;
   newAccount.email = values.email;
   newAccount.phoneNumber = values.phoneNumber;
-  // newAccount.birthDate = values.birthDate ? values.birthDate : null;
   newAccount.birthDate = values.birthDate ? values.birthDate : null;
   newAccount.store = values.store;
   newAccount.storeId = newAccount.store?.id;
@@ -79,10 +67,15 @@ const buildCustomerAccountData = (
 const initDefaultValuesForNewStoreCustomerForm = (
   sourceEntity?: StoreCustomer | null
 ) => {
-  const initValues = new CreateStoreCustomerFormInitValues();
+  const initValues: IFormValues = {
+    customerName: '',
+    email: '',
+    phoneNumber: '',
+    birthDate: '',
+    store: null,
+  };
 
   if (sourceEntity) {
-    initValues.userName = sourceEntity.userName;
     initValues.customerName = sourceEntity.customerName;
     initValues.email = sourceEntity.email;
     initValues.phoneNumber = sourceEntity.phoneNumber;
@@ -167,7 +160,6 @@ export const ManageCustomerForm: React.FC = () => {
     <div>
       <Formik
         validationSchema={Yup.object().shape({
-          userName: Yup.string().required(() => 'User name is required'),
           customerName: Yup.string().required(
             () => 'Customer name is required'
           ),
@@ -177,7 +169,7 @@ export const ManageCustomerForm: React.FC = () => {
           store: Yup.object()
             .nullable()
             .required(() => `Store is required`),
-          phoneNumber: Yup.string().notRequired(),
+          phoneNumber: Yup.string().required(() => `Phone number is required`),
           birthDate: Yup.string().notRequired(),
         })}
         initialValues={initValues}
@@ -214,36 +206,6 @@ export const ManageCustomerForm: React.FC = () => {
               <div className="dealerFormManage">
                 <Stack horizontal tokens={{ childrenGap: 20 }}>
                   <Stack grow={1}>
-                    <Field name="userName">
-                      {() => (
-                        <div className="form__group">
-                          <TextField
-                            autoComplete={'off'}
-                            value={formik.values.userName}
-                            styles={fabricStyles.textFildLabelStyles}
-                            className="form__group__field"
-                            label="User name"
-                            required
-                            onChange={(args: any) => {
-                              let value = args.target.value;
-
-                              formik.setFieldValue('userName', value);
-                              formik.setFieldTouched('userName');
-                            }}
-                            errorMessage={
-                              formik.errors.userName &&
-                              formik.touched.userName ? (
-                                <span className="form__group__error">
-                                  {formik.errors.userName}
-                                </span>
-                              ) : (
-                                ''
-                              )
-                            }
-                          />
-                        </div>
-                      )}
-                    </Field>
                     <Field name="customerName">
                       {() => (
                         <div className="form__group">
@@ -382,6 +344,7 @@ export const ManageCustomerForm: React.FC = () => {
                       {() => (
                         <div className="form__group">
                           <MaskedTextField
+                            required
                             autoComplete={'off'}
                             value={formik.values.phoneNumber}
                             styles={fabricStyles.textFildLabelStyles}
@@ -393,6 +356,16 @@ export const ManageCustomerForm: React.FC = () => {
                               formik.setFieldValue('phoneNumber', value);
                               formik.setFieldTouched('phoneNumber');
                             }}
+                            errorMessage={
+                              formik.errors.phoneNumber &&
+                              formik.touched.phoneNumber ? (
+                                <span className="form__group__error">
+                                  {formik.errors.phoneNumber}
+                                </span>
+                              ) : (
+                                ''
+                              )
+                            }
                           />
                         </div>
                       )}
