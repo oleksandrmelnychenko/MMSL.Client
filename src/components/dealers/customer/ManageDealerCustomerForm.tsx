@@ -46,7 +46,8 @@ const buildNewStoreCustomerAccount = (
   newAccount.customerName = values.customerName;
   newAccount.email = values.email;
   newAccount.phoneNumber = values.phoneNumber;
-  newAccount.birthDate = values.birthDate;
+  newAccount.birthDate =
+    values.birthDate && values.birthDate.length > 0 ? values.birthDate : null;
   newAccount.store = values.store;
   newAccount.storeId = newAccount.store?.id;
 

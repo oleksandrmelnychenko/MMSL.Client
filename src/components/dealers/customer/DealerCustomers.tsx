@@ -24,7 +24,7 @@ import {
   CommonDialogType,
 } from '../../../redux/slices/control.slice';
 import { List } from 'linq-typescript';
-import ManageCustomerForm from './ManageDealerCustomerForm';
+import ManageDealerCustomerForm from './ManageDealerCustomerForm';
 import { customerActions } from '../../../redux/slices/customer/customer.slice';
 import { DealerState } from '../../../redux/slices/dealer.slice';
 
@@ -135,10 +135,12 @@ export const DealerCustomers: React.FC = () => {
       iconProps: { iconName: 'Save' },
       onClick: () => {
         formikReference.formik.submitForm();
-        if (!dealerCustomerState.selectedCustomer) {
-          setIsOpenForm(false);
-          setIsDirtyForm(false);
-          dispatch(dealerActions.setSelectedCustomerInCurrentStore(null));
+        if (formikReference?.formik && formikReference.formik.isValid) {
+          if (!dealerCustomerState.selectedCustomer) {
+            setIsOpenForm(false);
+            setIsDirtyForm(false);
+            dispatch(dealerActions.setSelectedCustomerInCurrentStore(null));
+          }
         }
       },
       buttonStyles: commandBarButtonStyles,
@@ -229,9 +231,10 @@ export const DealerCustomers: React.FC = () => {
           (selectedLocalStore && dealerCustomerState.selectedCustomer) ? (
             <>
               <Separator alignContent="start">Customers form</Separator>
-              <ManageCustomerForm
+              <ManageDealerCustomerForm
                 formikReference={formikReference}
                 submitAction={(args: any) => {
+                  debugger;
                   const value = { ...args, storeId: selectedLocalStore.id };
                   if (dealerCustomerState.selectedCustomer) {
                     dispatch(

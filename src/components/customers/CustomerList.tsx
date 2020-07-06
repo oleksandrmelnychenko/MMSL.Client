@@ -29,6 +29,7 @@ import {
 } from '../../common/fabric-styles/styles';
 import { List } from 'linq-typescript';
 import { StoreCustomer } from '../../interfaces/storeCustomer';
+import { dateToFormatedString } from '../../helpers/date.helper';
 
 const _customerColumns: IColumn[] = [
   {
@@ -85,6 +86,23 @@ const _customerColumns: IColumn[] = [
     isPadded: true,
   },
   {
+    key: 'store',
+    name: 'Store',
+    minWidth: 70,
+    maxWidth: 90,
+    isResizable: true,
+    isCollapsible: true,
+    data: 'string',
+    onRender: (item: any) => {
+      return (
+        <Text style={defaultCellStyle}>
+          {item.store ? item.store.name : ''}
+        </Text>
+      );
+    },
+    isPadded: true,
+  },
+  {
     key: 'phoneNumber',
     name: 'Phone Number',
     minWidth: 70,
@@ -98,8 +116,8 @@ const _customerColumns: IColumn[] = [
     isPadded: true,
   },
   {
-    key: 'store',
-    name: 'Store',
+    key: 'birthDate',
+    name: 'Birth Date',
     minWidth: 70,
     maxWidth: 90,
     isResizable: true,
@@ -108,7 +126,7 @@ const _customerColumns: IColumn[] = [
     onRender: (item: any) => {
       return (
         <Text style={defaultCellStyle}>
-          {item.store ? item.store.name : ''}
+          {dateToFormatedString(item.birthDate)}
         </Text>
       );
     },
