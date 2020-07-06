@@ -270,6 +270,7 @@ export const apiUpdateOptionUnitEpic = (action$: AnyAction, state$: any) => {
       formData.append('orderIndex', action.payload.orderIndex);
       formData.append('value', action.payload.value);
       formData.append('isMandatory', action.payload.isMandatory);
+      formData.append('isBodyPosture', action.payload.isBodyPosture);
       formData.append('ImageUrl', action.payload.imageUrl);
       formData.append('id', action.payload.id);
       formData.append(
@@ -330,6 +331,7 @@ export const apiCreateNewOptionUnitEpic = (action$: AnyAction, state$: any) => {
       formData.append('orderIndex', action.payload.orderIndex);
       formData.append('value', action.payload.value);
       formData.append('isMandatory', action.payload.isMandatory);
+      formData.append('isBodyPosture', action.payload.isBodyPosture);
       formData.append('id', action.payload.id);
       formData.append('optionGroupId', action.payload.optionGroupId);
       formData.append(

@@ -36,6 +36,7 @@ export class OptionUnit extends EntityBaseNamed {
     this.imageUrl = '';
     this.imageBlob = null;
     this.isMandatory = false;
+    this.isBodyPosture = false;
     this.isAllow = false;
     this.value = '';
     this.orderIndex = 0;
@@ -55,6 +56,7 @@ export class OptionUnit extends EntityBaseNamed {
   /// This field is used for just added (not saved) image files. Actual saved image source is provided through `imageUrl`.
   imageBlob: any;
   isMandatory: boolean;
+  isBodyPosture: boolean;
   isAllow: boolean;
   optionGroupId?: number | null;
   optionGroup?: OptionGroup | null;
