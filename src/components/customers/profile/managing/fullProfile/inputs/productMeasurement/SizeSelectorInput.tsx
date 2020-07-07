@@ -38,22 +38,6 @@ const _buildSizeOptions = (measurement: Measurement) => {
   return result;
 };
 
-// const _resolveSelectedId = (
-//   sizeOptions: IComboBoxOption[],
-//   idToSelect: number
-// ) => {
-//   let result: number =
-//     sizeOptions.length > 0 ? (sizeOptions[0] as any).sizeMap.id : 0;
-
-//   const targetOption = new List(sizeOptions).firstOrDefault(
-//     (option: IComboBoxOption) => option.key === `${idToSelect}`
-//   );
-
-//   if (targetOption) result = (targetOption as any).sizeMap.id;
-
-//   return result;
-// };
-
 const _applySizeValues = (
   mapSize: MeasurementMapSize | null | undefined,
   formik: any

@@ -301,9 +301,10 @@ export const ManagingProductUnitForm: React.FC = () => {
           ])
         );
       }
+      updateButtonsAvailability();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formikReference, sectedOptionUnit]);
+  }, [formikReference, sectedOptionUnit, isEditingSingleUnit]);
 
   useEffect(() => {
     if (formikReference.formik) {
@@ -314,6 +315,15 @@ export const ManagingProductUnitForm: React.FC = () => {
   }, [formikReference, sectedOptionUnit]);
 
   useEffect(() => {
+    updateButtonsAvailability();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formikIsDirty, dismissIsDirty]);
+
+  useEffect(() => {
+    setUnitValues(sectedOptionUnit ? sectedOptionUnit.unitValues : []);
+  }, [sectedOptionUnit]);
+
+  const updateButtonsAvailability = () => {
     if (new List(commandBarItems).any()) {
       dispatch(
         controlActions.setPanelButtons(
@@ -326,12 +336,7 @@ export const ManagingProductUnitForm: React.FC = () => {
         )
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formikIsDirty, dismissIsDirty]);
-
-  useEffect(() => {
-    setUnitValues(sectedOptionUnit ? sectedOptionUnit.unitValues : []);
-  }, [sectedOptionUnit]);
+  };
 
   const onUpdateUnit = (values: IInitValues) => {
     if (targetProduct && values.unitToDelete) {
