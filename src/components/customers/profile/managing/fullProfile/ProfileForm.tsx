@@ -468,9 +468,59 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
               .required(() => 'Name is required'),
             description: Yup.string(),
             profileType: Yup.number(),
-            measurementId: Yup.number(),
-            fittingTypeId: Yup.number(),
-            measurementSizeId: Yup.number(),
+            measurementId: Yup.number().test(
+              'measurementId',
+              'Measurement is required',
+              (args: any) => {
+                let result = true;
+
+                if (formikReference?.formik?.values) {
+                  if (formikReference.formik.values.measurementId <= 0) {
+                    result = false;
+                  }
+                }
+
+                return result;
+              }
+            ),
+            fittingTypeId: Yup.number().test(
+              'fittingTypeId',
+              'Body fitting is required for body measurement',
+              (args: any) => {
+                let result = true;
+
+                if (formikReference?.formik?.values) {
+                  if (
+                    formikReference.formik.values.profileType ===
+                      ProfileTypes.BodyMeasurement &&
+                    formikReference.formik.values.fittingTypeId <= 0
+                  ) {
+                    result = false;
+                  }
+                }
+
+                return result;
+              }
+            ),
+            measurementSizeId: Yup.number().test(
+              'measurementSizeId',
+              'Size is required for base measurement',
+              (args: any) => {
+                let result = true;
+
+                if (formikReference?.formik?.values) {
+                  if (
+                    formikReference.formik.values.profileType ===
+                      ProfileTypes.BaseMeasurement &&
+                    formikReference.formik.values.measurementSizeId <= 0
+                  ) {
+                    result = false;
+                  }
+                }
+
+                return result;
+              }
+            ),
             measurementValues: Yup.array(),
             productStyleValues: Yup.array(),
             productStyleValuesDefaultsHelper: Yup.array(),
@@ -484,17 +534,6 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
           innerRef={(formik: any) => {
             formikReference.formik = formik;
             if (formik) {
-              // console.log(formik);
-              // console.log(`formik: ${formik.dirty}`);
-              // console.log(
-              //   `_urgentItemsDirtyHelper: ${_urgentItemsDirtyHelper(formik)}`
-              // );
-              // console.log(
-              //   `list: ${new List<IStyleUnitModel>(
-              //     formik.values.productStyleValues
-              //   ).any((item: IStyleUnitModel) => item.isDirty)}`
-              // );
-
               setFormikDirty(
                 formik.dirty ||
                   _urgentItemsDirtyHelper(formik) ||

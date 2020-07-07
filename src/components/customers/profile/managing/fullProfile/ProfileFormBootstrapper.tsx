@@ -25,9 +25,6 @@ export const ProfileFormBootstrapper: React.FC = () => {
     false
   );
 
-  // const { customer, product }: any = useSelector<IApplicationState, any>(
-  //   (state) => state.profileManaging.
-  // );
   const customer: StoreCustomer | null | undefined = useSelector<
     IApplicationState,
     StoreCustomer | null | undefined

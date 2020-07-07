@@ -6,7 +6,7 @@ import {
   Measurement,
   MeasurementMapDefinition,
 } from '../../../../../../../interfaces/measurements';
-import { initInputValueModelDefaults, IInputValueModel } from './ValueItem';
+import { IInputValueModel } from './ValueItem';
 import {
   CustomerProductProfile,
   ProfileTypes,
@@ -24,29 +24,6 @@ export interface IMeasurementInputProps {
   formik: any;
   orderProfile: CustomerProductProfile | null | undefined;
 }
-
-/// ????????
-export const updateFormChartValues = (
-  targetMeasurementId: number,
-  measurements: Measurement[],
-  formik: any,
-  orderProfile: CustomerProductProfile | null | undefined
-) => {
-  if (targetMeasurementId !== 0) {
-    const targetMeasurement: Measurement | null | undefined = new List(
-      measurements
-    ).firstOrDefault((measurement) => measurement.id === targetMeasurementId);
-
-    formik.setFieldValue(
-      MEASUREMENT_VALUES_FORM_FIELD,
-      initInputValueModelDefaults(targetMeasurement, orderProfile)
-    );
-  } else {
-    formik.setFieldValue(MEASUREMENT_VALUES_FORM_FIELD, []);
-    // formik.setFieldValue(MEASUREMENT_VALUES_FORM_FIELD, []);
-    // formik.setFieldValue(MEASUREMENT_VALUES_FORM_FIELD, []);
-  }
-};
 
 const _helper_1 = (
   targetMeasurementId: number,
@@ -129,46 +106,47 @@ export const MeasurementInput: React.FC<IMeasurementInputProps> = (
       {props.formik.values.profileType === ProfileTypes.Reference ? null : (
         <Field name={MEASUREMENT_ID_FORM_FIELD}>
           {() => (
-            <Dropdown
-              defaultSelectedKey={`${props.formik.values.measurementId}`}
-              label="Chart"
-              options={options}
-              style={{ width: '300px' }}
-              styles={fabricStyles.comboBoxStyles}
-              onChange={(
-                event: React.FormEvent<HTMLDivElement>,
-                option?: any,
-                index?: number
-              ) => {
-                const measurementId = option?.measurement
-                  ? option.measurement.id
-                  : 0;
+            <div className="form__group">
+              <Dropdown
+                defaultSelectedKey={`${props.formik.values.measurementId}`}
+                label="Chart"
+                options={options}
+                style={{ width: '300px' }}
+                styles={fabricStyles.comboBoxStyles}
+                onChange={(
+                  event: React.FormEvent<HTMLDivElement>,
+                  option?: any,
+                  index?: number
+                ) => {
+                  const measurementId = option?.measurement
+                    ? option.measurement.id
+                    : 0;
 
-                props.formik.setFieldValue(FITTING_TYPE_ID_FORM_FIELD, 0);
-                props.formik.setFieldValue(MEASUREMENT_SIZE_ID_FORM_FIELD, 0);
+                  props.formik.setFieldValue(FITTING_TYPE_ID_FORM_FIELD, 0);
+                  props.formik.setFieldValue(MEASUREMENT_SIZE_ID_FORM_FIELD, 0);
 
-                // updateFormChartValues(
-                //   measurementId,
-                //   props.measurements,
-                //   props.formik,
-                //   props.orderProfile
-                // );
+                  props.formik.setFieldValue(
+                    MEASUREMENT_VALUES_FORM_FIELD,
+                    _helper(
+                      _helper_1(measurementId, props.measurements),
+                      props.formik.values.valuesDefaultsHelper
+                    )
+                  );
 
-                props.formik.setFieldValue(
-                  MEASUREMENT_VALUES_FORM_FIELD,
-                  _helper(
-                    _helper_1(measurementId, props.measurements),
-                    props.formik.values.valuesDefaultsHelper
-                  )
-                );
-
-                props.formik.setFieldValue(
-                  MEASUREMENT_ID_FORM_FIELD,
-                  measurementId
-                );
-                props.formik.setFieldTouched(MEASUREMENT_ID_FORM_FIELD);
-              }}
-            />
+                  props.formik.setFieldValue(
+                    MEASUREMENT_ID_FORM_FIELD,
+                    measurementId
+                  );
+                  props.formik.setFieldTouched(MEASUREMENT_ID_FORM_FIELD);
+                }}
+              />
+              {props.formik.errors.measurementId &&
+              props.formik.touched.measurementId ? (
+                <span className="form__group__error ownError">
+                  {props.formik.errors.measurementId}
+                </span>
+              ) : null}
+            </div>
           )}
         </Field>
       )}

@@ -62,12 +62,15 @@ export const initInputValueModelDefaults = (
 
             if (profileValue) {
               resultItem.id = profileValue.id;
-              resultItem.value = profileValue.value
-                ? `${profileValue.value}`
-                : '';
-              resultItem.fittingValue = profileValue.fittingValue
-                ? `${profileValue.fittingValue}`
-                : '';
+              resultItem.value =
+                profileValue.value !== null && profileValue.value !== undefined
+                  ? `${profileValue.value}`
+                  : '';
+              resultItem.fittingValue =
+                profileValue.fittingValue !== null &&
+                profileValue.fittingValue !== undefined
+                  ? `${profileValue.fittingValue}`
+                  : '';
 
               resultItem.initValue = resultItem.value;
               resultItem.initFittingValue = resultItem.fittingValue;

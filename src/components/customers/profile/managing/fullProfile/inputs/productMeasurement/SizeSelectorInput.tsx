@@ -135,43 +135,53 @@ export const SizeSelectorInput: React.FC<ISizeSelectorInputProps> = (
         <Field name={MEASUREMENT_SIZE_ID_FORM_FIELD}>
           {(arrayHelper: any) => {
             return (
-              <ComboBox
-                selectedKey={`${props.formik.values.measurementSizeId}`}
-                allowFreeform={false}
-                label="Size"
-                placeholder={'Choose size'}
-                style={{ width: '300px' }}
-                autoComplete={true ? 'on' : 'off'}
-                options={sizeOptions}
-                useComboBoxAsMenuWidth={true}
-                styles={{
-                  ...fabricStyles.comboBoxStyles,
-                  label: {
-                    ...fabricStyles.comboBoxStyles.label,
-                  },
-                }}
-                onChange={(
-                  event: React.FormEvent<IComboBox>,
-                  option?: any,
-                  index?: number,
-                  value?: string
-                ) => {
-                  let sizeId = option ? option.sizeMap.id : 0;
+              <div className="form__group">
+                <ComboBox
+                  selectedKey={`${props.formik.values.measurementSizeId}`}
+                  allowFreeform={false}
+                  label="Size"
+                  placeholder={'Choose size'}
+                  style={{ width: '300px' }}
+                  autoComplete={true ? 'on' : 'off'}
+                  options={sizeOptions}
+                  useComboBoxAsMenuWidth={true}
+                  styles={{
+                    ...fabricStyles.comboBoxStyles,
+                    label: {
+                      ...fabricStyles.comboBoxStyles.label,
+                    },
+                  }}
+                  onChange={(
+                    event: React.FormEvent<IComboBox>,
+                    option?: any,
+                    index?: number,
+                    value?: string
+                  ) => {
+                    let sizeId = option ? option.sizeMap.id : 0;
 
-                  props.formik.setFieldValue(
-                    MEASUREMENT_SIZE_ID_FORM_FIELD,
-                    sizeId
-                  );
-                  props.formik.setFieldTouched(MEASUREMENT_SIZE_ID_FORM_FIELD);
+                    props.formik.setFieldValue(
+                      MEASUREMENT_SIZE_ID_FORM_FIELD,
+                      sizeId
+                    );
+                    props.formik.setFieldTouched(
+                      MEASUREMENT_SIZE_ID_FORM_FIELD
+                    );
 
-                  _applySizeValues(
-                    new List(sizeOptions).firstOrDefault(
-                      (option) => option.sizeMap.id === sizeId
-                    )?.sizeMap,
-                    props.formik
-                  );
-                }}
-              />
+                    _applySizeValues(
+                      new List(sizeOptions).firstOrDefault(
+                        (option) => option.sizeMap.id === sizeId
+                      )?.sizeMap,
+                      props.formik
+                    );
+                  }}
+                />
+                {props.formik.errors.measurementSizeId &&
+                props.formik.touched.measurementSizeId ? (
+                  <span className="form__group__error ownError">
+                    {props.formik.errors.measurementSizeId}
+                  </span>
+                ) : null}
+              </div>
             );
           }}
         </Field>

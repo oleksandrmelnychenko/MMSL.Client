@@ -130,7 +130,7 @@ export const ProfileFormMarkup: React.FC<IProfileFormMarkupProps> = (
             tokens={{ childrenGap: '15px' }}
           >
             <Text variant="mediumPlus" styles={mainTitleHintContent}>
-              {'Styles'}
+              {'Body posture'}
             </Text>
             <StyleSelectorInput formik={props.formik} />
           </Stack>

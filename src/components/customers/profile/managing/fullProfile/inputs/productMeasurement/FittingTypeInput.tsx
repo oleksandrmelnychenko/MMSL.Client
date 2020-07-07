@@ -89,20 +89,7 @@ export const FittingTypeInput: React.FC<IFittingTypeInputProps> = (
           (args: any) => {
             const options = _buildOptions(args);
 
-            // props.formik.setFieldValue(
-            //   FITTING_TYPE_ID_FORM_FIELD,
-            //   _resolveSelectedId(options, props.formik.values.fittingTypeId)
-            // );
-            // props.formik.setFieldTouched(FITTING_TYPE_ID_FORM_FIELD);
-
             setFittingTypeOptions(options);
-
-            // _applyOffsetSizeValues(
-            //   new List(fittingTypeOptions).firstOrDefault(
-            //     (option) => option.fittingType.id === fittingTypeId
-            //   )?.fittingType,
-            //   props.formik
-            // );
           },
           (args: any) => {
             setFittingTypeOptions([]);
@@ -127,36 +114,44 @@ export const FittingTypeInput: React.FC<IFittingTypeInputProps> = (
       {props.formik.values.profileType === ProfileTypes.BodyMeasurement ? (
         <Field name={FITTING_TYPE_ID_FORM_FIELD}>
           {() => (
-            <ComboBox
-              selectedKey={`${props.formik.values.fittingTypeId}`}
-              label="Fitting type"
-              placeholder={'Choose fitting type'}
-              style={{ width: '300px' }}
-              allowFreeform={false}
-              options={fittingTypeOptions}
-              styles={fabricStyles.comboBoxStyles}
-              onChange={(
-                event: React.FormEvent<IComboBox>,
-                option?: any,
-                index?: number,
-                value?: string
-              ) => {
-                let fittingTypeId = option ? option.fittingType.id : 0;
+            <div className="form__group">
+              <ComboBox
+                selectedKey={`${props.formik.values.fittingTypeId}`}
+                label="Fitting type"
+                placeholder={'Choose fitting type'}
+                style={{ width: '300px' }}
+                allowFreeform={false}
+                options={fittingTypeOptions}
+                styles={fabricStyles.comboBoxStyles}
+                onChange={(
+                  event: React.FormEvent<IComboBox>,
+                  option?: any,
+                  index?: number,
+                  value?: string
+                ) => {
+                  let fittingTypeId = option ? option.fittingType.id : 0;
 
-                props.formik.setFieldValue(
-                  FITTING_TYPE_ID_FORM_FIELD,
-                  fittingTypeId
-                );
-                props.formik.setFieldTouched(FITTING_TYPE_ID_FORM_FIELD);
+                  props.formik.setFieldValue(
+                    FITTING_TYPE_ID_FORM_FIELD,
+                    fittingTypeId
+                  );
+                  props.formik.setFieldTouched(FITTING_TYPE_ID_FORM_FIELD);
 
-                _applyOffsetSizeValues(
-                  new List(fittingTypeOptions).firstOrDefault(
-                    (option) => option.fittingType.id === fittingTypeId
-                  )?.fittingType,
-                  props.formik
-                );
-              }}
-            />
+                  _applyOffsetSizeValues(
+                    new List(fittingTypeOptions).firstOrDefault(
+                      (option) => option.fittingType.id === fittingTypeId
+                    )?.fittingType,
+                    props.formik
+                  );
+                }}
+              />
+              {props.formik.errors.fittingTypeId &&
+              props.formik.touched.fittingTypeId ? (
+                <span className="form__group__error ownError">
+                  {props.formik.errors.fittingTypeId}
+                </span>
+              ) : null}
+            </div>
           )}
         </Field>
       ) : null}
