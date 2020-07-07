@@ -27,7 +27,7 @@ const _buildSizeOptions = (measurement: Measurement) => {
     result = new List(measurement.measurementMapSizes)
       .select((size: MeasurementMapSize) => {
         return {
-          key: `${size.id}`,
+          key: `${size.measurementSizeId}`,
           text: `${size.measurementSize ? size.measurementSize.name : ''}`,
           sizeMap: size,
         } as IComboBoxOption;
@@ -144,7 +144,7 @@ export const SizeSelectorInput: React.FC<ISizeSelectorInputProps> = (
                     index?: number,
                     value?: string
                   ) => {
-                    let sizeId = option ? option.sizeMap.id : 0;
+                    let sizeId = option ? option.sizeMap.measurementSizeId : 0;
 
                     props.formik.setFieldValue(
                       MEASUREMENT_SIZE_ID_FORM_FIELD,
@@ -156,7 +156,7 @@ export const SizeSelectorInput: React.FC<ISizeSelectorInputProps> = (
 
                     _applySizeValues(
                       new List(sizeOptions).firstOrDefault(
-                        (option) => option.sizeMap.id === sizeId
+                        (option) => option.sizeMap.measurementSizeId === sizeId
                       )?.sizeMap,
                       props.formik
                     );
