@@ -81,7 +81,14 @@ const product = createSlice({
     apiAddNewProductCategory(state, action) {},
     apiUpdateProductCategory(state, action) {},
     apiDeleteProductCategory(state, action) {},
-    apiGetProductCategoryById(state, action) {},
+    apiGetProductCategoryById(
+      state,
+      action: { type: string; payload: number }
+    ) {},
+    apiGetProductCategoryByIdBodyPosturePerspective(
+      state,
+      action: { type: string; payload: number }
+    ) {},
     apiGetMeasurementsByProduct(state, action) {},
     apiSaveUpdatedProductGroups(state, action) {},
     apiAddNewMeasurement(state, action) {},

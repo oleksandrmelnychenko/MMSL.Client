@@ -103,20 +103,7 @@ export const SizeSelectorInput: React.FC<ISizeSelectorInputProps> = (
           (args: any) => {
             const options = _buildSizeOptions(args);
 
-            // props.formik.setFieldValue(
-            //   MEASUREMENT_SIZE_ID_FORM_FIELD,
-            //   _resolveSelectedId(options, props.formik.values.measurementSizeId)
-            // );
-            // props.formik.setFieldTouched(MEASUREMENT_SIZE_ID_FORM_FIELD);
-
             setSizeOptions(options);
-
-            // _applySizeValues(
-            //   new List(sizeOptions).firstOrDefault(
-            //     (option) => option.sizeMap.id === sizeMapId
-            //   )?.sizeMap,
-            //   props.formik
-            // );
           },
           (args: any) => {
             setSizeOptions([]);
@@ -177,7 +164,7 @@ export const SizeSelectorInput: React.FC<ISizeSelectorInputProps> = (
                 />
                 {props.formik.errors.measurementSizeId &&
                 props.formik.touched.measurementSizeId ? (
-                  <span className="form__group__error ownError">
+                  <span className="form__group__error formFieldError">
                     {props.formik.errors.measurementSizeId}
                   </span>
                 ) : null}

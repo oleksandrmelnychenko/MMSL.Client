@@ -408,6 +408,52 @@ export const apiGetProductCategoryByIdEpic = (
     })
   );
 };
+export const apiGetProductCategoryByIdBodyPosturePerspectiveEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(productActions.apiGetProductCategoryByIdBodyPosturePerspective.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+      StoreHelper.getStore().dispatch(controlActions.enableStatusBar());
+
+      return getWebRequest(api.GET_PRODUCT_CATEGORY_BY_ID, state$.value, [
+        { key: `productCategoryId`, value: `${action.payload}` },
+        { key: `showBodyPostureOnly`, value: `${true}` },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                {
+                  type:
+                    'ERROR_API_GET_PRODUCT_CATEGORY_BY_ID_BODY_POSTURE_PERSPECTIVE',
+                },
+                controlActions.disabledStatusBar(),
+                controlActions.showInfoMessage(
+                  new InfoMessage(
+                    `Error occurred while getting product from body posture perspective. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
+                ),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
 
 export const getMeasurementsByProductEpic = (
   action$: AnyAction,

@@ -17,6 +17,16 @@
         background-color: #ffffff;
         // box-shadow: 0px 0 11px 1px rgba(0, 0, 0, 0.09);
         box-shadow: rgba(0, 0, 0, 0.09) 0px 1.6px 3.6px 0px, rgba(0, 0, 0, 0.09) 0px 0.3px 0.9px 0px;
+    }
 
+    .form__group__error {
+        &.formFieldError {
+            bottom: -22px;
+        }
+
+        &.valuesFieldError {
+            top: 9px;
+            bottom: 0px;
+        }
     }
 }

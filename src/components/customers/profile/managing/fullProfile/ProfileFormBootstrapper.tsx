@@ -69,7 +69,9 @@ export const ProfileFormBootstrapper: React.FC = () => {
 
       dispatch(
         assignPendingActions(
-          productActions.apiGetProductCategoryById(productId),
+          productActions.apiGetProductCategoryByIdBodyPosturePerspective(
+            productId
+          ),
           [],
           [],
           (args: any) => {

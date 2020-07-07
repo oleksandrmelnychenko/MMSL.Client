@@ -34,7 +34,7 @@ export const initInputValueModelDefaults = (
         : []
     )
       .select<IInputValueModel>((mapDefinition: MeasurementMapDefinition) => {
-        const resultItem = {
+        const resultItem: IInputValueModel = {
           value: '',
           fittingValue: '',
           measurementDefinitionId: mapDefinition.measurementDefinitionId,
@@ -206,7 +206,6 @@ export interface IValueItemProps {
   formik: any;
   valueModel: IInputValueModel;
   index: number;
-  // isBodySizeOffset: boolean;
 }
 
 export const ValueItem: React.FC<IValueItemProps> = (
@@ -254,6 +253,7 @@ export const ValueItem: React.FC<IValueItemProps> = (
                   </Text>
                 </TooltipHost>
               </Stack.Item>
+
               <Stack.Item grow={1} className={'valueItem__sizeMeasurement'}>
                 <Stack>
                   <>

@@ -20,34 +20,39 @@ export const BaseMeasurementInput: React.FC<IBaseMeasurementInputProps> = (
     <>
       {props.formik.values.profileType === ProfileTypes.BaseMeasurement &&
       props.formik.values.measurementId !== 0 ? (
-        <>
+        <div className="form__group">
           <Stack tokens={{ childrenGap: '12px' }}>
-            <Stack tokens={{ childrenGap: '6px' }}>
-              <Separator alignContent="start">Columns</Separator>
+            <Separator alignContent="start">Columns</Separator>
 
-              <FieldArray name={MEASUREMENT_VALUES_FORM_FIELD}>
-                {(arrayHelper: any) => {
-                  return (
-                    <Stack horizontal wrap tokens={{ childrenGap: '9px' }}>
-                      {props.formik.values.measurementValues.map(
-                        (valueModel: IInputValueModel, index: number) => {
-                          return (
-                            <ValueItem
-                              key={index}
-                              index={index}
-                              formik={props.formik}
-                              valueModel={valueModel}
-                            />
-                          );
-                        }
-                      )}
-                    </Stack>
-                  );
-                }}
-              </FieldArray>
-            </Stack>
+            {props.formik.errors.measurementValues &&
+            props.formik.touched.measurementValues ? (
+              <span className="form__group__error formFieldError valuesFieldError">
+                {props.formik.errors.measurementValues}
+              </span>
+            ) : null}
+
+            <FieldArray name={MEASUREMENT_VALUES_FORM_FIELD}>
+              {(arrayHelper: any) => {
+                return (
+                  <Stack horizontal wrap tokens={{ childrenGap: '9px' }}>
+                    {props.formik.values.measurementValues.map(
+                      (valueModel: IInputValueModel, index: number) => {
+                        return (
+                          <ValueItem
+                            key={index}
+                            index={index}
+                            formik={props.formik}
+                            valueModel={valueModel}
+                          />
+                        );
+                      }
+                    )}
+                  </Stack>
+                );
+              }}
+            </FieldArray>
           </Stack>
-        </>
+        </div>
       ) : null}
     </>
   );

@@ -24,24 +24,33 @@ export const FreshMeasurementInput: React.FC<IFreshMeasurementInputProps> = (
         <FieldArray name={MEASUREMENT_VALUES_FORM_FIELD}>
           {(arrayHelper: any) => {
             return (
-              <Stack tokens={{ childrenGap: '6px' }}>
-                <Separator alignContent="start">Columns</Separator>
+              <div className="form__group">
+                <Stack tokens={{ childrenGap: '12px' }}>
+                  <Separator alignContent="start">Columns</Separator>
 
-                <Stack horizontal wrap tokens={{ childrenGap: '9px' }}>
-                  {props.formik.values.measurementValues.map(
-                    (valueModel: IInputValueModel, index: number) => {
-                      return (
-                        <ValueItem
-                          key={index}
-                          index={index}
-                          formik={props.formik}
-                          valueModel={valueModel}
-                        />
-                      );
-                    }
-                  )}
+                  {props.formik.errors.measurementValues &&
+                  props.formik.touched.measurementValues ? (
+                    <span className="form__group__error formFieldError valuesFieldError">
+                      {props.formik.errors.measurementValues}
+                    </span>
+                  ) : null}
+
+                  <Stack horizontal wrap tokens={{ childrenGap: '9px' }}>
+                    {props.formik.values.measurementValues.map(
+                      (valueModel: IInputValueModel, index: number) => {
+                        return (
+                          <ValueItem
+                            key={index}
+                            index={index}
+                            formik={props.formik}
+                            valueModel={valueModel}
+                          />
+                        );
+                      }
+                    )}
+                  </Stack>
                 </Stack>
-              </Stack>
+              </div>
             );
           }}
         </FieldArray>

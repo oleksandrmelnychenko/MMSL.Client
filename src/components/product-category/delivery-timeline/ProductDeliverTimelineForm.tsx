@@ -134,17 +134,21 @@ export const ProductDeliverTimelineForm: React.FC = () => {
               [],
               [],
               (args: any) => {
-                dispatch(
-                  assignPendingActions(
-                    productActions.apiGetProductCategoryById(productCategoryId),
-                    [],
-                    [],
-                    (args: any) => {
-                      dispatch(productActions.chooseProductCategory(args));
-                    },
-                    (args: any) => {}
-                  )
-                );
+                if (productCategoryId) {
+                  dispatch(
+                    assignPendingActions(
+                      productActions.apiGetProductCategoryById(
+                        productCategoryId
+                      ),
+                      [],
+                      [],
+                      (args: any) => {
+                        dispatch(productActions.chooseProductCategory(args));
+                      },
+                      (args: any) => {}
+                    )
+                  );
+                }
               },
               (args: any) => {}
             );
@@ -157,17 +161,21 @@ export const ProductDeliverTimelineForm: React.FC = () => {
               [],
               [],
               (args: any) => {
-                dispatch(
-                  assignPendingActions(
-                    productActions.apiGetProductCategoryById(productCategoryId),
-                    [],
-                    [],
-                    (args: any) => {
-                      dispatch(productActions.chooseProductCategory(args));
-                    },
-                    (args: any) => {}
-                  )
-                );
+                if (productCategoryId) {
+                  dispatch(
+                    assignPendingActions(
+                      productActions.apiGetProductCategoryById(
+                        productCategoryId
+                      ),
+                      [],
+                      [],
+                      (args: any) => {
+                        dispatch(productActions.chooseProductCategory(args));
+                      },
+                      (args: any) => {}
+                    )
+                  );
+                }
               },
               (args: any) => {}
             );

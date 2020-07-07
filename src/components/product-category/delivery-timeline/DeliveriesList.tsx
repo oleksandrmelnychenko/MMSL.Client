@@ -99,17 +99,19 @@ export const DeliveriesList: React.FC = () => {
         [],
         [],
         (args: any) => {
-          dispatch(
-            assignPendingActions(
-              productActions.apiGetProductCategoryById(targetProduct?.id),
-              [],
-              [],
-              (args: any) => {
-                dispatch(productActions.chooseProductCategory(args));
-              },
-              (args: any) => {}
-            )
-          );
+          if (targetProduct) {
+            dispatch(
+              assignPendingActions(
+                productActions.apiGetProductCategoryById(targetProduct.id),
+                [],
+                [],
+                (args: any) => {
+                  dispatch(productActions.chooseProductCategory(args));
+                },
+                (args: any) => {}
+              )
+            );
+          }
         },
         (args: any) => {}
       )

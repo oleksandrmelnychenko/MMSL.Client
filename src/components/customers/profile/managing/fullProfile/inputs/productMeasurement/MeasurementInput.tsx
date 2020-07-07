@@ -25,7 +25,7 @@ export interface IMeasurementInputProps {
   orderProfile: CustomerProductProfile | null | undefined;
 }
 
-const _helper_1 = (
+const buildMeasurementDefinitionsValues = (
   targetMeasurementId: number,
   measurements: Measurement[]
 ) => {
@@ -42,7 +42,7 @@ const _helper_1 = (
         : []
     )
       .select<IInputValueModel>((mapDefinition: MeasurementMapDefinition) => {
-        const resultItem = {
+        const resultItem: IInputValueModel = {
           value: '',
           fittingValue: '',
           measurementDefinitionId: mapDefinition.measurementDefinitionId,
@@ -62,7 +62,7 @@ const _helper_1 = (
   return result;
 };
 
-const _helper = (
+const extractDefaultFalues = (
   valueMaps: IInputValueModel[],
   defaults: IInputValueModel[]
 ) => {
@@ -127,8 +127,11 @@ export const MeasurementInput: React.FC<IMeasurementInputProps> = (
 
                   props.formik.setFieldValue(
                     MEASUREMENT_VALUES_FORM_FIELD,
-                    _helper(
-                      _helper_1(measurementId, props.measurements),
+                    extractDefaultFalues(
+                      buildMeasurementDefinitionsValues(
+                        measurementId,
+                        props.measurements
+                      ),
                       props.formik.values.valuesDefaultsHelper
                     )
                   );
@@ -142,7 +145,7 @@ export const MeasurementInput: React.FC<IMeasurementInputProps> = (
               />
               {props.formik.errors.measurementId &&
               props.formik.touched.measurementId ? (
-                <span className="form__group__error ownError">
+                <span className="form__group__error formFieldError">
                   {props.formik.errors.measurementId}
                 </span>
               ) : null}

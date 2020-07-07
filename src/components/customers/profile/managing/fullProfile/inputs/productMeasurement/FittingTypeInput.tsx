@@ -147,7 +147,7 @@ export const FittingTypeInput: React.FC<IFittingTypeInputProps> = (
               />
               {props.formik.errors.fittingTypeId &&
               props.formik.touched.fittingTypeId ? (
-                <span className="form__group__error ownError">
+                <span className="form__group__error formFieldError">
                   {props.formik.errors.fittingTypeId}
                 </span>
               ) : null}

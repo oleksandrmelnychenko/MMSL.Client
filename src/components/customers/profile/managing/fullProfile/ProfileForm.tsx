@@ -521,7 +521,45 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
                 return result;
               }
             ),
-            measurementValues: Yup.array(),
+            measurementValues: Yup.array().test(
+              'measurementValues',
+              'All measurement columns need values',
+              (args: any) => {
+                let result = true;
+
+                if (formikReference?.formik?.values) {
+                  const profileType = formikReference.formik.values.profileType;
+
+                  if (
+                    profileType === ProfileTypes.FreshMeasurement ||
+                    profileType === ProfileTypes.BaseMeasurement
+                  ) {
+                    result = new List<IInputValueModel>(
+                      formikReference.formik.values.measurementValues
+                    ).all(
+                      (valueModel: IInputValueModel) =>
+                        valueModel.value !== null &&
+                        valueModel.value !== undefined &&
+                        valueModel.value.length > 0
+                    );
+                  } else if (profileType === ProfileTypes.BodyMeasurement) {
+                    result = new List<IInputValueModel>(
+                      formikReference.formik.values.measurementValues
+                    ).all(
+                      (valueModel: IInputValueModel) =>
+                        valueModel.value !== null &&
+                        valueModel.value !== undefined &&
+                        valueModel.value.length > 0 &&
+                        valueModel.fittingValue !== null &&
+                        valueModel.fittingValue !== undefined &&
+                        valueModel.fittingValue.length > 0
+                    );
+                  }
+                }
+
+                return result;
+              }
+            ),
             productStyleValues: Yup.array(),
             productStyleValuesDefaultsHelper: Yup.array(),
           })}
