@@ -109,7 +109,7 @@ export const MeasurementInput: React.FC<IMeasurementInputProps> = (
             <div className="form__group">
               <Dropdown
                 defaultSelectedKey={`${props.formik.values.measurementId}`}
-                label="Chart"
+                label="Measurement"
                 options={options}
                 style={{ width: '300px' }}
                 styles={fabricStyles.comboBoxStyles}

@@ -52,7 +52,7 @@ const _buildOptions = (availableMeasurements: Measurement[]) => {
   ];
 };
 
-const _helper = (
+const extractDefaultFalues = (
   valueMaps: IInputValueModel[],
   defaults: IInputValueModel[],
   onlyForFittingValues: boolean
@@ -77,12 +77,6 @@ const _helper = (
       mapResult.fittingValue = defaults[index].fittingValue;
       mapResult.initFittingValue = defaults[index].initFittingValue;
     }
-
-    // mapResult.value = '';
-    // mapResult.fittingValue = '';
-
-    // mapResult.initValue = defaults[index].initValue;
-    // mapResult.initFittingValue = defaults[index].initFittingValue;
 
     return mapResult;
   });
@@ -124,7 +118,7 @@ export const ProfileTypeInput: React.FC<IProfileTypeInputProps> = (
             if (value === ProfileTypes.Reference) {
               props.formik.setFieldValue(
                 MEASUREMENT_VALUES_FORM_FIELD,
-                _helper(
+                extractDefaultFalues(
                   props.formik.values.measurementValues,
                   props.formik.values.valuesDefaultsHelper,
                   false
@@ -133,7 +127,7 @@ export const ProfileTypeInput: React.FC<IProfileTypeInputProps> = (
             } else {
               props.formik.setFieldValue(
                 MEASUREMENT_VALUES_FORM_FIELD,
-                _helper(
+                extractDefaultFalues(
                   props.formik.values.measurementValues,
                   props.formik.values.valuesDefaultsHelper,
                   true

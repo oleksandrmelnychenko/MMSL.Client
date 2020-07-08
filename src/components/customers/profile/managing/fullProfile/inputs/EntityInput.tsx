@@ -1,7 +1,6 @@
 import React from 'react';
 import { Field } from 'formik';
 import { Stack, TextField } from 'office-ui-fabric-react';
-import * as fabricStyles from '../../../../../../common/fabric-styles/styles';
 import { textFildLabelNoTopPaddingStyles } from '../../../../../../common/fabric-styles/styles';
 
 export interface IEntityInputProps {
@@ -12,7 +11,7 @@ export const EntityInput: React.FC<IEntityInputProps> = (
   props: IEntityInputProps
 ) => {
   return (
-    <Stack>
+    <Stack styles={{ root: { marginBottom: '6px' } }}>
       <Field name="name">
         {() => (
           <div className="form__group">
@@ -40,7 +39,7 @@ export const EntityInput: React.FC<IEntityInputProps> = (
           </div>
         )}
       </Field>
-      <Field name="description">
+      {/* <Field name="description">
         {() => (
           <div className="form__group">
             <TextField
@@ -66,7 +65,7 @@ export const EntityInput: React.FC<IEntityInputProps> = (
             />
           </div>
         )}
-      </Field>
+      </Field> */}
     </Stack>
   );
 };
