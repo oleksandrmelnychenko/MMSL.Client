@@ -88,9 +88,15 @@ const extractDefaultFalues = (
 
 const _buildOptions = (measurements: Measurement[]) => {
   return measurements.map((measurement: Measurement, index: number) => {
+    let text = measurement.name;
+
+    if (measurement.measurementUnit) {
+      text = `${text} (${measurement.measurementUnit.name})`;
+    }
+
     return {
       key: `${measurement.id}`,
-      text: measurement.name,
+      text: text,
       measurement: measurement,
     } as IDropdownOption;
   });
