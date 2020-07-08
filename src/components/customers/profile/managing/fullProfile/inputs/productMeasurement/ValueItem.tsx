@@ -112,7 +112,6 @@ const _buildFieldName = (profileType: ProfileTypes, valueIndex: number) => {
   let result = '';
 
   if (
-    profileType === ProfileTypes.FreshMeasurement ||
     profileType === ProfileTypes.BaseMeasurement ||
     profileType === ProfileTypes.BodyMeasurement
   ) {
@@ -131,10 +130,7 @@ const _extractCurrentValueFromFormik = (
 ) => {
   let result = '';
 
-  if (
-    formik.values.profileType === ProfileTypes.FreshMeasurement ||
-    formik.values.profileType === ProfileTypes.BaseMeasurement
-  ) {
+  if (formik.values.profileType === ProfileTypes.BaseMeasurement) {
     result = formik.values.measurementValues[valueIndex].value;
   } else if (formik.values.profileType === ProfileTypes.BodyMeasurement) {
     if (isBodySizeOffset)
@@ -156,10 +152,7 @@ const _onSetItemValue = (
   let formikValuePath: string = '';
   let formikField: string = '';
 
-  if (
-    formik.values.profileType === ProfileTypes.FreshMeasurement ||
-    formik.values.profileType === ProfileTypes.BaseMeasurement
-  ) {
+  if (formik.values.profileType === ProfileTypes.BaseMeasurement) {
     formikValuePath = `${MEASUREMENT_VALUES_FORM_FIELD}[${valueIndex}].value`;
     formikField = MEASUREMENT_VALUES_FORM_FIELD;
   } else if (formik.values.profileType === ProfileTypes.BodyMeasurement) {
@@ -260,7 +253,7 @@ export const ValueItem: React.FC<IValueItemProps> = (
                     {props.formik.values.profileType ===
                     ProfileTypes.BodyMeasurement ? (
                       <Text variant="small" styles={mainTitleHintContent}>
-                        {'Fresh'}
+                        {'Body'}
                       </Text>
                     ) : null}
                   </>
@@ -298,7 +291,7 @@ export const ValueItem: React.FC<IValueItemProps> = (
                     >
                       <Stack>
                         <Text variant="small" styles={mainTitleHintContent}>
-                          {'Body'}
+                          {'Allowance'}
                         </Text>
                         <div className="valueItem__editNameInput">
                           <TextField

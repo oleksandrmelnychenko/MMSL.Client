@@ -90,10 +90,10 @@ export const ProfileFormMarkup: React.FC<IProfileFormMarkupProps> = (
               </Stack>
 
               <Stack horizontal>
-                <FreshMeasurementInput
+                {/* <FreshMeasurementInput
                   formik={props.formik}
                   orderProfile={props.profileForEdit}
-                />
+                /> */}
 
                 <BaseMeasurementInput
                   formik={props.formik}

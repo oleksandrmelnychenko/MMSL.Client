@@ -26,12 +26,12 @@ const _buildOptions = (availableMeasurements: Measurement[]) => {
     availableMeasurements.length === 0 ? ' (no cahrts)' : '';
 
   return [
-    {
-      key: `${ProfileTypes.FreshMeasurement}`,
-      text: `Fresh Measurement${disabledOptionHint}`,
-      disabled: availableMeasurements.length === 0,
-      profileType: ProfileTypes.FreshMeasurement,
-    } as IDropdownOption,
+    // {
+    //   key: `${ProfileTypes.FreshMeasurement}`,
+    //   text: `Fresh Measurement${disabledOptionHint}`,
+    //   disabled: availableMeasurements.length === 0,
+    //   profileType: ProfileTypes.FreshMeasurement,
+    // } as IDropdownOption,
     {
       key: `${ProfileTypes.BaseMeasurement}`,
       text: `Base Measurement${disabledOptionHint}`,
@@ -101,12 +101,13 @@ export const ProfileTypeInput: React.FC<IProfileTypeInputProps> = (
           ) => {
             const value = option
               ? option.profileType
-              : ProfileTypes.FreshMeasurement;
+              : ProfileTypes.BaseMeasurement;
 
-            if (value === ProfileTypes.FreshMeasurement) {
-              props.formik.setFieldValue(FITTING_TYPE_ID_FORM_FIELD, 0);
-              props.formik.setFieldValue(MEASUREMENT_SIZE_ID_FORM_FIELD, 0);
-            } else if (value === ProfileTypes.BaseMeasurement) {
+            // if (value === ProfileTypes.FreshMeasurement) {
+            //   props.formik.setFieldValue(FITTING_TYPE_ID_FORM_FIELD, 0);
+            //   props.formik.setFieldValue(MEASUREMENT_SIZE_ID_FORM_FIELD, 0);
+            // } else
+            if (value === ProfileTypes.BaseMeasurement) {
               props.formik.setFieldValue(FITTING_TYPE_ID_FORM_FIELD, 0);
             } else if (value === ProfileTypes.BodyMeasurement) {
               props.formik.setFieldValue(FITTING_TYPE_ID_FORM_FIELD, 0);

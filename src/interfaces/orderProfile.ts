@@ -11,7 +11,7 @@ import { ProductCategory } from './products';
 import { OptionUnit, UnitValue } from './options';
 
 export enum ProfileTypes {
-  FreshMeasurement = 0,
+  // FreshMeasurement = 0,
   BaseMeasurement = 1,
   BodyMeasurement = 2,
   Reference = 3,
@@ -21,7 +21,7 @@ export class CustomerProductProfile extends EntityBaseNamed {
   constructor() {
     super();
 
-    this.profileType = ProfileTypes.FreshMeasurement;
+    this.profileType = ProfileTypes.BaseMeasurement;
 
     this.dealerAccountId = 0;
     this.dealerAccount = null;

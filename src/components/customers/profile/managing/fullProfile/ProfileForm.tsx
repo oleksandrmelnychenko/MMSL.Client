@@ -60,10 +60,7 @@ interface IFormValues {
 const _urgentItemsDirtyHelper = (formik: any) => {
   let isDirtyResult = false;
 
-  if (
-    formik.values.profileType === ProfileTypes.FreshMeasurement ||
-    formik.values.profileType === ProfileTypes.BaseMeasurement
-  ) {
+  if (formik.values.profileType === ProfileTypes.BaseMeasurement) {
     isDirtyResult = new List(formik.values.measurementValues).any(
       (item: any) => item.value !== item.initValue
     );
@@ -100,7 +97,7 @@ const _initDefaultMeasurementValues = (
     initValues.profileType =
       measurements.length === 0
         ? ProfileTypes.Reference
-        : ProfileTypes.FreshMeasurement;
+        : ProfileTypes.BodyMeasurement;
 
   if (initValues.measurementId === 0)
     initValues.measurementId = measurements.length > 0 ? measurements[0].id : 0;
@@ -147,7 +144,7 @@ const _initDefaultValues = (
     name: '',
     description: '',
     /// Measurement scope
-    profileType: ProfileTypes.FreshMeasurement,
+    profileType: ProfileTypes.BaseMeasurement,
     measurementId: 0,
     fittingTypeId: 0,
     measurementSizeId: 0,
@@ -220,14 +217,15 @@ const _buildNewPayload = (
     productCategoryId: productCategory.id,
   };
 
-  if (payload.profileType === ProfileTypes.FreshMeasurement) {
-    payload.values = _buildMeasurementPayloadValues(
-      values.measurementValues,
-      payload.profileType
-    );
-    payload.fittingTypeId = 0;
-    payload.measurementSizeId = 0;
-  } else if (payload.profileType === ProfileTypes.BaseMeasurement) {
+  // if (payload.profileType === ProfileTypes.FreshMeasurement) {
+  //   payload.values = _buildMeasurementPayloadValues(
+  //     values.measurementValues,
+  //     payload.profileType
+  //   );
+  //   payload.fittingTypeId = 0;
+  //   payload.measurementSizeId = 0;
+  // } else
+  if (payload.profileType === ProfileTypes.BaseMeasurement) {
     payload.values = _buildMeasurementPayloadValues(
       values.measurementValues,
       payload.profileType
@@ -278,14 +276,15 @@ const _buildEditedPayload = (
     productCategoryId: productCategory.id,
   };
 
-  if (payload.profileType === ProfileTypes.FreshMeasurement) {
-    payload.values = _buildMeasurementPayloadValues(
-      values.measurementValues,
-      payload.profileType
-    );
-    payload.fittingTypeId = 0;
-    payload.measurementSizeId = 0;
-  } else if (payload.profileType === ProfileTypes.BaseMeasurement) {
+  // if (payload.profileType === ProfileTypes.FreshMeasurement) {
+  //   payload.values = _buildMeasurementPayloadValues(
+  //     values.measurementValues,
+  //     payload.profileType
+  //   );
+  //   payload.fittingTypeId = 0;
+  //   payload.measurementSizeId = 0;
+  // } else
+  if (payload.profileType === ProfileTypes.BaseMeasurement) {
     payload.values = _buildMeasurementPayloadValues(
       values.measurementValues,
       payload.profileType
@@ -531,7 +530,7 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
                   const profileType = formikReference.formik.values.profileType;
 
                   if (
-                    profileType === ProfileTypes.FreshMeasurement ||
+                    // profileType === ProfileTypes.FreshMeasurement ||
                     profileType === ProfileTypes.BaseMeasurement
                   ) {
                     result = new List<IInputValueModel>(
