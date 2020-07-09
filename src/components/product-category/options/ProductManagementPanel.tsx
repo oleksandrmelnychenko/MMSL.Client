@@ -19,16 +19,7 @@ import ProductPermissionsPanel, {
 } from './ProductPermissionsPanel';
 import { RoleType } from '../../../interfaces/identity';
 import { renderMenuItem } from '../../master/DashboardLeftMenuPanel';
-
-export const PRODUCT_CATEGORIES_DASHBOARD_PATH: string =
-  '/en/app/product/product-categories';
-export const PRODUCT_STYLES_PATH: string = '/en/app/product/styles/';
-export const PRODUCT_MEASUREMENTS_PATH: string =
-  '/en/app/product/measurements/';
-export const PRODUCT_TIMELINES_PATH: string =
-  '/en/app/product/delivery-timeline/';
-export const PRODUCT_STYLE_PERMISSIONS_PATH: string =
-  '/en/app/product/style-permissions/';
+import * as appPaths from '../../../common/environment/appPaths/index';
 
 const ProductManagementPanel: React.FC = () => {
   const dispatch = useDispatch();
@@ -51,7 +42,7 @@ const ProductManagementPanel: React.FC = () => {
           controlActions.openInfoPanelWithComponent({
             component: ProductStylesPanel,
             onDismisPendingAction: () => {
-              history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+              history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
 
               stylesPanelDismisActions().forEach((action) => {
                 dispatch(action);
@@ -61,10 +52,12 @@ const ProductManagementPanel: React.FC = () => {
         );
 
         if (choseCategory) {
-          history.push(`${PRODUCT_STYLES_PATH}${choseCategory.id}`);
+          history.push(
+            `${appPaths.APP_PRODUCT_STYLES_PATH}${choseCategory.id}`
+          );
         } else {
           dispatch(controlActions.closeInfoPanelWithComponent());
-          history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+          history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
         }
       },
     },
@@ -80,7 +73,7 @@ const ProductManagementPanel: React.FC = () => {
           controlActions.openInfoPanelWithComponent({
             component: ProductMeasurementPanel,
             onDismisPendingAction: () => {
-              history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+              history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
 
               measurementsPanelDismisActions().forEach((action) => {
                 dispatch(action);
@@ -90,10 +83,12 @@ const ProductManagementPanel: React.FC = () => {
         );
 
         if (choseCategory) {
-          history.push(`${PRODUCT_MEASUREMENTS_PATH}${choseCategory.id}`);
+          history.push(
+            `${appPaths.APP_PRODUCT_MEASUREMENTS}${choseCategory.id}`
+          );
         } else {
           dispatch(controlActions.closeInfoPanelWithComponent());
-          history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+          history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
         }
       },
     },
@@ -109,16 +104,16 @@ const ProductManagementPanel: React.FC = () => {
           controlActions.openInfoPanelWithComponent({
             component: ProductTimelinesPanel,
             onDismisPendingAction: () => {
-              history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+              history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
             },
           })
         );
 
         if (choseCategory) {
-          history.push(`${PRODUCT_TIMELINES_PATH}${choseCategory.id}`);
+          history.push(`${appPaths.APP_PRODUCT_TIMELINES}${choseCategory.id}`);
         } else {
           dispatch(controlActions.closeInfoPanelWithComponent());
-          history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+          history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
         }
       },
     },
@@ -134,7 +129,7 @@ const ProductManagementPanel: React.FC = () => {
           controlActions.openInfoPanelWithComponent({
             component: ProductPermissionsPanel,
             onDismisPendingAction: () => {
-              history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+              history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
 
               permissionsPanelDismisActions().forEach((action) => {
                 dispatch(action);
@@ -144,10 +139,12 @@ const ProductManagementPanel: React.FC = () => {
         );
 
         if (choseCategory) {
-          history.push(`${PRODUCT_STYLE_PERMISSIONS_PATH}${choseCategory.id}`);
+          history.push(
+            `${appPaths.APP_PRODUCT_STYLE_PERMISSIONS}${choseCategory.id}`
+          );
         } else {
           dispatch(controlActions.closeInfoPanelWithComponent());
-          history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+          history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
         }
       },
     },

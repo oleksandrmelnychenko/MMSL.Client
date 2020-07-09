@@ -13,17 +13,14 @@ import { controlActions } from '../../redux/slices/control.slice';
 import ProductMeasurementPanel from './options/measurementOptions/ProductMeasurementPanel';
 import ProductTimelinesPanel from './options/ProductTimelinesPanel';
 import ProductSettingsBootstrapper from './productSettings/ProductSettingsBootstrapper';
-import ProductManagementPanel, {
-  PRODUCT_MEASUREMENTS_PATH,
-  PRODUCT_CATEGORIES_DASHBOARD_PATH,
-  PRODUCT_TIMELINES_PATH,
-  PRODUCT_STYLES_PATH,
-  PRODUCT_STYLE_PERMISSIONS_PATH,
-} from './options/ProductManagementPanel';
+import ProductManagementPanel from './options/ProductManagementPanel';
 import ProductStylesPanel from './options/ProductStylesPanel';
 import ProductPermissions from './productPermissions/ProductPermissions';
 import ProductPermissionsPanel from './options/ProductPermissionsPanel';
 import { unitsActions } from '../../redux/slices/units.slice';
+import * as appPaths from '../../common/environment/appPaths/index';
+
+const PRODUCT_ID_PATH_SEGMENT: string = ':productId';
 
 const _extractCategoryIdFromPath = (history: any) => {
   const lastSegment: any = new List(
@@ -58,14 +55,22 @@ const ProductCategoryView: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (history?.location?.pathname?.includes(PRODUCT_MEASUREMENTS_PATH)) {
+    if (
+      history?.location?.pathname?.includes(appPaths.APP_PRODUCT_MEASUREMENTS)
+    ) {
       resolveTargetProductFlow(ProductMeasurementPanel);
-    } else if (history?.location?.pathname?.includes(PRODUCT_TIMELINES_PATH)) {
+    } else if (
+      history?.location?.pathname?.includes(appPaths.APP_PRODUCT_TIMELINES)
+    ) {
       resolveTargetProductFlow(ProductTimelinesPanel);
-    } else if (history?.location?.pathname?.includes(PRODUCT_STYLES_PATH)) {
+    } else if (
+      history?.location?.pathname?.includes(appPaths.APP_PRODUCT_STYLES_PATH)
+    ) {
       resolveTargetProductFlow(ProductStylesPanel);
     } else if (
-      history?.location?.pathname?.includes(PRODUCT_STYLE_PERMISSIONS_PATH)
+      history?.location?.pathname?.includes(
+        appPaths.APP_PRODUCT_STYLE_PERMISSIONS
+      )
     ) {
       resolveTargetProductFlow(ProductPermissionsPanel);
     } else {
@@ -101,7 +106,9 @@ const ProductCategoryView: React.FC = () => {
                 controlActions.openInfoPanelWithComponent({
                   component: optionsLeftPanelComponent,
                   onDismisPendingAction: () => {
-                    history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+                    history.push(
+                      appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH
+                    );
                   },
                 })
               );
@@ -114,7 +121,7 @@ const ProductCategoryView: React.FC = () => {
         controlActions.openInfoPanelWithComponent({
           component: optionsLeftPanelComponent,
           onDismisPendingAction: () => {
-            history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+            history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
           },
         })
       );
@@ -125,23 +132,23 @@ const ProductCategoryView: React.FC = () => {
     <div>
       <Switch>
         <Route
-          path={`${PRODUCT_MEASUREMENTS_PATH}:productId`}
+          path={`${appPaths.APP_PRODUCT_MEASUREMENTS}${PRODUCT_ID_PATH_SEGMENT}`}
           component={MeasurementsBootstrapper}
         />
         <Route
-          path={`${PRODUCT_TIMELINES_PATH}:productId`}
+          path={`${appPaths.APP_PRODUCT_TIMELINES}${PRODUCT_ID_PATH_SEGMENT}`}
           component={ProductDeliverTimeline}
         />
         <Route
-          path={`${PRODUCT_STYLES_PATH}:productId`}
+          path={`${appPaths.APP_PRODUCT_STYLES_PATH}${PRODUCT_ID_PATH_SEGMENT}`}
           component={ProductSettingsBootstrapper}
         />
         <Route
-          path={`${PRODUCT_STYLE_PERMISSIONS_PATH}:productId`}
+          path={`${appPaths.APP_PRODUCT_STYLE_PERMISSIONS}${PRODUCT_ID_PATH_SEGMENT}`}
           component={ProductPermissions}
         />
         <Route
-          path={PRODUCT_CATEGORIES_DASHBOARD_PATH}
+          path={appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH}
           component={ProductCategories}
         />
       </Switch>

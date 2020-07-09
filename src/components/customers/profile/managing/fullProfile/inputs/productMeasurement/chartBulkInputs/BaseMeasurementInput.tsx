@@ -22,7 +22,7 @@ export const BaseMeasurementInput: React.FC<IBaseMeasurementInputProps> = (
       props.formik.values.measurementId !== 0 ? (
         <div className="form__group">
           <Stack tokens={{ childrenGap: '12px' }}>
-            <Separator alignContent="start">Columns</Separator>
+            <Separator alignContent="start">Measurements</Separator>
 
             {props.formik.errors.measurementValues &&
             props.formik.touched.measurementValues ? (

@@ -57,6 +57,10 @@ import {
   default as profileManagingReducer,
   IProfileManagingState,
 } from '../slices/customer/orderProfile/profileManaging.slice';
+import {
+  default as storeReducer,
+  IStoreState,
+} from '../slices/store/store.slice';
 
 export interface IApplicationState {
   auth: IAuthState;
@@ -77,6 +81,7 @@ export interface IApplicationState {
   dealerProducts: IDealerProductsState;
   orderProfile: IOrderProfileState;
   profileManaging: IProfileManagingState;
+  store: IStoreState;
 }
 
 export const reducer = combineReducers({
@@ -98,4 +103,5 @@ export const reducer = combineReducers({
   dealerProducts: dealerProductsReducer,
   orderProfile: orderProfileReducer,
   profileManaging: profileManagingReducer,
+  store: storeReducer,
 });

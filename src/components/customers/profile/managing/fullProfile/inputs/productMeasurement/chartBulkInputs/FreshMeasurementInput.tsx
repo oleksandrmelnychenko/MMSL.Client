@@ -1,10 +1,7 @@
 import React from 'react';
 import { FieldArray } from 'formik';
 import {} from '../../../../../../../../interfaces/measurements';
-import {
-  CustomerProductProfile,
-  ProfileTypes,
-} from '../../../../../../../../interfaces/orderProfile';
+import { CustomerProductProfile } from '../../../../../../../../interfaces/orderProfile';
 import { Stack, Separator } from 'office-ui-fabric-react';
 import ValueItem, { IInputValueModel } from '../ValueItem';
 import { MEASUREMENT_VALUES_FORM_FIELD } from '../../../ProfileForm';
@@ -26,7 +23,7 @@ export const FreshMeasurementInput: React.FC<IFreshMeasurementInputProps> = (
           return (
             <div className="form__group">
               <Stack tokens={{ childrenGap: '12px' }}>
-                <Separator alignContent="start">Columns</Separator>
+                <Separator alignContent="start">Measurements</Separator>
 
                 {props.formik.errors.measurementValues &&
                 props.formik.touched.measurementValues ? (

@@ -1,26 +1,17 @@
 import React, { useEffect } from 'react';
 import {
-  Label,
-  PrimaryButton,
-  TooltipHost,
-  TooltipDelay,
-  DirectionalHint,
-} from 'office-ui-fabric-react';
-import {
   controlActions,
   IInfoPanelMenuItem,
 } from '../../../redux/slices/control.slice';
 import { useDispatch, useSelector } from 'react-redux';
-import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { useHistory } from 'react-router-dom';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { ProductCategory } from '../../../interfaces/products';
-import ProductManagementPanel, {
-  PRODUCT_CATEGORIES_DASHBOARD_PATH,
-} from './ProductManagementPanel';
+import ProductManagementPanel from './ProductManagementPanel';
 import ProductPermissionForm from '../productPermissions/managing/ProductPermissionForm';
 import { RoleType } from '../../../interfaces/identity';
 import { renderMenuItem } from '../../master/DashboardLeftMenuPanel';
+import * as appPaths from '../../../common/environment/appPaths/index';
 
 export const permissionsPanelDismisActions = () => {
   return [];
@@ -46,7 +37,7 @@ const ProductPermissionsPanel: React.FC = () => {
       isDisabled: false,
       tooltip: 'Go back to products',
       onClickFunc: () => {
-        history.push(PRODUCT_CATEGORIES_DASHBOARD_PATH);
+        history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
 
         /// Open product managing (common) panel
         dispatch(

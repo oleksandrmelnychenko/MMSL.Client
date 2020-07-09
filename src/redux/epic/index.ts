@@ -12,6 +12,7 @@ import * as fittingTypes from './fittingTypes.epic';
 import * as unitsOfMeasurement from './unitsOfMeasurement.epic';
 import * as dealerProducts from './dealerProducts.epic';
 import * as orderProfile from './orderProfile.epic';
+import * as store from './store.epic';
 
 const arrayEpic = [
   ...Object.values(authEpic),
@@ -27,6 +28,7 @@ const arrayEpic = [
   ...Object.values(unitsOfMeasurement),
   ...Object.values(dealerProducts),
   ...Object.values(orderProfile),
+  ...Object.values(store),
 ];
 
 export const rootEpic = combineEpics(...arrayEpic);

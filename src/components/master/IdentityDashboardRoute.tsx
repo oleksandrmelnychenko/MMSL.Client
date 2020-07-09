@@ -8,6 +8,7 @@ import ProductCategoryView from '../product-category/ProductCategoryView';
 import { List } from 'linq-typescript';
 import { TokenHelper } from '../../helpers/token.helper';
 import { RoleType } from '../../interfaces/identity';
+import * as appPaths from '../../common/environment/appPaths/index';
 
 const DEALERS_ROUTE: string = 'Dealers';
 const CUSTOMER_ROUTE: string = 'Customer';
@@ -39,7 +40,7 @@ const IdentityDashboardRoute: React.FC = () => {
       return (
         <Route
           key={index}
-          path={`/en/app/dealers`}
+          path={appPaths.APP_DEALERS}
           component={DealersBootstrapper}
         />
       );
@@ -47,7 +48,7 @@ const IdentityDashboardRoute: React.FC = () => {
       return (
         <Route
           key={index}
-          path={`/en/app/customers`}
+          path={appPaths.APP_CUSTOMERS}
           component={CustomersBootstrapper}
         />
       );
@@ -55,12 +56,14 @@ const IdentityDashboardRoute: React.FC = () => {
       return (
         <Route
           key={index}
-          path={`/en/app/product`}
+          path={appPaths.APP_PRODUCT}
           component={ProductCategoryView}
         />
       );
     else if (routeDescription === REPORTS_ROUTE)
-      return <Route key={index} path={`/en/app/reports`} component={Reports} />;
+      return (
+        <Route key={index} path={appPaths.APP_REPORTS} component={Reports} />
+      );
     else if (routeDescription === ORDER_PROFILES_ROUTE) return null;
   };
 
