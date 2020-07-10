@@ -71,24 +71,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
         items={_items}
         className="dealers__store__controls"
       />
-      <ManageDealerForm
-      // formikReference={formikReference}
-      // dealerAccount={selectedDealer}
-      // submitAction={(args: any) => {
-      //   let createAction = assignPendingActions(
-      //     dealerActions.updateDealer(args),
-      //     [
-      //       dealerActions.setSelectedDealer(null),
-      //       controlActions.closeInfoPanelWithComponent(),
-      //       dealerActions.isOpenPanelWithDealerDetails(
-      //         new ToggleDealerPanelWithDetails()
-      //       ),
-      //       dealerActions.getDealersListPaginated(),
-      //     ]
-      //   );
-      //   dispatch(createAction);
-      // }}
-      />
+      <ManageDealerForm />
     </div>
   );
 };

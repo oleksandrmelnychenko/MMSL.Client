@@ -1,12 +1,13 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
-import { Checkbox, Stack, TextField } from 'office-ui-fabric-react';
+import { Formik, Form } from 'formik';
+import { Stack } from 'office-ui-fabric-react';
 import '../managing/dealerManaging/manageDealerForm.scss';
 import * as Yup from 'yup';
 import { FormicReference } from '../../../interfaces';
 import { Address } from '../../../interfaces/addresses';
 import { DealerAccount } from '../../../interfaces/dealer';
-import { textFildLabelStyles } from '../../../common/fabric-styles/styles';
+import Entry from '../../../common/formFields/Entry';
+import FormCheckbox from '../../../common/formFields/FormCheckbox';
 
 class ManageDealerFormProps {
   constructor() {
@@ -120,163 +121,68 @@ export const BillingAddressForm: React.FC<ManageDealerFormProps> = (props) => {
           return (
             <Form className="form">
               <div className="dealerFormManage">
-                <Stack horizontal tokens={{ childrenGap: 20 }}>
-                  <Stack grow={4} tokens={{ childrenGap: 20 }}>
-                    <Stack>
-                      <div className="formScope">
-                        <Field name="addressLine1">
-                          {() => {
-                            return (
-                              <div className="form__group">
-                                <TextField
-                                  value={formik.values.addressLine1}
-                                  styles={textFildLabelStyles}
-                                  className="form__group__field"
-                                  label="Address Line 1"
-                                  onChange={(args: any) => {
-                                    let value = args.target.value;
-                                    formik.setFieldValue('addressLine1', value);
-                                    formik.setFieldTouched('addressLine1');
-                                  }}
-                                />
-                              </div>
-                            );
-                          }}
-                        </Field>
-                        <Field name="addressLine2">
-                          {() => {
-                            return (
-                              <div className="form__group">
-                                <TextField
-                                  value={formik.values.addressLine2}
-                                  styles={textFildLabelStyles}
-                                  className="form__group__field"
-                                  label="Address Line 2"
-                                  onChange={(args: any) => {
-                                    let value = args.target.value;
-                                    formik.setFieldValue('addressLine2', value);
-                                    formik.setFieldTouched('addressLine2');
-                                  }}
-                                />
-                              </div>
-                            );
-                          }}
-                        </Field>
-                        <Stack horizontal tokens={{ childrenGap: 20 }}>
-                          <Stack grow={1}>
-                            <Field name="city">
-                              {() => {
-                                return (
-                                  <div className="form__group">
-                                    <TextField
-                                      value={formik.values.city}
-                                      styles={textFildLabelStyles}
-                                      className="form__group__field"
-                                      label="City"
-                                      onChange={(args: any) => {
-                                        let value = args.target.value;
-                                        formik.setFieldValue('city', value);
-                                        formik.setFieldTouched('city');
-                                      }}
-                                    />
-                                  </div>
-                                );
-                              }}
-                            </Field>
-                            <Field name="country">
-                              {() => {
-                                return (
-                                  <div className="form__group">
-                                    <TextField
-                                      value={formik.values.country}
-                                      styles={textFildLabelStyles}
-                                      className="form__group__field"
-                                      label="Country"
-                                      onChange={(args: any) => {
-                                        let value = args.target.value;
-                                        formik.setFieldValue('country', value);
-                                        formik.setFieldTouched('country');
-                                      }}
-                                    />
-                                  </div>
-                                );
-                              }}
-                            </Field>
-                          </Stack>
-                          <Stack grow={1}>
-                            <Field name="state">
-                              {() => {
-                                return (
-                                  <div className="form__group">
-                                    <TextField
-                                      value={formik.values.state}
-                                      styles={textFildLabelStyles}
-                                      className="form__group__field"
-                                      label="State"
-                                      onChange={(args: any) => {
-                                        let value = args.target.value;
-                                        formik.setFieldValue('state', value);
-                                        formik.setFieldTouched('state');
-                                      }}
-                                    />
-                                  </div>
-                                );
-                              }}
-                            </Field>
-                            <Field name="zip">
-                              {() => {
-                                return (
-                                  <div className="form__group">
-                                    <TextField
-                                      value={formik.values.zip}
-                                      styles={textFildLabelStyles}
-                                      className="form__group__field"
-                                      label="Zip"
-                                      onChange={(args: any) => {
-                                        let value = args.target.value;
-                                        formik.setFieldValue('zip', value);
-                                        formik.setFieldTouched('zip');
-                                      }}
-                                    />
-                                  </div>
-                                );
-                              }}
-                            </Field>
-                          </Stack>
-                        </Stack>
-                      </div>
-                    </Stack>
+                <Stack tokens={{ childrenGap: 20 }}>
+                  <Stack>
                     <div className="formScope">
-                      <Stack horizontal>
-                        <Stack.Item>
-                          <Field name="useBillingAsShipping">
-                            {() => {
-                              return (
-                                <div className="form__group">
-                                  <Checkbox
-                                    checked={formik.values.useBillingAsShipping}
-                                    label="Delivery address the same as billing"
-                                    onChange={(
-                                      checked: any,
-                                      isChecked: any
-                                    ) => {
-                                      formik.setFieldValue(
-                                        'useBillingAsShipping',
-                                        isChecked
-                                      );
-                                      formik.setFieldTouched(
-                                        'useBillingAsShipping'
-                                      );
-                                    }}
-                                  />
-                                </div>
-                              );
-                            }}
-                          </Field>
-                        </Stack.Item>
+                      <Entry
+                        formik={formik}
+                        label={'Address Line 1'}
+                        fieldName={'addressLine1'}
+                        isRequired={false}
+                      />
+
+                      <Entry
+                        formik={formik}
+                        label={'Address Line 2'}
+                        fieldName={'addressLine2'}
+                        isRequired={false}
+                      />
+
+                      <Stack horizontal tokens={{ childrenGap: 20 }}>
+                        <Stack grow={1}>
+                          <Entry
+                            formik={formik}
+                            label={'City'}
+                            fieldName={'city'}
+                            isRequired={false}
+                          />
+
+                          <Entry
+                            formik={formik}
+                            label={'Country'}
+                            fieldName={'country'}
+                            isRequired={false}
+                          />
+                        </Stack>
+                        <Stack grow={1}>
+                          <Entry
+                            formik={formik}
+                            label={'State'}
+                            fieldName={'state'}
+                            isRequired={false}
+                          />
+
+                          <Entry
+                            formik={formik}
+                            label={'Zip'}
+                            fieldName={'zip'}
+                            isRequired={false}
+                          />
+                        </Stack>
                       </Stack>
                     </div>
                   </Stack>
+                  <div className="formScope">
+                    <Stack horizontal>
+                      <Stack.Item>
+                        <FormCheckbox
+                          formik={formik}
+                          label={'Delivery address the same as billing'}
+                          fieldName={'useBillingAsShipping'}
+                        />
+                      </Stack.Item>
+                    </Stack>
+                  </div>
                 </Stack>
               </div>
             </Form>

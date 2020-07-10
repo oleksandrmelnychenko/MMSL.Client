@@ -20,6 +20,8 @@ import { assignPendingActions } from '../../../../helpers/action.helper';
 import { productSettingsActions } from '../../../../redux/slices/productSettings.slice';
 import GroupPriceInput from './price/GroupPriceInput';
 import { CurrencyType } from '../../../../interfaces/currencyTypes';
+import Entry from '../../../../common/formFields/Entry';
+import FormCheckbox from '../../../../common/formFields/FormCheckbox';
 
 interface IInitValues {
   name: string;
@@ -253,53 +255,19 @@ export const ManagingvOptionGroupForm: React.FC = () => {
           <Form className="form">
             <div className="dealerFormManage">
               <Stack>
-                <Field name="name">
-                  {() => (
-                    <div className="form__group">
-                      <TextField
-                        value={formik.values.name}
-                        styles={fabricStyles.textFildLabelStyles}
-                        className="form__group__field"
-                        label="Name"
-                        required
-                        onChange={(args: any) => {
-                          let value = args.target.value;
+                <Entry
+                  formik={formik}
+                  label={'Name'}
+                  fieldName={'name'}
+                  isRequired
+                />
 
-                          formik.setFieldValue('name', value);
-                          formik.setFieldTouched('name');
-                        }}
-                        errorMessage={
-                          formik.errors.name && formik.touched.name ? (
-                            <span className="form__group__error">
-                              {formik.errors.name}
-                            </span>
-                          ) : (
-                            ''
-                          )
-                        }
-                      />
-                    </div>
-                  )}
-                </Field>
-                <Field name="isMandatory">
-                  {() => {
-                    return (
-                      <div
-                        className="form__group"
-                        style={{ marginTop: '20px' }}
-                      >
-                        <Checkbox
-                          checked={formik.values.isMandatory}
-                          label="Is mandatory"
-                          onChange={(checked: any, isChecked: any) => {
-                            formik.setFieldValue('isMandatory', isChecked);
-                            formik.setFieldTouched('isMandatory');
-                          }}
-                        />
-                      </div>
-                    );
-                  }}
-                </Field>
+                <FormCheckbox
+                  formik={formik}
+                  label={'Is mandatory'}
+                  fieldName={'isMandatory'}
+                />
+
                 <Field name="declareSharedStylePrice">
                   {() => {
                     return (
@@ -334,6 +302,7 @@ export const ManagingvOptionGroupForm: React.FC = () => {
                     );
                   }}
                 </Field>
+
                 <Field name="priceValue">
                   {() => (
                     <div className="form__group">

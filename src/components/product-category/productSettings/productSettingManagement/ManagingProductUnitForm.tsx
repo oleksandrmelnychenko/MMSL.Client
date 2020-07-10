@@ -32,6 +32,8 @@ import AttachField from './AttachField';
 import UnitValuesInput, { UnitValueModel } from './UnitValuesInput';
 import UnitPriceInput from './price/UnitPriceInput';
 import { CurrencyType } from '../../../../interfaces/currencyTypes';
+import Entry from '../../../../common/formFields/Entry';
+import FormCheckbox from '../../../../common/formFields/FormCheckbox';
 
 export interface IInitValues {
   value: string;
@@ -484,35 +486,13 @@ export const ManagingProductUnitForm: React.FC = () => {
       {(formik) => {
         return isUnitFormVisible ? (
           <Form>
-            <Stack grow={1}>
-              <Field name="value">
-                {() => (
-                  <div className="form__group">
-                    <TextField
-                      value={formik.values.value}
-                      styles={fabricStyles.textFildLabelStyles}
-                      className="form__group__field"
-                      label="Name"
-                      required
-                      onChange={(args: any) => {
-                        let value = args.target.value;
-
-                        formik.setFieldValue('value', value);
-                        formik.setFieldTouched('value');
-                      }}
-                      errorMessage={
-                        formik.errors.value && formik.touched.value ? (
-                          <span className="form__group__error">
-                            {formik.errors.value}
-                          </span>
-                        ) : (
-                          ''
-                        )
-                      }
-                    />
-                  </div>
-                )}
-              </Field>
+            <Stack>
+              <Entry
+                formik={formik}
+                fieldName={'value'}
+                label={'Name'}
+                isRequired
+              />
 
               <div style={{ marginTop: '15px' }}>
                 <UnitValuesInput
@@ -534,22 +514,11 @@ export const ManagingProductUnitForm: React.FC = () => {
                 />
               </div>
 
-              <Field name="isBodyPosture">
-                {() => {
-                  return (
-                    <div className="form__group" style={{ marginTop: '20px' }}>
-                      <Checkbox
-                        checked={formik.values.isBodyPosture}
-                        label="Is body posture"
-                        onChange={(checked: any, isChecked: any) => {
-                          formik.setFieldValue('isBodyPosture', isChecked);
-                          formik.setFieldTouched('isBodyPosture');
-                        }}
-                      />
-                    </div>
-                  );
-                }}
-              </Field>
+              <FormCheckbox
+                formik={formik}
+                label={'Is body posture'}
+                fieldName={'isBodyPosture'}
+              />
 
               <Field name="priceValue">
                 {() => (
