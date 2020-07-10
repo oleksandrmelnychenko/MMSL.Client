@@ -78,19 +78,7 @@ export const CreateDealerPanel: React.FC = (props: any) => {
           items={_items}
           className="dealers__store__controls"
         />
-        <ManageDealerForm
-        // formikReference={formikReference}
-        // submitAction={(args: any) => {
-        //   let createAction = assignPendingActions(
-        //     dealerActions.saveNewDealer(args),
-        //     [
-        //       dealerActions.getDealersListPaginated(),
-        //       dealerActions.toggleNewDealerForm(false),
-        //     ]
-        //   );
-        //   dispatch(createAction);
-        // }}
-        />
+        <ManageDealerForm />
       </Panel>
     </div>
   );

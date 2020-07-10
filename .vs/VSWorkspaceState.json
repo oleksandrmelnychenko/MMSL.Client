@@ -2,10 +2,14 @@
   "ExpandedNodes": [
     "",
     "\\src",
+    "\\src\\common",
+    "\\src\\common\\environment",
+    "\\src\\common\\environment\\appPaths",
     "\\src\\components",
     "\\src\\components\\customers",
-    "\\src\\components\\customers\\customerManaging"
+    "\\src\\components\\customers\\customerManaging",
+    "\\src\\components\\dealers"
   ],
-  "SelectedNode": "\\.gitignore",
+  "SelectedNode": "\\src\\components\\dealers\\DealersBootstrapper.tsx",
   "PreviewInSolutionExplorer": false
 }

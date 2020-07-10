@@ -11,7 +11,6 @@ import ProductCustomerDetails from './ProductCustomerDetails';
 import EntityInput from './inputs/EntityInput';
 import ProfileTypeInput from './inputs/productMeasurement/ProfileTypeInput';
 import MeasurementInput from './inputs/productMeasurement/MeasurementInput';
-import FreshMeasurementInput from './inputs/productMeasurement/chartBulkInputs/FreshMeasurementInput';
 import BaseMeasurementInput from './inputs/productMeasurement/chartBulkInputs/BaseMeasurementInput';
 import BodyMeasurementInput from './inputs/productMeasurement/chartBulkInputs/BodyMeasurementInput';
 import StyleSelectorInput from './inputs/productStyle/StyleSelectorInput';
@@ -90,11 +89,6 @@ export const ProfileFormMarkup: React.FC<IProfileFormMarkupProps> = (
               </Stack>
 
               <Stack horizontal>
-                {/* <FreshMeasurementInput
-                  formik={props.formik}
-                  orderProfile={props.profileForEdit}
-                /> */}
-
                 <BaseMeasurementInput
                   formik={props.formik}
                   orderProfile={props.profileForEdit}
