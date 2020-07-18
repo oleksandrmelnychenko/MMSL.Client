@@ -39,7 +39,6 @@ export interface IInitValues {
   value: string;
   imageUrl: string;
   isMandatory: boolean;
-  isBodyPosture: boolean;
   imageFile: any | null;
   isRemovingImage: boolean;
   dirtyValues: UnitValueModel[];
@@ -59,7 +58,6 @@ const _buildNewUnitPayload = (
     orderIndex: 0,
     value: values.value,
     isMandatory: values.isMandatory,
-    isBodyPosture: values.isBodyPosture,
     optionGroupId: relativeOptionGroupId,
     file: values.imageFile,
     serializedValues: values.dirtyValues.map((item) => {
@@ -82,7 +80,6 @@ const _buildUpdatedUnitPayload = (
     orderIndex: sourceEntity.orderIndex,
     value: values.value,
     isMandatory: values.isMandatory,
-    isBodyPosture: values.isBodyPosture,
     serializedValues: new List<any>(
       new List(values.dirtyValues)
         .select((valueItem) => {
@@ -153,7 +150,6 @@ const _initDefaultValues = (
     value: '',
     imageUrl: '',
     isMandatory: false,
-    isBodyPosture: false,
     imageFile: null,
     isRemovingImage: false,
     dirtyValues: [],
@@ -166,7 +162,6 @@ const _initDefaultValues = (
   if (sourceEntity) {
     initValues.value = sourceEntity.value;
     initValues.isMandatory = sourceEntity.isMandatory;
-    initValues.isBodyPosture = sourceEntity.isBodyPosture;
     initValues.isRemovingImage =
       sourceEntity.imageBlob !== null && sourceEntity.imageBlob !== undefined;
     initValues.imageUrl = sourceEntity.imageUrl;
@@ -192,7 +187,6 @@ const _isFormikDirty = (initValues: IInitValues, values: IInitValues) => {
       initValues.value !== values.value ||
       initValues.imageUrl !== values.imageUrl ||
       initValues.isMandatory !== values.isMandatory ||
-      initValues.isBodyPosture !== values.isBodyPosture ||
       initValues.imageFile !== values.imageFile ||
       initValues.isRemovingImage !== values.isRemovingImage ||
       values.dirtyValuesToDelete.length > 0 ||
@@ -452,7 +446,6 @@ export const ManagingProductUnitForm: React.FC = () => {
           .min(3)
           .required(() => 'Value is required'),
         isMandatory: Yup.boolean(),
-        isBodyPosture: Yup.boolean(),
         imageFile: Yup.object().nullable(),
         isRemovingImage: Yup.boolean(),
         unitToDelete: Yup.object().nullable(),
@@ -513,12 +506,6 @@ export const ManagingProductUnitForm: React.FC = () => {
                   }}
                 />
               </div>
-
-              <FormCheckbox
-                formik={formik}
-                label={'Is body posture'}
-                fieldName={'isBodyPosture'}
-              />
 
               <Field name="priceValue">
                 {() => (

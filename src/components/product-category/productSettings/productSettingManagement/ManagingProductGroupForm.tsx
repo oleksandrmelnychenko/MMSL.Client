@@ -29,6 +29,7 @@ interface IInitValues {
   priceValue: number;
   priceCurrencyId: number;
   declareSharedStylePrice: boolean;
+  isBodyPosture: boolean;
 }
 
 const _buildNewPayload = (values: IInitValues, product: ProductCategory) => {
@@ -36,6 +37,7 @@ const _buildNewPayload = (values: IInitValues, product: ProductCategory) => {
     productId: product.id,
     name: values.name,
     isMandatory: values.isMandatory,
+    isBodyPosture: values.isBodyPosture,
   };
 
   if (values.declareSharedStylePrice) {
@@ -56,6 +58,7 @@ const _buildUpdatedPayload = (
   let payload: any = {
     id: sourceEntity.id,
     isDeleted: sourceEntity.isDeleted,
+    isBodyPosture: values.isBodyPosture,
   };
 
   payload.name = values.name;
@@ -83,11 +86,13 @@ const _initDefaultValues = (
     priceValue: 0,
     priceCurrencyId: currencies.length > 0 ? currencies[0].id : 0,
     declareSharedStylePrice: false,
+    isBodyPosture: false,
   };
 
   if (sourceEntity) {
     initValues.name = sourceEntity.name;
     initValues.isMandatory = sourceEntity.isMandatory;
+    initValues.isBodyPosture = sourceEntity.isBodyPosture;
 
     if (sourceEntity.currentPrice) {
       initValues.declareSharedStylePrice = true;
@@ -234,6 +239,7 @@ export const ManagingvOptionGroupForm: React.FC = () => {
           .min(3)
           .required(() => 'Name is required'),
         priceValue: Yup.number().min(0, `Price can't be negative`),
+        isBodyPosture: Yup.boolean(),
         priceCurrencyId: Yup.string(),
         isMandatory: Yup.boolean(),
         declareSharedStylePrice: Yup.boolean(),
@@ -266,6 +272,12 @@ export const ManagingvOptionGroupForm: React.FC = () => {
                   formik={formik}
                   label={'Is mandatory'}
                   fieldName={'isMandatory'}
+                />
+
+                <FormCheckbox
+                  formik={formik}
+                  label={'Is body posture'}
+                  fieldName={'isBodyPosture'}
                 />
 
                 <Field name="declareSharedStylePrice">

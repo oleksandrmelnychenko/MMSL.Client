@@ -18,6 +18,7 @@ export const FormCheckbox: React.FC<IFormCheckboxProps> = (
           <Checkbox
             checked={props.formik.values[props.fieldName]}
             label={props.label}
+            styles={{ root: { marginTop: '20px' } }}
             onChange={(checked: any, isChecked: any) => {
               props.formik.setFieldValue(props.fieldName, isChecked);
               props.formik.setFieldTouched(props.fieldName);

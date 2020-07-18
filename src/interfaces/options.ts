@@ -9,6 +9,8 @@ export class OptionGroup extends EntityBaseNamed {
     super();
 
     this.isMandatory = false;
+    this.isBodyPosture = false;
+
     this.optionUnits = [];
 
     this.groupItemVisualState = new GroupItemVisualState();
@@ -20,6 +22,7 @@ export class OptionGroup extends EntityBaseNamed {
   }
 
   isMandatory: boolean;
+  isBodyPosture: boolean;
   optionUnits: OptionUnit[];
   optionPrices: OptionPrice[];
   currentPrice: OptionPrice | null | undefined;
@@ -36,7 +39,6 @@ export class OptionUnit extends EntityBaseNamed {
     this.imageUrl = '';
     this.imageBlob = null;
     this.isMandatory = false;
-    this.isBodyPosture = false;
     this.isAllow = false;
     this.value = '';
     this.orderIndex = 0;
@@ -56,7 +58,7 @@ export class OptionUnit extends EntityBaseNamed {
   /// This field is used for just added (not saved) image files. Actual saved image source is provided through `imageUrl`.
   imageBlob: any;
   isMandatory: boolean;
-  isBodyPosture: boolean;
+
   isAllow: boolean;
   optionGroupId?: number | null;
   optionGroup?: OptionGroup | null;
