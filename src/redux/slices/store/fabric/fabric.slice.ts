@@ -1,12 +1,19 @@
-import { Fabric } from './../../../../interfaces/fabric';
+import { Fabric, FilterItem } from './../../../../interfaces/fabric';
 import { createSlice } from '@reduxjs/toolkit';
+import { Pagination, PaginationInfo } from '../../../../interfaces';
 
 const INIT_STATE: IFabricState = {
   fabrics: [],
+  pagination: new Pagination(),
+  searchWord: '',
+  filters: [],
 };
 
 export interface IFabricState {
   fabrics: Fabric[];
+  pagination: Pagination;
+  searchWord: string;
+  filters: FilterItem[];
 }
 
 const fabric = createSlice({
@@ -14,12 +21,34 @@ const fabric = createSlice({
   initialState: INIT_STATE,
 
   reducers: {
-    apiGetAllFabrics(state) {},
+    apiGetAllFabrics(
+      state,
+      action: {
+        type: string;
+        payload: {
+          /// TODO: pagination temporary commented
+          paginationPageNumber: number;
+          paginationLimit: number;
+          searchPhrase: string;
+          filterBuilder: FilterItem[];
+        };
+      }
+    ) {},
     apiCreateFabric(state, action: { type: string; payload: string }) {},
     apiUpdateFabric(state, action: { type: string; payload: string }) {},
     apiDeleteFabricById(state, action: { type: string; payload: number }) {},
     changeFabrics(state, action: { type: string; payload: Fabric[] }) {
       state.fabrics = action.payload;
+      return state;
+    },
+    changePaginationInfo(
+      state,
+      action: { type: string; payload: PaginationInfo }
+    ) {
+      state.pagination = {
+        ...state.pagination,
+        paginationInfo: action.payload,
+      };
       return state;
     },
   },

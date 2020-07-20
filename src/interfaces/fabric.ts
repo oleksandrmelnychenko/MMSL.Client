@@ -66,3 +66,34 @@ export class Fabric extends EntityBase {
   userIdentityId: number;
   userIdentity: UserIdentity | null | undefined;
 }
+
+export class FabricFilterValue {
+  constructor() {
+    this.value = '';
+    this.applied = false;
+  }
+
+  value: string;
+  applied: boolean;
+}
+
+export class FilterItem {
+  constructor() {
+    this.name = '';
+
+    this.min = 0;
+    this.max = 0;
+
+    this.isRange = false;
+
+    this.values = [];
+  }
+
+  name: string;
+  min: number;
+  max: number;
+
+  isRange: boolean;
+
+  values: FabricFilterValue[];
+}

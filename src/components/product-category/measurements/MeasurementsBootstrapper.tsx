@@ -105,6 +105,7 @@ const MeasurementsBootstrapper: React.FC = () => {
           controlActions.showDashboardHintStub({
             isVisible: true,
             title: CREATE_YOUR_FIRST_MEASUREMENT,
+            isButtonAvailable: true,
             buttonLabel: CREATE_MEASUREMENT,
             buttonAction: () => {
               dispatch(

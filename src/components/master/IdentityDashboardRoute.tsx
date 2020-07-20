@@ -3,7 +3,7 @@ import './dashboard.scss';
 import { Switch, Route } from 'react-router-dom';
 import DealersBootstrapper from '../dealers/DealersBootstrapper';
 import CustomersBootstrapper from '../customers/CustomersBootstrapper';
-import StoreBootstrapper from '../store/StoreBootstrapper';
+import FabricsViewBootstrapper from '../fabrics/FabricsBootstrapper';
 import Reports from '../reports/Reports';
 import ProductCategoryView from '../product-category/ProductCategoryView';
 import { List } from 'linq-typescript';
@@ -75,7 +75,7 @@ const IdentityDashboardRoute: React.FC = () => {
         <Route
           key={index}
           path={appPaths.APP_STORE}
-          component={StoreBootstrapper}
+          component={FabricsViewBootstrapper}
         />
       );
   };

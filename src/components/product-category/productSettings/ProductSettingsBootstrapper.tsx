@@ -49,6 +49,7 @@ export const ProductSettingsBootstrapper: React.FC = (props: any) => {
           controlActions.showDashboardHintStub({
             isVisible: true,
             title: CREATE_YOUR_FIRST_STYLE,
+            isButtonAvailable: true,
             buttonLabel: CREATE_STYLE,
             buttonAction: () => {
               if (targetProduct) {

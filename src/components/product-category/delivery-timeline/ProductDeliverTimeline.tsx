@@ -41,6 +41,7 @@ export const ProductDeliverTimeline: React.FC = () => {
           controlActions.showDashboardHintStub({
             isVisible: true,
             title: CREATE_YOUR_FIRST_TIMELINE,
+            isButtonAvailable: true,
             buttonLabel: CREATE_TIMELINE,
             buttonAction: () => {
               dispatch(

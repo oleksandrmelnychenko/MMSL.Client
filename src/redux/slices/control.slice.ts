@@ -82,11 +82,14 @@ export class DashboardHintStubProps {
   constructor() {
     this.isVisible = false;
     this.title = '';
+    this.isButtonAvailable = false;
     this.buttonLabel = '';
     this.buttonAction = () => {};
   }
+
   isVisible: boolean;
   title: string;
+  isButtonAvailable: boolean;
   buttonLabel: string;
   buttonAction: () => void;
 }
@@ -212,6 +215,7 @@ const controls = createSlice({
         ...state.dashboardHintStub,
         isVisible: action.payload.isVisible,
         title: action.payload.title,
+        isButtonAvailable: action.payload.isButtonAvailable,
         buttonLabel: action.payload.buttonLabel,
         buttonAction: action.payload.buttonAction,
       };

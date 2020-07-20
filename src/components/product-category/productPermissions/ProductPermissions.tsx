@@ -89,6 +89,7 @@ const ProductPermissions: React.FC = () => {
           controlActions.showDashboardHintStub({
             isVisible: true,
             title: CREATE_YOUR_FIRST_STYLE_SETTINGS_PERMISSION,
+            isButtonAvailable: true,
             buttonLabel: CREATE_STYLE_PERMISSION,
             buttonAction: () => {
               if (localProduct) {

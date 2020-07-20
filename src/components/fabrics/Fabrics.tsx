@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Stores: React.FC = () => {
+const Fabrics: React.FC = () => {
   return <div>Stores</div>;
 };
 
-export default Stores;
+export default Fabrics;

@@ -26,6 +26,8 @@ const HintStub: React.FC = () => {
     },
   };
 
+  console.log(dashboardStubHint.isButtonAvailable);
+
   return (
     <div className="hintStub">
       <div className="hintStub__centeredContainer">
@@ -41,16 +43,18 @@ const HintStub: React.FC = () => {
           >
             {dashboardStubHint?.title}
           </Label>
-          <Stack.Item align={'center'}>
-            <PrimaryButton
-              text={dashboardStubHint?.buttonLabel}
-              onClick={() => {
-                if (dashboardStubHint?.buttonAction) {
-                  dashboardStubHint.buttonAction();
-                }
-              }}
-            />
-          </Stack.Item>
+          {dashboardStubHint.isButtonAvailable ? (
+            <Stack.Item align={'center'}>
+              <PrimaryButton
+                text={dashboardStubHint?.buttonLabel}
+                onClick={() => {
+                  if (dashboardStubHint?.buttonAction) {
+                    dashboardStubHint.buttonAction();
+                  }
+                }}
+              />
+            </Stack.Item>
+          ) : null}
         </Stack>
       </div>
     </div>
