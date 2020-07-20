@@ -23,7 +23,7 @@ const DASHBOARD_MENU_TITLE: string = 'Dashboard';
 const ORDER_PROFILES_MENU_TITLE: string = 'Order';
 const CUSTOMER_MENU_TITLE: string = 'Customer';
 const DEALERS_MENU_TITLE: string = 'Dealers';
-const STOCK_MENU_TITLE: string = 'Stock';
+const STORE_MENU_TITLE: string = 'Store';
 const DOCUMENTS_MENU_TITLE: string = 'Documents';
 const ACTIVITY_HISTORY_MENU_TITLE: string = 'Activity History';
 const PRODUCTS_MENU_TITLE: string = 'Products';
@@ -87,9 +87,9 @@ const Menu: React.FC = () => {
       link: `/${languageCode}/app/dealers`,
     },
     {
-      title: STOCK_MENU_TITLE,
-      className: 'stock',
-      link: `/${languageCode}/app/stock`,
+      title: STORE_MENU_TITLE,
+      className: 'store',
+      link: `/${languageCode}/app/store`,
     },
     {
       title: DOCUMENTS_MENU_TITLE,

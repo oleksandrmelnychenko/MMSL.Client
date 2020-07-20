@@ -3,6 +3,7 @@ import './dashboard.scss';
 import { Switch, Route } from 'react-router-dom';
 import DealersBootstrapper from '../dealers/DealersBootstrapper';
 import CustomersBootstrapper from '../customers/CustomersBootstrapper';
+import StoreView from '../store/StoreView';
 import Reports from '../reports/Reports';
 import ProductCategoryView from '../product-category/ProductCategoryView';
 import { List } from 'linq-typescript';
@@ -15,6 +16,7 @@ const CUSTOMER_ROUTE: string = 'Customer';
 const PRODUCT_ROUTE: string = 'Product';
 const REPORTS_ROUTE: string = 'Reports';
 const ORDER_PROFILES_ROUTE: string = 'OrderProfiles';
+const STORE_ROUTE: string = 'Store';
 
 const _routes: any[] = [
   {
@@ -31,6 +33,9 @@ const _routes: any[] = [
   },
   {
     description: ORDER_PROFILES_ROUTE,
+  },
+  {
+    description: STORE_ROUTE,
   },
 ];
 
@@ -65,6 +70,10 @@ const IdentityDashboardRoute: React.FC = () => {
         <Route key={index} path={appPaths.APP_REPORTS} component={Reports} />
       );
     else if (routeDescription === ORDER_PROFILES_ROUTE) return null;
+    else if (routeDescription === STORE_ROUTE)
+      return (
+        <Route key={index} path={appPaths.APP_STORE} component={StoreView} />
+      );
   };
 
   const rolesList = new List(TokenHelper.extractRolesFromJWT());

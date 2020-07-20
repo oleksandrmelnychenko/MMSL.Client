@@ -11,3 +11,5 @@ export const APP_PRODUCT_TIMELINES: string =
   '/en/app/product/delivery-timeline/';
 export const APP_PRODUCT_STYLE_PERMISSIONS: string =
   '/en/app/product/style-permissions/';
+
+export const APP_STORE: string = '/en/app/store';
