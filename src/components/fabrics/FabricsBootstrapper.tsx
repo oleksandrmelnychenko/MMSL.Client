@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Fabrics from './Fabrics';
+import FabricForm from './managing/FabricForm';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import { assignPendingActions } from '../../helpers/action.helper';
@@ -64,7 +65,6 @@ const FabricsViewBootstrapper: React.FC = () => {
         const canManageFabrics: boolean = rolesList.contains(
           RoleType[RoleType.Administrator] || RoleType[RoleType.Manufacturer]
         );
-        debugger;
 
         dispatch(
           controlActions.showDashboardHintStub({
@@ -75,17 +75,16 @@ const FabricsViewBootstrapper: React.FC = () => {
             isButtonAvailable: canManageFabrics,
             buttonLabel: CREATE_FABRIC,
             buttonAction: () => {
-              debugger;
-              //   dispatch(
-              //     controlActions.openRightPanel({
-              //       title: 'New Measurement',
-              //       width: '400px',
-              //       closeFunctions: () => {
-              //         dispatch(controlActions.closeRightPanel());
-              //       },
-              //       component: MeasurementForm,
-              //     })
-              //   );
+              dispatch(
+                controlActions.openRightPanel({
+                  title: 'New Fabric',
+                  width: '900px',
+                  closeFunctions: () => {
+                    dispatch(controlActions.closeRightPanel());
+                  },
+                  component: FabricForm,
+                })
+              );
             },
           })
         );

@@ -4,6 +4,7 @@ import { Pagination, PaginationInfo } from '../../../../interfaces';
 
 const INIT_STATE: IFabricState = {
   fabrics: [],
+  targetFabric: null,
   pagination: new Pagination(),
   searchWord: '',
   filters: [],
@@ -11,6 +12,7 @@ const INIT_STATE: IFabricState = {
 
 export interface IFabricState {
   fabrics: Fabric[];
+  targetFabric: Fabric | null | undefined;
   pagination: Pagination;
   searchWord: string;
   filters: FilterItem[];
@@ -39,6 +41,13 @@ const fabric = createSlice({
     apiDeleteFabricById(state, action: { type: string; payload: number }) {},
     changeFabrics(state, action: { type: string; payload: Fabric[] }) {
       state.fabrics = action.payload;
+      return state;
+    },
+    changeTargetFabric(
+      state,
+      action: { type: string; payload: Fabric | null | undefined }
+    ) {
+      state.targetFabric = action.payload;
       return state;
     },
     changePaginationInfo(

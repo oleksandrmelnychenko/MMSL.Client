@@ -12,6 +12,7 @@ import {
   postWebRequest,
   putWebRequest,
   deleteWebRequest,
+  postFormDataWebRequest,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.fabric.constants';
 import {
@@ -20,6 +21,32 @@ import {
   InfoMessageType,
 } from '../slices/control.slice';
 import { fabricActions } from '../slices/store/fabric/fabric.slice';
+
+// : string;
+// : string;
+// : FabricStatuses;
+// : string;
+// : string;
+// : string;
+// : string;
+// : string;
+// : string;
+// : string;
+// : number;
+// : any | null;
+
+const FABRIC_CODE: string = 'fabricCode';
+const DESCRIPTION: string = 'description';
+const STATUS: string = 'status';
+const COMPOSITION: string = 'composition';
+const PATTERN: string = 'pattern';
+const METRES: string = 'metres';
+const WEAVE: string = 'weave';
+const COLOR: string = 'color';
+const MILL: string = 'mill';
+const GSM: string = 'gSM';
+const COUNT: string = 'count';
+const FILE: string = 'file';
 
 export const apiGetAllFabricsEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
@@ -64,9 +91,23 @@ export const apiCreateFabricEpic = (action$: AnyAction, state$: any) => {
     switchMap((action: AnyAction) => {
       const languageCode = getActiveLanguage(state$.value.localize).code;
 
-      return postWebRequest(
+      const formData: FormData = new FormData();
+      formData.append(FABRIC_CODE, action.payload.fabricCode);
+      formData.append(DESCRIPTION, action.payload.description);
+      formData.append(STATUS, action.payload.status);
+      formData.append(COMPOSITION, action.payload.composition);
+      formData.append(PATTERN, action.payload.pattern);
+      formData.append(METRES, action.payload.metres);
+      formData.append(WEAVE, action.payload.weave);
+      formData.append(COLOR, action.payload.color);
+      formData.append(MILL, action.payload.mill);
+      formData.append(GSM, action.payload.gSM);
+      formData.append(COUNT, action.payload.count);
+      formData.append(FILE, action.payload.imageFile);
+
+      return postFormDataWebRequest(
         api.CREATE_NEW_FABRIC,
-        action.payload,
+        formData,
         state$.value
       ).pipe(
         mergeMap((successResponse: any) => {
