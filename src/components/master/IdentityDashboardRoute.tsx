@@ -3,7 +3,7 @@ import './dashboard.scss';
 import { Switch, Route } from 'react-router-dom';
 import DealersBootstrapper from '../dealers/DealersBootstrapper';
 import CustomersBootstrapper from '../customers/CustomersBootstrapper';
-import StoreView from '../store/StoreView';
+import StoreBootstrapper from '../store/StoreBootstrapper';
 import Reports from '../reports/Reports';
 import ProductCategoryView from '../product-category/ProductCategoryView';
 import { List } from 'linq-typescript';
@@ -72,7 +72,11 @@ const IdentityDashboardRoute: React.FC = () => {
     else if (routeDescription === ORDER_PROFILES_ROUTE) return null;
     else if (routeDescription === STORE_ROUTE)
       return (
-        <Route key={index} path={appPaths.APP_STORE} component={StoreView} />
+        <Route
+          key={index}
+          path={appPaths.APP_STORE}
+          component={StoreBootstrapper}
+        />
       );
   };
 

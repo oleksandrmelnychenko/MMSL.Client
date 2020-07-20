@@ -61,6 +61,10 @@ import {
   default as storeReducer,
   IStoreState,
 } from '../slices/store/store.slice';
+import {
+  default as fabricReducer,
+  IFabricState,
+} from '../slices/store/fabric/fabric.slice';
 
 export interface IApplicationState {
   auth: IAuthState;
@@ -82,6 +86,7 @@ export interface IApplicationState {
   orderProfile: IOrderProfileState;
   profileManaging: IProfileManagingState;
   store: IStoreState;
+  fabric: IFabricState;
 }
 
 export const reducer = combineReducers({
@@ -104,4 +109,5 @@ export const reducer = combineReducers({
   orderProfile: orderProfileReducer,
   profileManaging: profileManagingReducer,
   store: storeReducer,
+  fabric: fabricReducer,
 });

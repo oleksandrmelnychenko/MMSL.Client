@@ -1,8 +1,13 @@
+import { Fabric } from './../../../interfaces/fabric';
 import { createSlice } from '@reduxjs/toolkit';
 
-const INIT_STATE: IStoreState = {};
+const INIT_STATE: IStoreState = {
+  fabrics: [],
+};
 
-export interface IStoreState {}
+export interface IStoreState {
+  fabrics: Fabric[];
+}
 
 const store = createSlice({
   name: 'store',

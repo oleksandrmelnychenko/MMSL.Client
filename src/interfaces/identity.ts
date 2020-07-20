@@ -1,5 +1,12 @@
 import { EntityBase, EntityBaseNamed } from './base';
 
+export enum RoleType {
+  Administrator = 0,
+  Manufacturer = 1,
+  Dealer = 2,
+  Customer = 3,
+}
+
 export interface IAuthentication {
   email: string;
   password: string;
@@ -18,13 +25,6 @@ export interface IAuthState {
 
 export class UserRole extends EntityBase {}
 
-export enum RoleType {
-  Administrator = 0,
-  Manufacturer = 1,
-  Dealer = 2,
-  Customer = 3,
-}
-
 export class UserIdentityRoleType extends EntityBaseNamed {
   constructor() {
     super();
@@ -33,4 +33,38 @@ export class UserIdentityRoleType extends EntityBaseNamed {
   }
 
   roleType: RoleType;
+}
+
+export class UserIdentity extends EntityBase {
+  constructor() {
+    super();
+
+    this.email = '';
+    this.passwordHash = '';
+    this.passwordSalt = '';
+
+    this.lastLoggedIn = null;
+
+    this.isPasswordExpired = false;
+    this.forceChangePassword = false;
+    this.canUserResetExpiredPassword = false;
+
+    this.passwordExpiresAt = new Date(Date.now());
+
+    this.userRoles = [];
+  }
+
+  email: string;
+  passwordHash: string;
+  passwordSalt: string;
+
+  lastLoggedIn: Date | null | undefined;
+
+  isPasswordExpired: boolean;
+  forceChangePassword: boolean;
+  canUserResetExpiredPassword: boolean;
+
+  passwordExpiresAt: Date;
+
+  userRoles: UserRole[];
 }
