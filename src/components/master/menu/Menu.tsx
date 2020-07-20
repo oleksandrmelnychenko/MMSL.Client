@@ -20,7 +20,7 @@ interface IMenuItem {
 }
 
 const DASHBOARD_MENU_TITLE: string = 'Dashboard';
-const ORDER_PROFILES_MENU_TITLE: string = 'Order Profiles';
+const ORDER_PROFILES_MENU_TITLE: string = 'Order';
 const CUSTOMER_MENU_TITLE: string = 'Customer';
 const DEALERS_MENU_TITLE: string = 'Dealers';
 const STOCK_MENU_TITLE: string = 'Stock';

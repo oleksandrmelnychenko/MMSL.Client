@@ -234,7 +234,6 @@ export const DealerCustomers: React.FC = () => {
               <ManageDealerCustomerForm
                 formikReference={formikReference}
                 submitAction={(args: any) => {
-                  debugger;
                   const value = { ...args, storeId: selectedLocalStore.id };
                   if (dealerCustomerState.selectedCustomer) {
                     dispatch(

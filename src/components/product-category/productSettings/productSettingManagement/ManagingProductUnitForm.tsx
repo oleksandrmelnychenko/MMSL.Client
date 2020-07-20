@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
-import { Stack, TextField, Label, Checkbox } from 'office-ui-fabric-react';
+import { Stack, Label } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import { FormicReference } from '../../../../interfaces';
 import {
@@ -8,7 +8,6 @@ import {
   UnitValue,
   OptionGroup,
 } from '../../../../interfaces/options';
-import * as fabricStyles from '../../../../common/fabric-styles/styles';
 import { IApplicationState } from '../../../../redux/reducers';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -33,7 +32,6 @@ import UnitValuesInput, { UnitValueModel } from './UnitValuesInput';
 import UnitPriceInput from './price/UnitPriceInput';
 import { CurrencyType } from '../../../../interfaces/currencyTypes';
 import Entry from '../../../../common/formFields/Entry';
-import FormCheckbox from '../../../../common/formFields/FormCheckbox';
 
 export interface IInitValues {
   value: string;

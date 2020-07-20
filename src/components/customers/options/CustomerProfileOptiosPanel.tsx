@@ -111,6 +111,7 @@ const CustomerProfileOptiosPanel: React.FC = () => {
               customer: selectedCustomer,
               productId: selectedProductProfile.id,
               profileForEdit: null,
+              profileToReplicate: null,
             })
           );
         }
@@ -143,6 +144,42 @@ const CustomerProfileOptiosPanel: React.FC = () => {
               customer: selectedCustomer,
               productId: targetOrderProfile.productCategoryId,
               profileForEdit: targetOrderProfile,
+              profileToReplicate: null,
+            })
+          );
+
+          dispatch(orderProfileActions.changeTargetOrderProfile(null));
+        }
+      },
+    },
+    {
+      allowedRoles: [RoleType.Dealer],
+      title: 'Replicate',
+      className:
+        targetOrderProfile && selectedCustomer
+          ? 'management__btn-styles'
+          : 'management__btn-styles management__btn-disabled',
+      isDisabled: targetOrderProfile && selectedCustomer ? false : true,
+      tooltip: 'Replicate profile',
+      onClickFunc: () => {
+        if (targetOrderProfile && selectedCustomer) {
+          dispatch(
+            controlActions.openInfoPanelWithComponent({
+              component: ManageProfileOptiosPanel,
+              onDismisPendingAction: () => {
+                onDismissManageProfileOptiosPanel().forEach((action) =>
+                  dispatch(action)
+                );
+              },
+            })
+          );
+
+          dispatch(
+            profileManagingActions.beginManaging({
+              customer: selectedCustomer,
+              productId: targetOrderProfile.productCategoryId,
+              profileForEdit: null,
+              profileToReplicate: targetOrderProfile,
             })
           );
 

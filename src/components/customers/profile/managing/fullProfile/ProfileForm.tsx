@@ -122,23 +122,32 @@ const _initDefaultMeasurementValues = (
 const _initDefaultStyleValues = (
   initValues: IFormValues,
   productCategory: ProductCategory,
-  sourceEntity: CustomerProductProfile | null | undefined
+  sourceEntity: CustomerProductProfile | null | undefined,
+  entityToReplicate: CustomerProductProfile | null | undefined
 ) => {
   initValues.productStyleValues = initUnitItems(
     productCategory,
-    sourceEntity
+    entityToReplicate ? entityToReplicate : sourceEntity
   ) as [];
+
+  if (entityToReplicate) {
+    initValues.productStyleValues.forEach((unitItem: IStyleUnitModel) => {
+      unitItem.id = 0;
+      unitItem.isDirty = unitItem.isChecked;
+    });
+  }
 
   initValues.productStyleValuesDefaultsHelper = initUnitItems(
     productCategory,
-    sourceEntity
+    entityToReplicate ? null : sourceEntity
   ) as [];
 };
 
 const _initDefaultValues = (
   measurements: Measurement[],
   productCategory: ProductCategory,
-  sourceEntity: CustomerProductProfile | null | undefined
+  sourceEntity: CustomerProductProfile | null | undefined,
+  entityToReplicate: CustomerProductProfile | null | undefined
 ) => {
   const initValues: IFormValues = {
     name: '',
@@ -155,13 +164,29 @@ const _initDefaultValues = (
     productStyleValuesDefaultsHelper: [],
   };
 
-  _initDefaultMeasurementValues(initValues, measurements, sourceEntity);
-  _initDefaultStyleValues(initValues, productCategory, sourceEntity);
+  _initDefaultMeasurementValues(
+    initValues,
+    measurements,
+    entityToReplicate ? entityToReplicate : sourceEntity
+  );
+  _initDefaultStyleValues(
+    initValues,
+    productCategory,
+    sourceEntity,
+    entityToReplicate
+  );
 
   if (sourceEntity) {
     initValues.name = sourceEntity.name;
     initValues.description = sourceEntity.description
       ? sourceEntity.description
+      : '';
+  }
+
+  if (entityToReplicate) {
+    initValues.name = '';
+    initValues.description = entityToReplicate.description
+      ? entityToReplicate.description
       : '';
   }
 
@@ -217,14 +242,6 @@ const _buildNewPayload = (
     productCategoryId: productCategory.id,
   };
 
-  // if (payload.profileType === ProfileTypes.FreshMeasurement) {
-  //   payload.values = _buildMeasurementPayloadValues(
-  //     values.measurementValues,
-  //     payload.profileType
-  //   );
-  //   payload.fittingTypeId = 0;
-  //   payload.measurementSizeId = 0;
-  // } else
   if (payload.profileType === ProfileTypes.BaseMeasurement) {
     payload.values = _buildMeasurementPayloadValues(
       values.measurementValues,
@@ -276,14 +293,6 @@ const _buildEditedPayload = (
     productCategoryId: productCategory.id,
   };
 
-  // if (payload.profileType === ProfileTypes.FreshMeasurement) {
-  //   payload.values = _buildMeasurementPayloadValues(
-  //     values.measurementValues,
-  //     payload.profileType
-  //   );
-  //   payload.fittingTypeId = 0;
-  //   payload.measurementSizeId = 0;
-  // } else
   if (payload.profileType === ProfileTypes.BaseMeasurement) {
     payload.values = _buildMeasurementPayloadValues(
       values.measurementValues,
@@ -311,17 +320,22 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const profileForEdit: CustomerProductProfile | null | undefined = useSelector<
+  const { profileForEdit, profileToReplicate }: any = useSelector<
     IApplicationState,
-    CustomerProductProfile | null | undefined
-  >((state) => state.profileManaging.profileForEdit);
+    any
+  >((state) => state.profileManaging);
 
   const productId: number = useSelector<IApplicationState, number>(
     (state) => state.profileManaging.productId
   );
 
   const [formInit, setFormInit] = useState<any>(
-    _initDefaultValues(props.measurements, props.product, profileForEdit)
+    _initDefaultValues(
+      props.measurements,
+      props.product,
+      profileForEdit,
+      profileToReplicate
+    )
   );
   const [isFormikDirty, setFormikDirty] = useState<boolean>(false);
   const [formikReference] = useState<FormicReference>(
@@ -352,7 +366,8 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
                 _initDefaultValues(
                   props.measurements,
                   props.product,
-                  profileForEdit
+                  profileForEdit,
+                  profileToReplicate
                 )
               );
             }
@@ -365,9 +380,20 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
 
   useEffect(() => {
     setFormInit(
-      _initDefaultValues(props.measurements, props.product, profileForEdit)
+      _initDefaultValues(
+        props.measurements,
+        props.product,
+        profileForEdit,
+        profileToReplicate
+      )
     );
-  }, [props.measurements, props.product, props.customer, profileForEdit]);
+  }, [
+    props.measurements,
+    props.product,
+    props.customer,
+    profileForEdit,
+    profileToReplicate,
+  ]);
 
   const onCreate = (values: IFormValues) => {
     const payload = _buildNewPayload(values, props.product, props.customer);
