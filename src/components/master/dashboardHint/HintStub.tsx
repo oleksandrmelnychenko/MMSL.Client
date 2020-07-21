@@ -26,8 +26,6 @@ const HintStub: React.FC = () => {
     },
   };
 
-  console.log(dashboardStubHint.isButtonAvailable);
-
   return (
     <div className="hintStub">
       <div className="hintStub__centeredContainer">

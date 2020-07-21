@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { dealerActions } from '../../../redux/slices/dealer.slice';
-import { controlActions } from '../../../redux/slices/control.slice';
+import {
+  controlActions,
+  DashboardHintStubProps,
+} from '../../../redux/slices/control.slice';
 import { productActions } from '../../../redux/slices/product.slice';
 import './menu.scss';
 import { IApplicationState } from '../../../redux/reducers';
@@ -39,6 +42,11 @@ const Menu: React.FC = () => {
 
   const [isOpenSubMenu, setIsOpenSubMenu] = useState(false);
 
+  const dashboardStubHint = useSelector<
+    IApplicationState,
+    DashboardHintStubProps
+  >((state) => state.control.dashboardHintStub);
+
   const onMenuClick = (item: IMenuItem) => {
     setIsOpenSubMenu(false);
     dispatch(dealerActions.setSelectedDealer(null));
@@ -49,21 +57,6 @@ const Menu: React.FC = () => {
       dispatch(productActions.disposeProductCategoryStates());
     }
   };
-
-  const history = useLocation();
-
-  const pathNamesSubMenu = [
-    `/${languageCode}/app/styles`,
-    // Old pages, are not neccessary now
-    // `/${languageCode}/app/measurements`,
-    // `/${languageCode}/app/timeline`,
-  ];
-  useEffect(() => {
-    if (pathNamesSubMenu.includes(history.pathname)) {
-      setIsOpenSubMenu(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [history]);
 
   const menu: IMenuItem[] = [
     {
@@ -110,24 +103,6 @@ const Menu: React.FC = () => {
       title: SETTINGS_MENU_TITLE,
       className: 'settings',
       link: `/${languageCode}/app/styles`,
-      // Old pages, are not neccessary now
-      // children: [
-      // {
-      //   title: 'Styles',
-      //   className: 'styles',
-      //   link: `/${languageCode}/app/styles`,
-      // },
-      // {
-      //   title: 'Measurements',
-      //   className: 'measurements',
-      //   link: `/${languageCode}/app/measurements`,
-      // },
-      // {
-      //   title: 'Delivery timeline',
-      //   className: 'timeline',
-      //   link: `/${languageCode}/app/timeline`,
-      // },
-      // ],
     },
     {
       title: REPORTS_MENU_TITLE,
@@ -147,7 +122,10 @@ const Menu: React.FC = () => {
         >
           <NavLink
             onClick={() => {
-              item.children ? setIsOpenSubMenu(true) : onMenuClick(item);
+              if (dashboardStubHint.isVisible)
+                dispatch(controlActions.closeDashboardHintStub());
+
+              onMenuClick(item);
             }}
             className={`menu__link ${item.className}`}
             to={item.link}

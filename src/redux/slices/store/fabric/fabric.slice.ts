@@ -28,7 +28,6 @@ const fabric = createSlice({
       action: {
         type: string;
         payload: {
-          /// TODO: pagination temporary commented
           paginationPageNumber: number;
           paginationLimit: number;
           searchPhrase: string;

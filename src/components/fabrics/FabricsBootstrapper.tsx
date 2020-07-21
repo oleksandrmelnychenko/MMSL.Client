@@ -23,7 +23,7 @@ const FabricsViewBootstrapper: React.FC = () => {
   const [isWasIntended, setIsWasIntended] = useState<boolean>(false);
 
   const isEmpty: boolean = useSelector<IApplicationState, boolean>(
-    (state) => state.fabric.fabrics.length !== 0
+    (state) => state.fabric.fabrics.length === 0
   );
 
   const fabricState: IFabricState = useSelector<

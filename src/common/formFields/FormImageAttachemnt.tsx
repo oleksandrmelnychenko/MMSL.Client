@@ -67,8 +67,6 @@ export const FormImageAttachemnt: React.FC<IFormImageAttachemntProps> = (
 
   const isHaveURL: boolean = thumbUrl && thumbUrl.length > 0 ? true : false;
 
-  console.log(isHaveURL);
-
   return (
     <Field name={props.fieldName}>
       {() => {
