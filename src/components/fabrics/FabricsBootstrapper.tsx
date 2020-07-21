@@ -9,9 +9,7 @@ import {
   IFabricState,
 } from '../../redux/slices/store/fabric/fabric.slice';
 import { controlActions } from '../../redux/slices/control.slice';
-import { List } from 'linq-typescript';
-import { TokenHelper } from '../../helpers/token.helper';
-import { RoleType } from '../../interfaces/identity';
+import { isUserCanManageFabrics } from '../../helpers/fabric.helper';
 
 export const CREATE_YOUR_FIRST_FABRIC: string = 'Create your first fabric';
 export const NO_AVAILABLE_FABRICS: string = 'No available fabrics';
@@ -61,10 +59,7 @@ const FabricsViewBootstrapper: React.FC = () => {
   useEffect(() => {
     if (isWasIntended) {
       if (isEmpty) {
-        const rolesList = new List(TokenHelper.extractRolesFromJWT());
-        const canManageFabrics: boolean = rolesList.contains(
-          RoleType[RoleType.Administrator] || RoleType[RoleType.Manufacturer]
-        );
+        const canManageFabrics: boolean = isUserCanManageFabrics();
 
         dispatch(
           controlActions.showDashboardHintStub({

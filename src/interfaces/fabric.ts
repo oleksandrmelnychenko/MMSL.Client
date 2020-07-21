@@ -21,7 +21,7 @@ export class Fabric extends EntityBase {
     this.mill = '';
     this.color = '';
     this.composition = '';
-    this.gSM = '';
+    this.gsm = '';
     this.count = 0;
     this.weave = '';
     this.pattern = '';
@@ -49,7 +49,7 @@ export class Fabric extends EntityBase {
   mill: string;
   color: string;
   composition: string;
-  gSM: string;
+  gsm: string;
   count: number;
   weave: string;
   pattern: string;

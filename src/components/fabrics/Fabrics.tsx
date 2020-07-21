@@ -1,14 +1,25 @@
 import React from 'react';
-import { IApplicationState } from '../../redux/reducers';
-import { useSelector } from 'react-redux';
-import { Fabric } from '../../interfaces/fabric';
+import { Stack } from 'office-ui-fabric-react';
+import FabricsHeader from './FabricsHeader';
+import FabricList from './FabricList';
 
 const Fabrics: React.FC = () => {
-  const fabrics: Fabric[] = useSelector<IApplicationState, Fabric[]>(
-    (state) => state.fabric.fabrics
+  return (
+    <div className="content__root">
+      <Stack verticalAlign="space-around">
+        <Stack.Item align="stretch">
+          <div className="content__header">
+            <div className="content__header__top">
+              <FabricsHeader />
+            </div>
+          </div>
+        </Stack.Item>
+        <Stack.Item>
+          <FabricList />
+        </Stack.Item>
+      </Stack>
+    </div>
   );
-
-  return <div>{fabrics.length}</div>;
 };
 
 export default Fabrics;

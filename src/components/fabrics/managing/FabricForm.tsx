@@ -33,6 +33,7 @@ export interface IFormValues {
   count: number;
 
   imageFile: any | null;
+  fieldExternalImageURL: string;
 }
 
 const _statuses = [
@@ -67,6 +68,7 @@ const _initDefaultValues = (sourceEntity: Fabric | null | undefined) => {
     gSM: '',
     count: 0,
     imageFile: null,
+    fieldExternalImageURL: '',
   };
 
   if (sourceEntity) {
@@ -79,9 +81,10 @@ const _initDefaultValues = (sourceEntity: Fabric | null | undefined) => {
     initValues.weave = sourceEntity.weave;
     initValues.color = sourceEntity.color;
     initValues.mill = sourceEntity.mill;
-    initValues.gSM = sourceEntity.gSM;
+    initValues.gSM = sourceEntity.gsm;
     initValues.count = sourceEntity.count;
     initValues.imageFile = null;
+    initValues.fieldExternalImageURL = sourceEntity.imageUrl;
   }
 
   return initValues;
@@ -109,7 +112,24 @@ const _buildNewPayload = (values: IFormValues) => {
 };
 
 const _buildEditedPayload = (values: IFormValues, sourceEntity: Fabric) => {
-  let payload: any = {};
+  let payload: any = {
+    fabricCode: values.fabricCode,
+    description: values.description,
+    status: values.status,
+    composition: values.composition,
+    pattern: values.pattern,
+    metres: values.metres,
+    weave: values.weave,
+    color: values.color,
+    mill: values.mill,
+    gSM: values.gSM,
+    count: parseInt(`${values.count}`),
+    imageFile: values.imageFile,
+    imageUrl: values.fieldExternalImageURL ? values.fieldExternalImageURL : '',
+    id: sourceEntity.id,
+  };
+
+  if (isNaN(payload.count)) payload.count = 0;
 
   return payload;
 };
@@ -197,7 +217,33 @@ const FabricForm: React.FC = () => {
   const onEdit = (values: IFormValues, fabricForEdit: Fabric) => {
     const payload = _buildEditedPayload(values, fabricForEdit);
 
-    console.log(payload);
+    dispatch(
+      assignPendingActions(
+        fabricActions.apiUpdateFabric(payload),
+        [],
+        [],
+        (args: any) => {
+          dispatch(
+            fabricActions.changeFabrics(
+              new List(fabrics)
+                .select((fabric: Fabric) => {
+                  let selectResult = fabric;
+
+                  if (fabric.id === args.body.id) {
+                    selectResult = args.body;
+                  }
+
+                  return selectResult;
+                })
+                .toArray()
+            )
+          );
+          dispatch(controlActions.closeRightPanel());
+          dispatch(fabricActions.changeTargetFabric(null));
+        },
+        (args: any) => {}
+      )
+    );
   };
 
   return (
@@ -215,7 +261,7 @@ const FabricForm: React.FC = () => {
         gSM: Yup.string().required(() => 'GSM is required'),
         count: Yup.number(),
         imageFile: Yup.object().nullable(),
-        imageURL: Yup.string(),
+        fieldExternalImageURL: Yup.string().nullable(),
       })}
       initialValues={_initDefaultValues(targetProduct)}
       onSubmit={(values: any) => {
@@ -337,9 +383,7 @@ const FabricForm: React.FC = () => {
                     <FormImageAttachemnt
                       formik={formik}
                       fieldName={'imageFile'}
-                      sourceImageURL={
-                        targetProduct?.imageUrl ? targetProduct.imageUrl : ''
-                      }
+                      fieldExternalImageURL={'fieldExternalImageURL'}
                     />
                   </div>
                 </Stack>

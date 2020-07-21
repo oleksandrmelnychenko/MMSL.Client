@@ -50,7 +50,7 @@ const _onRenderThumb = (thumbUrl: string) => {
 
 export interface IFormImageAttachemntProps {
   formik: any;
-  sourceImageURL: string;
+  fieldExternalImageURL: string;
   fieldName: string;
 }
 
@@ -59,7 +59,7 @@ export const FormImageAttachemnt: React.FC<IFormImageAttachemntProps> = (
 ) => {
   const fileInputRef: any = React.createRef();
 
-  let thumbUrl: string = props.sourceImageURL;
+  let thumbUrl: string = props.formik.values[props.fieldExternalImageURL];
 
   if (props.formik.values[props.fieldName]) {
     thumbUrl = URL.createObjectURL(props.formik.values[props.fieldName]);
@@ -107,6 +107,12 @@ export const FormImageAttachemnt: React.FC<IFormImageAttachemntProps> = (
                           props.formik.setFieldTouched(props.fieldName);
                         }
                       }
+
+                      props.formik.setFieldValue(
+                        props.fieldExternalImageURL,
+                        null
+                      );
+                      props.formik.setFieldTouched(props.fieldExternalImageURL);
                     };
 
                     const addInputFileFlow = () => {
