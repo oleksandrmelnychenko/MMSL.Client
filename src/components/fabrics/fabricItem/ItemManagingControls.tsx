@@ -101,7 +101,9 @@ const ItemManagingControls: React.FC<IItemManagingControlsProps> = (
         title: 'Details',
         description: props.fabric.fabricCode,
         width: '900px',
-        panelType: RightPanelType.Form,
+        panelType: canManageFabrics
+          ? RightPanelType.Form
+          : RightPanelType.ReadOnly,
         closeFunctions: () => {
           dispatch(rightPanelActions.closeRightPanel());
         },

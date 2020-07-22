@@ -52,6 +52,7 @@ export interface IFormImageAttachemntProps {
   formik: any;
   fieldExternalImageURL: string;
   fieldName: string;
+  readOnly?: boolean;
 }
 
 export const FormImageAttachemnt: React.FC<IFormImageAttachemntProps> = (
@@ -73,67 +74,71 @@ export const FormImageAttachemnt: React.FC<IFormImageAttachemntProps> = (
         return (
           <div className="form__group">
             <Stack tokens={{ childrenGap: 10 }}>
-              <div style={{ position: 'relative' }}>
-                <input
-                  accept="image/*"
-                  ref={fileInputRef}
-                  style={{
-                    height: '1px',
-                    width: '1px',
-                    position: 'absolute',
-                  }}
-                  type="file"
-                  onChange={(args: any) => {
-                    let file = args.currentTarget.files;
+              {props.readOnly ? null : (
+                <div style={{ position: 'relative' }}>
+                  <input
+                    accept="image/*"
+                    ref={fileInputRef}
+                    style={{
+                      height: '1px',
+                      width: '1px',
+                      position: 'absolute',
+                    }}
+                    type="file"
+                    onChange={(args: any) => {
+                      let file = args.currentTarget.files;
 
-                    if (file && file.length && file.length > 0) {
-                      props.formik.setFieldValue(props.fieldName, file[0]);
-                      props.formik.setFieldTouched(props.fieldName);
+                      if (file && file.length && file.length > 0) {
+                        props.formik.setFieldValue(props.fieldName, file[0]);
+                        props.formik.setFieldTouched(props.fieldName);
 
-                      args.currentTarget.value = '';
-                    }
-                  }}
-                />
-                <DefaultButton
-                  iconProps={{ iconName: 'Attach' }}
-                  styles={fabricStyles.btnUploadStyle}
-                  text={isHaveURL ? 'Delete attach' : 'Attach'}
-                  onClick={() => {
-                    const clearInputFileFlow = () => {
-                      if (fileInputRef && fileInputRef.current) {
-                        if (fileInputRef.current) {
-                          fileInputRef.current.value = '';
-                          props.formik.setFieldValue(props.fieldName, null);
-                          props.formik.setFieldTouched(props.fieldName);
-                        }
+                        args.currentTarget.value = '';
                       }
-
-                      props.formik.setFieldValue(
-                        props.fieldExternalImageURL,
-                        null
-                      );
-                      props.formik.setFieldTouched(props.fieldExternalImageURL);
-                    };
-
-                    const addInputFileFlow = () => {
-                      if (fileInputRef && fileInputRef.current) {
-                        if (fileInputRef.current && document.createEvent) {
-                          let evt = document.createEvent('MouseEvents');
-                          evt.initEvent('click', true, false);
-                          fileInputRef.current.dispatchEvent(evt);
+                    }}
+                  />
+                  <DefaultButton
+                    iconProps={{ iconName: 'Attach' }}
+                    styles={fabricStyles.btnUploadStyle}
+                    text={isHaveURL ? 'Delete attach' : 'Attach'}
+                    onClick={() => {
+                      const clearInputFileFlow = () => {
+                        if (fileInputRef && fileInputRef.current) {
+                          if (fileInputRef.current) {
+                            fileInputRef.current.value = '';
+                            props.formik.setFieldValue(props.fieldName, null);
+                            props.formik.setFieldTouched(props.fieldName);
+                          }
                         }
-                      }
-                    };
 
-                    if (isHaveURL) {
-                      clearInputFileFlow();
-                    } else {
-                      addInputFileFlow();
-                    }
-                  }}
-                  allowDisabledFocus
-                />
-              </div>
+                        props.formik.setFieldValue(
+                          props.fieldExternalImageURL,
+                          null
+                        );
+                        props.formik.setFieldTouched(
+                          props.fieldExternalImageURL
+                        );
+                      };
+
+                      const addInputFileFlow = () => {
+                        if (fileInputRef && fileInputRef.current) {
+                          if (fileInputRef.current && document.createEvent) {
+                            let evt = document.createEvent('MouseEvents');
+                            evt.initEvent('click', true, false);
+                            fileInputRef.current.dispatchEvent(evt);
+                          }
+                        }
+                      };
+
+                      if (isHaveURL) {
+                        clearInputFileFlow();
+                      } else {
+                        addInputFileFlow();
+                      }
+                    }}
+                    allowDisabledFocus
+                  />
+                </div>
+              )}
 
               {isHaveURL ? _onRenderThumb(thumbUrl) : null}
             </Stack>

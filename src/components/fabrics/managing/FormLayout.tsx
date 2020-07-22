@@ -4,6 +4,7 @@ import { Stack, IDropdownOption } from 'office-ui-fabric-react';
 import Entry from '../../../common/formFields/Entry';
 import FormDropdown from '../../../common/formFields/FormDropdown';
 import FormImageAttachemnt from '../../../common/formFields/FormImageAttachemnt';
+import { isUserCanManageFabrics } from '../../../helpers/fabric.helper';
 
 const _statuses = [
   {
@@ -28,6 +29,8 @@ export interface IFormLayoutProps {
 }
 
 const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
+  const canManageFabrics: boolean = isUserCanManageFabrics();
+
   return (
     <Stack horizontal tokens={{ childrenGap: '12px' }}>
       <Stack.Item grow={1} styles={{ root: { width: '32%' } }}>
@@ -37,6 +40,7 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
             fieldName={'fabricCode'}
             label={'Fabric Code'}
             isRequired
+            readOnly={!canManageFabrics}
           />
 
           <Entry
@@ -44,6 +48,7 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
             fieldName={'composition'}
             label={'Composition'}
             isRequired
+            readOnly={!canManageFabrics}
           />
 
           <Entry
@@ -51,6 +56,7 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
             fieldName={'pattern'}
             label={'Pattern'}
             isRequired
+            readOnly={!canManageFabrics}
           />
 
           <Entry
@@ -58,6 +64,7 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
             fieldName={'metres'}
             label={'Metres'}
             isRequired
+            readOnly={!canManageFabrics}
           />
 
           <Entry
@@ -65,6 +72,7 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
             fieldName={'weave'}
             label={'Weave'}
             isRequired
+            readOnly={!canManageFabrics}
           />
 
           <Entry
@@ -72,6 +80,7 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
             fieldName={'color'}
             label={'Color'}
             isRequired
+            readOnly={!canManageFabrics}
           />
 
           <Entry
@@ -79,6 +88,7 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
             fieldName={'mill'}
             label={'Mill'}
             isRequired
+            readOnly={!canManageFabrics}
           />
 
           <Entry
@@ -86,6 +96,7 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
             fieldName={'gSM'}
             label={'GSM'}
             isRequired
+            readOnly={!canManageFabrics}
           />
         </Stack>
       </Stack.Item>
@@ -97,9 +108,11 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
             fieldName={'description'}
             label={'Description'}
             isRequired={false}
+            readOnly={!canManageFabrics}
           />
 
           <FormDropdown
+            readOnly={!canManageFabrics}
             formik={props.formik}
             fieldName={'status'}
             label={'Status'}
@@ -117,6 +130,7 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
           />
 
           <Entry
+            readOnly={!canManageFabrics}
             formik={props.formik}
             fieldName={'count'}
             label={'Count'}
@@ -130,6 +144,7 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
         <Stack>
           <div style={{ marginTop: '41px' }}>
             <FormImageAttachemnt
+              readOnly={!canManageFabrics}
               formik={props.formik}
               fieldName={'imageFile'}
               fieldExternalImageURL={'fieldExternalImageURL'}

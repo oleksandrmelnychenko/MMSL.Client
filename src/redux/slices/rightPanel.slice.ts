@@ -49,6 +49,7 @@ const rightPanel = createSlice({
         commandBarItems: [],
         closeFunctions: action.payload.closeFunctions,
         component: action.payload.component,
+        panelType: action.payload.panelType,
       };
       return state;
     },

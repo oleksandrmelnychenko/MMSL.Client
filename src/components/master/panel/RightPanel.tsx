@@ -4,6 +4,7 @@ import { IApplicationState } from '../../../redux/reducers';
 import {
   IRightPanelProps,
   rightPanelActions,
+  RightPanelType,
 } from '../../../redux/slices/rightPanel.slice';
 import {
   Stack,
@@ -15,14 +16,44 @@ import {
   StickyPositionType,
 } from 'office-ui-fabric-react';
 import { commandBarStyles } from '../../../common/fabric-styles/styles';
-import './rightPanel.scss';
+
+const _renderCommandsBar = (rightPanelProps: IRightPanelProps) => {
+  let result: any = null;
+
+  if (rightPanelProps.panelType === RightPanelType.Form) {
+    result = (
+      <div className="rightPanel__commandBar">
+        <CommandBar
+          styles={commandBarStyles}
+          items={rightPanelProps.commandBarItems as ICommandBarItemProps[]}
+          className={rightPanelProps.commandBarClassName}
+        />
+      </div>
+    );
+  }
+
+  return result;
+};
+
+const _resolvePanelContentStyle = (panelType: RightPanelType) => {
+  let result: any = null;
+
+  if (panelType === RightPanelType.Form) {
+    result = { root: { top: '188px', marginBottom: '28px' } };
+  } else if (panelType === RightPanelType.ReadOnly) {
+    result = { root: { top: '74px', marginBottom: '28px' } };
+  }
+
+  return result;
+};
 
 export const RightPanel: React.FC<IRightPanelProps> = () => {
   const dispatch = useDispatch();
 
-  const rightPanel = useSelector<IApplicationState, IRightPanelProps>(
-    (state) => state.rightPanel.rightPanel
-  );
+  const rightPanelProps: IRightPanelProps = useSelector<
+    IApplicationState,
+    IRightPanelProps
+  >((state) => state.rightPanel.rightPanel);
 
   useEffect(() => {
     document.onkeydown = (event) => {
@@ -45,24 +76,20 @@ export const RightPanel: React.FC<IRightPanelProps> = () => {
             horizontal
             className="panelTitle__panelHeader"
           >
-            <Text className="panelTitle__title">{rightPanel.title}</Text>
+            <Text className="panelTitle__title">{rightPanelProps.title}</Text>
             <Text className="panelTitle__description">
-              {rightPanel.description}
+              {rightPanelProps.description}
             </Text>
           </Stack>
         </div>
-        <div className="rightPanel__commandBar">
-          <CommandBar
-            styles={commandBarStyles}
-            items={rightPanel.commandBarItems as ICommandBarItemProps[]}
-            className={rightPanel.commandBarClassName}
-          />
-        </div>
+        {_renderCommandsBar(rightPanelProps)}
       </Sticky>
 
-      <ScrollablePane styles={{ root: { top: '188px', marginBottom: '28px' } }}>
+      <ScrollablePane
+        styles={_resolvePanelContentStyle(rightPanelProps.panelType)}
+      >
         <div style={{ padding: '28px 28px 0px 28px' }}>
-          <rightPanel.component />
+          <rightPanelProps.component />
         </div>
       </ScrollablePane>
     </div>

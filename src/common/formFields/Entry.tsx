@@ -9,6 +9,7 @@ export interface IEntryProps {
   label: string;
   isRequired: boolean;
   isNumber?: boolean;
+  readOnly?: boolean;
 }
 
 export const Entry: React.FC<IEntryProps> = (props: IEntryProps) => {
@@ -17,6 +18,7 @@ export const Entry: React.FC<IEntryProps> = (props: IEntryProps) => {
       {() => (
         <div className="form__group">
           <TextField
+            readOnly={props.readOnly}
             type={props.isNumber ? 'number' : undefined}
             autoComplete={'off'}
             value={props.formik.values[props.fieldName]}
