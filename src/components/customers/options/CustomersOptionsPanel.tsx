@@ -10,6 +10,7 @@ import {
   IInfoPanelMenuItem,
   CommonDialogType,
 } from '../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../redux/slices/rightPanel.slice';
 import ManageCustomerForm from '../customerManaging/ManageCustomerForm';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { List } from 'linq-typescript';
@@ -51,11 +52,11 @@ const CustomersOptionsPanel: React.FC = () => {
       onClickFunc: () => {
         if (selectedCustomer) {
           dispatch(
-            controlActions.openRightPanel({
+            rightPanelActions.openRightPanel({
               title: `Customer: ${selectedCustomer!.customerName}`,
               width: '400px',
               closeFunctions: () => {
-                dispatch(controlActions.closeRightPanel());
+                dispatch(rightPanelActions.closeRightPanel());
                 dispatch(customerActions.updateSelectedCustomer(null));
               },
               component: ManageCustomerForm,

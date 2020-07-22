@@ -7,7 +7,6 @@ export class ControlState {
     this.isGlobalShimmerActive = false;
     this.isCollapseMenu = false;
     this.panelInfo = new IPanelInfo();
-    this.rightPanel = new RightPanelProps();
     this.commonDialog = new CommonDialogState();
     this.infoMessage = null;
     this.isActivateStatusBar = false;
@@ -19,7 +18,6 @@ export class ControlState {
   isGlobalShimmerActive: boolean;
   isCollapseMenu: boolean;
   panelInfo: IPanelInfo;
-  rightPanel: RightPanelProps;
   commonDialog: CommonDialogState;
   infoMessage: InfoMessage | null | undefined;
   isActivateStatusBar: boolean;
@@ -50,22 +48,6 @@ export enum CommonDialogType {
   Common,
   Delete,
   Content,
-}
-
-export class RightPanelProps {
-  constructor() {
-    this.title = '';
-    this.width = '600px';
-    this.closeFunctions = null;
-    this.component = null;
-  }
-  title: string;
-  description?: string;
-  width: string;
-  commandBarItems?: any[];
-  commandBarClassName?: string;
-  closeFunctions: any;
-  component: any;
 }
 
 export class DashboardHintStubProps {
@@ -174,27 +156,6 @@ const controls = createSlice({
     },
     hideGlobalShimmer(state) {
       state.isGlobalShimmerActive = false;
-      return state;
-    },
-    openRightPanel(state, action) {
-      state.rightPanel = {
-        ...state.rightPanel,
-        title: action.payload.title,
-        width: action.payload.width,
-        commandBarClassName: action.payload.commandBarClassName,
-        description: action.payload.description,
-        commandBarItems: [],
-        closeFunctions: action.payload.closeFunctions,
-        component: action.payload.component,
-      };
-      return state;
-    },
-    setPanelButtons(state, action) {
-      state.rightPanel.commandBarItems = action.payload;
-      return state;
-    },
-    closeRightPanel(state) {
-      state.rightPanel = new RightPanelProps();
       return state;
     },
     showDashboardHintStub(

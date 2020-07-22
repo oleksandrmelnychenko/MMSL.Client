@@ -13,7 +13,7 @@ import {
   CommandBarItem,
   ChangeItemsDisabledState,
 } from '../../../helpers/commandBar.helper';
-import { controlActions } from '../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../redux/slices/rightPanel.slice';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { List } from 'linq-typescript';
@@ -95,7 +95,7 @@ export const ManageCustomerForm: React.FC = () => {
   const initValues = initDefaultValuesForNewStoreCustomerForm(selectedCustomer);
 
   const commandBarItems = useSelector<IApplicationState, any>(
-    (state) => state.control.rightPanel.commandBarItems
+    (state) => state.rightPanel.rightPanel.commandBarItems
   );
 
   const [formikReference] = useState<FormicReference>(
@@ -119,7 +119,7 @@ export const ManageCustomerForm: React.FC = () => {
   useEffect(() => {
     if (formikReference.formik) {
       dispatch(
-        controlActions.setPanelButtons([
+        rightPanelActions.setPanelButtons([
           GetCommandBarItemProps(CommandBarItem.Save, () => {
             formikReference.formik.submitForm();
           }),
@@ -134,7 +134,7 @@ export const ManageCustomerForm: React.FC = () => {
   useEffect(() => {
     if (new List(commandBarItems).any()) {
       dispatch(
-        controlActions.setPanelButtons(
+        rightPanelActions.setPanelButtons(
           ChangeItemsDisabledState(
             commandBarItems,
             [CommandBarItem.Reset, CommandBarItem.Save],
@@ -179,7 +179,7 @@ export const ManageCustomerForm: React.FC = () => {
               customerActions.saveNewCustomer(buildCustomerAccountData(values)),
               [
                 customerActions.getCustomersListPaginated(),
-                controlActions.closeRightPanel(),
+                rightPanelActions.closeRightPanel(),
               ]
             );
             dispatch(createAction);

@@ -8,7 +8,7 @@ import { FittingType } from '../../../../../interfaces/measurements';
 import { CommandBarButton, FontWeights } from 'office-ui-fabric-react';
 import FittinTypeGrid from './FittingTypeGrid';
 import FittingTypeForm from './management/FittingTypeForm';
-import { controlActions } from '../../../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../../../redux/slices/rightPanel.slice';
 
 export const CREATE_YOUR_FIRST_FITTING_TYPE: string =
   'Create your first fitting type';
@@ -68,11 +68,11 @@ const FittingTypes: React.FC = () => {
   const addNewFittingType = () => {
     if (targetMeasurement) {
       dispatch(
-        controlActions.openRightPanel({
+        rightPanelActions.openRightPanel({
           title: 'Add fitting type',
           width: '400px',
           closeFunctions: () => {
-            dispatch(controlActions.closeRightPanel());
+            dispatch(rightPanelActions.closeRightPanel());
           },
           component: FittingTypeForm,
         })

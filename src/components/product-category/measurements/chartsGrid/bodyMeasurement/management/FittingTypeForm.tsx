@@ -17,7 +17,7 @@ import {
 import * as fabricStyles from '../../../../../../common/fabric-styles/styles';
 import './fittingTypeForm.scss';
 import { List } from 'linq-typescript';
-import { controlActions } from '../../../../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../../../../redux/slices/rightPanel.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   GetCommandBarItemProps,
@@ -25,10 +25,7 @@ import {
   ChangeItemsDisabledState,
 } from '../../../../../../helpers/commandBar.helper';
 import { IApplicationState } from '../../../../../../redux/reducers';
-import {
-  FittingType,
-  MeasurementUnit,
-} from '../../../../../../interfaces/measurements';
+import { FittingType } from '../../../../../../interfaces/measurements';
 import { fittingTypesActions } from '../../../../../../redux/slices/measurements/fittingTypes.slice';
 import { assignPendingActions } from '../../../../../../helpers/action.helper';
 
@@ -267,13 +264,13 @@ export const FittingTypeForm: React.FC = () => {
   );
 
   const commandBarItems = useSelector<IApplicationState, any>(
-    (state) => state.control.rightPanel.commandBarItems
+    (state) => state.rightPanel.rightPanel.commandBarItems
   );
 
   useEffect(() => {
     if (formikReference.formik) {
       dispatch(
-        controlActions.setPanelButtons([
+        rightPanelActions.setPanelButtons([
           GetCommandBarItemProps(CommandBarItem.Save, () => {
             formikReference.formik.submitForm();
           }),
@@ -288,7 +285,7 @@ export const FittingTypeForm: React.FC = () => {
   useEffect(() => {
     if (new List(commandBarItems).any()) {
       dispatch(
-        controlActions.setPanelButtons(
+        rightPanelActions.setPanelButtons(
           ChangeItemsDisabledState(
             commandBarItems,
             [CommandBarItem.Reset, CommandBarItem.Save],
@@ -333,7 +330,7 @@ export const FittingTypeForm: React.FC = () => {
               dispatch(fittingTypesActions.changeFittingTypes([]));
             }
 
-            dispatch(controlActions.closeRightPanel());
+            dispatch(rightPanelActions.closeRightPanel());
           },
           (args: any) => {}
         )
@@ -372,7 +369,7 @@ export const FittingTypeForm: React.FC = () => {
                   .toArray()
               )
             );
-            dispatch(controlActions.closeRightPanel());
+            dispatch(rightPanelActions.closeRightPanel());
           },
           (args: any) => {}
         )

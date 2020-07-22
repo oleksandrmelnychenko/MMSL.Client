@@ -9,10 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { ImenuItem } from '../../../interfaces';
-import { controlActions } from '../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../redux/slices/rightPanel.slice';
 import ManageDealerForm from '../managing/dealerManaging/ManageDealerForm';
-import ProductAvailabilityForm from '../managing/dealerProductManaging/ProductAvailabilityForm';
-import { DealerAccount } from '../../../interfaces/dealer';
 
 const DealerOptions: React.FC = () => {
   const dispatch = useDispatch();
@@ -22,33 +20,12 @@ const DealerOptions: React.FC = () => {
     ToggleDealerPanelWithDetails
   >((state) => state.dealer.isOpenPanelWithDealerDetails);
 
-  const dealer = useSelector<IApplicationState, DealerAccount | null>(
-    (state) => state.dealer.selectedDealer
-  );
-
-  // const changeSelectedMenuItem = (componentType: number) => {
-  //   const updateMenu = menu.map((item) => {
-  //     item.isSelected = false;
-  //     if (item.componentType === componentType) {
-  //       item.isSelected = true;
-  //     }
-  //     return item;
-  //   });
-
-  //   setMenu(updateMenu);
-  // };
-
   useEffect(() => {
     return () => {
       dispatch(dealerActions.setSelectedDealer(null));
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // useEffect(() => {
-  //   changeSelectedMenuItem(isOpenPanelWithDealerDetails.componentType);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [isOpenPanelWithDealerDetails]);
 
   const menuItem: ImenuItem[] = [
     {
@@ -64,11 +41,11 @@ const DealerOptions: React.FC = () => {
       componentType: DealerDetilsComponents.DealerDetails,
       onClickAction: () => {
         dispatch(
-          controlActions.openRightPanel({
+          rightPanelActions.openRightPanel({
             title: 'Edit dealer',
             width: '600px',
             closeFunctions: () => {
-              dispatch(controlActions.closeRightPanel());
+              dispatch(rightPanelActions.closeRightPanel());
             },
             component: ManageDealerForm,
           })
@@ -90,30 +67,7 @@ const DealerOptions: React.FC = () => {
       onClickAction: () => {},
       isSelected: false,
     },
-    // {
-    //   title: 'Products',
-    //   className: 'management__btn-styles',
-    //   componentType: DealerDetilsComponents.DealerProducts,
-    //   onClickAction: () => {
-    //     if (dealer) {
-    //       dispatch(
-    //         controlActions.openRightPanel({
-    //           title: 'Manage products',
-    //           description: dealer.name,
-    //           width: '600px',
-    //           closeFunctions: () => {
-    //             dispatch(controlActions.closeRightPanel());
-    //           },
-    //           component: ProductAvailabilityForm,
-    //         })
-    //       );
-    //     }
-    //   },
-    //   isSelected: false,
-    // },
   ];
-
-  // const [menu, setMenu] = useState(menuItem);
 
   return (
     <div className="management">
@@ -135,7 +89,6 @@ const DealerOptions: React.FC = () => {
               ) {
                 if (item.onClickAction) item.onClickAction();
               } else {
-                // changeSelectedMenuItem(item.componentType);
                 const openDetailsArgs: ToggleDealerPanelWithDetails = new ToggleDealerPanelWithDetails();
                 openDetailsArgs.isOpen = true;
                 openDetailsArgs.componentType = item.componentType;

@@ -21,6 +21,7 @@ import {
   controlActions,
   CommonDialogType,
 } from '../../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../../redux/slices/rightPanel.slice';
 import { Card } from '@uifabric/react-cards';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
 import { assignPendingActions } from '../../../../helpers/action.helper';
@@ -220,12 +221,12 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
                     );
 
                     dispatch(
-                      controlActions.openRightPanel({
+                      rightPanelActions.openRightPanel({
                         title: 'Details',
                         description: args.value,
                         width: '400px',
                         closeFunctions: () => {
-                          dispatch(controlActions.closeRightPanel());
+                          dispatch(rightPanelActions.closeRightPanel());
                         },
                         component: ManagingProductUnitForm,
                       })

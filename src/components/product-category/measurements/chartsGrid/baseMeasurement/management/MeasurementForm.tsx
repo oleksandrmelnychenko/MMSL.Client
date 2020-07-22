@@ -13,7 +13,7 @@ import * as fabricStyles from '../../../../../../common/fabric-styles/styles';
 import './measurementForm.scss';
 import { List } from 'linq-typescript';
 import { useDispatch, useSelector } from 'react-redux';
-import { controlActions } from '../../../../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../../../../redux/slices/rightPanel.slice';
 import {
   CommandBarItem,
   GetCommandBarItemProps,
@@ -172,7 +172,7 @@ export const MeasurementForm: React.FC = () => {
   );
 
   const commandBarItems = useSelector<IApplicationState, any>(
-    (state) => state.control.rightPanel.commandBarItems
+    (state) => state.rightPanel.rightPanel.commandBarItems
   );
 
   const measurements = useSelector<IApplicationState, Measurement[]>(
@@ -201,7 +201,7 @@ export const MeasurementForm: React.FC = () => {
   useEffect(() => {
     if (formikReference.formik) {
       dispatch(
-        controlActions.setPanelButtons([
+        rightPanelActions.setPanelButtons([
           GetCommandBarItemProps(CommandBarItem.Save, () => {
             formikReference.formik.submitForm();
           }),
@@ -216,7 +216,7 @@ export const MeasurementForm: React.FC = () => {
   useEffect(() => {
     if (new List(commandBarItems).any()) {
       dispatch(
-        controlActions.setPanelButtons(
+        rightPanelActions.setPanelButtons(
           ChangeItemsDisabledState(
             commandBarItems,
             [CommandBarItem.Reset, CommandBarItem.Save],
@@ -274,7 +274,7 @@ export const MeasurementForm: React.FC = () => {
               productActions.changeSelectedProductMeasurement(args.body)
             );
             dispatch(productActions.changeProductMeasurementForEdit(null));
-            dispatch(controlActions.closeRightPanel());
+            dispatch(rightPanelActions.closeRightPanel());
           },
           (args: any) => {}
         )
@@ -307,7 +307,7 @@ export const MeasurementForm: React.FC = () => {
             dispatch(
               productActions.changeSelectedProductMeasurement(args.body)
             );
-            dispatch(controlActions.closeRightPanel());
+            dispatch(rightPanelActions.closeRightPanel());
           },
           (args: any) => {}
         )

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Fabric, FabricStatuses } from '../../../interfaces/fabric';
 import { FormicReference } from '../../../interfaces';
 import { fabricActions } from '../../../redux/slices/store/fabric/fabric.slice';
-import { controlActions } from '../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../redux/slices/rightPanel.slice';
 import {
   GetCommandBarItemProps,
   CommandBarItem,
@@ -13,11 +13,8 @@ import {
 import { List } from 'linq-typescript';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { Stack, IDropdownOption } from 'office-ui-fabric-react';
-import Entry from '../../../common/formFields/Entry';
-import FormDropdown from '../../../common/formFields/FormDropdown';
-import FormImageAttachemnt from '../../../common/formFields/FormImageAttachemnt';
 import { assignPendingActions } from '../../../helpers/action.helper';
+import FormLayout from './FormLayout';
 
 export interface IFormValues {
   fabricCode: string;
@@ -35,24 +32,6 @@ export interface IFormValues {
   imageFile: any | null;
   fieldExternalImageURL: string;
 }
-
-const _statuses = [
-  {
-    key: `${FabricStatuses.InStock}`,
-    text: 'In Stock',
-    status: FabricStatuses.InStock,
-  } as IDropdownOption,
-  {
-    key: `${FabricStatuses.OutOfStock}`,
-    text: 'Out of Stock',
-    status: FabricStatuses.OutOfStock,
-  } as IDropdownOption,
-  {
-    key: `${FabricStatuses.Discontinued}`,
-    text: 'Discontinued',
-    status: FabricStatuses.Discontinued,
-  } as IDropdownOption,
-];
 
 const _initDefaultValues = (sourceEntity: Fabric | null | undefined) => {
   const initValues: IFormValues = {
@@ -143,7 +122,7 @@ const FabricForm: React.FC = () => {
   const [isFormikDirty, setFormikDirty] = useState<boolean>(false);
 
   const commandBarItems = useSelector<IApplicationState, any>(
-    (state) => state.control.rightPanel.commandBarItems
+    (state) => state.rightPanel.rightPanel.commandBarItems
   );
 
   const targetProduct: Fabric | null | undefined = useSelector<
@@ -165,7 +144,7 @@ const FabricForm: React.FC = () => {
   useEffect(() => {
     if (formikReference.formik) {
       dispatch(
-        controlActions.setPanelButtons([
+        rightPanelActions.setPanelButtons([
           GetCommandBarItemProps(CommandBarItem.Save, () => {
             formikReference.formik.submitForm();
           }),
@@ -180,7 +159,7 @@ const FabricForm: React.FC = () => {
   useEffect(() => {
     if (new List(commandBarItems).any()) {
       dispatch(
-        controlActions.setPanelButtons(
+        rightPanelActions.setPanelButtons(
           ChangeItemsDisabledState(
             commandBarItems,
             [CommandBarItem.Reset, CommandBarItem.Save],
@@ -206,7 +185,7 @@ const FabricForm: React.FC = () => {
               new List(fabrics).concat([args.body]).toArray()
             )
           );
-          dispatch(controlActions.closeRightPanel());
+          dispatch(rightPanelActions.closeRightPanel());
           dispatch(fabricActions.changeTargetFabric(null));
         },
         (args: any) => {}
@@ -238,7 +217,7 @@ const FabricForm: React.FC = () => {
                 .toArray()
             )
           );
-          dispatch(controlActions.closeRightPanel());
+          dispatch(rightPanelActions.closeRightPanel());
           dispatch(fabricActions.changeTargetFabric(null));
         },
         (args: any) => {}
@@ -278,117 +257,7 @@ const FabricForm: React.FC = () => {
       {(formik) => {
         return (
           <Form>
-            <Stack horizontal tokens={{ childrenGap: '12px' }}>
-              <Stack.Item grow={1} styles={{ root: { width: '32%' } }}>
-                <Stack>
-                  <Entry
-                    formik={formik}
-                    fieldName={'fabricCode'}
-                    label={'Fabric Code'}
-                    isRequired
-                  />
-
-                  <Entry
-                    formik={formik}
-                    fieldName={'composition'}
-                    label={'Composition'}
-                    isRequired
-                  />
-
-                  <Entry
-                    formik={formik}
-                    fieldName={'pattern'}
-                    label={'Pattern'}
-                    isRequired
-                  />
-
-                  <Entry
-                    formik={formik}
-                    fieldName={'metres'}
-                    label={'Metres'}
-                    isRequired
-                  />
-
-                  <Entry
-                    formik={formik}
-                    fieldName={'weave'}
-                    label={'Weave'}
-                    isRequired
-                  />
-
-                  <Entry
-                    formik={formik}
-                    fieldName={'color'}
-                    label={'Color'}
-                    isRequired
-                  />
-
-                  <Entry
-                    formik={formik}
-                    fieldName={'mill'}
-                    label={'Mill'}
-                    isRequired
-                  />
-
-                  <Entry
-                    formik={formik}
-                    fieldName={'gSM'}
-                    label={'GSM'}
-                    isRequired
-                  />
-                </Stack>
-              </Stack.Item>
-
-              <Stack.Item grow={1} styles={{ root: { width: '32%' } }}>
-                <Stack>
-                  <Entry
-                    formik={formik}
-                    fieldName={'description'}
-                    label={'Description'}
-                    isRequired={false}
-                  />
-
-                  <FormDropdown
-                    formik={formik}
-                    fieldName={'status'}
-                    label={'Status'}
-                    options={_statuses}
-                    resolveOnChangeValue={(
-                      option: IDropdownOption | null | undefined
-                    ) => {
-                      return option
-                        ? (option as any).status
-                        : FabricStatuses.InStock;
-                    }}
-                    resolveSelectedKeyValue={(formValue: any) =>
-                      formValue !== null && formValue !== undefined
-                        ? `${formValue}`
-                        : ''
-                    }
-                  />
-
-                  <Entry
-                    formik={formik}
-                    fieldName={'count'}
-                    label={'Count'}
-                    isRequired={false}
-                    isNumber
-                  />
-                </Stack>
-              </Stack.Item>
-
-              <Stack.Item grow={1} styles={{ root: { width: '32%' } }}>
-                <Stack>
-                  <div style={{ marginTop: '41px' }}>
-                    <FormImageAttachemnt
-                      formik={formik}
-                      fieldName={'imageFile'}
-                      fieldExternalImageURL={'fieldExternalImageURL'}
-                    />
-                  </div>
-                </Stack>
-              </Stack.Item>
-            </Stack>
+            <FormLayout formik={formik} />
           </Form>
         );
       }}

@@ -3,6 +3,7 @@ import {
   controlActions,
   IInfoPanelMenuItem,
 } from '../../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../../redux/slices/rightPanel.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ProductManagementPanel from '../ProductManagementPanel';
@@ -77,11 +78,11 @@ const BodyMeasurementOptions: React.FC = () => {
       onClickFunc: () => {
         if (category && targetProductMeasurement) {
           dispatch(
-            controlActions.openRightPanel({
+            rightPanelActions.openRightPanel({
               title: 'Add fitting type',
               width: '400px',
               closeFunctions: () => {
-                dispatch(controlActions.closeRightPanel());
+                dispatch(rightPanelActions.closeRightPanel());
               },
               component: FittingTypeForm,
             })

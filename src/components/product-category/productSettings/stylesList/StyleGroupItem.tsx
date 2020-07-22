@@ -22,6 +22,7 @@ import {
   controlActions,
   CommonDialogType,
 } from '../../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../../redux/slices/rightPanel.slice';
 import './styleGroupItem.scss';
 import { ManagingvOptionGroupForm } from './../productSettingManagement/ManagingProductGroupForm';
 import { OptionGroupDetails } from './../productSettingManagement/OptionGroupDetails';
@@ -209,12 +210,12 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
                           )
                         );
                         dispatch(
-                          controlActions.openRightPanel({
+                          rightPanelActions.openRightPanel({
                             title: 'Manage Style',
                             description: props.expandableStyleGroup.item.name,
                             width: '700px',
                             closeFunctions: () => {
-                              dispatch(controlActions.closeRightPanel());
+                              dispatch(rightPanelActions.closeRightPanel());
                             },
                             component: OptionGroupDetails,
                           })
@@ -252,12 +253,12 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
                             productSettingsActions.changeEditingGroup(args)
                           );
                           dispatch(
-                            controlActions.openRightPanel({
+                            rightPanelActions.openRightPanel({
                               title: 'Details',
                               description: args.name,
                               width: '400px',
                               closeFunctions: () => {
-                                dispatch(controlActions.closeRightPanel());
+                                dispatch(rightPanelActions.closeRightPanel());
                               },
                               component: ManagingvOptionGroupForm,
                             })

@@ -5,7 +5,7 @@ import { ProductCategory } from '../../../../../interfaces/products';
 import { ProductPermissionSettings } from '../../../../../interfaces/products';
 import { List } from 'linq-typescript';
 import { useDispatch, useSelector } from 'react-redux';
-import { controlActions } from '../../../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../../../redux/slices/rightPanel.slice';
 import {
   CommandBarItem,
   GetCommandBarItemProps,
@@ -84,7 +84,7 @@ export const PermissionStylesConfigForm: React.FC = () => {
   >([]);
 
   const commandBarItems = useSelector<IApplicationState, any>(
-    (state) => state.control.rightPanel.commandBarItems
+    (state) => state.rightPanel.rightPanel.commandBarItems
   );
 
   const productCategory = useSelector<
@@ -120,7 +120,7 @@ export const PermissionStylesConfigForm: React.FC = () => {
     if (new List(commandBarItems).any()) {
       updatePanelButtons();
       dispatch(
-        controlActions.setPanelButtons(
+        rightPanelActions.setPanelButtons(
           ChangeItemsDisabledState(
             commandBarItems,
             [CommandBarItem.Reset, CommandBarItem.Save],
@@ -184,7 +184,7 @@ export const PermissionStylesConfigForm: React.FC = () => {
 
   const updatePanelButtons = () => {
     dispatch(
-      controlActions.setPanelButtons([
+      rightPanelActions.setPanelButtons([
         GetCommandBarItemProps(CommandBarItem.Save, () => {
           editSetting();
         }),

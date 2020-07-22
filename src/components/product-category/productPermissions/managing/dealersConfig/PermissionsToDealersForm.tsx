@@ -10,6 +10,7 @@ import {
   controlActions,
   CommonDialogType,
 } from '../../../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../../../redux/slices/rightPanel.slice';
 import {
   CommandBarItem,
   GetCommandBarItemProps,
@@ -68,7 +69,7 @@ export const PermissionsToDealersForm: React.FC = () => {
   );
 
   const commandBarItems = useSelector<IApplicationState, any>(
-    (state) => state.control.rightPanel.commandBarItems
+    (state) => state.rightPanel.rightPanel.commandBarItems
   );
 
   const productCategory = useSelector<
@@ -102,7 +103,7 @@ export const PermissionsToDealersForm: React.FC = () => {
   useEffect(() => {
     if (formikReference.formik) {
       dispatch(
-        controlActions.setPanelButtons([
+        rightPanelActions.setPanelButtons([
           GetCommandBarItemProps(CommandBarItem.New, () => {
             formikReference.formik.resetForm();
             setDetailsState(DealerDetailsState.Assigning);
@@ -127,7 +128,7 @@ export const PermissionsToDealersForm: React.FC = () => {
   useEffect(() => {
     if (new List(commandBarItems).any()) {
       dispatch(
-        controlActions.setPanelButtons(
+        rightPanelActions.setPanelButtons(
           ChangeItemsDisabledStatePartialy(commandBarItems, [
             { command: CommandBarItem.New, isDisabled: false },
             { command: CommandBarItem.Reset, isDisabled: !assignDirtyRules },

@@ -7,7 +7,7 @@ import {
 } from '../../common/fabric-styles/styles';
 import { isUserCanManageFabrics } from '../../helpers/fabric.helper';
 import { fabricActions } from '../../redux/slices/store/fabric/fabric.slice';
-import { controlActions } from '../../redux/slices/control.slice';
+import { rightPanelActions } from '../../redux/slices/rightPanel.slice';
 import FabricForm from './managing/FabricForm';
 
 export const FabricsHeader: React.FC = (props: any) => {
@@ -28,11 +28,11 @@ export const FabricsHeader: React.FC = (props: any) => {
           onClick={() => {
             dispatch(fabricActions.changeTargetFabric(null));
             dispatch(
-              controlActions.openRightPanel({
+              rightPanelActions.openRightPanel({
                 title: 'New Fabric',
                 width: '900px',
                 closeFunctions: () => {
-                  dispatch(controlActions.closeRightPanel());
+                  dispatch(rightPanelActions.closeRightPanel());
                 },
                 component: FabricForm,
               })

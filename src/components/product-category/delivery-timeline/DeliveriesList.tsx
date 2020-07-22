@@ -16,6 +16,7 @@ import {
   controlActions,
   CommonDialogType,
 } from '../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../redux/slices/rightPanel.slice';
 import {
   detailsListStyle,
   columnIconButtonStyle,
@@ -197,12 +198,12 @@ export const DeliveriesList: React.FC = () => {
               onClick={() => {
                 dispatch(productActions.selectedTimeline(item));
                 dispatch(
-                  controlActions.openRightPanel({
+                  rightPanelActions.openRightPanel({
                     title: 'Edit timeline',
                     description: item.deliveryTimeline.name,
                     width: '400px',
                     closeFunctions: () => {
-                      dispatch(controlActions.closeRightPanel());
+                      dispatch(rightPanelActions.closeRightPanel());
                     },
                     component: ProductDeliverTimelineForm,
                   })

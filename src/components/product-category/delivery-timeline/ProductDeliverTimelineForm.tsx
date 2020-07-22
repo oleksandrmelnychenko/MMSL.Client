@@ -11,7 +11,7 @@ import {
   ProductDeliveryTimelineSelected,
 } from '../../../interfaces/deliveryTimelines';
 import { IApplicationState } from '../../../redux/reducers';
-import { controlActions } from '../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../redux/slices/rightPanel.slice';
 import {
   GetCommandBarItemProps,
   CommandBarItem,
@@ -51,7 +51,7 @@ export const ProductDeliverTimelineForm: React.FC = () => {
   );
 
   const commandBarItems = useSelector<IApplicationState, any>(
-    (state) => state.control.rightPanel.commandBarItems
+    (state) => state.rightPanel.rightPanel.commandBarItems
   );
 
   const [formikReference] = useState<FormicReference>(
@@ -84,7 +84,7 @@ export const ProductDeliverTimelineForm: React.FC = () => {
   useEffect(() => {
     if (formikReference.formik) {
       dispatch(
-        controlActions.setPanelButtons([
+        rightPanelActions.setPanelButtons([
           GetCommandBarItemProps(CommandBarItem.Save, () => {
             formikReference.formik.submitForm();
           }),
@@ -100,7 +100,7 @@ export const ProductDeliverTimelineForm: React.FC = () => {
   useEffect(() => {
     if (new List(commandBarItems).any()) {
       dispatch(
-        controlActions.setPanelButtons(
+        rightPanelActions.setPanelButtons(
           ChangeItemsDisabledState(
             commandBarItems,
             [CommandBarItem.Reset, CommandBarItem.Save],
@@ -182,7 +182,7 @@ export const ProductDeliverTimelineForm: React.FC = () => {
 
             dispatch(action);
           }
-          dispatch(controlActions.closeRightPanel());
+          dispatch(rightPanelActions.closeRightPanel());
         }}
         innerRef={(formik: any) => {
           formikReference.formik = formik;

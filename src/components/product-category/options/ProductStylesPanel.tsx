@@ -1,17 +1,11 @@
 import React, { useEffect } from 'react';
-import {
-  Label,
-  PrimaryButton,
-  TooltipHost,
-  TooltipDelay,
-  DirectionalHint,
-} from 'office-ui-fabric-react';
+
 import {
   controlActions,
   IInfoPanelMenuItem,
 } from '../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../redux/slices/rightPanel.slice';
 import { useDispatch, useSelector } from 'react-redux';
-import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { useHistory } from 'react-router-dom';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { ProductCategory } from '../../../interfaces/products';
@@ -74,11 +68,11 @@ const ProductStylesPanel: React.FC = () => {
       onClickFunc: () => {
         if (choseCategory) {
           dispatch(
-            controlActions.openRightPanel({
+            rightPanelActions.openRightPanel({
               title: 'New style',
               width: '400px',
               closeFunctions: () => {
-                dispatch(controlActions.closeRightPanel());
+                dispatch(rightPanelActions.closeRightPanel());
               },
               component: ManagingvOptionGroupForm,
             })

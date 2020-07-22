@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
 import {
   RightPanelProps,
-  controlActions,
-} from '../../../redux/slices/control.slice';
+  rightPanelActions,
+} from '../../../redux/slices/rightPanel.slice';
 import {
   Stack,
   Text,
@@ -15,19 +15,20 @@ import {
   StickyPositionType,
 } from 'office-ui-fabric-react';
 import { commandBarStyles } from '../../../common/fabric-styles/styles';
+import './rightPanel.scss';
 
 export const RightPanel: React.FC<RightPanelProps> = () => {
   const dispatch = useDispatch();
 
   const rightPanel = useSelector<IApplicationState, RightPanelProps>(
-    (state) => state.control.rightPanel
+    (state) => state.rightPanel.rightPanel
   );
 
   useEffect(() => {
     document.onkeydown = (event) => {
       if ((event as any).keyCode === 27) {
         event.preventDefault();
-        dispatch(controlActions.closeRightPanel());
+        dispatch(rightPanelActions.closeRightPanel());
       }
     };
     return () => {
@@ -36,7 +37,7 @@ export const RightPanel: React.FC<RightPanelProps> = () => {
   });
 
   return (
-    <div>
+    <div className="rightPanel">
       <Sticky stickyPosition={StickyPositionType.Header}>
         <div className="panelTitle">
           <Stack
@@ -50,7 +51,7 @@ export const RightPanel: React.FC<RightPanelProps> = () => {
             </Text>
           </Stack>
         </div>
-        <div>
+        <div className="rightPanel__commandBar">
           <CommandBar
             styles={commandBarStyles}
             items={rightPanel.commandBarItems as ICommandBarItemProps[]}

@@ -4,6 +4,7 @@ import { IApplicationState } from '../../../redux/reducers/index';
 import { Measurement } from '../../../interfaces/measurements';
 import { ProductCategory } from '../../../interfaces/products';
 import { controlActions } from '../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../redux/slices/rightPanel.slice';
 import MeasurementForm from './chartsGrid/baseMeasurement/management/MeasurementForm';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { productActions } from '../../../redux/slices/product.slice';
@@ -109,11 +110,11 @@ const MeasurementsBootstrapper: React.FC = () => {
             buttonLabel: CREATE_MEASUREMENT,
             buttonAction: () => {
               dispatch(
-                controlActions.openRightPanel({
+                rightPanelActions.openRightPanel({
                   title: 'New Measurement',
                   width: '400px',
                   closeFunctions: () => {
-                    dispatch(controlActions.closeRightPanel());
+                    dispatch(rightPanelActions.closeRightPanel());
                   },
                   component: MeasurementForm,
                 })

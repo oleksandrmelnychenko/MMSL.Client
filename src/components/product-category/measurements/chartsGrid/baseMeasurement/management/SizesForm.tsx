@@ -12,7 +12,7 @@ import {
 import * as fabricStyles from '../../../../../../common/fabric-styles/styles';
 import './sizeForm.scss';
 import { List } from 'linq-typescript';
-import { controlActions } from '../../../../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../../../../redux/slices/rightPanel.slice';
 import { measurementActions } from '../../../../../../redux/slices/measurements/measurement.slice';
 import { productActions } from '../../../../../../redux/slices/product.slice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -263,13 +263,13 @@ export const SizesForm: React.FC = () => {
   >((state) => state.product.productMeasurementsState.sizeForEdit);
 
   const commandBarItems = useSelector<IApplicationState, any>(
-    (state) => state.control.rightPanel.commandBarItems
+    (state) => state.rightPanel.rightPanel.commandBarItems
   );
 
   useEffect(() => {
     if (formikReference.formik) {
       dispatch(
-        controlActions.setPanelButtons([
+        rightPanelActions.setPanelButtons([
           GetCommandBarItemProps(CommandBarItem.Save, () => {
             formikReference.formik.submitForm();
           }),
@@ -284,7 +284,7 @@ export const SizesForm: React.FC = () => {
   useEffect(() => {
     if (new List(commandBarItems).any()) {
       dispatch(
-        controlActions.setPanelButtons(
+        rightPanelActions.setPanelButtons(
           ChangeItemsDisabledState(
             commandBarItems,
             [CommandBarItem.Reset, CommandBarItem.Save],
@@ -324,7 +324,7 @@ export const SizesForm: React.FC = () => {
                   dispatch(
                     productActions.changeSelectedProductMeasurement(args)
                   );
-                  dispatch(controlActions.closeRightPanel());
+                  dispatch(rightPanelActions.closeRightPanel());
                 },
                 (args: any) => {}
               )
@@ -363,7 +363,7 @@ export const SizesForm: React.FC = () => {
                   dispatch(
                     productActions.changeSelectedProductMeasurement(args)
                   );
-                  dispatch(controlActions.closeRightPanel());
+                  dispatch(rightPanelActions.closeRightPanel());
                 },
                 (args: any) => {}
               )

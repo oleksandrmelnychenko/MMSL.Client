@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
-import { Stack, TextField, Checkbox } from 'office-ui-fabric-react';
+import { Stack, Checkbox } from 'office-ui-fabric-react';
 import * as Yup from 'yup';
 import '../../../dealers/managing/dealerManaging/manageDealerForm.scss';
 import { FormicReference } from '../../../../interfaces';
 import { OptionGroup } from '../../../../interfaces/options';
-import * as fabricStyles from '../../../../common/fabric-styles/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { controlActions } from '../../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../../redux/slices/rightPanel.slice';
 import {
   GetCommandBarItemProps,
   CommandBarItem,
@@ -113,7 +113,7 @@ export const ManagingvOptionGroupForm: React.FC = () => {
   const [isFormikDirty, setFormikDirty] = useState<boolean>(false);
 
   const commandBarItems = useSelector<IApplicationState, any>(
-    (state) => state.control.rightPanel.commandBarItems
+    (state) => state.rightPanel.rightPanel.commandBarItems
   );
 
   const targetProduct: ProductCategory | null | undefined = useSelector<
@@ -142,7 +142,7 @@ export const ManagingvOptionGroupForm: React.FC = () => {
   useEffect(() => {
     if (formikReference.formik) {
       dispatch(
-        controlActions.setPanelButtons([
+        rightPanelActions.setPanelButtons([
           GetCommandBarItemProps(CommandBarItem.Save, () => {
             formikReference.formik.submitForm();
           }),
@@ -157,7 +157,7 @@ export const ManagingvOptionGroupForm: React.FC = () => {
   useEffect(() => {
     if (new List(commandBarItems).any()) {
       dispatch(
-        controlActions.setPanelButtons(
+        rightPanelActions.setPanelButtons(
           ChangeItemsDisabledState(
             commandBarItems,
             [CommandBarItem.Reset, CommandBarItem.Save],
@@ -188,7 +188,7 @@ export const ManagingvOptionGroupForm: React.FC = () => {
                 [],
                 (args: any) => {
                   dispatch(productSettingsActions.updateOptionGroupList(args));
-                  dispatch(controlActions.closeRightPanel());
+                  dispatch(rightPanelActions.closeRightPanel());
                   dispatch(productSettingsActions.changeEditingGroup(null));
                 },
                 (args: any) => {}
@@ -219,7 +219,7 @@ export const ManagingvOptionGroupForm: React.FC = () => {
                 [],
                 (args: any) => {
                   dispatch(productSettingsActions.updateOptionGroupList(args));
-                  dispatch(controlActions.closeRightPanel());
+                  dispatch(rightPanelActions.closeRightPanel());
                   dispatch(productSettingsActions.changeEditingGroup(null));
                 },
                 (args: any) => {}

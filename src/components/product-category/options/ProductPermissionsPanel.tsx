@@ -3,6 +3,7 @@ import {
   controlActions,
   IInfoPanelMenuItem,
 } from '../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../redux/slices/rightPanel.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { IApplicationState } from '../../../redux/reducers/index';
@@ -63,11 +64,11 @@ const ProductPermissionsPanel: React.FC = () => {
       onClickFunc: () => {
         if (choseCategory) {
           dispatch(
-            controlActions.openRightPanel({
+            rightPanelActions.openRightPanel({
               title: 'New style permission',
               width: '400px',
               closeFunctions: () => {
-                dispatch(controlActions.closeRightPanel());
+                dispatch(rightPanelActions.closeRightPanel());
               },
               component: ProductPermissionForm,
             })

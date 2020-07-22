@@ -26,6 +26,7 @@ import {
   controlActions,
   CommonDialogType,
 } from '../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../redux/slices/rightPanel.slice';
 import ProductPermissionForm from './managing/ProductPermissionForm';
 import { productStylePermissionsActions } from '../../../redux/slices/productStylePermissions.slice';
 import { assignPendingActions } from '../../../helpers/action.helper';
@@ -76,12 +77,12 @@ const PermissionsList: React.FC = () => {
               )
             );
             dispatch(
-              controlActions.openRightPanel({
+              rightPanelActions.openRightPanel({
                 title: 'Details',
                 description: args.name,
                 width: '700px',
                 closeFunctions: () => {
-                  dispatch(controlActions.closeRightPanel());
+                  dispatch(rightPanelActions.closeRightPanel());
                 },
                 component: PermissionStylesConfigForm,
               })
@@ -107,12 +108,12 @@ const PermissionsList: React.FC = () => {
               )
             );
             dispatch(
-              controlActions.openRightPanel({
+              rightPanelActions.openRightPanel({
                 title: 'Assign Dealers',
                 description: args.name,
                 width: '720px',
                 closeFunctions: () => {
-                  dispatch(controlActions.closeRightPanel());
+                  dispatch(rightPanelActions.closeRightPanel());
                 },
                 component: PermissionsToDealersForm,
               })
@@ -139,12 +140,12 @@ const PermissionsList: React.FC = () => {
             );
 
             dispatch(
-              controlActions.openRightPanel({
+              rightPanelActions.openRightPanel({
                 title: 'Edit style permission',
                 description: args.name,
                 width: '400px',
                 closeFunctions: () => {
-                  dispatch(controlActions.closeRightPanel());
+                  dispatch(rightPanelActions.closeRightPanel());
                 },
                 component: ProductPermissionForm,
               })

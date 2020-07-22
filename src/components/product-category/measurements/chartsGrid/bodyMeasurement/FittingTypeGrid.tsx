@@ -27,6 +27,7 @@ import {
   controlActions,
   CommonDialogType,
 } from '../../../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../../../redux/slices/rightPanel.slice';
 import FittingTypeForm from './management/FittingTypeForm';
 import {
   Measurement,
@@ -227,12 +228,12 @@ const FittingTypeGrid: React.FC = () => {
             dispatch(fittingTypesActions.changeFittingTypeForEdit(args));
 
             dispatch(
-              controlActions.openRightPanel({
+              rightPanelActions.openRightPanel({
                 title: 'Edit',
                 description: `${args.type}`,
                 width: '400px',
                 closeFunctions: () => {
-                  dispatch(controlActions.closeRightPanel());
+                  dispatch(rightPanelActions.closeRightPanel());
                 },
                 component: FittingTypeForm,
               })

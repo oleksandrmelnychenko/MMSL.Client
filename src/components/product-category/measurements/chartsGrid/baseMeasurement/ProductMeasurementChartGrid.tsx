@@ -33,6 +33,7 @@ import {
   controlActions,
   CommonDialogType,
 } from '../../../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../../../redux/slices/rightPanel.slice';
 import { productActions } from '../../../../../redux/slices/product.slice';
 import BaseSizeValueCell from './BaseSizeValueCell';
 import BaseSizeNameCell from './BaseSizeNameCell';
@@ -150,7 +151,7 @@ const ProductMeasurementChartGrid: React.FC = () => {
                             );
 
                             dispatch(
-                              controlActions.openRightPanel({
+                              rightPanelActions.openRightPanel({
                                 title: 'Edit size',
                                 description: item.name,
                                 width: '400px',
@@ -160,7 +161,7 @@ const ProductMeasurementChartGrid: React.FC = () => {
                                       null
                                     )
                                   );
-                                  dispatch(controlActions.closeRightPanel());
+                                  dispatch(rightPanelActions.closeRightPanel());
                                 },
                                 component: SizesForm,
                               })
@@ -385,12 +386,12 @@ const ProductMeasurementChartGrid: React.FC = () => {
   const addNewSize = () => {
     if (targetProductMeasurementChart) {
       dispatch(
-        controlActions.openRightPanel({
+        rightPanelActions.openRightPanel({
           title: 'Add size',
           description: targetProductMeasurementChart.name,
           width: '400px',
           closeFunctions: () => {
-            dispatch(controlActions.closeRightPanel());
+            dispatch(rightPanelActions.closeRightPanel());
           },
           component: SizesForm,
         })

@@ -15,12 +15,14 @@ import {
   controlActions,
   CommonDialogType,
 } from '../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../redux/slices/rightPanel.slice';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { fabricActions } from '../../../redux/slices/store/fabric/fabric.slice';
 import { IApplicationState } from '../../../redux/reducers';
 import { List } from 'linq-typescript';
 import FabricForm from '../managing/FabricForm';
 import './fabricItem.scss';
+import { isUserCanManageFabrics } from '../../../helpers/fabric.helper';
 
 export interface IItemManagingControlsProps {
   fabric: Fabric;
@@ -34,6 +36,8 @@ const ItemManagingControls: React.FC<IItemManagingControlsProps> = (
   const fabrics: Fabric[] = useSelector<IApplicationState, Fabric[]>(
     (state) => state.fabric.fabrics
   );
+
+  const canManageFabrics: boolean = isUserCanManageFabrics();
 
   const imageProps: IImageProps = {
     src: props.fabric.imageUrl,
@@ -90,12 +94,12 @@ const ItemManagingControls: React.FC<IItemManagingControlsProps> = (
   const onEdit = () => {
     dispatch(fabricActions.changeTargetFabric(props.fabric));
     dispatch(
-      controlActions.openRightPanel({
+      rightPanelActions.openRightPanel({
         title: 'Details',
         description: props.fabric.fabricCode,
         width: '900px',
         closeFunctions: () => {
-          dispatch(controlActions.closeRightPanel());
+          dispatch(rightPanelActions.closeRightPanel());
         },
         component: FabricForm,
       })
@@ -123,7 +127,7 @@ const ItemManagingControls: React.FC<IItemManagingControlsProps> = (
       </Stack.Item>
 
       <TooltipHost
-        content="Edit"
+        content="Details"
         directionalHint={DirectionalHint.bottomRightEdge}
         id="StyleSettings"
         calloutProps={{ gapSpace: 0 }}
@@ -131,26 +135,28 @@ const ItemManagingControls: React.FC<IItemManagingControlsProps> = (
       >
         <IconButton
           iconProps={{
-            iconName: 'Edit',
+            iconName: 'Settings',
           }}
           onClick={() => onEdit()}
         />
       </TooltipHost>
 
-      <TooltipHost
-        content="Delete"
-        directionalHint={DirectionalHint.bottomRightEdge}
-        id="deleteStyle"
-        calloutProps={{ gapSpace: 0 }}
-        styles={{ root: { display: 'inline-block', float: 'left' } }}
-      >
-        <IconButton
-          iconProps={{
-            iconName: 'Delete',
-          }}
-          onClick={() => onDelete()}
-        />
-      </TooltipHost>
+      {canManageFabrics ? (
+        <TooltipHost
+          content="Delete"
+          directionalHint={DirectionalHint.bottomRightEdge}
+          id="deleteStyle"
+          calloutProps={{ gapSpace: 0 }}
+          styles={{ root: { display: 'inline-block', float: 'left' } }}
+        >
+          <IconButton
+            iconProps={{
+              iconName: 'Delete',
+            }}
+            onClick={() => onDelete()}
+          />
+        </TooltipHost>
+      ) : null}
     </Stack>
   );
 };

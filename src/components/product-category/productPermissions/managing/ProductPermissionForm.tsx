@@ -8,7 +8,7 @@ import { ProductPermissionSettings } from '../../../../interfaces/products';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
 import { List } from 'linq-typescript';
 import { useDispatch, useSelector } from 'react-redux';
-import { controlActions } from '../../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../../redux/slices/rightPanel.slice';
 import {
   CommandBarItem,
   GetCommandBarItemProps,
@@ -81,7 +81,7 @@ export const ProductPermissionForm: React.FC = () => {
   const [isFormikDirty, setFormikDirty] = useState<boolean>(false);
 
   const commandBarItems = useSelector<IApplicationState, any>(
-    (state) => state.control.rightPanel.commandBarItems
+    (state) => state.rightPanel.rightPanel.commandBarItems
   );
 
   const productCategory = useSelector<
@@ -113,7 +113,7 @@ export const ProductPermissionForm: React.FC = () => {
   useEffect(() => {
     if (formikReference.formik) {
       dispatch(
-        controlActions.setPanelButtons([
+        rightPanelActions.setPanelButtons([
           GetCommandBarItemProps(CommandBarItem.Save, () => {
             formikReference.formik.submitForm();
           }),
@@ -128,7 +128,7 @@ export const ProductPermissionForm: React.FC = () => {
   useEffect(() => {
     if (new List(commandBarItems).any()) {
       dispatch(
-        controlActions.setPanelButtons(
+        rightPanelActions.setPanelButtons(
           ChangeItemsDisabledState(
             commandBarItems,
             [CommandBarItem.Reset, CommandBarItem.Save],
@@ -164,7 +164,7 @@ export const ProductPermissionForm: React.FC = () => {
                   .toArray()
               )
             );
-            dispatch(controlActions.closeRightPanel());
+            dispatch(rightPanelActions.closeRightPanel());
             dispatch(
               productStylePermissionsActions.changeEditingPermissionSetting(
                 null
@@ -191,7 +191,7 @@ export const ProductPermissionForm: React.FC = () => {
                 new List(permissionSettings).concat([args.body]).toArray()
               )
             );
-            dispatch(controlActions.closeRightPanel());
+            dispatch(rightPanelActions.closeRightPanel());
             dispatch(
               productStylePermissionsActions.changeEditingPermissionSetting(
                 null

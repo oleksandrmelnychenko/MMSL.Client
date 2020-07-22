@@ -12,6 +12,7 @@ import {
   CommonDialogType,
   IInfoPanelMenuItem,
 } from '../../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../../redux/slices/rightPanel.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   labelStyle,
@@ -101,11 +102,11 @@ const BaseMeasurementOptions: React.FC = () => {
       onClickFunc: () => {
         if (choseCategory) {
           dispatch(
-            controlActions.openRightPanel({
+            rightPanelActions.openRightPanel({
               title: 'New Measurement',
               width: '400px',
               closeFunctions: () => {
-                dispatch(controlActions.closeRightPanel());
+                dispatch(rightPanelActions.closeRightPanel());
               },
               component: MeasurementForm,
             })
@@ -130,12 +131,12 @@ const BaseMeasurementOptions: React.FC = () => {
             )
           );
           dispatch(
-            controlActions.openRightPanel({
+            rightPanelActions.openRightPanel({
               title: 'Edit Measurement',
               description: targetProductMeasurement.name,
               width: '400px',
               closeFunctions: () => {
-                dispatch(controlActions.closeRightPanel());
+                dispatch(rightPanelActions.closeRightPanel());
                 dispatch(productActions.changeProductMeasurementForEdit(null));
               },
               component: MeasurementForm,
@@ -226,12 +227,12 @@ const BaseMeasurementOptions: React.FC = () => {
       onClickFunc: () => {
         if (targetProductMeasurement) {
           dispatch(
-            controlActions.openRightPanel({
+            rightPanelActions.openRightPanel({
               title: 'Add size',
               description: targetProductMeasurement.name,
               width: '400px',
               closeFunctions: () => {
-                dispatch(controlActions.closeRightPanel());
+                dispatch(rightPanelActions.closeRightPanel());
               },
               component: SizesForm,
             })

@@ -14,6 +14,7 @@ import {
   controlActions,
   CommonDialogType,
 } from '../../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../../redux/slices/rightPanel.slice';
 import {
   GetCommandBarItemProps,
   CommandBarItem,
@@ -206,7 +207,7 @@ export const ManagingProductUnitForm: React.FC = () => {
   const [unitValues, setUnitValues] = useState<UnitValue[]>([]);
 
   const commandBarItems = useSelector<IApplicationState, any>(
-    (state) => state.control.rightPanel.commandBarItems
+    (state) => state.rightPanel.rightPanel.commandBarItems
   );
 
   const targetProduct: ProductCategory | null = useSelector<
@@ -258,7 +259,7 @@ export const ManagingProductUnitForm: React.FC = () => {
     if (formikReference.formik) {
       if (isEditingSingleUnit) {
         dispatch(
-          controlActions.setPanelButtons([
+          rightPanelActions.setPanelButtons([
             GetCommandBarItemProps(CommandBarItem.Save, () =>
               formikReference.formik.submitForm()
             ),
@@ -272,7 +273,7 @@ export const ManagingProductUnitForm: React.FC = () => {
         );
       } else {
         dispatch(
-          controlActions.setPanelButtons([
+          rightPanelActions.setPanelButtons([
             GetCommandBarItemProps(CommandBarItem.New, () => {
               formikReference.formik.resetForm();
 
@@ -319,7 +320,7 @@ export const ManagingProductUnitForm: React.FC = () => {
   const updateButtonsAvailability = () => {
     if (new List(commandBarItems).any()) {
       dispatch(
-        controlActions.setPanelButtons(
+        rightPanelActions.setPanelButtons(
           ChangeItemsDisabledStatePartialy(commandBarItems, [
             { command: CommandBarItem.New, isDisabled: false },
             { command: CommandBarItem.Reset, isDisabled: !formikIsDirty },
@@ -342,7 +343,7 @@ export const ManagingProductUnitForm: React.FC = () => {
           [],
           (successResponseArgs: any) => {
             if (isEditingSingleUnit) {
-              dispatch(controlActions.closeRightPanel());
+              dispatch(rightPanelActions.closeRightPanel());
               dispatch(
                 productSettingsActions.changeManagingOptionUnitsState(
                   new ManagingOptionUnitsState()

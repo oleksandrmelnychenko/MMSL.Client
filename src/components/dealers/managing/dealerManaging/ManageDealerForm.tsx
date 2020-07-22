@@ -19,6 +19,7 @@ import { List } from 'linq-typescript';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../../redux/reducers';
 import { controlActions } from '../../../../redux/slices/control.slice';
+import { rightPanelActions } from '../../../../redux/slices/rightPanel.slice';
 import {
   CommandBarItem,
   GetCommandBarItemProps,
@@ -163,7 +164,7 @@ export const ManageDealerForm: React.FC = () => {
   const [formWarning, setFormWarning] = useState<string>('');
 
   const commandBarItems = useSelector<IApplicationState, any>(
-    (state) => state.control.rightPanel.commandBarItems
+    (state) => state.rightPanel.rightPanel.commandBarItems
   );
 
   const dealerAccount = useSelector<IApplicationState, DealerAccount | null>(
@@ -187,7 +188,7 @@ export const ManageDealerForm: React.FC = () => {
   useEffect(() => {
     if (formikReference.formik) {
       dispatch(
-        controlActions.setPanelButtons([
+        rightPanelActions.setPanelButtons([
           GetCommandBarItemProps(CommandBarItem.Save, () => {
             setFormWarning('');
             formikReference.formik.submitForm();
@@ -205,7 +206,7 @@ export const ManageDealerForm: React.FC = () => {
   useEffect(() => {
     if (new List(commandBarItems).any()) {
       dispatch(
-        controlActions.setPanelButtons(
+        rightPanelActions.setPanelButtons(
           ChangeItemsDisabledState(
             commandBarItems,
             [CommandBarItem.Reset, CommandBarItem.Save],
@@ -236,7 +237,7 @@ export const ManageDealerForm: React.FC = () => {
             )
           );
 
-          dispatch(controlActions.closeRightPanel());
+          dispatch(rightPanelActions.closeRightPanel());
           dispatch(controlActions.closeInfoPanelWithComponent());
           dispatch(dealerActions.setSelectedDealer(null));
           dispatch(
@@ -276,7 +277,7 @@ export const ManageDealerForm: React.FC = () => {
                 .toArray()
             )
           );
-          dispatch(controlActions.closeRightPanel());
+          dispatch(rightPanelActions.closeRightPanel());
           dispatch(controlActions.closeInfoPanelWithComponent());
           dispatch(dealerActions.setSelectedDealer(null));
           dispatch(

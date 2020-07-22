@@ -21,6 +21,7 @@ import {
   InfoMessage,
   InfoMessageType,
 } from '../slices/control.slice';
+import { rightPanelActions } from '../slices/rightPanel.slice';
 import { dealerActions } from '../../redux/slices/dealer.slice';
 import StoreHelper from '../../helpers/store.helper';
 
@@ -258,7 +259,7 @@ export const updateStoreCustomerEpic = (action$: AnyAction, state$: any) => {
           return successCommonEpicFlow(
             successResponse,
             [
-              controlActions.closeRightPanel(),
+              rightPanelActions.closeRightPanel(),
               customerActions.getCustomersListPaginated(),
               customerActions.updateSelectedCustomer(null),
               controlActions.disabledStatusBar(),

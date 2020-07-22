@@ -8,10 +8,8 @@ import CommonDialog from './DashboardDialog/CommonDialog';
 import { useSelector } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers/index';
 import { Panel, PanelType } from 'office-ui-fabric-react';
-import {
-  RightPanelProps,
-  DashboardHintStubProps,
-} from '../../redux/slices/control.slice';
+import { DashboardHintStubProps } from '../../redux/slices/control.slice';
+import { RightPanelProps } from '../../redux/slices/rightPanel.slice';
 import { panelStyle } from '../../common/fabric-styles/styles';
 import { RightPanel } from './panel/RightPanel';
 import DashboardLeftMenuPanel from './DashboardLeftMenuPanel';
@@ -26,7 +24,7 @@ const Dashboard: React.FC = () => {
   );
 
   const rightPanel = useSelector<IApplicationState, RightPanelProps>(
-    (state) => state.control.rightPanel
+    (state) => state.rightPanel.rightPanel
   );
 
   const dashboardStubHint = useSelector<
@@ -80,6 +78,7 @@ const Dashboard: React.FC = () => {
       </main>
 
       <Footer />
+
       {!!rightPanel.title && (
         <Panel
           type={PanelType.custom}
