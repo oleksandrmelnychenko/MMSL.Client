@@ -54,9 +54,7 @@ export const FabricsHeader: React.FC = (props: any) => {
               dispatch(fabricActions.changeTargetFabric(null));
               dispatch(
                 rightPanelActions.openRightPanel({
-                  title: 'Configure avaiability',
-                  description:
-                    'Configure availability of the fabric parts that will be visible for your dealers.',
+                  title: 'Configure fabric avaiability',
                   width: '400px',
                   panelType: RightPanelType.Form,
                   closeFunctions: () => {
@@ -68,7 +66,7 @@ export const FabricsHeader: React.FC = (props: any) => {
             }}
             iconProps={{ iconName: 'Settings' }}
           >
-            Configure avaiability
+            Configure fabric avaiability
           </ActionButton>
         </Stack>
       ) : null}

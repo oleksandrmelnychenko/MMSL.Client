@@ -100,7 +100,7 @@ const ItemManagingControls: React.FC<IItemManagingControlsProps> = (
       rightPanelActions.openRightPanel({
         title: 'Details',
         description: props.fabric.fabricCode,
-        width: '900px',
+        width: '600px',
         panelType: canManageFabrics
           ? RightPanelType.Form
           : RightPanelType.ReadOnly,

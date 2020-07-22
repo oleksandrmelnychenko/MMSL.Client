@@ -14,7 +14,7 @@ import { List } from 'linq-typescript';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { assignPendingActions } from '../../../../helpers/action.helper';
-import FormLayout from './FormLayout';
+import FormLayout, { buildFabricVisibilities } from './FormLayout';
 
 export interface IFormValues {
   fabricCode: string;
@@ -257,7 +257,13 @@ const FabricForm: React.FC = () => {
       {(formik) => {
         return (
           <Form>
-            <FormLayout formik={formik} />
+            <FormLayout
+              formik={formik}
+              fabricVisibilities={buildFabricVisibilities(
+                targetFabric,
+                fabrics
+              )}
+            />
           </Form>
         );
       }}

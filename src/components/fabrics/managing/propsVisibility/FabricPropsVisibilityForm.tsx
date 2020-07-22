@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IApplicationState } from '../../../../redux/reducers';
 import { useSelector, useDispatch } from 'react-redux';
-import { Fabric } from '../../../../interfaces/fabric';
+import { Fabric, FabricVisibilities } from '../../../../interfaces/fabric';
 import { FormicReference } from '../../../../interfaces';
 import {
   fabricActions,
@@ -33,14 +33,14 @@ export interface IFormValues {
 
 const _initDefaultValues = (sourceFabrics: Fabric[]) => {
   const initValues: IFormValues = {
-    isMetresVisible: false,
-    isMillVisible: false,
-    isColorVisible: false,
-    isCompositionVisible: false,
-    isGSMVisible: false,
-    isCountVisible: false,
-    isWeaveVisible: false,
-    isPatternVisible: false,
+    isMetresVisible: true,
+    isMillVisible: true,
+    isColorVisible: true,
+    isCompositionVisible: true,
+    isGSMVisible: true,
+    isCountVisible: true,
+    isWeaveVisible: true,
+    isPatternVisible: true,
   };
 
   if (sourceFabrics.length > 0) {
@@ -58,7 +58,7 @@ const _initDefaultValues = (sourceFabrics: Fabric[]) => {
 };
 
 const _buildEditedPayload = (values: IFormValues) => {
-  let payload: any = {
+  let payload: FabricVisibilities = {
     isMetresVisible: values.isMetresVisible,
     isMillVisible: values.isMillVisible,
     isColorVisible: values.isColorVisible,
@@ -194,7 +194,7 @@ const FabricPropsVisibilityForm: React.FC = () => {
       {(formik) => {
         return (
           <Form>
-            <Stack>
+            <Stack style={{ marginTop: '-21px' }}>
               <FormCheckbox
                 formik={formik}
                 label={'Metres'}

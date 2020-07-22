@@ -67,6 +67,28 @@ export class Fabric extends EntityBase {
   userIdentity: UserIdentity | null | undefined;
 }
 
+export class FabricVisibilities {
+  constructor() {
+    this.isMetresVisible = false;
+    this.isMillVisible = false;
+    this.isColorVisible = false;
+    this.isCompositionVisible = false;
+    this.isGSMVisible = false;
+    this.isCountVisible = false;
+    this.isWeaveVisible = false;
+    this.isPatternVisible = false;
+  }
+
+  isMetresVisible: boolean;
+  isMillVisible: boolean;
+  isColorVisible: boolean;
+  isCompositionVisible: boolean;
+  isGSMVisible: boolean;
+  isCountVisible: boolean;
+  isWeaveVisible: boolean;
+  isPatternVisible: boolean;
+}
+
 export class FabricFilterValue {
   constructor() {
     this.value = '';

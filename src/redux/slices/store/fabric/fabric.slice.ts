@@ -1,4 +1,8 @@
-import { Fabric, FilterItem } from './../../../../interfaces/fabric';
+import {
+  Fabric,
+  FilterItem,
+  FabricVisibilities,
+} from './../../../../interfaces/fabric';
 import { createSlice } from '@reduxjs/toolkit';
 import { Pagination, PaginationInfo } from '../../../../interfaces';
 
@@ -37,7 +41,10 @@ const fabric = createSlice({
     ) {},
     apiCreateFabric(state, action: { type: string; payload: string }) {},
     apiUpdateFabric(state, action: { type: string; payload: string }) {},
-    apiUpdateFabricVisibility(state, action: { type: string; payload: any }) {},
+    apiUpdateFabricVisibility(
+      state,
+      action: { type: string; payload: FabricVisibilities }
+    ) {},
     apiDeleteFabricById(state, action: { type: string; payload: number }) {},
     changeFabrics(state, action: { type: string; payload: Fabric[] }) {
       state.fabrics = action.payload;
