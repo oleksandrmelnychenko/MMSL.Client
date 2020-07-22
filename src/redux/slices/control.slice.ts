@@ -32,34 +32,24 @@ export class CommonDialogState {
   constructor() {
     this.dialogArgs = null;
   }
-  dialogArgs: DialogArgs | null;
+  dialogArgs: IDialogArgs | null;
 }
 
-export class DialogArgs {
-  constructor(
-    dialogType: CommonDialogType,
-    title: string,
-    subText: string,
-    onSubmitClick: () => void,
-    onDeclineClick: () => void
-  ) {
-    this.dialogType = dialogType;
-    this.title = title;
-    this.subText = subText;
-    this.onSubmitClick = onSubmitClick;
-    this.onDeclineClick = onDeclineClick;
-  }
-
+export interface IDialogArgs {
   dialogType: CommonDialogType;
   title: string;
   subText: string;
+  viewContent?: any;
   onSubmitClick: () => void;
   onDeclineClick: () => void;
 }
 
+export class ModalArgs {}
+
 export enum CommonDialogType {
   Common,
   Delete,
+  Content,
 }
 
 export class RightPanelProps {
@@ -154,7 +144,10 @@ const controls = createSlice({
       state.panelInfo = new IPanelInfo();
       return state;
     },
-    toggleCommonDialogVisibility(state, action) {
+    toggleCommonDialogVisibility(
+      state,
+      action: { type: string; payload: IDialogArgs | null }
+    ) {
       state.commonDialog.dialogArgs = action.payload;
       return state;
     },

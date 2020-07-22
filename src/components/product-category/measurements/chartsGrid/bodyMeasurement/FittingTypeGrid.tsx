@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IApplicationState } from '../../../../../redux/reducers';
-import {
-  FittingType,
-  MeasurementUnit,
-} from '../../../../../interfaces/measurements';
+import { FittingType } from '../../../../../interfaces/measurements';
 import {
   DetailsList,
   ConstrainMode,
@@ -28,7 +25,6 @@ import { assignPendingActions } from '../../../../../helpers/action.helper';
 import { fittingTypesActions } from '../../../../../redux/slices/measurements/fittingTypes.slice';
 import {
   controlActions,
-  DialogArgs,
   CommonDialogType,
 } from '../../../../../redux/slices/control.slice';
 import FittingTypeForm from './management/FittingTypeForm';
@@ -40,7 +36,6 @@ import { ProductCategory } from '../../../../../interfaces/products';
 import BodySizeValueCell from './BodySizeValueCell';
 import BodySizeTypeCell from './BodySizeTypeCell';
 import BorderedCell from '../BorderedCell';
-import { defaultCellStyle } from '../../../../../common/fabric-styles/styles';
 
 const FittingTypeGrid: React.FC = () => {
   const dispatch = useDispatch();
@@ -252,37 +247,35 @@ const FittingTypeGrid: React.FC = () => {
   const onDelete = (fittingTypeToDelete: FittingType) => {
     if (fittingTypeToDelete) {
       dispatch(
-        controlActions.toggleCommonDialogVisibility(
-          new DialogArgs(
-            CommonDialogType.Delete,
-            'Delete fitting type',
-            `Are you sure you want to delete ${fittingTypeToDelete.type}?`,
-            () => {
-              if (fittingTypeToDelete) {
-                dispatch(
-                  assignPendingActions(
-                    fittingTypesActions.apiDeleteFittingTypeById(
-                      fittingTypeToDelete.id
-                    ),
-                    [],
-                    [],
-                    (args: any) => {
-                      dispatch(
-                        fittingTypesActions.changeFittingTypes(
-                          new List(fittingTypes)
-                            .where((item) => item.id !== args.body)
-                            .toArray()
-                        )
-                      );
-                    },
-                    (args: any) => {}
-                  )
-                );
-              }
-            },
-            () => {}
-          )
-        )
+        controlActions.toggleCommonDialogVisibility({
+          dialogType: CommonDialogType.Delete,
+          title: 'Delete fitting type',
+          subText: `Are you sure you want to delete ${fittingTypeToDelete.type}?`,
+          onSubmitClick: () => {
+            if (fittingTypeToDelete) {
+              dispatch(
+                assignPendingActions(
+                  fittingTypesActions.apiDeleteFittingTypeById(
+                    fittingTypeToDelete.id
+                  ),
+                  [],
+                  [],
+                  (args: any) => {
+                    dispatch(
+                      fittingTypesActions.changeFittingTypes(
+                        new List(fittingTypes)
+                          .where((item) => item.id !== args.body)
+                          .toArray()
+                      )
+                    );
+                  },
+                  (args: any) => {}
+                )
+              );
+            }
+          },
+          onDeclineClick: () => {},
+        })
       );
     }
   };

@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   controlActions,
   IInfoPanelMenuItem,
-  DialogArgs,
   CommonDialogType,
 } from '../../../redux/slices/control.slice';
 import { CUSTOMERS_PATH } from '../CustomersBootstrapper';
@@ -199,67 +198,64 @@ const CustomerProfileOptiosPanel: React.FC = () => {
       onClickFunc: () => {
         if (targetOrderProfile && selectedCustomer) {
           dispatch(
-            controlActions.toggleCommonDialogVisibility(
-              new DialogArgs(
-                CommonDialogType.Delete,
-                'Delete profile',
-                `Are you sure you want to delete ${targetOrderProfile.name}?`,
-                () => {
-                  if (targetOrderProfile && selectedCustomer) {
-                    dispatch(
-                      assignPendingActions(
-                        orderProfileActions.apiDeleteOrderProfileById(
-                          targetOrderProfile.id
-                        ),
-                        [],
-                        [],
-                        (args: any) => {
-                          dispatch(
-                            assignPendingActions(
-                              orderProfileActions.apiGetProductProfilesByCutomerId(
-                                selectedCustomer.id
-                              ),
-                              [],
-                              [],
-                              (args: any) => {
-                                dispatch(
-                                  orderProfileActions.changeCustomerProductProfiles(
+            controlActions.toggleCommonDialogVisibility({
+              dialogType: CommonDialogType.Delete,
+              title: 'Delete profile',
+              subText: `Are you sure you want to delete ${targetOrderProfile.name}?`,
+              onSubmitClick: () => {
+                if (targetOrderProfile && selectedCustomer) {
+                  dispatch(
+                    assignPendingActions(
+                      orderProfileActions.apiDeleteOrderProfileById(
+                        targetOrderProfile.id
+                      ),
+                      [],
+                      [],
+                      (args: any) => {
+                        dispatch(
+                          assignPendingActions(
+                            orderProfileActions.apiGetProductProfilesByCutomerId(
+                              selectedCustomer.id
+                            ),
+                            [],
+                            [],
+                            (args: any) => {
+                              dispatch(
+                                orderProfileActions.changeCustomerProductProfiles(
+                                  args
+                                )
+                              );
+
+                              dispatch(
+                                orderProfileActions.changeSelectedProductProfiles(
+                                  new List<ProductCategory>(
                                     args
+                                  ).firstOrDefault(
+                                    (product) =>
+                                      product.id === selectedProductProfile?.id
                                   )
-                                );
-
-                                dispatch(
-                                  orderProfileActions.changeSelectedProductProfiles(
-                                    new List<ProductCategory>(
-                                      args
-                                    ).firstOrDefault(
-                                      (product) =>
-                                        product.id ===
-                                        selectedProductProfile?.id
-                                    )
-                                  )
-                                );
-                              },
-                              (args: any) => {}
-                            )
-                          );
-
-                          if (
-                            targetOrderProfile &&
-                            targetOrderProfile.id === args.body.id
+                                )
+                              );
+                            },
+                            (args: any) => {}
                           )
-                            dispatch(
-                              orderProfileActions.changeTargetOrderProfile(null)
-                            );
-                        },
-                        (args: any) => {}
-                      )
-                    );
-                  }
-                },
-                () => {}
-              )
-            )
+                        );
+
+                        if (
+                          targetOrderProfile &&
+                          targetOrderProfile.id === args.body.id
+                        )
+                          dispatch(
+                            orderProfileActions.changeTargetOrderProfile(null)
+                          );
+                      },
+                      (args: any) => {}
+                    )
+                  );
+                }
+              },
+              onDeclineClick: () => {},
+            })
           );
         }
       },

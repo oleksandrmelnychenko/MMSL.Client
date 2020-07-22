@@ -19,10 +19,7 @@ import {
   commandBarStyles,
 } from '../../../common/fabric-styles/styles';
 import { controlActions } from '../../../redux/slices/control.slice';
-import {
-  DialogArgs,
-  CommonDialogType,
-} from '../../../redux/slices/control.slice';
+import { CommonDialogType } from '../../../redux/slices/control.slice';
 import { List } from 'linq-typescript';
 import ManageDealerCustomerForm from './ManageDealerCustomerForm';
 import { customerActions } from '../../../redux/slices/customer/customer.slice';
@@ -112,17 +109,15 @@ export const DealerCustomers: React.FC = () => {
           dispatch(dealerActions.setSelectedCustomerInCurrentStore(null));
         } else {
           dispatch(
-            controlActions.toggleCommonDialogVisibility(
-              new DialogArgs(
-                CommonDialogType.Common,
-                'Information',
-                `Select a store to create in it customers`,
-                () => {
-                  dispatch(controlActions.toggleCommonDialogVisibility(null));
-                },
-                () => {}
-              )
-            )
+            controlActions.toggleCommonDialogVisibility({
+              dialogType: CommonDialogType.Common,
+              title: 'Information',
+              subText: `Select a store to create in it customers`,
+              onSubmitClick: () => {
+                dispatch(controlActions.toggleCommonDialogVisibility(null));
+              },
+              onDeclineClick: () => {},
+            })
           );
         }
       },
@@ -163,27 +158,23 @@ export const DealerCustomers: React.FC = () => {
       onClick: () => {
         if (selectedLocalStore && dealerCustomerState.selectedCustomer) {
           dispatch(
-            controlActions.toggleCommonDialogVisibility(
-              new DialogArgs(
-                CommonDialogType.Delete,
-                'Delete store',
-                `Are you sure you want to delete ${dealerCustomerState.selectedCustomer.customerName}?`,
-                () => {
-                  dispatch(
-                    dealerActions.deleteCurrentCustomerFromStore(
-                      dealerCustomerState.selectedCustomer!.id
-                    )
-                  );
-                  dispatch(
-                    dealerActions.setSelectedCustomerInCurrentStore(null)
-                  );
-                  dispatch(dealerActions.getStoresByDealer(selectedDealer!.id));
+            controlActions.toggleCommonDialogVisibility({
+              dialogType: CommonDialogType.Delete,
+              title: 'Delete store',
+              subText: `Are you sure you want to delete ${dealerCustomerState.selectedCustomer.customerName}?`,
+              onSubmitClick: () => {
+                dispatch(
+                  dealerActions.deleteCurrentCustomerFromStore(
+                    dealerCustomerState.selectedCustomer!.id
+                  )
+                );
+                dispatch(dealerActions.setSelectedCustomerInCurrentStore(null));
+                dispatch(dealerActions.getStoresByDealer(selectedDealer!.id));
 
-                  setIsOpenForm(false);
-                },
-                () => {}
-              )
-            )
+                setIsOpenForm(false);
+              },
+              onDeclineClick: () => {},
+            })
           );
         }
       },

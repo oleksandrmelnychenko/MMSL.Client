@@ -9,7 +9,6 @@ import {
   controlActions,
   IInfoPanelMenuItem,
   CommonDialogType,
-  DialogArgs,
 } from '../../../redux/slices/control.slice';
 import ManageCustomerForm from '../customerManaging/ManageCustomerForm';
 import { assignPendingActions } from '../../../helpers/action.helper';
@@ -120,46 +119,38 @@ const CustomersOptionsPanel: React.FC = () => {
       onClickFunc: () => {
         if (selectedCustomer) {
           dispatch(
-            controlActions.toggleCommonDialogVisibility(
-              new DialogArgs(
-                CommonDialogType.Delete,
-                'Delete customer',
-                `Are you sure you want to delete ${selectedCustomer.customerName}?`,
-                () => {
-                  if (selectedCustomer) {
-                    dispatch(
-                      assignPendingActions(
-                        customerActions.apiDeleteCustomerById(
-                          selectedCustomer.id
-                        ),
-                        [],
-                        [],
-                        (args: any) => {
-                          dispatch(
-                            customerActions.updateCustomersList(
-                              new List(customersList)
-                                .where(
-                                  (item) => item.id !== selectedCustomer.id
-                                )
-                                .toArray()
-                            )
-                          );
+            controlActions.toggleCommonDialogVisibility({
+              dialogType: CommonDialogType.Delete,
+              title: 'Delete customer',
+              subText: `Are you sure you want to delete ${selectedCustomer.customerName}?`,
+              onSubmitClick: () => {
+                if (selectedCustomer) {
+                  dispatch(
+                    assignPendingActions(
+                      customerActions.apiDeleteCustomerById(
+                        selectedCustomer.id
+                      ),
+                      [],
+                      [],
+                      (args: any) => {
+                        dispatch(
+                          customerActions.updateCustomersList(
+                            new List(customersList)
+                              .where((item) => item.id !== selectedCustomer.id)
+                              .toArray()
+                          )
+                        );
 
-                          dispatch(
-                            customerActions.updateSelectedCustomer(null)
-                          );
-                          dispatch(
-                            controlActions.closeInfoPanelWithComponent()
-                          );
-                        },
-                        (args: any) => {}
-                      )
-                    );
-                  }
-                },
-                () => {}
-              )
-            )
+                        dispatch(customerActions.updateSelectedCustomer(null));
+                        dispatch(controlActions.closeInfoPanelWithComponent());
+                      },
+                      (args: any) => {}
+                    )
+                  );
+                }
+              },
+              onDeclineClick: () => {},
+            })
           );
         }
       },

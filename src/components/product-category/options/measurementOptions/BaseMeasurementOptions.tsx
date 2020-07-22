@@ -9,7 +9,6 @@ import {
 import { productActions } from '../../../../redux/slices/product.slice';
 import {
   controlActions,
-  DialogArgs,
   CommonDialogType,
   IInfoPanelMenuItem,
 } from '../../../../redux/slices/control.slice';
@@ -157,62 +156,60 @@ const BaseMeasurementOptions: React.FC = () => {
       onClickFunc: () => {
         if (targetProductMeasurement) {
           dispatch(
-            controlActions.toggleCommonDialogVisibility(
-              new DialogArgs(
-                CommonDialogType.Delete,
-                'Delete measurement',
-                `Are you sure you want to delete ${targetProductMeasurement.name}?`,
-                () => {
-                  dispatch(
-                    /// Delete measurement
-                    assignPendingActions(
-                      measurementActions.apiDeleteMeasurementById(
-                        targetProductMeasurement.id
-                      ),
-                      [],
-                      [],
-                      (args: any) => {
-                        dispatch(
-                          /// Clear target delete measurement
-                          productActions.changeSelectedProductMeasurement(null)
-                        );
-                        const updatedMeasurements = new List(measurements)
-                          .where((item) => item.id !== args.body)
-                          .toArray();
+            controlActions.toggleCommonDialogVisibility({
+              dialogType: CommonDialogType.Delete,
+              title: 'Delete measurement',
+              subText: `Are you sure you want to delete ${targetProductMeasurement.name}?`,
+              onSubmitClick: () => {
+                dispatch(
+                  /// Delete measurement
+                  assignPendingActions(
+                    measurementActions.apiDeleteMeasurementById(
+                      targetProductMeasurement.id
+                    ),
+                    [],
+                    [],
+                    (args: any) => {
+                      dispatch(
+                        /// Clear target delete measurement
+                        productActions.changeSelectedProductMeasurement(null)
+                      );
+                      const updatedMeasurements = new List(measurements)
+                        .where((item) => item.id !== args.body)
+                        .toArray();
 
+                      dispatch(
+                        productActions.updateProductMeasurementsList(
+                          updatedMeasurements
+                        )
+                      );
+
+                      if (updatedMeasurements.length > 0) {
                         dispatch(
-                          productActions.updateProductMeasurementsList(
-                            updatedMeasurements
+                          /// Select first measurement
+                          assignPendingActions(
+                            measurementActions.apiGetMeasurementById(
+                              updatedMeasurements[0].id
+                            ),
+                            [],
+                            [],
+                            (args: any) => {
+                              dispatch(
+                                productActions.changeSelectedProductMeasurement(
+                                  args
+                                )
+                              );
+                            },
+                            (args: any) => {}
                           )
                         );
-
-                        if (updatedMeasurements.length > 0) {
-                          dispatch(
-                            /// Select first measurement
-                            assignPendingActions(
-                              measurementActions.apiGetMeasurementById(
-                                updatedMeasurements[0].id
-                              ),
-                              [],
-                              [],
-                              (args: any) => {
-                                dispatch(
-                                  productActions.changeSelectedProductMeasurement(
-                                    args
-                                  )
-                                );
-                              },
-                              (args: any) => {}
-                            )
-                          );
-                        }
                       }
-                    )
-                  );
-                },
-                () => {}
-              )
-            )
+                    }
+                  )
+                );
+              },
+              onDeclineClick: () => {},
+            })
           );
         }
       },

@@ -25,7 +25,7 @@ import { assignPendingActions } from '../../helpers/action.helper';
 import { controlActions } from '../../redux/slices/control.slice';
 import { ToggleDealerPanelWithDetails } from '../../redux/slices/dealer.slice';
 import DealerOptions from './options/DealerOptions';
-import { DialogArgs, CommonDialogType } from '../../redux/slices/control.slice';
+import { CommonDialogType } from '../../redux/slices/control.slice';
 import {
   detailsListStyle,
   columnIconButtonStyle,
@@ -222,34 +222,32 @@ export const DealerList: React.FC = () => {
               ariaLabel="Delete"
               onClick={(args: any) => {
                 dispatch(
-                  controlActions.toggleCommonDialogVisibility(
-                    new DialogArgs(
-                      CommonDialogType.Delete,
-                      'Delete dealer',
-                      `Are you sure you want to delete ${item.name}?`,
-                      () => {
-                        const actionsQueue: any[] = [
-                          dealerActions.apiGetDealersListPaginated(),
-                        ];
-                        /// TODO:
-                        if (item.id) {
-                          actionsQueue.push(
-                            dealerActions.setSelectedDealer(null),
-                            controlActions.closeInfoPanelWithComponent(),
-                            dealerActions.isOpenPanelWithDealerDetails(
-                              new ToggleDealerPanelWithDetails()
-                            )
-                          );
-                        }
-                        let action = assignPendingActions(
-                          dealerActions.deleteDealerById(item.id),
-                          actionsQueue
+                  controlActions.toggleCommonDialogVisibility({
+                    dialogType: CommonDialogType.Delete,
+                    title: 'Delete dealer',
+                    subText: `Are you sure you want to delete ${item.name}?`,
+                    onSubmitClick: () => {
+                      const actionsQueue: any[] = [
+                        dealerActions.apiGetDealersListPaginated(),
+                      ];
+                      /// TODO:
+                      if (item.id) {
+                        actionsQueue.push(
+                          dealerActions.setSelectedDealer(null),
+                          controlActions.closeInfoPanelWithComponent(),
+                          dealerActions.isOpenPanelWithDealerDetails(
+                            new ToggleDealerPanelWithDetails()
+                          )
                         );
-                        dispatch(action);
-                      },
-                      () => {}
-                    )
-                  )
+                      }
+                      let action = assignPendingActions(
+                        dealerActions.deleteDealerById(item.id),
+                        actionsQueue
+                      );
+                      dispatch(action);
+                    },
+                    onDeclineClick: () => {},
+                  })
                 );
               }}
             />

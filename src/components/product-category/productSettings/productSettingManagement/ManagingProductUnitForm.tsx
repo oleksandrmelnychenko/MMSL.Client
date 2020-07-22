@@ -12,7 +12,6 @@ import { IApplicationState } from '../../../../redux/reducers';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   controlActions,
-  DialogArgs,
   CommonDialogType,
 } from '../../../../redux/slices/control.slice';
 import {
@@ -388,33 +387,29 @@ export const ManagingProductUnitForm: React.FC = () => {
   const onDeleteUnit = () => {
     if (formikReference.formik.values.unitToDelete) {
       dispatch(
-        controlActions.toggleCommonDialogVisibility(
-          new DialogArgs(
-            CommonDialogType.Delete,
-            'Delete style option',
-            `Are you sure you want to delete ${formikReference.formik.values.unitToDelete.value}?`,
-            () => {
-              dispatch(
-                assignPendingActions(
-                  productSettingsActions.apiDeleteOptionUnitById(
-                    formikReference.formik.values.unitToDelete.id
-                  ),
-                  [
-                    productSettingsActions.changeTargetOptionUnit(null),
-                    productSettingsActions.toggleOptionUnitFormVisibility(
-                      false
-                    ),
-                  ],
-                  [],
-                  (args: any) => {
-                    refreshTargetProductState();
-                  }
-                )
-              );
-            },
-            () => {}
-          )
-        )
+        controlActions.toggleCommonDialogVisibility({
+          dialogType: CommonDialogType.Delete,
+          title: 'Delete style option',
+          subText: `Are you sure you want to delete ${formikReference.formik.values.unitToDelete.value}?`,
+          onSubmitClick: () => {
+            dispatch(
+              assignPendingActions(
+                productSettingsActions.apiDeleteOptionUnitById(
+                  formikReference.formik.values.unitToDelete.id
+                ),
+                [
+                  productSettingsActions.changeTargetOptionUnit(null),
+                  productSettingsActions.toggleOptionUnitFormVisibility(false),
+                ],
+                [],
+                (args: any) => {
+                  refreshTargetProductState();
+                }
+              )
+            );
+          },
+          onDeclineClick: () => {},
+        })
       );
     }
   };

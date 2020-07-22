@@ -24,7 +24,6 @@ import {
 } from 'office-ui-fabric-react';
 import {
   controlActions,
-  DialogArgs,
   CommonDialogType,
 } from '../../../redux/slices/control.slice';
 import ProductPermissionForm from './managing/ProductPermissionForm';
@@ -160,37 +159,35 @@ const PermissionsList: React.FC = () => {
   const onDeletePermission = (permission: ProductPermissionSettings) => {
     if (permission && targetProduct) {
       dispatch(
-        controlActions.toggleCommonDialogVisibility(
-          new DialogArgs(
-            CommonDialogType.Delete,
-            'Delete style permission',
-            `Are you sure you want to delete ${permission.name}?`,
-            () => {
-              if (permission && targetProduct) {
-                dispatch(
-                  assignPendingActions(
-                    productStylePermissionsActions.apiDeletePermission(
-                      permission.id
-                    ),
-                    [],
-                    [],
-                    (args: any) => {
-                      dispatch(
-                        productStylePermissionsActions.updatePermissionSettingsList(
-                          new List(permissionSettings)
-                            .where((item) => item.id !== permission.id)
-                            .toArray()
-                        )
-                      );
-                    },
-                    (args: any) => {}
-                  )
-                );
-              }
-            },
-            () => {}
-          )
-        )
+        controlActions.toggleCommonDialogVisibility({
+          dialogType: CommonDialogType.Delete,
+          title: 'Delete style permission',
+          subText: `Are you sure you want to delete ${permission.name}?`,
+          onSubmitClick: () => {
+            if (permission && targetProduct) {
+              dispatch(
+                assignPendingActions(
+                  productStylePermissionsActions.apiDeletePermission(
+                    permission.id
+                  ),
+                  [],
+                  [],
+                  (args: any) => {
+                    dispatch(
+                      productStylePermissionsActions.updatePermissionSettingsList(
+                        new List(permissionSettings)
+                          .where((item) => item.id !== permission.id)
+                          .toArray()
+                      )
+                    );
+                  },
+                  (args: any) => {}
+                )
+              );
+            }
+          },
+          onDeclineClick: () => {},
+        })
       );
     }
   };

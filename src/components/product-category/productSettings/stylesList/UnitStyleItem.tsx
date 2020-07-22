@@ -20,7 +20,6 @@ import {
 import {
   controlActions,
   CommonDialogType,
-  DialogArgs,
 } from '../../../../redux/slices/control.slice';
 import { Card } from '@uifabric/react-cards';
 import * as fabricStyles from '../../../../common/fabric-styles/styles';
@@ -244,28 +243,26 @@ export const UnitRowItem: React.FC<UnitRowItemProps> = (
             title="Delete"
             onClick={(args: any) => {
               dispatch(
-                controlActions.toggleCommonDialogVisibility(
-                  new DialogArgs(
-                    CommonDialogType.Delete,
-                    'Delete style option',
-                    `Are you sure you want to delete ${props.optionUnit.value}?`,
-                    () => {
-                      let action = assignPendingActions(
-                        productSettingsActions.apiDeleteOptionUnitById(
-                          props.optionUnit.id
-                        ),
-                        [],
-                        [],
-                        (args: any) => {
-                          if (targetProduct?.id)
-                            getProductStyles(targetProduct.id);
-                        }
-                      );
-                      dispatch(action);
-                    },
-                    () => {}
-                  )
-                )
+                controlActions.toggleCommonDialogVisibility({
+                  dialogType: CommonDialogType.Delete,
+                  title: 'Delete style option',
+                  subText: `Are you sure you want to delete ${props.optionUnit.value}?`,
+                  onSubmitClick: () => {
+                    let action = assignPendingActions(
+                      productSettingsActions.apiDeleteOptionUnitById(
+                        props.optionUnit.id
+                      ),
+                      [],
+                      [],
+                      (args: any) => {
+                        if (targetProduct?.id)
+                          getProductStyles(targetProduct.id);
+                      }
+                    );
+                    dispatch(action);
+                  },
+                  onDeclineClick: () => {},
+                })
               );
             }}
           />

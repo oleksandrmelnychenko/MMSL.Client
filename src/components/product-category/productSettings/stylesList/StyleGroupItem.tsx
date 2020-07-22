@@ -20,7 +20,6 @@ import {
 } from 'office-ui-fabric-react';
 import {
   controlActions,
-  DialogArgs,
   CommonDialogType,
 } from '../../../../redux/slices/control.slice';
 import './styleGroupItem.scss';
@@ -285,28 +284,26 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
                 }}
                 onClick={() => {
                   dispatch(
-                    controlActions.toggleCommonDialogVisibility(
-                      new DialogArgs(
-                        CommonDialogType.Delete,
-                        'Delete style',
-                        `Are you sure you want to delete ${props.expandableStyleGroup.item.name}?`,
-                        () => {
-                          let action = assignPendingActions(
-                            productSettingsActions.apiDeleteOptionGroupById(
-                              props.expandableStyleGroup.item.id
-                            ),
-                            [],
-                            [],
-                            (args: any) => {
-                              if (targetProduct?.id)
-                                getProductStyles(targetProduct.id);
-                            }
-                          );
-                          dispatch(action);
-                        },
-                        () => {}
-                      )
-                    )
+                    controlActions.toggleCommonDialogVisibility({
+                      dialogType: CommonDialogType.Delete,
+                      title: 'Delete style',
+                      subText: `Are you sure you want to delete ${props.expandableStyleGroup.item.name}?`,
+                      onSubmitClick: () => {
+                        let action = assignPendingActions(
+                          productSettingsActions.apiDeleteOptionGroupById(
+                            props.expandableStyleGroup.item.id
+                          ),
+                          [],
+                          [],
+                          (args: any) => {
+                            if (targetProduct?.id)
+                              getProductStyles(targetProduct.id);
+                          }
+                        );
+                        dispatch(action);
+                      },
+                      onDeclineClick: () => {},
+                    })
                   );
                 }}
               />

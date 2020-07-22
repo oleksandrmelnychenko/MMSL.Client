@@ -8,7 +8,6 @@ import { List } from 'linq-typescript';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   controlActions,
-  DialogArgs,
   CommonDialogType,
 } from '../../../../../redux/slices/control.slice';
 import {
@@ -209,24 +208,22 @@ export const PermissionsToDealersForm: React.FC = () => {
   const onDismissDealer = (dealerToDismiss: DealerAccount) => {
     if (productCategory && editingPermission) {
       dispatch(
-        controlActions.toggleCommonDialogVisibility(
-          new DialogArgs(
-            CommonDialogType.Delete,
-            'Dismiss dealer',
-            `Are you sure you want to dismiss ${dealerToDismiss.companyName} dealer from current style permission?`,
-            () => {
-              if (productCategory && editingPermission) {
-                const payload = _buildPayload(
-                  editingPermission,
-                  dealerToDismiss,
-                  true
-                );
-                onUpdate(payload);
-              }
-            },
-            () => {}
-          )
-        )
+        controlActions.toggleCommonDialogVisibility({
+          dialogType: CommonDialogType.Delete,
+          title: 'Dismiss dealer',
+          subText: `Are you sure you want to dismiss ${dealerToDismiss.companyName} dealer from current style permission?`,
+          onSubmitClick: () => {
+            if (productCategory && editingPermission) {
+              const payload = _buildPayload(
+                editingPermission,
+                dealerToDismiss,
+                true
+              );
+              onUpdate(payload);
+            }
+          },
+          onDeclineClick: () => {},
+        })
       );
     }
   };

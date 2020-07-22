@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { List } from 'linq-typescript';
 import { useSelector, useDispatch } from 'react-redux';
-
 import {
   Separator,
   CommandBar,
@@ -20,10 +19,7 @@ import {
   commandBarStyles,
 } from '../../../common/fabric-styles/styles';
 import { controlActions } from '../../../redux/slices/control.slice';
-import {
-  DialogArgs,
-  CommonDialogType,
-} from '../../../redux/slices/control.slice';
+import { CommonDialogType } from '../../../redux/slices/control.slice';
 import { assignPendingActions } from '../../../helpers/action.helper';
 
 export const DealerStores: React.FC = () => {
@@ -131,26 +127,24 @@ export const DealerStores: React.FC = () => {
       onClick: () => {
         if (selectedStore) {
           dispatch(
-            controlActions.toggleCommonDialogVisibility(
-              new DialogArgs(
-                CommonDialogType.Delete,
-                'Delete store',
-                `Are you sure you want to delete ${selectedStore.name}?`,
-                () => {
-                  if (selectedStore) {
-                    dispatch(
-                      dealerActions.deleteCurrentDealerStore(
-                        selectedStore.id as number
-                      )
-                    );
-                  }
-                  formikReference.formik.resetForm();
-                  setSelectedStore(null);
-                  setIsOpenForm(false);
-                },
-                () => {}
-              )
-            )
+            controlActions.toggleCommonDialogVisibility({
+              dialogType: CommonDialogType.Delete,
+              title: 'Delete store',
+              subText: `Are you sure you want to delete ${selectedStore.name}?`,
+              onSubmitClick: () => {
+                if (selectedStore) {
+                  dispatch(
+                    dealerActions.deleteCurrentDealerStore(
+                      selectedStore.id as number
+                    )
+                  );
+                }
+                formikReference.formik.resetForm();
+                setSelectedStore(null);
+                setIsOpenForm(false);
+              },
+              onDeclineClick: () => {},
+            })
           );
         }
       },

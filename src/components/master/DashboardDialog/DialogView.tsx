@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import './dashboard.scss';
-import { useSelector, useDispatch } from 'react-redux';
+import '../dashboard.scss';
+import { useDispatch } from 'react-redux';
 import {
   Dialog,
   Text,
@@ -12,29 +12,31 @@ import {
   FontIcon,
   mergeStyles,
 } from 'office-ui-fabric-react';
-import { IApplicationState } from '../../redux/reducers';
-import { DialogArgs, CommonDialogType } from '../../redux/slices/control.slice';
-import { controlActions } from '../../redux/slices/control.slice';
+import {
+  IDialogArgs,
+  CommonDialogType,
+} from '../../../redux/slices/control.slice';
+import { controlActions } from '../../../redux/slices/control.slice';
 
-const CommonDialog: React.FC = () => {
+export interface IDialogViewProps {
+  dialogArgs: IDialogArgs;
+}
+
+const DialogView: React.FC<IDialogViewProps> = (props: IDialogViewProps) => {
   const dispatch = useDispatch();
+
   const [isHidden, setIsHidden] = useState<boolean>();
   const [title, setTitle] = useState<string>();
   const [subText, setSubText] = useState<string>();
 
-  const dialogArgs: DialogArgs | null = useSelector<
-    IApplicationState,
-    DialogArgs | null
-  >((state) => state.control.commonDialog.dialogArgs);
-
   useEffect(() => {
-    setIsHidden(dialogArgs ? false : true);
+    setIsHidden(props.dialogArgs ? false : true);
 
-    if (dialogArgs) {
-      setTitle(dialogArgs.title);
-      setSubText(dialogArgs.subText);
+    if (props.dialogArgs) {
+      setTitle(props.dialogArgs.title);
+      setSubText(props.dialogArgs.subText);
     }
-  }, [dialogArgs]);
+  }, [props.dialogArgs]);
 
   const onRenderCommonDialog = () => {
     return (
@@ -56,7 +58,7 @@ const CommonDialog: React.FC = () => {
           <PrimaryButton
             onClick={() => {
               dispatch(controlActions.toggleCommonDialogVisibility(null));
-              dialogArgs?.onSubmitClick();
+              props.dialogArgs?.onSubmitClick();
             }}
             text="Ok"
           />
@@ -85,7 +87,7 @@ const CommonDialog: React.FC = () => {
           <PrimaryButton
             onClick={() => {
               dispatch(controlActions.toggleCommonDialogVisibility(null));
-              dialogArgs?.onSubmitClick();
+              props.dialogArgs?.onSubmitClick();
             }}
             text="Permanently delete"
           />
@@ -102,7 +104,7 @@ const CommonDialog: React.FC = () => {
             }}
             onClick={() => {
               dispatch(controlActions.toggleCommonDialogVisibility(null));
-              dialogArgs?.onDeclineClick();
+              props.dialogArgs?.onDeclineClick();
             }}
             text="Cancel"
           />
@@ -112,45 +114,43 @@ const CommonDialog: React.FC = () => {
   };
 
   return (
-    <div className="commonDialog">
-      {dialogArgs ? (
-        <Dialog
-          minWidth={'500px'}
-          hidden={isHidden}
-          styles={{ main: { margin: '0' } }}
-          onDismiss={() => {
-            dispatch(controlActions.toggleCommonDialogVisibility(null));
-            dialogArgs?.onDeclineClick();
-          }}
-          modalProps={{ isDarkOverlay: true }}
-          dialogContentProps={{
-            type: DialogType.normal,
-            title: (
-              <Text
-                styles={{
-                  root: {
-                    fontWeight: 100,
-                    fontSize: '24px',
-                    color: 'rgb(80, 80, 80)',
-                  },
-                }}
-              >
-                {title}
-              </Text>
-            ),
-            showCloseButton: true,
-          }}
-        >
-          {dialogArgs?.dialogType === CommonDialogType.Common
-            ? onRenderCommonDialog()
-            : null}
-          {dialogArgs?.dialogType === CommonDialogType.Delete
-            ? onRenderDeleteDialog()
-            : null}
-        </Dialog>
-      ) : null}
-    </div>
+    <>
+      <Dialog
+        minWidth={'500px'}
+        hidden={isHidden}
+        styles={{ main: { margin: '0' } }}
+        onDismiss={() => {
+          dispatch(controlActions.toggleCommonDialogVisibility(null));
+          props.dialogArgs.onDeclineClick();
+        }}
+        modalProps={{ isDarkOverlay: true }}
+        dialogContentProps={{
+          type: DialogType.normal,
+          title: (
+            <Text
+              styles={{
+                root: {
+                  fontWeight: 100,
+                  fontSize: '24px',
+                  color: 'rgb(80, 80, 80)',
+                },
+              }}
+            >
+              {title}
+            </Text>
+          ),
+          showCloseButton: true,
+        }}
+      >
+        {props.dialogArgs.dialogType === CommonDialogType.Common
+          ? onRenderCommonDialog()
+          : null}
+        {props.dialogArgs.dialogType === CommonDialogType.Delete
+          ? onRenderDeleteDialog()
+          : null}
+      </Dialog>
+    </>
   );
 };
 
-export default CommonDialog;
+export default DialogView;

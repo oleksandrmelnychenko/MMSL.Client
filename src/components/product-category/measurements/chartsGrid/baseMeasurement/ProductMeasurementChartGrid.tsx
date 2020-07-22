@@ -31,7 +31,6 @@ import './productMeasurementChartGrid.scss';
 import { List } from 'linq-typescript';
 import {
   controlActions,
-  DialogArgs,
   CommonDialogType,
 } from '../../../../../redux/slices/control.slice';
 import { productActions } from '../../../../../redux/slices/product.slice';
@@ -187,58 +186,56 @@ const ProductMeasurementChartGrid: React.FC = () => {
                     targetProduct
                   ) {
                     dispatch(
-                      controlActions.toggleCommonDialogVisibility(
-                        new DialogArgs(
-                          CommonDialogType.Delete,
-                          'Delete size',
-                          `Are you sure you want to delete ${item.measurementSize.name}?`,
-                          () => {
-                            if (
-                              item &&
-                              item.measurementSize &&
-                              targetProductMeasurementChart &&
-                              targetProduct
-                            ) {
-                              dispatch(
-                                assignPendingActions(
-                                  measurementActions.apiDeleteMeasurementSizeById(
-                                    {
-                                      measurementId:
-                                        targetProductMeasurementChart.id,
-                                      sizeId: item.measurementSize.id,
-                                    }
-                                  ),
-                                  [],
-                                  [],
-                                  (args: any) => {
-                                    dispatch(
-                                      assignPendingActions(
-                                        measurementActions.apiGetMeasurementById(
-                                          targetProductMeasurementChart
-                                            ? targetProductMeasurementChart.id
-                                            : 0
-                                        ),
-                                        [],
-                                        [],
-                                        (args: any) => {
-                                          dispatch(
-                                            productActions.changeSelectedProductMeasurement(
-                                              args
-                                            )
-                                          );
-                                        },
-                                        (args: any) => {}
-                                      )
-                                    );
-                                  },
-                                  (args: any) => {}
-                                )
-                              );
-                            }
-                          },
-                          () => {}
-                        )
-                      )
+                      controlActions.toggleCommonDialogVisibility({
+                        dialogType: CommonDialogType.Delete,
+                        title: 'Delete size',
+                        subText: `Are you sure you want to delete ${item.measurementSize.name}?`,
+                        onSubmitClick: () => {
+                          if (
+                            item &&
+                            item.measurementSize &&
+                            targetProductMeasurementChart &&
+                            targetProduct
+                          ) {
+                            dispatch(
+                              assignPendingActions(
+                                measurementActions.apiDeleteMeasurementSizeById(
+                                  {
+                                    measurementId:
+                                      targetProductMeasurementChart.id,
+                                    sizeId: item.measurementSize.id,
+                                  }
+                                ),
+                                [],
+                                [],
+                                (args: any) => {
+                                  dispatch(
+                                    assignPendingActions(
+                                      measurementActions.apiGetMeasurementById(
+                                        targetProductMeasurementChart
+                                          ? targetProductMeasurementChart.id
+                                          : 0
+                                      ),
+                                      [],
+                                      [],
+                                      (args: any) => {
+                                        dispatch(
+                                          productActions.changeSelectedProductMeasurement(
+                                            args
+                                          )
+                                        );
+                                      },
+                                      (args: any) => {}
+                                    )
+                                  );
+                                },
+                                (args: any) => {}
+                              )
+                            );
+                          }
+                        },
+                        onDeclineClick: () => {},
+                      })
                     );
                   }
                 },

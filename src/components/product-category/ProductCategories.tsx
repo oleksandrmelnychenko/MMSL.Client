@@ -18,7 +18,7 @@ import { controlActions } from '../../redux/slices/control.slice';
 import { IApplicationState } from '../../redux/reducers/index';
 import { ProductCategory } from '../../interfaces/products';
 import * as fabricStyles from '../../common/fabric-styles/styles';
-import { DialogArgs, CommonDialogType } from '../../redux/slices/control.slice';
+import { CommonDialogType } from '../../redux/slices/control.slice';
 import CategoryManagementPanel from './categoryManagement/CategoryManagementPanel';
 import { ProductManagingPanelComponent } from '../../redux/slices/product.slice';
 import { assignPendingActions } from '../../helpers/action.helper';
@@ -47,29 +47,27 @@ const ProductCategories: React.FC = () => {
   ) => {
     event.stopPropagation();
     dispatch(
-      controlActions.toggleCommonDialogVisibility(
-        new DialogArgs(
-          CommonDialogType.Delete,
-          'Delete product',
-          `Are you sure you want to delete ${category.name}?`,
-          () => {
-            dispatch(productActions.chooseProductCategory(null));
-            dispatch(controlActions.closeInfoPanelWithComponent());
+      controlActions.toggleCommonDialogVisibility({
+        dialogType: CommonDialogType.Delete,
+        title: 'Delete product',
+        subText: `Are you sure you want to delete ${category.name}?`,
+        onSubmitClick: () => {
+          dispatch(productActions.chooseProductCategory(null));
+          dispatch(controlActions.closeInfoPanelWithComponent());
 
-            let action = assignPendingActions(
-              productActions.apiDeleteProductCategory(category.id),
-              [],
-              [],
-              (args: any) => {
-                dispatch(productActions.apiGetAllProductCategoryAnUpdateList());
-              }
-            );
+          let action = assignPendingActions(
+            productActions.apiDeleteProductCategory(category.id),
+            [],
+            [],
+            (args: any) => {
+              dispatch(productActions.apiGetAllProductCategoryAnUpdateList());
+            }
+          );
 
-            dispatch(action);
-          },
-          () => {}
-        )
-      )
+          dispatch(action);
+        },
+        onDeclineClick: () => {},
+      })
     );
   };
 

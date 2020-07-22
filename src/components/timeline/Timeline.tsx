@@ -18,7 +18,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import {
   controlActions,
-  DialogArgs,
   CommonDialogType,
 } from '../../redux/slices/control.slice';
 import { deliveryTimelinesActions } from '../../redux/slices/deliveryTimeline.slice';
@@ -142,21 +141,19 @@ export const Timeline: React.FC = () => {
               iconProps={{ iconName: 'Delete' }}
               onClick={() => {
                 dispatch(
-                  controlActions.toggleCommonDialogVisibility(
-                    new DialogArgs(
-                      CommonDialogType.Delete,
-                      'Delete delivery timeline',
-                      `Are you sure you want to delete ${item.name}?`,
-                      () => {
-                        dispatch(
-                          deliveryTimelinesActions.apiDeleteDeliveryTimeline(
-                            item.id
-                          )
-                        );
-                      },
-                      () => {}
-                    )
-                  )
+                  controlActions.toggleCommonDialogVisibility({
+                    dialogType: CommonDialogType.Delete,
+                    title: 'Delete delivery timeline',
+                    subText: `Are you sure you want to delete ${item.name}?`,
+                    onSubmitClick: () => {
+                      dispatch(
+                        deliveryTimelinesActions.apiDeleteDeliveryTimeline(
+                          item.id
+                        )
+                      );
+                    },
+                    onDeclineClick: () => {},
+                  })
                 );
               }}
             ></ActionButton>

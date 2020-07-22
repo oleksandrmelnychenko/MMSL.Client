@@ -4,7 +4,7 @@ import Header from './header/Header';
 import Footer from './footer/Footer';
 import Menu from './menu/Menu';
 import { useLocation, Route } from 'react-router-dom';
-import CommonDialog from './CommonDialog';
+import CommonDialog from './DashboardDialog/CommonDialog';
 import { useSelector } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers/index';
 import { Panel, PanelType } from 'office-ui-fabric-react';

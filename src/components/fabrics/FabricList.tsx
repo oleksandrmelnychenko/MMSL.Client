@@ -16,7 +16,7 @@ const FabricList: React.FC = () => {
       <ScrollablePane
         styles={{
           ...fabricStyles.scrollablePaneStyleForDetailList,
-          contentContainer: { overflowX: 'hidden' },
+          contentContainer: { overflowX: 'hidden', padding: '12px' },
         }}
       >
         <Stack horizontal tokens={{ childrenGap: '24px' }} wrap>
