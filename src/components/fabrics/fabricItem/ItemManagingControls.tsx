@@ -23,7 +23,7 @@ import { assignPendingActions } from '../../../helpers/action.helper';
 import { fabricActions } from '../../../redux/slices/store/fabric/fabric.slice';
 import { IApplicationState } from '../../../redux/reducers';
 import { List } from 'linq-typescript';
-import FabricForm from '../managing/FabricForm';
+import FabricForm from '../managing/entity/FabricForm';
 import './fabricItem.scss';
 import { isUserCanManageFabrics } from '../../../helpers/fabric.helper';
 

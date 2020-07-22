@@ -23,19 +23,6 @@ import {
 } from '../slices/control.slice';
 import { fabricActions } from '../slices/store/fabric/fabric.slice';
 
-// : string;
-// : string;
-// : FabricStatuses;
-// : string;
-// : string;
-// : string;
-// : string;
-// : string;
-// : string;
-// : string;
-// : number;
-// : any | null;
-
 const FABRIC_CODE: string = 'fabricCode';
 const DESCRIPTION: string = 'description';
 const STATUS: string = 'status';
@@ -186,6 +173,50 @@ export const apiUpdateFabricEpic = (action$: AnyAction, state$: any) => {
                 controlActions.showInfoMessage(
                   new InfoMessage(
                     `Error occurred while updating fabric. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiUpdateFabricVisibilityEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(fabricActions.apiUpdateFabricVisibility.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      return putWebRequest(
+        api.UPDATE_FABRIC_VISIBILITY,
+        action.payload,
+        state$.value
+      ).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_UPDATE_FABRIC_VISIBILITIES' },
+                controlActions.showInfoMessage(
+                  new InfoMessage(
+                    `Error occurred while updating fabric visibilities. ${errorResponse}`,
                     InfoMessageType.Warning
                   )
                 ),

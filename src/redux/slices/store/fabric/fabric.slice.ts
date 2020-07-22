@@ -37,6 +37,7 @@ const fabric = createSlice({
     ) {},
     apiCreateFabric(state, action: { type: string; payload: string }) {},
     apiUpdateFabric(state, action: { type: string; payload: string }) {},
+    apiUpdateFabricVisibility(state, action: { type: string; payload: any }) {},
     apiDeleteFabricById(state, action: { type: string; payload: number }) {},
     changeFabrics(state, action: { type: string; payload: Fabric[] }) {
       state.fabrics = action.payload;

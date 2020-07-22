@@ -1,10 +1,10 @@
 import React from 'react';
-import { FabricStatuses } from '../../../interfaces/fabric';
+import { FabricStatuses } from '../../../../interfaces/fabric';
 import { Stack, IDropdownOption } from 'office-ui-fabric-react';
-import Entry from '../../../common/formFields/Entry';
-import FormDropdown from '../../../common/formFields/FormDropdown';
-import FormImageAttachemnt from '../../../common/formFields/FormImageAttachemnt';
-import { isUserCanManageFabrics } from '../../../helpers/fabric.helper';
+import Entry from '../../../../common/formFields/Entry';
+import FormDropdown from '../../../../common/formFields/FormDropdown';
+import FormImageAttachemnt from '../../../../common/formFields/FormImageAttachemnt';
+import { isUserCanManageFabrics } from '../../../../helpers/fabric.helper';
 
 const _statuses = [
   {

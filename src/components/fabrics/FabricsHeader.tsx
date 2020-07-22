@@ -11,7 +11,8 @@ import {
   rightPanelActions,
   RightPanelType,
 } from '../../redux/slices/rightPanel.slice';
-import FabricForm from './managing/FabricForm';
+import FabricForm from './managing/entity/FabricForm';
+import FabricPropsVisibilityForm from './managing/propsVisibility/FabricPropsVisibilityForm';
 
 export const FabricsHeader: React.FC = (props: any) => {
   const dispatch = useDispatch();
@@ -27,25 +28,49 @@ export const FabricsHeader: React.FC = (props: any) => {
       </Text>
 
       {canManageFabrics ? (
-        <ActionButton
-          onClick={() => {
-            dispatch(fabricActions.changeTargetFabric(null));
-            dispatch(
-              rightPanelActions.openRightPanel({
-                title: 'New Fabric',
-                width: '900px',
-                panelType: RightPanelType.Form,
-                closeFunctions: () => {
-                  dispatch(rightPanelActions.closeRightPanel());
-                },
-                component: FabricForm,
-              })
-            );
-          }}
-          iconProps={{ iconName: 'Add' }}
-        >
-          New fabric
-        </ActionButton>
+        <Stack horizontal>
+          <ActionButton
+            onClick={() => {
+              dispatch(fabricActions.changeTargetFabric(null));
+              dispatch(
+                rightPanelActions.openRightPanel({
+                  title: 'New Fabric',
+                  width: '900px',
+                  panelType: RightPanelType.Form,
+                  closeFunctions: () => {
+                    dispatch(rightPanelActions.closeRightPanel());
+                  },
+                  component: FabricForm,
+                })
+              );
+            }}
+            iconProps={{ iconName: 'Add' }}
+          >
+            New fabric
+          </ActionButton>
+
+          <ActionButton
+            onClick={() => {
+              dispatch(fabricActions.changeTargetFabric(null));
+              dispatch(
+                rightPanelActions.openRightPanel({
+                  title: 'Configure avaiability',
+                  description:
+                    'Configure availability of the fabric parts that will be visible for your dealers.',
+                  width: '400px',
+                  panelType: RightPanelType.Form,
+                  closeFunctions: () => {
+                    dispatch(rightPanelActions.closeRightPanel());
+                  },
+                  component: FabricPropsVisibilityForm,
+                })
+              );
+            }}
+            iconProps={{ iconName: 'Settings' }}
+          >
+            Configure avaiability
+          </ActionButton>
+        </Stack>
       ) : null}
 
       <SearchBox

@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { IApplicationState } from '../../../redux/reducers';
+import { IApplicationState } from '../../../../redux/reducers';
 import { useSelector, useDispatch } from 'react-redux';
-import { Fabric, FabricStatuses } from '../../../interfaces/fabric';
-import { FormicReference } from '../../../interfaces';
-import { fabricActions } from '../../../redux/slices/store/fabric/fabric.slice';
-import { rightPanelActions } from '../../../redux/slices/rightPanel.slice';
+import { Fabric, FabricStatuses } from '../../../../interfaces/fabric';
+import { FormicReference } from '../../../../interfaces';
+import { fabricActions } from '../../../../redux/slices/store/fabric/fabric.slice';
+import { rightPanelActions } from '../../../../redux/slices/rightPanel.slice';
 import {
   GetCommandBarItemProps,
   CommandBarItem,
   ChangeItemsDisabledState,
-} from '../../../helpers/commandBar.helper';
+} from '../../../../helpers/commandBar.helper';
 import { List } from 'linq-typescript';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { assignPendingActions } from '../../../helpers/action.helper';
+import { assignPendingActions } from '../../../../helpers/action.helper';
 import FormLayout from './FormLayout';
 
 export interface IFormValues {
@@ -125,7 +125,7 @@ const FabricForm: React.FC = () => {
     (state) => state.rightPanel.rightPanel.commandBarItems
   );
 
-  const targetProduct: Fabric | null | undefined = useSelector<
+  const targetFabric: Fabric | null | undefined = useSelector<
     IApplicationState,
     Fabric | null | undefined
   >((state) => state.fabric.targetFabric);
@@ -242,9 +242,9 @@ const FabricForm: React.FC = () => {
         imageFile: Yup.object().nullable(),
         fieldExternalImageURL: Yup.string().nullable(),
       })}
-      initialValues={_initDefaultValues(targetProduct)}
+      initialValues={_initDefaultValues(targetFabric)}
       onSubmit={(values: any) => {
-        if (targetProduct) onEdit(values, targetProduct);
+        if (targetFabric) onEdit(values, targetFabric);
         else onCreate(values);
       }}
       innerRef={(formik: any) => {

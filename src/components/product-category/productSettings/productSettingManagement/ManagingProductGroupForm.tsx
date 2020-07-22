@@ -6,7 +6,6 @@ import '../../../dealers/managing/dealerManaging/manageDealerForm.scss';
 import { FormicReference } from '../../../../interfaces';
 import { OptionGroup } from '../../../../interfaces/options';
 import { useDispatch, useSelector } from 'react-redux';
-import { controlActions } from '../../../../redux/slices/control.slice';
 import { rightPanelActions } from '../../../../redux/slices/rightPanel.slice';
 import {
   GetCommandBarItemProps,

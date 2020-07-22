@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Fabrics from './Fabrics';
-import FabricForm from './managing/FabricForm';
+import FabricForm from './managing/entity/FabricForm';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import { assignPendingActions } from '../../helpers/action.helper';
