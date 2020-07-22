@@ -2,7 +2,10 @@ import React, { useEffect } from 'react';
 import { Text, ScrollablePane, Stack, Separator } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { controlActions } from '../../../redux/slices/control.slice';
-import { rightPanelActions } from '../../../redux/slices/rightPanel.slice';
+import {
+  rightPanelActions,
+  RightPanelType,
+} from '../../../redux/slices/rightPanel.slice';
 import {
   horizontalGapStackTokens,
   mainTitleContent,
@@ -49,6 +52,7 @@ export const ProductDeliverTimeline: React.FC = () => {
                 rightPanelActions.openRightPanel({
                   title: 'New timeline',
                   width: '400px',
+                  panelType: RightPanelType.Form,
                   closeFunctions: () => {
                     dispatch(rightPanelActions.closeRightPanel());
                   },

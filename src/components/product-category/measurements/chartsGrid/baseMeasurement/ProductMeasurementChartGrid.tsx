@@ -33,7 +33,10 @@ import {
   controlActions,
   CommonDialogType,
 } from '../../../../../redux/slices/control.slice';
-import { rightPanelActions } from '../../../../../redux/slices/rightPanel.slice';
+import {
+  rightPanelActions,
+  RightPanelType,
+} from '../../../../../redux/slices/rightPanel.slice';
 import { productActions } from '../../../../../redux/slices/product.slice';
 import BaseSizeValueCell from './BaseSizeValueCell';
 import BaseSizeNameCell from './BaseSizeNameCell';
@@ -155,6 +158,7 @@ const ProductMeasurementChartGrid: React.FC = () => {
                                 title: 'Edit size',
                                 description: item.name,
                                 width: '400px',
+                                panelType: RightPanelType.Form,
                                 closeFunctions: () => {
                                   dispatch(
                                     productActions.changeProductMeasurementSizeForEdit(
@@ -390,6 +394,7 @@ const ProductMeasurementChartGrid: React.FC = () => {
           title: 'Add size',
           description: targetProductMeasurementChart.name,
           width: '400px',
+          panelType: RightPanelType.Form,
           closeFunctions: () => {
             dispatch(rightPanelActions.closeRightPanel());
           },

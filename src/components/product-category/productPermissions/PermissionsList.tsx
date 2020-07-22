@@ -26,7 +26,10 @@ import {
   controlActions,
   CommonDialogType,
 } from '../../../redux/slices/control.slice';
-import { rightPanelActions } from '../../../redux/slices/rightPanel.slice';
+import {
+  rightPanelActions,
+  RightPanelType,
+} from '../../../redux/slices/rightPanel.slice';
 import ProductPermissionForm from './managing/ProductPermissionForm';
 import { productStylePermissionsActions } from '../../../redux/slices/productStylePermissions.slice';
 import { assignPendingActions } from '../../../helpers/action.helper';
@@ -81,6 +84,7 @@ const PermissionsList: React.FC = () => {
                 title: 'Details',
                 description: args.name,
                 width: '700px',
+                panelType: RightPanelType.Form,
                 closeFunctions: () => {
                   dispatch(rightPanelActions.closeRightPanel());
                 },
@@ -112,6 +116,7 @@ const PermissionsList: React.FC = () => {
                 title: 'Assign Dealers',
                 description: args.name,
                 width: '720px',
+                panelType: RightPanelType.Form,
                 closeFunctions: () => {
                   dispatch(rightPanelActions.closeRightPanel());
                 },
@@ -144,6 +149,7 @@ const PermissionsList: React.FC = () => {
                 title: 'Edit style permission',
                 description: args.name,
                 width: '400px',
+                panelType: RightPanelType.Form,
                 closeFunctions: () => {
                   dispatch(rightPanelActions.closeRightPanel());
                 },

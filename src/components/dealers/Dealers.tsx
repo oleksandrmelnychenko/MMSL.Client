@@ -15,7 +15,10 @@ import {
   columnIconButtonStyle,
 } from '../../common/fabric-styles/styles';
 import { controlActions } from '../../redux/slices/control.slice';
-import { rightPanelActions } from '../../redux/slices/rightPanel.slice';
+import {
+  rightPanelActions,
+  RightPanelType,
+} from '../../redux/slices/rightPanel.slice';
 import ManageDealerForm from './managing/dealerManaging/ManageDealerForm';
 
 export const Dealers: React.FC = (props: any) => {
@@ -72,6 +75,7 @@ export const Dealers: React.FC = (props: any) => {
                       rightPanelActions.openRightPanel({
                         title: 'Add dealer',
                         width: '600px',
+                        panelType: RightPanelType.Form,
                         closeFunctions: () => {
                           dispatch(rightPanelActions.closeRightPanel());
                         },

@@ -9,7 +9,10 @@ import {
   IFabricState,
 } from '../../redux/slices/store/fabric/fabric.slice';
 import { controlActions } from '../../redux/slices/control.slice';
-import { rightPanelActions } from '../../redux/slices/rightPanel.slice';
+import {
+  rightPanelActions,
+  RightPanelType,
+} from '../../redux/slices/rightPanel.slice';
 import { isUserCanManageFabrics } from '../../helpers/fabric.helper';
 
 export const CREATE_YOUR_FIRST_FABRIC: string = 'Create your first fabric';
@@ -75,6 +78,7 @@ const FabricsViewBootstrapper: React.FC = () => {
                 rightPanelActions.openRightPanel({
                   title: 'New Fabric',
                   width: '900px',
+                  panelType: RightPanelType.Form,
                   closeFunctions: () => {
                     dispatch(rightPanelActions.closeRightPanel());
                   },

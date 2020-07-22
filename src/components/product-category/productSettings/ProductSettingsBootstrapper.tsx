@@ -6,7 +6,10 @@ import { IApplicationState } from '../../../redux/reducers';
 import { ProductCategory } from '../../../interfaces/products';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { controlActions } from '../../../redux/slices/control.slice';
-import { rightPanelActions } from '../../../redux/slices/rightPanel.slice';
+import {
+  rightPanelActions,
+  RightPanelType,
+} from '../../../redux/slices/rightPanel.slice';
 import ProductSettings from './ProductSettings';
 import ManagingvOptionGroupForm from './productSettingManagement/ManagingProductGroupForm';
 
@@ -58,6 +61,7 @@ export const ProductSettingsBootstrapper: React.FC = (props: any) => {
                   rightPanelActions.openRightPanel({
                     title: 'New style',
                     width: '400px',
+                    panelType: RightPanelType.Form,
                     closeFunctions: () => {
                       dispatch(rightPanelActions.closeRightPanel());
                     },

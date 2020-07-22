@@ -9,7 +9,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { labelStyle, btnMenuStyle } from '../../../common/fabric-styles/styles';
 import { IApplicationState } from '../../../redux/reducers/index';
 import { ImenuItem } from '../../../interfaces';
-import { rightPanelActions } from '../../../redux/slices/rightPanel.slice';
+import {
+  rightPanelActions,
+  RightPanelType,
+} from '../../../redux/slices/rightPanel.slice';
 import ManageDealerForm from '../managing/dealerManaging/ManageDealerForm';
 
 const DealerOptions: React.FC = () => {
@@ -44,6 +47,7 @@ const DealerOptions: React.FC = () => {
           rightPanelActions.openRightPanel({
             title: 'Edit dealer',
             width: '600px',
+            panelType: RightPanelType.Form,
             closeFunctions: () => {
               dispatch(rightPanelActions.closeRightPanel());
             },

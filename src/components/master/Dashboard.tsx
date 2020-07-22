@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers/index';
 import { Panel, PanelType } from 'office-ui-fabric-react';
 import { DashboardHintStubProps } from '../../redux/slices/control.slice';
-import { RightPanelProps } from '../../redux/slices/rightPanel.slice';
+import { IRightPanelProps } from '../../redux/slices/rightPanel.slice';
 import { panelStyle } from '../../common/fabric-styles/styles';
 import { RightPanel } from './panel/RightPanel';
 import DashboardLeftMenuPanel from './DashboardLeftMenuPanel';
@@ -23,7 +23,7 @@ const Dashboard: React.FC = () => {
     (state) => state.control.isCollapseMenu
   );
 
-  const rightPanel = useSelector<IApplicationState, RightPanelProps>(
+  const rightPanel = useSelector<IApplicationState, IRightPanelProps>(
     (state) => state.rightPanel.rightPanel
   );
 

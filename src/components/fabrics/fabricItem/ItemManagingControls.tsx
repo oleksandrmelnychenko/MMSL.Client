@@ -15,7 +15,10 @@ import {
   controlActions,
   CommonDialogType,
 } from '../../../redux/slices/control.slice';
-import { rightPanelActions } from '../../../redux/slices/rightPanel.slice';
+import {
+  rightPanelActions,
+  RightPanelType,
+} from '../../../redux/slices/rightPanel.slice';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { fabricActions } from '../../../redux/slices/store/fabric/fabric.slice';
 import { IApplicationState } from '../../../redux/reducers';
@@ -98,6 +101,7 @@ const ItemManagingControls: React.FC<IItemManagingControlsProps> = (
         title: 'Details',
         description: props.fabric.fabricCode,
         width: '900px',
+        panelType: RightPanelType.Form,
         closeFunctions: () => {
           dispatch(rightPanelActions.closeRightPanel());
         },

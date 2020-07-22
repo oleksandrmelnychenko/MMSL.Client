@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
 import {
-  RightPanelProps,
+  IRightPanelProps,
   rightPanelActions,
 } from '../../../redux/slices/rightPanel.slice';
 import {
@@ -17,10 +17,10 @@ import {
 import { commandBarStyles } from '../../../common/fabric-styles/styles';
 import './rightPanel.scss';
 
-export const RightPanel: React.FC<RightPanelProps> = () => {
+export const RightPanel: React.FC<IRightPanelProps> = () => {
   const dispatch = useDispatch();
 
-  const rightPanel = useSelector<IApplicationState, RightPanelProps>(
+  const rightPanel = useSelector<IApplicationState, IRightPanelProps>(
     (state) => state.rightPanel.rightPanel
   );
 

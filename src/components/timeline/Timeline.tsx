@@ -20,7 +20,10 @@ import {
   controlActions,
   CommonDialogType,
 } from '../../redux/slices/control.slice';
-import { rightPanelActions } from '../../redux/slices/rightPanel.slice';
+import {
+  rightPanelActions,
+  RightPanelType,
+} from '../../redux/slices/rightPanel.slice';
 import { deliveryTimelinesActions } from '../../redux/slices/deliveryTimeline.slice';
 import {
   scrollablePaneStyleForDetailList,
@@ -129,6 +132,7 @@ export const Timeline: React.FC = () => {
                       ? selectedDeliveryTimeline.name
                       : '',
                     width: '400px',
+                    panelType: RightPanelType.Form,
                     closeFunctions: () => {
                       dispatch(rightPanelActions.closeRightPanel());
                     },
@@ -232,6 +236,7 @@ export const Timeline: React.FC = () => {
                       rightPanelActions.openRightPanel({
                         title: 'New timeline',
                         width: '400px',
+                        panelType: RightPanelType.Form,
                         closeFunctions: () => {
                           dispatch(rightPanelActions.closeRightPanel());
                         },

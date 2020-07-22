@@ -1,11 +1,33 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+export enum RightPanelType {
+  Form,
+  ReadOnly,
+}
+
+export interface IRightPanelState {
+  rightPanel: IRightPanelProps;
+}
+
+export interface IRightPanelProps {
+  title: string;
+  width: string;
+  closeFunctions: any;
+  component: any;
+  panelType: RightPanelType;
+
+  description?: string;
+  commandBarItems?: any[];
+  commandBarClassName?: string;
+}
+
 const _defaultRightPanelProps = () => {
   return {
     title: '',
     width: '600px',
     closeFunctions: null,
     component: null,
+    panelType: RightPanelType.Form,
   };
 };
 
@@ -13,26 +35,11 @@ const INIT_STATE: IRightPanelState = {
   rightPanel: _defaultRightPanelProps(),
 };
 
-export interface IRightPanelState {
-  rightPanel: RightPanelProps;
-}
-
-export interface RightPanelProps {
-  title: string;
-  width: string;
-  closeFunctions: any;
-  component: any;
-
-  description?: string;
-  commandBarItems?: any[];
-  commandBarClassName?: string;
-}
-
 const rightPanel = createSlice({
   name: 'rightPanel',
   initialState: INIT_STATE,
   reducers: {
-    openRightPanel(state, action: { type: string; payload: RightPanelProps }) {
+    openRightPanel(state, action: { type: string; payload: IRightPanelProps }) {
       state.rightPanel = {
         ...state.rightPanel,
         title: action.payload.title,

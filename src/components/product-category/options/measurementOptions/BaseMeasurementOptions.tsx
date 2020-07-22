@@ -12,7 +12,10 @@ import {
   CommonDialogType,
   IInfoPanelMenuItem,
 } from '../../../../redux/slices/control.slice';
-import { rightPanelActions } from '../../../../redux/slices/rightPanel.slice';
+import {
+  rightPanelActions,
+  RightPanelType,
+} from '../../../../redux/slices/rightPanel.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   labelStyle,
@@ -105,6 +108,7 @@ const BaseMeasurementOptions: React.FC = () => {
             rightPanelActions.openRightPanel({
               title: 'New Measurement',
               width: '400px',
+              panelType: RightPanelType.Form,
               closeFunctions: () => {
                 dispatch(rightPanelActions.closeRightPanel());
               },
@@ -135,6 +139,7 @@ const BaseMeasurementOptions: React.FC = () => {
               title: 'Edit Measurement',
               description: targetProductMeasurement.name,
               width: '400px',
+              panelType: RightPanelType.Form,
               closeFunctions: () => {
                 dispatch(rightPanelActions.closeRightPanel());
                 dispatch(productActions.changeProductMeasurementForEdit(null));
@@ -231,6 +236,7 @@ const BaseMeasurementOptions: React.FC = () => {
               title: 'Add size',
               description: targetProductMeasurement.name,
               width: '400px',
+              panelType: RightPanelType.Form,
               closeFunctions: () => {
                 dispatch(rightPanelActions.closeRightPanel());
               },

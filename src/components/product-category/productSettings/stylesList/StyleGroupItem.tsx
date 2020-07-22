@@ -22,7 +22,10 @@ import {
   controlActions,
   CommonDialogType,
 } from '../../../../redux/slices/control.slice';
-import { rightPanelActions } from '../../../../redux/slices/rightPanel.slice';
+import {
+  rightPanelActions,
+  RightPanelType,
+} from '../../../../redux/slices/rightPanel.slice';
 import './styleGroupItem.scss';
 import { ManagingvOptionGroupForm } from './../productSettingManagement/ManagingProductGroupForm';
 import { OptionGroupDetails } from './../productSettingManagement/OptionGroupDetails';
@@ -214,6 +217,7 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
                             title: 'Manage Style',
                             description: props.expandableStyleGroup.item.name,
                             width: '700px',
+                            panelType: RightPanelType.Form,
                             closeFunctions: () => {
                               dispatch(rightPanelActions.closeRightPanel());
                             },
@@ -257,6 +261,7 @@ export const StyleGroupItem: React.FC<IStyleGroupItemProps> = (
                               title: 'Details',
                               description: args.name,
                               width: '400px',
+                              panelType: RightPanelType.Form,
                               closeFunctions: () => {
                                 dispatch(rightPanelActions.closeRightPanel());
                               },

@@ -3,7 +3,10 @@ import { ProductCategory } from '../../../interfaces/products';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
 import { controlActions } from '../../../redux/slices/control.slice';
-import { rightPanelActions } from '../../../redux/slices/rightPanel.slice';
+import {
+  rightPanelActions,
+  RightPanelType,
+} from '../../../redux/slices/rightPanel.slice';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { productStylePermissionsActions } from '../../../redux/slices/productStylePermissions.slice';
 import ProductPermissionForm from './managing/ProductPermissionForm';
@@ -98,6 +101,7 @@ const ProductPermissions: React.FC = () => {
                   rightPanelActions.openRightPanel({
                     title: 'New style permission',
                     width: '400px',
+                    panelType: RightPanelType.Form,
                     closeFunctions: () => {
                       dispatch(rightPanelActions.closeRightPanel());
                     },

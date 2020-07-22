@@ -4,7 +4,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import { customerActions } from '../../redux/slices/customer/customer.slice';
 import { controlActions } from '../../redux/slices/control.slice';
-import { rightPanelActions } from '../../redux/slices/rightPanel.slice';
+import {
+  rightPanelActions,
+  RightPanelType,
+} from '../../redux/slices/rightPanel.slice';
 import {
   horizontalGapStackTokens,
   mainTitleContent,
@@ -42,6 +45,7 @@ export const CustomersHeader: React.FC = (props: any) => {
             rightPanelActions.openRightPanel({
               title: 'New Customer',
               width: '400px',
+              panelType: RightPanelType.Form,
               closeFunctions: () => {
                 dispatch(rightPanelActions.closeRightPanel());
               },
