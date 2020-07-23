@@ -32,9 +32,15 @@ const FabricList: React.FC = () => {
     (state) => state.fabricFilters.filters
   );
 
+  const isSearching: boolean = useSelector<IApplicationState, boolean>(
+    (state) => state.fabric.searchWord.length > 0
+  );
+
+  const isFiltered: boolean = isAnyApplied(filters) || isSearching;
+
   return (
     <div>
-      {isAnyApplied(filters) && fabrics.length === 0 ? (
+      {isFiltered && fabrics.length === 0 ? (
         _renderHintLable('No such fabrics')
       ) : (
         <Stack horizontal tokens={{ childrenGap: '24px' }} wrap>

@@ -1,6 +1,6 @@
 import React from 'react';
-import { ActionButton, Text, Stack, SearchBox } from 'office-ui-fabric-react';
-import { useDispatch, useSelector } from 'react-redux';
+import { ActionButton, Text, Stack } from 'office-ui-fabric-react';
+import { useDispatch } from 'react-redux';
 import {
   horizontalGapStackTokens,
   mainTitleContent,
@@ -13,17 +13,10 @@ import {
 } from '../../redux/slices/rightPanel.slice';
 import FabricForm from './managing/entity/FabricForm';
 import FabricPropsVisibilityForm from './managing/propsVisibility/FabricPropsVisibilityForm';
-import { IApplicationState } from '../../redux/reducers';
 import { assignPendingActions } from '../../helpers/action.helper';
 
 export const FabricsHeader: React.FC = (props: any) => {
   const dispatch = useDispatch();
-
-  const searchWord: string = useSelector<IApplicationState, string>(
-    (state) => state.fabric.searchWord
-  );
-
-  const searchBoxStyles = { root: { width: 200 } };
 
   const canManageFabrics: boolean = isUserCanManageFabrics();
 
@@ -57,17 +50,28 @@ export const FabricsHeader: React.FC = (props: any) => {
 
           <ActionButton
             onClick={() => {
-              dispatch(fabricActions.changeTargetFabric(null));
               dispatch(
-                rightPanelActions.openRightPanel({
-                  title: 'Configure fabric avaiability',
-                  width: '400px',
-                  panelType: RightPanelType.Form,
-                  closeFunctions: () => {
-                    dispatch(rightPanelActions.closeRightPanel());
+                assignPendingActions(
+                  fabricActions.apiGetFabricVisibility(),
+                  [],
+                  [],
+                  (args: any) => {
+                    dispatch(fabricActions.changeTargetFabric(null));
+                    dispatch(fabricActions.changeFabricVisibilities(args));
+                    dispatch(
+                      rightPanelActions.openRightPanel({
+                        title: 'Configure fabric avaiability',
+                        width: '400px',
+                        panelType: RightPanelType.Form,
+                        closeFunctions: () => {
+                          dispatch(rightPanelActions.closeRightPanel());
+                        },
+                        component: FabricPropsVisibilityForm,
+                      })
+                    );
                   },
-                  component: FabricPropsVisibilityForm,
-                })
+                  (args: any) => {}
+                )
               );
             }}
             iconProps={{ iconName: 'Settings' }}
@@ -76,31 +80,6 @@ export const FabricsHeader: React.FC = (props: any) => {
           </ActionButton>
         </Stack>
       ) : null}
-
-      <SearchBox
-        styles={searchBoxStyles}
-        value={searchWord}
-        placeholder="Find fabric"
-        onSearch={(args: any) => {
-          dispatch(fabricActions.changeSearchWord(args ? args : ''));
-
-          dispatch(
-            assignPendingActions(
-              fabricActions.apiGetAllFabricsPaginated(),
-              [],
-              [],
-              (args: any) => {
-                dispatch(fabricActions.changeFabrics(args.entities));
-                dispatch(
-                  fabricActions.changePaginationInfo(args.paginationInfo)
-                );
-              },
-              (args: any) => {}
-            )
-          );
-        }}
-        onChange={(args: any) => {}}
-      />
     </Stack>
   );
 };

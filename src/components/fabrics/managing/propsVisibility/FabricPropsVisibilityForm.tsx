@@ -1,16 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { IApplicationState } from '../../../../redux/reducers';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  Fabric,
-  FabricVisibilities,
-  FilterItem,
-} from '../../../../interfaces/fabric';
+import { FabricVisibilities } from '../../../../interfaces/fabric';
 import { FormicReference } from '../../../../interfaces';
-import {
-  fabricActions,
-  IFabricState,
-} from '../../../../redux/slices/store/fabric/fabric.slice';
+import { fabricActions } from '../../../../redux/slices/store/fabric/fabric.slice';
 import { rightPanelActions } from '../../../../redux/slices/rightPanel.slice';
 import {
   GetCommandBarItemProps,
@@ -35,7 +28,7 @@ export interface IFormValues {
   isPatternVisible: boolean;
 }
 
-const _initDefaultValues = (sourceFabrics: Fabric[]) => {
+const _initDefaultValues = (fabricVisibilities: FabricVisibilities) => {
   const initValues: IFormValues = {
     isMetresVisible: true,
     isMillVisible: true,
@@ -47,16 +40,14 @@ const _initDefaultValues = (sourceFabrics: Fabric[]) => {
     isPatternVisible: true,
   };
 
-  if (sourceFabrics.length > 0) {
-    initValues.isMetresVisible = sourceFabrics[0].isMetresVisible;
-    initValues.isMillVisible = sourceFabrics[0].isMillVisible;
-    initValues.isColorVisible = sourceFabrics[0].isColorVisible;
-    initValues.isCompositionVisible = sourceFabrics[0].isCompositionVisible;
-    initValues.isGSMVisible = sourceFabrics[0].isGSMVisible;
-    initValues.isCountVisible = sourceFabrics[0].isCountVisible;
-    initValues.isWeaveVisible = sourceFabrics[0].isWeaveVisible;
-    initValues.isPatternVisible = sourceFabrics[0].isPatternVisible;
-  }
+  initValues.isMetresVisible = fabricVisibilities.isMetresVisible;
+  initValues.isMillVisible = fabricVisibilities.isMillVisible;
+  initValues.isColorVisible = fabricVisibilities.isColorVisible;
+  initValues.isCompositionVisible = fabricVisibilities.isCompositionVisible;
+  initValues.isGSMVisible = fabricVisibilities.isGSMVisible;
+  initValues.isCountVisible = fabricVisibilities.isCountVisible;
+  initValues.isWeaveVisible = fabricVisibilities.isWeaveVisible;
+  initValues.isPatternVisible = fabricVisibilities.isPatternVisible;
 
   return initValues;
 };
@@ -88,18 +79,10 @@ const FabricPropsVisibilityForm: React.FC = () => {
     (state) => state.rightPanel.rightPanel.commandBarItems
   );
 
-  const fabrics: Fabric[] = useSelector<IApplicationState, Fabric[]>(
-    (state) => state.fabric.fabrics
-  );
-
-  const fabricState: IFabricState = useSelector<
+  const fabricVisibilities: FabricVisibilities = useSelector<
     IApplicationState,
-    IFabricState
-  >((state) => state.fabric);
-
-  const filters: FilterItem[] = useSelector<IApplicationState, FilterItem[]>(
-    (state) => state.fabricFilters.filters
-  );
+    FabricVisibilities
+  >((state) => state.fabric.fabricVisibilities);
 
   useEffect(() => {
     return () => {
@@ -138,7 +121,7 @@ const FabricPropsVisibilityForm: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFormikDirty, dispatch]);
 
-  const onEdit = (values: IFormValues, sourceFabrics: Fabric[]) => {
+  const onEdit = (values: IFormValues) => {
     const payload = _buildEditedPayload(values);
 
     dispatch(
@@ -149,14 +132,7 @@ const FabricPropsVisibilityForm: React.FC = () => {
         (args: any) => {
           dispatch(
             assignPendingActions(
-              fabricActions.apiGetAllFabrics({
-                paginationPageNumber:
-                  fabricState.pagination.paginationInfo.pageNumber,
-                paginationLimit: fabricState.pagination.limit,
-
-                searchPhrase: fabricState.searchWord,
-                filterBuilder: filters,
-              }),
+              fabricActions.apiGetAllFabricsPaginated(),
               [],
               [],
               (args: any) => {
@@ -188,13 +164,13 @@ const FabricPropsVisibilityForm: React.FC = () => {
         isWeaveVisible: Yup.boolean(),
         isPatternVisible: Yup.boolean(),
       })}
-      initialValues={_initDefaultValues(fabrics)}
+      initialValues={_initDefaultValues(fabricVisibilities)}
       onSubmit={(values: any) => {
-        if (fabrics) onEdit(values, fabrics);
+        onEdit(values);
       }}
       innerRef={(formik: any) => {
         formikReference.formik = formik;
-        if (formik) setFormikDirty(formik.dirty && fabrics.length > 0);
+        if (formik) setFormikDirty(formik.dirty);
       }}
       validateOnBlur={false}
       enableReinitialize={true}

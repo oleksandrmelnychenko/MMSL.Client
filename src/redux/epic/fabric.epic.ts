@@ -302,6 +302,43 @@ export const apiUpdateFabricVisibilityEpic = (
   );
 };
 
+export const apiGetFabricVisibilityEpic = (action$: AnyAction, state$: any) => {
+  return action$.pipe(
+    ofType(fabricActions.apiGetFabricVisibility.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      return getWebRequest(api.GET_FABRIC_VISIBILITY, state$.value).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_GET_FABRIC_VISIBILITIES' },
+                controlActions.showInfoMessage(
+                  new InfoMessage(
+                    `Error occurred while getting fabric visibilities. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
 export const apiDeleteFabricByIdEpic = (action$: AnyAction, state$: any) => {
   return action$.pipe(
     ofType(fabricActions.apiDeleteFabricById.type),

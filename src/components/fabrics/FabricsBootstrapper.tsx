@@ -29,14 +29,20 @@ const FabricsViewBootstrapper: React.FC = () => {
     (state) => state.fabric.fabrics.length === 0
   );
 
-  const fabricState: IFabricState = useSelector<
-    IApplicationState,
-    IFabricState
-  >((state) => state.fabric);
+  const isSearching: boolean = useSelector<IApplicationState, boolean>(
+    (state) => state.fabric.searchWord.length > 0
+  );
 
   const filters: FilterItem[] = useSelector<IApplicationState, FilterItem[]>(
     (state) => state.fabricFilters.filters
   );
+
+  const isFiltered: boolean = isAnyApplied(filters) || isSearching;
+
+  const fabricState: IFabricState = useSelector<
+    IApplicationState,
+    IFabricState
+  >((state) => state.fabric);
 
   useEffect(() => {
     dispatch(
@@ -67,7 +73,7 @@ const FabricsViewBootstrapper: React.FC = () => {
   /// Resolve dashboard hint visibility
   useEffect(() => {
     if (isWasIntended) {
-      if (isEmpty && !isAnyApplied(filters)) {
+      if (isEmpty && !isFiltered) {
         const canManageFabrics: boolean = isUserCanManageFabrics();
 
         dispatch(
