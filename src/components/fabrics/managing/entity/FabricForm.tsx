@@ -15,6 +15,7 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { assignPendingActions } from '../../../../helpers/action.helper';
 import FormLayout, { buildFabricVisibilities } from './FormLayout';
+import { fabricFiltersActions } from '../../../../redux/slices/store/fabric/fabricFilters.slice';
 
 export interface IFormValues {
   fabricCode: string;
@@ -181,8 +182,26 @@ const FabricForm: React.FC = () => {
         [],
         (args: any) => {
           dispatch(
-            fabricActions.changeFabrics(
-              new List(fabrics).concat([args.body]).toArray()
+            assignPendingActions(
+              fabricFiltersActions.apiGetFilters(),
+              [],
+              [],
+              (args: any) => {
+                dispatch(fabricFiltersActions.changeAndApplyFilters(args));
+
+                dispatch(
+                  assignPendingActions(
+                    fabricActions.apiGetAllFabricsPaginated(),
+                    [],
+                    [],
+                    (args: any) => {
+                      dispatch(fabricActions.changeFabrics(args.entities));
+                    },
+                    (args: any) => {}
+                  )
+                );
+              },
+              (args: any) => {}
             )
           );
           dispatch(rightPanelActions.closeRightPanel());
@@ -203,18 +222,26 @@ const FabricForm: React.FC = () => {
         [],
         (args: any) => {
           dispatch(
-            fabricActions.changeFabrics(
-              new List(fabrics)
-                .select((fabric: Fabric) => {
-                  let selectResult = fabric;
+            assignPendingActions(
+              fabricFiltersActions.apiGetFilters(),
+              [],
+              [],
+              (args: any) => {
+                dispatch(fabricFiltersActions.changeAndApplyFilters(args));
 
-                  if (fabric.id === args.body.id) {
-                    selectResult = args.body;
-                  }
-
-                  return selectResult;
-                })
-                .toArray()
+                dispatch(
+                  assignPendingActions(
+                    fabricActions.apiGetAllFabricsPaginated(),
+                    [],
+                    [],
+                    (args: any) => {
+                      dispatch(fabricActions.changeFabrics(args.entities));
+                    },
+                    (args: any) => {}
+                  )
+                );
+              },
+              (args: any) => {}
             )
           );
           dispatch(rightPanelActions.closeRightPanel());

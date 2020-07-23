@@ -1,31 +1,49 @@
 import React from 'react';
 import { IApplicationState } from '../../redux/reducers';
 import { useSelector } from 'react-redux';
-import { Fabric } from '../../interfaces/fabric';
-import { ScrollablePane, Stack } from 'office-ui-fabric-react';
-import * as fabricStyles from '../../common/fabric-styles/styles';
+import { Fabric, FilterItem, isAnyApplied } from '../../interfaces/fabric';
 import FabricItem from './fabricItem/FabricItem';
+import { Stack, Label } from 'office-ui-fabric-react';
+
+const _renderHintLable = (textMessage: string): JSX.Element => {
+  const result = (
+    <Label
+      styles={{
+        root: {
+          fontWeight: 400,
+          fontSize: '16px',
+          color: '#a19f9d',
+        },
+      }}
+    >
+      {textMessage}
+    </Label>
+  );
+
+  return result;
+};
 
 const FabricList: React.FC = () => {
   const fabrics: Fabric[] = useSelector<IApplicationState, Fabric[]>(
     (state) => state.fabric.fabrics
   );
 
+  const filters: FilterItem[] = useSelector<IApplicationState, FilterItem[]>(
+    (state) => state.fabricFilters.filters
+  );
+
   return (
-    <>
-      <ScrollablePane
-        styles={{
-          ...fabricStyles.scrollablePaneStyleForDetailList,
-          contentContainer: { overflowX: 'hidden', padding: '12px' },
-        }}
-      >
+    <div>
+      {isAnyApplied(filters) && fabrics.length === 0 ? (
+        _renderHintLable('No such fabrics')
+      ) : (
         <Stack horizontal tokens={{ childrenGap: '24px' }} wrap>
           {fabrics.map((fabric: Fabric, index: number) => {
             return <FabricItem fabric={fabric} key={index} />;
           })}
         </Stack>
-      </ScrollablePane>
-    </>
+      )}
+    </div>
   );
 };
 

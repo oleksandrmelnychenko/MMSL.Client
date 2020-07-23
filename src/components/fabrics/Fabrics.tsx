@@ -1,7 +1,9 @@
 import React from 'react';
-import { Stack } from 'office-ui-fabric-react';
+import { Stack, ScrollablePane, Separator } from 'office-ui-fabric-react';
 import FabricsHeader from './FabricsHeader';
 import FabricList from './FabricList';
+import FabricFiltersBootstrapper from './filters/FabricFiltersBootstrapper';
+import * as fabricStyles from '../../common/fabric-styles/styles';
 
 const Fabrics: React.FC = () => {
   return (
@@ -14,9 +16,60 @@ const Fabrics: React.FC = () => {
             </div>
           </div>
         </Stack.Item>
-        <Stack.Item>
-          <FabricList />
-        </Stack.Item>
+
+        <ScrollablePane
+          styles={{
+            ...fabricStyles.scrollablePaneStyleForDetailList,
+            contentContainer: {
+              overflowX: 'hidden',
+              left: '0px',
+              padding: '12px',
+            },
+          }}
+        >
+          <Stack horizontal>
+            <Stack.Item>
+              <ScrollablePane
+                styles={{
+                  contentContainer: {
+                    overflowX: 'hidden',
+                    left: '0',
+                    padding: '12px',
+                    width: '250px',
+                  },
+                }}
+              >
+                <FabricFiltersBootstrapper />
+              </ScrollablePane>
+            </Stack.Item>
+
+            <Separator
+              vertical
+              styles={{
+                root: {
+                  position: 'absolute',
+                  height: '100%',
+                  top: '0px',
+                  left: '254px',
+                },
+              }}
+            />
+
+            <Stack.Item>
+              <ScrollablePane
+                styles={{
+                  root: { left: '261px' },
+                  contentContainer: {
+                    overflowX: 'hidden',
+                    padding: '12px',
+                  },
+                }}
+              >
+                <FabricList />
+              </ScrollablePane>
+            </Stack.Item>
+          </Stack>
+        </ScrollablePane>
       </Stack>
     </div>
   );

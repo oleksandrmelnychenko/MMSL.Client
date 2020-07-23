@@ -69,6 +69,10 @@ import {
   default as rightPanelReducer,
   IRightPanelState,
 } from '../slices/rightPanel.slice';
+import {
+  default as fabricFiltersReducer,
+  IfabricFiltersState,
+} from '../slices/store/fabric/fabricFilters.slice';
 
 export interface IApplicationState {
   auth: IAuthState;
@@ -92,6 +96,7 @@ export interface IApplicationState {
   store: IStoreState;
   fabric: IFabricState;
   rightPanel: IRightPanelState;
+  fabricFilters: IfabricFiltersState;
 }
 
 export const reducer = combineReducers({
@@ -116,4 +121,5 @@ export const reducer = combineReducers({
   store: storeReducer,
   fabric: fabricReducer,
   rightPanel: rightPanelReducer,
+  fabricFilters: fabricFiltersReducer,
 });

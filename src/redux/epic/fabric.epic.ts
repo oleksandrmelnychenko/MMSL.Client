@@ -22,6 +22,12 @@ import {
   InfoMessageType,
 } from '../slices/control.slice';
 import { fabricActions } from '../slices/store/fabric/fabric.slice';
+import { List } from 'linq-typescript';
+import {
+  FilterItem,
+  FabricFilterValue,
+  getApplied,
+} from '../../interfaces/fabric';
 
 const FABRIC_CODE: string = 'fabricCode';
 const DESCRIPTION: string = 'description';
@@ -49,6 +55,71 @@ export const apiGetAllFabricsEpic = (action$: AnyAction, state$: any) => {
           return successCommonEpicFlow(
             successResponse,
             [controlActions.disabledStatusBar()],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_GET_ALL_FABRICS' },
+                controlActions.showInfoMessage(
+                  new InfoMessage(
+                    `Error occurred while getting fabrics. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiGetAllFabricsPaginatedEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(fabricActions.apiGetAllFabricsPaginated.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      const pageNumber =
+        state$.value.fabric.pagination.paginationInfo.pageNumber;
+      const limit = state$.value.fabric.pagination.limit;
+      const searchPhrase = state$.value.fabric.searchWord;
+
+      const filters = getApplied(state$.value.fabricFilters.filters);
+
+      return getWebRequest(api.GET_ALL_FABRICS, state$.value, [
+        {
+          key: 'pageNumber',
+          value: `${pageNumber}`,
+        },
+        {
+          key: 'limit',
+          value: `${limit}`,
+        },
+        {
+          key: 'searchPhrase',
+          value: `${searchPhrase}`,
+        },
+        {
+          key: 'filterBuilder',
+          value: `${JSON.stringify(filters)}`,
+        },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [controlActions.disabledStatusBar()],
+
             action
           );
         }),

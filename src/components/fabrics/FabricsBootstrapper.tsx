@@ -14,6 +14,7 @@ import {
   RightPanelType,
 } from '../../redux/slices/rightPanel.slice';
 import { isUserCanManageFabrics } from '../../helpers/fabric.helper';
+import { FilterItem, isAnyApplied } from '../../interfaces/fabric';
 
 export const CREATE_YOUR_FIRST_FABRIC: string = 'Create your first fabric';
 export const NO_AVAILABLE_FABRICS: string = 'No available fabrics';
@@ -33,6 +34,10 @@ const FabricsViewBootstrapper: React.FC = () => {
     IFabricState
   >((state) => state.fabric);
 
+  const filters: FilterItem[] = useSelector<IApplicationState, FilterItem[]>(
+    (state) => state.fabricFilters.filters
+  );
+
   useEffect(() => {
     dispatch(
       assignPendingActions(
@@ -42,7 +47,7 @@ const FabricsViewBootstrapper: React.FC = () => {
           paginationLimit: fabricState.pagination.limit,
 
           searchPhrase: fabricState.searchWord,
-          filterBuilder: fabricState.filters,
+          filterBuilder: filters,
         }),
         [],
         [],
@@ -62,7 +67,7 @@ const FabricsViewBootstrapper: React.FC = () => {
   /// Resolve dashboard hint visibility
   useEffect(() => {
     if (isWasIntended) {
-      if (isEmpty) {
+      if (isEmpty && !isAnyApplied(filters)) {
         const canManageFabrics: boolean = isUserCanManageFabrics();
 
         dispatch(
@@ -77,7 +82,7 @@ const FabricsViewBootstrapper: React.FC = () => {
               dispatch(
                 rightPanelActions.openRightPanel({
                   title: 'New Fabric',
-                  width: '900px',
+                  width: '600px',
                   panelType: RightPanelType.Form,
                   closeFunctions: () => {
                     dispatch(rightPanelActions.closeRightPanel());

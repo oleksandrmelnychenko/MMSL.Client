@@ -139,18 +139,6 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
       );
     }
 
-    if (props.fabricVisibilities.isGSMVisible) {
-      entriesResult.push(
-        <Entry
-          formik={props.formik}
-          fieldName={'gSM'}
-          label={'GSM'}
-          isRequired
-          readOnly={!canManageFabrics}
-        />
-      );
-    }
-
     if (props.fabricVisibilities.isCountVisible) {
       entriesResult.push(
         <Entry

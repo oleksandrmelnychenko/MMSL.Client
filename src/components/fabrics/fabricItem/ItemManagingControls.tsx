@@ -10,7 +10,7 @@ import {
   ImageFit,
 } from 'office-ui-fabric-react';
 import './fabricItem.scss';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   controlActions,
   CommonDialogType,
@@ -21,11 +21,10 @@ import {
 } from '../../../redux/slices/rightPanel.slice';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { fabricActions } from '../../../redux/slices/store/fabric/fabric.slice';
-import { IApplicationState } from '../../../redux/reducers';
-import { List } from 'linq-typescript';
 import FabricForm from '../managing/entity/FabricForm';
 import './fabricItem.scss';
 import { isUserCanManageFabrics } from '../../../helpers/fabric.helper';
+import { fabricFiltersActions } from '../../../redux/slices/store/fabric/fabricFilters.slice';
 
 export interface IItemManagingControlsProps {
   fabric: Fabric;
@@ -35,10 +34,6 @@ const ItemManagingControls: React.FC<IItemManagingControlsProps> = (
   props: IItemManagingControlsProps
 ) => {
   const dispatch = useDispatch();
-
-  const fabrics: Fabric[] = useSelector<IApplicationState, Fabric[]>(
-    (state) => state.fabric.fabrics
-  );
 
   const canManageFabrics: boolean = isUserCanManageFabrics();
 
@@ -78,10 +73,31 @@ const ItemManagingControls: React.FC<IItemManagingControlsProps> = (
               [],
               (args: any) => {
                 dispatch(
-                  fabricActions.changeFabrics(
-                    new List(fabrics)
-                      .where((fabric: Fabric) => fabric.id !== props.fabric.id)
-                      .toArray()
+                  assignPendingActions(
+                    fabricFiltersActions.apiGetFilters(),
+                    [],
+                    [],
+                    (args: any) => {
+                      dispatch(
+                        fabricFiltersActions.changeAndApplyFilters(args)
+                      );
+
+                      dispatch(
+                        assignPendingActions(
+                          fabricActions.apiGetAllFabricsPaginated(),
+                          [],
+                          [],
+                          (args: any) => {
+                            dispatch(
+                              fabricActions.changeFabrics(args.entities)
+                            );
+                            dispatch(fabricActions.changeTargetFabric(null));
+                          },
+                          (args: any) => {}
+                        )
+                      );
+                    },
+                    (args: any) => {}
                   )
                 );
               },

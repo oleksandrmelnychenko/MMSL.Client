@@ -1,0 +1,9 @@
+.filterValue {
+    transition: all ease 0.1s;
+    padding: 6px 6px 6px 6px;
+
+    &:hover {
+        background-color: #edebe9;
+        cursor: pointer;
+    }
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActionButton, Text, Stack, SearchBox } from 'office-ui-fabric-react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   horizontalGapStackTokens,
   mainTitleContent,
@@ -13,9 +13,15 @@ import {
 } from '../../redux/slices/rightPanel.slice';
 import FabricForm from './managing/entity/FabricForm';
 import FabricPropsVisibilityForm from './managing/propsVisibility/FabricPropsVisibilityForm';
+import { IApplicationState } from '../../redux/reducers';
+import { assignPendingActions } from '../../helpers/action.helper';
 
 export const FabricsHeader: React.FC = (props: any) => {
   const dispatch = useDispatch();
+
+  const searchWord: string = useSelector<IApplicationState, string>(
+    (state) => state.fabric.searchWord
+  );
 
   const searchBoxStyles = { root: { width: 200 } };
 
@@ -35,7 +41,7 @@ export const FabricsHeader: React.FC = (props: any) => {
               dispatch(
                 rightPanelActions.openRightPanel({
                   title: 'New Fabric',
-                  width: '900px',
+                  width: '600px',
                   panelType: RightPanelType.Form,
                   closeFunctions: () => {
                     dispatch(rightPanelActions.closeRightPanel());
@@ -73,27 +79,27 @@ export const FabricsHeader: React.FC = (props: any) => {
 
       <SearchBox
         styles={searchBoxStyles}
+        value={searchWord}
         placeholder="Find fabric"
         onSearch={(args: any) => {
-          //   if (args) {
-          //     let value = args.target.value;
-          //     dispatch(customerActions.searchCustomer(value));
-          //     dispatch(customerActions.getCustomersListPaginated());
-          //   } else {
-          //     dispatch(customerActions.searchCustomer(''));
-          //     dispatch(customerActions.getCustomersListPaginated());
-          //   }
+          dispatch(fabricActions.changeSearchWord(args ? args : ''));
+
+          dispatch(
+            assignPendingActions(
+              fabricActions.apiGetAllFabricsPaginated(),
+              [],
+              [],
+              (args: any) => {
+                dispatch(fabricActions.changeFabrics(args.entities));
+                dispatch(
+                  fabricActions.changePaginationInfo(args.paginationInfo)
+                );
+              },
+              (args: any) => {}
+            )
+          );
         }}
-        onChange={(args: any) => {
-          //   if (args) {
-          //     let value = args.target.value;
-          //     dispatch(customerActions.searchCustomer(value));
-          //     dispatch(customerActions.getCustomersListPaginated());
-          //   } else {
-          //     dispatch(customerActions.searchCustomer(''));
-          //     dispatch(customerActions.getCustomersListPaginated());
-          //   }
-        }}
+        onChange={(args: any) => {}}
       />
     </Stack>
   );

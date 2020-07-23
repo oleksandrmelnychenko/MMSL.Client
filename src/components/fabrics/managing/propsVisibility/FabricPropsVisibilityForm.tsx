@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { IApplicationState } from '../../../../redux/reducers';
 import { useSelector, useDispatch } from 'react-redux';
-import { Fabric, FabricVisibilities } from '../../../../interfaces/fabric';
+import {
+  Fabric,
+  FabricVisibilities,
+  FilterItem,
+} from '../../../../interfaces/fabric';
 import { FormicReference } from '../../../../interfaces';
 import {
   fabricActions,
@@ -93,6 +97,10 @@ const FabricPropsVisibilityForm: React.FC = () => {
     IFabricState
   >((state) => state.fabric);
 
+  const filters: FilterItem[] = useSelector<IApplicationState, FilterItem[]>(
+    (state) => state.fabricFilters.filters
+  );
+
   useEffect(() => {
     return () => {
       dispatch(fabricActions.changeTargetFabric(null));
@@ -147,7 +155,7 @@ const FabricPropsVisibilityForm: React.FC = () => {
                 paginationLimit: fabricState.pagination.limit,
 
                 searchPhrase: fabricState.searchWord,
-                filterBuilder: fabricState.filters,
+                filterBuilder: filters,
               }),
               [],
               [],

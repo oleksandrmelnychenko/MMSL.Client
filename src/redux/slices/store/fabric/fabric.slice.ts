@@ -11,7 +11,6 @@ const INIT_STATE: IFabricState = {
   targetFabric: null,
   pagination: new Pagination(),
   searchWord: '',
-  filters: [],
 };
 
 export interface IFabricState {
@@ -19,7 +18,6 @@ export interface IFabricState {
   targetFabric: Fabric | null | undefined;
   pagination: Pagination;
   searchWord: string;
-  filters: FilterItem[];
 }
 
 const fabric = createSlice({
@@ -39,6 +37,7 @@ const fabric = createSlice({
         };
       }
     ) {},
+    apiGetAllFabricsPaginated(state) {},
     apiCreateFabric(state, action: { type: string; payload: string }) {},
     apiUpdateFabric(state, action: { type: string; payload: string }) {},
     apiUpdateFabricVisibility(
@@ -65,6 +64,10 @@ const fabric = createSlice({
         ...state.pagination,
         paginationInfo: action.payload,
       };
+      return state;
+    },
+    changeSearchWord(state, action: { type: string; payload: string }) {
+      state.searchWord = action.payload;
       return state;
     },
   },
