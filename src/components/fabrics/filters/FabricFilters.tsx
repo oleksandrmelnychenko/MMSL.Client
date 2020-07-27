@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { FilterItem } from '../../../interfaces/fabric';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../redux/reducers';
@@ -22,7 +22,6 @@ const FabricFilters: React.FC = () => {
     <div>
       <Stack tokens={{ childrenGap: '18px' }}>
         <SearchBox
-          // styles={searchBoxStyles}
           value={searchWord}
           placeholder="Find fabric"
           onSearch={(args: any) => {
@@ -48,14 +47,20 @@ const FabricFilters: React.FC = () => {
 
         <Stack>
           {filters.map((item: FilterItem, index: number) => {
-            return (
+            let result = null;
+
+            result = (
               <Stack.Item key={index}>
                 <Filter filterItem={item} />
                 <Separator
-                  styles={{ root: { paddingTop: '0px', paddingBottom: '0px' } }}
+                  styles={{
+                    root: { paddingTop: '0px', paddingBottom: '0px' },
+                  }}
                 />
               </Stack.Item>
             );
+
+            return result;
           })}
         </Stack>
       </Stack>

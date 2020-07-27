@@ -4,14 +4,6 @@
     box-shadow: 0px 0 11px 1px rgba(0, 0, 0, 0.09);
     border: 1px solid #f3f2f1;
 
-    &:hover {
-        border-color: #e1dfdd;
-
-        .fabricItem__info {
-            bottom: 0px !important;
-        }
-    }
-
     &__card {
         position: relative;
         width: 250px;
@@ -22,10 +14,18 @@
     &__info {
         padding: 12px;
         position: absolute;
-        bottom: -51px !important;
+        bottom: -51px;
         // bottom: 0px;
         width: 100%;
         background: #ffffff;
         transition: all ease 0.3s;
     }
+
+    &:hover {
+    border-color: #e1dfdd;
+
+    .fabricItem__info {
+        bottom: 0px;
+    }
+}
 }

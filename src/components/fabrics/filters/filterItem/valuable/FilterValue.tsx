@@ -1,11 +1,11 @@
 import React from 'react';
-import { FabricFilterValue } from '../../../../interfaces/fabric';
+import { FabricFilterValue } from '../../../../../interfaces/fabric';
 import { Checkbox, Stack, Text, FontWeights } from 'office-ui-fabric-react';
 import './filterValue.scss';
 import { useDispatch } from 'react-redux';
-import { fabricFiltersActions } from '../../../../redux/slices/store/fabric/fabricFilters.slice';
-import { assignPendingActions } from '../../../../helpers/action.helper';
-import { fabricActions } from '../../../../redux/slices/store/fabric/fabric.slice';
+import { fabricFiltersActions } from '../../../../../redux/slices/store/fabric/fabricFilters.slice';
+import { assignPendingActions } from '../../../../../helpers/action.helper';
+import { fabricActions } from '../../../../../redux/slices/store/fabric/fabric.slice';
 
 export interface IFilterValueProps {
   filterName: string;
@@ -51,7 +51,6 @@ const FilterValue: React.FC<IFilterValueProps> = (props: IFilterValueProps) => {
           nowrap
           styles={{
             root: {
-              // marginTop: '5px',
               fontSize: '14px',
               fontWeight: FontWeights.regular,
             },

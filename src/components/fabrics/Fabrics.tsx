@@ -35,7 +35,7 @@ const Fabrics: React.FC = () => {
                     overflowX: 'hidden',
                     left: '0',
                     padding: '12px',
-                    width: '250px',
+                    width: '270px',
                   },
                 }}
               >
@@ -50,7 +50,7 @@ const Fabrics: React.FC = () => {
                   position: 'absolute',
                   height: '100%',
                   top: '0px',
-                  left: '254px',
+                  left: '274px',
                 },
               }}
             />
@@ -58,7 +58,7 @@ const Fabrics: React.FC = () => {
             <Stack.Item>
               <ScrollablePane
                 styles={{
-                  root: { left: '261px' },
+                  root: { left: '281px' },
                   contentContainer: {
                     overflowX: 'hidden',
                     padding: '12px',

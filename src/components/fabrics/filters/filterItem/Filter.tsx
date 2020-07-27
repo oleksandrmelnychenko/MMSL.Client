@@ -1,17 +1,9 @@
 import React from 'react';
 import { FilterItem, FabricFilterValue } from '../../../../interfaces/fabric';
-import {
-  Stack,
-  IconButton,
-  Text,
-  FontWeights,
-  Label,
-} from 'office-ui-fabric-react';
-import FilterValue from './FilterValue';
-import RangeFilterValue from './RangeFilterValue';
-import './filter.scss';
-import { useDispatch } from 'react-redux';
-import { fabricFiltersActions } from '../../../../redux/slices/store/fabric/fabricFilters.slice';
+import { Stack, Label } from 'office-ui-fabric-react';
+import FilterValue from './valuable/FilterValue';
+import RangeFilterValue from './range/RangeFilterValue';
+import FilterHeader from './FilterHeader';
 
 const _renderHintLable = (textMessage: string): JSX.Element => {
   const result = (
@@ -31,73 +23,59 @@ const _renderHintLable = (textMessage: string): JSX.Element => {
   return result;
 };
 
+const _renderFilterContent = (filterItem: FilterItem) => {
+  let result = null;
+
+  if (filterItem.isRange) {
+    result = (
+      <div style={{ marginTop: '9px' }}>
+        <RangeFilterValue filterItem={filterItem} />
+      </div>
+    );
+  } else {
+    if (filterItem.isExpanded) {
+      if (filterItem.values.length > 0) {
+        result = (
+          <Stack>
+            {filterItem.values.map(
+              (value: FabricFilterValue, index: number) => {
+                return (
+                  <Stack.Item key={index}>
+                    <FilterValue
+                      filterName={filterItem.name}
+                      fabricFilterValue={value}
+                    />
+                  </Stack.Item>
+                );
+              }
+            )}
+          </Stack>
+        );
+      } else {
+        result = _renderHintLable('No available filter options');
+      }
+    }
+  }
+
+  return result;
+};
+
 export interface IFilterProps {
   filterItem: FilterItem;
 }
 
 const Filter: React.FC<IFilterProps> = (props: IFilterProps) => {
-  const dispatch = useDispatch();
-
   return (
     <div className="filter">
       <Stack tokens={{ childrenGap: '6px' }}>
-        <Stack horizontal>
-          <Stack.Item grow={1}>
-            <Text
-              block
-              nowrap
-              styles={{
-                root: {
-                  marginTop: '5px',
-                  fontSize: '15px',
-                  fontWeight: FontWeights.semibold,
-                },
-              }}
-            >
-              {props.filterItem.name}
-            </Text>
-          </Stack.Item>
-
-          <IconButton
-            iconProps={{
-              iconName: props.filterItem.isExpanded
-                ? 'ChevronDownMed'
-                : 'ChevronRightMed',
-            }}
-            onClick={() => {
-              dispatch(
-                fabricFiltersActions.onFilterExpand({
-                  ...props.filterItem,
-                  isExpanded: !props.filterItem.isExpanded,
-                })
-              );
-            }}
-          />
-        </Stack>
-
-        {props.filterItem.isExpanded ? (
-          props.filterItem.isRange ? (
-            <RangeFilterValue filterItem={props.filterItem} />
-          ) : props.filterItem.values.length > 0 ? (
-            <Stack>
-              {props.filterItem.values.map(
-                (value: FabricFilterValue, index: number) => {
-                  return (
-                    <Stack.Item key={index}>
-                      <FilterValue
-                        filterName={props.filterItem.name}
-                        fabricFilterValue={value}
-                      />
-                    </Stack.Item>
-                  );
-                }
-              )}
-            </Stack>
-          ) : (
-            _renderHintLable('No available filter options')
-          )
-        ) : null}
+        <FilterHeader filterItem={props.filterItem} />
       </Stack>
+
+      <div className="filter">
+        <Stack tokens={{ childrenGap: '6px' }}>
+          {_renderFilterContent(props.filterItem)}
+        </Stack>
+      </div>
     </div>
   );
 };

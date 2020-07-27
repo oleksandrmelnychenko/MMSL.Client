@@ -112,6 +112,7 @@ export class FilterItem {
     this.values = [];
 
     this.isExpanded = false;
+    this.isApplied = false;
   }
 
   name: string;
@@ -123,6 +124,7 @@ export class FilterItem {
   values: FabricFilterValue[];
 
   isExpanded: boolean;
+  isApplied: boolean;
 }
 
 export const isAnyApplied: (filterItems: FilterItem[]) => boolean = (
@@ -131,11 +133,7 @@ export const isAnyApplied: (filterItems: FilterItem[]) => boolean = (
   let isApplied: boolean = false;
 
   filterItems.forEach((filter: FilterItem) => {
-    if (
-      new List<FabricFilterValue>(filter.values).any(
-        (value: FabricFilterValue) => value.applied
-      )
-    ) {
+    if (filter.isApplied) {
       isApplied = true;
       return isApplied;
     }
@@ -151,12 +149,18 @@ export const getApplied: (filterItems: FilterItem[]) => FilterItem[] = (
     .select((filterItem: FilterItem) => {
       let selectResult: any = null;
 
-      let appliedValues = new List(filterItem.values)
-        .where((value: FabricFilterValue) => value.applied)
-        .toArray();
+      if (filterItem.isRange) {
+        if (filterItem.isApplied) {
+          selectResult = { ...filterItem };
+        }
+      } else {
+        let appliedValues = new List(filterItem.values)
+          .where((value: FabricFilterValue) => value.applied)
+          .toArray();
 
-      if (appliedValues.length > 0) {
-        selectResult = { ...filterItem, values: appliedValues };
+        if (appliedValues.length > 0) {
+          selectResult = { ...filterItem, values: appliedValues };
+        }
       }
 
       return selectResult;
@@ -166,6 +170,33 @@ export const getApplied: (filterItems: FilterItem[]) => FilterItem[] = (
 
   return result;
 };
+
+// export const getApplied: (filterItems: FilterItem[]) => FilterItem[] = (
+//   filterItems: FilterItem[]
+// ) => {
+//   let result: FilterItem[] = new List<FilterItem>(filterItems)
+//     .select((filterItem: FilterItem) => {
+//       let selectResult: any = null;
+
+//       if (filterItem.isRange) {
+//         selectResult = { ...filterItem };
+//       } else {
+//         let appliedValues = new List(filterItem.values)
+//           .where((value: FabricFilterValue) => value.applied)
+//           .toArray();
+
+//         if (appliedValues.length > 0) {
+//           selectResult = { ...filterItem, values: appliedValues };
+//         }
+//       }
+
+//       return selectResult;
+//     })
+//     .where((item: any) => item !== null)
+//     .toArray();
+
+//   return result;
+// };
 
 export const syncFilters: (
   filterItems: FilterItem[],

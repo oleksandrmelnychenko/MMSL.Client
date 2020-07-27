@@ -10,6 +10,8 @@ import FormDropdown from '../../../../common/formFields/FormDropdown';
 import FormImageAttachemnt from '../../../../common/formFields/FormImageAttachemnt';
 import { isUserCanManageFabrics } from '../../../../helpers/fabric.helper';
 
+const DISABLE_SPEC_SYMBOLS: string = `^[^>#<&?.4:;@"/|'!*]+$`;
+
 const _buildStackStyle = (descriptionEntries: any[]) => {
   let styleResult: any = { root: { width: '48%' } };
 
@@ -87,6 +89,7 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
           label={'Metres'}
           isRequired
           readOnly={!canManageFabrics}
+          regExpString={DISABLE_SPEC_SYMBOLS}
         />
       );
     }
@@ -99,6 +102,7 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
           label={'Mill'}
           isRequired
           readOnly={!canManageFabrics}
+          regExpString={DISABLE_SPEC_SYMBOLS}
         />
       );
     }
@@ -111,6 +115,7 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
           label={'Color'}
           isRequired
           readOnly={!canManageFabrics}
+          regExpString={DISABLE_SPEC_SYMBOLS}
         />
       );
     }
@@ -123,6 +128,7 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
           label={'Composition'}
           isRequired
           readOnly={!canManageFabrics}
+          regExpString={DISABLE_SPEC_SYMBOLS}
         />
       );
     }
@@ -135,6 +141,7 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
           label={'GSM'}
           isRequired
           readOnly={!canManageFabrics}
+          regExpString={DISABLE_SPEC_SYMBOLS}
         />
       );
     }
@@ -148,6 +155,7 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
           label={'Count'}
           isRequired={false}
           isNumber
+          regExpString={DISABLE_SPEC_SYMBOLS}
         />
       );
     }
@@ -160,6 +168,7 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
           label={'Weave'}
           isRequired
           readOnly={!canManageFabrics}
+          regExpString={DISABLE_SPEC_SYMBOLS}
         />
       );
     }
@@ -172,6 +181,7 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
           label={'Pattern'}
           isRequired
           readOnly={!canManageFabrics}
+          regExpString={DISABLE_SPEC_SYMBOLS}
         />
       );
     }
