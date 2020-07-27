@@ -5,3 +5,4 @@ export const GET_FABRIC_VISIBILITY = '/fabrics/get/visibilities';
 export const UPDATE_FABRIC_VISIBILITY = '/fabrics/update/visibilities';
 export const DELETE_FABRIC_BY_ID = '/fabrics/delete';
 export const GET_FABRIC_FILTERS = '/fabrics/filters';
+export const IMPORT_FABRICS_FROM_EXCEL = '/fabrics/filters/TODO';

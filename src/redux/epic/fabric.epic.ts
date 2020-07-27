@@ -9,7 +9,6 @@ import { ofType } from 'redux-observable';
 import { getActiveLanguage } from 'react-localize-redux';
 import {
   getWebRequest,
-  postWebRequest,
   putWebRequest,
   deleteWebRequest,
   postFormDataWebRequest,
@@ -22,12 +21,7 @@ import {
   InfoMessageType,
 } from '../slices/control.slice';
 import { fabricActions } from '../slices/store/fabric/fabric.slice';
-import { List } from 'linq-typescript';
-import {
-  FilterItem,
-  FabricFilterValue,
-  getApplied,
-} from '../../interfaces/fabric';
+import { getApplied } from '../../interfaces/fabric';
 
 const FABRIC_CODE: string = 'fabricCode';
 const DESCRIPTION: string = 'description';

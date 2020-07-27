@@ -73,6 +73,10 @@ import {
   default as fabricFiltersReducer,
   IfabricFiltersState,
 } from '../slices/store/fabric/fabricFilters.slice';
+import {
+  default as fabricImporterReducer,
+  IFabricImportertate,
+} from '../slices/store/fabric/fabricImporter.slice';
 
 export interface IApplicationState {
   auth: IAuthState;
@@ -97,6 +101,7 @@ export interface IApplicationState {
   fabric: IFabricState;
   rightPanel: IRightPanelState;
   fabricFilters: IfabricFiltersState;
+  fabricImporter: IFabricImportertate;
 }
 
 export const reducer = combineReducers({
@@ -122,4 +127,5 @@ export const reducer = combineReducers({
   fabric: fabricReducer,
   rightPanel: rightPanelReducer,
   fabricFilters: fabricFiltersReducer,
+  fabricImporter: fabricImporterReducer,
 });

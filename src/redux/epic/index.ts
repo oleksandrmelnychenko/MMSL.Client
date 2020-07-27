@@ -15,6 +15,7 @@ import * as orderProfile from './orderProfile.epic';
 import * as store from './store.epic';
 import * as fabric from './fabric.epic';
 import * as fabricFilters from './fabricFilters.epic';
+import * as fabricImporter from './fabricImporter.epic';
 
 const arrayEpic = [
   ...Object.values(authEpic),
@@ -33,6 +34,7 @@ const arrayEpic = [
   ...Object.values(store),
   ...Object.values(fabric),
   ...Object.values(fabricFilters),
+  ...Object.values(fabricImporter),
 ];
 
 export const rootEpic = combineEpics(...arrayEpic);

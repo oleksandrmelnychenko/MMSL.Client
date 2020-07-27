@@ -9,6 +9,8 @@ import {
 import TakeFileControl, {
   EXCEL_COMBINED_ACCEPT,
 } from '../../../common/TakeFileControl';
+import { useDispatch } from 'react-redux';
+import { fabricImporterActions } from '../../../redux/slices/store/fabric/fabricImporter.slice';
 
 export interface IExportImportControlsProps {
   style?: any;
@@ -17,6 +19,8 @@ export interface IExportImportControlsProps {
 export const ExportImportControls: React.FC<IExportImportControlsProps> = (
   props: IExportImportControlsProps
 ) => {
+  const dispatch = useDispatch();
+
   return (
     <Stack horizontal style={{ ...props.style }}>
       <TakeFileControl
@@ -26,7 +30,7 @@ export const ExportImportControls: React.FC<IExportImportControlsProps> = (
         inputAccept={EXCEL_COMBINED_ACCEPT}
         tooltip="Import fabrics from excel"
         onTakeFile={(file: any) => {
-          console.log(file);
+          dispatch(fabricImporterActions.apiImportFabricsFromExcel(file));
         }}
       />
 
