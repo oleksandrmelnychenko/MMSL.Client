@@ -171,33 +171,6 @@ export const getApplied: (filterItems: FilterItem[]) => FilterItem[] = (
   return result;
 };
 
-// export const getApplied: (filterItems: FilterItem[]) => FilterItem[] = (
-//   filterItems: FilterItem[]
-// ) => {
-//   let result: FilterItem[] = new List<FilterItem>(filterItems)
-//     .select((filterItem: FilterItem) => {
-//       let selectResult: any = null;
-
-//       if (filterItem.isRange) {
-//         selectResult = { ...filterItem };
-//       } else {
-//         let appliedValues = new List(filterItem.values)
-//           .where((value: FabricFilterValue) => value.applied)
-//           .toArray();
-
-//         if (appliedValues.length > 0) {
-//           selectResult = { ...filterItem, values: appliedValues };
-//         }
-//       }
-
-//       return selectResult;
-//     })
-//     .where((item: any) => item !== null)
-//     .toArray();
-
-//   return result;
-// };
-
 export const syncFilters: (
   filterItems: FilterItem[],
   sourceFilterItems: FilterItem[]

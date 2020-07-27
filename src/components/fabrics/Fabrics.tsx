@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stack, ScrollablePane, Separator } from 'office-ui-fabric-react';
-import FabricsHeader from './FabricsHeader';
+import FabricsHeader from './header/FabricsHeader';
 import FabricList from './FabricList';
 import FabricFiltersBootstrapper from './filters/FabricFiltersBootstrapper';
 import * as fabricStyles from '../../common/fabric-styles/styles';

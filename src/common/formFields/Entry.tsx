@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Field } from 'formik';
 import { TextField } from 'office-ui-fabric-react';
 import * as fabricStyles from '../fabric-styles/styles';
@@ -14,8 +14,6 @@ export interface IEntryProps {
 }
 
 export const Entry: React.FC<IEntryProps> = (props: IEntryProps) => {
-  // const emailRegex: RegExp = new RegExp(`^[^>#<&?.4:;@"/|'!*]+$`);
-
   const [regExperssion, setRegExperssion] = useState<RegExp | null>(null);
 
   useEffect(() => {
@@ -42,7 +40,6 @@ export const Entry: React.FC<IEntryProps> = (props: IEntryProps) => {
               let isValid: boolean = true;
               const value = args?.target?.value ? args.target.value : '';
 
-              debugger;
               if (regExperssion) {
                 isValid = regExperssion.test(value);
               }
