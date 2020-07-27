@@ -23,12 +23,12 @@ export interface IFormValues {
   status: FabricStatuses;
   composition: string;
   pattern: string;
-  metres: string;
+  metres: number;
   weave: string;
   color: string;
   mill: string;
   gSM: string;
-  count: number;
+  count: string;
 
   imageFile: any | null;
   fieldExternalImageURL: string;
@@ -41,12 +41,12 @@ const _initDefaultValues = (sourceEntity: Fabric | null | undefined) => {
     status: FabricStatuses.InStock,
     composition: '',
     pattern: '',
-    metres: '',
+    metres: 0,
     weave: '',
     color: '',
     mill: '',
     gSM: '',
-    count: 0,
+    count: '',
     imageFile: null,
     fieldExternalImageURL: '',
   };
@@ -77,16 +77,16 @@ const _buildNewPayload = (values: IFormValues) => {
     status: values.status,
     composition: values.composition,
     pattern: values.pattern,
-    metres: values.metres,
+    metres: parseInt(`${values.metres}`),
     weave: values.weave,
     color: values.color,
     mill: values.mill,
     gSM: values.gSM,
-    count: parseInt(`${values.count}`),
+    count: values.count,
     imageFile: values.imageFile,
   };
 
-  if (isNaN(payload.count)) payload.count = 0;
+  if (isNaN(payload.metres)) payload.metres = 0;
 
   return payload;
 };
@@ -98,18 +98,18 @@ const _buildEditedPayload = (values: IFormValues, sourceEntity: Fabric) => {
     status: values.status,
     composition: values.composition,
     pattern: values.pattern,
-    metres: values.metres,
+    metres: parseInt(`${values.metres}`),
     weave: values.weave,
     color: values.color,
     mill: values.mill,
     gSM: values.gSM,
-    count: parseInt(`${values.count}`),
+    count: values.count,
     imageFile: values.imageFile,
     imageUrl: values.fieldExternalImageURL ? values.fieldExternalImageURL : '',
     id: sourceEntity.id,
   };
 
-  if (isNaN(payload.count)) payload.count = 0;
+  if (isNaN(payload.metres)) payload.metres = 0;
 
   return payload;
 };
@@ -260,12 +260,12 @@ const FabricForm: React.FC = () => {
         status: Yup.number(),
         composition: Yup.string().required(() => 'Composition is required'),
         pattern: Yup.string().required(() => 'Pattern is required'),
-        metres: Yup.string().required(() => 'Metres is required'),
+        metres: Yup.number(),
         weave: Yup.string().required(() => 'Weave is required'),
         color: Yup.string().required(() => 'Color is required'),
         mill: Yup.string().required(() => 'Mill is required'),
         gSM: Yup.string().required(() => 'GSM is required'),
-        count: Yup.number(),
+        count: Yup.string().required(() => 'Metres is required'),
         imageFile: Yup.object().nullable(),
         fieldExternalImageURL: Yup.string().nullable(),
       })}

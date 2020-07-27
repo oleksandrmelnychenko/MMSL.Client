@@ -88,8 +88,8 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
           fieldName={'metres'}
           label={'Metres'}
           isRequired
+          isNumber
           readOnly={!canManageFabrics}
-          regExpString={DISABLE_SPEC_SYMBOLS}
         />
       );
     }
@@ -154,7 +154,6 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
           fieldName={'count'}
           label={'Count'}
           isRequired={false}
-          isNumber
           regExpString={DISABLE_SPEC_SYMBOLS}
         />
       );

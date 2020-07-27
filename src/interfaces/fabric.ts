@@ -18,12 +18,12 @@ export class Fabric extends EntityBase {
 
     this.status = FabricStatuses.InStock;
 
-    this.metres = '';
+    this.metres = 0;
     this.mill = '';
     this.color = '';
     this.composition = '';
     this.gsm = '';
-    this.count = 0;
+    this.count = '';
     this.weave = '';
     this.pattern = '';
 
@@ -46,12 +46,12 @@ export class Fabric extends EntityBase {
 
   status: FabricStatuses;
 
-  metres: string;
+  metres: number;
   mill: string;
   color: string;
   composition: string;
   gsm: string;
-  count: number;
+  count: string;
   weave: string;
   pattern: string;
 
