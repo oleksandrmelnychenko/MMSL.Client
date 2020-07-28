@@ -129,7 +129,7 @@ const ItemManagingControls: React.FC<IItemManagingControlsProps> = (
   };
 
   return (
-    <Stack horizontal>
+    <Stack className="fabricItem__controls" horizontal>
       <Stack.Item grow={1}>
         <TooltipHost
           content="Explore"

@@ -14,18 +14,27 @@
     &__info {
         padding: 12px;
         position: absolute;
-        bottom: -51px;
-        // bottom: 0px;
+        // bottom: -51px;
+        bottom: 0px;
         width: 100%;
         background: #ffffff;
         transition: all ease 0.3s;
     }
 
     &:hover {
-    border-color: #e1dfdd;
+        border-color: #e1dfdd;
 
-    .fabricItem__info {
-        bottom: 0px;
+        .fabricItem__info {
+            bottom: 0px;
+        }
+
+        .fabricItem__controls {}
     }
-}
+
+    &__centeredStub {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: inherit;
+    }
 }

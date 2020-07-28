@@ -40,14 +40,6 @@ const buildQueryParamsString = (queryParams?: QueryParam[]) => {
   return queryString;
 };
 
-export const getDownloadWebRequest = (urlPath: string) => {
-  return ajax
-    .getJSON<IWebResponse>(urlPath, {
-      'Content-Type': 'application/octet-stream',
-    })
-    .pipe(map((response) => response.body));
-};
-
 export const getWebRequest = (
   urlPath: string,
   state: IApplicationState,

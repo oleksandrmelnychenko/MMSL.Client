@@ -88,7 +88,6 @@ const ItemInfo: React.FC<IItemInfoProps> = (props: IItemInfoProps) => {
             </Text>
           </Stack>
 
-          {/* align="start" */}
           <Stack.Item>
             <TooltipHost
               content={_fabricStatusToHint(props.fabric.status)}

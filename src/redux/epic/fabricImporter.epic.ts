@@ -10,7 +10,6 @@ import { getActiveLanguage } from 'react-localize-redux';
 import {
   postFormDataWebRequest,
   getWebRequest,
-  getDownloadWebRequest,
 } from '../../helpers/epic.helper';
 import * as api from '../constants/api.fabric.constants';
 import {
