@@ -14,11 +14,12 @@
     &__info {
         padding: 12px;
         position: absolute;
-        // bottom: -51px;
-        bottom: 0px;
+        bottom: -51px;
+        // bottom: 0px;
         width: 100%;
         background: #ffffff;
         transition: all ease 0.3s;
+
     }
 
     &:hover {
@@ -27,8 +28,6 @@
         .fabricItem__info {
             bottom: 0px;
         }
-
-        .fabricItem__controls {}
     }
 
     &__centeredStub {
