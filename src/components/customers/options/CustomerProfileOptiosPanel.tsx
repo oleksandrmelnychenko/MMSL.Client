@@ -86,8 +86,8 @@ const CustomerProfileOptiosPanel: React.FC = () => {
       title: 'New',
       className:
         selectedCustomer && selectedProductProfile
-          ? 'management__btn-new_measurement'
-          : 'management__btn-new_measurement management__btn-disabled',
+          ? 'management__btn-add_profile'
+          : 'management__btn-add_profile management__btn-disabled',
       isDisabled: selectedCustomer ? false : true,
       tooltip: 'Create new profile',
       onClickFunc: () => {
@@ -156,8 +156,8 @@ const CustomerProfileOptiosPanel: React.FC = () => {
       title: 'Replicate',
       className:
         targetOrderProfile && selectedCustomer
-          ? 'management__btn-styles'
-          : 'management__btn-styles management__btn-disabled',
+          ? 'management__btn-replicate_profile'
+          : 'management__btn-replicate_profile management__btn-disabled',
       isDisabled: targetOrderProfile && selectedCustomer ? false : true,
       tooltip: 'Replicate profile',
       onClickFunc: () => {
