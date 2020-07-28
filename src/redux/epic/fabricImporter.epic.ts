@@ -7,7 +7,11 @@ import { switchMap, mergeMap, catchError } from 'rxjs/operators';
 import { AnyAction } from 'redux';
 import { ofType } from 'redux-observable';
 import { getActiveLanguage } from 'react-localize-redux';
-import { postFormDataWebRequest } from '../../helpers/epic.helper';
+import {
+  postFormDataWebRequest,
+  getWebRequest,
+  getDownloadWebRequest,
+} from '../../helpers/epic.helper';
 import * as api from '../constants/api.fabric.constants';
 import {
   controlActions,
@@ -15,6 +19,7 @@ import {
   InfoMessageType,
 } from '../slices/control.slice';
 import { fabricImporterActions } from '../slices/store/fabric/fabricImporter.slice';
+import { getApplied } from '../../interfaces/fabric';
 
 export const apiImportFabricsFromExcelEpic = (
   action$: AnyAction,
@@ -26,18 +31,7 @@ export const apiImportFabricsFromExcelEpic = (
       const languageCode = getActiveLanguage(state$.value.localize).code;
 
       const formData: FormData = new FormData();
-      //   formData.append(FABRIC_CODE, action.payload.fabricCode);
-      //   formData.append(DESCRIPTION, action.payload.description);
-      //   formData.append(STATUS, action.payload.status);
-      //   formData.append(COMPOSITION, action.payload.composition);
-      //   formData.append(PATTERN, action.payload.pattern);
-      //   formData.append(METRES, action.payload.metres);
-      //   formData.append(WEAVE, action.payload.weave);
-      //   formData.append(COLOR, action.payload.color);
-      //   formData.append(MILL, action.payload.mill);
-      //   formData.append(GSM, action.payload.gSM);
-      //   formData.append(COUNT, action.payload.count);
-      //   formData.append(FILE, action.payload.imageFile);
+      formData.append('File', action.payload);
 
       return postFormDataWebRequest(
         api.IMPORT_FABRICS_FROM_EXCEL,
@@ -47,7 +41,12 @@ export const apiImportFabricsFromExcelEpic = (
         mergeMap((successResponse: any) => {
           return successCommonEpicFlow(
             successResponse,
-            [controlActions.disabledStatusBar()],
+            [
+              controlActions.showInfoMessage(
+                new InfoMessage(`Successfully imported`, InfoMessageType.Common)
+              ),
+              controlActions.disabledStatusBar(),
+            ],
             action
           );
         }),
@@ -60,6 +59,63 @@ export const apiImportFabricsFromExcelEpic = (
                 controlActions.showInfoMessage(
                   new InfoMessage(
                     `Error occurred while importing fabrics from excel. ${errorResponse}`,
+                    InfoMessageType.Warning
+                  )
+                ),
+                controlActions.disabledStatusBar(),
+              ],
+              action
+            );
+          });
+        })
+      );
+    })
+  );
+};
+
+export const apiExportToPDFPaginatedEpic = (
+  action$: AnyAction,
+  state$: any
+) => {
+  return action$.pipe(
+    ofType(fabricImporterActions.apiExportToPDFPaginated.type),
+    switchMap((action: AnyAction) => {
+      const languageCode = getActiveLanguage(state$.value.localize).code;
+
+      const searchPhrase = state$.value.fabric.searchWord;
+      const filters = getApplied(state$.value.fabricFilters.filters);
+
+      return getWebRequest(api.EXPORT_FABRICS_TO_PDF, state$.value, [
+        {
+          key: 'searchPhrase',
+          value: `${searchPhrase}`,
+        },
+        {
+          key: 'filterBuilder',
+          value: `${JSON.stringify(filters)}`,
+        },
+      ]).pipe(
+        mergeMap((successResponse: any) => {
+          return successCommonEpicFlow(
+            successResponse,
+            [
+              controlActions.showInfoMessage(
+                new InfoMessage(`Successfully exported`, InfoMessageType.Common)
+              ),
+              controlActions.disabledStatusBar(),
+            ],
+            action
+          );
+        }),
+        catchError((errorResponse: any) => {
+          return checkUnauthorized(errorResponse.status, languageCode, () => {
+            return errorCommonEpicFlow(
+              errorResponse,
+              [
+                { type: 'ERROR_EXPORT_FABRICS_TO_PDF' },
+                controlActions.showInfoMessage(
+                  new InfoMessage(
+                    `Error occurred while export fabrics to PDF. ${errorResponse}`,
                     InfoMessageType.Warning
                   )
                 ),

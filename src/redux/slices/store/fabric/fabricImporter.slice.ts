@@ -15,9 +15,9 @@ const fabricImporter = createSlice({
         type: string;
         payload: any;
       }
-    ) {
-      debugger;
-    },
+    ) {},
+    apiExportToPDFPaginated(state) {},
+    apiDownload(state, action: { type: string; payload: string }) {},
   },
 });
 

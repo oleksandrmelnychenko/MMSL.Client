@@ -84,9 +84,21 @@ export const FabricsHeader: React.FC = (props: any) => {
 
           <Separator vertical />
 
-          <ExportImportControls style={{ marginTop: '3px' }} />
+          <ExportImportControls
+            canManageFabrics={canManageFabrics}
+            style={{ marginTop: '3px' }}
+          />
         </Stack>
-      ) : null}
+      ) : (
+        <Stack horizontal tokens={{ childrenGap: '12px' }}>
+          <Separator vertical />
+
+          <ExportImportControls
+            canManageFabrics={canManageFabrics}
+            style={{ marginTop: '3px' }}
+          />
+        </Stack>
+      )}
     </Stack>
   );
 };
