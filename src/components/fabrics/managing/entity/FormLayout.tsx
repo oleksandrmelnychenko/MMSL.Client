@@ -89,6 +89,7 @@ const FormLayout: React.FC<IFormLayoutProps> = (props: IFormLayoutProps) => {
           label={'Metres'}
           isRequired
           isNumber
+          step={'0.01'}
           readOnly={!canManageFabrics}
         />
       );

@@ -9,6 +9,7 @@ export interface IEntryProps {
   label: string;
   isRequired: boolean;
   isNumber?: boolean;
+  step?: string;
   readOnly?: boolean;
   regExpString?: string;
 }
@@ -30,6 +31,7 @@ export const Entry: React.FC<IEntryProps> = (props: IEntryProps) => {
           <TextField
             readOnly={props.readOnly}
             type={props.isNumber ? 'number' : undefined}
+            step={props.step}
             autoComplete={'off'}
             value={props.formik.values[props.fieldName]}
             styles={fabricStyles.textFildLabelStyles}

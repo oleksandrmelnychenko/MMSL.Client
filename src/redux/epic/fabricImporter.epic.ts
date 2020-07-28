@@ -42,6 +42,7 @@ export const apiImportFabricsFromExcelEpic = (
           return successCommonEpicFlow(
             successResponse,
             [
+              fabricImporterActions.changeIsImporting(false),
               controlActions.showInfoMessage(
                 new InfoMessage(`Successfully imported`, InfoMessageType.Common)
               ),
@@ -55,6 +56,7 @@ export const apiImportFabricsFromExcelEpic = (
             return errorCommonEpicFlow(
               errorResponse,
               [
+                fabricImporterActions.changeIsImporting(false),
                 { type: 'ERROR_IMPORT_FABRICS_FROM_EXCEL' },
                 controlActions.showInfoMessage(
                   new InfoMessage(
@@ -99,6 +101,7 @@ export const apiExportToPDFPaginatedEpic = (
           return successCommonEpicFlow(
             successResponse,
             [
+              fabricImporterActions.changeIsExporting(false),
               controlActions.showInfoMessage(
                 new InfoMessage(`Successfully exported`, InfoMessageType.Common)
               ),
@@ -112,6 +115,7 @@ export const apiExportToPDFPaginatedEpic = (
             return errorCommonEpicFlow(
               errorResponse,
               [
+                fabricImporterActions.changeIsExporting(false),
                 { type: 'ERROR_EXPORT_FABRICS_TO_PDF' },
                 controlActions.showInfoMessage(
                   new InfoMessage(
