@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { CommandBar, ICommandBarItemProps } from 'office-ui-fabric-react';
 import { dealerActions } from '../../../redux/slices/dealer.slice';
-import { controlActions } from '../../../redux/slices/control.slice';
+import { infoPanelActions } from '../../../redux/slices/infoPanel.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { assignPendingActions } from '../../../helpers/action.helper';
 import { FormicReference } from '../../../interfaces';
@@ -86,7 +86,7 @@ export const DealerDetails: React.FC<DealerDetailsProps> = (
             dealerActions.updateDealer(args),
             [
               dealerActions.setSelectedDealer(null),
-              controlActions.closeInfoPanelWithComponent(),
+              infoPanelActions.closeInfoPanelWithComponent(),
               dealerActions.isOpenPanelWithDealerDetails(
                 new ToggleDealerPanelWithDetails()
               ),

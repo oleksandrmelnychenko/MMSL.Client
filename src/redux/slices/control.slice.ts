@@ -1,12 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { IPanelInfo } from '../../interfaces';
 import { RoleType } from '../../interfaces/identity';
 
 export class ControlState {
   constructor() {
     this.isGlobalShimmerActive = false;
-    this.isCollapseMenu = false;
-    this.panelInfo = new IPanelInfo();
     this.commonDialog = new CommonDialogState();
     this.infoMessage = null;
     this.isActivateStatusBar = false;
@@ -16,8 +13,6 @@ export class ControlState {
   }
 
   isGlobalShimmerActive: boolean;
-  isCollapseMenu: boolean;
-  panelInfo: IPanelInfo;
   commonDialog: CommonDialogState;
   infoMessage: InfoMessage | null | undefined;
   isActivateStatusBar: boolean;
@@ -96,36 +91,6 @@ const controls = createSlice({
   name: 'control',
   initialState: new ControlState(),
   reducers: {
-    isOpenPanelInfo(state, action) {
-      state.panelInfo.isOpenPanelInfo = action.payload;
-      return state;
-    },
-    isCollapseMenu(state, action) {
-      state.panelInfo.isOpenPanelInfo = action.payload;
-      return state;
-    },
-    openInfoPanelWithComponent(
-      state,
-      action: {
-        type: string;
-        payload: {
-          component: any;
-          onDismisPendingAction: () => void;
-        };
-      }
-    ) {
-      state.isCollapseMenu = true;
-      state.panelInfo.isOpenPanelInfo = true;
-      state.panelInfo.componentInPanelInfo = action.payload.component;
-      state.panelInfo.onDismisPendingAction =
-        action.payload.onDismisPendingAction;
-      return state;
-    },
-    closeInfoPanelWithComponent(state) {
-      state.isCollapseMenu = false;
-      state.panelInfo = new IPanelInfo();
-      return state;
-    },
     toggleCommonDialogVisibility(
       state,
       action: { type: string; payload: IDialogArgs | null }

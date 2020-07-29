@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import { assignPendingActions } from '../../helpers/action.helper';
 import { List } from 'linq-typescript';
-import { controlActions } from '../../redux/slices/control.slice';
+import { infoPanelActions } from '../../redux/slices/infoPanel.slice';
 import {
   CustomerListState,
   customerActions,
@@ -59,7 +59,7 @@ const CustomersBootstrapper: React.FC = () => {
     } else {
       if (selectedCustomer) {
         dispatch(
-          controlActions.openInfoPanelWithComponent({
+          infoPanelActions.openInfoPanelWithComponent({
             component: CustomersOptionsPanel,
             onDismisPendingAction: () =>
               onDismisActionsCustomersOptionsPanel().forEach((action) => {
@@ -68,7 +68,7 @@ const CustomersBootstrapper: React.FC = () => {
           })
         );
       } else {
-        dispatch(controlActions.closeInfoPanelWithComponent());
+        dispatch(infoPanelActions.closeInfoPanelWithComponent());
       }
     }
 
@@ -88,7 +88,7 @@ const CustomersBootstrapper: React.FC = () => {
             (args: any) => {
               dispatch(customerActions.updateSelectedCustomer(args));
               dispatch(
-                controlActions.openInfoPanelWithComponent({
+                infoPanelActions.openInfoPanelWithComponent({
                   component: optionsLeftPanelComponent,
                   onDismisPendingAction: () => {
                     history.push(CUSTOMERS_PATH);
@@ -103,7 +103,7 @@ const CustomersBootstrapper: React.FC = () => {
       }
     } else {
       dispatch(
-        controlActions.openInfoPanelWithComponent({
+        infoPanelActions.openInfoPanelWithComponent({
           component: optionsLeftPanelComponent,
           onDismisPendingAction: () => {
             history.push(CUSTOMERS_PATH);

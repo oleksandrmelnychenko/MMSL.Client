@@ -23,6 +23,7 @@ import { dealerActions } from '../../redux/slices/dealer.slice';
 import { DealerAccount } from '../../interfaces/dealer';
 import { assignPendingActions } from '../../helpers/action.helper';
 import { controlActions } from '../../redux/slices/control.slice';
+import { infoPanelActions } from '../../redux/slices/infoPanel.slice';
 import { ToggleDealerPanelWithDetails } from '../../redux/slices/dealer.slice';
 import DealerOptions from './options/DealerOptions';
 import { CommonDialogType } from '../../redux/slices/control.slice';
@@ -67,7 +68,7 @@ export const DealerList: React.FC = () => {
     dispatch(controlActions.showGlobalShimmer());
     return () => {
       dispatch(dealerActions.getAndSelectDealerById(null));
-      dispatch(controlActions.closeInfoPanelWithComponent());
+      dispatch(infoPanelActions.closeInfoPanelWithComponent());
     };
   }, [dispatch]);
 
@@ -234,7 +235,7 @@ export const DealerList: React.FC = () => {
                       if (item.id) {
                         actionsQueue.push(
                           dealerActions.setSelectedDealer(null),
-                          controlActions.closeInfoPanelWithComponent(),
+                          infoPanelActions.closeInfoPanelWithComponent(),
                           dealerActions.isOpenPanelWithDealerDetails(
                             new ToggleDealerPanelWithDetails()
                           )
@@ -284,24 +285,14 @@ export const DealerList: React.FC = () => {
                     );
                     dispatch(createAction);
                     dispatch(
-                      controlActions.openInfoPanelWithComponent({
+                      infoPanelActions.openInfoPanelWithComponent({
                         component: DealerOptions,
                         onDismisPendingAction: () => {},
                       })
                     );
                   };
 
-                  // const unSelectFlow = () => {
-                  //   dispatch(dealerActions.setSelectedDealer(null));
-                  //   dispatch(controlActions.closeInfoPanelWithComponent());
-                  // };
-
                   if (selectedDealerId) {
-                    // if (selectedDealerId === args.item.id) {
-                    //   unSelectFlow();
-                    // } else {
-                    //   selectFlow();
-                    // }
                     if (selectedDealerId !== args.item.id) {
                       selectFlow();
                     }

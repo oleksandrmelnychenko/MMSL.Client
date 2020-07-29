@@ -10,23 +10,6 @@ export class FormicReference {
   isDirtyFunc?: (isDirty: boolean) => void;
 }
 
-export class IPanelInfo {
-  constructor() {
-    this.isOpenPanelInfo = false;
-    this.hasCloseButton = false;
-    this.isHasCloseButton = true;
-
-    this.onDismisPendingAction = () => {};
-  }
-
-  isOpenPanelInfo: boolean;
-  hasCloseButton: boolean;
-  componentInPanelInfo: any;
-  isHasCloseButton: boolean;
-
-  onDismisPendingAction: () => void;
-}
-
 export interface ImenuItem {
   title: string;
   className: string;

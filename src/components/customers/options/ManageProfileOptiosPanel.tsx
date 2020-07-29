@@ -1,9 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  controlActions,
-  IInfoPanelMenuItem,
-} from '../../../redux/slices/control.slice';
+import { IInfoPanelMenuItem } from '../../../redux/slices/control.slice';
+import { infoPanelActions } from '../../../redux/slices/infoPanel.slice';
 import { useHistory } from 'react-router-dom';
 import CustomerProfileOptiosPanel, {
   onDismisActionsCustomerProfileOptiosPanel,
@@ -24,7 +22,7 @@ export const onDismissManageProfileOptiosPanel = () => {
 
 export const onBackFromProfileManaging = (dispatch: any, history: any) => {
   dispatch(
-    controlActions.openInfoPanelWithComponent({
+    infoPanelActions.openInfoPanelWithComponent({
       component: CustomerProfileOptiosPanel,
       onDismisPendingAction: () => {
         history.push(CUSTOMERS_PATH);

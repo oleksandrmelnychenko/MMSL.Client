@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-
 import {
   controlActions,
   IInfoPanelMenuItem,
 } from '../../../redux/slices/control.slice';
+import { infoPanelActions } from '../../../redux/slices/infoPanel.slice';
 import {
   rightPanelActions,
   RightPanelType,
@@ -49,7 +49,7 @@ const ProductStylesPanel: React.FC = () => {
 
         /// Open product managing (common) panel
         dispatch(
-          controlActions.openInfoPanelWithComponent({
+          infoPanelActions.openInfoPanelWithComponent({
             component: ProductManagementPanel,
             onDismisPendingAction: () => {},
           })

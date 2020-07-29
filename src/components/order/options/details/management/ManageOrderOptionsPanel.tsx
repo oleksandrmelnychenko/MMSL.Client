@@ -1,9 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  controlActions,
-  IInfoPanelMenuItem,
-} from '../../../../../redux/slices/control.slice';
+import { IInfoPanelMenuItem } from '../../../../../redux/slices/control.slice';
+import { infoPanelActions } from '../../../../../redux/slices/infoPanel.slice';
 import { useHistory } from 'react-router-dom';
 import { RoleType } from '../../../../../interfaces/identity';
 import { ICommand } from '../../../../../redux/slices/customer/orderProfile/profileManaging.slice';
@@ -15,7 +13,7 @@ export const onDismissManageOrderOptionsPanel = () => {
 };
 
 export const onBackFromProfileManaging = (dispatch: any, history: any) => {
-  dispatch(controlActions.closeInfoPanelWithComponent());
+  dispatch(infoPanelActions.closeInfoPanelWithComponent());
 
   onDismissManageOrderOptionsPanel().forEach((action) => {
     dispatch(action);

@@ -10,6 +10,7 @@ import {
   IInfoPanelMenuItem,
   CommonDialogType,
 } from '../../../redux/slices/control.slice';
+import { infoPanelActions } from '../../../redux/slices/infoPanel.slice';
 import {
   rightPanelActions,
   RightPanelType,
@@ -78,7 +79,7 @@ const CustomersOptionsPanel: React.FC = () => {
       tooltip: 'Manage profiles',
       onClickFunc: () => {
         if (selectedCustomer) {
-          dispatch(controlActions.closeInfoPanelWithComponent());
+          dispatch(infoPanelActions.closeInfoPanelWithComponent());
 
           dispatch(
             assignPendingActions(
@@ -89,7 +90,7 @@ const CustomersOptionsPanel: React.FC = () => {
                 dispatch(customerActions.updateSelectedCustomer(args));
                 history.push(`${CUSTOMER_PROFILES_PATH}${selectedCustomer.id}`);
                 dispatch(
-                  controlActions.openInfoPanelWithComponent({
+                  infoPanelActions.openInfoPanelWithComponent({
                     component: CustomerProfileOptiosPanel,
                     onDismisPendingAction: () => {
                       history.push(CUSTOMERS_PATH);
@@ -105,7 +106,7 @@ const CustomersOptionsPanel: React.FC = () => {
             )
           );
         } else {
-          dispatch(controlActions.closeInfoPanelWithComponent());
+          dispatch(infoPanelActions.closeInfoPanelWithComponent());
           history.push(CUSTOMERS_PATH);
         }
       },
@@ -148,7 +149,9 @@ const CustomersOptionsPanel: React.FC = () => {
                         );
 
                         dispatch(customerActions.updateSelectedCustomer(null));
-                        dispatch(controlActions.closeInfoPanelWithComponent());
+                        dispatch(
+                          infoPanelActions.closeInfoPanelWithComponent()
+                        );
                       },
                       (args: any) => {}
                     )

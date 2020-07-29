@@ -12,16 +12,16 @@ import {
   Label,
   PrimaryButton,
 } from 'office-ui-fabric-react';
+import { IInfoPanelMenuItem } from '../../redux/slices/control.slice';
 import {
-  controlActions,
-  IInfoPanelMenuItem,
-} from '../../redux/slices/control.slice';
+  infoPanelActions,
+  IInfoPanelState,
+} from '../../redux/slices/infoPanel.slice';
 import {
   stylesPanelInfo,
   labelStyle,
   btnMenuStyle,
 } from '../../common/fabric-styles/styles';
-import { IPanelInfo } from '../../interfaces/index';
 import { List } from 'linq-typescript';
 import { TokenHelper } from '../../helpers/token.helper';
 import { RoleType } from '../../interfaces/identity';
@@ -80,16 +80,17 @@ const DashboardLeftMenuPanel: React.FC = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const panelInfo: IPanelInfo = useSelector<IApplicationState, IPanelInfo>(
-    (state) => state.control.panelInfo
-  );
+  const panelInfo: IInfoPanelState = useSelector<
+    IApplicationState,
+    IInfoPanelState
+  >((state) => state.infoPanel);
 
   const dismissPanelInfo = () => {
     if (panelInfo.onDismisPendingAction) {
       panelInfo.onDismisPendingAction();
     }
 
-    dispatch(controlActions.closeInfoPanelWithComponent());
+    dispatch(infoPanelActions.closeInfoPanelWithComponent());
   };
 
   return (

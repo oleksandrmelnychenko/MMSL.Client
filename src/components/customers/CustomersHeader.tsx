@@ -3,7 +3,7 @@ import { SearchBox, ActionButton, Text, Stack } from 'office-ui-fabric-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import { customerActions } from '../../redux/slices/customer/customer.slice';
-import { controlActions } from '../../redux/slices/control.slice';
+import { infoPanelActions } from '../../redux/slices/infoPanel.slice';
 import {
   rightPanelActions,
   RightPanelType,
@@ -26,7 +26,7 @@ export const CustomersHeader: React.FC = (props: any) => {
 
   useEffect(() => {
     return () => {
-      dispatch(controlActions.closeInfoPanelWithComponent());
+      dispatch(infoPanelActions.closeInfoPanelWithComponent());
       dispatch(customerActions.updateCustomersList([]));
     };
   }, [dispatch]);

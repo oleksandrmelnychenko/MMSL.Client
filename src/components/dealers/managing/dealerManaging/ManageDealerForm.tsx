@@ -18,7 +18,7 @@ import { Currency } from '../../../../interfaces/currencyTypes';
 import { List } from 'linq-typescript';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../../../redux/reducers';
-import { controlActions } from '../../../../redux/slices/control.slice';
+import { infoPanelActions } from '../../../../redux/slices/infoPanel.slice';
 import { rightPanelActions } from '../../../../redux/slices/rightPanel.slice';
 import {
   CommandBarItem,
@@ -238,7 +238,7 @@ export const ManageDealerForm: React.FC = () => {
           );
 
           dispatch(rightPanelActions.closeRightPanel());
-          dispatch(controlActions.closeInfoPanelWithComponent());
+          dispatch(infoPanelActions.closeInfoPanelWithComponent());
           dispatch(dealerActions.setSelectedDealer(null));
           dispatch(
             dealerActions.isOpenPanelWithDealerDetails(
@@ -278,7 +278,7 @@ export const ManageDealerForm: React.FC = () => {
             )
           );
           dispatch(rightPanelActions.closeRightPanel());
-          dispatch(controlActions.closeInfoPanelWithComponent());
+          dispatch(infoPanelActions.closeInfoPanelWithComponent());
           dispatch(dealerActions.setSelectedDealer(null));
           dispatch(
             dealerActions.isOpenPanelWithDealerDetails(

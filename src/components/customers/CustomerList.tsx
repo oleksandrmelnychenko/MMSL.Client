@@ -17,7 +17,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
 import { customerActions } from '../../redux/slices/customer/customer.slice';
-import { controlActions } from '../../redux/slices/control.slice';
+import { infoPanelActions } from '../../redux/slices/infoPanel.slice';
 import CustomersOptionsPanel, {
   onDismisActionsCustomersOptionsPanel,
 } from './options/CustomersOptionsPanel';
@@ -27,8 +27,6 @@ import {
   detailsListStyle,
   defaultCellStyle,
 } from '../../common/fabric-styles/styles';
-import { List } from 'linq-typescript';
-import { StoreCustomer } from '../../interfaces/storeCustomer';
 import { dateToFormatedString } from '../../helpers/date.helper';
 
 const _customerColumns: IColumn[] = [
@@ -152,23 +150,10 @@ export const CustomerList: React.FC = () => {
   useEffect(() => {
     if (!selectedCustomer) {
       selection.setAllSelected(false);
-      dispatch(controlActions.closeInfoPanelWithComponent());
+      dispatch(infoPanelActions.closeInfoPanelWithComponent());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCustomer]);
-
-  /// UI selection
-  // useEffect(() => {
-  //   if (selectedCustomer) {
-  //     selection.getItems().forEach((customer: any, index: number) => {
-  //       if (customer.id === selectedCustomer.id) {
-  //         selection.selectToIndex(index);
-  //       }
-  //     });
-  //   }
-
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [customersList]);
 
   const onRenderDetailsHeader: IRenderFunction<IDetailsHeaderProps> = (
     props,
@@ -201,7 +186,7 @@ export const CustomerList: React.FC = () => {
           const selectFlow = () => {
             dispatch(customerActions.updateSelectedCustomer(args.item));
             dispatch(
-              controlActions.openInfoPanelWithComponent({
+              infoPanelActions.openInfoPanelWithComponent({
                 component: CustomersOptionsPanel,
                 onDismisPendingAction: () =>
                   onDismisActionsCustomersOptionsPanel().forEach((action) => {

@@ -9,7 +9,7 @@ import { IApplicationState } from '../../redux/reducers';
 import { assignPendingActions } from '../../helpers/action.helper';
 import { List } from 'linq-typescript';
 import { productActions } from '../../redux/slices/product.slice';
-import { controlActions } from '../../redux/slices/control.slice';
+import { infoPanelActions } from '../../redux/slices/infoPanel.slice';
 import ProductMeasurementPanel from './options/measurementOptions/ProductMeasurementPanel';
 import ProductTimelinesPanel from './options/ProductTimelinesPanel';
 import ProductSettingsBootstrapper from './productSettings/ProductSettingsBootstrapper';
@@ -18,7 +18,6 @@ import ProductStylesPanel from './options/ProductStylesPanel';
 import ProductPermissions from './productPermissions/ProductPermissions';
 import ProductPermissionsPanel from './options/ProductPermissionsPanel';
 import { unitsActions } from '../../redux/slices/units.slice';
-import * as appPaths from '../../common/environment/appPaths/index';
 import * as productPaths from '../../common/environment/appPaths/product';
 
 const PRODUCT_ID_PATH_SEGMENT: string = ':productId';
@@ -81,7 +80,7 @@ const ProductCategoryView: React.FC = () => {
     } else {
       if (targetCategory) {
         dispatch(
-          controlActions.openInfoPanelWithComponent({
+          infoPanelActions.openInfoPanelWithComponent({
             component: ProductManagementPanel,
             onDismisPendingAction: () => {
               dispatch(productActions.chooseProductCategory(null));
@@ -89,7 +88,7 @@ const ProductCategoryView: React.FC = () => {
           })
         );
       } else {
-        dispatch(controlActions.closeInfoPanelWithComponent());
+        dispatch(infoPanelActions.closeInfoPanelWithComponent());
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -108,7 +107,7 @@ const ProductCategoryView: React.FC = () => {
             (args: any) => {
               dispatch(productActions.chooseProductCategory(args));
               dispatch(
-                controlActions.openInfoPanelWithComponent({
+                infoPanelActions.openInfoPanelWithComponent({
                   component: optionsLeftPanelComponent,
                   onDismisPendingAction: () => {
                     history.push(
@@ -123,7 +122,7 @@ const ProductCategoryView: React.FC = () => {
       }
     } else {
       dispatch(
-        controlActions.openInfoPanelWithComponent({
+        infoPanelActions.openInfoPanelWithComponent({
           component: optionsLeftPanelComponent,
           onDismisPendingAction: () => {
             history.push(productPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);

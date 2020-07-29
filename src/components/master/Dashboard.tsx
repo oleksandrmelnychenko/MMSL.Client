@@ -20,7 +20,7 @@ const Dashboard: React.FC = () => {
   const location = useLocation();
 
   const isCollapseMenu = useSelector<IApplicationState, boolean>(
-    (state) => state.control.isCollapseMenu
+    (state) => state.infoPanel.isCollapseMenu
   );
 
   const rightPanel = useSelector<IApplicationState, IRightPanelProps>(

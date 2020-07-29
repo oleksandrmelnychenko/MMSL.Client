@@ -1,6 +1,6 @@
 import React from 'react';
 import NewMeetToMeasureOrder from './NewMeetToMeasureOrder';
-import { controlActions } from '../../../../../redux/slices/control.slice';
+import { infoPanelActions } from '../../../../../redux/slices/infoPanel.slice';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import * as orderPaths from '../../../../../common/environment/appPaths/order';
@@ -11,7 +11,7 @@ export const NewMTMOrderBootstrapper: React.FC = (props: any) => {
   const history = useHistory();
 
   dispatch(
-    controlActions.openInfoPanelWithComponent({
+    infoPanelActions.openInfoPanelWithComponent({
       component: ManageProfileOptiosPanel,
       onDismisPendingAction: () => {
         history.push(orderPaths.APP_ORDER_LIST);

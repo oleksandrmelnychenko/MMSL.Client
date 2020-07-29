@@ -77,6 +77,10 @@ import {
   default as fabricImporterReducer,
   IFabricImportertate,
 } from '../slices/store/fabric/fabricImporter.slice';
+import {
+  default as infoPanelReducer,
+  IInfoPanelState,
+} from '../slices/infoPanel.slice';
 
 export interface IApplicationState {
   auth: IAuthState;
@@ -102,6 +106,7 @@ export interface IApplicationState {
   rightPanel: IRightPanelState;
   fabricFilters: IfabricFiltersState;
   fabricImporter: IFabricImportertate;
+  infoPanel: IInfoPanelState;
 }
 
 export const reducer = combineReducers({
@@ -128,4 +133,5 @@ export const reducer = combineReducers({
   rightPanel: rightPanelReducer,
   fabricFilters: fabricFiltersReducer,
   fabricImporter: fabricImporterReducer,
+  infoPanel: infoPanelReducer,
 });

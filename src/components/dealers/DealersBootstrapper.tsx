@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Switch, Route, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { IApplicationState } from '../../redux/reducers';
-import { controlActions } from '../../redux/slices/control.slice';
+import { infoPanelActions } from '../../redux/slices/infoPanel.slice';
 import Dealers from './Dealers';
 import { DealerAccount } from '../../interfaces/dealer';
 import DealerOptions from './options/DealerOptions';
@@ -21,7 +21,7 @@ const DealersBootstrapper: React.FC = () => {
   useEffect(() => {
     if (dealer) {
       dispatch(
-        controlActions.openInfoPanelWithComponent({
+        infoPanelActions.openInfoPanelWithComponent({
           component: DealerOptions,
           onDismisPendingAction: () => {
             dispatch(dealerActions.setSelectedDealer(null));
@@ -29,7 +29,7 @@ const DealersBootstrapper: React.FC = () => {
         })
       );
     } else {
-      dispatch(controlActions.closeInfoPanelWithComponent());
+      dispatch(infoPanelActions.closeInfoPanelWithComponent());
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

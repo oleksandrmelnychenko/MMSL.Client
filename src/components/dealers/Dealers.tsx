@@ -14,7 +14,7 @@ import {
   mainTitleContent,
   columnIconButtonStyle,
 } from '../../common/fabric-styles/styles';
-import { controlActions } from '../../redux/slices/control.slice';
+import { infoPanelActions } from '../../redux/slices/infoPanel.slice';
 import {
   rightPanelActions,
   RightPanelType,
@@ -70,7 +70,7 @@ export const Dealers: React.FC = (props: any) => {
                   iconProps={{ iconName: 'Add' }}
                   onClick={() => {
                     dispatch(dealerActions.setSelectedDealer(null));
-                    dispatch(controlActions.closeInfoPanelWithComponent());
+                    dispatch(infoPanelActions.closeInfoPanelWithComponent());
                     dispatch(
                       rightPanelActions.openRightPanel({
                         title: 'Add dealer',

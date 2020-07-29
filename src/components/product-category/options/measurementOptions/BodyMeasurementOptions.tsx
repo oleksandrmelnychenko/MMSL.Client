@@ -1,8 +1,6 @@
 import React from 'react';
-import {
-  controlActions,
-  IInfoPanelMenuItem,
-} from '../../../../redux/slices/control.slice';
+import { IInfoPanelMenuItem } from '../../../../redux/slices/control.slice';
+import { infoPanelActions } from '../../../../redux/slices/infoPanel.slice';
 import {
   rightPanelActions,
   RightPanelType,
@@ -58,7 +56,7 @@ const BodyMeasurementOptions: React.FC = () => {
       onClickFunc: () => {
         history.push('/en/app/product/product-categories');
         dispatch(
-          controlActions.openInfoPanelWithComponent({
+          infoPanelActions.openInfoPanelWithComponent({
             component: ProductManagementPanel,
             onDismisPendingAction: () => {},
           })

@@ -15,6 +15,7 @@ import { Card } from '@uifabric/react-cards';
 import { Text } from 'office-ui-fabric-react/lib/Text';
 import './product-category.scss';
 import { controlActions } from '../../redux/slices/control.slice';
+import { infoPanelActions } from '../../redux/slices/infoPanel.slice';
 import { IApplicationState } from '../../redux/reducers/index';
 import { ProductCategory } from '../../interfaces/products';
 import * as fabricStyles from '../../common/fabric-styles/styles';
@@ -53,7 +54,7 @@ const ProductCategories: React.FC = () => {
         subText: `Are you sure you want to delete ${category.name}?`,
         onSubmitClick: () => {
           dispatch(productActions.chooseProductCategory(null));
-          dispatch(controlActions.closeInfoPanelWithComponent());
+          dispatch(infoPanelActions.closeInfoPanelWithComponent());
 
           let action = assignPendingActions(
             productActions.apiDeleteProductCategory(category.id),
@@ -189,7 +190,7 @@ const ProductCategories: React.FC = () => {
                                   productActions.chooseProductCategory(args)
                                 );
                                 dispatch(
-                                  controlActions.openInfoPanelWithComponent({
+                                  infoPanelActions.openInfoPanelWithComponent({
                                     component: ProductManagementPanel,
                                     onDismisPendingAction: () => {
                                       dispatch(

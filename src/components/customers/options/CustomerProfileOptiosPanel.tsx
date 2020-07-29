@@ -6,6 +6,7 @@ import {
   IInfoPanelMenuItem,
   CommonDialogType,
 } from '../../../redux/slices/control.slice';
+import { infoPanelActions } from '../../../redux/slices/infoPanel.slice';
 import CustomersOptionsPanel from './CustomersOptionsPanel';
 import { useHistory } from 'react-router-dom';
 import { IApplicationState } from '../../../redux/reducers';
@@ -70,7 +71,7 @@ const CustomerProfileOptiosPanel: React.FC = () => {
       onClickFunc: () => {
         history.push(CUSTOMERS_PATH);
         dispatch(
-          controlActions.openInfoPanelWithComponent({
+          infoPanelActions.openInfoPanelWithComponent({
             component: CustomersOptionsPanel,
             onDismisPendingAction: () => {},
           })
@@ -92,11 +93,10 @@ const CustomerProfileOptiosPanel: React.FC = () => {
       tooltip: 'Create new profile',
       onClickFunc: () => {
         if (selectedCustomer && selectedProductProfile) {
-          debugger;
           dispatch(orderProfileActions.changeTargetOrderProfile(null));
 
           dispatch(
-            controlActions.openInfoPanelWithComponent({
+            infoPanelActions.openInfoPanelWithComponent({
               component: ManageProfileOptiosPanel,
               onDismisPendingAction: () => {
                 onDismissManageProfileOptiosPanel().forEach((action) =>
@@ -129,7 +129,7 @@ const CustomerProfileOptiosPanel: React.FC = () => {
       onClickFunc: () => {
         if (targetOrderProfile && selectedCustomer) {
           dispatch(
-            controlActions.openInfoPanelWithComponent({
+            infoPanelActions.openInfoPanelWithComponent({
               component: ManageProfileOptiosPanel,
               onDismisPendingAction: () => {
                 onDismissManageProfileOptiosPanel().forEach((action) =>
@@ -164,7 +164,7 @@ const CustomerProfileOptiosPanel: React.FC = () => {
       onClickFunc: () => {
         if (targetOrderProfile && selectedCustomer) {
           dispatch(
-            controlActions.openInfoPanelWithComponent({
+            infoPanelActions.openInfoPanelWithComponent({
               component: ManageProfileOptiosPanel,
               onDismisPendingAction: () => {
                 onDismissManageProfileOptiosPanel().forEach((action) =>

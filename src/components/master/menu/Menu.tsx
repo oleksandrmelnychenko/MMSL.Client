@@ -6,6 +6,7 @@ import {
   controlActions,
   DashboardHintStubProps,
 } from '../../../redux/slices/control.slice';
+import { infoPanelActions } from '../../../redux/slices/infoPanel.slice';
 import { productActions } from '../../../redux/slices/product.slice';
 import './menu.scss';
 import { IApplicationState } from '../../../redux/reducers';
@@ -53,7 +54,7 @@ const Menu: React.FC = () => {
   const onMenuClick = (item: IMenuItem) => {
     setIsOpenSubMenu(false);
     dispatch(dealerActions.setSelectedDealer(null));
-    dispatch(controlActions.closeInfoPanelWithComponent());
+    dispatch(infoPanelActions.closeInfoPanelWithComponent());
     dispatch(productSettingsActions.updateSearchWordOptionGroup(''));
 
     if (item.title !== PRODUCTS_MENU_TITLE) {
