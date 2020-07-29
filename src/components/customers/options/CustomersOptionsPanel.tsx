@@ -20,13 +20,14 @@ import { List } from 'linq-typescript';
 import CustomerProfileOptiosPanel, {
   onDismisActionsCustomerProfileOptiosPanel,
 } from './CustomerProfileOptiosPanel';
-import {
-  CUSTOMERS_PATH,
-  CUSTOMER_PROFILES_PATH,
-} from '../CustomersBootstrapper';
+
 import { useHistory } from 'react-router-dom';
 import { RoleType } from '../../../interfaces/identity';
 import { renderMenuItem } from '../../master/DashboardLeftMenuPanel';
+import {
+  CUSTOMER_PROFILES_PATH,
+  CUSTOMERS_PATH,
+} from '../../../common/environment/appPaths';
 
 export const onDismisActionsCustomersOptionsPanel = () => {
   return [customerActions.updateSelectedCustomer(null)];

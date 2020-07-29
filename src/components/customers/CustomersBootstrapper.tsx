@@ -17,6 +17,10 @@ import Customers from './Customers';
 import Profiles from './profile/Profiles';
 import { TokenHelper } from '../../helpers/token.helper';
 import { RoleType } from '../../interfaces/identity';
+import {
+  CUSTOMERS_PATH,
+  CUSTOMER_PROFILES_PATH,
+} from '../../common/environment/appPaths';
 
 const _extractCustomerIdFromPath = (history: any) => {
   const lastSegment: any = new List(
@@ -25,9 +29,6 @@ const _extractCustomerIdFromPath = (history: any) => {
 
   return parseInt(lastSegment ? lastSegment : '');
 };
-
-export const CUSTOMERS_PATH: string = '/en/app/customers/';
-export const CUSTOMER_PROFILES_PATH: string = '/en/app/customers/profiles/';
 
 const CustomersBootstrapper: React.FC = () => {
   const dispatch = useDispatch();

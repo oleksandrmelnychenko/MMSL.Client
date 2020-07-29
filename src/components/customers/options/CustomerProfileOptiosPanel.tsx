@@ -6,7 +6,6 @@ import {
   IInfoPanelMenuItem,
   CommonDialogType,
 } from '../../../redux/slices/control.slice';
-import { CUSTOMERS_PATH } from '../CustomersBootstrapper';
 import CustomersOptionsPanel from './CustomersOptionsPanel';
 import { useHistory } from 'react-router-dom';
 import { IApplicationState } from '../../../redux/reducers';
@@ -23,6 +22,7 @@ import { ProductCategory } from '../../../interfaces/products';
 import { List } from 'linq-typescript';
 import { RoleType } from '../../../interfaces/identity';
 import { renderMenuItem } from '../../master/DashboardLeftMenuPanel';
+import { CUSTOMERS_PATH } from '../../../common/environment/appPaths';
 
 export const onDismisActionsCustomerProfileOptiosPanel = () => {
   return [
@@ -92,6 +92,7 @@ const CustomerProfileOptiosPanel: React.FC = () => {
       tooltip: 'Create new profile',
       onClickFunc: () => {
         if (selectedCustomer && selectedProductProfile) {
+          debugger;
           dispatch(orderProfileActions.changeTargetOrderProfile(null));
 
           dispatch(

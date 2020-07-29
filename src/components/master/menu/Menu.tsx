@@ -14,6 +14,9 @@ import { productSettingsActions } from '../../../redux/slices/productSettings.sl
 import { TokenHelper } from '../../../helpers/token.helper';
 import { List } from 'linq-typescript';
 import { RoleType } from '../../../interfaces/identity';
+import * as appPaths from '../../../common/environment/appPaths/index';
+import * as productPaths from '../../../common/environment/appPaths/product';
+import * as orderPaths from '../../../common/environment/appPaths/order';
 
 interface IMenuItem {
   title: string;
@@ -23,7 +26,7 @@ interface IMenuItem {
 }
 
 const DASHBOARD_MENU_TITLE: string = 'Dashboard';
-const ORDER_PROFILES_MENU_TITLE: string = 'Order';
+const ORDER_MENU_TITLE: string = 'Order';
 const CUSTOMER_MENU_TITLE: string = 'Customer';
 const DEALERS_MENU_TITLE: string = 'Dealers';
 const STORE_MENU_TITLE: string = 'Store';
@@ -65,24 +68,24 @@ const Menu: React.FC = () => {
       link: `/${languageCode}/app/dashboard`,
     },
     {
-      title: ORDER_PROFILES_MENU_TITLE,
+      title: ORDER_MENU_TITLE,
       className: 'order',
-      link: `/${languageCode}/app/order`,
+      link: orderPaths.APP_ORDER_LIST,
     },
     {
       title: CUSTOMER_MENU_TITLE,
       className: 'customer',
-      link: `/${languageCode}/app/customers`,
+      link: appPaths.APP_CUSTOMERS,
     },
     {
       title: DEALERS_MENU_TITLE,
       className: 'dealers',
-      link: `/${languageCode}/app/dealers`,
+      link: appPaths.APP_DEALERS,
     },
     {
       title: STORE_MENU_TITLE,
       className: 'store',
-      link: `/${languageCode}/app/store`,
+      link: appPaths.APP_STORE,
     },
     {
       title: DOCUMENTS_MENU_TITLE,
@@ -97,7 +100,7 @@ const Menu: React.FC = () => {
     {
       title: PRODUCTS_MENU_TITLE,
       className: 'product',
-      link: `/${languageCode}/app/product/product-categories`,
+      link: productPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH,
     },
     {
       title: SETTINGS_MENU_TITLE,
@@ -107,7 +110,7 @@ const Menu: React.FC = () => {
     {
       title: REPORTS_MENU_TITLE,
       className: 'reports',
-      link: `/${languageCode}/app/reports`,
+      link: appPaths.APP_REPORTS,
     },
   ];
 
@@ -149,11 +152,11 @@ const Menu: React.FC = () => {
 
     if (rolesList.contains(RoleType[RoleType.Administrator])) {
       resolvedMenu = new List(menu)
-        .where((menuItem) => menuItem.title !== ORDER_PROFILES_MENU_TITLE)
+        .where((menuItem) => menuItem.title !== ORDER_MENU_TITLE)
         .toArray();
     } else if (rolesList.contains(RoleType[RoleType.Manufacturer])) {
       resolvedMenu = new List(menu)
-        .where((menuItem) => menuItem.title !== ORDER_PROFILES_MENU_TITLE)
+        .where((menuItem) => menuItem.title !== ORDER_MENU_TITLE)
         .toArray();
     } else if (rolesList.contains(RoleType[RoleType.Customer])) {
     } else if (rolesList.contains(RoleType[RoleType.Dealer])) {

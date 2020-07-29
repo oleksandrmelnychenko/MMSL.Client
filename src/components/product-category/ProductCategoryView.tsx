@@ -19,6 +19,7 @@ import ProductPermissions from './productPermissions/ProductPermissions';
 import ProductPermissionsPanel from './options/ProductPermissionsPanel';
 import { unitsActions } from '../../redux/slices/units.slice';
 import * as appPaths from '../../common/environment/appPaths/index';
+import * as productPaths from '../../common/environment/appPaths/product';
 
 const PRODUCT_ID_PATH_SEGMENT: string = ':productId';
 
@@ -56,20 +57,24 @@ const ProductCategoryView: React.FC = () => {
 
   useEffect(() => {
     if (
-      history?.location?.pathname?.includes(appPaths.APP_PRODUCT_MEASUREMENTS)
+      history?.location?.pathname?.includes(
+        productPaths.APP_PRODUCT_MEASUREMENTS
+      )
     ) {
       resolveTargetProductFlow(ProductMeasurementPanel);
     } else if (
-      history?.location?.pathname?.includes(appPaths.APP_PRODUCT_TIMELINES)
+      history?.location?.pathname?.includes(productPaths.APP_PRODUCT_TIMELINES)
     ) {
       resolveTargetProductFlow(ProductTimelinesPanel);
     } else if (
-      history?.location?.pathname?.includes(appPaths.APP_PRODUCT_STYLES_PATH)
+      history?.location?.pathname?.includes(
+        productPaths.APP_PRODUCT_STYLES_PATH
+      )
     ) {
       resolveTargetProductFlow(ProductStylesPanel);
     } else if (
       history?.location?.pathname?.includes(
-        appPaths.APP_PRODUCT_STYLE_PERMISSIONS
+        productPaths.APP_PRODUCT_STYLE_PERMISSIONS
       )
     ) {
       resolveTargetProductFlow(ProductPermissionsPanel);
@@ -107,7 +112,7 @@ const ProductCategoryView: React.FC = () => {
                   component: optionsLeftPanelComponent,
                   onDismisPendingAction: () => {
                     history.push(
-                      appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH
+                      productPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH
                     );
                   },
                 })
@@ -121,7 +126,7 @@ const ProductCategoryView: React.FC = () => {
         controlActions.openInfoPanelWithComponent({
           component: optionsLeftPanelComponent,
           onDismisPendingAction: () => {
-            history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
+            history.push(productPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
           },
         })
       );
@@ -132,23 +137,23 @@ const ProductCategoryView: React.FC = () => {
     <div>
       <Switch>
         <Route
-          path={`${appPaths.APP_PRODUCT_MEASUREMENTS}${PRODUCT_ID_PATH_SEGMENT}`}
+          path={`${productPaths.APP_PRODUCT_MEASUREMENTS}${PRODUCT_ID_PATH_SEGMENT}`}
           component={MeasurementsBootstrapper}
         />
         <Route
-          path={`${appPaths.APP_PRODUCT_TIMELINES}${PRODUCT_ID_PATH_SEGMENT}`}
+          path={`${productPaths.APP_PRODUCT_TIMELINES}${PRODUCT_ID_PATH_SEGMENT}`}
           component={ProductDeliverTimeline}
         />
         <Route
-          path={`${appPaths.APP_PRODUCT_STYLES_PATH}${PRODUCT_ID_PATH_SEGMENT}`}
+          path={`${productPaths.APP_PRODUCT_STYLES_PATH}${PRODUCT_ID_PATH_SEGMENT}`}
           component={ProductSettingsBootstrapper}
         />
         <Route
-          path={`${appPaths.APP_PRODUCT_STYLE_PERMISSIONS}${PRODUCT_ID_PATH_SEGMENT}`}
+          path={`${productPaths.APP_PRODUCT_STYLE_PERMISSIONS}${PRODUCT_ID_PATH_SEGMENT}`}
           component={ProductPermissions}
         />
         <Route
-          path={appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH}
+          path={productPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH}
           component={ProductCategories}
         />
       </Switch>

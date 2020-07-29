@@ -4,12 +4,15 @@ import { Switch, Route } from 'react-router-dom';
 import DealersBootstrapper from '../dealers/DealersBootstrapper';
 import CustomersBootstrapper from '../customers/CustomersBootstrapper';
 import FabricsViewBootstrapper from '../fabrics/FabricsBootstrapper';
+import OrdersRoute from '../order/OrdersRoute';
 import Reports from '../reports/Reports';
 import ProductCategoryView from '../product-category/ProductCategoryView';
 import { List } from 'linq-typescript';
 import { TokenHelper } from '../../helpers/token.helper';
 import { RoleType } from '../../interfaces/identity';
 import * as appPaths from '../../common/environment/appPaths/index';
+import * as productPaths from '../../common/environment/appPaths/product';
+import * as orderPaths from '../../common/environment/appPaths/order';
 
 const DEALERS_ROUTE: string = 'Dealers';
 const CUSTOMER_ROUTE: string = 'Customer';
@@ -61,7 +64,7 @@ const IdentityDashboardRoute: React.FC = () => {
       return (
         <Route
           key={index}
-          path={appPaths.APP_PRODUCT}
+          path={productPaths.APP_PRODUCT}
           component={ProductCategoryView}
         />
       );
@@ -73,8 +76,8 @@ const IdentityDashboardRoute: React.FC = () => {
       return (
         <Route
           key={index}
-          path={appPaths.APP_ORDER}
-          component={FabricsViewBootstrapper}
+          path={orderPaths.APP_ORDER_LIST}
+          component={OrdersRoute}
         />
       );
     else if (routeDescription === STORE_ROUTE)

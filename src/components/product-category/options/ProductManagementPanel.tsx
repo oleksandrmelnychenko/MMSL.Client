@@ -20,6 +20,7 @@ import ProductPermissionsPanel, {
 import { RoleType } from '../../../interfaces/identity';
 import { renderMenuItem } from '../../master/DashboardLeftMenuPanel';
 import * as appPaths from '../../../common/environment/appPaths/index';
+import * as productPaths from '../../../common/environment/appPaths/product';
 
 const ProductManagementPanel: React.FC = () => {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ const ProductManagementPanel: React.FC = () => {
           controlActions.openInfoPanelWithComponent({
             component: ProductStylesPanel,
             onDismisPendingAction: () => {
-              history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
+              history.push(productPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
 
               stylesPanelDismisActions().forEach((action) => {
                 dispatch(action);
@@ -53,11 +54,11 @@ const ProductManagementPanel: React.FC = () => {
 
         if (choseCategory) {
           history.push(
-            `${appPaths.APP_PRODUCT_STYLES_PATH}${choseCategory.id}`
+            `${productPaths.APP_PRODUCT_STYLES_PATH}${choseCategory.id}`
           );
         } else {
           dispatch(controlActions.closeInfoPanelWithComponent());
-          history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
+          history.push(productPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
         }
       },
     },
@@ -73,7 +74,7 @@ const ProductManagementPanel: React.FC = () => {
           controlActions.openInfoPanelWithComponent({
             component: ProductMeasurementPanel,
             onDismisPendingAction: () => {
-              history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
+              history.push(productPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
 
               measurementsPanelDismisActions().forEach((action) => {
                 dispatch(action);
@@ -84,11 +85,11 @@ const ProductManagementPanel: React.FC = () => {
 
         if (choseCategory) {
           history.push(
-            `${appPaths.APP_PRODUCT_MEASUREMENTS}${choseCategory.id}`
+            `${productPaths.APP_PRODUCT_MEASUREMENTS}${choseCategory.id}`
           );
         } else {
           dispatch(controlActions.closeInfoPanelWithComponent());
-          history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
+          history.push(productPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
         }
       },
     },
@@ -104,16 +105,18 @@ const ProductManagementPanel: React.FC = () => {
           controlActions.openInfoPanelWithComponent({
             component: ProductTimelinesPanel,
             onDismisPendingAction: () => {
-              history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
+              history.push(productPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
             },
           })
         );
 
         if (choseCategory) {
-          history.push(`${appPaths.APP_PRODUCT_TIMELINES}${choseCategory.id}`);
+          history.push(
+            `${productPaths.APP_PRODUCT_TIMELINES}${choseCategory.id}`
+          );
         } else {
           dispatch(controlActions.closeInfoPanelWithComponent());
-          history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
+          history.push(productPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
         }
       },
     },
@@ -129,7 +132,7 @@ const ProductManagementPanel: React.FC = () => {
           controlActions.openInfoPanelWithComponent({
             component: ProductPermissionsPanel,
             onDismisPendingAction: () => {
-              history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
+              history.push(productPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
 
               permissionsPanelDismisActions().forEach((action) => {
                 dispatch(action);
@@ -140,11 +143,11 @@ const ProductManagementPanel: React.FC = () => {
 
         if (choseCategory) {
           history.push(
-            `${appPaths.APP_PRODUCT_STYLE_PERMISSIONS}${choseCategory.id}`
+            `${productPaths.APP_PRODUCT_STYLE_PERMISSIONS}${choseCategory.id}`
           );
         } else {
           dispatch(controlActions.closeInfoPanelWithComponent());
-          history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
+          history.push(productPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
         }
       },
     },

@@ -4,7 +4,6 @@ import {
   controlActions,
   IInfoPanelMenuItem,
 } from '../../../redux/slices/control.slice';
-import { CUSTOMERS_PATH } from '../CustomersBootstrapper';
 import { useHistory } from 'react-router-dom';
 import CustomerProfileOptiosPanel, {
   onDismisActionsCustomerProfileOptiosPanel,
@@ -17,6 +16,7 @@ import { IApplicationState } from '../../../redux/reducers';
 import { RoleType } from '../../../interfaces/identity';
 
 import { renderMenuItem } from '../../master/DashboardLeftMenuPanel';
+import { CUSTOMERS_PATH } from '../../../common/environment/appPaths';
 
 export const onDismissManageProfileOptiosPanel = () => {
   return [profileManagingActions.stopManaging()];

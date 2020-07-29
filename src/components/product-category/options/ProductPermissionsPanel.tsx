@@ -15,7 +15,7 @@ import ProductManagementPanel from './ProductManagementPanel';
 import ProductPermissionForm from '../productPermissions/managing/ProductPermissionForm';
 import { RoleType } from '../../../interfaces/identity';
 import { renderMenuItem } from '../../master/DashboardLeftMenuPanel';
-import * as appPaths from '../../../common/environment/appPaths/index';
+import * as productPaths from '../../../common/environment/appPaths/product';
 
 export const permissionsPanelDismisActions = () => {
   return [];
@@ -41,7 +41,7 @@ const ProductPermissionsPanel: React.FC = () => {
       isDisabled: false,
       tooltip: 'Go back to products',
       onClickFunc: () => {
-        history.push(appPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
+        history.push(productPaths.APP_PRODUCT_CATEGORIES_DASHBOARD_PATH);
 
         /// Open product managing (common) panel
         dispatch(
