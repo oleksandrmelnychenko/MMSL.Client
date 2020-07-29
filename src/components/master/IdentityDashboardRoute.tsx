@@ -15,7 +15,7 @@ const DEALERS_ROUTE: string = 'Dealers';
 const CUSTOMER_ROUTE: string = 'Customer';
 const PRODUCT_ROUTE: string = 'Product';
 const REPORTS_ROUTE: string = 'Reports';
-const ORDER_PROFILES_ROUTE: string = 'OrderProfiles';
+const ORDER_ROUTE: string = 'Order';
 const STORE_ROUTE: string = 'Store';
 
 const _routes: any[] = [
@@ -32,7 +32,7 @@ const _routes: any[] = [
     description: REPORTS_ROUTE,
   },
   {
-    description: ORDER_PROFILES_ROUTE,
+    description: ORDER_ROUTE,
   },
   {
     description: STORE_ROUTE,
@@ -69,7 +69,14 @@ const IdentityDashboardRoute: React.FC = () => {
       return (
         <Route key={index} path={appPaths.APP_REPORTS} component={Reports} />
       );
-    else if (routeDescription === ORDER_PROFILES_ROUTE) return null;
+    else if (routeDescription === ORDER_ROUTE)
+      return (
+        <Route
+          key={index}
+          path={appPaths.APP_ORDER}
+          component={FabricsViewBootstrapper}
+        />
+      );
     else if (routeDescription === STORE_ROUTE)
       return (
         <Route
@@ -86,11 +93,11 @@ const IdentityDashboardRoute: React.FC = () => {
 
   if (rolesList.contains(RoleType[RoleType.Administrator])) {
     resolvedRoutes = new List(_routes)
-      .where((route) => route.description !== ORDER_PROFILES_ROUTE)
+      .where((route) => route.description !== ORDER_ROUTE)
       .toArray();
   } else if (rolesList.contains(RoleType[RoleType.Manufacturer])) {
     resolvedRoutes = new List(_routes)
-      .where((route) => route.description !== ORDER_PROFILES_ROUTE)
+      .where((route) => route.description !== ORDER_ROUTE)
       .toArray();
   } else if (rolesList.contains(RoleType[RoleType.Customer])) {
   } else if (rolesList.contains(RoleType[RoleType.Dealer])) {

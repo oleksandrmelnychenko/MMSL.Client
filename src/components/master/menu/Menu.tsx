@@ -67,7 +67,7 @@ const Menu: React.FC = () => {
     {
       title: ORDER_PROFILES_MENU_TITLE,
       className: 'order',
-      link: `/${languageCode}/app/order-profiles`,
+      link: `/${languageCode}/app/order`,
     },
     {
       title: CUSTOMER_MENU_TITLE,

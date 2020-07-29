@@ -260,6 +260,21 @@ const CustomerProfileOptiosPanel: React.FC = () => {
         }
       },
     },
+    {
+      allowedRoles: [RoleType.Dealer],
+      title: 'Create order',
+      className:
+        targetOrderProfile && selectedCustomer
+          ? 'management__btn-shirt_plus'
+          : 'management__btn-shirt_plus management__btn-disabled',
+      isDisabled: targetOrderProfile && selectedCustomer ? false : true,
+      tooltip: 'Create new order',
+      onClickFunc: () => {
+        if (targetOrderProfile && selectedCustomer) {
+          debugger;
+        }
+      },
+    },
   ];
 
   return <>{renderMenuItem(menuItem)}</>;
