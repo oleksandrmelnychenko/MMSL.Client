@@ -8,6 +8,8 @@ const INIT_STATE: IInfoPanelState = {
 
   componentInPanelInfo: null,
 
+  commands: [],
+
   onDismisPendingAction: () => {},
 };
 
@@ -19,7 +21,16 @@ export interface IInfoPanelState {
 
   componentInPanelInfo: any;
 
+  commands: ICommand[];
+
   onDismisPendingAction: () => void;
+}
+
+export interface ICommand {
+  name: string;
+  isDisabled: boolean;
+  className: string;
+  onClick: () => void;
 }
 
 const infoPanel = createSlice({
@@ -59,6 +70,10 @@ const infoPanel = createSlice({
 
       state.onDismisPendingAction = () => {};
 
+      return state;
+    },
+    updateCommands(state, action: { type: string; payload: ICommand[] }) {
+      state.commands = action.payload;
       return state;
     },
   },

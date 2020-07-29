@@ -20,7 +20,7 @@ import {
 } from './inputs/productStyle/StyleUnitItem';
 import { List } from 'linq-typescript';
 import { StoreCustomer } from '../../../../../interfaces/storeCustomer';
-import { profileManagingActions } from '../../../../../redux/slices/customer/orderProfile/profileManaging.slice';
+import { infoPanelActions } from '../../../../../redux/slices/infoPanel.slice';
 import { FormicReference } from '../../../../../interfaces';
 import { assignPendingActions } from '../../../../../helpers/action.helper';
 import { orderProfileActions } from '../../../../../redux/slices/customer/orderProfile/orderProfile.slice';
@@ -344,7 +344,7 @@ export const ProfileForm: React.FC<IProfileFormProps> = (
 
   useEffect(() => {
     dispatch(
-      profileManagingActions.updateCommands([
+      infoPanelActions.updateCommands([
         {
           className: 'management__btn-save',
           isDisabled: !isFormikDirty,

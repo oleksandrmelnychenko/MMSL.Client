@@ -8,7 +8,6 @@ export interface IProfileManagingState {
   productId: number;
   profileForEdit: CustomerProductProfile | null | undefined;
   profileToReplicate: CustomerProductProfile | null | undefined;
-  commands: ICommand[];
 }
 
 const INIT_STATE: IProfileManagingState = {
@@ -17,15 +16,7 @@ const INIT_STATE: IProfileManagingState = {
   productId: 0,
   profileForEdit: null,
   profileToReplicate: null,
-  commands: [],
 };
-
-export interface ICommand {
-  name: string;
-  isDisabled: boolean;
-  className: string;
-  onClick: () => void;
-}
 
 const profileManaging = createSlice({
   name: 'profileManaging',
@@ -49,7 +40,6 @@ const profileManaging = createSlice({
       state.productId = action.payload.productId;
       state.profileForEdit = action.payload.profileForEdit;
       state.profileToReplicate = action.payload.profileToReplicate;
-      state.commands = [];
 
       return state;
     },
@@ -59,12 +49,7 @@ const profileManaging = createSlice({
       state.productId = 0;
       state.profileForEdit = null;
       state.profileToReplicate = null;
-      state.commands = [];
 
-      return state;
-    },
-    updateCommands(state, action: { type: string; payload: ICommand[] }) {
-      state.commands = action.payload;
       return state;
     },
   },

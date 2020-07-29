@@ -1,10 +1,12 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { IInfoPanelMenuItem } from '../../../../../redux/slices/control.slice';
-import { infoPanelActions } from '../../../../../redux/slices/infoPanel.slice';
+import {
+  infoPanelActions,
+  ICommand,
+} from '../../../../../redux/slices/infoPanel.slice';
 import { useHistory } from 'react-router-dom';
 import { RoleType } from '../../../../../interfaces/identity';
-import { ICommand } from '../../../../../redux/slices/customer/orderProfile/profileManaging.slice';
 import { IApplicationState } from '../../../../../redux/reducers';
 import { renderMenuItem } from '../../../../master/DashboardLeftMenuPanel';
 
@@ -25,7 +27,7 @@ const ManageProfileOptiosPanel: React.FC = () => {
   const history = useHistory();
 
   const commands: ICommand[] = useSelector<IApplicationState, ICommand[]>(
-    (state) => state.profileManaging.commands
+    (state) => state.infoPanel.commands
   );
 
   const menuItem: IInfoPanelMenuItem[] = [
