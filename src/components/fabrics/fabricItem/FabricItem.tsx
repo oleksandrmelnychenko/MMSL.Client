@@ -27,16 +27,9 @@ const FabricItem: React.FC<IFabricItemProps> = (props: IFabricItemProps) => {
     }
   }, [props.fabric]);
 
-  const imageProps: IImageProps = {
-    src: props.fabric.imageUrl,
-    imageFit: ImageFit.cover,
-    width: '100%',
-    height: '100%',
-  };
-
   return (
     <div className="fabricItem">
-      <div className="fabricItem__card" onClick={(args: any) => {}}>
+      <div className="fabricItem__card">
         {showImageStub ? (
           <div className="fabricItem__centeredStub">
             <FontIcon
@@ -50,9 +43,9 @@ const FabricItem: React.FC<IFabricItemProps> = (props: IFabricItemProps) => {
           </div>
         ) : (
           <Image
-            className={'fabricItem__image'}
-            {...imageProps}
             src={props.fabric.imageUrl}
+            imageFit={ImageFit.cover}
+            className={'fabricItem__image'}
             onLoadingStateChange={(loadState: ImageLoadState) => {
               if (loadState === ImageLoadState.loaded) {
                 setShowImageStub(false);

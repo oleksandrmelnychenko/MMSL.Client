@@ -50,7 +50,7 @@ export interface IItemInfoProps {
 
 const ItemInfo: React.FC<IItemInfoProps> = (props: IItemInfoProps) => {
   return (
-    <div className={'fabricItem__info'}>
+    <div className="fabricItem__info">
       <Stack>
         <Stack horizontal style={{ paddingBottom: '12px' }}>
           <Stack tokens={{ childrenGap: '6px' }}>
