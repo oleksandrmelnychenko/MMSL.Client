@@ -24,6 +24,7 @@ import { List } from 'linq-typescript';
 import { RoleType } from '../../../interfaces/identity';
 import { renderMenuItem } from '../../master/DashboardLeftMenuPanel';
 import { CUSTOMERS_PATH } from '../../../common/environment/appPaths';
+import { APP_ORDER_NEW_MTM_ORDER } from '../../../common/environment/appPaths/order';
 
 export const onDismisActionsCustomerProfileOptiosPanel = () => {
   return [
@@ -272,7 +273,7 @@ const CustomerProfileOptiosPanel: React.FC = () => {
       tooltip: 'Create new order',
       onClickFunc: () => {
         if (targetOrderProfile && selectedCustomer) {
-          debugger;
+          history.push(APP_ORDER_NEW_MTM_ORDER);
         }
       },
     },

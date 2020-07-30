@@ -76,7 +76,7 @@ const IdentityDashboardRoute: React.FC = () => {
       return (
         <Route
           key={index}
-          path={orderPaths.APP_ORDER_LIST}
+          path={orderPaths.APP_ORDER}
           component={OrdersRoute}
         />
       );

@@ -10,6 +10,6 @@
     "\\src\\components\\customers\\customerManaging",
     "\\src\\components\\dealers"
   ],
-  "SelectedNode": "\\src\\components\\dealers\\DealersBootstrapper.tsx",
+  "SelectedNode": "\\src\\components\\customers\\CustomersHeader.tsx",
   "PreviewInSolutionExplorer": false
 }

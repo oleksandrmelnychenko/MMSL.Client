@@ -2,22 +2,22 @@ import React from 'react';
 import NewMeetToMeasureOrder from './NewMeetToMeasureOrder';
 import { infoPanelActions } from '../../../../../redux/slices/infoPanel.slice';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import * as orderPaths from '../../../../../common/environment/appPaths/order';
 import ManageProfileOptiosPanel from '../../../../customers/options/ManageProfileOptiosPanel';
+import { onDismissManageOrderOptionsPanel } from '../../../options/details/management/ManageOrderOptionsPanel';
 
 export const NewMTMOrderBootstrapper: React.FC = (props: any) => {
   const dispatch = useDispatch();
-  const history = useHistory();
 
-  dispatch(
-    infoPanelActions.openInfoPanelWithComponent({
-      component: ManageProfileOptiosPanel,
-      onDismisPendingAction: () => {
-        history.push(orderPaths.APP_ORDER_LIST);
-      },
-    })
-  );
+  // dispatch(
+  //   infoPanelActions.openInfoPanelWithComponent({
+  //     component: ManageProfileOptiosPanel,
+  //     onDismisPendingAction: () => {
+  //       onDismissManageOrderOptionsPanel().forEach((action) =>
+  //         dispatch(action)
+  //       );
+  //     },
+  //   })
+  // );
 
   return <NewMeetToMeasureOrder />;
 };
