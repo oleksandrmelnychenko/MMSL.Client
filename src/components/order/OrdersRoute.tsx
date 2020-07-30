@@ -1,13 +1,10 @@
 import React from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import * as orderPaths from '../../common/environment/appPaths/order';
 import OrderList from './orders/OrderList';
 import NewMTMOrderBootstrapper from './details/management/mtm/NewMTMOrderBootstrapper';
 
 export const OrdersRoute: React.FC = (props: any) => {
-  const history = useHistory();
-
-  debugger;
   return (
     <Switch>
       <Route

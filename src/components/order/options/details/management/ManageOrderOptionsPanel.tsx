@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import { RoleType } from '../../../../../interfaces/identity';
 import { IApplicationState } from '../../../../../redux/reducers';
 import { renderMenuItem } from '../../../../master/DashboardLeftMenuPanel';
+import { APP_ORDER_LIST } from '../../../../../common/environment/appPaths/order';
 
 export const onDismissManageOrderOptionsPanel = () => {
   return [];
@@ -16,13 +17,14 @@ export const onDismissManageOrderOptionsPanel = () => {
 
 export const onBackFromProfileManaging = (dispatch: any, history: any) => {
   dispatch(infoPanelActions.closeInfoPanelWithComponent());
+  history.push(APP_ORDER_LIST);
 
   onDismissManageOrderOptionsPanel().forEach((action) => {
     dispatch(action);
   });
 };
 
-const ManageProfileOptiosPanel: React.FC = () => {
+const ManageOrderOptionsPanel: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -62,4 +64,4 @@ const ManageProfileOptiosPanel: React.FC = () => {
   return <>{renderMenuItem(menuItem)}</>;
 };
 
-export default ManageProfileOptiosPanel;
+export default ManageOrderOptionsPanel;
